@@ -15,19 +15,10 @@ import org.protege.editor.owl.model.search.SearchSettingsListener;
 import org.protege.editor.owl.model.search.SearchStringParser;
 
 import org.apache.lucene.search.IndexSearcher;
-import org.semanticweb.owlapi.model.AddAxiom;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLAnnotation;
-import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
-import org.semanticweb.owlapi.model.OWLAnnotationSubject;
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
-import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
-import org.semanticweb.owlapi.model.RemoveAxiom;
 import org.semanticweb.owlapi.util.ProgressMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +45,8 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
 
     private OWLEditorKit editorKit;
 
+    private OWLOntology activeOntology;
+
     private ExecutorService service = Executors.newSingleThreadExecutor();
 
     private AtomicLong lastSearchId = new AtomicLong(0);
@@ -65,6 +58,8 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
     private ProgressMonitor progressMonitor;
 
     private LuceneIndexer indexer = new LuceneIndexer();
+
+    private IndexDelegator indexDelegator;
 
     private IndexSearcher indexSearcher;
 
@@ -89,6 +84,46 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
         };
         editorKit.getOWLModelManager().addOntologyChangeListener(ontologyChangeListener);
         editorKit.getModelManager().addListener(modelManagerListener);
+    }
+
+    private void handleModelManagerEvent(OWLModelManagerChangeEvent event) {
+        OWLOntology ontology = editorKit.getOWLModelManager().getActiveOntology();
+        if (isCacheMutatingEvent(event)) {
+            boolean success = changeActiveOntology(ontology);
+            if (success) {
+                indexDelegator = new IndexDelegator(activeOntology);
+            }
+            rebuildIndex();
+        }
+        else if (isCacheSavingEvent(event)) {
+            indexDelegator.saveVersion();
+        }
+    }
+
+    private boolean changeActiveOntology(OWLOntology ontology) {
+        if (activeOntology == null) {
+            activeOntology = ontology;
+            return true;
+        }
+        else {
+            if (!activeOntology.equals(ontology)) {
+                activeOntology = ontology;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void rebuildIndex() {
+        lastSearchId.set(0); // rebuild index
+    }
+
+    private boolean isCacheMutatingEvent(OWLModelManagerChangeEvent event) {
+        return event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ENTITY_RENDERER_CHANGED);
+    }
+
+    private boolean isCacheSavingEvent(OWLModelManagerChangeEvent event) {
+        return event.isType(EventType.ONTOLOGY_SAVED);
     }
 
     @Override
@@ -129,24 +164,33 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
         return settings;
     }
 
+    @Override
+    public void performSearch(String searchString, SearchResultHandler searchResultHandler) {
+        if (lastSearchId.getAndIncrement() == 0) {
+            lastIndexingTask = service.submit(new Runnable() {
+                public void run() {
+                    buildingIndex();
+                }
+            });
+        }
+        SearchQueries searchQueries = prepareQuery(searchString);
+        lastSearchingTask = service.submit(new SearchCallable(lastSearchId.incrementAndGet(), searchQueries, searchResultHandler));
+    }
+
     private void buildingIndex() {
         long t0 = System.currentTimeMillis();
         logger.info("Building search index...");
         fireIndexingStarted();
         try {
-            OWLOntology activeOntology = editorKit.getOWLModelManager().getActiveOntology();
-            indexer.doIndex(new IndexDelegator(activeOntology),
+            indexer.doIndex(indexDelegator,
                     new SearchContext(editorKit),
                     progress -> fireIndexingProgressed(progress));
             long t1 = System.currentTimeMillis();
             logger.info("... built search index in " + (t1 - t0) + " ms");
-            indexSearcher = new IndexSearcher(indexer.getIndexReader());
+            reloadIndexSearcher();
         }
         catch (IOException e) {
             logger.error("... build index failed");
-            e.printStackTrace();
-        }
-        catch (Throwable e) {
             e.printStackTrace();
         }
         finally {
@@ -163,78 +207,25 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
     }
 
     private void updatingIndex(List<? extends OWLOntologyChange> changes) {
-        long t0 = System.currentTimeMillis();
-        logger.info("Updating search index...");
-        ChangeSet changeSet = new ChangeSet();
         try {
-            for (OWLOntologyChange change : changes) {
-                if (!change.isAxiomChange()) continue; // ignore if it is not an axiom change
-                OWLOntology sourceOntology = change.getOntology();
-                OWLAxiom changedAxiom = change.getAxiom();
-                if (change instanceof RemoveAxiom) {
-                    if (changedAxiom instanceof OWLDeclarationAxiom) {
-                        OWLEntity entity = ((OWLDeclarationAxiom) changedAxiom).getEntity();
-                        changeSet.addRemoveDeclaration(entity);
-                    } else if (changedAxiom instanceof OWLAnnotationAssertionAxiom) {
-                        OWLAnnotationSubject annotationSubject = ((OWLAnnotationAssertionAxiom) changedAxiom).getSubject();
-                        if (annotationSubject instanceof IRI) {
-                            OWLEntity annotationEntitySubject = sourceOntology.getEntitiesInSignature((IRI) annotationSubject).stream().findFirst().get();
-                            OWLAnnotation annotation = ((OWLAnnotationAssertionAxiom) changedAxiom).getAnnotation();
-                            changeSet.addRemoveAnnotation(annotationEntitySubject, annotation);
-                        }
-                    }
-                } else if (change instanceof AddAxiom) {
-                    if (changedAxiom instanceof OWLDeclarationAxiom) {
-                        OWLEntity entity = ((OWLDeclarationAxiom) changedAxiom).getEntity();
-                        changeSet.addAddDeclaration(entity);
-                    } else if (changedAxiom instanceof OWLAnnotationAssertionAxiom) {
-                        OWLAnnotationSubject annotationSubject = ((OWLAnnotationAssertionAxiom) changedAxiom).getSubject();
-                        if (annotationSubject instanceof IRI) {
-                            OWLEntity annotationEntitySubject = sourceOntology.getEntitiesInSignature((IRI) annotationSubject).stream().findFirst().get();
-                            OWLAnnotation annotation = ((OWLAnnotationAssertionAxiom) changedAxiom).getAnnotation();
-                            changeSet.addAddAnnotation(annotationEntitySubject, annotation);
-                        }
-                    }
-                }
+            boolean success = indexer.doUpdate(indexDelegator,
+                    new ChangeSet(changes),
+                    new SearchContext(editorKit));
+            if (success) {
+                reloadIndexSearcher();
             }
-            indexer.doUpdate(changeSet, new SearchContext(editorKit));
-            long t1 = System.currentTimeMillis();
-            logger.info("... updated search index in " + (t1 - t0) + " ms");
-            indexSearcher = new IndexSearcher(indexer.getIndexReader());
         }
         catch (IOException e) {
             logger.error("... update index failed");
             e.printStackTrace();
         }
-        catch (Throwable e) {
-            e.printStackTrace();
-        }
     }
 
-    private void handleModelManagerEvent(OWLModelManagerChangeEvent event) {
-        if (isCacheMutatingEvent(event)) {
-            lastSearchId.set(0); // rebuild index
-        }
+    private void reloadIndexSearcher() {
+        indexSearcher = new IndexSearcher(indexer.getIndexReader(indexDelegator));
     }
 
-    private boolean isCacheMutatingEvent(OWLModelManagerChangeEvent event) {
-        return event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ENTITY_RENDERER_CHANGED);
-    }
-
-    @Override
-    public void performSearch(String searchString, SearchResultHandler searchResultHandler) {
-        if (lastSearchId.getAndIncrement() == 0) {
-            lastIndexingTask = service.submit(new Runnable() {
-                public void run() {
-                    buildingIndex();
-                }
-            });
-        }
-        SearchQueries searchQueries = prepareQuery(searchString);
-        lastSearchingTask = service.submit(new SearchCallable(lastSearchId.incrementAndGet(), searchQueries, searchResultHandler));
-    }
-
-    public SearchQueries prepareQuery(String searchString) {
+    private SearchQueries prepareQuery(String searchString) {
         QueryBasedInputHandler handler = new QueryBasedInputHandler(this);
         searchStringParser.parse(searchString, handler);
         return handler.getQueryObject();

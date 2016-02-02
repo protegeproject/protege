@@ -1,11 +1,22 @@
 package org.protege.editor.owl.model.search.lucene;
 
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotationSubject;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.RemoveAxiom;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.Map.Entry;
 
@@ -20,14 +31,59 @@ import com.google.common.collect.Multimap;
  */
 public class ChangeSet {
 
+    private List<? extends OWLOntologyChange> changes;
+
     private Set<OWLEntity> removeDeclarations = new HashSet<>();
     private Multimap<OWLEntity, OWLAnnotation> removeAnnotations = ArrayListMultimap.create();
 
     private Set<OWLEntity> addDeclarations = new HashSet<>();
     private Multimap<OWLEntity, OWLAnnotation> addAnnotations = ArrayListMultimap.create();
 
-    public ChangeSet() {
-        // NO-OP
+    public ChangeSet(List<? extends OWLOntologyChange> changes) {
+        this.changes = changes;
+        for (OWLOntologyChange change : changes) {
+            if (!change.isAxiomChange()) continue; // ignore if it is not an axiom change
+            OWLOntology sourceOntology = change.getOntology();
+            OWLAxiom changedAxiom = change.getAxiom();
+            if (change instanceof RemoveAxiom) {
+                if (changedAxiom instanceof OWLDeclarationAxiom) {
+                    OWLEntity entity = ((OWLDeclarationAxiom) changedAxiom).getEntity();
+                    addRemoveDeclaration(entity);
+                } else if (changedAxiom instanceof OWLAnnotationAssertionAxiom) {
+                    OWLAnnotationSubject annotationSubject = ((OWLAnnotationAssertionAxiom) changedAxiom).getSubject();
+                    if (annotationSubject instanceof IRI) {
+                        Optional<OWLEntity> annotationEntitySubject = sourceOntology.getEntitiesInSignature((IRI) annotationSubject).stream().findFirst();
+                        if (annotationEntitySubject.isPresent()) {
+                            OWLAnnotation annotation = ((OWLAnnotationAssertionAxiom) changedAxiom).getAnnotation();
+                            addRemoveAnnotation(annotationEntitySubject.get(), annotation);
+                        }
+                    }
+                }
+            } else if (change instanceof AddAxiom) {
+                if (changedAxiom instanceof OWLDeclarationAxiom) {
+                    OWLEntity entity = ((OWLDeclarationAxiom) changedAxiom).getEntity();
+                    addAddDeclaration(entity);
+                } else if (changedAxiom instanceof OWLAnnotationAssertionAxiom) {
+                    OWLAnnotationSubject annotationSubject = ((OWLAnnotationAssertionAxiom) changedAxiom).getSubject();
+                    if (annotationSubject instanceof IRI) {
+                        Optional<OWLEntity> annotationEntitySubject = sourceOntology.getEntitiesInSignature((IRI) annotationSubject).stream().findFirst();
+                        if (annotationEntitySubject.isPresent()) {
+                            OWLAnnotation annotation = ((OWLAnnotationAssertionAxiom) changedAxiom).getAnnotation();
+                            addAddAnnotation(annotationEntitySubject.get(), annotation);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns the number of changes from ontology editing.
+     *
+     * @return Returns the number of changes from ontology editing.
+     */
+    public int size() {
+        return changes.size();
     }
 
     /**
@@ -39,14 +95,7 @@ public class ChangeSet {
         return Collections.unmodifiableSet(removeDeclarations);
     }
 
-    /**
-     * Collect the removed entities from an ontology. Hint: Use {@link OWLOntologyChange} to
-     * know what declaration axioms that have been removed and get the subject entity.
-     *
-     * @param entity
-     *          The removed entity.
-     */
-    public void addRemoveDeclaration(OWLEntity entity) {
+    protected void addRemoveDeclaration(OWLEntity entity) {
         removeDeclarations.add(entity);
     }
 
@@ -61,17 +110,7 @@ public class ChangeSet {
         return Collections.unmodifiableCollection(removeAnnotations.entries());
     }
 
-    /**
-     * Collect the removed annotations from an ontology. Hint: Use {@link OWLOntologyChange} to
-     * know what annotation assertion axioms that have been removed from the ontology. The method
-     * requires to include the subject entity of the annotation assertion.
-     *
-     * @param subject
-     *          The subject entity of the annotation assertion.
-     * @param annotation
-     *          The annotation object.
-     */
-    public void addRemoveAnnotation(OWLEntity subject, OWLAnnotation annotation) {
+    protected void addRemoveAnnotation(OWLEntity subject, OWLAnnotation annotation) {
         removeAnnotations.put(subject, annotation);
     }
 
@@ -84,14 +123,7 @@ public class ChangeSet {
         return Collections.unmodifiableSet(addDeclarations);
     }
 
-    /**
-     * Collect the added entities to an ontology.  Hint: Use {@link OWLOntologyChange} to
-     * know what declaration axioms that have been added and get the subject entity.
-     *
-     * @param entity
-     *          The added entity.
-     */
-    public void addAddDeclaration(OWLEntity entity) {
+    protected void addAddDeclaration(OWLEntity entity) {
         addDeclarations.add(entity);
     }
 
@@ -106,17 +138,7 @@ public class ChangeSet {
         return Collections.unmodifiableCollection(addAnnotations.entries());
     }
 
-    /**
-     * Collect the added annotations to an ontology. Hint: Use {@link OWLOntologyChange} to
-     * know what annotation assertion axioms that have been added to the ontology. The method
-     * requires to include the subject entity of the annotation assertion.
-     *
-     * @param subject
-     *          The subject entity of the annotation assertion.
-     * @param annotation
-     *          The annotation object.
-     */
-    public void addAddAnnotation(OWLEntity subject, OWLAnnotation annotation) {
+    protected void addAddAnnotation(OWLEntity subject, OWLAnnotation annotation) {
         addAnnotations.put(subject, annotation);
     }
 }
