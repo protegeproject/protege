@@ -104,7 +104,7 @@ public class IndexDelegator {
             openIndexWriter(indexer.getIndexWriterConfig());
             long t0 = System.currentTimeMillis();
             for (OWLOntology ontology : context.getOntologies()) {
-                logger.info("... building index for OntologyIRI<{}>" + ontology.getOntologyID().getOntologyIRI().get());
+                logger.info("... building index for OntologyIRI<{}>", ontology.getOntologyID().getOntologyIRI().get());
                 
                 // Calculate first the total number of axioms that will get indexed
                 int totalAxiomCount = ontology.getAxiomCount(AxiomType.DECLARATION) + ontology.getAxiomCount(AxiomType.ANNOTATION_ASSERTION);
