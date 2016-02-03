@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.view.individual;
 
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.search.EntitySearcher;
 
 import java.util.*;
@@ -64,7 +65,7 @@ public class OWLMembersListViewComponent extends OWLIndividualListViewComponent 
         OWLOntology activeOntology = getOWLModelManager().getActiveOntology();
         Set<OWLOntology> importsClosure = activeOntology.getImportsClosure();
 
-        for (OWLNamedIndividual individual : activeOntology.getIndividualsInSignature(true)) {
+        for (OWLNamedIndividual individual : activeOntology.getIndividualsInSignature(Imports.INCLUDED)) {
             Collection<OWLClassExpression> types = EntitySearcher.getTypes(individual, importsClosure);
             if (types.size() == 0) {
                 untypedIndividuals.add(individual);

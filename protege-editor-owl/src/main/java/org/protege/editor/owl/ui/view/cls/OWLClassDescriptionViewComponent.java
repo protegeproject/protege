@@ -86,7 +86,7 @@ public class OWLClassDescriptionViewComponent extends AbstractOWLClassViewCompon
                 setEnabled(false);
                 return;
             }
-            for (Object selVal : list.getSelectedValues()) {
+            for (Object selVal : list.getSelectedValuesList()) {
                 if (!(selVal instanceof OWLSubClassAxiomFrameSectionRow)) {
                     setEnabled(false);
                     return;

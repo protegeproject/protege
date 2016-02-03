@@ -106,7 +106,7 @@ public class AnonymousClassesView extends AbstractActiveOntologyViewComponent im
 
     public java.util.List<OWLObject> getObjectsToCopy() {
         List<OWLObject> sel = new ArrayList<>();
-for (Object clsItem : list.getSelectedValues()){
+for (Object clsItem : list.getSelectedValuesList()){
             sel.add(((AnonymousClassItem)clsItem).getOWLClass());
         }
         return sel;
