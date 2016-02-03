@@ -122,7 +122,9 @@ public class SearchIndexPreferences {
      *          A string represents the unique versioning ID of the ontology.
      */
     public void clearIndexLocation(String ontologyVersion) {
-        getPreferences().putString(ontologyVersion, null);
+        if (getPreferenceValue(ontologyVersion).isPresent()) {
+            getPreferences().putString(ontologyVersion, null); // clear by make the value null
+        }
     }
 
     /**
