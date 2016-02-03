@@ -2,6 +2,7 @@ package org.protege.editor.owl.model.axiom;
 
 import com.google.common.collect.Sets;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
 import java.util.Collections;
@@ -19,39 +20,39 @@ public class DefaultSubjectDefinitionExtractor implements SubjectDefinitionExtra
 
                 @Override
                 public Set<? extends OWLAxiom> visit(OWLClass cls) {
-                    return ontology.getAxioms(cls);
+                    return ontology.getAxioms(cls, Imports.EXCLUDED);
                 }
 
                 @Override
                 public Set<? extends OWLAxiom> visit(OWLObjectProperty property) {
-                    return ontology.getAxioms(property);
+                    return ontology.getAxioms(property, Imports.EXCLUDED);
                 }
 
                 @Override
                 public Set<? extends OWLAxiom> visit(OWLDataProperty property) {
-                    return ontology.getAxioms(property);
+                    return ontology.getAxioms(property, Imports.EXCLUDED);
                 }
 
                 @Override
                 public Set<? extends OWLAxiom> visit(OWLNamedIndividual individual) {
-                    return ontology.getAxioms(individual);
+                    return ontology.getAxioms(individual, Imports.EXCLUDED);
                 }
 
                 @Override
                 public Set<? extends OWLAxiom> visit(OWLDatatype datatype) {
-                    return ontology.getAxioms(datatype);
+                    return ontology.getAxioms(datatype, Imports.EXCLUDED);
                 }
 
                 @Override
                 public Set<? extends OWLAxiom> visit(OWLAnnotationProperty property) {
-                    return ontology.getAxioms(property);
+                    return ontology.getAxioms(property, Imports.EXCLUDED);
                 }
 
                 @Override
                 public Set<? extends OWLAxiom> visit(IRI iri) {
                     Set<OWLAxiom> axioms = Sets.newHashSet();
                     axioms.addAll(ontology.getAnnotationAssertionAxioms(iri));
-                    for(OWLEntity entity : ontology.getEntitiesInSignature(iri, true)) {
+                    for(OWLEntity entity : ontology.getEntitiesInSignature(iri, Imports.INCLUDED)) {
                         axioms.addAll(getDefiningAxioms(entity, ontology));
                     }
                     return axioms;
