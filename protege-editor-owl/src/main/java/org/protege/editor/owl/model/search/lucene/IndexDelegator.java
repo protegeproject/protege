@@ -4,6 +4,7 @@ import org.protege.editor.owl.model.search.SearchContext;
 import org.protege.editor.owl.model.search.SearchIndexPreferences;
 import org.protege.editor.owl.model.search.lucene.AbstractLuceneIndexer.IndexProgressListener;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.Term;
@@ -17,6 +18,7 @@ import org.semanticweb.owlapi.search.EntitySearcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Map.Entry;
@@ -38,6 +40,8 @@ public class IndexDelegator {
 
     private String previousOntologyVersion = "";
 
+    private IndexWriter indexWriter;
+
     private IndexDirectory indexDirectory;
 
     private OWLOntology ontology;
@@ -53,16 +57,15 @@ public class IndexDelegator {
         if (indexLocation.isPresent()) {
             String existingIndexLocation = indexLocation.get();
             indexDirectory = new IndexDirectory(existingIndexLocation);
-            logger.info("Loading index files from " + indexDirectory.getLocation());
+            logger.info("Loading search index from " + indexDirectory.getLocation());
             isIndexReady = true;
         } else {
             String directoryName = buildIndexDirectoryName(ontology);
             String newIndexLocation = preferences.createIndexLocation(directoryName);
             indexDirectory = new IndexDirectory(newIndexLocation);
-            preferences.registerIndexLocation(ontologyVersion, newIndexLocation);
             isIndexReady = false;
         }
-        updateOntologyVersion();
+        setActiveOntologyVersion(ontologyVersion);
     }
 
     public OWLOntology getActiveOntology() {
@@ -71,6 +74,19 @@ public class IndexDelegator {
 
     public String getActiveOntologyVersion() {
         return currentOntologyVersion;
+    }
+
+    protected void setActiveOntologyVersion(String version) {
+        previousOntologyVersion = version;
+        currentOntologyVersion = version;
+        preferences.registerIndexLocation(version, indexDirectory.getLocation());
+    }
+
+    protected void changeActiveOntologyVersion(String newVersion) {
+        previousOntologyVersion = currentOntologyVersion;
+        currentOntologyVersion = newVersion;
+        preferences.clearIndexLocation(getPreviousOntologyVersion());
+        preferences.registerIndexLocation(getActiveOntologyVersion(), indexDirectory.getLocation());
     }
 
     protected String getPreviousOntologyVersion() {
@@ -83,12 +99,12 @@ public class IndexDelegator {
 
     public void doIndex(AbstractLuceneIndexer indexer, SearchContext context, IndexProgressListener listener) throws IOException {
         if (!isIndexReady) {
-            long t0 = System.currentTimeMillis();
             logger.info("Building search index...");
-            
-            final IndexWriter writer = getIndexWriter(indexer.getIndexWriterConfig());
+            logger.info("... saving index to {}", indexDirectory.getLocation());
+            openIndexWriter(indexer.getIndexWriterConfig());
+            long t0 = System.currentTimeMillis();
             for (OWLOntology ontology : context.getOntologies()) {
-                logger.info("... building index for " + ontology.getOntologyID());
+                logger.info("... building index for OntologyIRI<{}>" + ontology.getOntologyID().getOntologyIRI().get());
                 
                 // Calculate first the total number of axioms that will get indexed
                 int totalAxiomCount = ontology.getAxiomCount(AxiomType.DECLARATION) + ontology.getAxiomCount(AxiomType.ANNOTATION_ASSERTION);
@@ -97,57 +113,75 @@ public class IndexDelegator {
                 // Start indexing
                 int progress = 1;
                 for (OWLEntity entity : ontology.getSignature(Imports.INCLUDED)) {
-                    writer.addDocument(indexer.createEntityDocument(entity, context));
+                    indexWriter.addDocument(indexer.createEntityDocument(entity, context));
                     listener.fireIndexingProgressed(percentage(progress++, totalAxiomCount));
                     for (OWLAnnotation annotation : EntitySearcher.getAnnotations(entity, ontology)) {
-                        writer.addDocument(indexer.createAnnotationDocument(entity, annotation, context));
+                        indexWriter.addDocument(indexer.createAnnotationDocument(entity, annotation, context));
                         listener.fireIndexingProgressed(percentage(progress++, totalAxiomCount));
                     }
                 }
             }
-            writer.close();
-            isIndexReady = true;
-
+            optimizeIndex();
             long t1 = System.currentTimeMillis();
-            logger.info("... built search index in " + (t1 - t0) + " ms");
+            logger.info("... built index in " + (t1 - t0) + " ms");
+            isIndexReady = true;
         }
     }
 
     public boolean doUpdate(AbstractLuceneIndexer indexer, ChangeSet changeSet, SearchContext context) throws IOException {
         if (isIndexReady) {
-            logger.info("... updating index from {} change(s)", changeSet.size());
+            logger.info("Updating search index from {} change(s)", changeSet.size());
+            openIndexWriter(indexer.getIndexWriterConfig());
             
-            final IndexWriter writer = getIndexWriter(indexer.getIndexWriterConfig());
-
             // Process the remove change set first ...
             for (OWLEntity entity : changeSet.getRemoveDeclarations()) {
-                writer.deleteDocuments(new Term(IndexField.ENTITY_IRI, indexer.getEntityId(entity)));
+                indexWriter.deleteDocuments(new Term(IndexField.ENTITY_IRI, indexer.getEntityId(entity)));
             }
             for (Entry<OWLEntity, OWLAnnotation> annotationEntry : changeSet.getRemoveAnnotations()) {
-                writer.deleteDocuments(
+                indexWriter.deleteDocuments(
                         new Term(IndexField.ENTITY_IRI, indexer.getEntityId(annotationEntry.getKey())),
                         new Term(IndexField.ANNOTATION_IRI, indexer.getAnnotationId(annotationEntry.getValue())));
             }
             // ... and then continue process the addition change set.
             for (OWLEntity entity : changeSet.getAddDeclarations()) {
-                writer.addDocument(indexer.createEntityDocument(entity, context));
+                indexWriter.addDocument(indexer.createEntityDocument(entity, context));
             }
             for (Entry<OWLEntity, OWLAnnotation> annotationEntry : changeSet.getAddAnnotations()) {
-                writer.addDocument(indexer.createAnnotationDocument(annotationEntry.getKey(), annotationEntry.getValue(), context));
+                indexWriter.addDocument(indexer.createAnnotationDocument(annotationEntry.getKey(), annotationEntry.getValue(), context));
             }
-            writer.close();
+            commitIndex();
             return true;
         }
         return false;
     }
 
-    public void saveVersion() {
-        if (updateOntologyVersion()) {
-            preferences.clearIndexLocation(getPreviousOntologyVersion());
-            preferences.registerIndexLocation(getActiveOntologyVersion(), indexDirectory.getLocation());
-            logger.info("Saved index IndexVersion({}) to {}", getPreviousOntologyVersion(), indexDirectory.getLocation());
-        } else {
-            logger.info("No ontology changes detected. Not writing new index version.");
+    public void optimizeIndex() throws IOException {
+        if (isOpen(indexWriter)) {
+            indexWriter.close();
+        }
+    }
+
+    public void commitIndex() throws IOException {
+        if (isOpen(indexWriter)) {
+            indexWriter.commit();
+        }
+    }
+
+    public void saveIndex() throws IOException {
+        updateOntologyVersion();
+        optimizeIndex();
+        logger.info("Saved search index");
+    }
+
+    public void revertIndex() throws IOException {
+        preferences.clearIndexLocation(getActiveOntologyVersion());
+        FileUtils.deleteDirectory(new File(indexDirectory.getLocation()));
+    }
+
+    public void closeIndex() throws IOException {
+        if (isOpen(indexWriter)) {
+            indexWriter.close();
+            logger.info("Closed search index");
         }
     }
 
@@ -155,8 +189,15 @@ public class IndexDelegator {
      * Private utility methods
      */
 
-    private IndexWriter getIndexWriter(IndexWriterConfig indexWriterConfig) throws IOException {
-        return new IndexWriter(indexDirectory.getPhysicalDirectory(), indexWriterConfig);
+    private void openIndexWriter(IndexWriterConfig indexWriterConfig) throws IOException {
+        if (!isOpen(indexWriter)) {
+            indexWriter = new IndexWriter(indexDirectory.getPhysicalDirectory(), indexWriterConfig);
+        }
+    }
+
+    private boolean isOpen(IndexWriter indexWriter) {
+        if (indexWriter == null) return false;
+        return indexWriter.isOpen();
     }
 
     private String buildIndexDirectoryName(OWLOntology ontology) {
@@ -173,14 +214,11 @@ public class IndexDelegator {
         return Integer.toHexString(result);
     }
 
-    private boolean updateOntologyVersion() {
+    private void updateOntologyVersion() {
         String newVersion = getOntologyVersion(getActiveOntology());
         if (!currentOntologyVersion.equals(newVersion)) {
-            previousOntologyVersion = currentOntologyVersion;
-            currentOntologyVersion = newVersion;
-            return true;
+            changeActiveOntologyVersion(newVersion);
         }
-        return false;
     }
 
     private int percentage(int progress, int total) {

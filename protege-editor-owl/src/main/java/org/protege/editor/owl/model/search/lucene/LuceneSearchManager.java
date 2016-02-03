@@ -24,7 +24,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -60,6 +62,7 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
     private LuceneIndexer indexer = new LuceneIndexer();
 
     private IndexDelegator indexDelegator;
+    private Map<OWLOntology, IndexDelegator> indexDelegatorCache = new HashMap<>();
 
     private IndexSearcher indexSearcher;
 
@@ -91,12 +94,17 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
         if (isCacheMutatingEvent(event)) {
             boolean success = changeActiveOntology(ontology);
             if (success) {
-                indexDelegator = new IndexDelegator(activeOntology);
+                IndexDelegator indexDelegator = indexDelegatorCache.get(activeOntology);
+                if (indexDelegator == null) {
+                    indexDelegator = new IndexDelegator(activeOntology);
+                    indexDelegatorCache.put(activeOntology, indexDelegator);
+                }
+                this.indexDelegator = indexDelegator;
             }
             rebuildIndex();
         }
         else if (isCacheSavingEvent(event)) {
-            indexDelegator.saveVersion();
+            indexer.save(indexDelegator);
         }
     }
 
@@ -104,8 +112,7 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
         if (activeOntology == null) {
             activeOntology = ontology;
             return true;
-        }
-        else {
+        } else {
             if (!activeOntology.equals(ontology)) {
                 activeOntology = ontology;
                 return true;
@@ -145,8 +152,24 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
     @Override
     public void dispose() throws Exception {
         OWLModelManager mm = editorKit.getOWLModelManager();
+        disposeListeners(mm);
+        closeIndexes(mm);
+    }
+
+    private void disposeListeners(OWLModelManager mm) {
         mm.removeOntologyChangeListener(ontologyChangeListener);
         mm.removeListener(modelManagerListener);
+    }
+
+    private void closeIndexes(OWLModelManager mm) {
+        for (OWLOntology ontology : indexDelegatorCache.keySet()) {
+            IndexDelegator indexDelegator = indexDelegatorCache.get(ontology);
+            if (mm.isDirty(ontology)) {
+                indexer.revert(indexDelegator);
+            } else {
+                indexer.close(indexDelegator);
+            }
+        }
     }
 
     @Override
