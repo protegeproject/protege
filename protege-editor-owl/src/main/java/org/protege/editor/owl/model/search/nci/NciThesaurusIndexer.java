@@ -2,6 +2,7 @@ package org.protege.editor.owl.model.search.nci;
 
 import org.protege.editor.owl.model.search.SearchContext;
 import org.protege.editor.owl.model.search.lucene.AbstractLuceneIndexer;
+import org.protege.editor.owl.model.search.lucene.IndexDelegator;
 import org.protege.editor.owl.model.search.lucene.IndexField;
 import org.protege.editor.owl.model.search.lucene.analyzer.PhoneticAnalyzer;
 
@@ -17,6 +18,7 @@ import org.semanticweb.owlapi.model.OWLAnnotationValue;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLLiteral;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -32,6 +34,42 @@ public class NciThesaurusIndexer extends AbstractLuceneIndexer {
         super(new PerFieldAnalyzerWrapper(new StandardAnalyzer(), new HashMap<String, Analyzer>() {{
             put(IndexField.PHONETIC_NAME, new PhoneticAnalyzer());
         }}));
+    }
+
+    public void commit(IndexDelegator delegator) {
+        try {
+            delegator.commitIndex();
+        } catch (IOException e) {
+            logger.error("... commit index failed");
+            e.printStackTrace();
+        }
+    }
+
+    public void save(IndexDelegator delegator) {
+        try {
+            delegator.saveIndex();
+        } catch (IOException e) {
+            logger.error("... save index failed");
+            e.printStackTrace();
+        }
+    }
+
+    public void revert(IndexDelegator delegator) {
+        try {
+            delegator.revertIndex();
+        } catch (IOException e) {
+            logger.error("... revert index failed");
+            e.printStackTrace();
+        }
+    }
+
+    public void close(IndexDelegator delegator) {
+        try {
+            delegator.closeIndex();
+        } catch (IOException e) {
+            logger.error("... close index failed");
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -30,7 +30,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -69,6 +71,7 @@ public class NciSearchManager extends LuceneSearcher implements SearchManager, S
     private IndexDelegator indexDelegator;
 
     private IndexSearcher indexSearcher;
+    private Map<OWLOntology, IndexDelegator> indexDelegatorCache = new HashMap<>();
 
     private Future<?> lastIndexingTask;
     private Future<?> lastSearchingTask;
@@ -98,12 +101,17 @@ public class NciSearchManager extends LuceneSearcher implements SearchManager, S
         if (isCacheMutatingEvent(event)) {
             boolean success = changeActiveOntology(ontology);
             if (success) {
-                indexDelegator = new IndexDelegator(activeOntology);
+                IndexDelegator indexDelegator = indexDelegatorCache.get(activeOntology);
+                if (indexDelegator == null) {
+                    indexDelegator = new IndexDelegator(activeOntology);
+                    indexDelegatorCache.put(activeOntology, indexDelegator);
+                }
+                this.indexDelegator = indexDelegator;
             }
             rebuildIndex();
         }
         else if (isCacheSavingEvent(event)) {
-            indexDelegator.saveVersion();
+            indexer.save(indexDelegator);
         }
     }
 
@@ -152,8 +160,24 @@ public class NciSearchManager extends LuceneSearcher implements SearchManager, S
     @Override
     public void dispose() throws Exception {
         OWLModelManager mm = editorKit.getOWLModelManager();
+        disposeListeners(mm);
+        closeIndexes(mm);
+    }
+
+    private void disposeListeners(OWLModelManager mm) {
         mm.removeOntologyChangeListener(ontologyChangeListener);
         mm.removeListener(modelManagerListener);
+    }
+
+    private void closeIndexes(OWLModelManager mm) {
+        for (OWLOntology ontology : indexDelegatorCache.keySet()) {
+            IndexDelegator indexDelegator = indexDelegatorCache.get(ontology);
+            if (mm.isDirty(ontology)) {
+                indexer.revert(indexDelegator);
+            } else {
+                indexer.close(indexDelegator);
+            }
+        }
     }
 
     @Override
