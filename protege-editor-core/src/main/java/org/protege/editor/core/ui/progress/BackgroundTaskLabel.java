@@ -33,11 +33,7 @@ public class BackgroundTaskLabel extends JLabel implements BackgroundTaskListene
 
     private static final int DELAY_MILLIS = 1000;
 
-    private ActionListener timeout = new ActionListener(){
-        public void actionPerformed(ActionEvent event) {
-            setVisible(true);
-        }
-    };
+    private ActionListener timeout = event -> setVisible(true);
 
     private Timer t;
 
@@ -65,11 +61,7 @@ public class BackgroundTaskLabel extends JLabel implements BackgroundTaskListene
 
     public void endTask(BackgroundTask task) {
         t.stop();
-        runInSwingThread(new Runnable(){
-            public void run() {
-                setVisible(mngr.isBusy());
-            }
-        });
+        runInSwingThread(() -> setVisible(mngr.isBusy()));
     }
 
 

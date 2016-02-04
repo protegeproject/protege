@@ -81,11 +81,9 @@ public class OpenFromURLPanel extends JPanel implements VerifiedInputEditor {
         bookmarksList.setCellRenderer(new BookmarkedItemListRenderer());
         bookmarksHolder.add(new JScrollPane(bookmarksList));
         fillList();
-        bookmarksList.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    updateTextField();
-                }
+        bookmarksList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                updateTextField();
             }
         });
     }

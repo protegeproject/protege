@@ -82,15 +82,12 @@ public class ProtegeApplication implements BundleActivator {
 
     public void start(final BundleContext context) {
         logManager.bind();
-    	context.addFrameworkListener(new FrameworkListener() {
-    		@Override
-    		public void frameworkEvent(FrameworkEvent event) {
-    			if (event.getType() == FrameworkEvent.STARTED) {
-    				reallyStart(context);
-    			}
+    	context.addFrameworkListener(event -> {
+            if (event.getType() == FrameworkEvent.STARTED) {
+                reallyStart(context);
+            }
 
-    		}
-    	});
+        });
 
     }
     
@@ -359,10 +356,8 @@ public class ProtegeApplication implements BundleActivator {
     }
     
     private void setupExceptionHandler() {
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            public void uncaughtException(Thread t, Throwable e) {
-                logger.error("Uncaught Exception in thread '{}'", t.getName(), e);
-            }
+        Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+            logger.error("Uncaught Exception in thread '{}'", t.getName(), e);
         });
     }
 

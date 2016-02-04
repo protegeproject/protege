@@ -37,23 +37,11 @@ public class MList extends JList {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    private ActionListener deleteActionListener = new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-            MList.this.handleDelete();
-        }
-    };
+    private ActionListener deleteActionListener = e -> handleDelete();
 
-    private ActionListener addActionListener = new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-            MList.this.handleAdd();
-        }
-    };
+    private ActionListener addActionListener = e -> handleAdd();
 
-    private ActionListener editActionListener = new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-            MList.this.handleEdit();
-        }
-    };
+    private ActionListener editActionListener = e -> handleEdit();
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

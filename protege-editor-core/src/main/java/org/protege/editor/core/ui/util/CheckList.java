@@ -56,13 +56,10 @@ public class CheckList extends JComponent {
         this.listeners = new ArrayList<CheckListListener>();
         item2CheckBoxMap = new IdentityHashMap<Object, JCheckBox>();
         setLayout(new CheckListLayoutManager());
-        list.addPropertyChangeListener(new PropertyChangeListener() {
-
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (evt.getPropertyName().equals("model")) {
-                    handleModelChange();
-                    ((ListModel) evt.getOldValue()).removeListDataListener(lsnr);
-                }
+        list.addPropertyChangeListener(evt -> {
+            if (evt.getPropertyName().equals("model")) {
+                handleModelChange();
+                ((ListModel) evt.getOldValue()).removeListDataListener(lsnr);
             }
         });
         list.getModel().addListDataListener(lsnr);
@@ -109,11 +106,7 @@ public class CheckList extends JComponent {
                 item2CheckBoxMap.put(item, cb);
                 add(cb);
                 final int index = i;
-                cb.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        fireCheckChanged(item, index, cb.isSelected());
-                    }
-                });
+                cb.addActionListener(e -> fireCheckChanged(item, index, cb.isSelected()));
             }
             remaining.remove(item);
         }

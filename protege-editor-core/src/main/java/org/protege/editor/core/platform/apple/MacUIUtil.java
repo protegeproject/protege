@@ -19,19 +19,17 @@ public class MacUIUtil {
         else {
             fileDialog = new FileDialog((Dialog) parent, title, FileDialog.LOAD);
         }
-        fileDialog.setFilenameFilter(new FilenameFilter() {
-            public boolean accept(File dir, String name) {
-                if (extensions.isEmpty()) {
-                    return true;
-                }
-                else {
-                    for (String ext : extensions) {
-                        if (name.toLowerCase().endsWith(ext.toLowerCase())) {
-                            return true;
-                        }
+        fileDialog.setFilenameFilter((dir, name) -> {
+            if (extensions.isEmpty()) {
+                return true;
+            }
+            else {
+                for (String ext : extensions) {
+                    if (name.toLowerCase().endsWith(ext.toLowerCase())) {
+                        return true;
                     }
-                    return false;
                 }
+                return false;
             }
         });
         fileDialog.setDirectory(UIUtil.getCurrentFileDirectory());
@@ -54,19 +52,17 @@ public class MacUIUtil {
         else {
             fileDialog = new FileDialog((Dialog) parent, title, FileDialog.SAVE);
         }
-        fileDialog.setFilenameFilter(new FilenameFilter() {
-            public boolean accept(File dir, String name) {
-                if (extensions.isEmpty()) {
-                    return true;
-                }
-                else {
-                    for (String ext : extensions) {
-                        if (name.toLowerCase().endsWith(ext.toLowerCase())) {
-                            return true;
-                        }
+        fileDialog.setFilenameFilter((dir, name) -> {
+            if (extensions.isEmpty()) {
+                return true;
+            }
+            else {
+                for (String ext : extensions) {
+                    if (name.toLowerCase().endsWith(ext.toLowerCase())) {
+                        return true;
                     }
-                    return false;
                 }
+                return false;
             }
         });
         fileDialog.setDirectory(UIUtil.getCurrentFileDirectory());

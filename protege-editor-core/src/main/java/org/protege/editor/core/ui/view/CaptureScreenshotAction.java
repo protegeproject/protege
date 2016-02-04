@@ -34,11 +34,7 @@ public class CaptureScreenshotAction extends ProtegeAction {
 
     private Component currentView;
 
-    private final PropertyChangeListener listener = new PropertyChangeListener() {
-        public void propertyChange(PropertyChangeEvent evt) {
-            handleFocusManagerPropertyChange(evt);
-        }
-    };
+    private final PropertyChangeListener listener = this::handleFocusManagerPropertyChange;
 
     public static final CaptureTypePanel captureTypePanel = new CaptureTypePanel();
 
