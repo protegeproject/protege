@@ -96,26 +96,4 @@ public class LinkLabel extends JLabel {
             linkListener.actionPerformed(new ActionEvent(this, 0, getText()));
         }
     }
-
-
-    public static void main(String[] args) {
-        Box box = new Box(BoxLayout.Y_AXIS);
-        box.add(new LinkLabel("Test link!", new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
-        }));
-        box.add(Box.createVerticalStrut(30));
-        box.add(new LinkLabel("Another link", new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            }
-        }));
-        JFrame f = new JFrame();
-        JPanel panel = new JPanel();
-        panel.setBackground(Color.WHITE);
-        panel.add(box);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setContentPane(panel);
-        f.pack();
-        f.setVisible(true);
-    }
 }

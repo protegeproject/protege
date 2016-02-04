@@ -67,11 +67,9 @@ public class PluginPanel extends JPanel {
             tables.add(table);
             tabbedPane.addTab(label, table);
 
-            table.addListSelectionListener(new ListSelectionListener() {
-                public void valueChanged(ListSelectionEvent e) {
-                    PluginInfo info = table.getCurrentUpdateInfo();
-                    updateInfoPanel(info);
-                }
+            table.addListSelectionListener(e -> {
+                PluginInfo info = table.getCurrentUpdateInfo();
+                updateInfoPanel(info);
             });
         }
         tabbedPane.setSelectedIndex(0);
@@ -81,18 +79,14 @@ public class PluginPanel extends JPanel {
 
         add(sp, BorderLayout.CENTER);
 
-        tabbedPane.addChangeListener(new ChangeListener(){
-            public void stateChanged(ChangeEvent event) {
-                PluginTable table = (PluginTable)tabbedPane.getSelectedComponent();
-                updateInfoPanel(table.getCurrentUpdateInfo());
-            }
+        tabbedPane.addChangeListener(event -> {
+            PluginTable table = (PluginTable)tabbedPane.getSelectedComponent();
+            updateInfoPanel(table.getCurrentUpdateInfo());
         });
 
         alwaysShow = new JCheckBox("Always check for updates on startup.", PluginManager.getInstance().isAutoUpdateEnabled());
-        alwaysShow.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent event) {
-                PluginManager.getInstance().setAutoUpdateEnabled(alwaysShow.isSelected());
-            }
+        alwaysShow.addActionListener(event -> {
+            PluginManager.getInstance().setAutoUpdateEnabled(alwaysShow.isSelected());
         });
         alwaysShow.setAlignmentX(0.0f);
         add(alwaysShow, BorderLayout.SOUTH);
@@ -135,15 +129,13 @@ public class PluginPanel extends JPanel {
         label.setFont(font);
         label.setAlignmentX(0.0f);
         box.add(label);
-        licenseLabel = new LinkLabel("", new ActionListener(){
-            public void actionPerformed(ActionEvent event) {
-                try {
-                    URL url = new URL(licenseLabel.getText());
-                    NativeBrowserLauncher.openURL(url.toString());
-                }
-                catch (MalformedURLException e) {
-                    // do nothing
-                }
+        licenseLabel = new LinkLabel("", event -> {
+            try {
+                URL url = new URL(licenseLabel.getText());
+                NativeBrowserLauncher.openURL(url.toString());
+            }
+            catch (MalformedURLException e) {
+                // do nothing
             }
         });
         licenseLabel.setFont(font);
@@ -171,12 +163,10 @@ public class PluginPanel extends JPanel {
         pane.setPreferredSize(new Dimension(300, 200));
         pane.setEditable(false);
         pane.setFont(new Font("SansSerif", Font.PLAIN, 9));
-        pane.addHyperlinkListener(new HyperlinkListener(){
-            public void hyperlinkUpdate(HyperlinkEvent event) {
-                if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED &&
-                    event.getURL() != null) {
-                    NativeBrowserLauncher.openURL(event.getURL().toString());
-                }
+        pane.addHyperlinkListener(event -> {
+            if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED &&
+                event.getURL() != null) {
+                NativeBrowserLauncher.openURL(event.getURL().toString());
             }
         });
         return pane;
@@ -194,16 +184,14 @@ public class PluginPanel extends JPanel {
                 updateDocPanel(readme, readmePane, readmeScroller);
             }
             else{
-                Runnable loadContent = new Runnable() {
-                    public void run() {
-                        final ContentMimePair readme = getContent(info.getReadmeURI());
-                        updateInfoReadmeMap.put(info, readme);
-                        SwingUtilities.invokeLater(new Runnable(){
-                            public void run() {
-                                updateDocPanel(readme, readmePane, readmeScroller);
-                            }
-                        });
-                    }
+                Runnable loadContent = () -> {
+                    final ContentMimePair readme1 = getContent(info.getReadmeURI());
+                    updateInfoReadmeMap.put(info, readme1);
+                    SwingUtilities.invokeLater(new Runnable(){
+                        public void run() {
+                            updateDocPanel(readme1, readmePane, readmeScroller);
+                        }
+                    });
                 };
                 Thread t = new Thread(loadContent, "Load plugin info");
                 t.setPriority(Thread.MIN_PRIORITY);
@@ -247,10 +235,8 @@ public class PluginPanel extends JPanel {
     private void updateDocPanel(ContentMimePair content, JEditorPane textEditor, final JScrollPane scroller) {
         textEditor.setContentType(content.mimeType);
         textEditor.setText(content.content);
-        SwingUtilities.invokeLater(new Runnable(){
-            public void run() {
-                scroller.getViewport().setViewPosition(new Point(0, 0));
-            }
+        SwingUtilities.invokeLater(() -> {
+            scroller.getViewport().setViewPosition(new Point(0, 0));
         });
     }
 

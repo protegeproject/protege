@@ -76,22 +76,11 @@ public class ViewBanner extends JPanel {
         toolBarPanel.setBackground(backgroundColor);
         labelPanel.add(toolBarPanel, BorderLayout.EAST);
         labelPanel.add(label, BorderLayout.WEST);
-//        labelPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener(new PropertyChangeListener() {
-            /**
-             * This method gets called when a bound property is changed.
-             * @param evt A PropertyChangeEvent object describing the event source
-             *            and the property that has changed.
-             */
-
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (evt.getPropertyName().equals("focusOwner")) {
-                    repaint();
-                }
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener(evt -> {
+            if (evt.getPropertyName().equals("focusOwner")) {
+                repaint();
             }
         });
-//        backgroundColor = new Color(80, 148, 229);
-//        backgroundColor = new Color(30, 122, 232);
     }
 
 

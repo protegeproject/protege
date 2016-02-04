@@ -114,38 +114,35 @@ public abstract class AbstractAppleApplicationWrapper {
         if (listener != null) {
             return listener;
         }
-        InvocationHandler handler = new InvocationHandler() {
-            public Object invoke(Object proxy, Method method, Object[] args)
-            throws Throwable {
-                if (method.equals(handleAboutMethod)){
-                    Object applicationEvent = args[0];
-                    setHandledMethod.invoke(applicationEvent, handleAboutRequest());
-                }
-                if (method.equals(handleOpenFileMethod)) {
-                    Object event = args[0];
-                    String fileName = (String) getFileNameMethod.invoke(event, new Object[] { });
-                    editFile(fileName);
-                }
-                else if (method.equals(handlePreferencesMethod)){
-                    Object applicationEvent = args[0];
-                    setHandledMethod.invoke(applicationEvent, handlePreferencesRequest());
-                }
-                else if (method.equals(handleQuitMethod)){
-                    Object applicationEvent = args[0];
-                    setHandledMethod.invoke(applicationEvent, handleQuitRequest());
-                }
-                // behave like a good java object
-                else if (method.getName().equals("equals")) {
-                    return proxy == args[0];
-                }
-                else if (method.getName().equals("hashCode")) {
-                    return 42;
-                }
-                else if (method.getName().equals("toString")) {
-                    return "OSX Application Listener";
-                }
-                return null;
+        InvocationHandler handler = (proxy, method, args) -> {
+            if (method.equals(handleAboutMethod)){
+                Object applicationEvent = args[0];
+                setHandledMethod.invoke(applicationEvent, handleAboutRequest());
             }
+            if (method.equals(handleOpenFileMethod)) {
+                Object event = args[0];
+                String fileName = (String) getFileNameMethod.invoke(event, new Object[] { });
+                editFile(fileName);
+            }
+            else if (method.equals(handlePreferencesMethod)){
+                Object applicationEvent = args[0];
+                setHandledMethod.invoke(applicationEvent, handlePreferencesRequest());
+            }
+            else if (method.equals(handleQuitMethod)){
+                Object applicationEvent = args[0];
+                setHandledMethod.invoke(applicationEvent, handleQuitRequest());
+            }
+            // behave like a good java object
+            else if (method.getName().equals("equals")) {
+                return proxy == args[0];
+            }
+            else if (method.getName().equals("hashCode")) {
+                return 42;
+            }
+            else if (method.getName().equals("toString")) {
+                return "OSX Application Listener";
+            }
+            return null;
         };
         listener = Proxy.newProxyInstance(getClass().getClassLoader(), 
                                           new Class[] { applicationListenerClass }, handler);

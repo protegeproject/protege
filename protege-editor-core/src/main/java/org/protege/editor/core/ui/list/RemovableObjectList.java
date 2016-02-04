@@ -222,13 +222,10 @@ public class RemovableObjectList<O> extends MList {
         final RemovableObjectList<String> list = new RemovableObjectList<String>();
         list.setListData(strings.toArray());
 
-        list.addListSelectionListener(new ListSelectionListener() {
-
-            public void valueChanged(ListSelectionEvent e) {
-                String x1 = list.getSelectedValue();
-                if (x1 != null) {
-                    System.out.println(x1);
-                }
+        list.addListSelectionListener(e -> {
+            String x1 = list.getSelectedValue();
+            if (x1 != null) {
+                System.out.println(x1);
             }
         });
 

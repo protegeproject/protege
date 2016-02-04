@@ -63,35 +63,33 @@ public class PluginTable extends JPanel {
 
     private void handleTableShown(){
 
-        Thread t = new Thread(new Runnable(){
-            public void run() {
-                tableModel = new PluginUpdateTableModel(provider);
-                table = new JTable(tableModel);
+        Thread t = new Thread(() -> {
+            tableModel = new PluginUpdateTableModel(provider);
+            table = new JTable(tableModel);
 
-                table.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
-                table.setShowGrid(true);
-                table.setRowMargin(1);
-                table.setGridColor(Color.LIGHT_GRAY);
-                table.setRowHeight(table.getRowHeight() + 5);
-                table.setRowSelectionAllowed(true);
-                table.setColumnSelectionAllowed(false);
-                TableUtils.pack(table, true, false, 3);
-                
-                final JScrollPane tableSp = new JScrollPane(table);
+            table.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
+            table.setShowGrid(true);
+            table.setRowMargin(1);
+            table.setGridColor(Color.LIGHT_GRAY);
+            table.setRowHeight(table.getRowHeight() + 5);
+            table.setRowSelectionAllowed(true);
+            table.setColumnSelectionAllowed(false);
+            TableUtils.pack(table, true, false, 3);
 
-                for (ListSelectionListener l : pendingListeners){
-                    table.getSelectionModel().addListSelectionListener(l);
-                }
-                pendingListeners.clear();
+            final JScrollPane tableSp = new JScrollPane(table);
 
-                SwingUtilities.invokeLater(new Runnable(){
-                    public void run() {
-                        remove(waitLabel);
-                        add(tableSp, BorderLayout.CENTER);
-                        validate();
-                    }
-                });
+            for (ListSelectionListener l : pendingListeners){
+                table.getSelectionModel().addListSelectionListener(l);
             }
+            pendingListeners.clear();
+
+            SwingUtilities.invokeLater(new Runnable(){
+                public void run() {
+                    remove(waitLabel);
+                    add(tableSp, BorderLayout.CENTER);
+                    validate();
+                }
+            });
         }, "Load plugin table contents");
 
         t.start();

@@ -95,14 +95,12 @@ public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel
         // (as those that use a view component are lazilly created)
         view.addHierarchyListener(event -> {
             if (!registeredListener){
-                addSelectionListener(new ChangeListener(){
-                    public void stateChanged(ChangeEvent event) {
-                        boolean valid = getSelectedObjects() != null && !getSelectedObjects().isEmpty();
-                        for (InputVerificationStatusChangedListener l : validateListeners){
-                            l.verifiedStatusChanged(valid);
-                        }
-                        isValid = valid;
+                addSelectionListener(e -> {
+                    boolean valid = getSelectedObjects() != null && !getSelectedObjects().isEmpty();
+                    for (InputVerificationStatusChangedListener l : validateListeners){
+                        l.verifiedStatusChanged(valid);
                     }
+                    isValid = valid;
                 });
                 registeredListener = true;
             }

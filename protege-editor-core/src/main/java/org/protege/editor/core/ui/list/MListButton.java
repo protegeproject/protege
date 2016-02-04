@@ -24,16 +24,12 @@ public abstract class MListButton {
     private Object rowObject;
 
 
-    protected MListButton(String name, Color rollOverColor, ActionListener actionListener) {
+    protected MListButton(String name, Color rollOverColor, ActionListener listener) {
         this.name = name;
         this.rollOverColor = rollOverColor;
-        this.actionListener = actionListener;
-        if (actionListener == null) {
-            actionListener = new ActionListener() {
-
-                public void actionPerformed(ActionEvent e) {
-                }
-            };
+        this.actionListener = listener;
+        if (listener == null) {
+            actionListener = e -> {};
         }
     }
 

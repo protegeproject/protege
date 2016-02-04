@@ -26,15 +26,13 @@ public class ViewActionAdapter extends ViewAction {
             putValue((String) keys[i], action.getValue((String) keys[i]));
         }
         setEnabled(action.isEnabled());
-        action.addPropertyChangeListener(new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent evt) {
-                if ("enabled".equals(evt.getPropertyName())) {
-                    setEnabled((Boolean) evt.getNewValue());
-                }
-                else {
-                    // Pass it on!
-                    ViewActionAdapter.this.action.putValue(evt.getPropertyName(), evt.getNewValue());
-                }
+        action.addPropertyChangeListener(evt -> {
+            if ("enabled".equals(evt.getPropertyName())) {
+                setEnabled((Boolean) evt.getNewValue());
+            }
+            else {
+                // Pass it on!
+                ViewActionAdapter.this.action.putValue(evt.getPropertyName(), evt.getNewValue());
             }
         });
     }
