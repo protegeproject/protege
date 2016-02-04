@@ -109,7 +109,7 @@ public class PluginPanel extends JPanel {
     private Component createAuthorPanel() {
         Box box = new Box(BoxLayout.LINE_AXIS);
         final JLabel label = new JLabel("Author: ");
-        final Font font = label.getFont().deriveFont(8);
+        final Font font = label.getFont().deriveFont(Font.BOLD);
         label.setFont(font);
         label.setAlignmentX(0.0f);
         box.add(label);
@@ -125,7 +125,7 @@ public class PluginPanel extends JPanel {
     private Component createLicensePanel() {
         Box box = new Box(BoxLayout.LINE_AXIS);
         final JLabel label = new JLabel("License: ");
-        final Font font = label.getFont().deriveFont(8);
+        final Font font = label.getFont().deriveFont(Font.BOLD);
         label.setFont(font);
         label.setAlignmentX(0.0f);
         box.add(label);

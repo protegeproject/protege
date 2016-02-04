@@ -88,7 +88,7 @@ public class ViewMenuAction extends ProtegeDynamicAction {
             	        viewManager.showView(plugin.getId());;
                     }
                 };
-                action.putValue(AbstractAction.SHORT_DESCRIPTION, plugin.getDocumentation());
+                action.putValue(Action.SHORT_DESCRIPTION, plugin.getDocumentation());
                 subMenu.add(action);
             }
         }
