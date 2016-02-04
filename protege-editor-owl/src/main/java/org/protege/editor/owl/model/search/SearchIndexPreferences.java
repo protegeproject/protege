@@ -3,10 +3,12 @@ package org.protege.editor.owl.model.search;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 
+import org.semanticweb.owlapi.model.OWLOntology;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -23,9 +25,11 @@ public class SearchIndexPreferences {
 
     public static final String BASE_DIR = "BASE_DIR";
 
+    public static final String PREFIX_INDEX_DIR = "ProtegeIndex";
+
     public static final String PROTEGE_DIR = ".Protege";
 
-    public static final String INDEX_DIR = "lucene";
+    public static final String COLLECTOR_DIR = "lucene";
 
     private static SearchIndexPreferences instance;
 
@@ -92,15 +96,17 @@ public class SearchIndexPreferences {
     }
 
     /**
-     * Construct a full index path location given the directory name. The base directory
-     * will be concatenated to the index directory name. 
+     * Construct a full index path location given the ontology object.
      *
-     * @param indexDirectoryName
-     *          The index directory name
+     * @param ontology
+     *          An OWL ontology object
      * @return A full path location of the index directory.
      */
-    public String createIndexLocation(String indexDirectoryName) {
-        return getBaseDirectory() + fsSeparator + indexDirectoryName;
+    public String createIndexLocation(OWLOntology ontology) {
+        String ontologyIdHex = Integer.toHexString(ontology.getOntologyID().toString().hashCode());
+        String timestampHex = Integer.toHexString(new Date().hashCode());
+        String indexDir = String.format("%s-%s-%s", PREFIX_INDEX_DIR, ontologyIdHex, timestampHex);
+        return getBaseDirectory() + fsSeparator + indexDir;
     }
 
     /**
@@ -180,7 +186,7 @@ public class SearchIndexPreferences {
 
     private String getUserHomeDirectory() {
         String homeDir = prepare(System.getProperty("user.home"));
-        return homeDir + fsSeparator + PROTEGE_DIR + fsSeparator + INDEX_DIR;
+        return homeDir + fsSeparator + PROTEGE_DIR + fsSeparator + COLLECTOR_DIR;
     }
 
     private Optional<String> getPreferenceValue(String key) {
