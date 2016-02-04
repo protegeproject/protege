@@ -72,10 +72,7 @@ public class PasteAction extends FocusedComponentAction<Pasteable> {
                 return (List<OWLObject>) transferable.getTransferData(OWLObjectDataFlavor.OWL_OBJECT_DATA_FLAVOR);
             }
         }
-        catch (UnsupportedFlavorException e) {
-            throw new OWLRuntimeException(e);
-        }
-        catch (IOException e) {
+        catch (UnsupportedFlavorException | IOException e) {
             throw new OWLRuntimeException(e);
         }
         return Collections.emptyList();
