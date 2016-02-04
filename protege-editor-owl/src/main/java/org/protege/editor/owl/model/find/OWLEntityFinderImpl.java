@@ -290,12 +290,12 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
             if (match.startsWith(WILDCARD)) {
                 if (match.length() > 1 && match.endsWith(WILDCARD)) {
                     // Contains
-                    matcher = (rendering, s) -> rendering.indexOf(s) != -1;
+                    matcher = String::contains;
                     match = match.substring(1, match.length() - 1);
                 }
                 else {
                     // Ends with
-                    matcher = (rendering, s) -> rendering.indexOf(s) != -1;
+                    matcher = String::contains;
                     match = match.substring(1, match.length());
                 }
             }

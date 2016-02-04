@@ -42,8 +42,8 @@ public abstract class ProtegeActionPluginJPFImpl extends AbstractProtegePlugin<P
      * that will be used for the menu item text etc.
      */
     public String getName() {
-    	String name = new String(PluginUtilities.getAttribute(extension, NAME_PARAM));
-    	if ((name != null) && (name.indexOf("\\u") != -1)) {
+    	String name = PluginUtilities.getAttribute(extension, NAME_PARAM);
+    	if (name != null && name.contains("\\u")) {
     		name = decode(name);
     	}
         return name;
@@ -58,7 +58,7 @@ public abstract class ProtegeActionPluginJPFImpl extends AbstractProtegePlugin<P
      */
     public String getToolTipText() {
     	String tooltip = PluginUtilities.getAttribute(extension, TOOL_TIP_PARAM);
-    	if ((tooltip != null) && (tooltip.indexOf("\\u") != -1)) {
+    	if (tooltip != null && tooltip.contains("\\u")) {
     		tooltip = decode(tooltip);
     	}
         return tooltip;
