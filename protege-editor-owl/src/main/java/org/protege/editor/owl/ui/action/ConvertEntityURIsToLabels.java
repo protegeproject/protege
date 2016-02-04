@@ -91,7 +91,7 @@ public class ConvertEntityURIsToLabels extends ProtegeOWLAction {
             }
         });
 
-        StringBuffer html = new StringBuffer("<html><body>");
+        StringBuilder html = new StringBuilder("<html><body>");
         html.append("For each entity missing a label in the currently loaded ontologies:<ul>");
         html.append("<li>create a label annotation using its current IRI fragment</li>");
         html.append("<li>change its URI to an auto ID</li>");
