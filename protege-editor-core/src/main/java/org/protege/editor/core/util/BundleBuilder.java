@@ -73,15 +73,11 @@ public class BundleBuilder {
                 JarEntry entry = new JarEntry(path);
                 jar.putNextEntry(entry);
                 byte buffer[] = new byte[BUFFER_SIZE];
-                FileInputStream input = new FileInputStream(f);
-                try {
-                    int readCount = 0;
+                try (FileInputStream input = new FileInputStream(f)) {
+                    int readCount;
                     while ((readCount = input.read(buffer)) > 0) {
                         jar.write(buffer, 0, readCount);
                     }
-                }
-                finally {
-                    input.close();
                 }
             }
             else {
