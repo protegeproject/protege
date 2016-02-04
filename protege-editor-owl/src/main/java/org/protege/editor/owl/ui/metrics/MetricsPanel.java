@@ -110,11 +110,10 @@ public class MetricsPanel extends JPanel {
             MetricsTableModel tableModel = new MetricsTableModel(metricManagerMap.get(metricsSet));
             tableModelMap.put(metricManagerMap.get(metricsSet), tableModel);
             final JTable table = new JTable(tableModel);
-            table.setGridColor(Color.LIGHT_GRAY);
+            table.setGridColor(new Color(240, 240, 240));
             table.setRowHeight(table.getRowHeight() + 4);
             table.setShowGrid(true);
             table.getColumnModel().getColumn(1).setMaxWidth(150);
-            table.getColumnModel().setColumnMargin(2);
             table.addMouseListener(new MouseAdapter() {
 
                 public void mousePressed(MouseEvent e) {
@@ -155,6 +154,7 @@ public class MetricsPanel extends JPanel {
                 @Override
                 public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                     JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                    label.setBorder(null);
                     Object metricValue = table.getModel().getValueAt(row, 1);
                     if (metricValue instanceof Integer) {
                         Integer number = (Integer) metricValue;
@@ -215,13 +215,22 @@ public class MetricsPanel extends JPanel {
             JLabel titleLabel = new JLabel(metricsSet);
             titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD));
             tablePanel.add(titleLabel, BorderLayout.NORTH);
-            tablePanel.add(table);
+            JPanel tableHolder = new JPanel(new BorderLayout());
+            tableHolder.setBorder(BorderFactory.createEmptyBorder(2, 20, 0, 0));
+            tableHolder.add(table);
+            tableHolder.setOpaque(false);
+            tablePanel.add(tableHolder);
+            table.setShowVerticalLines(false);
+            table.setShowHorizontalLines(true);
+            table.setBackground(Color.WHITE);
             tablePanel.setBorder(BorderFactory.createEmptyBorder(2, 7, 14, 7));
-            table.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+            tablePanel.setOpaque(false);
             box.add(tablePanel);
+            box.setOpaque(false);
         }
         JScrollPane sp = new JScrollPane(box);
-        sp.setOpaque(false);
+        sp.setOpaque(true);
+        sp.setBackground(Color.WHITE);
         sp.getVerticalScrollBar().setBlockIncrement(20);
         add(sp);
     }
