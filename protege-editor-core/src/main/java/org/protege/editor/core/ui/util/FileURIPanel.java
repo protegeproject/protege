@@ -73,10 +73,7 @@ public class FileURIPanel extends JPanel {
 
 
     private void handleBrowse() {
-        JFrame parent = null;//(JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
-        if (parent == null) {
-            parent = new JFrame();
-        }
+        JFrame parent = new JFrame();
         File f = UIUtil.openFile(parent, "Select an ontology file", "OWL File", fileExtensions);
         if (f != null) {
             textField.setText(f.getAbsolutePath());

@@ -94,7 +94,7 @@ public class IRITextEditor implements OWLObjectEditor<IRI>, VerifiedInputEditor 
 	}
 
 	public boolean setEditedObject(IRI editedObject) {
-		if (editedObject != null && editedObject instanceof IRI) {
+		if (editedObject != null) {
 			iriTextField.setText(editedObject.toString());
 		}
 		return editedObject != null;

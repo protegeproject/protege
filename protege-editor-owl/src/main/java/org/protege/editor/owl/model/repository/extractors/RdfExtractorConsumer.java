@@ -54,7 +54,7 @@ public class RdfExtractorConsumer implements RDFConsumer {
         }
         else if (predicate.equals(OWLRDFVocabulary.RDF_TYPE.toString()) &&
                 object.equals("http://www.w3.org/2002/07/owl#OntologyProperty")) {
-            ontologyProperties.add(subject.toString());
+            ontologyProperties.add(subject);
         }
         else if (predicate.equals(OWLRDFVocabulary.RDF_TYPE.toString()) &&
                 object.equals(OWLRDFVocabulary.OWL_ONTOLOGY.toString()) &&

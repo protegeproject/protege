@@ -15,9 +15,6 @@ public class LibraryUtilities {
 			return null;
 		}
 		String s = entry.getId();
-		if (s == null) {
-		    return null;
-		}
 		int flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE;
 		Pattern inMiddle = Pattern.compile(", " + property + "=([^,]*),", flags);
 		Matcher m1 = inMiddle.matcher(s);

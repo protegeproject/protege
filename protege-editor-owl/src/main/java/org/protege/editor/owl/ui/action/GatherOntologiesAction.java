@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.action;
 
 import org.protege.editor.owl.ui.GatherOntologiesPanel;
+import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
 import org.semanticweb.owlapi.model.*;
 import org.slf4j.LoggerFactory;
 
@@ -8,6 +9,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.URI;
+import java.util.UUID;
 
 
 /**
@@ -28,15 +30,25 @@ public class GatherOntologiesAction extends ProtegeOWLAction {
         OWLDocumentFormat saveAsFormat = panel.getOntologyFormat();
         File saveAsLocation = panel.getSaveLocation();
         for (OWLOntology ont : panel.getOntologiesToSave()) {
-            OWLDocumentFormat format = saveAsFormat;
+            final OWLDocumentFormat format;
             OWLOntologyManager man = getOWLModelManager().getOWLOntologyManager();
-            if (format == null) {
-                format = man.getOntologyFormat(ont);
+            if(saveAsFormat != null) {
+                format = saveAsFormat;
             }
+            else {
+                OWLDocumentFormat documentFormat = man.getOntologyFormat(ont);
+                if(documentFormat != null) {
+                    format = documentFormat;
+                }
+                else {
+                    format = new RDFXMLDocumentFormat();
+                }
+            }
+
             URI originalPhysicalURI = man.getOntologyDocumentIRI(ont).toURI();
             String originalPath = originalPhysicalURI.getPath();
             if (originalPath == null) {
-                originalPath = System.currentTimeMillis() + ".owl";
+                originalPath = UUID.randomUUID().toString() + ".owl";
             }
             File originalFile = new File(originalPath);
             String originalFileName = originalFile.getName();
