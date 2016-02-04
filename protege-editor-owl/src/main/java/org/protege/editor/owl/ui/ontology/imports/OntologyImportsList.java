@@ -111,22 +111,26 @@ public class OntologyImportsList extends MList {
                 }
                 OWLImportsDeclaration decl = manager.getOWLDataFactory().getOWLImportsDeclaration(importedOntologyDocumentIRI);
                 if (!manager.contains(importParameters.getOntologyID())) {
-                    manager.makeLoadImportRequest(decl);
-                    eKit.getModelManager().fireEvent(EventType.ONTOLOGY_LOADED);
-
-                    if (importParameters.getOntologyID() != null && !importParameters.getOntologyID().isAnonymous()) {
-                        OWLOntology importedOnt = manager.getOntology(importParameters.getOntologyID());
-                        if (importedOnt == null) {
-                            logger.warn("Imported ontology has unexpected id. " +
-                                    "During imports processing we anticipated " + importParameters.getOntologyID());
-                            logger.warn("Please notify the Protege developers via the protege 4 mailing list (p4-feedback@lists.stanford.edu)");
-                            continue;
+                    try {
+                        manager.loadOntology(importedOntologyDocumentIRI);
+                        eKit.getModelManager().fireEvent(EventType.ONTOLOGY_LOADED);
+                        if (importParameters.getOntologyID() != null && !importParameters.getOntologyID().isAnonymous()) {
+                            OWLOntology importedOnt = manager.getOntology(importParameters.getOntologyID());
+                            if (importedOnt == null) {
+                                logger.warn("Imported ontology has unexpected id. " +
+                                        "During imports processing we anticipated " + importParameters.getOntologyID());
+                                logger.warn("Please notify the Protege developers via the protege 4 mailing list (p4-feedback@lists.stanford.edu)");
+                                continue;
+                            }
+                            eKit.addRecent(manager.getOntologyDocumentIRI(importedOnt).toURI());
                         }
-                        eKit.addRecent(manager.getOntologyDocumentIRI(importedOnt).toURI());
+                        changes.add(new AddImport(ont, decl));
+                    } catch (OWLOntologyCreationException e) {
+                        logger.error("There was a problem loading the ontology from {}.  Error: {}", importedOntologyDocumentIRI, e.getMessage(), e);
+                        JOptionPane.showMessageDialog(this, "An error occurred whilst the ontology at " + importedOntologyDocumentIRI + " was being loaded.", "Error loading ontology", JOptionPane.ERROR_MESSAGE);
                     }
-
                 }
-                changes.add(new AddImport(ont, decl));
+
             }
             eKit.getModelManager().applyChanges(changes);
         }
