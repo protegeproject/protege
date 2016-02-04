@@ -29,6 +29,6 @@ public class OSUtils {
 
 
     public static boolean isWindows() {
-        return System.getProperty(OS_NAME).indexOf("Windows") != -1;
+        return System.getProperty(OS_NAME).contains("Windows");
     }
 }

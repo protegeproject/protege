@@ -73,10 +73,10 @@ public class FileUtils {
      * @param file The file to be shown
      */
     public static void showFile(File file) throws IOException {
-        if (System.getProperty("os.name").indexOf("Mac") != -1) {
+        if (System.getProperty("os.name").contains("Mac")) {
             showInFinder(file);
         }
-        else if (System.getProperty("os.name").indexOf("Windows") != -1) {
+        else if (System.getProperty("os.name").contains("Windows")) {
             showInExplorer(file);
         }
         else {
@@ -102,7 +102,7 @@ public class FileUtils {
      */
     private static void showInExplorer(File file) throws IOException {
         String path = file.getCanonicalPath();
-        if (path.indexOf(" ") != -1) {
+        if (path.contains(" ")) {
             // The path contains spaces, so we must surround it with quotes
             path = "\"" + path + "\"";
         }
