@@ -48,7 +48,7 @@ public class EditUriAction extends AbstractAction {
         JDialog dialog = pane.createDialog(parent, "Edit URI Redirect");
         dialog.setVisible(true);
         Object value = pane.getValue();
-        if (value != null && value.equals(new Integer(JOptionPane.OK_OPTION))) {
+        if (value != null && value.equals(JOptionPane.OK_OPTION)) {
             UriEntry editted = panel.getUriEntry();
             if (container instanceof XMLCatalog) {
             	XMLCatalog lib = (XMLCatalog) container;
