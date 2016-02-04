@@ -18,21 +18,16 @@ import java.util.List;
  */
 public class MList extends JList {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = -7803414142701944703L;
-
 
     private static final Stroke BUTTON_STROKE = new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 
     private static final int BUTTON_DIMENSION = 16;
-//
+
     private static final int BUTTON_MARGIN = 2;
 
     private Font sectionHeaderFont = new Font("Lucida Grande", Font.PLAIN, 10);
     
-    private static final Color itemBackgroundColor = Color.WHITE;//new Color(240, 245, 240);
+    private static final Color itemBackgroundColor = Color.WHITE;
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -72,45 +67,43 @@ public class MList extends JList {
 
     private List<MListButton> editAndDeleteButtonList = Arrays.asList(editButton, deleteButton);
 
-    private List<MListButton> deleteButtonList = Arrays.<MListButton>asList(deleteButton);
+    private List<MListButton> deleteButtonList = Arrays.asList(deleteButton);
 
     public int lastMousePositionCellIndex = 0;
 
-
-    private MouseMotionListener mouseMovementListener = new MouseMotionAdapter() {
-
-        @Override
-        public void mouseMoved(MouseEvent e) {
-            handleMouseMoved();
-        }
-    };
-
-    private MouseListener mouseButtonListener = new MouseAdapter() {
-        @Override
-        public void mousePressed(MouseEvent e) {
-            MList.this.mouseDown = true;
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            MList.this.handleMouseClick(e);
-            MList.this.mouseDown = false;
-        }
-
-        @Override
-        public void mouseExited(MouseEvent event) {
-            // leave the component cleanly
-            MList.this.repaint();
-        }
-    };
 
     public MList() {
         ListCellRenderer renderer = this.getCellRenderer();
         this.ren = new MListCellRenderer();
         this.ren.setContentRenderer(renderer);
         super.setCellRenderer(this.ren);
-        this.addMouseMotionListener(this.mouseMovementListener);
-        this.addMouseListener(this.mouseButtonListener);
+        MouseMotionListener mouseMovementListener = new MouseMotionAdapter() {
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                handleMouseMoved();
+            }
+        };
+        this.addMouseMotionListener(mouseMovementListener);
+        MouseListener mouseButtonListener = new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                MList.this.mouseDown = true;
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                MList.this.handleMouseClick(e);
+                MList.this.mouseDown = false;
+            }
+
+            @Override
+            public void mouseExited(MouseEvent event) {
+                // leave the component cleanly
+                MList.this.repaint();
+            }
+        };
+        this.addMouseListener(mouseButtonListener);
         attachedListenersForCacheResetting();
     }
 
