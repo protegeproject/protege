@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
+import java.util.stream.Collectors;
 
 
 /**
@@ -136,11 +137,12 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
         List<OWLAxiomChange> filteredChanges = filterIrrelevantChanges(changes);
         updateImplicitRoots(filteredChanges);
         for (OWLOntologyChange change : filteredChanges) {
-            for (OWLEntity entity : change.getSignature()) {
-                if (entity instanceof OWLClass && !entity.equals(root)) {
-                    changedClasses.add((OWLClass) entity);
-                }
-            }
+            changedClasses.addAll(
+                    change.getSignature().stream()
+                    .filter(entity -> entity instanceof OWLClass)
+                    .filter(entity -> !entity.equals(root))
+                    .map(entity -> (OWLClass) entity)
+                    .collect(Collectors.toList()));
         }
         for (OWLClass cls : changedClasses) {
             registerNodeChanged(cls);
