@@ -148,8 +148,8 @@ public abstract class AbstractWizardPanel extends WizardPanel {
         if (component instanceof Container) {
             Container container = (Container) component;
             Component [] components = container.getComponents();
-            for (int i = 0; i < components.length; i++) {
-                setComponentTransparency(components[i]);
+            for (Component c : components) {
+                setComponentTransparency(c);
             }
         }
     }
