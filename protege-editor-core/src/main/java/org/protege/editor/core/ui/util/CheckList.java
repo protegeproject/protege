@@ -176,20 +176,4 @@ public class CheckList extends JComponent {
 
         void itemUnchecked(Object item);
     }
-
-
-    public static void main(String[] args) {
-        DefaultListModel m = new DefaultListModel();
-        for (int i = 0; i < 5000; i++) {
-            m.addElement("X" + i);
-        }
-
-        CheckList list = new CheckList(new JList(m));
-
-        JFrame f = new JFrame();
-        f.getContentPane().setLayout(new BorderLayout());
-        f.getContentPane().add(new JScrollPane(list));
-        f.setVisible(true);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
 }

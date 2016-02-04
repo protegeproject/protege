@@ -55,7 +55,7 @@ public class WorkspaceManager {
                 }
             });
             workspaceFrameMap.put(workspace, frame);
-            frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
             frame.setVisible(true);
         }
     }

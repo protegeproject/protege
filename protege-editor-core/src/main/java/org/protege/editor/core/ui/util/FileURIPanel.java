@@ -106,13 +106,4 @@ public class FileURIPanel extends JPanel {
     public URI getURI() throws URISyntaxException {
         return new URI(textField.getText());
     }
-
-
-    public static void main(String[] args) {
-        JFrame f = new JFrame();
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setContentPane(new FileURIPanel(new HashSet<>(Arrays.asList("owl"))));
-        f.setVisible(true);
-        f.pack();
-    }
 }
