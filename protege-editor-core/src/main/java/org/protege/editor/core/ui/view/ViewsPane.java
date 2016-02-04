@@ -76,7 +76,7 @@ public class ViewsPane extends JPanel {
             // There isn't even a default xml config file.  We don't want the system
             // to keel over, so just create a blank panel (the user can drag views on
             // to it as they wish).
-            VerticalSplitterNode node = new VerticalSplitterNode(Collections.EMPTY_LIST, Collections.EMPTY_LIST);
+            VerticalSplitterNode node = new VerticalSplitterNode(Collections.emptyList(), Collections.emptyList());
             nodePanel = new NodePanel(node);
             add(nodePanel);
             dynamicConfigPanel = new DynamicConfigPanel(nodePanel);

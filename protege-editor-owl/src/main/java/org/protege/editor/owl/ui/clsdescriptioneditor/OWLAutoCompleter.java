@@ -261,7 +261,7 @@ public class OWLAutoCompleter {
                     textComponent.getText(),
                     e);
         }
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
 

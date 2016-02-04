@@ -44,7 +44,7 @@ public class OWLDataPropertySetEditor extends AbstractOWLObjectEditor<Set<OWLDat
     }
 
     public boolean setEditedObject(Set<OWLDataProperty> p){
-        editor.setSelection(p != null ? p : Collections.EMPTY_SET);
+        editor.setSelection(p != null ? p : Collections.emptySet());
         return true;
     }
 
