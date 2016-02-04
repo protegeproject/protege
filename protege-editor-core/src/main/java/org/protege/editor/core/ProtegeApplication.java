@@ -514,8 +514,7 @@ public class ProtegeApplication implements BundleActivator {
         for (EditorKit eKit : eKitMngr.getEditorKits()) {
             Workspace wSpace = eKit.getWorkspace();
             if (!eKitMngr.getWorkspaceManager().doClose(wSpace)) {
-                quitting = false;
-                return quitting;
+                return false;
             }
         }
         try {

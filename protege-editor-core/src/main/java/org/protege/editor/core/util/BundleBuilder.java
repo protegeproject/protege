@@ -58,7 +58,11 @@ public class BundleBuilder {
     }
     
     private void addDirectory(JarOutputStream jar, File dir) throws IOException {
-        for (File f : dir.listFiles()) {
+        File[] files = dir.listFiles();
+        if(files == null) {
+            return;
+        }
+        for (File f : files) {
             String path = calculatePath(f);
             if (f.isFile()) {
                 if (f.equals(getManifest())) {

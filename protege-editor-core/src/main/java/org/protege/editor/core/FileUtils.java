@@ -114,8 +114,11 @@ public class FileUtils {
 
     public static void deleteRecursively(File file) {
         if (file.isDirectory()){
-            for(File f : file.listFiles()){
-                deleteRecursively(f);
+            File[] files = file.listFiles();
+            if (files != null) {
+                for(File f : files){
+                    deleteRecursively(f);
+                }
             }
         }
         file.delete();

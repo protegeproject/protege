@@ -46,11 +46,6 @@ public class MainToolBarBuilder {
         ToolBarActionPluginJPFImpl lastPlugin = null;
         for (ToolBarActionPluginJPFImpl plugin : list) {
             try {
-                if (lastPlugin != null) {
-                    if (lastPlugin.getGroup().equals(plugin.getGroup()) == false) {
-                        toolBar.addSeparator();
-                    }
-                }
                 ProtegeAction action = plugin.newInstance();
                 toolBar.add(action);
                 action.initialise();
