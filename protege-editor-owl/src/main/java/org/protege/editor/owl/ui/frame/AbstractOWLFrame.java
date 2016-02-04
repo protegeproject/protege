@@ -56,9 +56,7 @@ public abstract class AbstractOWLFrame<R extends Object> implements OWLFrame<R> 
 
 
     public void dispose() {
-        for (OWLFrameSection section : sections) {
-            section.dispose();
-        }
+        sections.forEach(OWLFrameSection::dispose);
     }
 
 
