@@ -329,7 +329,7 @@ public class MList extends JList {
 
     protected Border createListItemBorder(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         Border internalPadding = BorderFactory.createEmptyBorder(1, 1, 1, 1);
-        Border line = BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220));
+        Border line = BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(240, 240, 240));
         Border externalBorder = BorderFactory.createMatteBorder(0, 20, 0, 0, list.getBackground());
         return BorderFactory.createCompoundBorder(
                 externalBorder,
