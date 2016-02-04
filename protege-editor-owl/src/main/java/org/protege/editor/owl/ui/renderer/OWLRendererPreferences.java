@@ -55,7 +55,9 @@ public class OWLRendererPreferences {
     public static final String DISPLAY_ANNOTATION_ANNOTATIONS_INLINE = "DISPLAY_ANNOTATION_ANNOTATIONS_INLINE";
 
     public static final String DISPLAY_LITERAL_DATATYPES_INLINE = "DISPLAY_LITERAL_DATATYPES_INLINE";
-    
+
+    public static final String DISPLAY_THUMBNAILS_INLINE = "DISPLAY_THUMBNAILS_INLINE";
+
     public static final int DEFAULT_FONT_SIZE = 12;
 
     /**
@@ -111,6 +113,8 @@ public class OWLRendererPreferences {
     private boolean displayAnnotationAnnotationsInline;
 
     private boolean displayLiteralDatatypesInline;
+
+    private boolean displayThumbnailsInline;
 
     /*
      * HELP!
@@ -191,6 +195,15 @@ public class OWLRendererPreferences {
         getPreferences().putBoolean(DISPLAY_LITERAL_DATATYPES_INLINE, displayLiteralDatatypesInline);
     }
 
+    public boolean isDisplayThumbnailsInline() {
+        return displayThumbnailsInline;
+    }
+
+    public void setDisplayThumbnailsInline(boolean displayThumbnailsInline) {
+        this.displayThumbnailsInline = displayThumbnailsInline;
+        getPreferences().putBoolean(DISPLAY_THUMBNAILS_INLINE, displayThumbnailsInline);
+    }
+
     public void setAnnotations(List<IRI> iris){
         annotationIRIS = iris;
         writeAnnotations();
@@ -251,6 +264,7 @@ public class OWLRendererPreferences {
         fontName = p.getString(FONT_NAME, DEFAULT_FONT_NAME);
         displayAnnotationAnnotationsInline = p.getBoolean(DISPLAY_ANNOTATION_ANNOTATIONS_INLINE, true);
         displayLiteralDatatypesInline = p.getBoolean(DISPLAY_LITERAL_DATATYPES_INLINE, true);
+        displayThumbnailsInline = p.getBoolean(DISPLAY_THUMBNAILS_INLINE, true);
         loadAnnotations();
         resetFont();
     }

@@ -176,13 +176,23 @@
         <checkbox value="true"/>
     </extension>
 
+    <extension id="ui.view.menu.inlinethumbnailrendering"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Display thumbnails for image URLs"/>
+        <toolTip value="Display thumbnail images for annotation values that are image URLs"/>
+        <path value="org.protege.editor.owl.ui.view.menu/SlotAAA-AC"/>
+        <class value="org.protege.editor.owl.ui.renderer.InlineThumbnailRenderingAction"/>
+        <editorKitId value="OWLEditorKit"/>
+        <checkbox value="true"/>
+    </extension>
+
 
     <extension id="tree.showdeprecatedentities"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Display deprecated (obsolete) entities"/>
         <class value="org.protege.editor.owl.ui.action.DisplayDeprecatedEntitiesAction"/>
         <toolTip value="Display deprecated entities in the currently focused view"/>
-        <path value="org.protege.editor.owl.ui.view.menu/SlotAAA-AC"/>
+        <path value="org.protege.editor.owl.ui.view.menu/SlotAAA-AD"/>
         <editorKitId value="OWLEditorKit"/>
         <checkbox value="true"/>
     </extension>
