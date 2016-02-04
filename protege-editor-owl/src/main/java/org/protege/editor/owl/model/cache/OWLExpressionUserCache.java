@@ -254,23 +254,19 @@ public class OWLExpressionUserCache implements Disposable {
 
     private OWLEntity parseOWLEntity(String name) {
         String[] s = name.split(DELIMITER);
-        if (s[0].equals(OWLCLASS)){
-            return mngr.getOWLDataFactory().getOWLClass(IRI.create(s[1]));
-        }
-        else if (s[0].equals(OWLOBJECTPROPERTY)){
-            return mngr.getOWLDataFactory().getOWLObjectProperty(IRI.create(s[1]));
-        }
-        else if (s[0].equals(OWLDATAPROPERTY)){
-            return mngr.getOWLDataFactory().getOWLDataProperty(IRI.create(s[1]));
-        }
-        else if (s[0].equals(OWLANNOTATIONPROPERTY)){
-            return mngr.getOWLDataFactory().getOWLAnnotationProperty(IRI.create(s[1]));
-        }
-        else if (s[0].equals(OWLINDIVIDUAL)){
-            return mngr.getOWLDataFactory().getOWLNamedIndividual(IRI.create(s[1]));
-        }
-        else if (s[0].equals(OWLDATATYPE)){
-            return mngr.getOWLDataFactory().getOWLDatatype(IRI.create(s[1]));
+        switch (s[0]) {
+            case OWLCLASS:
+                return mngr.getOWLDataFactory().getOWLClass(IRI.create(s[1]));
+            case OWLOBJECTPROPERTY:
+                return mngr.getOWLDataFactory().getOWLObjectProperty(IRI.create(s[1]));
+            case OWLDATAPROPERTY:
+                return mngr.getOWLDataFactory().getOWLDataProperty(IRI.create(s[1]));
+            case OWLANNOTATIONPROPERTY:
+                return mngr.getOWLDataFactory().getOWLAnnotationProperty(IRI.create(s[1]));
+            case OWLINDIVIDUAL:
+                return mngr.getOWLDataFactory().getOWLNamedIndividual(IRI.create(s[1]));
+            case OWLDATATYPE:
+                return mngr.getOWLDataFactory().getOWLDatatype(IRI.create(s[1]));
         }
         return null;
     }
