@@ -122,8 +122,8 @@ public class OWLObjectDropTargetListener implements DropTargetListener {
 
     protected boolean isAcceptableTransferable(Transferable transferable) {
         DataFlavor [] flavors = transferable.getTransferDataFlavors();
-        for (int i = 0; i < flavors.length; i++) {
-            if (flavors[i].equals(OWLObjectDataFlavor.OWL_OBJECT_DATA_FLAVOR)) {
+        for (DataFlavor flavor : flavors) {
+            if (OWLObjectDataFlavor.OWL_OBJECT_DATA_FLAVOR.equals(flavor)) {
                 return true;
             }
         }

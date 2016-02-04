@@ -22,8 +22,8 @@ public class ViewActionAdapter extends ViewAction {
     public ViewActionAdapter(DisposableAction action) {
         this.action = action;
         Object [] keys = action.getKeys();
-        for (int i = 0; i < keys.length; i++) {
-            putValue((String) keys[i], action.getValue((String) keys[i]));
+        for (Object key : keys) {
+            putValue((String) key, action.getValue((String) key));
         }
         setEnabled(action.isEnabled());
         action.addPropertyChangeListener(evt -> {
