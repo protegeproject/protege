@@ -1001,7 +1001,7 @@
         <toolTip value="Copy the sub-hierarchy of the selection to the clipboard as tab indented text"/>
         <path value="org.protege.editor.core.application.menu.EditMenu/SlotC-CA"/>
         <editorKitId value="OWLEditorKit"/>
-        <accelerator value="C"/>
+        <accelerator value="alt C"/>
     </extension>
 
     <extension id="paste"
