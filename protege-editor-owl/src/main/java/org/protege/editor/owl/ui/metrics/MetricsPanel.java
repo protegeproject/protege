@@ -213,10 +213,10 @@ public class MetricsPanel extends JPanel {
                 }
             });
             JLabel titleLabel = new JLabel(metricsSet);
-            titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD));
+            titleLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
             tablePanel.add(titleLabel, BorderLayout.NORTH);
             JPanel tableHolder = new JPanel(new BorderLayout());
-            tableHolder.setBorder(BorderFactory.createEmptyBorder(2, 20, 0, 0));
+            tableHolder.setBorder(BorderFactory.createEmptyBorder(5, 20, 0, 0));
             tableHolder.add(table);
             tableHolder.setOpaque(false);
             tablePanel.add(tableHolder);
@@ -231,7 +231,9 @@ public class MetricsPanel extends JPanel {
         JScrollPane sp = new JScrollPane(box);
         sp.setOpaque(true);
         sp.setBackground(Color.WHITE);
-        sp.getVerticalScrollBar().setBlockIncrement(20);
+        JScrollBar verticalScrollBar = sp.getVerticalScrollBar();
+        verticalScrollBar.setBlockIncrement(50);
+        verticalScrollBar.setUnitIncrement(50);
         add(sp);
     }
 
