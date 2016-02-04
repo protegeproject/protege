@@ -70,11 +70,7 @@ public class JOptionPaneEx {
                     }
                 }
             };
-            final InputVerificationStatusChangedListener verificationListener = new InputVerificationStatusChangedListener() {
-                public void verifiedStatusChanged(boolean verified) {
-                    optionPane.setOKEnabled(verified);
-                }
-            };
+            final InputVerificationStatusChangedListener verificationListener = optionPane::setOKEnabled;
             ((VerifiedInputEditor) component).addStatusChangedListener(verificationListener);
 
             final JDialog dlg = createDialog(parent, title, optionPane, defaultFocusedComponent);

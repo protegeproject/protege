@@ -42,11 +42,11 @@ public abstract class ViewComponentPluginAdapter implements ViewComponentPlugin 
 
 
     public Set<String> getCategorisations() {
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     public Set<String> getNavigates() {
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
 }

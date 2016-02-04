@@ -399,7 +399,7 @@ public abstract class Workspace extends JComponent implements Disposable {
 
 
         public Set<String> getNavigates() {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
     }
 }

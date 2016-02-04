@@ -38,7 +38,7 @@ public class OWLIndividualSetEditor extends AbstractOWLObjectEditor<Set<OWLNamed
 
 
     public boolean setEditedObject(Set<OWLNamedIndividual> individuals) {
-        panel.setSelection(individuals != null ? individuals : Collections.EMPTY_SET);
+        panel.setSelection(individuals != null ? individuals : Collections.emptySet());
         return true;
     }
 
