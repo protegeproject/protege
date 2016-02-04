@@ -239,9 +239,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
     	String replacementText = getReplaceWithValue();
     	for (OWLEntity entity : matches) {
     		String iriString = entity.getIRI().toString();
-    		StringBuffer sb = new StringBuffer(replacementText);
-    		sb.append(iriString.substring(prefixLength));
-    		addToEntityMap(entity, sb.toString());
+            addToEntityMap(entity, replacementText + iriString.substring(prefixLength));
     	}
     }
     

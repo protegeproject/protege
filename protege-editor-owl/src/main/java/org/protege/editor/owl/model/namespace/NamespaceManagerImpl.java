@@ -77,11 +77,7 @@ public class NamespaceManagerImpl extends AbstractNamespaceManager {
         String prefix = getPrefix(uri);
         String uriString = uri.toString();
         String localName = uriString.substring(ns.length(), uriString.length());
-        StringBuffer b = new StringBuffer(prefix.length() + localName.length() + 1);
-        b.append(prefix);
-        b.append(':');
-        b.append(localName);
-        return b.toString();
+        return prefix + ':' + localName;
     }
 
 

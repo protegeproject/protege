@@ -138,7 +138,7 @@ public class ExpressionEditor<O> extends JTextPane
         }
         else if (desc instanceof Collection){
             OWLModelManager mngr = getOWLEditorKit().getModelManager();
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             for (Object obj : (Collection)desc){
                 if (obj instanceof OWLObject){
                     if (sb.length() > 0){
