@@ -32,7 +32,7 @@ public class URLPanel extends JPanel {
 
     public URLPanel() {
         this.textField = ComponentFactory.createTextField();
-        listeners = new ArrayList<ChangeListener>();
+        listeners = new ArrayList<>();
         setLayout(new BorderLayout(7, 7));
         add(textField, BorderLayout.NORTH);
         textField.getDocument().addDocumentListener(new DocumentListener() {
@@ -72,7 +72,7 @@ public class URLPanel extends JPanel {
     }
 
     protected void fireChange() {
-        for (ChangeListener listener : new ArrayList<ChangeListener>(listeners)) {
+        for (ChangeListener listener : new ArrayList<>(listeners)) {
             listener.stateChanged(new ChangeEvent(this));
         }
     }

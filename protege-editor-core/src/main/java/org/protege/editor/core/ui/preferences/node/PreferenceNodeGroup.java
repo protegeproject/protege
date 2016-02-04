@@ -23,7 +23,7 @@ public class PreferenceNodeGroup {
 
     public PreferenceNodeGroup(String label) {
         this.label = label;
-        nodes = new ArrayList<PreferenceNode>();
+        nodes = new ArrayList<>();
     }
 
 

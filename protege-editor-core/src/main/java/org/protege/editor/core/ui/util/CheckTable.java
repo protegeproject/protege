@@ -36,7 +36,7 @@ public class CheckTable<O> extends JTable {
 
     private TableCellRenderer renderer;
 
-    private List<ListSelectionListener> checkSelListeners = new ArrayList<ListSelectionListener>();
+    private List<ListSelectionListener> checkSelListeners = new ArrayList<>();
 
     private DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer(){
 
@@ -252,9 +252,9 @@ public class CheckTable<O> extends JTable {
 
 
     public static void main(String[] args) {
-        CheckTable<String> table = new CheckTable<String>("things"); // @@TODO ensure empty table still works
+        CheckTable<String> table = new CheckTable<>("things"); // @@TODO ensure empty table still works
         CheckTableModel<String> model = table.getModel(); // @@TODO ensure changes to the model directly affect the view
-        List<String> data = new ArrayList<String>();
+        List<String> data = new ArrayList<>();
         data.add("one");
         data.add("two");
         data.add("three");

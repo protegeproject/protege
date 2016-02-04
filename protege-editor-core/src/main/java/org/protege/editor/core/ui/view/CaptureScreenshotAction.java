@@ -219,7 +219,7 @@ public class CaptureScreenshotAction extends ProtegeAction {
 
         private static CaptureType lastCaptureType = CaptureType.VIEW_HOLDER;
 
-        private List<JRadioButton> captureTypeButtons = new ArrayList<JRadioButton>();
+        private List<JRadioButton> captureTypeButtons = new ArrayList<>();
 
 //        private final JTextField pathField;
 

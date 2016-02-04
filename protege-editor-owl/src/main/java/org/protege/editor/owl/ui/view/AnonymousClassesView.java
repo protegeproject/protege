@@ -56,7 +56,7 @@ public class AnonymousClassesView extends AbstractActiveOntologyViewComponent im
         add(list, BorderLayout.CENTER);
 
         list.addListSelectionListener(event -> {
-            for (ChangeListener l : new ArrayList<ChangeListener>(listeners)) {
+            for (ChangeListener l : new ArrayList<>(listeners)) {
                 l.stateChanged(new ChangeEvent(AnonymousClassesView.this));
             }
             Object item = list.getSelectedValue();

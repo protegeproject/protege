@@ -226,7 +226,7 @@ public class MList extends JList {
     }
 
     protected List<MListButton> getSectionButtons(MListSectionHeader header) {
-        List<MListButton> buttons = new ArrayList<MListButton>();
+        List<MListButton> buttons = new ArrayList<>();
         if (header.canAdd()) {
             buttons.add(this.addButton);
         }

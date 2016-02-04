@@ -30,7 +30,7 @@ public class ViewComponentPropertiesFactory implements ComponentPropertiesFactor
             return Collections.emptyMap();
         }
         View view = (View) component;
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put("pluginId", view.getId());
         return map;
     }

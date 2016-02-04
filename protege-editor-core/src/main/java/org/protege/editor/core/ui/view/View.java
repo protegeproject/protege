@@ -126,8 +126,8 @@ public class View extends JComponent implements NodeComponent, Disposable {
                 }
             }
         });
-        additionalViewActionPlugins = new HashSet<ViewActionPlugin>();
-        addedViewActions = new HashSet<ViewAction>();
+        additionalViewActionPlugins = new HashSet<>();
+        addedViewActions = new HashSet<>();
     }
 
 
@@ -232,7 +232,7 @@ public class View extends JComponent implements NodeComponent, Disposable {
 
     private void createViewToolBar() {
         ViewToolBarActionPluginLoader loader = new ViewToolBarActionPluginLoader(workspace.getEditorKit(), this);
-        java.util.List<ViewActionPlugin> plugins = new ArrayList<ViewActionPlugin>(loader.getPlugins());
+        java.util.List<ViewActionPlugin> plugins = new ArrayList<>(loader.getPlugins());
         plugins.addAll(additionalViewActionPlugins);
         Collections.sort(plugins, new ToolBarActionComparator());
         String lastGroup = null;

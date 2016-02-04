@@ -28,7 +28,7 @@ public class EditorKitFactoryPluginLoader {
 
 
     public Set<EditorKitFactoryPlugin> getPlugins() {
-        Set<EditorKitFactoryPlugin> result = new HashSet<EditorKitFactoryPlugin>();
+        Set<EditorKitFactoryPlugin> result = new HashSet<>();
         PluginExtensionFilter filter = new PluginExtensionFilter(ProtegeApplication.ID,
                                                                  EditorKitFactory.EXTENSION_POINT_ID,
                                                                  new DefaultPluginExtensionMatcher());

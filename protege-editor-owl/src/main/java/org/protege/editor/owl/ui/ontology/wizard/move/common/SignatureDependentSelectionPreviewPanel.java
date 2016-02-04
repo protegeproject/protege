@@ -138,7 +138,7 @@ public class SignatureDependentSelectionPreviewPanel extends MoveAxiomsKitConfig
 
         Runnable runnable = () -> {
             final Set<OWLAxiom> axioms = signatureSelection.getAxioms(sourceOntologies, entities);
-            final java.util.List<OWLAxiom> axs = new ArrayList<OWLAxiom>(new TreeSet<OWLAxiom>(axioms));
+            final java.util.List<OWLAxiom> axs = new ArrayList<>(new TreeSet<>(axioms));
             final int upperBound = 500 > axs.size() ? axs.size() : 500;
 
 

@@ -40,7 +40,7 @@ public class ViewMenuAction extends ProtegeDynamicAction {
         
         // First categorise them
 
-        Map<String, List<ViewComponentPlugin>> categoriesMap = new HashMap<String, List<ViewComponentPlugin>>();
+        Map<String, List<ViewComponentPlugin>> categoriesMap = new HashMap<>();
         String miscellaneousKey = "Miscellaneous";
 
         ViewComponentPluginLoader loader = new ViewComponentPluginLoader(workspace);
@@ -50,7 +50,7 @@ public class ViewMenuAction extends ProtegeDynamicAction {
                 for (String category : categories) {
                     List<ViewComponentPlugin> plugins = categoriesMap.get(category);
                     if (plugins == null) {
-                        plugins = new ArrayList<ViewComponentPlugin>();
+                        plugins = new ArrayList<>();
                         categoriesMap.put(category, plugins);
                     }
                     plugins.add(plugin);
@@ -59,20 +59,20 @@ public class ViewMenuAction extends ProtegeDynamicAction {
             else {
                 List<ViewComponentPlugin> plugins = categoriesMap.get(miscellaneousKey);
                 if (plugins == null) {
-                    plugins = new ArrayList<ViewComponentPlugin>();
+                    plugins = new ArrayList<>();
                     categoriesMap.put(miscellaneousKey, plugins);
                 }
                 plugins.add(plugin);
             }
         }
 
-        List<String> categories = new ArrayList<String>();
+        List<String> categories = new ArrayList<>();
         categories.addAll(categoriesMap.keySet());
         Collections.sort(categories);
         for (String category : categories) {
             JMenu subMenu = new JMenu(category + " views");
             viewMenu.add(subMenu);
-            List<ViewComponentPlugin> viewPlugins = new ArrayList<ViewComponentPlugin>(categoriesMap.get(category));
+            List<ViewComponentPlugin> viewPlugins = new ArrayList<>(categoriesMap.get(category));
             // Sort them
             Collections.sort(viewPlugins, new Comparator<ViewComponentPlugin>() {
                 public int compare(ViewComponentPlugin o1, ViewComponentPlugin o2) {

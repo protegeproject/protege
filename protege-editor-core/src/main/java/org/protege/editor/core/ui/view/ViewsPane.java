@@ -94,7 +94,7 @@ public class ViewsPane extends JPanel {
 
 
     public Set<View> getViews() {
-        Set<View> views = new HashSet<View>();
+        Set<View> views = new HashSet<>();
         getViews(this, views);
         return views;
     }

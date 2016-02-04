@@ -126,7 +126,7 @@ public abstract class AbstractWizardPanel extends WizardPanel {
 
 
     static {
-        nonTransparentComponents = new HashSet<Class>();
+        nonTransparentComponents = new HashSet<>();
         nonTransparentComponents.add(JTextComponent.class);
         nonTransparentComponents.add(JList.class);
         nonTransparentComponents.add(JTree.class);

@@ -32,7 +32,7 @@ public class WorkspaceManager {
 
 
     public WorkspaceManager() {
-        this.workspaceFrameMap = new HashMap<Workspace, WorkspaceFrame>();
+        this.workspaceFrameMap = new HashMap<>();
     }
 
 

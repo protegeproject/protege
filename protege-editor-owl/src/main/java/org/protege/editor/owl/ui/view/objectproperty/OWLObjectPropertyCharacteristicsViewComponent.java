@@ -160,7 +160,7 @@ public class OWLObjectPropertyCharacteristicsViewComponent extends AbstractOWLOb
                 getOWLModelManager().applyChange(new AddAxiom(ont, ax));
             }
             else {
-                List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+                List<OWLOntologyChange> changes = new ArrayList<>();
                 OWLAxiom ax = setter.getAxiom();
                 for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
                     changes.add(new RemoveAxiom(ont, ax));

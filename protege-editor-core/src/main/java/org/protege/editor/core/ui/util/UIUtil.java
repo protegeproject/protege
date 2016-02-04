@@ -228,7 +228,7 @@ public class UIUtil {
     }
     
     public static <T> Collection<T> getComponentsExtending(Component component, Class<? extends T> clazz) {
-    	Collection<T> components = new ArrayList<T>();
+    	Collection<T> components = new ArrayList<>();
     	addComponentsExtending(component, clazz, components);
     	return components;
     }

@@ -53,8 +53,8 @@ public class CheckList extends JComponent {
 
     public CheckList(JList list) {
         this.list = list;
-        this.listeners = new ArrayList<CheckListListener>();
-        item2CheckBoxMap = new IdentityHashMap<Object, JCheckBox>();
+        this.listeners = new ArrayList<>();
+        item2CheckBoxMap = new IdentityHashMap<>();
         setLayout(new CheckListLayoutManager());
         list.addPropertyChangeListener(evt -> {
             if (evt.getPropertyName().equals("model")) {
@@ -68,7 +68,7 @@ public class CheckList extends JComponent {
     }
 
     public Collection<Object> getCheckedItems() {
-        Collection<Object> items = new ArrayList<Object>();
+        Collection<Object> items = new ArrayList<>();
         for(Object item : item2CheckBoxMap.keySet()) {
             if(item2CheckBoxMap.get(item).isSelected()) {
                 items.add(item);
@@ -93,7 +93,7 @@ public class CheckList extends JComponent {
 
 
     private void updateCheckBoxes() {
-        Map<Object, JCheckBox> remaining = new IdentityHashMap<Object, JCheckBox>();
+        Map<Object, JCheckBox> remaining = new IdentityHashMap<>();
         // Add ones that are
         remaining.putAll(item2CheckBoxMap);
         ListModel model = list.getModel();
@@ -119,7 +119,7 @@ public class CheckList extends JComponent {
     }
 
     protected void fireCheckChanged(Object item, int index, boolean b) {
-        for(CheckListListener lsnr : new ArrayList<CheckListListener>(listeners)) {
+        for(CheckListListener lsnr : new ArrayList<>(listeners)) {
             if(b) {
                 lsnr.itemChecked(item);
             }

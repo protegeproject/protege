@@ -40,7 +40,7 @@ public class ViewBanner extends JPanel {
 
     private Color defaultBackgroundColor;
     
-    private ArrayList<ViewIcon> viewIcons = new ArrayList<ViewIcon>();
+    private ArrayList<ViewIcon> viewIcons = new ArrayList<>();
 
 
     public ViewBanner(String labelText, Color bannerColor) {

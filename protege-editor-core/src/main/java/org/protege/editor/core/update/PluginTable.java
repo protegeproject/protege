@@ -38,7 +38,7 @@ public class PluginTable extends JPanel {
 
     private List<PluginInfo> provider;
 
-    private List<ListSelectionListener> pendingListeners = new ArrayList<ListSelectionListener>();
+    private List<ListSelectionListener> pendingListeners = new ArrayList<>();
 
     private ComponentAdapter componentAdapter = new ComponentAdapter(){
         public void componentShown(ComponentEvent event) {
@@ -145,7 +145,7 @@ public class PluginTable extends JPanel {
 
         public List<Boolean> getInstallList(){
             if (install == null){
-                install = new ArrayList<Boolean>(plugins.size());
+                install = new ArrayList<>(plugins.size());
                 for (PluginInfo info : plugins) {
                     install.add(false);//provider.isSelected(info));
                 }
@@ -172,7 +172,7 @@ public class PluginTable extends JPanel {
 
 
         public List<PluginInfo> getSelectedUpdateInfo() {
-            List<PluginInfo> sel = new ArrayList<PluginInfo>();
+            List<PluginInfo> sel = new ArrayList<>();
             int counter = 0;
             for (Boolean b : getInstallList()) {
                 if (b) {

@@ -82,7 +82,7 @@ public class OWLEquivalentDataPropertiesFrameSection extends AbstractOWLFrameSec
             if (!getOWLModelManager().getReasoner().isConsistent()) {
                 return;
             }
-            Set<OWLDataProperty> equivs = new HashSet<OWLDataProperty>(getReasoner().getEquivalentDataProperties(getRootObject()).getEntities());
+            Set<OWLDataProperty> equivs = new HashSet<>(getReasoner().getEquivalentDataProperties(getRootObject()).getEntities());
             equivs.remove(getRootObject());
             if (!equivs.isEmpty()){
                 OWLEquivalentDataPropertiesAxiom ax = getOWLDataFactory().getOWLEquivalentDataPropertiesAxiom(equivs);
