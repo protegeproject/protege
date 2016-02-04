@@ -38,12 +38,12 @@ public class MetricsTableModel extends AbstractTableModel {
 
 
     public Object getValueAt(int rowIndex, int columnIndex) {
-        OWLMetric metric = metricManager.getMetrics().get(rowIndex);
+        OWLMetric<?> metric = metricManager.getMetrics().get(rowIndex);
         if (columnIndex == 0) {
             return metric.getName();
         }
         else {
-            return metric.getValue().toString();
+            return metric.getValue();
         }
     }
 
