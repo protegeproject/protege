@@ -14,6 +14,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Collections;
 import java.util.Set;
+import java.util.UUID;
 
 /*
  * Copyright (C) 2007, University of Manchester
@@ -86,23 +87,17 @@ public class OWLAnonymousIndividualAnnotationValueEditor implements OWLObjectEdi
 
     public boolean setEditedObject(OWLAnonymousIndividual object) {
         if (object == null) {
-            String id = "genid" + System.nanoTime();
+            String id = "genid-" + UUID.randomUUID().toString();
             final OWLOntologyID ontologyID = editorKit.getModelManager().getActiveOntology().getOntologyID();
             if (!ontologyID.isAnonymous()){
-                id = ontologyID.getOntologyIRI() + "#" + id;
+                id = ontologyID.getOntologyIRI().get() + "#" + id;
             }
             object = editorKit.getModelManager().getOWLDataFactory().getOWLAnonymousIndividual(id);
         }
         frameList.setRootObject(object);
-        if (object != null) {
-            mainComponent.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-            annotationValueLabel.setIcon(OWLIcons.getIcon("individual.png"));
-            annotationValueLabel.setText(editorKit.getModelManager().getRendering(object));
-        }
-        else {
-            annotationValueLabel.setIcon(null);
-            annotationValueLabel.setText("");
-        }
+        mainComponent.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        annotationValueLabel.setIcon(OWLIcons.getIcon("individual.png"));
+        annotationValueLabel.setText(editorKit.getModelManager().getRendering(object));
         return true;
     }
 
