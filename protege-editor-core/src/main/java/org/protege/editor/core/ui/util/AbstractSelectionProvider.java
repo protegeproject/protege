@@ -19,7 +19,7 @@ public abstract class AbstractSelectionProvider implements SelectionProvider {
 
 
     public AbstractSelectionProvider() {
-        listeners = new ArrayList<SelectionProviderListener>();
+        listeners = new ArrayList<>();
     }
 
 
@@ -36,7 +36,7 @@ public abstract class AbstractSelectionProvider implements SelectionProvider {
 
 
     protected void fireSelectionChanged() {
-        for (SelectionProviderListener listener : new ArrayList<SelectionProviderListener>(listeners)) {
+        for (SelectionProviderListener listener : new ArrayList<>(listeners)) {
             listener.selectionChanged(this);
         }
     }

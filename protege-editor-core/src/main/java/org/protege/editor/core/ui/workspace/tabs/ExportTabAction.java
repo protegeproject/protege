@@ -33,7 +33,7 @@ public class ExportTabAction extends ProtegeAction {
 
 	public void actionPerformed(ActionEvent event) {
 		TabbedWorkspace workspace = (TabbedWorkspace) getWorkspace();
-		Set<String> extensions = new HashSet<String>();
+		Set<String> extensions = new HashSet<>();
 		extensions.add("xml");
 		String fileName = workspace.getSelectedTab().getLabel().replace(' ', '_') + ".layout.xml";
 		File f = UIUtil.saveFile((Window) SwingUtilities.getAncestorOfClass(Window.class, workspace),

@@ -110,7 +110,7 @@ public class ViewComponentPluginJPFImpl implements ViewComponentPlugin {
      */
     public ViewComponent newInstance() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
 
-        ExtensionInstantiator<ViewComponent> instantiator = new ExtensionInstantiator<ViewComponent>(extension);
+        ExtensionInstantiator<ViewComponent> instantiator = new ExtensionInstantiator<>(extension);
         ViewComponent viewComponent = instantiator.instantiate();
         viewComponent.setup(this);
         return viewComponent;

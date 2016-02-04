@@ -54,7 +54,7 @@ public class FileURIPanel extends JPanel {
         holder.add(textField = new JTextField(30), BorderLayout.NORTH);
         holder.add(new JButton(browseAction), BorderLayout.EAST);
         add(holder, BorderLayout.NORTH);
-        listeners = new ArrayList<ChangeListener>();
+        listeners = new ArrayList<>();
         textField.getDocument().addDocumentListener(new DocumentListener() {
             public void changedUpdate(DocumentEvent e) {
             }
@@ -100,7 +100,7 @@ public class FileURIPanel extends JPanel {
 
 
     protected void fireStateChanged() {
-        for (ChangeListener listener : new ArrayList<ChangeListener>(listeners)) {
+        for (ChangeListener listener : new ArrayList<>(listeners)) {
             listener.stateChanged(new ChangeEvent(this));
         }
     }
@@ -114,7 +114,7 @@ public class FileURIPanel extends JPanel {
     public static void main(String[] args) {
         JFrame f = new JFrame();
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setContentPane(new FileURIPanel(new HashSet<String>(Arrays.asList("owl"))));
+        f.setContentPane(new FileURIPanel(new HashSet<>(Arrays.asList("owl"))));
         f.setVisible(true);
         f.pack();
     }

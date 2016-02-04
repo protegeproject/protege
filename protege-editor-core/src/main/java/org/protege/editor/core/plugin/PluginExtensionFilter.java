@@ -57,7 +57,7 @@ public class PluginExtensionFilter {
      * <code>PluginExtensionMatcher</code>.
      */
     public Set<IExtension> getExtensions() {
-        Set<IExtension> result = new HashSet<IExtension>();
+        Set<IExtension> result = new HashSet<>();
         IExtensionRegistry registry = PluginUtilities.getInstance().getExtensionRegistry();
         IExtensionPoint extpt = registry.getExtensionPoint(pluginId, extensionPointId);
         if(extpt == null) {

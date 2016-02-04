@@ -37,7 +37,7 @@ public class RecentEditorKitManager {
 
 
     private RecentEditorKitManager() {
-        editorKitDescriptors = new ArrayList<EditorKitDescriptor>();
+        editorKitDescriptors = new ArrayList<>();
     }
 
 
@@ -54,7 +54,7 @@ public class RecentEditorKitManager {
 
 
     public List<EditorKitDescriptor> getDescriptors() {
-        return new ArrayList<EditorKitDescriptor>(editorKitDescriptors);
+        return new ArrayList<>(editorKitDescriptors);
     }
 
     public void pruneInvalidDescriptors() {

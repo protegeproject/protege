@@ -25,7 +25,7 @@ public class PreferenceNodePanel extends JPanel {
 
 
     public PreferenceNodePanel(PreferenceNodeGroup group) {
-        labels = new ArrayList<JLabel>();
+        labels = new ArrayList<>();
         setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(group.getLabel()),
                                                      BorderFactory.createEmptyBorder(10, 30, 20, 10)));
         List<PreferenceNode> prefNodes = group.getNodes();

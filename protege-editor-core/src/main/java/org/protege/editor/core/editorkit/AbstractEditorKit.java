@@ -23,7 +23,7 @@ public abstract class AbstractEditorKit<T extends EditorKitFactory> implements E
 
     private final Logger logger = LoggerFactory.getLogger(AbstractEditorKit.class);
 
-    private Map<Object, Disposable> objects = new HashMap<Object, Disposable>();
+    private Map<Object, Disposable> objects = new HashMap<>();
 
     private T editorKitFactory;
 

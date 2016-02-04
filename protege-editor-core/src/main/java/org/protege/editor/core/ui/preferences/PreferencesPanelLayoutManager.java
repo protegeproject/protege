@@ -29,8 +29,8 @@ public class PreferencesPanelLayoutManager implements LayoutManager2 {
 
 
     public PreferencesPanelLayoutManager(JComponent component) {
-        compList = new ArrayList<Component>();
-        labelMap = new HashMap<Component, JLabel>();
+        compList = new ArrayList<>();
+        labelMap = new HashMap<>();
         this.baseComponent = component;
     }
 

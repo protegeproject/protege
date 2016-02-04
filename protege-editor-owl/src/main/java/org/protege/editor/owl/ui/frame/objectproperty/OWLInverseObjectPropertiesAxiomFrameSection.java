@@ -60,7 +60,7 @@ public class OWLInverseObjectPropertiesAxiomFrameSection extends AbstractOWLFram
                     if (!getOWLModelManager().getReasoner().isConsistent()) {
                         return;
                     }
-                    final Set<OWLObjectPropertyExpression> infInverses = new HashSet<OWLObjectPropertyExpression>(getReasoner().getInverseObjectProperties(getRootObject()).getEntities());
+                    final Set<OWLObjectPropertyExpression> infInverses = new HashSet<>(getReasoner().getInverseObjectProperties(getRootObject()).getEntities());
                     infInverses.removeAll(added);
                     for (OWLObjectPropertyExpression invProp : infInverses) {
                         final OWLInverseObjectPropertiesAxiom ax = getOWLDataFactory().getOWLInverseObjectPropertiesAxiom(

@@ -47,7 +47,7 @@ public class RemovableObjectList<O> extends MList {
     }
 
     public List<O> getListItems() {
-        List<O> result = new ArrayList<O>();
+        List<O> result = new ArrayList<>();
         for(int i = 0; i < getModel().getSize(); i++) {
             result.add((O) ((RemovableObjectListItem)getModel().getElementAt(i)).getObject());
         }
@@ -116,7 +116,7 @@ public class RemovableObjectList<O> extends MList {
     
 
     public Collection<O> getSelectedObjects() {
-        Collection<O> objects = new ArrayList<O>();
+        Collection<O> objects = new ArrayList<>();
         for (Object o : getSelectedValues()) {
             O sel = (O) ((RemovableObjectListItem) o).getObject();
             objects.add(sel);
@@ -215,11 +215,11 @@ public class RemovableObjectList<O> extends MList {
 
 
     public static void main(String[] args) {
-        List<String> strings = new ArrayList<String>();
+        List<String> strings = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             strings.add("Item " + i);
         }
-        final RemovableObjectList<String> list = new RemovableObjectList<String>();
+        final RemovableObjectList<String> list = new RemovableObjectList<>();
         list.setListData(strings.toArray());
 
         list.addListSelectionListener(e -> {

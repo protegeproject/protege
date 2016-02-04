@@ -18,9 +18,9 @@ import java.util.List;
  */
 public class BackgroundTaskManager {
 
-    private List<BackgroundTaskListener> listeners = new ArrayList<BackgroundTaskListener>();
+    private List<BackgroundTaskListener> listeners = new ArrayList<>();
 
-    private List<BackgroundTask> runningTasks = new ArrayList<BackgroundTask>();
+    private List<BackgroundTask> runningTasks = new ArrayList<>();
 
 
     public void addBusyListener(final BackgroundTaskListener listener){
@@ -66,7 +66,7 @@ public class BackgroundTaskManager {
 
 
     public List<BackgroundTask> getRunningTasks(){
-        return new ArrayList<BackgroundTask>(runningTasks);
+        return new ArrayList<>(runningTasks);
     }
 
 

@@ -40,7 +40,7 @@ public class PluginInfoTableModel extends AbstractTableModel {
 
 
     public PluginInfoTableModel() {
-        bundles = new ArrayList<Bundle>();
+        bundles = new ArrayList<>();
         for (Bundle b : ProtegeApplication.getContext().getBundles()) {
         	if (ProtegeApplication.isPlugin(b)) {
         		bundles.add(b);

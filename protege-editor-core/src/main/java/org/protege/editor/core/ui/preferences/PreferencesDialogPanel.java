@@ -78,7 +78,7 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
     }
 
     public void dispose() {
-        for (PreferencesPanel panel : new ArrayList<PreferencesPanel>(map.values())) {
+        for (PreferencesPanel panel : new ArrayList<>(map.values())) {
             try {
                 panel.dispose();
             }
@@ -90,7 +90,7 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
     }
 
     public void applyPreferences() {
-        for (PreferencesPanel panel : new ArrayList<PreferencesPanel>(map.values())) {
+        for (PreferencesPanel panel : new ArrayList<>(map.values())) {
             try {
                 panel.applyChanges();
             }

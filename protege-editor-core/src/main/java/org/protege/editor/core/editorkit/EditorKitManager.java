@@ -22,7 +22,7 @@ public class EditorKitManager {
 
 
     public EditorKitManager() {
-        editorKits = new ArrayList<EditorKit>();
+        editorKits = new ArrayList<>();
         workspaceManager = new WorkspaceManager();
     }
 
@@ -78,6 +78,6 @@ public class EditorKitManager {
 
 
     public List<EditorKit> getEditorKits(){
-        return new ArrayList<EditorKit>(editorKits);
+        return new ArrayList<>(editorKits);
     }
 }

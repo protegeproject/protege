@@ -45,9 +45,9 @@ public class PluginPanel extends JPanel {
 
     private JScrollPane readmeScroller;
 
-    private Map<PluginInfo, ContentMimePair> updateInfoReadmeMap = new HashMap<PluginInfo, ContentMimePair>();
+    private Map<PluginInfo, ContentMimePair> updateInfoReadmeMap = new HashMap<>();
 
-    private Set<PluginTable> tables = new HashSet<PluginTable>();
+    private Set<PluginTable> tables = new HashSet<>();
 
     private JCheckBox alwaysShow;
 
@@ -242,7 +242,7 @@ public class PluginPanel extends JPanel {
 
 
     public List<PluginInfo> getPluginsToInstall() {
-        List<PluginInfo> plugins = new ArrayList<PluginInfo>();
+        List<PluginInfo> plugins = new ArrayList<>();
         for (PluginTable table : tables){
             plugins.addAll(table.getSelectedUpdateInfo());
         }

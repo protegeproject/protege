@@ -28,12 +28,12 @@ import java.util.Set;
 public class ErrorExplainer {
 
     private Map<Class<? extends Throwable>, ErrorExplanationFactory> factories =
-            new HashMap<Class<? extends Throwable>, ErrorExplanationFactory>();
+            new HashMap<>();
 
     public ErrorExplainer() {
         addExplanationFactory(FileNotFoundException.class, new ErrorExplanationFactory<FileNotFoundException>(){
             public <T extends FileNotFoundException> ErrorExplanation<T> createExplanation(T throwable) {
-                return new ErrorExplanation<T>(throwable, "File not found: " + throwable.getMessage());
+                return new ErrorExplanation<>(throwable, "File not found: " + throwable.getMessage());
             }
         });
 
@@ -44,7 +44,7 @@ public class ErrorExplainer {
                 if (throwable.getLineNumber() <= 0 || throwable.getColumnNumber() <= 0){
                     System.out.println("throwable = " + throwable);
                 }
-                return new ParseErrorExplanation<T>(throwable,
+                return new ParseErrorExplanation<>(throwable,
                                                     message,
                                                     throwable.getLineNumber()-1, // as they are indexed from 1
                                                     throwable.getColumnNumber()-1);
@@ -68,7 +68,7 @@ public class ErrorExplainer {
             cause = cause.getCause();
         }while (traverseCauses && cause != null);
 
-        return new ErrorExplanation<T>(throwable, throwable.getMessage()); // return the error itself
+        return new ErrorExplanation<>(throwable, throwable.getMessage()); // return the error itself
     }
 
 

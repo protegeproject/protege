@@ -50,7 +50,7 @@ public class WorkspaceFrame extends JFrame {
 
     public WorkspaceFrame(Workspace workspace) {
         this.workspace = workspace;
-        menuActions = new HashSet<ProtegeAction>();
+        menuActions = new HashSet<>();
         createUI();
         restoreMetrics();
         addWindowListener(new WindowAdapter() {

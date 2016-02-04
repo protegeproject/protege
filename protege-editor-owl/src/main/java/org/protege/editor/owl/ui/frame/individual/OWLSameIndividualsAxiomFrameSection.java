@@ -51,7 +51,7 @@ public class OWLSameIndividualsAxiomFrameSection extends AbstractOWLFrameSection
                 return;
             }
             Set<OWLIndividual> existingSameIndividuals = getCurrentlyDisplayedSameIndividuals();
-            Set<OWLNamedIndividual> newSameIndividuals = new HashSet<OWLNamedIndividual>();
+            Set<OWLNamedIndividual> newSameIndividuals = new HashSet<>();
             for (OWLNamedIndividual i : getCurrentReasoner().getSameIndividuals(getRootObject()).getEntities()) {
                 if (!i.equals(getRootObject()) && !existingSameIndividuals.contains(i)) {
                     newSameIndividuals.add(i);

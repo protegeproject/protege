@@ -104,7 +104,7 @@ public class WorkspaceTabPluginJPFImpl implements WorkspaceTabPlugin {
 
 
     public WorkspaceTab newInstance() throws InstantiationException, ClassNotFoundException, IllegalAccessException {
-        ExtensionInstantiator<WorkspaceTab> instantiator = new ExtensionInstantiator<WorkspaceTab>(extension);
+        ExtensionInstantiator<WorkspaceTab> instantiator = new ExtensionInstantiator<>(extension);
         WorkspaceTab tab = instantiator.instantiate();
         tab.setup(this);
         return tab;

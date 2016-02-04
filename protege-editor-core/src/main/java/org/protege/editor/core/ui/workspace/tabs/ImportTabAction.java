@@ -34,7 +34,7 @@ public class ImportTabAction extends ProtegeAction {
 
 	public void actionPerformed(ActionEvent event) {
 		TabbedWorkspace workspace = (TabbedWorkspace) getWorkspace();
-        Set<String> extensions = new HashSet<String>();
+        Set<String> extensions = new HashSet<>();
         extensions.add("xml");
         File f = UIUtil.openFile((JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, workspace),
                 "Open layout from",

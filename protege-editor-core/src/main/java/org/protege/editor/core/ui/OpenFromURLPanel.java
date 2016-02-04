@@ -36,7 +36,7 @@ public class OpenFromURLPanel extends JPanel implements VerifiedInputEditor {
     private MList bookmarksList;
 
     private List<InputVerificationStatusChangedListener> listeners =
-            new ArrayList<InputVerificationStatusChangedListener>();
+            new ArrayList<>();
 
 
     public OpenFromURLPanel() {
@@ -147,9 +147,9 @@ public class OpenFromURLPanel extends JPanel implements VerifiedInputEditor {
 
     private void fillList() {
         BookMarkedURIManager man = BookMarkedURIManager.getInstance();
-        Set<URI> ts = new TreeSet<URI>();
+        Set<URI> ts = new TreeSet<>();
         ts.addAll(man.getBookMarkedURIs());
-        ArrayList<Object> data = new ArrayList<Object>();
+        ArrayList<Object> data = new ArrayList<>();
 
         data.add(new AddURIItem());
         for (URI uri : ts) {

@@ -83,11 +83,11 @@ public class WizardModel {
      */
     public WizardModel() {
 
-        panelHashmap = new HashMap<Object, WizardPanel>();
+        panelHashmap = new HashMap<>();
 
-        buttonTextHashmap    = new HashMap<String, Object>();
-        buttonIconHashmap    = new HashMap<String, Icon>();
-        buttonEnabledHashmap = new HashMap<String, Boolean>();
+        buttonTextHashmap    = new HashMap<>();
+        buttonIconHashmap    = new HashMap<>();
+        buttonEnabledHashmap = new HashMap<>();
 
         propertyChangeSupport = new PropertyChangeSupport(this);
     }

@@ -40,7 +40,7 @@ public class ProtegeManager {
 
 
     private ProtegeManager() {
-        editorKitFactoriesMap = new HashMap<EditorKitFactoryPlugin, EditorKitFactory>();
+        editorKitFactoriesMap = new HashMap<>();
         EditorKitFactoryPluginLoader loader = new EditorKitFactoryPluginLoader();
         for (EditorKitFactoryPlugin plugin : loader.getPlugins()) {
             editorKitFactoriesMap.put(plugin, null);
@@ -113,7 +113,7 @@ public class ProtegeManager {
      * createAndSetupNewEditorKit and openAndSetupNewEditorKit methods.
      */
     public List<EditorKitFactoryPlugin> getEditorKitFactoryPlugins() {
-        return new ArrayList<EditorKitFactoryPlugin>(editorKitFactoriesMap.keySet());
+        return new ArrayList<>(editorKitFactoriesMap.keySet());
     }
 
 
@@ -139,7 +139,7 @@ public class ProtegeManager {
                     getEditorKitManager().addEditorKit(editorKit);
                     success = true;
                     if(getEditorKitManager().getEditorKitCount() == 1) {
-                        firstEditorKit = new WeakReference<EditorKit>(editorKit);
+                        firstEditorKit = new WeakReference<>(editorKit);
                     }
                     return editorKit;
                 }
@@ -171,7 +171,7 @@ public class ProtegeManager {
                     getEditorKitManager().addEditorKit(editorKit);
                     success = true;
                     if(getEditorKitManager().getEditorKitCount() == 1) {
-                        firstEditorKit = new WeakReference<EditorKit>(editorKit);
+                        firstEditorKit = new WeakReference<>(editorKit);
                     }
                     return editorKit;
                 }

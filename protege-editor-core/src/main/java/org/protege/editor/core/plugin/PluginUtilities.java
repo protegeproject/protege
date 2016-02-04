@@ -111,7 +111,7 @@ public class PluginUtilities {
     }
     
     public static Map<String, String> getAttributes(IExtension ext) {
-        Map<String, String> attributes = new HashMap<String, String>();
+        Map<String, String> attributes = new HashMap<>();
         for (IConfigurationElement config : ext.getConfigurationElements()) {
             String id = config.getName();
             String value = config.getAttribute(PluginProperties.PLUGIN_XML_VALUE);

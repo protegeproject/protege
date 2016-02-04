@@ -239,7 +239,7 @@ public class MenuBuilder {
     private Map<String, MenuActionPlugin> getPlugins() {
         // Create a map to hold the results in.  This maps menu plugin ids to their
         // menus so that we can form an ordering of parent child menu plugins
-        Map<String, MenuActionPlugin> result = new HashMap<String, MenuActionPlugin>();
+        Map<String, MenuActionPlugin> result = new HashMap<>();
         MenuActionPluginLoader pluginLoader = new MenuActionPluginLoader(editorKit);
         for (MenuActionPlugin plugin : pluginLoader.getPlugins()) {
             result.put(plugin.getId(), plugin);
@@ -255,7 +255,7 @@ public class MenuBuilder {
 
 
     private static List<MenuActionPlugin> getSortedList(Collection<MenuActionPlugin> plugins) {
-        List<MenuActionPlugin> list = new ArrayList<MenuActionPlugin>(plugins);
+        List<MenuActionPlugin> list = new ArrayList<>(plugins);
         Collections.sort(list, new MenuActionPluginComparator());
         return list;
     }

@@ -586,7 +586,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         }
         else{
             SwingUtilities.invokeLater(() -> {
-                Set<N> nodes = new HashSet<N>();
+                Set<N> nodes = new HashSet<>();
                 for (N droppedObject : droppedObjects){
                     if (getNodes(droppedObject) != null){ // if this node exists in the tree
                         nodes.add(droppedObject);

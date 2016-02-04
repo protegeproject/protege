@@ -29,7 +29,7 @@ public class RepositoryTableModel extends AbstractTableModel {
 
     public RepositoryTableModel(OntologyRepository repository) {
         this.repository = repository;
-        entries = new ArrayList<OntologyRepositoryEntry>(repository.getEntries());
+        entries = new ArrayList<>(repository.getEntries());
         Collections.sort(entries, new EntryShortNameURIComparator());
     }
 

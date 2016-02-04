@@ -127,7 +127,7 @@ public abstract class TabbedWorkspace extends Workspace {
 
     public List<WorkspaceTabPlugin> getOrderedPlugins() {
         WorkspaceTabPluginLoader loader = new WorkspaceTabPluginLoader(this);
-        List<WorkspaceTabPlugin> plugins = new ArrayList<WorkspaceTabPlugin>(loader.getPlugins());
+        List<WorkspaceTabPlugin> plugins = new ArrayList<>(loader.getPlugins());
         CustomWorkspaceTabsManager customTabsManager = getCustomTabsManager();
         plugins.addAll(customTabsManager.getCustomTabPlugins(this));
 
