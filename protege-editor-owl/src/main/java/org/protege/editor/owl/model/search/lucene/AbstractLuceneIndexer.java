@@ -39,11 +39,11 @@ public abstract class AbstractLuceneIndexer {
     }
 
     public void doIndex(IndexDelegator delegator, SearchContext context, IndexProgressListener listener) throws IOException {
-        delegator.doIndex(this, context, listener);
+        delegator.writeIndex(this, context, listener);
     }
 
     public boolean doUpdate(IndexDelegator delegator, ChangeSet changeSet, SearchContext context) throws IOException {
-        return delegator.doUpdate(this, changeSet, context);
+        return delegator.updateIndex(this, changeSet, context);
     }
 
     public IndexWriterConfig getIndexWriterConfig() {
