@@ -9,6 +9,7 @@ import org.protege.editor.owl.ui.transfer.OWLObjectDragSource;
 import org.protege.editor.owl.ui.transfer.OWLObjectDropTarget;
 import org.protege.editor.owl.ui.transfer.OWLObjectTreeDragGestureListener;
 import org.protege.editor.owl.ui.transfer.OWLObjectTreeDropTargetListener;
+import org.protege.editor.owl.ui.view.Copyable;
 import org.protege.editor.owl.ui.view.HasCopySubHierarchyToClipboard;
 import org.protege.editor.owl.ui.view.HasExpandAll;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -44,7 +45,7 @@ import java.util.List;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObjectDropTarget, OWLObjectDragSource, HasExpandAll, HasCopySubHierarchyToClipboard {
+public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObjectDropTarget, OWLObjectDragSource, HasExpandAll, HasCopySubHierarchyToClipboard, Copyable {
 
 //    private static final Logger logger = LoggerFactory.getLogger(OWLObjectTree.class);
 
@@ -735,5 +736,15 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
     @Override
     public boolean canPerformCopySubHierarchyToClipboard() {
         return getSelectedOWLObject() != null;
+    }
+
+    @Override
+    public boolean canCopy() {
+        return !getSelectedOWLObjects().isEmpty();
+    }
+
+    @Override
+    public List<OWLObject> getObjectsToCopy() {
+        return new ArrayList<>(getSelectedOWLObjects());
     }
 }
