@@ -83,7 +83,7 @@ public class ExplanationManager {
                 explanation.dispose();
             }
         });
-        dlg.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dlg.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         dlg.setModal(false);
         dlg.setResizable(true);
         dlg.pack();
