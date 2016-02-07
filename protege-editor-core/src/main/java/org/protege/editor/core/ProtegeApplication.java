@@ -353,6 +353,11 @@ public class ProtegeApplication implements BundleActivator {
         defaults.put("TextField.border", BorderFactory.createCompoundBorder(commonBorder,
                 BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 
+        defaults.put("SplitPane.border",
+                BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
+        defaults.put("TitledBorder.border", commonBorder);
+
     }
     
     private void setupExceptionHandler() {

@@ -33,7 +33,7 @@ public class TabIndentedHierarchyPanel extends AbstractOWLWizardPanel {
 
 
     protected void createUI(JComponent parent) {
-        setInstructions("Please enter the hierarchy that you want to create.  You should " + "use tabs to indent names!");
+        setInstructions("Please enter the hierarchy that you want to create.  You should use tabs to indent names.");
         parent.setLayout(new BorderLayout());
         prefixField = new JTextField(30);
         suffixField = new JTextField(30);

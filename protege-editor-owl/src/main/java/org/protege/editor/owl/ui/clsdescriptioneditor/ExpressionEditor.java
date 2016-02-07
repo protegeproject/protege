@@ -84,7 +84,7 @@ public class ExpressionEditor<O> extends JTextPane
         this.owlEditorKit = owlEditorKit;
         this.outerBorder = null;
         this.expressionChecker = checker;
-        defaultBorder = BorderFactory.createMatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY);
+        defaultBorder = BorderFactory.createEmptyBorder(1, 1, 1, 1);
         setStateBorder(defaultBorder);
         errorBorder = BorderFactory.createMatteBorder(1, 1, 1, 1, Color.RED);
         errorStroke = new BasicStroke(3.0f,
