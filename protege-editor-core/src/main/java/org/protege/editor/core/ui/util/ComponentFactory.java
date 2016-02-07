@@ -77,8 +77,7 @@ public class ComponentFactory {
 
 
     public static Border createTitledBorder(String title) {
-        return BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY),
-                                                                                   title),
+        return BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(title),
                                                   BorderFactory.createEmptyBorder(4, 4, 4, 4));
     }
 }
