@@ -186,7 +186,7 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
     protected List<MListButton> getButtons(Object value) {
         List<MListButton> buttons = new ArrayList<>(super.getButtons(value));
         if (value instanceof OWLFrameSectionRow) {
-            OWLFrameSectionRow frameRow = (OWLFrameSectionRow) value;
+            OWLFrameSectionRow<?,?,?> frameRow = (OWLFrameSectionRow<?,?,?>) value;
             buttons.add(axiomAnnotationButton);
             axiomAnnotationButton.setAnnotationPresent(isAnnotationPresent(frameRow));
 

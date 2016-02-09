@@ -20,6 +20,7 @@ import org.protege.editor.owl.model.OWLWorkspace;
 import org.protege.editor.owl.model.io.IOListenerPlugin;
 import org.protege.editor.owl.model.io.IOListenerPluginInstance;
 import org.protege.editor.owl.model.io.IOListenerPluginLoader;
+import org.protege.editor.owl.model.search.DefaultSearchManager;
 import org.protege.editor.owl.model.search.SearchManager;
 import org.protege.editor.owl.model.search.SearchMetadataImportManager;
 import org.protege.editor.owl.ui.OntologyFormatPanel;
@@ -95,7 +96,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         ontologyChangeListener = owlOntologyChanges -> modifiedDocument = true;
         modelManager.addOntologyChangeListener(ontologyChangeListener);
 
-        searchManager = new SearchManager(this, new SearchMetadataImportManager());
+        searchManager = new DefaultSearchManager(this, new SearchMetadataImportManager());
         loadErrorHandler = new OntologyLoadErrorHandlerUI(this);
         modelManager.setLoadErrorHandler(loadErrorHandler);
         loadIOListenerPlugins();
