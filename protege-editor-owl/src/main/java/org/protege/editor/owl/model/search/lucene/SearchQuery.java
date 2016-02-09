@@ -33,11 +33,13 @@ public class SearchQuery {
 
     public Set<Document> evaluate() throws IOException {
         Set<Document> docs = new HashSet<>();
-        TopDocs hits = searcher.search(query);
-        int hitNumber = hits.scoreDocs.length;
-        for (int i = 1; i <= hitNumber; i++) {
-            Document doc = searcher.find(hits.scoreDocs[i-1].doc);
-            docs.add(doc);
+        if (query != null) {
+            TopDocs hits = searcher.search(query);
+            int hitNumber = hits.scoreDocs.length;
+            for (int i = 1; i <= hitNumber; i++) {
+                Document doc = searcher.find(hits.scoreDocs[i-1].doc);
+                docs.add(doc);
+            }
         }
         return docs;
     }
