@@ -20,9 +20,7 @@ import org.protege.editor.owl.model.OWLWorkspace;
 import org.protege.editor.owl.model.io.IOListenerPlugin;
 import org.protege.editor.owl.model.io.IOListenerPluginInstance;
 import org.protege.editor.owl.model.io.IOListenerPluginLoader;
-import org.protege.editor.owl.model.search.DefaultSearchManager;
-import org.protege.editor.owl.model.search.SearchManager;
-import org.protege.editor.owl.model.search.SearchMetadataImportManager;
+import org.protege.editor.owl.model.search.*;
 import org.protege.editor.owl.ui.OntologyFormatPanel;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandlerUI;
@@ -36,6 +34,7 @@ import org.semanticweb.owlapi.util.VersionInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.*;
 import java.io.File;
 import java.net.ProtocolException;
 import java.net.URI;
@@ -77,7 +76,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     private OWLOntologyChangeListener ontologyChangeListener;
 
-    private SearchManager searchManager;
+    private SearchManagerSelector searchManagerSelector;
 
     public OWLEditorKit(OWLEditorKitFactory editorKitFactory) {
         super(editorKitFactory);
@@ -96,7 +95,8 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         ontologyChangeListener = owlOntologyChanges -> modifiedDocument = true;
         modelManager.addOntologyChangeListener(ontologyChangeListener);
 
-        searchManager = new DefaultSearchManager(this, new SearchMetadataImportManager());
+        searchManagerSelector = new SearchManagerSelector(this);
+
         loadErrorHandler = new OntologyLoadErrorHandlerUI(this);
         modelManager.setLoadErrorHandler(loadErrorHandler);
         loadIOListenerPlugins();
@@ -104,6 +104,8 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
         getWorkspace().refreshComponents();
     }
+
+
 
     /**
      * Determines if this editor kit has modified the contents if its documents in any way.
@@ -179,7 +181,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     }
 
     public SearchManager getSearchManager() {
-        return searchManager;
+        return searchManagerSelector.getCurrentSearchManager();
     }
 
     public boolean handleLoadRecentRequest(EditorKitDescriptor descriptor) throws Exception {
@@ -390,7 +392,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         logger.info(LogBanner.start("Disposing of Workspace"));
         getModelManager().removeOntologyChangeListener(ontologyChangeListener);
         super.dispose();
-        searchManager.dispose();
+        searchManagerSelector.getCurrentSearchManager().dispose();
         workspace.dispose();
         try {
             modelManager.dispose();
@@ -404,5 +406,9 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
             registration = null;
         }
         logger.info(LogBanner.end());
+    }
+
+    public SearchManagerSelector getSearchManagerSelector() {
+        return searchManagerSelector;
     }
 }

@@ -28,6 +28,7 @@
     <extension-point id="entity_renderer" name="Renderer Plugin" schema="schema/entity_renderer.exsd"/>
     <extension-point id="ExtraReasonerMenuAction" name="Extra Reasoner Menu Item" />
 
+    <extension-point id="searchmanager" name="Search Manager"/>
     <!-- PLUGINS -->
 
 
@@ -1480,6 +1481,10 @@
         <name value="Axioms by definition (select axioms that define entities)"/>
         <class value="org.protege.editor.owl.ui.ontology.wizard.move.bydefinition.MoveAxiomsByDefinitionKit"/>
     </extension>
-    
+
+    <extension id="DefaultSearchManager" point="org.protege.editor.owl.searchmanager">
+        <name value="Default search"/>
+        <class value="org.protege.editor.owl.model.search.DefaultSearchManager"/>
+    </extension>
 
 </plugin>

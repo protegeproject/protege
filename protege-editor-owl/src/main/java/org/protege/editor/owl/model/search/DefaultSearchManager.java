@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
  * Bio-Medical Informatics Research Group<br>
  * Date: 18/09/2012
  */
-public class DefaultSearchManager implements SearchManager {
+public class DefaultSearchManager extends SearchManager {
 
     private final Logger logger = LoggerFactory.getLogger(DefaultSearchManager.class);
 
@@ -41,17 +41,22 @@ public class DefaultSearchManager implements SearchManager {
 
     private List<SearchMetadata> searchMetadataCache = new ArrayList<>();
 
-    private final OWLOntologyChangeListener ontologyChangeListener;
+    private OWLOntologyChangeListener ontologyChangeListener;
 
-    private final OWLModelManagerListener modelManagerListener;
+    private OWLModelManagerListener modelManagerListener;
 
-    private final SearchMetadataImportManager importManager;
+    private SearchMetadataImportManager importManager;
 
     private final List<ProgressMonitor> progressMonitors = new ArrayList<>();
 
-    public DefaultSearchManager(OWLEditorKit editorKit, SearchMetadataImportManager importManager) {
-        this.editorKit = editorKit;
-        this.importManager = importManager;
+    public DefaultSearchManager() {
+
+    }
+
+    @Override
+    public void initialise() {
+        this.editorKit = getEditorKit();
+        this.importManager = new SearchMetadataImportManager();
         categories.add(SearchCategory.DISPLAY_NAME);
         categories.add(SearchCategory.IRI);
         categories.add(SearchCategory.ANNOTATION_VALUE);
@@ -70,6 +75,9 @@ public class DefaultSearchManager implements SearchManager {
 
     @Override
     public void dispose() {
+        if(editorKit == null) {
+            return;
+        }
         OWLModelManager modelMan = editorKit.getOWLModelManager();
         modelMan.removeOntologyChangeListener(ontologyChangeListener);
         modelMan.removeListener(modelManagerListener);
