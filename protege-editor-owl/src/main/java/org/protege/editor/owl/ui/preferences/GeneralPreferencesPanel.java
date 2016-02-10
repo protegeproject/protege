@@ -7,11 +7,15 @@ import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
 import org.protege.editor.core.ui.view.View;
 import org.protege.editor.owl.model.axiom.FreshAxiomLocation;
 import org.protege.editor.owl.model.axiom.FreshAxiomLocationPreferences;
+import org.protege.editor.owl.model.search.SearchManagePluginListCellRenderer;
+import org.protege.editor.owl.model.search.SearchManagerPlugin;
+import org.protege.editor.owl.model.search.SearchManagerSelector;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditorPreferences;
 import org.protege.editor.owl.ui.tree.OWLTreePreferences;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collection;
 
 
 /**
@@ -47,6 +51,9 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
     private JSpinner autoExpandMaxChildSizeSpinner;
 
 
+    private JComboBox<SearchManagerPlugin> searchManagerPluginComboBox = new JComboBox<>();
+
+
     public void applyChanges() {
         ExpressionEditorPreferences.getInstance().setCheckDelay((Integer) checkDelaySpinner.getModel().getValue());
 
@@ -66,6 +73,11 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
         prefs.setAutoExpansionEnabled(autoExpandEnabledCheckBox.isSelected());
         prefs.setAutoExpansionDepthLimit((Integer)autoExpandMaxDepthSpinner.getValue());
         prefs.setAutoExpansionChildLimit((Integer) autoExpandMaxChildSizeSpinner.getValue());
+
+        SearchManagerPlugin plugin = (SearchManagerPlugin) searchManagerPluginComboBox.getSelectedItem();
+        if(plugin != null) {
+            getOWLEditorKit().getSearchManagerSelector().setCurrentPluginId(plugin.getId());
+        }
     }
 
     private void createUI() {
@@ -120,6 +132,26 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
         panel.addGroup("Maximum child cut off");
         panel.addGroupComponent(autoExpandMaxChildSizeSpinner);
 
+        // Search
+
+        panel.addSeparator();
+        panel.addGroup("Search type");
+        panel.addGroupComponent(searchManagerPluginComboBox);
+        SearchManagerSelector selector = getOWLEditorKit().getSearchManagerSelector();
+        Collection<SearchManagerPlugin> plugins = selector.getPlugins();
+        if (!plugins.isEmpty()) {
+            for(SearchManagerPlugin plugin : plugins) {
+                searchManagerPluginComboBox.addItem(plugin);
+                if(plugin.getId().equals(getOWLEditorKit().getSearchManagerSelector().getCurrentPluginId())) {
+                    searchManagerPluginComboBox.setSelectedItem(plugin);
+                }
+            }
+            searchManagerPluginComboBox.setRenderer(new SearchManagePluginListCellRenderer());
+            searchManagerPluginComboBox.setEnabled(true);
+        }
+        else {
+            searchManagerPluginComboBox.setEnabled(false);
+        }
     }
 
     public void initialise() throws Exception {
