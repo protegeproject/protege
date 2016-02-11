@@ -33,6 +33,10 @@ public class OWLObjectTreeDragGestureListener extends OWLObjectDragGestureListen
     protected List<OWLObject> getSelectedObjects() {
         return tree.getSelectedOWLObjects();
     }
+    
+    protected boolean canPerformDrag() {
+    	return tree.getDragEnabled();
+    }
 
 
     protected JComponent getRendererComponent() {
