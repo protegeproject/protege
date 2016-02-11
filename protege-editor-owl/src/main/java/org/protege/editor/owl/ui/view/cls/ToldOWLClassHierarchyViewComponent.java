@@ -68,6 +68,8 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
 
         addAction(new DeleteClassAction(getOWLEditorKit(),
                 () -> new HashSet<>(getTree().getSelectedOWLObjects())), "B", "A");
+        
+        getTree().setDragEnabled(true);
 
         getTree().setDragAndDropHandler(new OWLTreeDragAndDropHandler<OWLClass>() {
             public boolean canDrop(Object child, Object parent) {
