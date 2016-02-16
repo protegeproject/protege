@@ -33,7 +33,7 @@ public class OWLDataTypeUtils {
 
 
     public Set<OWLDatatype> getBuiltinDatatypes(){
-        Set<OWLDatatype> datatypes = new HashSet<OWLDatatype>();
+        Set<OWLDatatype> datatypes = new HashSet<>();
         final OWLDataFactory df = mngr.getOWLDataFactory();
 
         datatypes.add(df.getTopDatatype());
@@ -45,7 +45,7 @@ public class OWLDataTypeUtils {
 
 
     public Set<OWLDatatype> getReferencedDatatypes(Set<OWLOntology> onts){
-        Set<OWLDatatype> referencedTypes = new HashSet<OWLDatatype>();
+        Set<OWLDatatype> referencedTypes = new HashSet<>();
         for (OWLOntology ont : onts){
             referencedTypes.addAll(ont.getDatatypesInSignature());
         }

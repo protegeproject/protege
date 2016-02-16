@@ -60,12 +60,10 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         langComboBox = uiHelper.getLanguageSelector();
 
         datatypeComboBox = uiHelper.getDatatypeSelector();
-        datatypeComboBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                OWLDatatype owlDatatype = (OWLDatatype) getSelectedDatatype();
-                boolean b = owlDatatype == null;
-                toggleLanguage(b);
-            }
+        datatypeComboBox.addActionListener(e -> {
+            OWLDatatype owlDatatype = getSelectedDatatype();
+            boolean b = owlDatatype == null;
+            toggleLanguage(b);
         });
 
         removeNonSelectableDatatypes(datatypeComboBox);
@@ -183,7 +181,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
     private void setupAutoCompleter(OWLEditorKit owlEditorKit) {
         new OWLAutoCompleter(owlEditorKit, annotationContent, new OWLExpressionChecker() {
             public void check(String text) throws OWLExpressionParserException {
-                throw new OWLExpressionParserException(text, 0, text.length(), true, true, true, true, true, true, new HashSet<String>());
+                throw new OWLExpressionParserException(text, 0, text.length(), true, true, true, true, true, true, new HashSet<>());
             }
 
             public Object createObject(String text)

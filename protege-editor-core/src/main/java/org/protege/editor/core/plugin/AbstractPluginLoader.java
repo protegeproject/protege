@@ -55,7 +55,7 @@ public abstract class AbstractPluginLoader<E> {
      */
     public Set<E> getPlugins() {
         PluginExtensionFilter filter = new PluginExtensionFilter(pluginId, extensionPointId, getExtensionMatcher());
-        Set<E> result = new HashSet<E>();
+        Set<E> result = new HashSet<>();
         for (IExtension ext : filter.getExtensions()) {
             result.add(createInstance(ext));
         }

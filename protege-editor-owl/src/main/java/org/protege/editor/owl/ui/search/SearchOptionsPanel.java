@@ -3,7 +3,6 @@ package org.protege.editor.owl.ui.search;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
 import org.protege.editor.owl.model.search.SearchCategory;
-import org.protege.editor.owl.model.search.SearchSettings;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -46,15 +45,13 @@ public class SearchOptionsPanel extends JPanel {
     private final JCheckBox showAllResultsCheckBox;
 
 
-    private final List<SearchOptionsChangedListener> listeners = new ArrayList<SearchOptionsChangedListener>();
+    private final List<SearchOptionsChangedListener> listeners = new ArrayList<>();
 
     private final JCheckBox searchInAnnotationValues;
 
     private final JCheckBox searchInLogicalAxioms;
 
     private final OWLEditorKit editorKit;
-
-    private final SearchSettings searchSettings;
 
     private final JCheckBox searchInIRIs;
 
@@ -72,7 +69,6 @@ public class SearchOptionsPanel extends JPanel {
             }
         });
         this.editorKit = editorKit;
-        this.searchSettings = editorKit.getSearchManager().getSearchSettings();
 
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(2, 0, 2, 0));
@@ -136,21 +132,21 @@ public class SearchOptionsPanel extends JPanel {
             }
         });
         
-        searchInIRIs.setSelected(searchSettings.isSearchType(SearchCategory.IRI));
+        searchInIRIs.setSelected(editorKit.getSearchManager().isSearchType(SearchCategory.IRI));
         bottomPanel.add(searchInIRIs);
         searchInAnnotationValues = new JCheckBox(new AbstractAction("Search in annotation values") {
             public void actionPerformed(ActionEvent e) {
                 handleSearchTypeChanged();
             }
         });
-        searchInAnnotationValues.setSelected(searchSettings.isSearchType(SearchCategory.ANNOTATION_VALUE));
+        searchInAnnotationValues.setSelected(editorKit.getSearchManager().isSearchType(SearchCategory.ANNOTATION_VALUE));
         bottomPanel.add(searchInAnnotationValues);
         searchInLogicalAxioms = new JCheckBox(new AbstractAction("Search in logical axioms") {
             public void actionPerformed(ActionEvent e) {
                 handleSearchTypeChanged();
             }
         });
-        searchInLogicalAxioms.setSelected(searchSettings.isSearchType(SearchCategory.LOGICAL_AXIOM));
+        searchInLogicalAxioms.setSelected(editorKit.getSearchManager().isSearchType(SearchCategory.LOGICAL_AXIOM));
         bottomPanel.add(searchInLogicalAxioms);
 
         bottomPanel.add(Box.createHorizontalStrut(10));
@@ -164,7 +160,7 @@ public class SearchOptionsPanel extends JPanel {
 
         bottomPanel.add(searchProgressBar);
         bottomPanel.add(searchProgressLabel);
-        editorKit.getSearchManager().setProgressMonitor(new org.semanticweb.owlapi.util.ProgressMonitor() {
+        editorKit.getSearchManager().addProgressMonitor(new org.semanticweb.owlapi.util.ProgressMonitor() {
             public void setStarted() {
                 searchProgressBar.setValue(0);
                 visibilityTimer.restart();
@@ -204,12 +200,12 @@ public class SearchOptionsPanel extends JPanel {
     }
 
     private void handleSearchTypeChanged() {
-        searchSettings.setCategories(getSearchTypes());
+        editorKit.getSearchManager().setCategories(getSearchTypes());
         fireSearchRequestOptionChanged();
     }
 
     public Collection<SearchCategory> getSearchTypes() {
-        Set<SearchCategory> result = new HashSet<SearchCategory>();
+        Set<SearchCategory> result = new HashSet<>();
         result.add(SearchCategory.DISPLAY_NAME);
         if (searchInIRIs.isSelected()) {
             result.add(SearchCategory.IRI);
@@ -236,13 +232,13 @@ public class SearchOptionsPanel extends JPanel {
     }
 
     private void fireSearchRequestOptionChanged() {
-        for (SearchOptionsChangedListener listener : new ArrayList<SearchOptionsChangedListener>(listeners)) {
+        for (SearchOptionsChangedListener listener : new ArrayList<>(listeners)) {
             listener.searchRequestOptionChanged();
         }
     }
 
     private void fireSearchResultsPresentationOptionChanged() {
-        for (SearchOptionsChangedListener listener : new ArrayList<SearchOptionsChangedListener>(listeners)) {
+        for (SearchOptionsChangedListener listener : new ArrayList<>(listeners)) {
             listener.searchResultsPresentationOptionChanged();
         }
     }

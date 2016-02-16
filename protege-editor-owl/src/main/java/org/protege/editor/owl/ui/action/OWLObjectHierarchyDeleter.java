@@ -148,7 +148,7 @@ public class OWLObjectHierarchyDeleter<E extends OWLEntity> {
 
 
     private void deleteDescendants(Set<E> selents) {
-        Set<E> ents = new HashSet<E>();
+        Set<E> ents = new HashSet<>();
         for (E ent : selents) {
             ents.add(ent);
             ents.addAll(hierarchyProvider.getDescendants(ent));

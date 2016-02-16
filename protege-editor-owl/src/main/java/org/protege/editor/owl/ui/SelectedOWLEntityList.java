@@ -17,10 +17,6 @@ import java.util.List;
  */
 public class SelectedOWLEntityList extends JList implements OWLSelectionModelListener {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 5544177770304817471L;
 
     private OWLEditorKit owlEditorKit;
 
@@ -32,7 +28,7 @@ public class SelectedOWLEntityList extends JList implements OWLSelectionModelLis
      */
     public SelectedOWLEntityList(OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
-        selectionList = new ArrayList<OWLEntity>();
+        selectionList = new ArrayList<>();
         owlEditorKit.getWorkspace().getOWLSelectionModel().addListener(this);
     }
 

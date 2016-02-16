@@ -83,7 +83,7 @@ public class SearchOptionsPanel extends JPanel {
 
         topPanel.add(searchProgressBar);
         topPanel.add(searchProgressLabel);
-        editorKit.getSearchManager().setProgressMonitor(new org.semanticweb.owlapi.util.ProgressMonitor() {
+        editorKit.getSearchManager().addProgressMonitor(new org.semanticweb.owlapi.util.ProgressMonitor() {
             @Override
             public void setStarted() {
                 searchProgressBar.setValue(0);

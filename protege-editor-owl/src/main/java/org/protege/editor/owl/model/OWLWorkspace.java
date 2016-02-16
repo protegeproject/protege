@@ -1,10 +1,5 @@
 package org.protege.editor.owl.model;
 
-import com.google.common.base.Optional;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.IRegistryEventListener;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.editorkit.EditorKit;
@@ -18,14 +13,26 @@ import org.protege.editor.core.ui.error.ErrorLogListener;
 import org.protege.editor.core.ui.error.ErrorNotificationLabel;
 import org.protege.editor.core.ui.error.SendErrorReportHandler;
 import org.protege.editor.core.ui.progress.BackgroundTaskLabel;
-import org.protege.editor.core.ui.workspace.*;
+import org.protege.editor.core.ui.workspace.CustomWorkspaceTabsManager;
+import org.protege.editor.core.ui.workspace.TabbedWorkspace;
+import org.protege.editor.core.ui.workspace.WorkspaceManager;
+import org.protege.editor.core.ui.workspace.WorkspaceTab;
+import org.protege.editor.core.ui.workspace.WorkspaceTabPlugin;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ProtegeOWL;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.model.inference.*;
+import org.protege.editor.owl.model.inference.OWLReasonerManager;
+import org.protege.editor.owl.model.inference.OWLReasonerManagerImpl;
+import org.protege.editor.owl.model.inference.ProtegeOWLReasonerInfo;
+import org.protege.editor.owl.model.inference.ProtegeOWLReasonerPlugin;
+import org.protege.editor.owl.model.inference.ProtegeOWLReasonerPluginJPFImpl;
+import org.protege.editor.owl.model.inference.ReasonerDiedException;
+import org.protege.editor.owl.model.inference.ReasonerInfoComparator;
+import org.protege.editor.owl.model.inference.ReasonerPreferences;
+import org.protege.editor.owl.model.inference.ReasonerStatus;
+import org.protege.editor.owl.model.inference.ReasonerUtilities;
 import org.protege.editor.owl.model.selection.OWLSelectionHistoryManager;
 import org.protege.editor.owl.model.selection.OWLSelectionHistoryManagerImpl;
 import org.protege.editor.owl.model.selection.OWLSelectionModel;
@@ -33,33 +40,102 @@ import org.protege.editor.owl.model.selection.OWLSelectionModelImpl;
 import org.protege.editor.owl.ui.OWLEntityCreationPanel;
 import org.protege.editor.owl.ui.OWLWorkspaceViewsTab;
 import org.protege.editor.owl.ui.action.ProtegeOWLAction;
-import org.protege.editor.owl.ui.inference.*;
+import org.protege.editor.owl.ui.inference.ConfigureReasonerAction;
+import org.protege.editor.owl.ui.inference.ExplainInconsistentOntologyAction;
+import org.protege.editor.owl.ui.inference.PrecomputeAction;
+import org.protege.editor.owl.ui.inference.ReasonerProgressUI;
+import org.protege.editor.owl.ui.inference.StopReasonerAction;
 import org.protege.editor.owl.ui.navigation.OWLEntityNavPanel;
 import org.protege.editor.owl.ui.ontology.OntologySourcesChangedHandlerUI;
 import org.protege.editor.owl.ui.preferences.AnnotationPreferences;
-import org.protege.editor.owl.ui.renderer.*;
+import org.protege.editor.owl.ui.renderer.KeywordColourMap;
+import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
+import org.protege.editor.owl.ui.renderer.OWLIconProvider;
+import org.protege.editor.owl.ui.renderer.OWLIconProviderImpl;
+import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
+import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.protege.editor.owl.ui.search.nci.SearchDialogPanel;
 import org.protege.editor.owl.ui.util.OWLComponentFactory;
 import org.protege.editor.owl.ui.util.OWLComponentFactoryImpl;
-import org.semanticweb.owlapi.model.*;
+
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.IRegistryEventListener;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.ImportChange;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLAxiomChange;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLException;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.SetOntologyID;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.util.CollectionFactory;
 import org.semanticweb.owlapi.util.OWLEntityCollectingOntologyChangeListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
-import javax.swing.text.JTextComponent;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTree;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.text.JTextComponent;
+
+import com.google.common.base.Optional;
 
 
 /**
@@ -154,7 +230,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         super.initialise();
 
-        errorNotificationLabel = new ErrorNotificationLabel(this);
+        errorNotificationLabel = new ErrorNotificationLabel();
 
         errorLogListener = new ErrorLogListener() {
             @Override
@@ -189,14 +265,12 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         final OWLModelManager mngr = getOWLModelManager();
 
-        owlModelManagerListener = new OWLModelManagerListener() {
-            public void handleChange(OWLModelManagerChangeEvent event) {
-                try {
-                    handleModelManagerEvent(event.getType());
-                }
-                catch (Exception t) {
-                    logger.warn("An error occurred whilst handling a Model Manager Event: {}", t);
-                }
+        owlModelManagerListener = event -> {
+            try {
+                handleModelManagerEvent(event.getType());
+            }
+            catch (Exception t) {
+                logger.warn("An error occurred whilst handling a Model Manager Event: {}", t);
             }
         };
         mngr.addListener(owlModelManagerListener);
@@ -218,12 +292,9 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         reasonerManagerStarted = true;
         updateReasonerStatus(false);
         displayReasonerResults.setSelected(mngr.getOWLReasonerManager().getReasonerPreferences().isShowInferences());
-        displayReasonerResults.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                ReasonerPreferences prefs = mngr.getOWLReasonerManager().getReasonerPreferences();
-                prefs.setShowInferences(displayReasonerResults.isSelected());
-            }
+        displayReasonerResults.addActionListener(e -> {
+            ReasonerPreferences prefs = mngr.getOWLReasonerManager().getReasonerPreferences();
+            prefs.setShowInferences(displayReasonerResults.isSelected());
         });
 
         new OntologySourcesChangedHandlerUI(this);
@@ -448,10 +519,6 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         windowMenu.addSeparator();
         windowMenu.add(new AbstractAction("Refresh user interface") {
 
-            /**
-             *
-             */
-            private static final long serialVersionUID = 9136219526373256639L;
 
             public void actionPerformed(ActionEvent e) {
                 refreshComponents();
@@ -574,10 +641,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             item.setSelected(mngr.getOWLReasonerManager().getCurrentReasonerFactoryId().equals(plugin.getReasonerId()));
             reasonerMenu.add(item);
             bg.add(item);
-            item.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    mngr.getOWLReasonerManager().setCurrentReasonerFactoryId(plugin.getReasonerId());
-                }
+            item.addActionListener(e -> {
+                mngr.getOWLReasonerManager().setCurrentReasonerFactoryId(plugin.getReasonerId());
             });
         }
     }
@@ -673,12 +738,10 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
                 0, 0
         ));
 
-        ontologiesList.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                OWLOntology ont = (OWLOntology) ontologiesList.getSelectedItem();
-                if (ont != null) {
-                    mngr.setActiveOntology(ont);
-                }
+        ontologiesList.addActionListener(e -> {
+            OWLOntology ont = (OWLOntology) ontologiesList.getSelectedItem();
+            if (ont != null) {
+                mngr.setActiveOntology(ont);
             }
         });
 

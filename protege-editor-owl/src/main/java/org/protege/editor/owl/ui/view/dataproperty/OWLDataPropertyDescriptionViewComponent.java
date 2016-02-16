@@ -16,15 +16,11 @@ import java.awt.*;
  */
 public class OWLDataPropertyDescriptionViewComponent extends AbstractOWLDataPropertyViewComponent {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 158597461466204219L;
-    private OWLFrameList<OWLDataProperty> list;
+        private OWLFrameList<OWLDataProperty> list;
 
 
     public void initialiseView() throws Exception {
-        list = new OWLFrameList<OWLDataProperty>(getOWLEditorKit(),
+        list = new OWLFrameList<>(getOWLEditorKit(),
                                                   new OWLDataPropertyDescriptionFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         add(new JScrollPane(list));

@@ -22,7 +22,7 @@ public abstract class PageObject {
 
     private PageObject parent;
 
-    private List<PageObject> children = new ArrayList<PageObject>();
+    private List<PageObject> children = new ArrayList<>();
 
     private Rectangle bounds = new Rectangle();
 
@@ -58,7 +58,7 @@ public abstract class PageObject {
      * @return A list of children that belong to this PageObject.
      */
     public List<PageObject> getChildren() {
-        return new ArrayList<PageObject>(children);
+        return new ArrayList<>(children);
     }
 
     public void clear() {
@@ -501,7 +501,7 @@ public abstract class PageObject {
     }
 
     final public List<LinkBox> getLinks() {
-        List<LinkBox> result = new ArrayList<LinkBox>();
+        List<LinkBox> result = new ArrayList<>();
         for (PageObject childPageObject : children) {
             if (childPageObject instanceof LinkBox) {
                 LinkBox childLinkBox = (LinkBox) childPageObject;

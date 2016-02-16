@@ -1,6 +1,8 @@
 package org.protege.editor.owl.model.hierarchy.property;
 
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.event.EventType;
+import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.hierarchy.OWLObjectPropertyHierarchyProvider;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
@@ -19,6 +21,8 @@ import java.util.Set;
  */
 public class InferredObjectPropertyHierarchyProvider extends OWLObjectPropertyHierarchyProvider {
 
+    private final OWLModelManagerListener listener;
+
     private OWLModelManager mngr;
 
     public static final String ID = "inferredObjectPropertyHierarchyProvider";
@@ -27,6 +31,13 @@ public class InferredObjectPropertyHierarchyProvider extends OWLObjectPropertyHi
     public InferredObjectPropertyHierarchyProvider(OWLModelManager mngr) {
         super(mngr.getOWLOntologyManager());
         this.mngr = mngr;
+        listener = e -> {
+            if (e.isType(EventType.ONTOLOGY_CLASSIFIED)
+                    || e.isType(EventType.REASONER_CHANGED)) {
+                fireHierarchyChanged();
+            }
+        };
+        mngr.addListener(listener);
     }
 
     protected OWLReasoner getReasoner() {
@@ -37,7 +48,7 @@ public class InferredObjectPropertyHierarchyProvider extends OWLObjectPropertyHi
         Set<OWLObjectPropertyExpression> subs = getReasoner().getSubObjectProperties(objectProperty, true).getFlattened();
         subs.remove(objectProperty);
         subs.remove(mngr.getOWLDataFactory().getOWLBottomObjectProperty());
-        Set<OWLObjectProperty> children = new HashSet<OWLObjectProperty>();
+        Set<OWLObjectProperty> children = new HashSet<>();
         for (OWLObjectPropertyExpression p : subs) {
             if (p instanceof OWLObjectProperty) {
                 children.add((OWLObjectProperty) p);
@@ -50,7 +61,7 @@ public class InferredObjectPropertyHierarchyProvider extends OWLObjectPropertyHi
     public Set<OWLObjectProperty> getParents(OWLObjectProperty objectProperty) {
         Set<OWLObjectPropertyExpression> supers = getReasoner().getSuperObjectProperties(objectProperty, true).getFlattened();
         supers.remove(objectProperty);
-        Set<OWLObjectProperty> parents = new HashSet<OWLObjectProperty>();
+        Set<OWLObjectProperty> parents = new HashSet<>();
         for (OWLObjectPropertyExpression p : supers) {
             if (p instanceof OWLObjectProperty) {
                 parents.add((OWLObjectProperty) p);
@@ -63,12 +74,18 @@ public class InferredObjectPropertyHierarchyProvider extends OWLObjectPropertyHi
     public Set<OWLObjectProperty> getEquivalents(OWLObjectProperty objectProperty) {
         Set<OWLObjectPropertyExpression> equivs = getReasoner().getEquivalentObjectProperties(objectProperty).getEntities();
         equivs.remove(objectProperty);
-        Set<OWLObjectProperty> ret = new HashSet<OWLObjectProperty>();
+        Set<OWLObjectProperty> ret = new HashSet<>();
         for (OWLObjectPropertyExpression p : equivs) {
             if (p instanceof OWLObjectProperty) {
                 ret.add((OWLObjectProperty) p);
             }
         }
         return ret;
+    }
+
+    @Override
+    public void dispose() {
+        mngr.removeListener(listener);
+        super.dispose();
     }
 }

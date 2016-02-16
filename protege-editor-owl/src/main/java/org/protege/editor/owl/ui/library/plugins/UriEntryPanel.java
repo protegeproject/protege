@@ -52,13 +52,11 @@ public class UriEntryPanel extends NewEntryPanel {
         physicalLocationField.setPreferredSize(new JTextField("/home/tredmond/Shared/ontologies/simple/pizza-good.owl").getPreferredSize());
         physicalLocationPanel.add(physicalLocationField);
         JButton browse = new JButton("Browse");
-        browse.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                File f = UIUtil.openFile(UriEntryPanel.this, "Choose OWL source", "OWL File", UIHelper.OWL_EXTENSIONS);
-                if (f != null) {
-                    physicalLocationField.setText(f.getPath());
-                    regenerateImportSuggestions();
-                }
+        browse.addActionListener(e -> {
+            File f = UIUtil.openFile(UriEntryPanel.this, "Choose OWL source", "OWL File", UIHelper.OWL_EXTENSIONS);
+            if (f != null) {
+                physicalLocationField.setText(f.getPath());
+                regenerateImportSuggestions();
             }
         });
         physicalLocationPanel.add(browse);
@@ -90,7 +88,7 @@ public class UriEntryPanel extends NewEntryPanel {
         IRI preferred = null;
         URI u = getPhysicalLocation();
         if (u != null) {
-            Set<IRI> locations = new TreeSet<IRI>();
+            Set<IRI> locations = new TreeSet<>();
             if (!"file".equals(u.getScheme())) {
                 preferred = IRI.create(u);
                 locations.add(preferred);
@@ -148,7 +146,7 @@ public class UriEntryPanel extends NewEntryPanel {
             importDeclarationString = (String) importDeclarationObject;
         }
         else if (importDeclarationObject instanceof IRI) {
-            importDeclarationString = ((IRI) importDeclarationObject).toString();
+            importDeclarationString = importDeclarationObject.toString();
         }
         if (importDeclarationString == null) {
             return null;

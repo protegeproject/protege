@@ -22,7 +22,7 @@ public class OWLAnnotationPropertyDomainFrameSection extends AbstractOWLFrameSec
 
     public static final String LABEL = "Domains (intersection)";
 
-    private Set<IRI> addedDomains = new HashSet<IRI>();
+    private Set<IRI> addedDomains = new HashSet<>();
 
     private OWLAnnotationPropertyDomainEditor editor;
 
@@ -61,7 +61,7 @@ public class OWLAnnotationPropertyDomainFrameSection extends AbstractOWLFrameSec
 
 
     public final boolean dropObjects(List<OWLObject> objects) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         for (OWLObject obj : objects) {
             if (obj instanceof OWLEntity) {
                 OWLEntity entity = (OWLEntity) obj;

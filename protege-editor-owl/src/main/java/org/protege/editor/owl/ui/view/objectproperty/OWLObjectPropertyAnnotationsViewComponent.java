@@ -23,7 +23,7 @@ public class OWLObjectPropertyAnnotationsViewComponent extends AbstractOWLObject
 
 
     public void initialiseView() throws Exception {
-        list = new OWLFrameList<OWLAnnotationSubject>(getOWLEditorKit(), new OWLAnnotationsFrame(getOWLEditorKit()));
+        list = new OWLFrameList<>(getOWLEditorKit(), new OWLAnnotationsFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         JScrollPane sp = new JScrollPane(list);
         sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);

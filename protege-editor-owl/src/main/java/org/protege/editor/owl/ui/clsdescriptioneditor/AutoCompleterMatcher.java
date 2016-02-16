@@ -16,5 +16,5 @@ import java.util.Set;
 public interface AutoCompleterMatcher {
 
     Set<OWLObject> getMatches(String fragment, boolean classes, boolean objectProperties, boolean dataProperties,
-    		                  boolean individuals, boolean datatypes);
+    		                  boolean individuals, boolean datatypes, boolean annotationProperties);
 }

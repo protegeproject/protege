@@ -181,14 +181,12 @@ public class UIUtil {
 
 
     public static File chooseFolder(Component parent, String title) {
-        if (System.getProperty("os.name").indexOf("OS X") != -1) {
+        if (System.getProperty("os.name").contains("OS X")) {
             return MacUIUtil.chooseOSXFolder(parent, title);
         }
         JFileChooser chooser = new JFileChooser();
         File currentDirectory = new File(getCurrentFileDirectory());
-        if (currentDirectory != null) {
-        	chooser.setSelectedFile(currentDirectory);
-        }
+        chooser.setSelectedFile(currentDirectory);
         chooser.setDialogTitle(title);
         chooser.setDialogType(JFileChooser.OPEN_DIALOG);
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -228,7 +226,7 @@ public class UIUtil {
     }
     
     public static <T> Collection<T> getComponentsExtending(Component component, Class<? extends T> clazz) {
-    	Collection<T> components = new ArrayList<T>();
+    	Collection<T> components = new ArrayList<>();
     	addComponentsExtending(component, clazz, components);
     	return components;
     }

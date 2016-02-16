@@ -52,7 +52,7 @@ public class ObjectSomeValuesFromFillerExtractor extends OWLClassExpressionVisit
     public ObjectSomeValuesFromFillerExtractor(OWLDataFactory dataFactory, OWLObjectProperty objectProperty) {
         this.dataFactory = dataFactory;
         this.objectProperty = objectProperty;
-        fillers = new HashSet<OWLClassExpression>();
+        fillers = new HashSet<>();
     }
 
 
@@ -81,7 +81,7 @@ public class ObjectSomeValuesFromFillerExtractor extends OWLClassExpressionVisit
      *         fillers of the existential restrictions that were processed.
      */
     public Set<OWLClassExpression> getFillers() {
-        return new HashSet<OWLClassExpression>(fillers);
+        return new HashSet<>(fillers);
     }
 
 

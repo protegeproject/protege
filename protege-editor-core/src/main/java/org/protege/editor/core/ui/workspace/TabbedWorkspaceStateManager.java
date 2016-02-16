@@ -24,13 +24,13 @@ public class TabbedWorkspaceStateManager extends DefaultHandler {
 
 
     public TabbedWorkspaceStateManager() {
-        tabs = new ArrayList<String>();
+        tabs = new ArrayList<>();
         load();
     }
 
 
     public TabbedWorkspaceStateManager(TabbedWorkspace workspace) {
-        tabs = new ArrayList<String>();
+        tabs = new ArrayList<>();
         for (WorkspaceTab tab : workspace.getWorkspaceTabs()) {
             tabs.add(tab.getId());
         }
@@ -38,13 +38,13 @@ public class TabbedWorkspaceStateManager extends DefaultHandler {
 
 
     public List<String> getTabs() {
-        return new ArrayList<String>(tabs);
+        return new ArrayList<>(tabs);
     }
 
 
     public void load() {
         tabs.clear();
-        tabs.addAll(getPreferences().getStringList(VISIBLE_TABS_PREFERENCE_KEY, new ArrayList<String>()));
+        tabs.addAll(getPreferences().getStringList(VISIBLE_TABS_PREFERENCE_KEY, new ArrayList<>()));
     }
 
 

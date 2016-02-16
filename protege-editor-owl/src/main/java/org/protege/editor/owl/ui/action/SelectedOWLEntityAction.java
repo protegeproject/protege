@@ -32,11 +32,7 @@ public abstract class SelectedOWLEntityAction extends ProtegeOWLAction {
 
 
     final public void initialise() throws Exception {
-        listener = new OWLSelectionModelListener() {
-            public void selectionChanged() throws Exception {
-                updateState();
-            }
-        };
+        listener = () -> updateState();
         updateState();
         getOWLWorkspace().getOWLSelectionModel().addListener(listener);
     }

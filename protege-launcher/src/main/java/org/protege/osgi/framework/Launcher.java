@@ -224,7 +224,7 @@ public class Launcher {
 
     private void printBanner() {
         logger.info("********************************************************************************");
-        logger.info("**                                  Protégé                                   **");
+        logger.info("**                                  Protege                                   **");
         logger.info("********************************************************************************");
         logger.info("");
     }

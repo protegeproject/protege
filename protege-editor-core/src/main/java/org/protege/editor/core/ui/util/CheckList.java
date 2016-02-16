@@ -53,16 +53,13 @@ public class CheckList extends JComponent {
 
     public CheckList(JList list) {
         this.list = list;
-        this.listeners = new ArrayList<CheckListListener>();
-        item2CheckBoxMap = new IdentityHashMap<Object, JCheckBox>();
+        this.listeners = new ArrayList<>();
+        item2CheckBoxMap = new IdentityHashMap<>();
         setLayout(new CheckListLayoutManager());
-        list.addPropertyChangeListener(new PropertyChangeListener() {
-
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (evt.getPropertyName().equals("model")) {
-                    handleModelChange();
-                    ((ListModel) evt.getOldValue()).removeListDataListener(lsnr);
-                }
+        list.addPropertyChangeListener(evt -> {
+            if (evt.getPropertyName().equals("model")) {
+                handleModelChange();
+                ((ListModel) evt.getOldValue()).removeListDataListener(lsnr);
             }
         });
         list.getModel().addListDataListener(lsnr);
@@ -71,7 +68,7 @@ public class CheckList extends JComponent {
     }
 
     public Collection<Object> getCheckedItems() {
-        Collection<Object> items = new ArrayList<Object>();
+        Collection<Object> items = new ArrayList<>();
         for(Object item : item2CheckBoxMap.keySet()) {
             if(item2CheckBoxMap.get(item).isSelected()) {
                 items.add(item);
@@ -96,7 +93,7 @@ public class CheckList extends JComponent {
 
 
     private void updateCheckBoxes() {
-        Map<Object, JCheckBox> remaining = new IdentityHashMap<Object, JCheckBox>();
+        Map<Object, JCheckBox> remaining = new IdentityHashMap<>();
         // Add ones that are
         remaining.putAll(item2CheckBoxMap);
         ListModel model = list.getModel();
@@ -109,11 +106,7 @@ public class CheckList extends JComponent {
                 item2CheckBoxMap.put(item, cb);
                 add(cb);
                 final int index = i;
-                cb.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        fireCheckChanged(item, index, cb.isSelected());
-                    }
-                });
+                cb.addActionListener(e -> fireCheckChanged(item, index, cb.isSelected()));
             }
             remaining.remove(item);
         }
@@ -126,7 +119,7 @@ public class CheckList extends JComponent {
     }
 
     protected void fireCheckChanged(Object item, int index, boolean b) {
-        for(CheckListListener lsnr : new ArrayList<CheckListListener>(listeners)) {
+        for(CheckListListener lsnr : new ArrayList<>(listeners)) {
             if(b) {
                 lsnr.itemChecked(item);
             }
@@ -182,21 +175,5 @@ public class CheckList extends JComponent {
         void itemChecked(Object item);
 
         void itemUnchecked(Object item);
-    }
-
-
-    public static void main(String[] args) {
-        DefaultListModel m = new DefaultListModel();
-        for (int i = 0; i < 5000; i++) {
-            m.addElement("X" + i);
-        }
-
-        CheckList list = new CheckList(new JList(m));
-
-        JFrame f = new JFrame();
-        f.getContentPane().setLayout(new BorderLayout());
-        f.getContentPane().add(new JScrollPane(list));
-        f.setVisible(true);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }

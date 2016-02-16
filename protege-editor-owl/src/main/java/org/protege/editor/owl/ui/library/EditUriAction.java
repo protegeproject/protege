@@ -48,7 +48,7 @@ public class EditUriAction extends AbstractAction {
         JDialog dialog = pane.createDialog(parent, "Edit URI Redirect");
         dialog.setVisible(true);
         Object value = pane.getValue();
-        if (value != null && value.equals(new Integer(JOptionPane.OK_OPTION))) {
+        if (value != null && value.equals(JOptionPane.OK_OPTION)) {
             UriEntry editted = panel.getUriEntry();
             if (container instanceof XMLCatalog) {
             	XMLCatalog lib = (XMLCatalog) container;
@@ -81,13 +81,10 @@ public class EditUriAction extends AbstractAction {
             add(new JLabel());
             JButton updateImportedDeclaration = new JButton("Update Import Declaration Using Ontology Name");
             add(updateImportedDeclaration);
-            updateImportedDeclaration.addActionListener(new ActionListener() {
-                
-                public void actionPerformed(ActionEvent e) {
-                    JDialog panel = new GetOntologyNamePanel(EditPanel.this, importedUri, URI.create(physicalLocation.getText()));
-                    panel.pack();
-                    panel.setVisible(true);
-                }
+            updateImportedDeclaration.addActionListener(e -> {
+                JDialog panel = new GetOntologyNamePanel(EditPanel.this, importedUri, URI.create(physicalLocation.getText()));
+                panel.pack();
+                panel.setVisible(true);
             });
 
             add(new JLabel("Physical Location: "));
@@ -159,29 +156,20 @@ public class EditUriAction extends AbstractAction {
 
             JPanel southPanel = new JPanel(new FlowLayout());
             southPanel.add(useOntologyName = new JButton("Use Ontology Name"));
-            useOntologyName.addActionListener(new ActionListener() {
-                
-                public void actionPerformed(ActionEvent e) {
-                    importedUri.setText(ontologyNameField.getText());
-                    setVisible(false);
-                }
+            useOntologyName.addActionListener(e -> {
+                importedUri.setText(ontologyNameField.getText());
+                setVisible(false);
             });
             southPanel.add(useOntologyVersion = new JButton("Use Ontology Version"));
-            useOntologyVersion.addActionListener(new ActionListener() {
-                
-                public void actionPerformed(ActionEvent e) {
-                    importedUri.setText(ontologyVersionField.getText());
-                    setVisible(false);
-                }
+            useOntologyVersion.addActionListener(e -> {
+                importedUri.setText(ontologyVersionField.getText());
+                setVisible(false);
             });
             
             JButton cancel = new JButton("Cancel");
             southPanel.add(cancel);
-            cancel.addActionListener(new ActionListener() {
-                
-                public void actionPerformed(ActionEvent e) {
-                    setVisible(false);
-                }
+            cancel.addActionListener(e -> {
+                setVisible(false);
             });
             
             getContentPane().add(southPanel, BorderLayout.SOUTH);

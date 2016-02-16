@@ -20,7 +20,7 @@ public class IRITextEditor implements OWLObjectEditor<IRI>, VerifiedInputEditor 
 	private OWLObjectEditorHandler<IRI> handler;
 	private JPanel editor;
 	private JTextField iriTextField;
-	private List<InputVerificationStatusChangedListener> inputVerificationListeners = new ArrayList<InputVerificationStatusChangedListener>();
+	private List<InputVerificationStatusChangedListener> inputVerificationListeners = new ArrayList<>();
 	
 	public IRITextEditor(OWLEditorKit editorKit) {
 		createGui();
@@ -94,7 +94,7 @@ public class IRITextEditor implements OWLObjectEditor<IRI>, VerifiedInputEditor 
 	}
 
 	public boolean setEditedObject(IRI editedObject) {
-		if (editedObject != null && editedObject instanceof IRI) {
+		if (editedObject != null) {
 			iriTextField.setText(editedObject.toString());
 		}
 		return editedObject != null;
@@ -106,7 +106,6 @@ public class IRITextEditor implements OWLObjectEditor<IRI>, VerifiedInputEditor 
 			editedObject = IRI.create(iriTextField.getText());
 		}
 		catch (RuntimeException e) {
-			;
 		}
 		return editedObject;
 	}

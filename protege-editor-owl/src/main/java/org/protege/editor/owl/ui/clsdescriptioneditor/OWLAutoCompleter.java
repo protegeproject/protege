@@ -124,7 +124,7 @@ public class OWLAutoCompleter {
         this.checker = checker;
         this.textComponent = tc;
 
-        wordDelimeters = new HashSet<String>();
+        wordDelimeters = new HashSet<>();
         wordDelimeters.add(" ");
         wordDelimeters.add("\n");
         wordDelimeters.add("[");
@@ -241,7 +241,8 @@ public class OWLAutoCompleter {
                                                             e.isOWLObjectPropertyExpected(),
                                                             e.isOWLDataPropertyExpected(),
                                                             e.isOWLIndividualExpected(),
-                                                            e.isDatatypeExpected());
+                                                            e.isDatatypeExpected(),
+                                                            e.isAnnotationPropertyExpected());
                 List kwMatches = new ArrayList(matches.size() + 10);
                 for (String s : e.getExpectedKeyWords()) {
                     if (s.toLowerCase().startsWith(word.toLowerCase())) {
@@ -260,7 +261,7 @@ public class OWLAutoCompleter {
                     textComponent.getText(),
                     e);
         }
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
 
@@ -283,9 +284,13 @@ public class OWLAutoCompleter {
         else if (matches.size() > 1) {
             // Show popup
             lastTextUpdate = textComponent.getText();
-            showPopup();
-            updatePopup(matches);
+            displayAndUpdatePopup(matches);
         }
+    }
+
+    private void displayAndUpdatePopup(List matches) {
+        showPopup();
+        updatePopup(matches);
     }
 
 

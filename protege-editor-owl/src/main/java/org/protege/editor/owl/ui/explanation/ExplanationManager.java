@@ -18,8 +18,9 @@ public class ExplanationManager {
 
 	private final Logger logger = LoggerFactory.getLogger(ExplanationManager.class);
 
-	private OWLEditorKit editorKit;
-	private Collection<ExplanationService> explainers = new HashSet<ExplanationService>();
+	private final OWLEditorKit editorKit;
+
+	private final Collection<ExplanationService> explanationServices = new HashSet<>();
 	
 	public ExplanationManager(OWLEditorKit editorKit) {
 		this.editorKit = editorKit;
@@ -28,13 +29,13 @@ public class ExplanationManager {
 	
 	public void reload() {
 		ExplanationPluginLoader loader = new ExplanationPluginLoader(editorKit);
-		explainers.clear();
+		explanationServices.clear();
 		for (ExplanationPlugin plugin : loader.getPlugins()) {
 			ExplanationService teacher = null;
 			try {
 				teacher = plugin.newInstance();
 				teacher.initialise();
-				explainers.add(teacher);
+				explanationServices.add(teacher);
 			}
 			catch (Exception e) {
 				logger.error("An error occurred whilst initialising an explanation service {}.", plugin.getName(), e);
@@ -51,12 +52,12 @@ public class ExplanationManager {
 	}
 	
 	public Collection<ExplanationService> getExplainers() {
-		return explainers;
+		return explanationServices;
 	}
 	
 	public Collection<ExplanationService> getTeachers(OWLAxiom axiom) {
-		Set<ExplanationService> smartTeachers = new HashSet<ExplanationService>();
-		for (ExplanationService teacher : explainers) {
+		Set<ExplanationService> smartTeachers = new HashSet<>();
+		for (ExplanationService teacher : explanationServices) {
 			if (teacher.hasExplanation(axiom)) {
 				smartTeachers.add(teacher);
 			}
@@ -65,8 +66,8 @@ public class ExplanationManager {
 	}
 	
 	public boolean hasExplanation(OWLAxiom axiom) {
-		for (ExplanationService teacher : explainers) {
-			if (teacher.hasExplanation(axiom)) {
+		for (ExplanationService explanationService : explanationServices) {
+			if (explanationService.hasExplanation(axiom)) {
 				return true;
 			}
 		}
@@ -83,7 +84,7 @@ public class ExplanationManager {
                 explanation.dispose();
             }
         });
-        dlg.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dlg.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         dlg.setModal(false);
         dlg.setResizable(true);
         dlg.pack();

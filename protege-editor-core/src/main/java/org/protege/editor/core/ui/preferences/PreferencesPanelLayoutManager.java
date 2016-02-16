@@ -29,8 +29,8 @@ public class PreferencesPanelLayoutManager implements LayoutManager2 {
 
 
     public PreferencesPanelLayoutManager(JComponent component) {
-        compList = new ArrayList<Component>();
-        labelMap = new HashMap<Component, JLabel>();
+        compList = new ArrayList<>();
+        labelMap = new HashMap<>();
         this.baseComponent = component;
     }
 
@@ -131,7 +131,7 @@ public class PreferencesPanelLayoutManager implements LayoutManager2 {
         curX = insets.left;
         maxY = maxY - insets.bottom;
         for (Component c : compList) {
-            if (c instanceof PreferencesPanel == false) {
+            if (!(c instanceof PreferencesPanel)) {
                 JLabel label = labelMap.get(c);
                 if (label != null) {
                     Dimension labelPrefSize = label.getPreferredSize();
@@ -150,44 +150,5 @@ public class PreferencesPanelLayoutManager implements LayoutManager2 {
                 curY = curY + prefSize.height + ROW_MARGIN;
             }
         }
-    }
-
-
-    public static void main(String[] args) {
-        JPanel panel = new JPanel();
-        panel.setLayout(new PreferencesPanelLayoutManager(panel));
-        panel.add(new JTextField(30), "Base URI");
-        panel.add(new JCheckBox("Include year"));
-        panel.add(new JCheckBox("Include month"));
-        panel.add(new JCheckBox("Include day"));
-        panel.add(new JPanel() {
-            /**
-             * 
-             */
-            private static final long serialVersionUID = 458183481480038217L;
-
-            public Dimension getPreferredSize() {
-                return new Dimension(20, 20);
-            }
-        });
-        panel.add(new JSeparator() {
-            /**
-             * 
-             */
-            private static final long serialVersionUID = 147186206224716146L;
-
-            public Dimension getPreferredSize() {
-                return new Dimension(100, 5);
-            }
-        });
-        panel.setBorder(BorderFactory.createMatteBorder(30, 30, 30, 30, Color.MAGENTA));
-        JList list = new JList(new Object []{"A", "B", "C"});
-        list.setPreferredSize(new Dimension(300, 200));
-        panel.add(list, "Choose a value for me");
-
-        JFrame f = new JFrame();
-        f.setContentPane(panel);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setVisible(true);
     }
 }

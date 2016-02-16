@@ -42,12 +42,7 @@ class OWLClassExpressionChecker implements OWLExpressionChecker<OWLClassExpressi
         if(text.isEmpty()) {
             return null;
         }
-        ManchesterOWLSyntaxParser parser = new ManchesterOWLSyntaxParserImpl(new Provider<OWLOntologyLoaderConfiguration>() {
-            @Override
-            public OWLOntologyLoaderConfiguration get() {
-                return new OWLOntologyLoaderConfiguration();
-            }
-        }, mngr.getOWLDataFactory());
+        ManchesterOWLSyntaxParser parser = new ManchesterOWLSyntaxParserImpl(OWLOntologyLoaderConfiguration::new, mngr.getOWLDataFactory());
         parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr.getOWLEntityFinder()));
         try {
             return parser.parseClassExpression(text);

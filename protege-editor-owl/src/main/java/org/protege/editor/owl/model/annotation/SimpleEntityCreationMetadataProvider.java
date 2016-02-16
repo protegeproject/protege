@@ -1,17 +1,10 @@
 package org.protege.editor.owl.model.annotation;
 
-import org.protege.editor.owl.model.HasActiveOntology;
-import org.protege.editor.owl.model.user.UserNameProvider;
-import org.protege.editor.owl.model.util.DateFormatter;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.vocab.DublinCoreVocabulary;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Matthew Horridge
@@ -20,40 +13,26 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class SimpleEntityCreationMetadataProvider implements EntityCreationMetadataProvider {
 
-    private final UserNameProvider userNameProvider;
+    private final List<AnnotationProvider> annotationProviders = new ArrayList<>();
 
-    private final DateFormatter dateFormatter;
-
-    public SimpleEntityCreationMetadataProvider(UserNameProvider userNameProvider, DateFormatter dateFormatter) {
-        this.userNameProvider = checkNotNull(userNameProvider);
-        this.dateFormatter = checkNotNull(dateFormatter);
+    public SimpleEntityCreationMetadataProvider(List<AnnotationProvider> annotationProviders) {
+        this.annotationProviders.addAll(annotationProviders);
     }
 
     @Override
     public List<OWLOntologyChange> getEntityCreationMetadataChanges(OWLEntity entity, OWLOntology targetOntology, OWLDataFactory df) {
         List<OWLOntologyChange> changes = new ArrayList<>();
-        Optional<String> userName = userNameProvider.getUserName();
-        Date date = new Date();
-        if(userName.isPresent()) {
-            changes.add(
-                    new AddAxiom(
-                            targetOntology,
-                            df.getOWLAnnotationAssertionAxiom(
-                                    df.getOWLAnnotationProperty(DublinCoreVocabulary.CREATOR.getIRI()),
-                                    entity.getIRI(),
-                                    df.getOWLLiteral(userName.get())
-                            )
-                    ));
-            changes.add(
-                    new AddAxiom(
-                            targetOntology,
-                            df.getOWLAnnotationAssertionAxiom(
-                                    df.getOWLAnnotationProperty(DublinCoreVocabulary.DATE.getIRI()),
-                                    entity.getIRI(),
-                                    df.getOWLLiteral(dateFormatter.formatDate(date))
-                            )
-                    )
-            );
+        for(AnnotationProvider annotationProvider : annotationProviders) {
+            Optional<OWLAnnotation> annotation = annotationProvider.getAnnotation(df);
+            if(annotation.isPresent()) {
+                changes.add(new AddAxiom(
+                        targetOntology,
+                        df.getOWLAnnotationAssertionAxiom(
+                                entity.getIRI(),
+                                annotation.get()
+                        )
+                ));
+            }
         }
         return changes;
     }

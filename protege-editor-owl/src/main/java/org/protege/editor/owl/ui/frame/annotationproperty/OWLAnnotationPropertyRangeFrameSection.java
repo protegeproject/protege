@@ -29,7 +29,7 @@ public class OWLAnnotationPropertyRangeFrameSection extends AbstractOWLFrameSect
 
     public static final String LABEL = "Range (intersection)";
 
-    private Set<IRI> addedDomains = new HashSet<IRI>();
+    private Set<IRI> addedDomains = new HashSet<>();
 
 
     public OWLAnnotationPropertyRangeFrameSection(OWLEditorKit editorKit, OWLFrame<OWLAnnotationProperty> frame) {
@@ -63,7 +63,7 @@ public class OWLAnnotationPropertyRangeFrameSection extends AbstractOWLFrameSect
 
 
     public final boolean dropObjects(List<OWLObject> objects) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         for (OWLObject obj : objects) {
             if (obj instanceof OWLEntity) {
                 OWLEntity entity = (OWLEntity) obj;

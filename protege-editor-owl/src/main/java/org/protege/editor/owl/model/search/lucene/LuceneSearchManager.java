@@ -5,17 +5,14 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.model.search.SearchCategory;
 import org.protege.editor.owl.model.search.SearchContext;
 import org.protege.editor.owl.model.search.SearchInterruptionException;
-import org.protege.editor.owl.model.search.SearchManager;
 import org.protege.editor.owl.model.search.SearchResult;
 import org.protege.editor.owl.model.search.SearchResultHandler;
-import org.protege.editor.owl.model.search.SearchSettings;
-import org.protege.editor.owl.model.search.SearchSettingsListener;
 import org.protege.editor.owl.model.search.SearchStringParser;
 
 import org.apache.lucene.search.IndexSearcher;
-import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
@@ -24,16 +21,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 import javax.swing.SwingUtilities;
+
+import com.google.common.base.Stopwatch;
 
 /**
  * Author: Josef Hardi <josef.hardi@stanford.edu><br>
@@ -41,23 +43,19 @@ import javax.swing.SwingUtilities;
  * Bio-Medical Informatics Research Group<br>
  * Date: 04/11/2015
  */
-public class LuceneSearchManager extends LuceneSearcher implements SearchManager, SearchSettingsListener {
+public class LuceneSearchManager extends LuceneSearcher {
 
     private static final Logger logger = LoggerFactory.getLogger(LuceneSearchManager.class);
 
     private OWLEditorKit editorKit;
 
-    private OWLOntology activeOntology;
+    private Set<SearchCategory> categories = new HashSet<>();
 
     private ExecutorService service = Executors.newSingleThreadExecutor();
 
     private AtomicLong lastSearchId = new AtomicLong(0);
 
-    private SearchSettings settings = new SearchSettings();
-
     private SearchStringParser searchStringParser = new KeywordStringParser();
-
-    private ProgressMonitor progressMonitor;
 
     private LuceneIndexer indexer = new LuceneIndexer();
 
@@ -66,17 +64,24 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
 
     private IndexSearcher indexSearcher;
 
-    private Future<?> lastIndexingTask;
-    private Future<?> lastSearchingTask;
+    private OWLOntologyChangeListener ontologyChangeListener;
 
-    private final OWLOntologyChangeListener ontologyChangeListener;
+    private OWLModelManagerListener modelManagerListener;
 
-    private final OWLModelManagerListener modelManagerListener;
+    private final List<ProgressMonitor> progressMonitors = new ArrayList<>();
 
-    public LuceneSearchManager(OWLEditorKit editorKit) {
-        this.editorKit = editorKit;
+    public LuceneSearchManager() {
+        // NO-OP
+    }
+
+    @Override
+    public void initialise() {
+        this.editorKit = getEditorKit();
+        categories.add(SearchCategory.DISPLAY_NAME);
+        categories.add(SearchCategory.IRI);
+        categories.add(SearchCategory.ANNOTATION_VALUE);
         ontologyChangeListener = new OWLOntologyChangeListener() {
-            public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
+            public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
                 updateIndex(changes);
             }
         };
@@ -90,43 +95,30 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
     }
 
     private void handleModelManagerEvent(OWLModelManagerChangeEvent event) {
-        OWLOntology ontology = editorKit.getOWLModelManager().getActiveOntology();
         if (isCacheMutatingEvent(event)) {
-            boolean success = changeActiveOntology(ontology);
-            if (success) {
-                IndexDelegator indexDelegator = indexDelegatorCache.get(activeOntology);
-                if (indexDelegator == null) {
-                    indexDelegator = new IndexDelegator(activeOntology);
-                    indexDelegatorCache.put(activeOntology, indexDelegator);
-                }
-                this.indexDelegator = indexDelegator;
-            }
-            rebuildIndex();
+            markCacheAsStale();
         }
         else if (isCacheSavingEvent(event)) {
             indexer.save(indexDelegator);
         }
     }
 
-    private boolean changeActiveOntology(OWLOntology ontology) {
-        if (activeOntology == null) {
-            activeOntology = ontology;
-            return true;
-        } else {
-            if (!activeOntology.equals(ontology)) {
-                activeOntology = ontology;
-                return true;
-            }
+    private void prepareIndexDelegator() {
+        OWLOntology activeOntology = editorKit.getOWLModelManager().getActiveOntology();
+        IndexDelegator indexDelegator = indexDelegatorCache.get(activeOntology);
+        if (indexDelegator == null) {
+            indexDelegator = new IndexDelegator(activeOntology);
+            indexDelegatorCache.put(activeOntology, indexDelegator);
         }
-        return false;
+        this.indexDelegator = indexDelegator;
     }
 
-    private void rebuildIndex() {
+    private void markCacheAsStale() {
         lastSearchId.set(0); // rebuild index
     }
 
     private boolean isCacheMutatingEvent(OWLModelManagerChangeEvent event) {
-        return event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ENTITY_RENDERER_CHANGED);
+        return event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ENTITY_RENDERER_CHANGED) || event.isType(EventType.ENTITY_RENDERING_CHANGED);
     }
 
     private boolean isCacheSavingEvent(OWLModelManagerChangeEvent event) {
@@ -134,23 +126,15 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
     }
 
     @Override
-    public void setProgressMonitor(ProgressMonitor pm) {
-        progressMonitor = pm;
+    public void addProgressMonitor(ProgressMonitor pm) {
+        progressMonitors.add(pm);
     }
 
     @Override
-    public boolean canInterrupt() {
-        return false;
-    }
-
-    @Override
-    public void interrupt() throws InterruptedException {
-        lastIndexingTask.cancel(true);
-        lastSearchingTask.cancel(true);
-    }
-
-    @Override
-    public void dispose() throws Exception {
+    public void dispose() {
+        if (editorKit == null) {
+            return;
+        }
         OWLModelManager mm = editorKit.getOWLModelManager();
         disposeListeners(mm);
         closeIndexes(mm);
@@ -173,31 +157,30 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
     }
 
     @Override
-    public void handleSearchSettingsChanged() {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
     public IndexSearcher getIndexSearcher() {
         return indexSearcher;
     }
 
     @Override
-    public SearchSettings getSearchSettings() {
-        return settings;
+    public boolean isSearchType(SearchCategory category) {
+        return categories.contains(category);
+    }
+
+    @Override
+    public void setCategories(Collection<SearchCategory> categories) {
+        this.categories.clear();
+        this.categories.addAll(categories);
+        markCacheAsStale();
     }
 
     @Override
     public void performSearch(String searchString, SearchResultHandler searchResultHandler) {
         if (lastSearchId.getAndIncrement() == 0) {
-            lastIndexingTask = service.submit(new Runnable() {
-                public void run() {
-                    buildingIndex();
-                }
-            });
+            prepareIndexDelegator();
+            service.submit(this::buildingIndex);
         }
         SearchQueries searchQueries = prepareQuery(searchString);
-        lastSearchingTask = service.submit(new SearchCallable(lastSearchId.incrementAndGet(), searchQueries, searchResultHandler));
+        service.submit(new SearchCallable(lastSearchId.incrementAndGet(), searchQueries, searchResultHandler));
     }
 
     private void buildingIndex() {
@@ -218,11 +201,7 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
     }
 
     private void updateIndex(List<? extends OWLOntologyChange> changes) {
-        lastIndexingTask = service.submit(new Runnable() {
-            public void run() {
-                updatingIndex(changes);
-            }
-        });
+        service.submit(() -> updatingIndex(changes));
     }
 
     private void updatingIndex(List<? extends OWLOntologyChange> changes) {
@@ -265,8 +244,8 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
 
         @Override
         public void run() {
-            logger.debug("Starting search " + searchId + " (pattern: " + searchQueries + ")");
-            long searchStartTime = System.currentTimeMillis();
+            logger.debug("Starting search {} (pattern: {})", searchId, searchQueries);
+            Stopwatch stopwatch = Stopwatch.createStarted();
             fireSearchStarted();
             ResultDocumentHandler documentHandler = new ResultDocumentHandler(editorKit);
             try {
@@ -282,9 +261,8 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
             }
             fireSearchFinished();
             Set<SearchResult> results = documentHandler.getSearchResults();
-            long searchEndTime = System.currentTimeMillis();
-            long searchTime = searchEndTime - searchStartTime;
-            logger.debug("... finished search " + searchId + " in " + searchTime + " ms (" + results.size() + " results)");
+            stopwatch.stop();
+            logger.debug("... finished search {} in {} ms ({} results)", searchId, stopwatch.elapsed(TimeUnit.MILLISECONDS), results.size());
             showResults(results, searchResultHandler);
         }
 
@@ -293,81 +271,70 @@ public class LuceneSearchManager extends LuceneSearcher implements SearchManager
                 searchResultHandler.searchFinished(results);
             }
             else {
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        searchResultHandler.searchFinished(results);
-                    }
-                });
+                SwingUtilities.invokeLater(() -> searchResultHandler.searchFinished(results));
             }
         }
     }
 
     private void fireIndexingStarted() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                progressMonitor.setSize(100);
-                progressMonitor.setMessage("Initializing index");
-                progressMonitor.setStarted();
+        SwingUtilities.invokeLater(() -> {
+            for (ProgressMonitor pm : progressMonitors) {
+                pm.setSize(100);
+                pm.setMessage("Initializing index");
+                pm.setStarted();
             }
         });
     }
 
     private void fireIndexingProgressed(final long progress) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                progressMonitor.setProgress(progress);
+        SwingUtilities.invokeLater(() -> {
+            for (ProgressMonitor pm : progressMonitors) {
+                pm.setProgress(progress);
                 switch ((int)progress % 4) {
-                    case 0: progressMonitor.setMessage("indexing"); break;
-                    case 1: progressMonitor.setMessage("indexing."); break;
-                    case 2: progressMonitor.setMessage("indexing.."); break;
-                    case 3: progressMonitor.setMessage("indexing..."); break;
+                    case 0: pm.setMessage("indexing"); break;
+                    case 1: pm.setMessage("indexing."); break;
+                    case 2: pm.setMessage("indexing.."); break;
+                    case 3: pm.setMessage("indexing..."); break;
                 }
             }
         });
     }
 
     private void fireIndexingFinished() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                progressMonitor.setFinished();
+        SwingUtilities.invokeLater(() -> {
+            for (ProgressMonitor pm : progressMonitors) {
+                pm.setFinished();
             }
         });
     }
 
     private void fireSearchStarted() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                progressMonitor.setSize(100);
-                progressMonitor.setStarted();
+        SwingUtilities.invokeLater(() -> {
+            for (ProgressMonitor pm : progressMonitors) {
+                pm.setSize(100);
+                pm.setStarted();
             }
         });
     }
 
     private void fireSearchProgressed(final long progress) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                progressMonitor.setProgress(progress);
+        SwingUtilities.invokeLater(() -> {
+            for (ProgressMonitor pm : progressMonitors) {
+                pm.setProgress(progress);
                 switch ((int)progress % 4) {
-                    case 0: progressMonitor.setMessage("searching"); break;
-                    case 1: progressMonitor.setMessage("searching."); break;
-                    case 2: progressMonitor.setMessage("searching.."); break;
-                    case 3: progressMonitor.setMessage("searching..."); break;
+                    case 0: pm.setMessage("searching"); break;
+                    case 1: pm.setMessage("searching."); break;
+                    case 2: pm.setMessage("searching.."); break;
+                    case 3: pm.setMessage("searching..."); break;
                 }
             }
         });
     }
 
     private void fireSearchFinished() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                progressMonitor.setFinished();
+        SwingUtilities.invokeLater(() -> {
+            for (ProgressMonitor pm : progressMonitors) {
+                pm.setFinished();
             }
         });
     }

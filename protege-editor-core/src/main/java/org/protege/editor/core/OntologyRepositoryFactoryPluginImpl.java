@@ -36,7 +36,7 @@ public class OntologyRepositoryFactoryPluginImpl implements OntologyRepositoryFa
 
     public OntologyRepositoryFactory newInstance() throws ClassNotFoundException, IllegalAccessException,
                                                          InstantiationException {
-        ExtensionInstantiator<OntologyRepositoryFactory> instantiator = new ExtensionInstantiator<OntologyRepositoryFactory>(extension);
+        ExtensionInstantiator<OntologyRepositoryFactory> instantiator = new ExtensionInstantiator<>(extension);
         return instantiator.instantiate();
     }
 }

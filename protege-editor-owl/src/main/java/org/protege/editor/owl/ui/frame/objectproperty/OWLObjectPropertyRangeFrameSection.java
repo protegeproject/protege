@@ -21,7 +21,7 @@ public class OWLObjectPropertyRangeFrameSection extends AbstractOWLFrameSection<
 
     public static final String LABEL = "Ranges (intersection)";
 
-    Set<OWLClassExpression> addedRanges = new HashSet<OWLClassExpression>();
+    Set<OWLClassExpression> addedRanges = new HashSet<>();
 
 
     public OWLObjectPropertyRangeFrameSection(OWLEditorKit owlEditorKit, OWLFrame<? extends OWLObjectProperty> frame) {
@@ -48,31 +48,29 @@ public class OWLObjectPropertyRangeFrameSection extends AbstractOWLFrameSection<
 
 
     protected void refillInferred() {
-        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_OBJECT_PROPERTY_RANGES, 
-                                                                  new Runnable() {
-            public void run() {
-            	if (!getOWLModelManager().getReasoner().isConsistent()) {
-            		return;
-            	}
-                for (OWLClassExpression inferredRange : getInferredRanges()) {
-                    if (!addedRanges.contains(inferredRange)) {
-                        OWLObjectPropertyRangeAxiom inferredAxiom = getOWLDataFactory().getOWLObjectPropertyRangeAxiom(getRootObject(),
-                                                                                                                       inferredRange);
-                        addInferredRowIfNontrivial(new OWLObjectPropertyRangeFrameSectionRow(getOWLEditorKit(),
-                                                                         OWLObjectPropertyRangeFrameSection.this,
-                                                                         null,
-                                                                         getRootObject(),
-                                                                         inferredAxiom));
+        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_OBJECT_PROPERTY_RANGES,
+                () -> {
+                    if (!getOWLModelManager().getReasoner().isConsistent()) {
+                        return;
                     }
-                    addedRanges.add(inferredRange);
-                }
-            }
-        });
+                    for (OWLClassExpression inferredRange : getInferredRanges()) {
+                        if (!addedRanges.contains(inferredRange)) {
+                            OWLObjectPropertyRangeAxiom inferredAxiom = getOWLDataFactory().getOWLObjectPropertyRangeAxiom(getRootObject(),
+                                                                                                                           inferredRange);
+                            addInferredRowIfNontrivial(new OWLObjectPropertyRangeFrameSectionRow(getOWLEditorKit(),
+                                                                             OWLObjectPropertyRangeFrameSection.this,
+                                                                             null,
+                                                                             getRootObject(),
+                                                                             inferredAxiom));
+                        }
+                        addedRanges.add(inferredRange);
+                    }
+                });
     }
 
 
     private Set<OWLClassExpression> getInferredRanges() {
-        return new HashSet<OWLClassExpression>(getOWLModelManager().getReasoner().getObjectPropertyRanges(getRootObject(), true).getFlattened());
+        return new HashSet<>(getOWLModelManager().getReasoner().getObjectPropertyRanges(getRootObject(), true).getFlattened());
     }
 
 
@@ -97,7 +95,7 @@ public class OWLObjectPropertyRangeFrameSection extends AbstractOWLFrameSection<
 
 
     public boolean dropObjects(List<OWLObject> objects) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         for (OWLObject obj : objects) {
             if (obj instanceof OWLClassExpression) {
                 OWLClassExpression desc = (OWLClassExpression) obj;

@@ -16,15 +16,11 @@ import java.awt.*;
  */
 public class OWLDisjointClassesViewComponent extends AbstractOWLClassViewComponent {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 469413788468114156L;
-    private OWLFrameList<OWLClass> list;
+        private OWLFrameList<OWLClass> list;
 
 
     public void initialiseClassView() throws Exception {
-        list = new OWLFrameList<OWLClass>(getOWLEditorKit(), new OWLClassDescriptionFrame(getOWLEditorKit()));
+        list = new OWLFrameList<>(getOWLEditorKit(), new OWLClassDescriptionFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         JScrollPane sp = new JScrollPane(list);
         sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

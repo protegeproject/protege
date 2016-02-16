@@ -39,7 +39,7 @@ public class MoveAxiomsKitPluginImpl implements MoveAxiomsKitPlugin {
 
 
     public MoveAxiomsKit newInstance() throws InstantiationException, ClassNotFoundException, IllegalAccessException {
-        ExtensionInstantiator<MoveAxiomsKit> instantiator = new ExtensionInstantiator<MoveAxiomsKit>(extension);
+        ExtensionInstantiator<MoveAxiomsKit> instantiator = new ExtensionInstantiator<>(extension);
         MoveAxiomsKit kit =  instantiator.instantiate();
         kit.setup(extension.getUniqueIdentifier(), PluginUtilities.getAttribute(extension, "name"), editorKit);
         return kit;

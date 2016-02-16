@@ -164,7 +164,7 @@ public class OWLObjectStyledStringRenderer {
                 return (List<O>) collection;
             }
             else {
-                return new ArrayList<O>(collection);
+                return new ArrayList<>(collection);
             }
         }
 

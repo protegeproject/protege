@@ -37,10 +37,8 @@ class OntologyImportItem implements MListItem {
     private OWLEditorKit eKit;
 
 
-    private MListButton fixImportsButton = new FixImportsButton(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-            handleImportsFix();
-        }
+    private MListButton fixImportsButton = new FixImportsButton(e -> {
+        handleImportsFix();
     });
 
     public OntologyImportItem(OWLOntology ont, OWLImportsDeclaration decl, OWLEditorKit eKit) {

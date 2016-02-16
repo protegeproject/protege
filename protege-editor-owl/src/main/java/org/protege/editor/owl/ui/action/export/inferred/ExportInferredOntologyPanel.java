@@ -57,7 +57,7 @@ public class ExportInferredOntologyPanel extends JPanel {
 
 
     public ExportInferredOntologyPanel() {
-        map = new HashMap<JCheckBox, InferredAxiomGenerator<? extends OWLAxiom>>();
+        map = new HashMap<>();
         checkBoxBox = new Box(BoxLayout.Y_AXIS);
         setLayout(new BorderLayout(7, 7));
         add(checkBoxBox);
@@ -80,12 +80,9 @@ public class ExportInferredOntologyPanel extends JPanel {
         String label = gen.getLabel();
         final JCheckBox box = new JCheckBox(label, selected);
         if(expensive) {
-            box.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if(box.isSelected()) {
-                        JOptionPane.showMessageDialog(ExportInferredOntologyPanel.this, "<html><body>Warning: Exporting <b>" + gen.getLabel() + "</b> may take a long time.</body></html>",  "Warning", JOptionPane.WARNING_MESSAGE);
-                    }
+            box.addActionListener(e -> {
+                if(box.isSelected()) {
+                    JOptionPane.showMessageDialog(ExportInferredOntologyPanel.this, "<html><body>Warning: Exporting <b>" + gen.getLabel() + "</b> may take a long time.</body></html>",  "Warning", JOptionPane.WARNING_MESSAGE);
                 }
             });
         }
@@ -97,7 +94,7 @@ public class ExportInferredOntologyPanel extends JPanel {
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<InferredAxiomGenerator<? extends OWLAxiom>> getInferredAxiomGenerators() {
-        List<InferredAxiomGenerator<? extends OWLAxiom>> result = new ArrayList<InferredAxiomGenerator<? extends OWLAxiom>>();
+        List<InferredAxiomGenerator<? extends OWLAxiom>> result = new ArrayList<>();
         for (JCheckBox checkBox : map.keySet()) {
             if (checkBox.isSelected()) {
                 result.add(new MonitoredInferredAxiomGenerator(map.get(checkBox)));

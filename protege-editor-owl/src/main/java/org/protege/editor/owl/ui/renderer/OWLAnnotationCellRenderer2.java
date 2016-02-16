@@ -9,6 +9,8 @@ import org.semanticweb.owlapi.util.EscapeUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.ImageObserver;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -46,6 +48,8 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
     private InlineDatatypeRendering datatypeRendering = RENDER_DATATYPE_INLINE;
 
     private AnnotationRenderingStyle annotationRenderingStyle = AnnotationRenderingStyle.COMFORTABLE;
+
+    private InlineThumbnailRendering thumbnailRendering = InlineThumbnailRendering.DISPLAY_THUMBNAILS_INLINE;
 
     public OWLAnnotationCellRenderer2(OWLEditorKit editorKit) {
         super();
@@ -365,14 +369,54 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
      * @return A list of paragraphs that represent the rendering of the annotation value.
      */
     private List<Paragraph> renderExternalIRI(Page page, IRI iri) {
-        Paragraph paragraph;
+        List<Paragraph> paragraphs = new ArrayList<>();
+        String iriString = iri.toString();
         if (isLinkableAddress(iri)) {
-            paragraph = page.addParagraph(iri.toString(), new HTTPLink(iri.toURI()));
+            if(isImageAddress(iri) && isDisplayThumbnails()) {
+                try {
+                    IconBox iconBox = getImageBox(iri);
+                    page.add(iconBox);
+
+                } catch (MalformedURLException e) {
+                    paragraphs.add(page.addParagraph(iriString, new HTTPLink(iri.toURI())));
+                }
+            }
+            else {
+                paragraphs.add(page.addParagraph(iriString, new HTTPLink(iri.toURI())));
+            }
         }
         else {
-            paragraph = page.addParagraph(iri.toString());
+            paragraphs.add(page.addParagraph(iriString));
         }
-        return Arrays.asList(paragraph);
+        return paragraphs;
+    }
+
+    private boolean isDisplayThumbnails() {
+        return thumbnailRendering != InlineThumbnailRendering.DO_NOT_DISPLAY_THUMBNAILS_INLINE;
+    }
+
+    public void setThumbnailRendering(InlineThumbnailRendering thumbnailRendering) {
+        this.thumbnailRendering = thumbnailRendering;
+        invalidateCache();
+    }
+
+    /**
+     * Gets the IconBox for the specified image IRI.
+     * @param iri The IRI pointing to the image.
+     * @return The icon box containing the image.
+     * @throws MalformedURLException
+     */
+    private IconBox getImageBox(IRI iri) throws MalformedURLException {
+        ImageIcon imageIcon = new ImageIcon(iri.toURI().toURL());
+        imageIcon.getImageLoadStatus();
+        IconBox iconBox = new IconBox(imageIcon, new HTTPLink(iri.toURI()));
+        iconBox.setMaxHeight(50);
+        return iconBox;
+    }
+
+    private boolean isImageAddress(IRI iri) {
+        String iriString = iri.toString();
+        return iriString.endsWith(".png") || iriString.endsWith(".jpg") || iriString.endsWith(".jpeg");
     }
 
     /**
@@ -383,7 +427,7 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
      * @return A list of paragraphs that represents the rendering of the entities.
      */
     private List<Paragraph> renderEntities(Page page, Set<OWLEntity> entities) {
-        List<Paragraph> paragraphs = new ArrayList<Paragraph>();
+        List<Paragraph> paragraphs = new ArrayList<>();
         for (OWLEntity entity : entities) {
             Icon icon = getIcon(entity);
             OWLModelManager modelManager = editorKit.getOWLModelManager();
@@ -415,7 +459,7 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
      */
     private List<Paragraph> renderLiteral(Page page, OWLLiteral literal, Color foreground, Color background, boolean isSelected) {
         String rendering = EscapeUtils.unescapeString(literal.getLiteral()).trim();
-        List<Paragraph> result = new ArrayList<Paragraph>();
+        List<Paragraph> result = new ArrayList<>();
         if (rendering.length() > 0) {
             List<LinkSpan> linkSpans = extractLinks(rendering);
             Paragraph literalParagraph = new Paragraph(rendering, linkSpans);
@@ -463,7 +507,7 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
      */
     private List<LinkSpan> extractLinks(String s) {
         Matcher matcher = URL_PATTERN.matcher(s);
-        List<LinkSpan> result = new ArrayList<LinkSpan>();
+        List<LinkSpan> result = new ArrayList<>();
         while (matcher.find()) {
             int start = matcher.start();
             int end = matcher.end();

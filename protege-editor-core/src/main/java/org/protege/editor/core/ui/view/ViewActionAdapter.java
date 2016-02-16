@@ -16,29 +16,23 @@ import java.beans.PropertyChangeListener;
  */
 public class ViewActionAdapter extends ViewAction {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1409546891527527361L;
-    private DisposableAction action;
+        private DisposableAction action;
 
 
     public ViewActionAdapter(DisposableAction action) {
         this.action = action;
         Object [] keys = action.getKeys();
-        for (int i = 0; i < keys.length; i++) {
-            putValue((String) keys[i], action.getValue((String) keys[i]));
+        for (Object key : keys) {
+            putValue((String) key, action.getValue((String) key));
         }
         setEnabled(action.isEnabled());
-        action.addPropertyChangeListener(new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent evt) {
-                if ("enabled".equals(evt.getPropertyName())) {
-                    setEnabled((Boolean) evt.getNewValue());
-                }
-                else {
-                    // Pass it on!
-                    ViewActionAdapter.this.action.putValue(evt.getPropertyName(), evt.getNewValue());
-                }
+        action.addPropertyChangeListener(evt -> {
+            if ("enabled".equals(evt.getPropertyName())) {
+                setEnabled((Boolean) evt.getNewValue());
+            }
+            else {
+                // Pass it on!
+                ViewActionAdapter.this.action.putValue(evt.getPropertyName(), evt.getNewValue());
             }
         });
     }

@@ -9,6 +9,8 @@ import org.protege.editor.owl.model.io.OntologySourcesManager;
 import org.protege.editor.owl.ui.selector.OWLOntologySelectorPanel2;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -42,6 +44,8 @@ public class OntologySourcesChangedHandlerUI implements OntologySourcesListener 
     private boolean handlingChange = false;
 
     private OWLOntologySelectorPanel2 ontologiesPanel;
+
+    private static  final Logger logger = LoggerFactory.getLogger(OntologySourcesChangedHandlerUI.class);
 
 
     public OntologySourcesChangedHandlerUI(final OWLWorkspace workspace) {
@@ -107,7 +111,7 @@ public class OntologySourcesChangedHandlerUI implements OntologySourcesListener 
             ontologiesPanel.add(new JLabel("<html>The following ontologies have changed outside of Protege.<p><p>Would you like to reload?</html>"), BorderLayout.NORTH);
 
 
-            final Set<OWLOntology> ignoreOnts = new HashSet<OWLOntology>(onts);
+            final Set<OWLOntology> ignoreOnts = new HashSet<>(onts);
 
             if (JOptionPaneEx.showConfirmDialog(eKit.getWorkspace(),
                                                 TITLE,

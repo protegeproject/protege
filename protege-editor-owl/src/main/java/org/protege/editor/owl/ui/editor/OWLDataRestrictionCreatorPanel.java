@@ -34,7 +34,7 @@ public class OWLDataRestrictionCreatorPanel extends AbstractRestrictionCreatorPa
     
 
     protected List<RestrictionCreator<OWLDataProperty, OWLDatatype>> createTypes() {
-        List<RestrictionCreator<OWLDataProperty, OWLDatatype>> types = new ArrayList<RestrictionCreator<OWLDataProperty, OWLDatatype>>();
+        List<RestrictionCreator<OWLDataProperty, OWLDatatype>> types = new ArrayList<>();
 
         types.add(some = new RestrictionCreator<OWLDataProperty, OWLDatatype>("Some (existential)") {
             public void createRestrictions(Set<OWLDataProperty> properties, Set<OWLDatatype> fillers,

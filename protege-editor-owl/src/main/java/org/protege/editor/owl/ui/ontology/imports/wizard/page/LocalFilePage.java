@@ -45,10 +45,8 @@ public class LocalFilePage extends OntologyImportPage {
     protected void createUI(JComponent parent) {
         setInstructions("Please specify the path to a file that contains an ontology.  You can use the browse " + "button to show a file chooser dialog.");
         filePathPanel = new FilePathPanel("Please select a file", UIHelper.OWL_EXTENSIONS);
-        filePathPanel.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                updateFinishEnabled();
-            }
+        filePathPanel.addChangeListener(e -> {
+            updateFinishEnabled();
         });
         filePathPanel.setBorder(ComponentFactory.createTitledBorder("Path"));
 
@@ -85,7 +83,7 @@ public class LocalFilePage extends OntologyImportPage {
     
     private void updateFinishEnabled() {
         File f = filePathPanel.getFile();
-        getWizard().setNextFinishButtonEnabled(f.exists() && f.isDirectory() == false);
+        getWizard().setNextFinishButtonEnabled(f.exists() && !f.isDirectory());
     }
 
     private JList createRecentList() {
@@ -100,11 +98,9 @@ public class LocalFilePage extends OntologyImportPage {
 
         final JList list = new JList(model);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        list.addListSelectionListener(new ListSelectionListener(){
-            public void valueChanged(ListSelectionEvent event) {
-                String path = ((EditorKitDescriptor)list.getSelectedValue()).getLabel();
-                filePathPanel.setPath(path);
-            }
+        list.addListSelectionListener(event -> {
+            String path = ((EditorKitDescriptor)list.getSelectedValue()).getLabel();
+            filePathPanel.setPath(path);
         });
         return list;
     }

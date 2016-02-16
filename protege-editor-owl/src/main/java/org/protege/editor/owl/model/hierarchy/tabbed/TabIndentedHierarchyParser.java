@@ -40,7 +40,7 @@ public class TabIndentedHierarchyParser {
 
 
     public List<Edge> parse(Reader reader) throws IOException {
-        lineList = new ArrayList<Line>();
+        lineList = new ArrayList<>();
         BufferedReader r = new BufferedReader(reader);
         createLines(r);
         return getEdges();
@@ -70,7 +70,7 @@ public class TabIndentedHierarchyParser {
 
 
     private List<Edge> getEdges() {
-        List<Edge> edges = new ArrayList<Edge>();
+        List<Edge> edges = new ArrayList<>();
         // Loop through all lines and build up a tree
         for (int i = 0; i < lineList.size(); i++) {
             Line curLine = lineList.get(i);

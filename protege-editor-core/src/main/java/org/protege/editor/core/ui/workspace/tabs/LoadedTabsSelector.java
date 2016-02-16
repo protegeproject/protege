@@ -17,7 +17,7 @@ public class LoadedTabsSelector extends JPanel {
     public LoadedTabsSelector(TabbedWorkspace workspace) {
         super(new BorderLayout());
         CustomWorkspaceTabsManager customTabsManager = workspace.getCustomTabsManager();
-        table = new CheckTable<WorkspaceTabPlugin>("Custom tabs");
+        table = new CheckTable<>("Custom tabs");
         table.setDefaultRenderer(new DefaultTableCellRenderer(){
             /**
              * 

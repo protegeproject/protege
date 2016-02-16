@@ -23,9 +23,9 @@ import java.util.Stack;
 public class HistoryManagerImpl implements HistoryManager {
     
     private enum ChangeType {
-        UNDOING, REDOING, NORMAL;
-    };
-    
+        UNDOING, REDOING, NORMAL
+    }
+
     private ChangeType typeOfChangeInProgress = ChangeType.NORMAL;
 
     private Logger logger = LoggerFactory.getLogger(HistoryManager.class);
@@ -59,9 +59,9 @@ public class HistoryManagerImpl implements HistoryManager {
     
     public HistoryManagerImpl(OWLOntologyManager manager) {
         this.manager = manager;
-        undoStack = new Stack<List<OWLOntologyChange>>();
-        redoStack = new Stack<List<OWLOntologyChange>>();
-        listeners = new ArrayList<UndoManagerListener>();
+        undoStack = new Stack<>();
+        redoStack = new Stack<>();
+        listeners = new ArrayList<>();
         typeOfChangeInProgress = ChangeType.NORMAL;
     }
 
@@ -85,7 +85,7 @@ public class HistoryManagerImpl implements HistoryManager {
             // no break;
         case REDOING:
             // Push the changes onto the stack
-            undoStack.push(new ArrayList<OWLOntologyChange>(changes));
+            undoStack.push(new ArrayList<>(changes));
             break;
         case UNDOING:
             // In undo mode, so handleSave changes for redo.
@@ -152,22 +152,22 @@ public class HistoryManagerImpl implements HistoryManager {
 
 
     public List<List<OWLOntologyChange>> getLoggedChanges() {
-        List<List<OWLOntologyChange>> copyOfLog = new ArrayList<List<OWLOntologyChange>>();
+        List<List<OWLOntologyChange>> copyOfLog = new ArrayList<>();
         for (List<OWLOntologyChange> changes : undoStack){
-            copyOfLog.add(new ArrayList<OWLOntologyChange>(changes));
+            copyOfLog.add(new ArrayList<>(changes));
         }
         return copyOfLog;
     }
 
 
     public void fireStateChanged() {
-        for (UndoManagerListener listener : new ArrayList<UndoManagerListener>(listeners)) {
+        for (UndoManagerListener listener : new ArrayList<>(listeners)) {
             listener.stateChanged(this);
         }
     }
     
     private List<OWLOntologyChange> reverseChanges(List<? extends OWLOntologyChange> changes) {
-        List<OWLOntologyChange> reversedChanges = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> reversedChanges = new ArrayList<>();
         for (OWLOntologyChange change : changes) {
             ReverseChangeGenerator gen = new ReverseChangeGenerator();
             change.accept(gen);

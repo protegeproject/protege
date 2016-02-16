@@ -36,14 +36,14 @@ public class OWLOntologySelectorPanel2 extends JComponent {
     public OWLOntologySelectorPanel2(final OWLEditorKit eKit, Set<OWLOntology> onts) {
         setLayout(new BorderLayout(6, 12));
 
-        final ArrayList<OWLOntology> ontologies = new ArrayList<OWLOntology>(onts);
-        final List<URI> files = new ArrayList<URI>(ontologies.size());
-        final List<Boolean> dirty = new ArrayList<Boolean>(ontologies.size());
+        final ArrayList<OWLOntology> ontologies = new ArrayList<>(onts);
+        final List<URI> files = new ArrayList<>(ontologies.size());
+        final List<Boolean> dirty = new ArrayList<>(ontologies.size());
         for (OWLOntology ont : ontologies){
             files.add(eKit.getModelManager().getOntologyPhysicalURI(ont));
             dirty.add(eKit.getModelManager().getDirtyOntologies().contains(ont));
         }
-        list = new CheckTable<OWLOntology>("Ontologies");
+        list = new CheckTable<>("Ontologies");
         list.getModel().setData(ontologies, true);
         list.checkAll(true);
         CheckTableModel model = list.getModel();
@@ -76,7 +76,7 @@ public class OWLOntologySelectorPanel2 extends JComponent {
 
 
     public Set<OWLOntology> getSelectedOntologies() {
-        return new HashSet<OWLOntology>(list.getFilteredValues());
+        return new HashSet<>(list.getFilteredValues());
     }
 
 

@@ -38,7 +38,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
 
     private ProtegeOWLReasonerInfo currentReasonerFactory;
 
-    private Map<OWLOntology, OWLReasoner> reasonerMap = new HashMap<OWLOntology, OWLReasoner>();
+    private Map<OWLOntology, OWLReasoner> reasonerMap = new HashMap<>();
     
     private OWLReasoner runningReasoner;
     private boolean classificationInProgress = false;
@@ -46,7 +46,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
     private ReasonerProgressMonitor reasonerProgressMonitor;
     private OWLReasonerExceptionHandler exceptionHandler;
     
-    private List<ReasonerFilter> reasonerFilters = new ArrayList<ReasonerFilter>();
+    private List<ReasonerFilter> reasonerFilters = new ArrayList<>();
     
     private OWLOntologyChangeListener nonBufferingOntologyChangeListener = new OWLOntologyChangeListener() {
        	public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
@@ -94,7 +94,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
         this.owlModelManager = owlModelManager;
         preferences = new ReasonerPreferences();
         preferences.load();
-        reasonerFactories = new HashSet<ProtegeOWLReasonerInfo>();
+        reasonerFactories = new HashSet<>();
         reasonerProgressMonitor = new NullReasonerProgressMonitor();
         installFactories();
         exceptionHandler = new DefaultOWLReasonerExceptionHandler();
@@ -337,11 +337,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
      * is fired in the event dispatch thread.
      */
     private void fireReclassified() {
-        Runnable r = new Runnable() {
-            public void run() {
-                owlModelManager.fireEvent(EventType.ONTOLOGY_CLASSIFIED);
-            }
-        };
+        Runnable r = () -> owlModelManager.fireEvent(EventType.ONTOLOGY_CLASSIFIED);
         if (SwingUtilities.isEventDispatchThread()) {
             r.run();
         }
@@ -458,10 +454,8 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
                 classificationInProgress = false;
             }
             if (reasonerChanged) {
-                SwingUtilities.invokeLater(new Runnable() {
-                	public void run() {
-                        owlModelManager.fireEvent(EventType.REASONER_CHANGED);
-                	}
+                SwingUtilities.invokeLater(() -> {
+owlModelManager.fireEvent(EventType.REASONER_CHANGED);
                 });
             }
             fireReclassified();

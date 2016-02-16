@@ -35,7 +35,7 @@ public class MainToolBarBuilder {
         JToolBar toolBar = new JToolBar();
         // Add actions to the toolbar
         MainToolBarActionPluginLoader editorKitSpecificLoader = new MainToolBarActionPluginLoader(editorKit);
-        List<ToolBarActionPluginJPFImpl> list = new ArrayList<ToolBarActionPluginJPFImpl>();
+        List<ToolBarActionPluginJPFImpl> list = new ArrayList<>();
         list.addAll(editorKitSpecificLoader.getPlugins());
         // Add general actions that apply to any clsdescriptioneditor kit.  This
         // mean passing in a null for the clsdescriptioneditor kit
@@ -46,11 +46,6 @@ public class MainToolBarBuilder {
         ToolBarActionPluginJPFImpl lastPlugin = null;
         for (ToolBarActionPluginJPFImpl plugin : list) {
             try {
-                if (lastPlugin != null) {
-                    if (lastPlugin.getGroup().equals(plugin.getGroup()) == false) {
-                        toolBar.addSeparator();
-                    }
-                }
                 ProtegeAction action = plugin.newInstance();
                 toolBar.add(action);
                 action.initialise();

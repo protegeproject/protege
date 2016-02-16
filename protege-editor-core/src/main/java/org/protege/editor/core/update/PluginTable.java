@@ -31,10 +31,6 @@ import java.util.List;
  */
 public class PluginTable extends JPanel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 6305532687611320179L;
 
     private JTable table;
 
@@ -42,7 +38,7 @@ public class PluginTable extends JPanel {
 
     private List<PluginInfo> provider;
 
-    private List<ListSelectionListener> pendingListeners = new ArrayList<ListSelectionListener>();
+    private List<ListSelectionListener> pendingListeners = new ArrayList<>();
 
     private ComponentAdapter componentAdapter = new ComponentAdapter(){
         public void componentShown(ComponentEvent event) {
@@ -67,35 +63,33 @@ public class PluginTable extends JPanel {
 
     private void handleTableShown(){
 
-        Thread t = new Thread(new Runnable(){
-            public void run() {
-                tableModel = new PluginUpdateTableModel(provider);
-                table = new JTable(tableModel);
+        Thread t = new Thread(() -> {
+            tableModel = new PluginUpdateTableModel(provider);
+            table = new JTable(tableModel);
 
-                table.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
-                table.setShowGrid(true);
-                table.setRowMargin(1);
-                table.setGridColor(Color.LIGHT_GRAY);
-                table.setRowHeight(table.getRowHeight() + 5);
-                table.setRowSelectionAllowed(true);
-                table.setColumnSelectionAllowed(false);
-                TableUtils.pack(table, true, false, 3);
-                
-                final JScrollPane tableSp = new JScrollPane(table);
+            table.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
+            table.setShowGrid(true);
+            table.setRowMargin(1);
+            table.setGridColor(Color.LIGHT_GRAY);
+            table.setRowHeight(table.getRowHeight() + 5);
+            table.setRowSelectionAllowed(true);
+            table.setColumnSelectionAllowed(false);
+            TableUtils.pack(table, true, false, 3);
 
-                for (ListSelectionListener l : pendingListeners){
-                    table.getSelectionModel().addListSelectionListener(l);
-                }
-                pendingListeners.clear();
+            final JScrollPane tableSp = new JScrollPane(table);
 
-                SwingUtilities.invokeLater(new Runnable(){
-                    public void run() {
-                        remove(waitLabel);
-                        add(tableSp, BorderLayout.CENTER);
-                        validate();
-                    }
-                });
+            for (ListSelectionListener l : pendingListeners){
+                table.getSelectionModel().addListSelectionListener(l);
             }
+            pendingListeners.clear();
+
+            SwingUtilities.invokeLater(new Runnable(){
+                public void run() {
+                    remove(waitLabel);
+                    add(tableSp, BorderLayout.CENTER);
+                    validate();
+                }
+            });
         }, "Load plugin table contents");
 
         t.start();
@@ -135,10 +129,6 @@ public class PluginTable extends JPanel {
 
     private class PluginUpdateTableModel extends AbstractTableModel {
 
-        /**
-         * 
-         */
-        private static final long serialVersionUID = 7766791162497899167L;
 
         private List<Boolean> install;
 
@@ -155,7 +145,7 @@ public class PluginTable extends JPanel {
 
         public List<Boolean> getInstallList(){
             if (install == null){
-                install = new ArrayList<Boolean>(plugins.size());
+                install = new ArrayList<>(plugins.size());
                 for (PluginInfo info : plugins) {
                     install.add(false);//provider.isSelected(info));
                 }
@@ -182,7 +172,7 @@ public class PluginTable extends JPanel {
 
 
         public List<PluginInfo> getSelectedUpdateInfo() {
-            List<PluginInfo> sel = new ArrayList<PluginInfo>();
+            List<PluginInfo> sel = new ArrayList<>();
             int counter = 0;
             for (Boolean b : getInstallList()) {
                 if (b) {

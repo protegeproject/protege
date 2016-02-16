@@ -45,7 +45,6 @@ import org.semanticweb.owlapi.util.PriorityCollection;
 import org.semanticweb.owlapi.util.SimpleIRIMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl;
 
 import java.io.File;
 import java.net.ProtocolException;
@@ -150,6 +149,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
         manager = OWLManager.createConcurrentOWLOntologyManager();
         manager.addOntologyChangeListener(this);
+        manager.addOntologyLoaderListener(this);
 
         // URI mappers for loading - added in reverse order
         AutoMappedRepositoryIRIMapper autoMappedRepositoryIRIMapper = new AutoMappedRepositoryIRIMapper(this);
@@ -284,7 +284,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 }
             } catch (OWLOntologyCreationException ooce) {
                 logger.info("Failed to load ontology: {}", ooce);
-                ;             // will be handled by the loadErrorHandler, so ignore
+                // will be handled by the loadErrorHandler, so ignore
             }
             return ontology != null;
         } finally {
@@ -389,31 +389,44 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         return ont;
     }
 
-
+    @Override
     public OWLOntology reload(OWLOntology ont) throws OWLOntologyCreationException {
-        IRI ontologyDocumentIRI = IRI.create(getOntologyPhysicalURI(ont));
-        manager.removeOntology(ont);
-        boolean wasTheActiveOntology = false;
-        if (ont.equals(activeOntology)) {
-            wasTheActiveOntology = true;
-            activeOntology = null;
-        }
-        dirtyOntologies.remove(ont.getOntologyID());
         try {
-            ont = manager.loadOntologyFromOntologyDocument(ontologyDocumentIRI);
-        } catch (Throwable t) {
-            ((OWLOntologyManagerImpl) manager).ontologyCreated(ont);  // put it back - a hack but it works
-            manager.setOntologyDocumentIRI(ont, ontologyDocumentIRI);
-            throw (t instanceof OWLOntologyCreationException) ? (OWLOntologyCreationException) t : new OWLOntologyCreationException(t);
+            OntologyReloader reloader = new OntologyReloader(manager);
+            reloader.reload(ont);
+            // Rebuild the cache in case the imports closure has changed
+            rebuildActiveOntologiesCache();
+            refreshRenderer();
+        } finally {
+            setClean(ont);
+            fireEvent(EventType.ONTOLOGY_RELOADED);
         }
-        if (wasTheActiveOntology) {
-            activeOntology = ont;
-        }
-        rebuildActiveOntologiesCache();
-        refreshRenderer();
-        fireEvent(EventType.ONTOLOGY_RELOADED);
         return ont;
     }
+//    public OWLOntology reload(OWLOntology ont) throws OWLOntologyCreationException {
+//        IRI ontologyDocumentIRI = IRI.create(getOntologyPhysicalURI(ont));
+//        manager.removeOntology(ont);
+//        boolean wasTheActiveOntology = false;
+//        if (ont.equals(activeOntology)) {
+//            wasTheActiveOntology = true;
+//            activeOntology = null;
+//        }
+//        dirtyOntologies.remove(ont.getOntologyID());
+//        try {
+//            ont = manager.loadOntologyFromOntologyDocument(ontologyDocumentIRI);
+//        } catch (Throwable t) {
+//            ((OWLOntologyManagerImpl) manager).ontologyCreated(ont);  // put it back - a hack but it works
+//            manager.setOntologyDocumentIRI(ont, ontologyDocumentIRI);
+//            throw (t instanceof OWLOntologyCreationException) ? (OWLOntologyCreationException) t : new OWLOntologyCreationException(t);
+//        }
+//        if (wasTheActiveOntology) {
+//            activeOntology = ont;
+//        }
+//        rebuildActiveOntologiesCache();
+//        refreshRenderer();
+//        fireEvent(EventType.ONTOLOGY_RELOADED);
+//        return ont;
+//    }
 
 
     public boolean removeOntology(OWLOntology ont) {

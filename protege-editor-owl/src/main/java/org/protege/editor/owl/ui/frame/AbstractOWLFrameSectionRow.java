@@ -97,10 +97,10 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
         if (newAxiom != null){ // the editor should protect from this, but just in case
         	A oldAxiom = getAxiom();
         	Set<OWLAnnotation> axiomAnnotations = oldAxiom.getAnnotations();
-        	if (axiomAnnotations != null && !axiomAnnotations.isEmpty()) {
+        	if (!axiomAnnotations.isEmpty()) {
         		newAxiom = newAxiom.getAnnotatedAxiom(axiomAnnotations);
         	}
-            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            List<OWLOntologyChange> changes = new ArrayList<>();
             changes.add(new RemoveAxiom(getOntology(), oldAxiom));
             changes.add(new AddAxiom(getOntology(), newAxiom));
             getOWLModelManager().applyChanges(changes);
@@ -169,24 +169,24 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
     public String getTooltip() {
         if (ontology != null) {
             UIHelper helper = new UIHelper(owlEditorKit);
-            StringBuffer buffer = new StringBuffer("<html>\n\t<body>\n\t\tAsserted in: ");
-            buffer.append(helper.getHTMLOntologyList(Collections.singleton(ontology)));
+            StringBuilder sb = new StringBuilder("<html>\n\t<body>\n\t\tAsserted in: ");
+            sb.append(helper.getHTMLOntologyList(Collections.singleton(ontology)));
             Set<OWLAnnotation> annotations = getAxiom().getAnnotations();
-            if (annotations != null && !annotations.isEmpty()) {
+            if (!annotations.isEmpty()) {
             	OWLModelManager protegeManager = getOWLModelManager();
-            	buffer.append("\n\t\t<p>Annotations:");
-            	buffer.append("\n\t\t<dl>");
+            	sb.append("\n\t\t<p>Annotations:");
+            	sb.append("\n\t\t<dl>");
             	for (OWLAnnotation annotation : annotations) {
-            		buffer.append("\n\t\t\t<dt>");
-            		buffer.append(protegeManager.getRendering(annotation.getProperty()));
-            		buffer.append("</dt>\n\t\t\t<dd>");
-            		buffer.append(protegeManager.getRendering(annotation.getValue()));
-            		buffer.append("</dd>");
+            		sb.append("\n\t\t\t<dt>");
+            		sb.append(protegeManager.getRendering(annotation.getProperty()));
+            		sb.append("</dt>\n\t\t\t<dd>");
+            		sb.append(protegeManager.getRendering(annotation.getValue()));
+            		sb.append("</dd>");
             	}
-            	buffer.append("\n\t\t</dl>\n\t</p>\n");
+            	sb.append("\n\t\t</dl>\n\t</p>\n");
             }
-            buffer.append("\t</body>\n</html>");
-            return buffer.toString();
+            sb.append("\t</body>\n</html>");
+            return sb.toString();
         }
         else {
             return "Inferred";

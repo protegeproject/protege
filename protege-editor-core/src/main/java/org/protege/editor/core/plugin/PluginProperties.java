@@ -73,7 +73,7 @@ public class PluginProperties {
 
 
     public static Set<String> getParameterValues(IExtension ext, String key) {
-        Set<String> values = new HashSet<String>();
+        Set<String> values = new HashSet<>();
         for (IConfigurationElement config : ext.getConfigurationElements()) {
             if (key.equals(config.getName())) {
                 String val = config.getAttribute(PLUGIN_XML_VALUE);

@@ -29,8 +29,8 @@ public class OWLObjectHierarchyDiffTool<N extends OWLObject> {
 
 
     public Set<N> getAddedParents(N child) {
-        Set<N> parents = new HashSet<N>(toProv.getParents(child));
-        parents.removeAll(new HashSet<N>(fromProv.getParents(child)));
+        Set<N> parents = new HashSet<>(toProv.getParents(child));
+        parents.removeAll(new HashSet<>(fromProv.getParents(child)));
         return parents;
     }
 
@@ -41,8 +41,8 @@ public class OWLObjectHierarchyDiffTool<N extends OWLObject> {
 
 
     public Set<N> getRemovedParents(N child) {
-        Set<N> parents = new HashSet<N>(fromProv.getParents(child));
-        parents.removeAll(new HashSet<N>(toProv.getParents(child)));
+        Set<N> parents = new HashSet<>(fromProv.getParents(child));
+        parents.removeAll(new HashSet<>(toProv.getParents(child)));
         return parents;
     }
 }

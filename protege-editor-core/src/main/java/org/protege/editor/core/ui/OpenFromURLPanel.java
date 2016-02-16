@@ -30,17 +30,13 @@ import java.util.TreeSet;
  * Date: 12-May-2007<br><br>
  */
 public class OpenFromURLPanel extends JPanel implements VerifiedInputEditor {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -8869065983080068694L;
 
     private JTextField uriField;
 
     private MList bookmarksList;
 
     private List<InputVerificationStatusChangedListener> listeners =
-            new ArrayList<InputVerificationStatusChangedListener>();
+            new ArrayList<>();
 
 
     public OpenFromURLPanel() {
@@ -70,10 +66,6 @@ public class OpenFromURLPanel extends JPanel implements VerifiedInputEditor {
         bookmarksHolder.setBorder(ComponentFactory.createTitledBorder("Bookmarks"));
         add(bookmarksHolder);
         bookmarksList = new MList() {
-            /**
-             * 
-             */
-            private static final long serialVersionUID = 6590889767286900162L;
 
 
             protected void handleAdd() {
@@ -89,11 +81,9 @@ public class OpenFromURLPanel extends JPanel implements VerifiedInputEditor {
         bookmarksList.setCellRenderer(new BookmarkedItemListRenderer());
         bookmarksHolder.add(new JScrollPane(bookmarksList));
         fillList();
-        bookmarksList.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    updateTextField();
-                }
+        bookmarksList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                updateTextField();
             }
         });
     }
@@ -157,9 +147,9 @@ public class OpenFromURLPanel extends JPanel implements VerifiedInputEditor {
 
     private void fillList() {
         BookMarkedURIManager man = BookMarkedURIManager.getInstance();
-        Set<URI> ts = new TreeSet<URI>();
+        Set<URI> ts = new TreeSet<>();
         ts.addAll(man.getBookMarkedURIs());
-        ArrayList<Object> data = new ArrayList<Object>();
+        ArrayList<Object> data = new ArrayList<>();
 
         data.add(new AddURIItem());
         for (URI uri : ts) {

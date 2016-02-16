@@ -30,10 +30,6 @@ import java.util.Set;
  */
 public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewComponent implements RefreshableComponent {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 3436509499024697735L;
 
     private OWLSelectionModelListener listener;
 
@@ -63,41 +59,33 @@ public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewC
      * a each plugin must have a zero argument constructor.
      */
     final public void initialiseOWLView() throws Exception {
-        registeredActions = new HashSet<OWLSelectionViewAction>();
-        listener = new OWLSelectionModelListener() {
-            public void selectionChanged() throws Exception {
-                final OWLObject owlObject = getOWLWorkspace().getOWLSelectionModel().getSelectedObject();
-                if (owlObject instanceof OWLEntity){
-                    if (canShowEntity((OWLEntity)owlObject)){
-                        updateViewContentAndHeader();
-                    }
-                }
-            }
-        };
-
-        entityRendererListener = new OWLEntityRendererListener() {
-            public void renderingChanged(OWLEntity entity, OWLModelManagerEntityRenderer renderer) {
-                if (lastDisplayedObject != null) {
-                    if (lastDisplayedObject.equals(entity)) {
-                        updateHeader(lastDisplayedObject);
-                    }
-                }
-            }
-        };
-
-        hierarchyListener = new HierarchyListener() {
-            public void hierarchyChanged(HierarchyEvent e) {
-                if (needsRefresh && isShowing()) {
+        registeredActions = new HashSet<>();
+        listener = () -> {
+            final OWLObject owlObject = getOWLWorkspace().getOWLSelectionModel().getSelectedObject();
+            if (owlObject instanceof OWLEntity){
+                if (canShowEntity((OWLEntity)owlObject)){
                     updateViewContentAndHeader();
                 }
             }
         };
 
-        modelManagerListener = new OWLModelManagerListener() {
-            public void handleChange(OWLModelManagerChangeEvent event) {
-                if (event.isType(EventType.ENTITY_RENDERER_CHANGED)) {
-                    getOWLModelManager().getOWLEntityRenderer().addListener(entityRendererListener);
+        entityRendererListener = (entity, renderer) -> {
+            if (lastDisplayedObject != null) {
+                if (lastDisplayedObject.equals(entity)) {
+                    updateHeader(lastDisplayedObject);
                 }
+            }
+        };
+
+        hierarchyListener = e -> {
+            if (needsRefresh && isShowing()) {
+                updateViewContentAndHeader();
+            }
+        };
+
+        modelManagerListener = event -> {
+            if (event.isType(EventType.ENTITY_RENDERER_CHANGED)) {
+                getOWLModelManager().getOWLEntityRenderer().addListener(entityRendererListener);
             }
         };
 

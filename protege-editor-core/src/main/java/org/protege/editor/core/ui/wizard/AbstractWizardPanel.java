@@ -24,12 +24,8 @@ import java.util.Set;
  */
 public abstract class AbstractWizardPanel extends WizardPanel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 8512811313733522394L;
 
-    private JTextArea instructionArea;
+    private final JTextArea  instructionArea = new JTextArea();
 
     private JPanel marginPanel;
 
@@ -95,7 +91,7 @@ public abstract class AbstractWizardPanel extends WizardPanel {
         marginLabel = new JLabel();
         marginPanel.add(marginLabel, BorderLayout.NORTH);
         marginLabel.setBorder(BorderFactory.createEmptyBorder(30, 8, 0, 0));
-        instructionArea = new JTextArea("");
+        instructionArea.setBorder(null);
         instructionArea.setOpaque(false);
         instructionArea.setWrapStyleWord(true);
         instructionArea.setLineWrap(true);
@@ -130,7 +126,7 @@ public abstract class AbstractWizardPanel extends WizardPanel {
 
 
     static {
-        nonTransparentComponents = new HashSet<Class>();
+        nonTransparentComponents = new HashSet<>();
         nonTransparentComponents.add(JTextComponent.class);
         nonTransparentComponents.add(JList.class);
         nonTransparentComponents.add(JTree.class);
@@ -152,8 +148,8 @@ public abstract class AbstractWizardPanel extends WizardPanel {
         if (component instanceof Container) {
             Container container = (Container) component;
             Component [] components = container.getComponents();
-            for (int i = 0; i < components.length; i++) {
-                setComponentTransparency(components[i]);
+            for (Component c : components) {
+                setComponentTransparency(c);
             }
         }
     }
@@ -179,11 +175,7 @@ public abstract class AbstractWizardPanel extends WizardPanel {
 
     private class HolderPanel extends JPanel {
 
-        /**
-         * 
-         */
-        private static final long serialVersionUID = 5476717953072456842L;
-        private Color color;
+                private Color color;
 
 
         public HolderPanel() {

@@ -48,7 +48,7 @@ public class BookMarkedURIManager {
         PreferencesManager man = PreferencesManager.getInstance();
         Preferences prefs = man.getApplicationPreferences(PREFERENCES_KEY);
         List<String> bookmarks = prefs.getStringList(PREFERENCES_KEY, getDefaults());
-        Set<URI> uris = new HashSet<URI>();
+        Set<URI> uris = new HashSet<>();
         for (String s : bookmarks) {
             try {
                 uris.add(new URI(s));
@@ -80,7 +80,7 @@ public class BookMarkedURIManager {
 
 
     private static List<String> getDefaults() {
-        List<String> defaults = new ArrayList<String>();
+        List<String> defaults = new ArrayList<>();
         defaults.add("http://owl.man.ac.uk/2006/07/sssw/people.owl");
         defaults.add("http://www.co-ode.org/ontologies/pizza/pizza.owl");
         defaults.add("http://protege.cim3.net/file/pub/ontologies/koala/koala.owl");

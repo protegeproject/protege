@@ -21,7 +21,7 @@ public class OWLClassAssertionAxiomTypeFrameSection extends AbstractOWLFrameSect
 
     public static final String LABEL = "Types";
 
-    private Set<OWLClassExpression> added = new HashSet<OWLClassExpression>();
+    private Set<OWLClassExpression> added = new HashSet<>();
 
 
     public OWLClassAssertionAxiomTypeFrameSection(OWLEditorKit editorKit, OWLFrame<? extends OWLIndividual> frame) {
@@ -51,26 +51,24 @@ public class OWLClassAssertionAxiomTypeFrameSection extends AbstractOWLFrameSect
 
 
     protected void refillInferred() {
-        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_TYPES, new Runnable() {
-                public void run() {
-                	if (!getOWLModelManager().getReasoner().isConsistent()) {
-                		return;
-                	}
-                    if (!getRootObject().isAnonymous()){
-                        for (OWLClass inferredType : getReasoner().getTypes(getRootObject().asOWLNamedIndividual(), true).getFlattened()) {
-                            if (!added.contains(inferredType)) {
-                                OWLClassAssertionAxiom ax = getOWLDataFactory().getOWLClassAssertionAxiom(inferredType, getRootObject());
-                                addInferredRowIfNontrivial(new OWLClassAssertionAxiomTypeFrameSectionRow(getOWLEditorKit(),
-                                                                                     OWLClassAssertionAxiomTypeFrameSection.this,
-                                                                                     null,
-                                                                                     getRootObject(),
-                                                                                     ax));
-                                added.add(inferredType);
-                            }
-                        }
+        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_TYPES, () -> {
+            if (!getOWLModelManager().getReasoner().isConsistent()) {
+                return;
+            }
+            if (!getRootObject().isAnonymous()){
+                for (OWLClass inferredType : getReasoner().getTypes(getRootObject().asOWLNamedIndividual(), true).getFlattened()) {
+                    if (!added.contains(inferredType)) {
+                        OWLClassAssertionAxiom ax = getOWLDataFactory().getOWLClassAssertionAxiom(inferredType, getRootObject());
+                        addInferredRowIfNontrivial(new OWLClassAssertionAxiomTypeFrameSectionRow(getOWLEditorKit(),
+                                                                             OWLClassAssertionAxiomTypeFrameSection.this,
+                                                                             null,
+                                                                             getRootObject(),
+                                                                             ax));
+                        added.add(inferredType);
                     }
                 }
-            });
+            }
+        });
     }
 
 
@@ -95,7 +93,7 @@ public class OWLClassAssertionAxiomTypeFrameSection extends AbstractOWLFrameSect
 
 
     public boolean dropObjects(List<OWLObject> objects) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         for (OWLObject obj : objects) {
             if (obj instanceof OWLClassExpression) {
                 OWLClassExpression classExpression = (OWLClassExpression) obj;

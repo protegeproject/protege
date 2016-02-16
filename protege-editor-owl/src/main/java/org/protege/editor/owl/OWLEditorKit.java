@@ -1,11 +1,5 @@
 package org.protege.editor.owl;
 
-import com.google.common.base.Optional;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.Constants;
-import org.osgi.framework.ServiceReference;
-import org.osgi.framework.ServiceRegistration;
-import org.osgi.service.packageadmin.PackageAdmin;
 import org.protege.editor.core.BookMarkedURIManager;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.editorkit.AbstractEditorKit;
@@ -21,17 +15,28 @@ import org.protege.editor.owl.model.io.IOListenerPlugin;
 import org.protege.editor.owl.model.io.IOListenerPluginInstance;
 import org.protege.editor.owl.model.io.IOListenerPluginLoader;
 import org.protege.editor.owl.model.search.SearchManager;
-import org.protege.editor.owl.model.search.lucene.LuceneSearchManager;
-import org.protege.editor.owl.model.search.nci.NciSearchManager;
+import org.protege.editor.owl.model.search.SearchManagerSelector;
 import org.protege.editor.owl.ui.OntologyFormatPanel;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandlerUI;
 import org.protege.editor.owl.ui.explanation.ExplanationManager;
 import org.protege.editor.owl.ui.ontology.OntologyPreferences;
 import org.protege.editor.owl.ui.ontology.imports.missing.MissingImportHandlerUI;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.Constants;
+import org.osgi.framework.ServiceReference;
+import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.packageadmin.PackageAdmin;
 import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
 import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDocumentFormat;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.util.VersionInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +47,8 @@ import java.net.URI;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
+
+import com.google.common.base.Optional;
 
 
 /**
@@ -67,7 +74,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     private OWLModelManager modelManager;
 
-    private Set<URI> newPhysicalURIs;
+    private final Set<URI> newPhysicalURIs = new HashSet<>();
 
     private OntologyLoadErrorHandlerUI loadErrorHandler;
 
@@ -77,7 +84,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     private OWLOntologyChangeListener ontologyChangeListener;
 
-    private SearchManager searchManager;
+    private SearchManagerSelector searchManagerSelector;
 
     public OWLEditorKit(OWLEditorKitFactory editorKitFactory) {
         super(editorKitFactory);
@@ -85,8 +92,8 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
 
     protected void initialise() {
+
         logger.info("OWL API Version: {}", VersionInfo.getVersionInfo().getVersion());
-        this.newPhysicalURIs = new HashSet<>();
         modelManager = new OWLModelManagerImpl();
 
         modelManager.setExplanationManager(new ExplanationManager(this));
@@ -96,7 +103,8 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         ontologyChangeListener = owlOntologyChanges -> modifiedDocument = true;
         modelManager.addOntologyChangeListener(ontologyChangeListener);
 
-        searchManager = new NciSearchManager(this);
+        searchManagerSelector = new SearchManagerSelector(this);
+
         loadErrorHandler = new OntologyLoadErrorHandlerUI(this);
         modelManager.setLoadErrorHandler(loadErrorHandler);
         loadIOListenerPlugins();
@@ -104,6 +112,8 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
         getWorkspace().refreshComponents();
     }
+
+
 
     /**
      * Determines if this editor kit has modified the contents if its documents in any way.
@@ -128,7 +138,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         ServiceReference sr = ProtegeOWL.getBundleContext().getServiceReference(PackageAdmin.class.getCanonicalName());
         PackageAdmin admin = (PackageAdmin) ProtegeOWL.getBundleContext().getService(sr);
         Bundle customizer = admin.getBundle(modelManager.getClass());
-        String name = (String) customizer.getHeaders().get(Constants.BUNDLE_NAME);
+        String name = customizer.getHeaders().get(Constants.BUNDLE_NAME);
         if (name == null) {
             name = customizer.getSymbolicName();
         }
@@ -179,7 +189,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     }
 
     public SearchManager getSearchManager() {
-        return searchManager;
+        return searchManagerSelector.getCurrentSearchManager();
     }
 
     public boolean handleLoadRecentRequest(EditorKitDescriptor descriptor) throws Exception {
@@ -390,9 +400,9 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         logger.info(LogBanner.start("Disposing of Workspace"));
         getModelManager().removeOntologyChangeListener(ontologyChangeListener);
         super.dispose();
+        searchManagerSelector.getCurrentSearchManager().dispose();
         workspace.dispose();
         try {
-            searchManager.dispose();
             modelManager.dispose();
         }
         catch (Exception e) {
@@ -404,5 +414,9 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
             registration = null;
         }
         logger.info(LogBanner.end());
+    }
+
+    public SearchManagerSelector getSearchManagerSelector() {
+        return searchManagerSelector;
     }
 }

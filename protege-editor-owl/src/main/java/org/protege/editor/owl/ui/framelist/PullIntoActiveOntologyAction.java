@@ -47,7 +47,7 @@ public class PullIntoActiveOntologyAction<R> extends OWLFrameListPopupMenuAction
 
 
     public void actionPerformed(ActionEvent e) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         for (OWLFrameSectionRow row : getSelectedRows()) {
             OWLAxiom ax = row.getAxiom();
             OWLOntology currentOnt = row.getOntology();

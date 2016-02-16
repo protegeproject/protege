@@ -9,11 +9,14 @@ import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
+import java.awt.font.NumericShaper;
 import java.util.*;
 import java.util.List;
 
@@ -63,7 +66,7 @@ public class MetricsPanel extends JPanel {
     private void showAxiomTypeDialog() {
         Set<? extends OWLAxiom> axioms = lastMetric.getAxioms();
         final OWLAxiomTypeFramePanel panel = new OWLAxiomTypeFramePanel(owlEditorKit);
-        Set<OWLAxiom> axs = new HashSet<OWLAxiom>(axioms);
+        Set<OWLAxiom> axs = new HashSet<>(axioms);
         panel.setRoot(axs);
         panel.setPreferredSize(new Dimension(800, 300));
         JOptionPane op = new JOptionPane(panel, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
@@ -81,8 +84,8 @@ public class MetricsPanel extends JPanel {
 
 
     protected void initialiseOWLView() {
-        metricManagerMap = new LinkedHashMap<String, OWLMetricManager>();
-        tableModelMap = new HashMap<OWLMetricManager, MetricsTableModel>();
+        metricManagerMap = new LinkedHashMap<>();
+        tableModelMap = new HashMap<>();
         createBasicMetrics();
         createClassAxiomMetrics();
         createObjectPropertyAxiomMetrics();
@@ -107,11 +110,10 @@ public class MetricsPanel extends JPanel {
             MetricsTableModel tableModel = new MetricsTableModel(metricManagerMap.get(metricsSet));
             tableModelMap.put(metricManagerMap.get(metricsSet), tableModel);
             final JTable table = new JTable(tableModel);
-            table.setGridColor(Color.LIGHT_GRAY);
+            table.setGridColor(new Color(240, 240, 240));
             table.setRowHeight(table.getRowHeight() + 4);
             table.setShowGrid(true);
             table.getColumnModel().getColumn(1).setMaxWidth(150);
-            table.getColumnModel().setColumnMargin(2);
             table.addMouseListener(new MouseAdapter() {
 
                 public void mousePressed(MouseEvent e) {
@@ -136,7 +138,7 @@ public class MetricsPanel extends JPanel {
                     MetricsTableModel model = (MetricsTableModel) table.getModel();
                     for(OWLMetricManager man : tableModelMap.keySet()) {
                         if(tableModelMap.get(man).equals(model)) {
-                            OWLMetric metric = man.getMetrics().get(row);
+                            OWLMetric<?> metric = man.getMetrics().get(row);
                             if(metric instanceof AxiomCountMetric) {
                                 lastMetric = (AxiomCountMetric) metric;
                                 popupMenu.show(table, e.getX(), e.getY());
@@ -147,19 +149,54 @@ public class MetricsPanel extends JPanel {
 
                 }
             });
+            DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer() {
 
-            final JPanel tablePanel = new JPanel(new BorderLayout());
+                @Override
+                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                    JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                    label.setBorder(null);
+                    Object metricValue = table.getModel().getValueAt(row, 1);
+                    if (metricValue instanceof Integer) {
+                        Integer number = (Integer) metricValue;
+                        if (number > 0) {
+                            if (column == 1) {
+                                label.setFont(label.getFont().deriveFont(Font.BOLD));
+                            }
+                            else {
+                                label.setFont(label.getFont().deriveFont(Font.PLAIN));
+                            }
+                            if (!isSelected) {
+                                label.setForeground(Color.BLACK);
+                            }
+                        }
+                        else {
+                            label.setFont(label.getFont().deriveFont(Font.PLAIN));
+                            label.setForeground(Color.LIGHT_GRAY);
+                        }
+                    }
+                    else {
+                        if (!isSelected) {
+                            label.setForeground(Color.BLACK);
+                        }
+                    }
+                    return label;
+                }
+            };
+            table.getColumnModel().getColumn(0).setCellRenderer(cellRenderer);
+            table.getColumnModel().getColumn(1).setCellRenderer(cellRenderer);
+
+            final JPanel tablePanel = new JPanel(new BorderLayout(3, 3));
             tablePanel.addMouseListener(new MouseAdapter() {
 
                 public void mousePressed(MouseEvent e) {
-                    if(e.isPopupTrigger()) {
+                    if (e.isPopupTrigger()) {
                         showMenu(e);
                     }
                 }
 
 
                 public void mouseReleased(MouseEvent e) {
-                    if(e.isPopupTrigger()) {
+                    if (e.isPopupTrigger()) {
                         showMenu(e);
                     }
                 }
@@ -175,14 +212,28 @@ public class MetricsPanel extends JPanel {
                     menu.show(tablePanel, e.getX(), e.getY());
                 }
             });
-            tablePanel.add(table);
-            tablePanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(2, 2, 14, 2),
-                                                                    ComponentFactory.createTitledBorder(metricsSet)));
-            table.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+            JLabel titleLabel = new JLabel(metricsSet);
+            titleLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
+            tablePanel.add(titleLabel, BorderLayout.NORTH);
+            JPanel tableHolder = new JPanel(new BorderLayout());
+            tableHolder.setBorder(BorderFactory.createEmptyBorder(5, 20, 0, 0));
+            tableHolder.add(table);
+            tableHolder.setOpaque(false);
+            tablePanel.add(tableHolder);
+            table.setShowVerticalLines(false);
+            table.setShowHorizontalLines(true);
+            table.setBackground(Color.WHITE);
+            tablePanel.setBorder(BorderFactory.createEmptyBorder(2, 7, 14, 7));
+            tablePanel.setOpaque(false);
             box.add(tablePanel);
+            box.setOpaque(false);
         }
         JScrollPane sp = new JScrollPane(box);
-        sp.setOpaque(false);
+        sp.setOpaque(true);
+        sp.setBackground(Color.WHITE);
+        JScrollBar verticalScrollBar = sp.getVerticalScrollBar();
+        verticalScrollBar.setBlockIncrement(50);
+        verticalScrollBar.setUnitIncrement(50);
         add(sp);
     }
 
@@ -193,7 +244,7 @@ public class MetricsPanel extends JPanel {
 
 
     private void createBasicMetrics() {
-        List<OWLMetric<?>> metrics = new ArrayList<OWLMetric<?>>();
+        List<OWLMetric<?>> metrics = new ArrayList<>();
         metrics.add(new AxiomCount(getOntology()));
         metrics.add(new LogicalAxiomCount(getOntology()));
         metrics.add(new ReferencedClassCount(getOntology()));
@@ -210,10 +261,10 @@ public class MetricsPanel extends JPanel {
 
 
     private void createClassAxiomMetrics() {
-        List<OWLMetric<?>> metrics = new ArrayList<OWLMetric<?>>();
-        metrics.add(new AxiomTypeMetric(getOntology(), AxiomType.SUBCLASS_OF));
-        metrics.add(new AxiomTypeMetric(getOntology(), AxiomType.EQUIVALENT_CLASSES));
-        metrics.add(new AxiomTypeMetric(getOntology(), AxiomType.DISJOINT_CLASSES));
+        List<OWLMetric<?>> metrics = new ArrayList<>();
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(), AxiomType.SUBCLASS_OF));
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(), AxiomType.EQUIVALENT_CLASSES));
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(), AxiomType.DISJOINT_CLASSES));
         metrics.add(new GCICount(getOntology()));
         metrics.add(new HiddenGCICount(getOntology()));
     	/*
@@ -225,33 +276,33 @@ public class MetricsPanel extends JPanel {
 
 
     private void createObjectPropertyAxiomMetrics() {
-        List<OWLMetric<?>> metrics = new ArrayList<OWLMetric<?>>();
-        metrics.add(new AxiomTypeMetric(getOntology(), AxiomType.SUB_OBJECT_PROPERTY));
-        metrics.add(new AxiomTypeMetric(getOntology(),
+        List<OWLMetric<?>> metrics = new ArrayList<>();
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(), AxiomType.SUB_OBJECT_PROPERTY));
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(),
                                         AxiomType.EQUIVALENT_OBJECT_PROPERTIES));
-        metrics.add(new AxiomTypeMetric(getOntology(),
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(),
                                         AxiomType.INVERSE_OBJECT_PROPERTIES));
-        metrics.add(new AxiomTypeMetric(getOntology(),
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(),
                                         AxiomType.DISJOINT_OBJECT_PROPERTIES));
-        metrics.add(new AxiomTypeMetric(getOntology(),
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(),
                                         AxiomType.FUNCTIONAL_OBJECT_PROPERTY));
-        metrics.add(new AxiomTypeMetric(getOntology(),
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(),
                                         AxiomType.INVERSE_FUNCTIONAL_OBJECT_PROPERTY));
-        metrics.add(new AxiomTypeMetric(getOntology(),
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(),
                                         AxiomType.TRANSITIVE_OBJECT_PROPERTY));
-        metrics.add(new AxiomTypeMetric(getOntology(),
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(),
                                         AxiomType.SYMMETRIC_OBJECT_PROPERTY));
-        metrics.add(new AxiomTypeMetric(getOntology(),
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(),
                                         AxiomType.ASYMMETRIC_OBJECT_PROPERTY));
-        metrics.add(new AxiomTypeMetric(getOntology(),
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(),
                                         AxiomType.REFLEXIVE_OBJECT_PROPERTY));
-        metrics.add(new AxiomTypeMetric(getOntology(),
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(),
                                         AxiomType.IRREFLEXIVE_OBJECT_PROPERTY));
-        metrics.add(new AxiomTypeMetric(getOntology(),
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(),
                                         AxiomType.OBJECT_PROPERTY_DOMAIN));
-        metrics.add(new AxiomTypeMetric(getOntology(),
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(),
                                         AxiomType.OBJECT_PROPERTY_RANGE));
-        metrics.add(new AxiomTypeMetric(getOntology(),
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(),
                                         AxiomType.SUB_PROPERTY_CHAIN_OF));
     	/*
     	 * Degenericized to be compatible with changing OWLAPI interfaces
@@ -262,17 +313,17 @@ public class MetricsPanel extends JPanel {
 
 
     private void createDataPropertyAxiomMetrics() {
-        List<OWLMetric<?>> metrics = new ArrayList<OWLMetric<?>>();
-        metrics.add(new AxiomTypeMetric(getOntology(), AxiomType.SUB_DATA_PROPERTY));
-        metrics.add(new AxiomTypeMetric(getOntology(),
+        List<OWLMetric<?>> metrics = new ArrayList<>();
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(), AxiomType.SUB_DATA_PROPERTY));
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(),
                                         AxiomType.EQUIVALENT_DATA_PROPERTIES));
-        metrics.add(new AxiomTypeMetric(getOntology(),
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(),
                                         AxiomType.DISJOINT_DATA_PROPERTIES));
-        metrics.add(new AxiomTypeMetric(getOntology(),
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(),
                                         AxiomType.FUNCTIONAL_DATA_PROPERTY));
-        metrics.add(new AxiomTypeMetric(getOntology(),
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(),
                                         AxiomType.DATA_PROPERTY_DOMAIN));
-        metrics.add(new AxiomTypeMetric(getOntology(),
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(),
                                         AxiomType.DATA_PROPERTY_RANGE));        
     	/*
     	 * Degenericized to be compatible with changing OWLAPI interfaces
@@ -283,18 +334,18 @@ public class MetricsPanel extends JPanel {
 
 
     private void createIndividualAxiomMetrics() {
-        List<OWLMetric<?>> metrics = new ArrayList<OWLMetric<?>>();
-        metrics.add(new AxiomTypeMetric(getOntology(), AxiomType.CLASS_ASSERTION));
-        metrics.add(new AxiomTypeMetric(getOntology(),
+        List<OWLMetric<?>> metrics = new ArrayList<>();
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(), AxiomType.CLASS_ASSERTION));
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(),
                                         AxiomType.OBJECT_PROPERTY_ASSERTION));
-        metrics.add(new AxiomTypeMetric(getOntology(),
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(),
                                         AxiomType.DATA_PROPERTY_ASSERTION));
-        metrics.add(new AxiomTypeMetric(getOntology(),
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(),
                                         AxiomType.NEGATIVE_OBJECT_PROPERTY_ASSERTION));
-        metrics.add(new AxiomTypeMetric(getOntology(),
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(),
                                         AxiomType.NEGATIVE_DATA_PROPERTY_ASSERTION));
-        metrics.add(new AxiomTypeMetric(getOntology(), AxiomType.SAME_INDIVIDUAL));
-        metrics.add(new AxiomTypeMetric(getOntology(), AxiomType.DIFFERENT_INDIVIDUALS));
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(), AxiomType.SAME_INDIVIDUAL));
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(), AxiomType.DIFFERENT_INDIVIDUALS));
     	/*
     	 * Degenericized to be compatible with changing OWLAPI interfaces
     	 */
@@ -304,10 +355,10 @@ public class MetricsPanel extends JPanel {
 
 
     private void createAnnotationAxiomMetrics() {
-        List<OWLMetric<?>> metrics = new ArrayList<OWLMetric<?>>();
-        metrics.add(new AxiomTypeMetric(getOntology(), AxiomType.ANNOTATION_ASSERTION));
-        metrics.add(new AxiomTypeMetric(getOntology(), AxiomType.ANNOTATION_PROPERTY_DOMAIN));
-        metrics.add(new AxiomTypeMetric(getOntology(), AxiomType.ANNOTATION_PROPERTY_RANGE));
+        List<OWLMetric<?>> metrics = new ArrayList<>();
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(), AxiomType.ANNOTATION_ASSERTION));
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(), AxiomType.ANNOTATION_PROPERTY_DOMAIN));
+        metrics.add(new AxiomTypeMetricWrapper(getOntology(), AxiomType.ANNOTATION_PROPERTY_RANGE));
     	/*
     	 * Degenericized to be compatible with changing OWLAPI interfaces
     	 */
@@ -334,5 +385,21 @@ public class MetricsPanel extends JPanel {
         }
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(new StringSelection(sb.toString()), null);
+    }
+
+    private static class AxiomTypeMetricWrapper extends AxiomTypeMetric {
+
+        private AxiomType<?> type;
+
+        public AxiomTypeMetricWrapper(OWLOntology o, AxiomType<?> axiomType) {
+            super(o, axiomType);
+            this.type = axiomType;
+        }
+
+        @Nonnull
+        @Override
+        public String getName() {
+            return type.getName();
+        }
     }
 }

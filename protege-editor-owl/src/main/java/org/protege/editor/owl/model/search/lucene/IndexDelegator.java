@@ -26,6 +26,9 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import com.google.common.base.Stopwatch;
 
 /**
  * Author: Josef Hardi <josef.hardi@stanford.edu><br>
@@ -56,7 +59,7 @@ public class IndexDelegator {
         if (indexLocation.isPresent()) {
             String existingIndexLocation = indexLocation.get();
             indexDirectory = IndexDirectory.load(existingIndexLocation);
-            logger.info("Loading search index from " + indexDirectory.getLocation());
+            logger.info("Loading search index from {}", indexDirectory.getLocation());
         } else {
             String newIndexLocation = preferences.createIndexLocation(ontology);
             indexDirectory = IndexDirectory.create(newIndexLocation);
@@ -134,12 +137,12 @@ public class IndexDelegator {
             /*
              * Call the index writing procedure and do the optimization
              */
-            long t0 = System.currentTimeMillis();
+            Stopwatch stopwatch = Stopwatch.createStarted();
             logger.info("... start writing index");
             indexDirectory.doIndex(indexWriter, documents, listener);
             optimizeIndex();
-            long t1 = System.currentTimeMillis();
-            logger.info("... built index in " + (t1 - t0) + " ms");
+            stopwatch.stop();
+            logger.info("... built index in {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
         }
     }
 

@@ -28,11 +28,7 @@ public class DLMetricsViewComponent extends AbstractOWLViewComponent {
 
     private boolean changed;
 
-    private OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
-        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
-            handleChanges(changes);
-        }
-    };
+    private OWLOntologyChangeListener listener = changes -> handleChanges(changes);
 
     private OWLModelManagerListener modelManagerListener = new OWLModelManagerListener() {
         public void handleChange(OWLModelManagerChangeEvent event) {

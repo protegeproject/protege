@@ -28,6 +28,7 @@
     <extension-point id="entity_renderer" name="Renderer Plugin" schema="schema/entity_renderer.exsd"/>
     <extension-point id="ExtraReasonerMenuAction" name="Extra Reasoner Menu Item" />
 
+    <extension-point id="searchmanager" name="Search Manager"/>
     <!-- PLUGINS -->
 
 
@@ -176,13 +177,23 @@
         <checkbox value="true"/>
     </extension>
 
+    <extension id="ui.view.menu.inlinethumbnailrendering"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Display thumbnails for image URLs"/>
+        <toolTip value="Display thumbnail images for annotation values that are image URLs"/>
+        <path value="org.protege.editor.owl.ui.view.menu/SlotAAA-AC"/>
+        <class value="org.protege.editor.owl.ui.renderer.InlineThumbnailRenderingAction"/>
+        <editorKitId value="OWLEditorKit"/>
+        <checkbox value="true"/>
+    </extension>
+
 
     <extension id="tree.showdeprecatedentities"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Display deprecated (obsolete) entities"/>
         <class value="org.protege.editor.owl.ui.action.DisplayDeprecatedEntitiesAction"/>
         <toolTip value="Display deprecated entities in the currently focused view"/>
-        <path value="org.protege.editor.owl.ui.view.menu/SlotAAA-AC"/>
+        <path value="org.protege.editor.owl.ui.view.menu/SlotAAA-AD"/>
         <editorKitId value="OWLEditorKit"/>
         <checkbox value="true"/>
     </extension>
@@ -991,7 +1002,7 @@
         <toolTip value="Copy the sub-hierarchy of the selection to the clipboard as tab indented text"/>
         <path value="org.protege.editor.core.application.menu.EditMenu/SlotC-CA"/>
         <editorKitId value="OWLEditorKit"/>
-        <accelerator value="C"/>
+        <accelerator value="alt C"/>
     </extension>
 
     <extension id="paste"
@@ -1434,6 +1445,18 @@
         <class value="org.protege.editor.owl.ui.preferences.GeneralPreferencesPanel"/>
     </extension>
 
+    <extension id="ui.user.prefs"
+               point="org.protege.editor.core.application.preferencespanel">
+        <label value="User details"/>
+        <class value="org.protege.editor.owl.ui.preferences.UserPreferencesPanel"/>
+    </extension>
+
+    <extension id="ui.entitymetadata.prefs"
+               point="org.protege.editor.core.application.preferencespanel">
+        <label value="New Entities Metadata"/>
+        <class value="org.protege.editor.owl.ui.annotation.EntityCreationMetadataPreferencesPanel"/>
+    </extension>
+
     <!-- Move axioms kits -->
 
     <extension id="MoveAxiomsByReference"
@@ -1458,6 +1481,15 @@
         <name value="Axioms by definition (select axioms that define entities)"/>
         <class value="org.protege.editor.owl.ui.ontology.wizard.move.bydefinition.MoveAxiomsByDefinitionKit"/>
     </extension>
-    
+
+    <extension id="DefaultSearchManager" point="org.protege.editor.owl.searchmanager">
+        <name value="Default search"/>
+        <class value="org.protege.editor.owl.model.search.impl.DefaultSearchManager"/>
+    </extension>
+
+   <extension id="NciSearchManager" point="org.protege.editor.owl.searchmanager">
+        <name value="Lucene search for NCI"/>
+        <class value="org.protege.editor.owl.model.search.nci.NciSearchManager"/>
+    </extension>
 
 </plugin>

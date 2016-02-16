@@ -122,15 +122,12 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
         else{
             setLayout(new EntitySelectorPanelLayoutManager());
             add(tabbedPane);
-            entityList = new RemovableObjectList<OWLEntity>();
+            entityList = new RemovableObjectList<>();
             entityList.setCellRenderer(new OWLCellRenderer(owlEditorKit));
 
-            entityList.addListSelectionListener(new ListSelectionListener() {
-
-                public void valueChanged(ListSelectionEvent e) {
-                    if(!e.getValueIsAdjusting()) {
-                        transmitSelectionFromList();
-                    }
+            entityList.addListSelectionListener(e -> {
+                if(!e.getValueIsAdjusting()) {
+                    transmitSelectionFromList();
                 }
             });
 
@@ -152,7 +149,7 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
 
     public void transmitSelectionFromList() {
         if (isMultiSelect()){
-            OWLEntity ent = (OWLEntity) entityList.getSelectedObject();
+            OWLEntity ent = entityList.getSelectedObject();
             setTreeSelection(ent);
         }
     }
@@ -160,7 +157,7 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
 
     public OWLEntity getSelectedObject() {
         if (isMultiSelect()){
-            return (OWLEntity) entityList.getSelectedObject();
+            return entityList.getSelectedObject();
         }
         else{
             final Set<? extends OWLEntity> sel = getCurrentSelection();
@@ -174,10 +171,10 @@ public class OWLEntitySelectorPanel extends JPanel implements OWLObjectSelector<
 
     public Set<OWLEntity> getSelectedObjects() {
         if (isMultiSelect()){
-            return new HashSet<OWLEntity>(entityList.getListItems());
+            return new HashSet<>(entityList.getListItems());
         }
         else{
-            return new HashSet<OWLEntity>(getCurrentSelection());
+            return new HashSet<>(getCurrentSelection());
         }
     }
 

@@ -24,7 +24,7 @@ public class ChangeListenerMediator {
 
 
     public ChangeListenerMediator() {
-        listeners = new ArrayList<ChangeListener>();
+        listeners = new ArrayList<>();
     }
 
 
@@ -58,7 +58,7 @@ public class ChangeListenerMediator {
      * @param source The cause of the state change.
      */
     public void fireStateChanged(Object source) {
-        for (ChangeListener listener : new ArrayList<ChangeListener>(listeners)) {
+        for (ChangeListener listener : new ArrayList<>(listeners)) {
             listener.stateChanged(new ChangeEvent(source));
         }
     }

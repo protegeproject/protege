@@ -26,7 +26,7 @@ public class IterativeAutoIDGenerator extends AbstractIDGenerator implements Rev
 	private long previousStartId;
     private long id;
 
-    private Stack<Long> checkpoints = new Stack<Long>();
+    private Stack<Long> checkpoints = new Stack<>();
 
 
     public IterativeAutoIDGenerator() {

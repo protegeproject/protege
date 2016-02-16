@@ -34,7 +34,7 @@ public class OWLClassExpressionExpressionEditor extends AbstractOWLClassExpressi
     public void initialise() throws Exception {
         final OWLEditorKit eKit = getOWLEditorKit();
         final OWLExpressionChecker<OWLClassExpression> checker = eKit.getModelManager().getOWLExpressionCheckerFactory().getOWLClassExpressionChecker();
-        editor = new ExpressionEditor<OWLClassExpression>(eKit, checker);
+        editor = new ExpressionEditor<>(eKit, checker);
 
         scroller = new JScrollPane(editor);
     }

@@ -37,7 +37,7 @@ public class OWLDataRangeEditor extends AbstractOWLObjectEditor<OWLDataRange> {
         tabbedPane = new JTabbedPane();
         editorPanel.add(tabbedPane);
         tabbedPane.add("Built in datatypes", datatypeList = new OWLDataTypeSelectorPanel(owlEditorKit));
-        expressionEditor = new ExpressionEditor<OWLDataRange>(owlEditorKit, new OWLDataRangeChecker(owlEditorKit.getOWLModelManager()));
+        expressionEditor = new ExpressionEditor<>(owlEditorKit, new OWLDataRangeChecker(owlEditorKit.getOWLModelManager()));
         expressionScroller = new JScrollPane(expressionEditor);
         tabbedPane.add("Data range expression", expressionScroller);
         tabbedPane.setPreferredSize(new Dimension(400, 600));

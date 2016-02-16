@@ -18,7 +18,7 @@ public class SelectImportLocationPage extends AbstractWizardPanel {
 	public static final String ID = "SelectImportLocationPage";
 
 	private Box mainBox;
-    private Collection<ImportLocationOptionsPanel> optionsPanels = new ArrayList<ImportLocationOptionsPanel>();
+    private Collection<ImportLocationOptionsPanel> optionsPanels = new ArrayList<>();
     private Object backPanelDescriptor;
 	
     public SelectImportLocationPage(OWLEditorKit owlEditorKit) {
@@ -45,8 +45,7 @@ public class SelectImportLocationPage extends AbstractWizardPanel {
     			continue;
     		}
     		ImportLocationOptionsPanel optionsPanel = new ImportLocationOptionsPanel(parameter);
-    		Border lineBorder = BorderFactory.createLineBorder(Color.GRAY);
-    		Border titledBorder = BorderFactory.createTitledBorder(lineBorder, "Physical Location: " + parameter.getPhysicalLocation().toString());
+    		Border titledBorder = BorderFactory.createTitledBorder("Physical Location: " + parameter.getPhysicalLocation().toString());
     		optionsPanel.setBorder(titledBorder);
     		mainBox.add(optionsPanel);
     		optionsPanels.add(optionsPanel);

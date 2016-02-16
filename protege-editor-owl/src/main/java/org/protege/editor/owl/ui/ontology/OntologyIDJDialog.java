@@ -54,12 +54,10 @@ public class OntologyIDJDialog extends JPanel {
         enableVersionCheckBox = new JCheckBox("Enable Version Iri");
         enableVersionCheckBox.setEnabled(true);
         enableVersionCheckBox.setSelected(!id.isAnonymous() && id.getVersionIRI().isPresent());
-        enableVersionCheckBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                versionIRIField.setEnabled(enableVersionCheckBox.isSelected());
-                if (versionIRIField.isEnabled()) {
-                    versionIRIField.setText(ontologyIRIField.getText());
-                }
+        enableVersionCheckBox.addActionListener(e -> {
+            versionIRIField.setEnabled(enableVersionCheckBox.isSelected());
+            if (versionIRIField.isEnabled()) {
+                versionIRIField.setText(ontologyIRIField.getText());
             }
         });
         versionIRIField = new JTextField();

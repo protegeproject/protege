@@ -37,10 +37,6 @@ import java.util.TreeSet;
  */
 public class OWLIndividualListComponent extends JPanel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 6410312414641497504L;
 
     private OWLEditorKit owlEditorKit;
 
@@ -83,32 +79,15 @@ public class OWLIndividualListComponent extends JPanel {
         list = new OWLObjectList(getOWLEditorKit());
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
-        list.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    if (list.getSelectedValue() != null) {
-//                        setSelectedEntity((OWLIndividual) list.getSelectedValue());
-                    }
-//                    changeListenerMediator.fireStateChanged(OWLIndividualListViewComponent.this);
-                }
-            }
-        });
 
-        listener = new OWLOntologyChangeListener() {
-            public void ontologiesChanged(java.util.List<? extends OWLOntologyChange> changes) {
-                processChanges(changes);
-            }
-        };
+        listener = changes -> processChanges(changes);
         getOWLModelManager().addOntologyChangeListener(listener);
         changeListenerMediator = new ChangeListenerMediator();
-        individualsInList = new TreeSet<OWLIndividual>(getOWLModelManager().getOWLObjectComparator());
+        individualsInList = new TreeSet<>(getOWLModelManager().getOWLObjectComparator());
 
-        modelManagerListener = new OWLModelManagerListener() {
-
-            public void handleChange(OWLModelManagerChangeEvent event) {
-                if(event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ONTOLOGY_RELOADED)) {
-                    refill();
-                }
+        modelManagerListener = event -> {
+            if(event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ONTOLOGY_RELOADED)) {
+                refill();
             }
         };
         getOWLModelManager().addListener(modelManagerListener);
@@ -160,7 +139,7 @@ public class OWLIndividualListComponent extends JPanel {
 
 
     public Set<OWLNamedIndividual> getSelectedIndividuals() {
-        Set<OWLNamedIndividual> inds = new HashSet<OWLNamedIndividual>();
+        Set<OWLNamedIndividual> inds = new HashSet<>();
         for (Object obj : list.getSelectedValues()) {
             inds.add((OWLNamedIndividual) obj);
         }
@@ -169,8 +148,8 @@ public class OWLIndividualListComponent extends JPanel {
 
 
     private void processChanges(java.util.List<? extends OWLOntologyChange> changes) {
-    	Set<OWLEntity> possiblyAddedEntities = new HashSet<OWLEntity>();
-    	Set<OWLEntity> possiblyRemovedEntities = new HashSet<OWLEntity>();
+    	Set<OWLEntity> possiblyAddedEntities = new HashSet<>();
+    	Set<OWLEntity> possiblyRemovedEntities = new HashSet<>();
         OWLEntityCollector addedCollector = new OWLEntityCollector(possiblyAddedEntities);
         OWLEntityCollector removedCollector = new OWLEntityCollector(possiblyRemovedEntities);
 
@@ -211,7 +190,7 @@ public class OWLIndividualListComponent extends JPanel {
         if (set == null) {
             return;
         }
-        java.util.List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        java.util.List<OWLOntologyChange> changes = new ArrayList<>();
         changes.addAll(set.getOntologyChanges());
         getOWLModelManager().applyChanges(changes);
         OWLNamedIndividual ind = set.getOWLEntity();
@@ -222,7 +201,7 @@ public class OWLIndividualListComponent extends JPanel {
 
 
     public java.util.List<OWLIndividual> find(String match) {
-        return new ArrayList<OWLIndividual>(getOWLModelManager().getOWLEntityFinder().getMatchingOWLIndividuals(match));
+        return new ArrayList<>(getOWLModelManager().getOWLEntityFinder().getMatchingOWLIndividuals(match));
     }
 
 

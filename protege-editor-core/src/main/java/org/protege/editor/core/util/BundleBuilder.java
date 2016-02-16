@@ -58,7 +58,11 @@ public class BundleBuilder {
     }
     
     private void addDirectory(JarOutputStream jar, File dir) throws IOException {
-        for (File f : dir.listFiles()) {
+        File[] files = dir.listFiles();
+        if(files == null) {
+            return;
+        }
+        for (File f : files) {
             String path = calculatePath(f);
             if (f.isFile()) {
                 if (f.equals(getManifest())) {
@@ -73,15 +77,11 @@ public class BundleBuilder {
                 JarEntry entry = new JarEntry(path);
                 jar.putNextEntry(entry);
                 byte buffer[] = new byte[BUFFER_SIZE];
-                FileInputStream input = new FileInputStream(f);
-                try {
-                    int readCount = 0;
+                try (FileInputStream input = new FileInputStream(f)) {
+                    int readCount;
                     while ((readCount = input.read(buffer)) > 0) {
                         jar.write(buffer, 0, readCount);
                     }
-                }
-                finally {
-                    input.close();
                 }
             }
             else {

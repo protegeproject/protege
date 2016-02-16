@@ -21,10 +21,6 @@ import java.awt.event.ActionListener;
 public class UsagePanel extends JPanel {
 
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 6031827085477038591L;
 
     private UsageTree tree;
 
@@ -41,35 +37,27 @@ public class UsagePanel extends JPanel {
         tree = new UsageTree(owlEditorKit);
 
         showAllCheckbox = new JCheckBox("this", !UsagePreferences.getInstance().isFilterActive(UsageFilter.filterSelf));
-        showAllCheckbox.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent event) {
-                UsagePreferences.getInstance().setFilterActive(UsageFilter.filterSelf, !showAllCheckbox.isSelected());
-                setOWLEntity(currentSelection);
-            }
+        showAllCheckbox.addActionListener(event -> {
+            UsagePreferences.getInstance().setFilterActive(UsageFilter.filterSelf, !showAllCheckbox.isSelected());
+            setOWLEntity(currentSelection);
         });
 
         showDisjointsCheckbox = new JCheckBox("disjoints", !UsagePreferences.getInstance().isFilterActive(UsageFilter.filterDisjoints));
-        showDisjointsCheckbox.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent event) {
-                UsagePreferences.getInstance().setFilterActive(UsageFilter.filterDisjoints, !showDisjointsCheckbox.isSelected());
-                setOWLEntity(currentSelection);
-            }
+        showDisjointsCheckbox.addActionListener(event -> {
+            UsagePreferences.getInstance().setFilterActive(UsageFilter.filterDisjoints, !showDisjointsCheckbox.isSelected());
+            setOWLEntity(currentSelection);
         });
 
         showDifferentCheckbox = new JCheckBox("different", !UsagePreferences.getInstance().isFilterActive(UsageFilter.filterDifferent));
-        showDifferentCheckbox.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent event) {
-                UsagePreferences.getInstance().setFilterActive(UsageFilter.filterDifferent, !showDifferentCheckbox.isSelected());
-                setOWLEntity(currentSelection);
-            }
+        showDifferentCheckbox.addActionListener(event -> {
+            UsagePreferences.getInstance().setFilterActive(UsageFilter.filterDifferent, !showDifferentCheckbox.isSelected());
+            setOWLEntity(currentSelection);
         });
 
         showNamedSubSuperclassesCheckbox = new JCheckBox("named sub/superclasses", !UsagePreferences.getInstance().isFilterActive(UsageFilter.filterNamedSubsSupers));
-        showNamedSubSuperclassesCheckbox.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent event) {
-                UsagePreferences.getInstance().setFilterActive(UsageFilter.filterNamedSubsSupers, !showNamedSubSuperclassesCheckbox.isSelected());                                
-                setOWLEntity(currentSelection);
-            }
+        showNamedSubSuperclassesCheckbox.addActionListener(event -> {
+            UsagePreferences.getInstance().setFilterActive(UsageFilter.filterNamedSubsSupers, !showNamedSubSuperclassesCheckbox.isSelected());
+            setOWLEntity(currentSelection);
         });
 
         Box box = new Box(BoxLayout.LINE_AXIS);

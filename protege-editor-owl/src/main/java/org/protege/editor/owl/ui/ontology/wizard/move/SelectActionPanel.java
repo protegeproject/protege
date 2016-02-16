@@ -40,11 +40,7 @@ public class SelectActionPanel extends AbstractMoveAxiomsWizardPanel {
         moveAxiomsButton = new JRadioButton("Move axioms (to another ontology)");
         deleteAxiomsButton = new JRadioButton("Delete axioms");
 
-        final ActionListener actionListener = new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                getWizard().resetButtonStates();
-            }
-        };
+        final ActionListener actionListener = event -> getWizard().resetButtonStates();
         copyAxiomsButton.addActionListener(actionListener);
         moveAxiomsButton.addActionListener(actionListener);
         deleteAxiomsButton.addActionListener(actionListener);

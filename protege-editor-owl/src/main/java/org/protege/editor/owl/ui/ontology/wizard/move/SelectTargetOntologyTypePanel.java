@@ -45,16 +45,12 @@ public class SelectTargetOntologyTypePanel extends AbstractMoveAxiomsWizardPanel
         ButtonGroup bg = new ButtonGroup();
         bg.add(mergeIntoNew);
         bg.add(mergeIntoExisting);
-        mergeIntoExisting.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                getWizard().resetButtonStates();
-            }
+        mergeIntoExisting.addActionListener(e -> {
+            getWizard().resetButtonStates();
         });
-        mergeIntoNew.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                getWizard().resetButtonStates();
-                getWizard().setTargetOntologyID(null);
-            }
+        mergeIntoNew.addActionListener(e -> {
+            getWizard().resetButtonStates();
+            getWizard().setTargetOntologyID(null);
         });
     }
 

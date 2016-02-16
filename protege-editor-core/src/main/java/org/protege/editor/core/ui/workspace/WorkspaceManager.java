@@ -32,7 +32,7 @@ public class WorkspaceManager {
 
 
     public WorkspaceManager() {
-        this.workspaceFrameMap = new HashMap<Workspace, WorkspaceFrame>();
+        this.workspaceFrameMap = new HashMap<>();
     }
 
 
@@ -55,7 +55,7 @@ public class WorkspaceManager {
                 }
             });
             workspaceFrameMap.put(workspace, frame);
-            frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
             frame.setVisible(true);
         }
     }

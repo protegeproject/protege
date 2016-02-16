@@ -26,13 +26,9 @@ public class OWLClassAssertionSelectionModel implements Disposable {
 	private OWLClass inferredOwlClass;
 	private OWLIndividual individual;
 	private boolean inferredOwlClassNeedsRecalculation = true;
-	private List<OWLSelectionModelListener> listeners = new ArrayList<OWLSelectionModelListener>();
+	private List<OWLSelectionModelListener> listeners = new ArrayList<>();
 	
-	private OWLSelectionModelListener mainSelectionListener = new OWLSelectionModelListener() {
-		public void selectionChanged() throws Exception {
-			mainSelectionChanged();
-		}
-	};
+	private OWLSelectionModelListener mainSelectionListener = () -> mainSelectionChanged();
 	
 	public static OWLClassAssertionSelectionModel get(OWLEditorKit editorKit) {
 		OWLClassAssertionSelectionModel selectionModel = (OWLClassAssertionSelectionModel) editorKit.get(OWLClassAssertionSelectionModel.class);
@@ -61,7 +57,7 @@ public class OWLClassAssertionSelectionModel implements Disposable {
 			fireSelectionChanged();
 		}
 		else if (e instanceof OWLIndividual) {
-			individual = (OWLIndividual) individual;
+			individual = individual;
 			inferredOwlClassNeedsRecalculation = true;
 			OWLModelManager modelManager = editorKit.getOWLModelManager();
 			Collection<OWLClassExpression> types = EntitySearcher.getTypes(individual, modelManager.getActiveOntologies());

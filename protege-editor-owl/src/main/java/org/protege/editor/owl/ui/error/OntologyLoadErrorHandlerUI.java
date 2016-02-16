@@ -93,7 +93,7 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
         }
         else{
             ErrorExplainer.ErrorExplanation explanation = new ErrorExplainer().getErrorExplanation(e, true);
-            ErrorPanel<T> errorPanel = new ErrorPanel<T>(explanation, loc);
+            ErrorPanel<T> errorPanel = new ErrorPanel<>(explanation, loc);
             logger.warn(explanation.getMessage(), explanation.getCause());
             retVal = JOptionPaneEx.showConfirmDialog(eKit.getWorkspace(),
                                                      "Load Error: " + ontologyID,
@@ -164,7 +164,7 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
             tabs.setPreferredSize(new Dimension(700, 500));
 
 
-            final java.util.List<OWLParser> parsers = new ArrayList<OWLParser>(e.getExceptions().keySet());
+            final java.util.List<OWLParser> parsers = new ArrayList<>(e.getExceptions().keySet());
 
             for (OWLParser parser : parsers){
                 Throwable parseError = e.getExceptions().get(parser);

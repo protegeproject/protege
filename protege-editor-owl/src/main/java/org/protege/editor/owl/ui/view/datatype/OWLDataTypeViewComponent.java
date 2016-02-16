@@ -39,10 +39,6 @@ import java.util.List;
 public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
         implements Findable<OWLDatatype> {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 3202742013883811816L;
 
     private OWLObjectList<OWLDatatype> list;
 
@@ -53,27 +49,20 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
         public void valueChanged(ListSelectionEvent e) {
             if (!e.getValueIsAdjusting()) {
                 if (list.getSelectedValue() != null) {
-                    setGlobalSelection((OWLDatatype)list.getSelectedValue());
+                    setGlobalSelection(list.getSelectedValue());
                 }
                 changeListenerMediator.fireStateChanged(OWLDataTypeViewComponent.this);
             }
         }
     };
 
-    private OWLOntologyChangeListener ontChangeListener = new OWLOntologyChangeListener(){
-        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
-            handleChanges(changes);
+    private OWLOntologyChangeListener ontChangeListener = changes -> handleChanges(changes);
+    
+    private OWLModelManagerListener modelManagerListener = event -> {
+        if (event.getType() == EventType.ACTIVE_ONTOLOGY_CHANGED) {
+            reload();
         }
     };
-    
-    private OWLModelManagerListener modelManagerListener = new OWLModelManagerListener() {
-		
-		public void handleChange(OWLModelManagerChangeEvent event) {
-			if (event.getType() == EventType.ACTIVE_ONTOLOGY_CHANGED) {
-				reload();
-			}
-		}
-	};
 
 
     public void initialiseView() throws Exception {
@@ -81,7 +70,7 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
 
         changeListenerMediator = new ChangeListenerMediator();
 
-        list = new OWLObjectList<OWLDatatype>(getOWLEditorKit());
+        list = new OWLObjectList<>(getOWLEditorKit());
         list.addListSelectionListener(selListener);
 
         reload();
@@ -97,10 +86,6 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
 
     private void setupActions() {
         final DisposableAction addDatatypeAction = new DisposableAction("Add datatype", OWLIcons.getIcon("datarange.add.png")) {
-            /**
-             * 
-             */
-            private static final long serialVersionUID = 7152977701137488187L;
 
             public void actionPerformed(ActionEvent event) {
                 createNewDatatype();
@@ -113,10 +98,6 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
 
         final OWLSelectionViewAction deleteDatatypeAction = new OWLSelectionViewAction("Delete datatype", OWLIcons.getIcon("datarange.remove.png")) {
 
-            /**
-             * 
-             */
-            private static final long serialVersionUID = 5359788681251086828L;
 
 
             public void actionPerformed(ActionEvent event) {
@@ -192,7 +173,7 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
     private void reload(){
         // Add all known datatypes including built in ones
         final OWLOntologyManager mngr = getOWLModelManager().getOWLOntologyManager();
-        java.util.List<OWLDatatype> datatypeList = new ArrayList<OWLDatatype>(new OWLDataTypeUtils(mngr).getKnownDatatypes(getOWLModelManager().getActiveOntologies()));
+        java.util.List<OWLDatatype> datatypeList = new ArrayList<>(new OWLDataTypeUtils(mngr).getKnownDatatypes(getOWLModelManager().getActiveOntologies()));
         Collections.sort(datatypeList, getOWLModelManager().getOWLObjectComparator());
 
         list.setListData(datatypeList.toArray(new OWLDatatype[datatypeList.size()]));
@@ -204,7 +185,7 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
 
 
     public List<OWLDatatype> find(String match) {
-        return new ArrayList<OWLDatatype>(getOWLModelManager().getOWLEntityFinder().getMatchingOWLDatatypes(match));
+        return new ArrayList<>(getOWLModelManager().getOWLEntityFinder().getMatchingOWLDatatypes(match));
     }
 
 

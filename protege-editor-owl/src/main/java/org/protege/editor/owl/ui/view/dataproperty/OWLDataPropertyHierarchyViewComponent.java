@@ -8,6 +8,7 @@ import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLSubPropertyAxiom;
 
 import javax.swing.*;
+import java.util.Optional;
 
 
 /**
@@ -18,10 +19,6 @@ import javax.swing.*;
  */
 public class OWLDataPropertyHierarchyViewComponent extends AbstractOWLPropertyHierarchyViewComponent<OWLDataProperty> {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 6315136229629963526L;
 
 
     protected boolean isOWLDataPropertyView() {
@@ -33,6 +30,10 @@ public class OWLDataPropertyHierarchyViewComponent extends AbstractOWLPropertyHi
         return getOWLModelManager().getOWLHierarchyManager().getOWLDataPropertyHierarchyProvider();
     }
 
+    @Override
+    protected Optional<OWLObjectHierarchyProvider<OWLDataProperty>> getInferredHierarchyProvider() {
+        return Optional.of(getOWLModelManager().getOWLHierarchyManager().getOWLDataPropertyHierarchyProvider());
+    }
 
     protected OWLSubPropertyAxiom getSubPropertyAxiom(OWLDataProperty child, OWLDataProperty parent) {
         return getOWLDataFactory().getOWLSubDataPropertyOfAxiom(child, parent);

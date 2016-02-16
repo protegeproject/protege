@@ -27,7 +27,7 @@ public class Line extends PageObject {
 
     private TextLayout textLayout;
 
-    private Map<LinkBox, AttributedString> linkMap = new HashMap<LinkBox, AttributedString>();
+    private Map<LinkBox, AttributedString> linkMap = new HashMap<>();
 
     public Line(AttributedString attributedString) {
         this.attributedString = attributedString;

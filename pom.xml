@@ -3,7 +3,7 @@
 
     <groupId>edu.stanford.protege</groupId>
     <artifactId>protege-parent</artifactId>
-    <version>5.0.0-beta-21-SNAPSHOT</version>
+    <version>5.0.0-beta-22-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>protege-parent</name>
@@ -160,6 +160,12 @@
 				<groupId>org.slf4j</groupId>
 				<artifactId>jul-to-slf4j</artifactId>
 				<version>${slf4j.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.fusesource.jansi</groupId>
+				<artifactId>jansi</artifactId>
+				<version>1.11</version>
 			</dependency>
 
 			<dependency>

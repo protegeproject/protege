@@ -3,6 +3,7 @@ package org.protege.editor.owl.model.cache;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.vocab.DublinCoreVocabulary;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import java.util.*;
@@ -19,27 +20,23 @@ import java.util.*;
  */
 public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
 
-    private Map<String, OWLClass> owlClassMap = new HashMap<String, OWLClass>();
+    private Map<String, OWLClass> owlClassMap = new HashMap<>();
 
-    private Map<String, OWLObjectProperty> owlObjectPropertyMap = new HashMap<String, OWLObjectProperty>();
+    private Map<String, OWLObjectProperty> owlObjectPropertyMap = new HashMap<>();
 
-    private Map<String, OWLDataProperty> owlDataPropertyMap = new HashMap<String, OWLDataProperty>();
+    private Map<String, OWLDataProperty> owlDataPropertyMap = new HashMap<>();
 
-    private Map<String, OWLAnnotationProperty> owlAnnotationPropertyMap = new HashMap<String, OWLAnnotationProperty>();
+    private Map<String, OWLAnnotationProperty> owlAnnotationPropertyMap = new HashMap<>();
 
-    private Map<String, OWLNamedIndividual> owlIndividualMap = new HashMap<String, OWLNamedIndividual>();
+    private Map<String, OWLNamedIndividual> owlIndividualMap = new HashMap<>();
 
-    private Map<String, OWLDatatype> owlDatatypeMap = new HashMap<String, OWLDatatype>();
+    private Map<String, OWLDatatype> owlDatatypeMap = new HashMap<>();
 
-    private Map<OWLEntity, String> entityRenderingMap = new HashMap<OWLEntity, String>();
+    private Map<OWLEntity, String> entityRenderingMap = new HashMap<>();
 
     private OWLModelManager owlModelManager;
 
-    private OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
-        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
-            processChanges(changes);
-        }
-    };
+    private OWLOntologyChangeListener listener = changes -> processChanges(changes);
 
 
     public OWLEntityRenderingCacheImpl() {
@@ -53,7 +50,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
 
 
     private void processChanges(List<? extends OWLOntologyChange> changes) {
-    	Set<OWLEntity> changedEntities = new HashSet<OWLEntity>();
+    	Set<OWLEntity> changedEntities = new HashSet<>();
         for (OWLOntologyChange change : changes) {
             if (change instanceof OWLAxiomChange) {
                 OWLAxiomChange chg = (OWLAxiomChange) change;
@@ -101,6 +98,11 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
         // standard annotation properties        
         for (IRI uri : OWLRDFVocabulary.BUILT_IN_ANNOTATION_PROPERTY_IRIS){
             addRendering(factory.getOWLAnnotationProperty(uri), owlAnnotationPropertyMap);
+        }
+
+        // Dublin Core
+        for(DublinCoreVocabulary vocabulary : DublinCoreVocabulary.values()) {
+            addRendering(factory.getOWLAnnotationProperty(vocabulary.getIRI()), owlAnnotationPropertyMap);
         }
 
         // datatypes
@@ -310,7 +312,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
 
 
     public Set<String> getOWLEntityRenderings() {
-        Set<String> renderings = new HashSet<String>(owlClassMap.size() +
+        Set<String> renderings = new HashSet<>(owlClassMap.size() +
                                                      owlObjectPropertyMap.size() +
                                                      owlDataPropertyMap.size() +
                                                      owlAnnotationPropertyMap.size() +

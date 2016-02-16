@@ -32,7 +32,7 @@ public class PluginParameterExtensionMatcher implements PluginExtensionMatcher {
 
 
     public PluginParameterExtensionMatcher() {
-        this(new HashMap<String, String>());
+        this(new HashMap<>());
     }
 
 
@@ -43,7 +43,7 @@ public class PluginParameterExtensionMatcher implements PluginExtensionMatcher {
      *                    initialise the values to be matched.
      */
     public PluginParameterExtensionMatcher(Map<String, String> keyValueMap) {
-        this.keyValueMap = new HashMap<String, String>();
+        this.keyValueMap = new HashMap<>();
         this.keyValueMap.putAll(keyValueMap);
     }
 

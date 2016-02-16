@@ -25,12 +25,7 @@ public class RemovePrefixMappingAction extends AbstractAction {
 	
 	private PrefixMapperTables tables;
 	private PrefixMapperTable table;
-	private ListSelectionListener tableSelectionListener = new ListSelectionListener() {
-		
-		public void valueChanged(ListSelectionEvent e) {
-			updateEnabled();
-		}
-	};
+	private ListSelectionListener tableSelectionListener = e -> updateEnabled();
 	
 	private SelectedOntologyListener ontologySelectionListener = new SelectedOntologyListener() {
 		
@@ -76,10 +71,10 @@ public class RemovePrefixMappingAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
     	PrefixMapperTable table = tables.getPrefixMapperTable();
         int [] selIndexes = table.getSelectedRows();
-        List<String> prefixesToRemove = new ArrayList<String>();
-        for (int i = 0; i < selIndexes.length; i++) {
-            prefixesToRemove.add(table.getModel().getValueAt(selIndexes[i], 0).toString());
-        }
+        List<String> prefixesToRemove = new ArrayList<>();
+		for (int selIndex : selIndexes) {
+			prefixesToRemove.add(table.getModel().getValueAt(selIndex, 0).toString());
+		}
         for (String prefix : prefixesToRemove) {
             table.getModel().removeMapping(prefix);
         }

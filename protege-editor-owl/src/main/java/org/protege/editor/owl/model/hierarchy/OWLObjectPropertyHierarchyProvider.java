@@ -1,10 +1,11 @@
 package org.protege.editor.owl.model.hierarchy;
 
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.search.EntitySearcher;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
+import static java.util.stream.Collectors.toList;
 
 
 /**
@@ -21,7 +22,7 @@ public class OWLObjectPropertyHierarchyProvider extends AbstractOWLPropertyHiera
 
 
     protected Set<OWLObjectProperty> getPropertiesReferencedInChange(List<? extends OWLOntologyChange> changes) {
-        Set<OWLObjectProperty> properties = new HashSet<OWLObjectProperty>();
+        Set<OWLObjectProperty> properties = new HashSet<>();
         for (OWLOntologyChange change : changes) {
             if (change.isAxiomChange()) {
                 OWLAxiomChange axiomChange = (OWLAxiomChange) change;
@@ -60,5 +61,28 @@ public class OWLObjectPropertyHierarchyProvider extends AbstractOWLPropertyHiera
 
     protected boolean containsReference(OWLOntology ont, OWLObjectProperty prop) {
         return ont.containsObjectPropertyInSignature(prop.getIRI());
+    }
+
+    @Override
+    protected Collection<OWLObjectProperty> getSuperProperties(OWLObjectProperty subProperty, Set<OWLOntology> ontologies) {
+        return EntitySearcher.getSuperProperties(subProperty, ontologies)
+                .stream()
+                .filter(p -> !p.isAnonymous())
+                .map(p -> (OWLObjectProperty) p)
+                .collect(toList());
+    }
+
+    @Override
+    protected Collection<OWLObjectProperty> getSubProperties(OWLObjectProperty superProp, Set<OWLOntology> ontologies) {
+        List<OWLObjectProperty> result = new ArrayList<>();
+        for(OWLOntology ont : ontologies) {
+            ont.getObjectSubPropertyAxiomsForSuperProperty(superProp)
+                    .stream()
+                    .map(OWLSubPropertyAxiom::getSubProperty)
+                    .filter(p -> !p.isAnonymous())
+                    .map(p -> (OWLObjectProperty) p)
+                    .forEach(result::add);
+        }
+        return result;
     }
 }

@@ -73,13 +73,13 @@ public class OWLObjectDropTargetListener implements DropTargetListener {
 
 
     public void drop(DropTargetDropEvent dtde) {
-        if (isDropAcceptable(dtde) == false) {
+        if (!isDropAcceptable(dtde)) {
             dtde.rejectDrop();
         }
         else {
             dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
             List<OWLObject> objs = getDropObjects(dtde.getTransferable());
-            List<OWLObject> dupObjs = new ArrayList<OWLObject>();
+            List<OWLObject> dupObjs = new ArrayList<>();
             OWLObject dupObj = null;
             for (OWLObject obj : objs) {
                 OWLObjectDuplicator duplicator = new OWLObjectDuplicator(target.getOWLModelManager().getOWLDataFactory());
@@ -103,7 +103,7 @@ public class OWLObjectDropTargetListener implements DropTargetListener {
 
 
     protected List<OWLObject> getDropObjects(Transferable transferable) {
-        if (isAcceptableTransferable(transferable) == false) {
+        if (!isAcceptableTransferable(transferable)) {
             return null;
         }
         try {
@@ -122,8 +122,8 @@ public class OWLObjectDropTargetListener implements DropTargetListener {
 
     protected boolean isAcceptableTransferable(Transferable transferable) {
         DataFlavor [] flavors = transferable.getTransferDataFlavors();
-        for (int i = 0; i < flavors.length; i++) {
-            if (flavors[i].equals(OWLObjectDataFlavor.OWL_OBJECT_DATA_FLAVOR)) {
+        for (DataFlavor flavor : flavors) {
+            if (OWLObjectDataFlavor.OWL_OBJECT_DATA_FLAVOR.equals(flavor)) {
                 return true;
             }
         }

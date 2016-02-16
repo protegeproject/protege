@@ -59,7 +59,7 @@ public class InferredAxiomsFrameSection extends AbstractOWLFrameSection<OWLOntol
             }
             OWLOntologyManager man = OWLManager.createOWLOntologyManager();
             OWLOntology inferredOnt = man.createOntology(IRI.create("http://another.com/ontology" + System.currentTimeMillis()));
-            InferredOntologyGenerator ontGen = new InferredOntologyGenerator(getOWLModelManager().getReasoner(), new ArrayList<InferredAxiomGenerator<? extends OWLAxiom>>());
+            InferredOntologyGenerator ontGen = new InferredOntologyGenerator(getOWLModelManager().getReasoner(), new ArrayList<>());
             ontGen.addGenerator(new InferredSubClassAxiomGenerator());
             ontGen.addGenerator(new InferredClassAssertionAxiomGenerator());
             ontGen.addGenerator(new InferredSubObjectPropertyAxiomGenerator());
@@ -67,7 +67,7 @@ public class InferredAxiomsFrameSection extends AbstractOWLFrameSection<OWLOntol
             ontGen.fillOntology(man.getOWLDataFactory(), inferredOnt);
 
 
-            for (OWLAxiom ax : new TreeSet<OWLAxiom>(inferredOnt.getAxioms())) {
+            for (OWLAxiom ax : new TreeSet<>(inferredOnt.getAxioms())) {
                 boolean add = true;
                 for (OWLOntology actOnt : getOWLModelManager().getActiveOntologies()) {
                     if (actOnt.containsAxiom(ax)) {
@@ -92,27 +92,23 @@ public class InferredAxiomsFrameSection extends AbstractOWLFrameSection<OWLOntol
 
 
     public Comparator<OWLFrameSectionRow<OWLOntology, OWLAxiom, OWLAxiom>> getRowComparator() {
-        return new Comparator<OWLFrameSectionRow<OWLOntology, OWLAxiom, OWLAxiom>>() {
+        return (o1, o2) -> {
 
-            public int compare(OWLFrameSectionRow<OWLOntology, OWLAxiom, OWLAxiom> o1,
-                    OWLFrameSectionRow<OWLOntology, OWLAxiom, OWLAxiom> o2) {
-
-                int diff = o1.getAxiom().compareTo(o2.getAxiom());
-                if(diff != 0) {
-                    return diff;
-                }
-                else if (o1.getOntology() == null  && o2.getOntology() == null) {
-                    return 0;
-                }
-                else if (o1.getOntology() == null) {
-                    return -1;
-                }
-                else if (o2.getOntology() == null) {
-                    return +1;
-                }
-                else {
-                    return o1.getOntology().compareTo(o2.getOntology());
-                }
+            int diff = o1.getAxiom().compareTo(o2.getAxiom());
+            if(diff != 0) {
+                return diff;
+            }
+            else if (o1.getOntology() == null  && o2.getOntology() == null) {
+                return 0;
+            }
+            else if (o1.getOntology() == null) {
+                return -1;
+            }
+            else if (o2.getOntology() == null) {
+                return +1;
+            }
+            else {
+                return o1.getOntology().compareTo(o2.getOntology());
             }
         };
     }

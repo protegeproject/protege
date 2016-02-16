@@ -28,7 +28,7 @@ public abstract class AbstractProtegePlugin<P extends ProtegePluginInstance> imp
 
 	public P newInstance() throws ClassNotFoundException,
 			IllegalAccessException, InstantiationException {
-        ExtensionInstantiator<P> instantiator = new ExtensionInstantiator<P>(extension);
+        ExtensionInstantiator<P> instantiator = new ExtensionInstantiator<>(extension);
         return instantiator.instantiate();
 	}
 	

@@ -17,11 +17,7 @@ import java.awt.*;
  */
 public class ViewSplitPaneDivider extends BasicSplitPaneDivider {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 4997020410292076231L;
-    // Debugging can be turned on (requires recompile) to
+        // Debugging can be turned on (requires recompile) to
     // highlight the divider position and size
     public static final boolean DEBUG = false;
 
@@ -47,10 +43,6 @@ public class ViewSplitPaneDivider extends BasicSplitPaneDivider {
 
     private static class DividerComponent extends JPanel {
 
-        /**
-         * 
-         */
-        private static final long serialVersionUID = 6486455263566584086L;
 
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);

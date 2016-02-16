@@ -66,7 +66,7 @@ public class OWLObjectPropertyIndividualPairEditor extends AbstractOWLObjectEdit
 
     public Set<OWLObjectPropertyIndividualPair> getEditedObjects() {
 
-        Set<OWLObjectPropertyIndividualPair> pairs = new HashSet<OWLObjectPropertyIndividualPair>();
+        Set<OWLObjectPropertyIndividualPair> pairs = new HashSet<>();
 
         for (OWLObjectProperty prop : objectPropertyPanel.getSelectedObjects()) {
             for (OWLIndividual ind : individualSelectorPanel.getSelectedObjects()) {

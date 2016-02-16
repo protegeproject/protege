@@ -52,7 +52,7 @@ public class PreferenceNodeGroupPanel extends JPanel {
 //        } catch (UnsupportedLookAndFeelException e) {
 //            e.printStackTrace();
 //        }
-        List<PreferenceNodeGroup> nodes = new ArrayList<PreferenceNodeGroup>();
+        List<PreferenceNodeGroup> nodes = new ArrayList<>();
         PreferenceNodeGroup group = new PreferenceNodeGroup("Class description rendering");
         group.addNode(new BooleanPreferenceNode("Show hyperlinks"));
         group.addNode(new BooleanPreferenceNode("Highlight key words"));

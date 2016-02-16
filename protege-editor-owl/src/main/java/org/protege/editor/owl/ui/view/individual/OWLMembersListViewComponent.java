@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.view.individual;
 
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.search.EntitySearcher;
 
 import java.util.*;
@@ -27,11 +28,9 @@ public class OWLMembersListViewComponent extends OWLIndividualListViewComponent 
 
     private static final long serialVersionUID = -6015526995379146198L;
 
-    private OWLSelectionModelListener l = new OWLSelectionModelListener() {
-        public void selectionChanged() throws Exception {
-            if (getOWLWorkspace().getOWLSelectionModel().getSelectedObject() instanceof OWLClass) {
-                refill();
-            }
+    private OWLSelectionModelListener l = () -> {
+        if (getOWLWorkspace().getOWLSelectionModel().getSelectedObject() instanceof OWLClass) {
+            refill();
         }
     };
 
@@ -62,11 +61,11 @@ public class OWLMembersListViewComponent extends OWLIndividualListViewComponent 
 
     //TODO: do we want to cache this?
     protected Set<OWLNamedIndividual> getUntypedIndividuals() {
-        Set<OWLNamedIndividual> untypedIndividuals = new HashSet<OWLNamedIndividual>();
+        Set<OWLNamedIndividual> untypedIndividuals = new HashSet<>();
         OWLOntology activeOntology = getOWLModelManager().getActiveOntology();
         Set<OWLOntology> importsClosure = activeOntology.getImportsClosure();
 
-        for (OWLNamedIndividual individual : activeOntology.getIndividualsInSignature(true)) {
+        for (OWLNamedIndividual individual : activeOntology.getIndividualsInSignature(Imports.INCLUDED)) {
             Collection<OWLClassExpression> types = EntitySearcher.getTypes(individual, importsClosure);
             if (types.size() == 0) {
                 untypedIndividuals.add(individual);
@@ -89,7 +88,7 @@ public class OWLMembersListViewComponent extends OWLIndividualListViewComponent 
             OWLOntologyChange change = new AddAxiom(getOWLModelManager().getActiveOntology(), typeAxiom);
             return Collections.singletonList(change);
         }
-        return new ArrayList<OWLOntologyChange>();
+        return new ArrayList<>();
     }
 
 

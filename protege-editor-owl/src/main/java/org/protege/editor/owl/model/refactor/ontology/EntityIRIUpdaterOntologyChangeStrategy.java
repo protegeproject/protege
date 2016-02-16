@@ -17,7 +17,7 @@ public class EntityIRIUpdaterOntologyChangeStrategy implements OntologyIDChangeS
         if(!isEntityRenamingChange(from, to)) {
             return Collections.emptyList();
         }
-        Map<OWLEntity, IRI> renameMap = new HashMap<OWLEntity, IRI>();
+        Map<OWLEntity, IRI> renameMap = new HashMap<>();
         getRenameMap(ontology, from, to, renameMap, Long.MAX_VALUE);
         OWLEntityRenamer entityRenamer = new OWLEntityRenamer(ontology.getOWLOntologyManager(), Collections.singleton(ontology));
         return entityRenamer.changeIRI(renameMap);
@@ -57,7 +57,7 @@ public class EntityIRIUpdaterOntologyChangeStrategy implements OntologyIDChangeS
     }
     
     public boolean hasEntitiesToRename(OWLOntology ontology, OWLOntologyID from, OWLOntologyID to) {
-        HashMap<OWLEntity, IRI> renameMap = new HashMap<OWLEntity, IRI>();
+        HashMap<OWLEntity, IRI> renameMap = new HashMap<>();
         getRenameMap(ontology, from, to, renameMap, 1);
         return !renameMap.isEmpty();
     }
@@ -66,7 +66,7 @@ public class EntityIRIUpdaterOntologyChangeStrategy implements OntologyIDChangeS
         if(!isEntityRenamingChange(from, to)) {
             return Collections.emptySet();
         }
-        Map<OWLEntity, IRI> renameMap = new HashMap<OWLEntity, IRI>();
+        Map<OWLEntity, IRI> renameMap = new HashMap<>();
         getRenameMap(ontology, from, to, renameMap, Long.MAX_VALUE);
         return renameMap.keySet();
     }
@@ -77,10 +77,7 @@ public class EntityIRIUpdaterOntologyChangeStrategy implements OntologyIDChangeS
             IRI entityIRI = entity.getIRI();
             if(entityIRI.length() > base.length()) {
                 if(entityIRI.subSequence(0, base.length()).equals(base)) {
-                    StringBuilder name = new StringBuilder();
-                    name.append(toBase);
-                    name.append(entityIRI.subSequence(base.length(), entityIRI.length()));
-                    renameMap.put(entity, IRI.create(name.toString()));
+                    renameMap.put(entity, IRI.create(toBase + entityIRI.subSequence(base.length(), entityIRI.length())));
                     counter++;
                     if(counter >= limit) {
                         return;

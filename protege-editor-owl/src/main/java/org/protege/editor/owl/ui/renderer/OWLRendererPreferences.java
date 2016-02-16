@@ -55,7 +55,9 @@ public class OWLRendererPreferences {
     public static final String DISPLAY_ANNOTATION_ANNOTATIONS_INLINE = "DISPLAY_ANNOTATION_ANNOTATIONS_INLINE";
 
     public static final String DISPLAY_LITERAL_DATATYPES_INLINE = "DISPLAY_LITERAL_DATATYPES_INLINE";
-    
+
+    public static final String DISPLAY_THUMBNAILS_INLINE = "DISPLAY_THUMBNAILS_INLINE";
+
     public static final int DEFAULT_FONT_SIZE = 12;
 
     /**
@@ -111,6 +113,8 @@ public class OWLRendererPreferences {
     private boolean displayAnnotationAnnotationsInline;
 
     private boolean displayLiteralDatatypesInline;
+
+    private boolean displayThumbnailsInline;
 
     /*
      * HELP!
@@ -191,19 +195,28 @@ public class OWLRendererPreferences {
         getPreferences().putBoolean(DISPLAY_LITERAL_DATATYPES_INLINE, displayLiteralDatatypesInline);
     }
 
+    public boolean isDisplayThumbnailsInline() {
+        return displayThumbnailsInline;
+    }
+
+    public void setDisplayThumbnailsInline(boolean displayThumbnailsInline) {
+        this.displayThumbnailsInline = displayThumbnailsInline;
+        getPreferences().putBoolean(DISPLAY_THUMBNAILS_INLINE, displayThumbnailsInline);
+    }
+
     public void setAnnotations(List<IRI> iris){
         annotationIRIS = iris;
         writeAnnotations();
     }
     
     public void setAnnotationLanguages(List<String> annotationLanguages) {
-    	this.annotationLanguages = new ArrayList<String>(annotationLanguages);
+    	this.annotationLanguages = new ArrayList<>(annotationLanguages);
     	writeAnnotations();
     }
 
 
     public List<IRI> getAnnotationIRIs(){
-        return new ArrayList<IRI>(annotationIRIS);
+        return new ArrayList<>(annotationIRIS);
     }
 
 
@@ -251,6 +264,7 @@ public class OWLRendererPreferences {
         fontName = p.getString(FONT_NAME, DEFAULT_FONT_NAME);
         displayAnnotationAnnotationsInline = p.getBoolean(DISPLAY_ANNOTATION_ANNOTATIONS_INLINE, true);
         displayLiteralDatatypesInline = p.getBoolean(DISPLAY_LITERAL_DATATYPES_INLINE, true);
+        displayThumbnailsInline = p.getBoolean(DISPLAY_THUMBNAILS_INLINE, true);
         loadAnnotations();
         resetFont();
     }
@@ -259,8 +273,8 @@ public class OWLRendererPreferences {
      * Using a backwards compatible encoding of annotations and their languages.
      */
     private void loadAnnotations() {
-        annotationIRIS = new ArrayList<IRI>();
-        annotationLanguages = new ArrayList<String>();
+        annotationIRIS = new ArrayList<>();
+        annotationLanguages = new ArrayList<>();
         final List<String> defaultValues = Collections.emptyList();
         List<String> values = getPreferences().getStringList(ANNOTATIONS, defaultValues);
 
@@ -299,7 +313,7 @@ public class OWLRendererPreferences {
      * Using a backwards compatible encoding of annotations and their languages.
      */
     private void writeAnnotations() {
-        List<String> values = new ArrayList<String>();
+        List<String> values = new ArrayList<>();
         StringBuilder langStringBuilder = new StringBuilder();
         for (String lang : annotationLanguages) {
             if (lang == null || lang.equals(NO_LANGUAGE_SET)){
@@ -317,7 +331,7 @@ public class OWLRendererPreferences {
     }
     
     private List<String> getDefaultLanguages() {
-    	List<String> langs = new ArrayList<String>();
+    	List<String> langs = new ArrayList<>();
     	Locale locale = Locale.getDefault();
     	if (locale != null && locale.getLanguage() != null && !locale.getLanguage().equals("")) {
     		langs.add(locale.getLanguage());
@@ -353,7 +367,7 @@ public class OWLRendererPreferences {
     public List<RendererPlugin> getRendererPlugins() {
     	if (rendererPlugins == null) {
     		RendererPluginLoader loader = new RendererPluginLoader();
-    		rendererPlugins = new ArrayList<RendererPlugin>(loader.getPlugins());
+    		rendererPlugins = new ArrayList<>(loader.getPlugins());
     		Collections.sort(rendererPlugins);
     	}
     	return rendererPlugins;

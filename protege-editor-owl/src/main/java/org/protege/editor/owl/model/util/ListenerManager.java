@@ -14,15 +14,12 @@ import java.util.Map;
  */
 public class ListenerManager<L extends Object> {
 
-    private Map<L, StackTraceElement []> listenerMap;
-
-    private static final int TRACE_DEPTH = 10;
+    private final Map<L, StackTraceElement []> listenerMap = new HashMap<>();
 
     private static final int TRACE_START = 3;
 
 
     public ListenerManager() {
-        listenerMap = new HashMap<L, StackTraceElement []>();
     }
 
 

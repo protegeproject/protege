@@ -26,11 +26,9 @@ public class RemoveAllDisjointAxiomsAction extends ProtegeOWLAction {
 
     private final Logger logger = LoggerFactory.getLogger(RemoveAllDisjointAxiomsAction.class);
 
-    private OWLModelManagerListener listener = new OWLModelManagerListener() {
-        public void handleChange(OWLModelManagerChangeEvent event) {
-            if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
-                updateState();
-            }
+    private OWLModelManagerListener listener = event -> {
+        if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED)) {
+            updateState();
         }
     };
 
@@ -43,14 +41,14 @@ public class RemoveAllDisjointAxiomsAction extends ProtegeOWLAction {
                                                  JOptionPane.YES_NO_CANCEL_OPTION,
                                                  JOptionPane.QUESTION_MESSAGE);
 
-            Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
+            Set<OWLOntology> ontologies = new HashSet<>();
             if (result == JOptionPane.YES_OPTION) {
                 ontologies.addAll(getOWLModelManager().getActiveOntologies());
             }
             else if (result == JOptionPane.NO_OPTION) {
                 ontologies = Collections.singleton(getOWLModelManager().getActiveOntology());
             }
-            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            List<OWLOntologyChange> changes = new ArrayList<>();
             for (OWLOntology ont : ontologies) {
                 for (OWLDisjointClassesAxiom ax : ont.getAxioms(AxiomType.DISJOINT_CLASSES)) {
                     changes.add(new RemoveAxiom(ont, ax));

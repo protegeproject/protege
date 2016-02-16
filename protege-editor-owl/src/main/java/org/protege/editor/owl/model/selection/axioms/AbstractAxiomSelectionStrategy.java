@@ -16,7 +16,7 @@ import java.util.List;
 public abstract class AbstractAxiomSelectionStrategy implements AxiomSelectionStrategy {
 
 
-    private List<PropertyChangeListener> listeners = new ArrayList<PropertyChangeListener>();
+    private List<PropertyChangeListener> listeners = new ArrayList<>();
 
     public static final String ONTOLOGIES_CHANGED = "change.ontologies";
 

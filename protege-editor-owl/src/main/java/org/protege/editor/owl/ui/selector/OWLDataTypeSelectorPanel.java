@@ -40,7 +40,7 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype>
 
     private OWLObjectList<OWLDatatype> list;
     
-    private Map<ChangeListener, ListSelectionListener> selListenerWrappers = new HashMap<ChangeListener, ListSelectionListener>();
+    private Map<ChangeListener, ListSelectionListener> selListenerWrappers = new HashMap<>();
 
     private class UpdateDatatypeListListener implements OWLOntologyChangeListener {
         public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
@@ -52,7 +52,7 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype>
         private boolean datatypesMightHaveChanged(List<? extends OWLOntologyChange> changes) {
             for (OWLOntologyChange change : changes) {
                 if (change instanceof OWLAxiomChange) {
-                    for (OWLEntity e : ((OWLAxiomChange) change).getAxiom().getSignature()) {
+                    for (OWLEntity e : change.getAxiom().getSignature()) {
                         if (e instanceof OWLDatatype && !e.isBuiltIn()) {
                             return true;
                         }
@@ -62,9 +62,9 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype>
             return false;
         }
         
-    };
-    
-    
+    }
+
+
     private class ActiveOntologyChangedListener implements OWLModelManagerListener {
         public void handleChange(OWLModelManagerChangeEvent event) {
             switch (event.getType()) {
@@ -73,8 +73,8 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype>
                 break;
             }
         }
-    };
-    
+    }
+
     private class OWLDatatypeListView extends AbstractOWLViewComponent {
         private static final long serialVersionUID = -2407766608313199261L;
         private OWLOntologyChangeListener ontologyChangeListener = new UpdateDatatypeListListener();
@@ -129,12 +129,12 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype>
 
 
     public OWLDatatype getSelectedObject(){
-        return (OWLDatatype)list.getSelectedValue();
+        return list.getSelectedValue();
     }
 
 
     public Set<OWLDatatype> getSelectedObjects() {
-        return new HashSet<OWLDatatype>(list.getSelectedOWLObjects());
+        return new HashSet<>(list.getSelectedOWLObjects());
     }
 
 
@@ -179,11 +179,7 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype>
     private ListSelectionListener wrapListener(final ChangeListener listener) {
         ListSelectionListener l = selListenerWrappers.get(listener);
         if (l == null){
-            l = new ListSelectionListener(){
-                public void valueChanged(ListSelectionEvent event) {
-                    listener.stateChanged(new ChangeEvent(list));
-                }
-            };
+            l = event -> listener.stateChanged(new ChangeEvent(list));
             selListenerWrappers.put(listener, l);
         }
         return l;

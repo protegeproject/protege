@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>edu.stanford.protege</groupId>
 		<artifactId>protege-parent</artifactId>
-		<version>5.0.0-beta-21-SNAPSHOT</version>
+		<version>5.0.0-beta-22-SNAPSHOT</version>
 		<relativePath>../</relativePath>
 	</parent>
 
@@ -36,9 +36,15 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.fusesource.jansi</groupId>
+			<artifactId>jansi</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>org.apache.felix</groupId>
 			<artifactId>org.apache.felix.main</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>

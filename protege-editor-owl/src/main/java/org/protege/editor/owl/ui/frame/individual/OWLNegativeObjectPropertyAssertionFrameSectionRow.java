@@ -53,7 +53,7 @@ public class OWLNegativeObjectPropertyAssertionFrameSectionRow extends AbstractO
      * or navigated to etc.
      */
     public List<OWLObject> getManipulatableObjects() {
-        List<OWLObject> objects = new ArrayList<OWLObject>();
+        List<OWLObject> objects = new ArrayList<>();
         objects.add(getAxiom().getProperty());
         objects.add(getAxiom().getObject());
         return objects;

@@ -38,7 +38,7 @@ public class MoveAxiomsByTypeKit extends MoveAxiomsKit implements FilteredAxioms
 
 
     public List<MoveAxiomsKitConfigurationPanel> getConfigurationPanels() {
-        List<MoveAxiomsKitConfigurationPanel> panels = new ArrayList<MoveAxiomsKitConfigurationPanel>();
+        List<MoveAxiomsKitConfigurationPanel> panels = new ArrayList<>();
         panels.add(axiomTypeSelectorPanel);
         panels.add(selectAxiomsPanel);
         return panels;
@@ -51,7 +51,7 @@ public class MoveAxiomsByTypeKit extends MoveAxiomsKit implements FilteredAxioms
 
 
     public void initialise() throws Exception {
-        types = new HashSet<AxiomType>();
+        types = new HashSet<>();
         axiomTypeSelectorPanel = new AxiomTypeSelectorPanel(this);
         selectAxiomsPanel = new SelectAxiomsPanel(this, "axioms.type");
     }
@@ -79,7 +79,7 @@ public class MoveAxiomsByTypeKit extends MoveAxiomsKit implements FilteredAxioms
 
 
     public Set<OWLAxiom> getUnfilteredAxioms(Set<OWLOntology> sourceOntologies) {
-        Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
+        Set<OWLAxiom> axioms = new HashSet<>();
         for (OWLOntology ont : sourceOntologies){
             for (AxiomType type : types){
                 axioms.addAll(ont.getAxioms(type));

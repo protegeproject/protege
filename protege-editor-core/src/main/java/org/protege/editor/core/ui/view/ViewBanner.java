@@ -23,10 +23,6 @@ import java.util.ArrayList;
  */
 public class ViewBanner extends JPanel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 2607019846677273073L;
 
     private JPanel toolBarPanel;
 
@@ -44,7 +40,7 @@ public class ViewBanner extends JPanel {
 
     private Color defaultBackgroundColor;
     
-    private ArrayList<ViewIcon> viewIcons = new ArrayList<ViewIcon>();
+    private ArrayList<ViewIcon> viewIcons = new ArrayList<>();
 
 
     public ViewBanner(String labelText, Color bannerColor) {
@@ -80,22 +76,11 @@ public class ViewBanner extends JPanel {
         toolBarPanel.setBackground(backgroundColor);
         labelPanel.add(toolBarPanel, BorderLayout.EAST);
         labelPanel.add(label, BorderLayout.WEST);
-//        labelPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener(new PropertyChangeListener() {
-            /**
-             * This method gets called when a bound property is changed.
-             * @param evt A PropertyChangeEvent object describing the event source
-             *            and the property that has changed.
-             */
-
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (evt.getPropertyName().equals("focusOwner")) {
-                    repaint();
-                }
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener(evt -> {
+            if (evt.getPropertyName().equals("focusOwner")) {
+                repaint();
             }
         });
-//        backgroundColor = new Color(80, 148, 229);
-//        backgroundColor = new Color(30, 122, 232);
     }
 
 
@@ -151,9 +136,9 @@ public class ViewBanner extends JPanel {
      * @param action The action to be added.
      */
     public void addAction(Action action) {
-        String name = (String) action.getValue(AbstractAction.NAME);
-        action.putValue(AbstractAction.NAME, "");
-        action.putValue(AbstractAction.SHORT_DESCRIPTION, name);
+        String name = (String) action.getValue(Action.NAME);
+        action.putValue(Action.NAME, "");
+        action.putValue(Action.SHORT_DESCRIPTION, name);
         JButton button = new JButton(action) {
             /**
              * 
@@ -166,7 +151,7 @@ public class ViewBanner extends JPanel {
         };
         button.setFocusable(false);
         toolBar.add(button);
-        Icon icon = (Icon) action.getValue(AbstractAction.SMALL_ICON);
+        Icon icon = (Icon) action.getValue(Action.SMALL_ICON);
         if (icon != null) {
             button.setPreferredSize(new Dimension(icon.getIconWidth() + 2, icon.getIconHeight()));
             button.setOpaque(false);

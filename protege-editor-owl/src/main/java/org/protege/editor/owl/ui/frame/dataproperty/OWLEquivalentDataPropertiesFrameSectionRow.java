@@ -51,7 +51,7 @@ public class OWLEquivalentDataPropertiesFrameSectionRow extends AbstractOWLFrame
     protected OWLObjectEditor<OWLDataProperty> getObjectEditor() {
         final OWLDataPropertyEditor editor = new OWLDataPropertyEditor(getOWLEditorKit());
         final Set<OWLDataPropertyExpression> equivs =
-                new HashSet<OWLDataPropertyExpression>(getAxiom().getProperties());
+                new HashSet<>(getAxiom().getProperties());
         equivs.remove(getRootObject());
         if (equivs.size() == 1){
             final OWLDataPropertyExpression p = equivs.iterator().next();
@@ -70,14 +70,14 @@ public class OWLEquivalentDataPropertiesFrameSectionRow extends AbstractOWLFrame
     
     @Override
     public void handleEditingFinished(Set<OWLDataProperty> editedObjects) {
-    	editedObjects = new HashSet<OWLDataProperty>(editedObjects);
+    	editedObjects = new HashSet<>(editedObjects);
     	editedObjects.remove(getRootObject());
     	super.handleEditingFinished(editedObjects);
     }
 
 
     public List<OWLDataPropertyExpression> getManipulatableObjects() {
-        List<OWLDataPropertyExpression> props = new ArrayList<OWLDataPropertyExpression>(getAxiom().getProperties());
+        List<OWLDataPropertyExpression> props = new ArrayList<>(getAxiom().getProperties());
         props.remove(getRoot());
         return props;
     }

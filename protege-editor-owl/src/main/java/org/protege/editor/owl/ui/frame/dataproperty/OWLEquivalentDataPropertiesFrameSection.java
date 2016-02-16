@@ -28,7 +28,7 @@ public class OWLEquivalentDataPropertiesFrameSection extends AbstractOWLFrameSec
 
     public static final String LABEL = "Equivalent To";
 
-    private Set<OWLEquivalentDataPropertiesAxiom> added = new HashSet<OWLEquivalentDataPropertiesAxiom>();
+    private Set<OWLEquivalentDataPropertiesAxiom> added = new HashSet<>();
 
 
     protected void clear() {
@@ -58,7 +58,7 @@ public class OWLEquivalentDataPropertiesFrameSection extends AbstractOWLFrameSec
     
     @Override
     public void handleEditingFinished(Set<OWLDataProperty> editedObjects) {
-    	editedObjects = new HashSet<OWLDataProperty>(editedObjects);
+    	editedObjects = new HashSet<>(editedObjects);
     	editedObjects.remove(getRootObject());
     	super.handleEditingFinished(editedObjects);
     }
@@ -78,25 +78,23 @@ public class OWLEquivalentDataPropertiesFrameSection extends AbstractOWLFrameSec
 
 
     protected void refillInferred() {
-        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_EQUIVALENT_DATATYPE_PROPERTIES, new Runnable() {
-                public void run() {
-                	if (!getOWLModelManager().getReasoner().isConsistent()) {
-                		return;
-                	}
-                    Set<OWLDataProperty> equivs = new HashSet<OWLDataProperty>(getReasoner().getEquivalentDataProperties(getRootObject()).getEntities());
-                    equivs.remove(getRootObject());
-                    if (!equivs.isEmpty()){
-                        OWLEquivalentDataPropertiesAxiom ax = getOWLDataFactory().getOWLEquivalentDataPropertiesAxiom(equivs);
-                        if (!added.contains(ax)) {
-                            addRow(new OWLEquivalentDataPropertiesFrameSectionRow(getOWLEditorKit(),
-                                                                                  OWLEquivalentDataPropertiesFrameSection.this,
-                                                                                  null,
-                                                                                  getRootObject(),
-                                                                                  ax));
-                        }
-                    }
+        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_EQUIVALENT_DATATYPE_PROPERTIES, () -> {
+            if (!getOWLModelManager().getReasoner().isConsistent()) {
+                return;
+            }
+            Set<OWLDataProperty> equivs = new HashSet<>(getReasoner().getEquivalentDataProperties(getRootObject()).getEntities());
+            equivs.remove(getRootObject());
+            if (!equivs.isEmpty()){
+                OWLEquivalentDataPropertiesAxiom ax = getOWLDataFactory().getOWLEquivalentDataPropertiesAxiom(equivs);
+                if (!added.contains(ax)) {
+                    addRow(new OWLEquivalentDataPropertiesFrameSectionRow(getOWLEditorKit(),
+                                                                          OWLEquivalentDataPropertiesFrameSection.this,
+                                                                          null,
+                                                                          getRootObject(),
+                                                                          ax));
                 }
-            });
+            }
+        });
     }
 
     @Override

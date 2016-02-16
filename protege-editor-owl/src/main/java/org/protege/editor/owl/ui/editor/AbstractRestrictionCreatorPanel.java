@@ -48,13 +48,9 @@ public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F e
 
     private boolean currentStatus = false;
 
-    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<InputVerificationStatusChangedListener>();
+    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<>();
 
-    private ChangeListener selListener = new ChangeListener(){
-        public void stateChanged(ChangeEvent event) {
-            checkStatus();
-        }
-    };
+    private ChangeListener selListener = event -> checkStatus();
 
 
     public void initialise() throws Exception {
@@ -90,10 +86,8 @@ public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F e
         typePanel.setBorder(ComponentFactory.createTitledBorder("Restriction type"));
         panel.add(typePanel, BorderLayout.SOUTH);
         typePanel.add(typeCombo);
-        typeCombo.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cardinalitySpinner.setEnabled(typeCombo.getSelectedItem() instanceof CardinalityRestrictionCreator);
-            }
+        typeCombo.addActionListener(e -> {
+            cardinalitySpinner.setEnabled(typeCombo.getSelectedItem() instanceof CardinalityRestrictionCreator);
         });
         JPanel spinnerHolder = new JPanel(new BorderLayout(4, 4));
         spinnerHolder.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
@@ -121,13 +115,13 @@ public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F e
 
 
     public Set<OWLClassExpression> getClassExpressions(){
-        Set<OWLClassExpression> result = new HashSet<OWLClassExpression>();
+        Set<OWLClassExpression> result = new HashSet<>();
         RestrictionCreator<P, F> creator = (RestrictionCreator<P, F>) typeCombo.getSelectedItem();
         if (creator == null) {
             return Collections.emptySet();
         }
         creator.createRestrictions(propertySelectorPanel.getSelectedObjects(),
-                                   new HashSet<F>(fillerSelectorPanel.getSelectedObjects()),
+                                   new HashSet<>(fillerSelectorPanel.getSelectedObjects()),
                                    result);
         return result;
     }

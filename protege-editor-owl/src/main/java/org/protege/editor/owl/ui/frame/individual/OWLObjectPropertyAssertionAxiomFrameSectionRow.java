@@ -51,7 +51,7 @@ public class OWLObjectPropertyAssertionAxiomFrameSectionRow extends AbstractOWLF
      * or navigated to etc.
      */
     public List<OWLObject> getManipulatableObjects() {
-        List<OWLObject> objects = new ArrayList<OWLObject>(2);
+        List<OWLObject> objects = new ArrayList<>(2);
         objects.add(getAxiom().getProperty());
         objects.add(getAxiom().getObject());
         return objects;

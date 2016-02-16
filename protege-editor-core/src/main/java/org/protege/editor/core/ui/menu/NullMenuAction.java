@@ -16,10 +16,6 @@ import java.awt.event.ActionEvent;
  */
 public class NullMenuAction extends ProtegeAction {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 6742889462492952439L;
 
 
     /**

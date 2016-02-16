@@ -28,7 +28,7 @@ import static java.util.stream.Collectors.toSet;
 public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> implements OWLObjectHierarchyProvider<N> {
 
     private final Logger logger = LoggerFactory.getLogger(AbstractOWLObjectHierarchyProvider.class);
-    
+
     private volatile boolean fireEvents;
 
     /*
@@ -90,32 +90,31 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
 
 
     public void dispose() {
-    	synchronized (listeners) {
-    		listeners.clear();
-    	}
+        synchronized (listeners) {
+            listeners.clear();
+        }
     }
 
 
     public Set<N> getAncestors(N object) {
 //    	getReadLock().lock();
-    	try {
-    		Set<N> results = new HashSet<N>();
-    		getAncestors(results, object);
-    		return results;
-    	}
-    	finally {
+        try {
+            Set<N> results = new HashSet<>();
+            getAncestors(results, object);
+            return results;
+        } finally {
 //    		getReadLock().unlock();
-    	}
+        }
     }
 
 
     private void getAncestors(Set<N> results, N object) {
-        for (N parent : getParents(object)) {
-            if (!results.contains(parent)) {
-                results.add(parent);
-                getAncestors(results, parent);
-            }
-        }
+        getParents(object).stream()
+                .filter(parent -> !results.contains(parent))
+                .forEach(parent -> {
+                    results.add(parent);
+                    getAncestors(results, parent);
+                });
     }
 
     @Override
@@ -132,24 +131,23 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
 
     public Set<N> getDescendants(N object) {
 //    	getReadLock().lock();
-    	try {
-    		Set<N> results = new HashSet<N>();
-    		getDescendants(results, object);
-    		return results;
-    	}
-    	finally {
+        try {
+            Set<N> results = new HashSet<>();
+            getDescendants(results, object);
+            return results;
+        } finally {
 //    		getReadLock().unlock();
-    	}
+        }
     }
 
 
     private void getDescendants(Set<N> results, N object) {
-        for (N child : getChildren(object)) {
-            if (!results.contains(child)) {
-                results.add(child);
-                getDescendants(results, child);
-            }
-        }
+        getChildren(object).stream()
+                .filter(child -> !results.contains(child))
+                .forEach(child -> {
+                    results.add(child);
+                    getDescendants(results, child);
+                });
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -161,16 +159,16 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
 
     /**
      * Gets the paths to the root class for the specified object.
+     *
      * @return A <code>Set</code> of <code>List</code>s of <code>N</code>s
      */
     public Set<List<N>> getPathsToRoot(N obj) {
 //    	getReadLock().lock();
-    	try { 	
-    		return setOfPaths(obj, new HashSet<N>());
-    	}
-    	finally {
+        try {
+            return setOfPaths(obj, new HashSet<>());
+        } finally {
 //    		getReadLock().unlock();
-    	}
+        }
     }
 
 
@@ -178,20 +176,20 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
         if (getRoots().contains(obj)) {
             return getSingleSetOfLists(obj);
         }
-        Set<List<N>> paths = new HashSet<List<N>>();
-        for (N par : getParents(obj)) {
-            if (!processed.contains(par)) {
-                processed.add(par);
-                paths.addAll(append(obj, setOfPaths(par, processed)));
-            }
-        }
+        Set<List<N>> paths = new HashSet<>();
+        getParents(obj).stream()
+                .filter(par -> !processed.contains(par))
+                .forEach(par -> {
+                    processed.add(par);
+                    paths.addAll(append(obj, setOfPaths(par, processed)));
+                });
         return paths;
     }
 
 
     private Set<List<N>> getSingleSetOfLists(N obj) {
-        Set<List<N>> set = new HashSet<List<N>>();
-        List<N> list = new ArrayList<N>();
+        Set<List<N>> set = new HashSet<>();
+        List<N> list = new ArrayList<>();
         list.add(obj);
         set.add(list);
         return set;
@@ -214,22 +212,22 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
 
 
     public void addListener(OWLObjectHierarchyProviderListener<N> listener) {
-    	synchronized (listeners) {
-    		listeners.add(listener);
-    	}
+        synchronized (listeners) {
+            listeners.add(listener);
+        }
     }
 
 
     public void removeListener(OWLObjectHierarchyProviderListener<N> listener) {
-    	synchronized (listeners) {
-    		listeners.remove(listener);
-    	}
+        synchronized (listeners) {
+            listeners.remove(listener);
+        }
     }
 
     private List<OWLObjectHierarchyProviderListener<N>> getListeners() {
-    	synchronized (listeners) {
-    		return new ArrayList<OWLObjectHierarchyProviderListener<N>>(listeners);
-    	}
+        synchronized (listeners) {
+            return new ArrayList<>(listeners);
+        }
     }
 
     protected void fireNodeChanged(N node) {
@@ -239,8 +237,7 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
         for (OWLObjectHierarchyProviderListener<N> listener : getListeners()) {
             try {
                 listener.nodeChanged(node);
-            }
-            catch (Throwable e) {
+            } catch (Throwable e) {
                 e.printStackTrace();
                 logger.error("{}: Listener {} has thrown an exception.  Removing bad listener.",
                         getClass().getName(),
@@ -259,8 +256,7 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
         for (OWLObjectHierarchyProviderListener<N> listener : getListeners()) {
             try {
                 listener.hierarchyChanged();
-            }
-            catch (Throwable e) {
+            } catch (Throwable e) {
                 e.printStackTrace();
             }
         }

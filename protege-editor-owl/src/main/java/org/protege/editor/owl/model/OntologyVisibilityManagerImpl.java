@@ -22,8 +22,8 @@ public class OntologyVisibilityManagerImpl implements OntologyVisibilityManager 
 
 
     public OntologyVisibilityManagerImpl() {
-        visibleOntologies = new HashSet<OWLOntology>();
-        listeners = new ArrayList<OntologyVisibilityManagerListener>();
+        visibleOntologies = new HashSet<>();
+        listeners = new ArrayList<>();
     }
 
 
@@ -38,7 +38,7 @@ public class OntologyVisibilityManagerImpl implements OntologyVisibilityManager 
 
 
     public void setVisible(Set<OWLOntology> ontologies) {
-        if (visibleOntologies.equals(ontologies) == false) {
+        if (!visibleOntologies.equals(ontologies)) {
             visibleOntologies.clear();
             visibleOntologies.addAll(ontologies);
             fireVisibilityChanged();
@@ -71,7 +71,7 @@ public class OntologyVisibilityManagerImpl implements OntologyVisibilityManager 
 
 
     protected void fireVisibilityChanged() {
-        List<OntologyVisibilityManagerListener> listenersCopy = new ArrayList<OntologyVisibilityManagerListener>(
+        List<OntologyVisibilityManagerListener> listenersCopy = new ArrayList<>(
                 listeners);
         for (OntologyVisibilityManagerListener listener : listenersCopy) {
             listener.ontologyVisibilityChanged(this);

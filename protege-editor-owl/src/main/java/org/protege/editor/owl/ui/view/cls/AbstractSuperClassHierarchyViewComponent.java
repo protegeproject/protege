@@ -17,10 +17,6 @@ import org.semanticweb.owlapi.model.OWLClass;
 public abstract class AbstractSuperClassHierarchyViewComponent extends AbstractOWLClassHierarchyViewComponent {
 
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 4012388467228453755L;
 
 
     protected OWLClass updateView(OWLClass selectedClass) {
@@ -39,4 +35,5 @@ public abstract class AbstractSuperClassHierarchyViewComponent extends AbstractO
 
 
     protected abstract AbstractSuperClassHierarchyProvider getOWLClassHierarchyProvider();
+
 }

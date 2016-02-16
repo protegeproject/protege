@@ -59,11 +59,9 @@ public class IntroductoryPanel extends JPanel {
 					selectedPlugin = plugin;
 				}
 				group.add(button);
-				button.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						selectedPlugin = plugin;
-					}
-				});
+				button.addActionListener(e -> {
+                    selectedPlugin = plugin;
+                });
 				optBox.add(button);
 			}
 			center.add(optBox);

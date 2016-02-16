@@ -49,11 +49,7 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
 
     private boolean cacheEditor = true;
 
-    private OWLOntologyChangeListener listener = new OWLOntologyChangeListener() {
-        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
-        	processOntologyChanges(changes);
-        }
-    };
+    private OWLOntologyChangeListener listener = changes -> processOntologyChanges(changes);
 
 
     protected AbstractOWLFrameSection(OWLEditorKit editorKit, String label, String rowLabel, OWLFrame<? extends R> frame) {
@@ -61,7 +57,7 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
         this.label = label;
         this.rowLabel = rowLabel;
         this.frame = frame;
-        this.rows = new ArrayList<OWLFrameSectionRow<R, A, E>>();
+        this.rows = new ArrayList<>();
 
         getOWLModelManager().addOntologyChangeListener(listener);
     }
@@ -183,8 +179,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
         if (editedObjects == null) {
             return;
         }
-        Set<A> axioms = new HashSet<A>();
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        Set<A> axioms = new HashSet<>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         for (E editedObject : editedObjects) {
             final A ax = createAxiom(editedObject);
             FreshAxiomLocationPreferences prefs = FreshAxiomLocationPreferences.getPreferences();
@@ -337,7 +333,7 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
     }
     
     public List<A> getAxioms() {
-    	List<A> axioms = new ArrayList<A>();
+    	List<A> axioms = new ArrayList<>();
     	for (OWLFrameSectionRow<R,A,E> row : rows) {
     		axioms.add(row.getAxiom());
     	}

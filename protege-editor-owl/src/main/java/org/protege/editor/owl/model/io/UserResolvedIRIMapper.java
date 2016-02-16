@@ -33,7 +33,7 @@ import java.util.Map;
  */
 public class UserResolvedIRIMapper implements OWLOntologyIRIMapper {
 
-    private Map<IRI, URI> resolvedMissingImports = new HashMap<IRI, URI>();
+    private Map<IRI, URI> resolvedMissingImports = new HashMap<>();
 
     private MissingImportHandler missingImportHandler;
 

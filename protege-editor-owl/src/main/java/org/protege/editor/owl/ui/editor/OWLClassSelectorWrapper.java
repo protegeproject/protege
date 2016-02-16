@@ -55,7 +55,7 @@ public class OWLClassSelectorWrapper extends AbstractOWLClassExpressionEditor {
 
 
     public Set<OWLClassExpression> getClassExpressions() {
-        return new HashSet<OWLClassExpression>(component.getSelectedObjects());
+        return new HashSet<>(component.getSelectedObjects());
     }
 
 

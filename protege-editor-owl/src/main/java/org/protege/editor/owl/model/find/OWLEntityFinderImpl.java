@@ -211,7 +211,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
 
     public Set<OWLEntity> getEntities(IRI iri) {
 
-        Set<OWLEntity> entities = new HashSet<OWLEntity>();
+        Set<OWLEntity> entities = new HashSet<>();
 
         for (OWLOntology ont : mngr.getActiveOntologies()){
             if (ont.containsClassInSignature(iri)){
@@ -256,7 +256,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
 
 
     private <T extends OWLEntity> Set<T> doRegExpSearch(String match, Class<T> type, int flags) {
-        Set<T> results = new HashSet<T>();
+        Set<T> results = new HashSet<>();
         try {
             Pattern pattern = Pattern.compile(match, flags);
             for (String rendering : getRenderings(type)) {
@@ -280,7 +280,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
      * (probably right but this should not be implemented separately)
      */
     private <T extends OWLEntity> Set<T> doWildcardSearch(String match, Class<T> type) {
-        Set<T> results = new HashSet<T>();
+        Set<T> results = new HashSet<>();
 
         if (match.equals(WILDCARD)){
             results = getAllEntities(type);
@@ -290,20 +290,12 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
             if (match.startsWith(WILDCARD)) {
                 if (match.length() > 1 && match.endsWith(WILDCARD)) {
                     // Contains
-                    matcher = new SimpleWildCardMatcher() {
-                        public boolean matches(String rendering, String s) {
-                            return rendering.indexOf(s) != -1;
-                        }
-                    };
+                    matcher = String::contains;
                     match = match.substring(1, match.length() - 1);
                 }
                 else {
                     // Ends with
-                    matcher = new SimpleWildCardMatcher() {
-                        public boolean matches(String rendering, String s) {
-                            return rendering.indexOf(s) != -1;
-                        }
-                    };
+                    matcher = String::contains;
                     match = match.substring(1, match.length());
                 }
             }
@@ -313,11 +305,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
                     match = match.substring(0, match.length() - 1);
                 }
                 // @@TODO handle matches exactly?
-                matcher = new SimpleWildCardMatcher() {
-                    public boolean matches(String rendering, String s) {
-                        return rendering.startsWith(s) || rendering.startsWith("'" + s);
-                    }
-                };
+                matcher = (rendering, s) -> rendering.startsWith(s) || rendering.startsWith("'" + s);
             }
 
             if (match.trim().length() == 0) {
@@ -347,7 +335,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
             return (Set<T>)new OWLDataTypeUtils(mngr.getOWLOntologyManager()).getKnownDatatypes(mngr.getActiveOntologies());
         }
         else{
-            Set<T> entities = new HashSet<T>();
+            Set<T> entities = new HashSet<>();
             for (OWLOntology ont: mngr.getActiveOntologies()){
                 if (type.equals(OWLClass.class)){
                     entities.addAll((Set<T>)ont.getClassesInSignature());

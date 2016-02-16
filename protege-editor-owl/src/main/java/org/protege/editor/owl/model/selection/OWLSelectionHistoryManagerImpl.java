@@ -39,16 +39,12 @@ public class OWLSelectionHistoryManagerImpl implements OWLSelectionHistoryManage
 
     public OWLSelectionHistoryManagerImpl(OWLSelectionModel owlSelectionModel) {
         this.selectionModel = owlSelectionModel;
-        changeListeners = new ArrayList<ChangeListener>();
+        changeListeners = new ArrayList<>();
 
-        prevSelections = new Stack<OWLEntity>();
-        forwardSelections = new Stack<OWLEntity>();
+        prevSelections = new Stack<>();
+        forwardSelections = new Stack<>();
 
-        listener = new OWLSelectionModelListener() {
-            public void selectionChanged() throws Exception {
-                handleSelection();
-            }
-        };
+        listener = () -> handleSelection();
         selectionModel.addListener(listener);
     }
 
@@ -124,7 +120,7 @@ public class OWLSelectionHistoryManagerImpl implements OWLSelectionHistoryManage
 
 
     protected void fireStateChanged() {
-        for (ChangeListener listener : new ArrayList<ChangeListener>(changeListeners)) {
+        for (ChangeListener listener : new ArrayList<>(changeListeners)) {
             listener.stateChanged(new ChangeEvent(this));
         }
     }

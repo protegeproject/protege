@@ -26,7 +26,7 @@ public class ConvertToPrimitiveClassAction extends SelectedOWLClassAction {
             return;
         }
         OWLDataFactory dataFactory = getOWLModelManager().getOWLDataFactory();
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
             for (OWLEquivalentClassesAxiom ax : ont.getEquivalentClassesAxioms(selCls)) {
                 changes.add(new RemoveAxiom(ont, ax));

@@ -82,15 +82,12 @@ public class ProtegeApplication implements BundleActivator {
 
     public void start(final BundleContext context) {
         logManager.bind();
-    	context.addFrameworkListener(new FrameworkListener() {
-    		@Override
-    		public void frameworkEvent(FrameworkEvent event) {
-    			if (event.getType() == FrameworkEvent.STARTED) {
-    				reallyStart(context);
-    			}
+    	context.addFrameworkListener(event -> {
+            if (event.getType() == FrameworkEvent.STARTED) {
+                reallyStart(context);
+            }
 
-    		}
-    	});
+        });
 
     }
     
@@ -356,20 +353,23 @@ public class ProtegeApplication implements BundleActivator {
         defaults.put("TextField.border", BorderFactory.createCompoundBorder(commonBorder,
                 BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 
+        defaults.put("SplitPane.border",
+                BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
+        defaults.put("TitledBorder.border", commonBorder);
+
     }
     
     private void setupExceptionHandler() {
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            public void uncaughtException(Thread t, Throwable e) {
-                logger.error("Uncaught Exception in thread '{}'", t.getName(), e);
-            }
+        Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+            logger.error("Uncaught Exception in thread '{}'", t.getName(), e);
         });
     }
 
 
     private void processCommandLineURIs() {
         try {
-            commandLineURIs = new ArrayList<URI>();
+            commandLineURIs = new ArrayList<>();
             for (String arg : PlatformArguments.getArguments(context)) {
                 File f = new File(arg);
                 if (f.exists()) {
@@ -519,8 +519,7 @@ public class ProtegeApplication implements BundleActivator {
         for (EditorKit eKit : eKitMngr.getEditorKits()) {
             Workspace wSpace = eKit.getWorkspace();
             if (!eKitMngr.getWorkspaceManager().doClose(wSpace)) {
-                quitting = false;
-                return quitting;
+                return false;
             }
         }
         try {

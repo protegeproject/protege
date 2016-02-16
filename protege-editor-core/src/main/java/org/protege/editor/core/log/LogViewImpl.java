@@ -16,11 +16,15 @@ public class LogViewImpl implements LogView {
     private final LogRecordModel logRecordModel;
 
     public LogViewImpl() {
-        view = new JPanel(new BorderLayout());
+        view = new JPanel(new BorderLayout(7, 7));
         view.setPreferredSize(new Dimension(800, 600));
-        JList<LogRecord> list = new JList<>(logRecordModel = new LogRecordModel());
+        JList<LogRecordElement> list = new JList<>(logRecordModel = new LogRecordModel());
         view.add(new JScrollPane(list));
-
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JButton clearLogButton = new JButton("Clear log");
+        clearLogButton.addActionListener(e -> clearView());
+        buttonPanel.add(clearLogButton);
+        view.add(buttonPanel, BorderLayout.SOUTH);
         list.setFont(new Font("monospaced", Font.PLAIN, 12));
         list.setCellRenderer(new LogRecordRenderer());
     }
@@ -39,4 +43,5 @@ public class LogViewImpl implements LogView {
     public void append(LogRecord logRecord) {
         SwingUtilities.invokeLater(() -> logRecordModel.append(logRecord));
     }
+
 }
