@@ -17,12 +17,10 @@ public class ProtegeOrphanFinder  {
         this.ontologies = ontologies;
         root = manager.getOWLDataFactory().getOWLThing();
         parentClassExtractor = new ParentClassExtractor();
-        rootFinder = new TerminalElementFinder<OWLClass>(new Relation<OWLClass>() {
-            public Collection<OWLClass> getR(OWLClass cls) {
-                Collection<OWLClass> parents = getParents(cls);
-                parents.remove(root);
-                return parents;
-            }
+        rootFinder = new TerminalElementFinder<>(cls -> {
+            Collection<OWLClass> parents = getParents(cls);
+            parents.remove(root);
+            return parents;
         });
     }
     
@@ -31,15 +29,13 @@ public class ProtegeOrphanFinder  {
     }
     
     public void initializeListener() {
-        manager.addOntologyChangeListener(new OWLOntologyChangeListener() {
-           public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
-               for (OWLOntologyChange change : changes) {
-                   if (change.getOntology() != null && ontologies.contains(change.getOntology())) {
-                       updateImplicitRoots(change);
-                   }
-               }
-            } 
-        });
+        manager.addOntologyChangeListener(changes -> {
+            for (OWLOntologyChange change : changes) {
+                if (change.getOntology() != null && ontologies.contains(change.getOntology())) {
+                    updateImplicitRoots(change);
+                }
+            }
+         });
     }
 
     public Set<OWLClass> getParents(OWLClass object) {
@@ -48,7 +44,7 @@ public class ProtegeOrphanFinder  {
         if (object.equals(root)) {
             return Collections.emptySet();
         }
-        Set<OWLClass> result = new HashSet<OWLClass>();
+        Set<OWLClass> result = new HashSet<>();
         // Thing if the object is a root class
         if (rootFinder.getTerminalElements().contains(object)) {
             result.add(root);
@@ -81,8 +77,8 @@ public class ProtegeOrphanFinder  {
     public void updateImplicitRoots(OWLOntologyChange change) {
         boolean remove = change instanceof RemoveAxiom;
         OWLAxiom axiom = change.getAxiom();
-        Set<OWLClass> possibleTerminalElements = new HashSet<OWLClass>();
-        Set<OWLClass> notInOntologies = new HashSet<OWLClass>();
+        Set<OWLClass> possibleTerminalElements = new HashSet<>();
+        Set<OWLClass> notInOntologies = new HashSet<>();
         for (OWLEntity entity : axiom.getSignature()) {
             if (!(entity instanceof OWLClass) || entity.equals(root)) {
                 continue;

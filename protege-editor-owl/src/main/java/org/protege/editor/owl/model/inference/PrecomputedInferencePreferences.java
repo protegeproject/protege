@@ -8,7 +8,7 @@ import java.util.*;
 public class PrecomputedInferencePreferences {
     private Set<InferenceType>             required   = EnumSet.noneOf(InferenceType.class);
     private Set<InferenceType>             disallowed = EnumSet.noneOf(InferenceType.class);
-    private Map<InferenceType,Set<String>> requested  = new EnumMap<InferenceType, Set<String>>(InferenceType.class);
+    private Map<InferenceType,Set<String>> requested  = new EnumMap<>(InferenceType.class);
 
     public Set<InferenceType> getPrecomputedInferences() {
     	Set<InferenceType> precompute = EnumSet.noneOf(InferenceType.class);
@@ -27,7 +27,7 @@ public class PrecomputedInferencePreferences {
     		Set<String> requestors = requested.get(type);
     		if (types.contains(type)) {
     			if (requestors == null) {
-    				requestors = new TreeSet<String>();
+    				requestors = new TreeSet<>();
     				requested.put(type, requestors);
     			}
     			requestors.add(requestor);

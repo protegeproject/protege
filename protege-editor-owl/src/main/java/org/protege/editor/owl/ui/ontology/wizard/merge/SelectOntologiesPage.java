@@ -38,7 +38,7 @@ public class SelectOntologiesPage extends AbstractOWLWizardPanel {
         list = new JList();
         list.setVisibleRowCount(8);
         list.setCellRenderer(getOWLEditorKit().getWorkspace().createOWLCellRenderer());
-        final java.util.List<OWLOntology> orderedOntologies = new ArrayList<OWLOntology>(getOWLModelManager().getOntologies());
+        final java.util.List<OWLOntology> orderedOntologies = new ArrayList<>(getOWLModelManager().getOntologies());
         Collections.sort(orderedOntologies, getOWLModelManager().getOWLObjectComparator());
         list.setListData(orderedOntologies.toArray());
         parent.add(new JScrollPane(list), BorderLayout.NORTH);
@@ -55,7 +55,7 @@ public class SelectOntologiesPage extends AbstractOWLWizardPanel {
         if (list.getSelectedValue() == null){
             Set<OWLOntology> defOnts = getDefaultOntologies();
             for (int i=0; i<list.getModel().getSize(); i++){
-                if (defOnts.contains((OWLOntology)list.getModel().getElementAt(i))){
+                if (defOnts.contains(list.getModel().getElementAt(i))){
                     list.addSelectionInterval(i, i);
                 }
             }
@@ -74,7 +74,7 @@ public class SelectOntologiesPage extends AbstractOWLWizardPanel {
 
 
     public Set<OWLOntology> getOntologies() {
-        Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
+        Set<OWLOntology> ontologies = new HashSet<>();
         for (Object o : list.getSelectedValues()) {
             ontologies.add((OWLOntology) o);
         }

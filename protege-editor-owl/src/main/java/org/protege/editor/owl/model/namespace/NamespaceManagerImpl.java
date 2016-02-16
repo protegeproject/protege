@@ -21,12 +21,12 @@ public class NamespaceManagerImpl extends AbstractNamespaceManager {
 
 
     public NamespaceManagerImpl() {
-        ns2Prefix = new TreeMap<String, String>();
+        ns2Prefix = new TreeMap<>();
     }
 
 
     public Map<String, String> getNamespaceMap() {
-        return new TreeMap<String, String>(new NamespaceComparator());
+        return new TreeMap<>(new NamespaceComparator());
     }
 
 
@@ -77,11 +77,7 @@ public class NamespaceManagerImpl extends AbstractNamespaceManager {
         String prefix = getPrefix(uri);
         String uriString = uri.toString();
         String localName = uriString.substring(ns.length(), uriString.length());
-        StringBuffer b = new StringBuffer(prefix.length() + localName.length() + 1);
-        b.append(prefix);
-        b.append(':');
-        b.append(localName);
-        return b.toString();
+        return prefix + ':' + localName;
     }
 
 

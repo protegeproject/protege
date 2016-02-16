@@ -21,19 +21,11 @@ import java.util.Map;
  */
 public class OWLObjectRenderingCache implements Disposable {
 
-    Map<OWLObject, String> cache = new MyLRUMap<OWLObject, String>(50, 1, 50);
+    Map<OWLObject, String> cache = new MyLRUMap<>(50, 1, 50);
 
-    private OWLModelManagerListener l = new OWLModelManagerListener(){
-        public void handleChange(OWLModelManagerChangeEvent event) {
-            clear();
-        }
-    };
+    private OWLModelManagerListener l = event -> clear();
 
-    private OWLOntologyChangeListener l2 = new OWLOntologyChangeListener(){
-        public void ontologiesChanged(List<? extends OWLOntologyChange> owlOntologyChanges) throws OWLException {
-            clear();
-        }
-    };
+    private OWLOntologyChangeListener l2 = owlOntologyChanges -> clear();
 
     private OWLModelManager mngr;
 

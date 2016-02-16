@@ -34,7 +34,7 @@ public class ConvertEntityURIsToIdentifierPattern {
 
     private OWLModelManager mngr;
 
-    private Map<OWLEntity, IRI> iriMap = new HashMap<OWLEntity, IRI>();
+    private Map<OWLEntity, IRI> iriMap = new HashMap<>();
 
     private OntologyImportsWalker ontologyImportsWalker;
 
@@ -59,15 +59,13 @@ public class ConvertEntityURIsToIdentifierPattern {
 
         if (!iriMap.isEmpty()){
 
-            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            List<OWLOntologyChange> changes = new ArrayList<>();
 
             changes.addAll(createNewLabelAxioms());
 
-            final OWLEntityURIConverterStrategy converterStrategy = new OWLEntityURIConverterStrategy() {
-                public IRI getConvertedIRI(OWLEntity owlEntity) {
-                    IRI uri = iriMap.get(owlEntity);
-                    return (uri != null) ? uri : owlEntity.getIRI();
-                }
+            final OWLEntityURIConverterStrategy converterStrategy = owlEntity -> {
+                IRI uri = iriMap.get(owlEntity);
+                return (uri != null) ? uri : owlEntity.getIRI();
             };
 
             OWLEntityURIConverter entityURIConverter = new OWLEntityURIConverter(mngr.getOWLOntologyManager(),
@@ -103,8 +101,8 @@ public class ConvertEntityURIsToIdentifierPattern {
         };
 
         // convert the preferences wrt IRIs into maps using annotation properties
-        List<OWLAnnotationProperty> annotationProperties = new ArrayList<OWLAnnotationProperty>();
-        Map<OWLAnnotationProperty, List<String>> langMap = new HashMap<OWLAnnotationProperty, List<String>>();
+        List<OWLAnnotationProperty> annotationProperties = new ArrayList<>();
+        Map<OWLAnnotationProperty, List<String>> langMap = new HashMap<>();
 
         ListMultimap<IRI, String> annotMap = OWLRendererPreferences.getInstance().getAnnotationLangMap();
         for (IRI iri : annotMap.keySet()){
@@ -145,7 +143,7 @@ public class ConvertEntityURIsToIdentifierPattern {
     }
 
     private Collection<? extends OWLOntologyChange> createNewLabelAxioms() {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
 
         OWLDataFactory df = mngr.getOWLDataFactory();
         EntityOfSameTypeGenerator gen = new EntityOfSameTypeGenerator(df);
@@ -216,7 +214,7 @@ public class ConvertEntityURIsToIdentifierPattern {
 
 
     private Set<OWLEntity> getAllReferencedEntities() {
-        Set<OWLEntity> entities = new HashSet<OWLEntity>();
+        Set<OWLEntity> entities = new HashSet<>();
         for(OWLOntology ont : ontologies) {
             entities.addAll(ont.getSignature());
         }

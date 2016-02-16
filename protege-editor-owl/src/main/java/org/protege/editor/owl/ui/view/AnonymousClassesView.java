@@ -33,14 +33,10 @@ import java.util.List;
  */
 public class AnonymousClassesView extends AbstractActiveOntologyViewComponent implements Deleteable, Copyable {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 6603279963895348251L;
 
     private MList list;
 
-    private java.util.List<ChangeListener> listeners = new ArrayList<ChangeListener>();
+    private java.util.List<ChangeListener> listeners = new ArrayList<>();
 
 
     protected void initialiseOntologyView() throws Exception {
@@ -59,15 +55,13 @@ public class AnonymousClassesView extends AbstractActiveOntologyViewComponent im
 
         add(list, BorderLayout.CENTER);
 
-        list.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent event) {
-                for (ChangeListener l : new ArrayList<ChangeListener>(listeners)) {
-                    l.stateChanged(new ChangeEvent(AnonymousClassesView.this));
-                }
-                Object item = list.getSelectedValue();
-                if (item != null) {
-                    getOWLEditorKit().getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(((AnonymousClassItem) item).getOWLClass());
-                }
+        list.addListSelectionListener(event -> {
+            for (ChangeListener l : new ArrayList<>(listeners)) {
+                l.stateChanged(new ChangeEvent(AnonymousClassesView.this));
+            }
+            Object item = list.getSelectedValue();
+            if (item != null) {
+                getOWLEditorKit().getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(((AnonymousClassItem) item).getOWLClass());
             }
         });
     }
@@ -78,7 +72,7 @@ public class AnonymousClassesView extends AbstractActiveOntologyViewComponent im
 
 
     protected void updateView(OWLOntology activeOntology) throws Exception {
-        Set<AnonymousClassItem> clses = new HashSet<AnonymousClassItem>();
+        Set<AnonymousClassItem> clses = new HashSet<>();
         AnonymousDefinedClassManager ADCManager = getOWLModelManager().get(AnonymousDefinedClassManager.ID);
         if (ADCManager != null){
             for (OWLClass cls : activeOntology.getClassesInSignature()){
@@ -111,8 +105,8 @@ public class AnonymousClassesView extends AbstractActiveOntologyViewComponent im
 
 
     public java.util.List<OWLObject> getObjectsToCopy() {
-        List<OWLObject> sel = new ArrayList<OWLObject>();
-for (Object clsItem : list.getSelectedValues()){
+        List<OWLObject> sel = new ArrayList<>();
+for (Object clsItem : list.getSelectedValuesList()){
             sel.add(((AnonymousClassItem)clsItem).getOWLClass());
         }
         return sel;

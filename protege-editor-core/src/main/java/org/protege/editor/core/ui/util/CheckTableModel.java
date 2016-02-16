@@ -10,10 +10,6 @@ import java.util.List;
 */
 public class CheckTableModel<O> extends DefaultTableModel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 836875586342144500L;
 
 
     CheckTableModel(String name) {
@@ -46,7 +42,7 @@ public class CheckTableModel<O> extends DefaultTableModel {
 
 
     public List<O> getFilteredValues() {
-        List<O> axioms = new ArrayList<O>();
+        List<O> axioms = new ArrayList<>();
         for (int i=0; i<getRowCount(); i++){
             if (getValueAt(i, 0).equals(Boolean.TRUE)){
                 axioms.add((O)getValueAt(i, 1));
@@ -57,7 +53,7 @@ public class CheckTableModel<O> extends DefaultTableModel {
 
 
     public List<O> getAllValues() {
-        List<O> values = new ArrayList<O>();
+        List<O> values = new ArrayList<>();
         for (int i=0; i<getRowCount(); i++){
             values.add((O)getValueAt(i, 1));
         }

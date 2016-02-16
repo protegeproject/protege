@@ -29,13 +29,9 @@ public class OWLDataPropertySetEditor extends AbstractOWLObjectEditor<Set<OWLDat
 
     private OWLDataPropertySelectorPanel editor;
     
-    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<InputVerificationStatusChangedListener>();
+    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<>();
     
-    private InputVerificationStatusChangedListener inputListener = new InputVerificationStatusChangedListener(){
-        public void verifiedStatusChanged(boolean newState) {
-            handleVerifyEditorContents();
-        }
-    };
+    private InputVerificationStatusChangedListener inputListener = newState -> handleVerifyEditorContents();
 
     public OWLDataPropertySetEditor(OWLEditorKit owlEditorKit) {
         editor = new OWLDataPropertySelectorPanel(owlEditorKit);
@@ -48,7 +44,7 @@ public class OWLDataPropertySetEditor extends AbstractOWLObjectEditor<Set<OWLDat
     }
 
     public boolean setEditedObject(Set<OWLDataProperty> p){
-        editor.setSelection(p != null ? p : Collections.EMPTY_SET);
+        editor.setSelection(p != null ? p : Collections.emptySet());
         return true;
     }
 

@@ -15,7 +15,7 @@ import java.util.Map.Entry;
  */
 public class EquivalenceRelation<X extends Comparable<? super X>> {
 
-    private Map<X, Set<X>> equivalenceMap = new HashMap<X, Set<X>>();
+    private Map<X, Set<X>> equivalenceMap = new HashMap<>();
 
     public boolean equivalent(X x, X y) {
         Set<X> equivalentToX = equivalenceMap.get(x);
@@ -27,7 +27,7 @@ public class EquivalenceRelation<X extends Comparable<? super X>> {
         if (toBeMerged.size() <= 1) {
             return;
         }
-        Set<X> equivalenceClass = new TreeSet<X>();
+        Set<X> equivalenceClass = new TreeSet<>();
         for (X x : toBeMerged) {
             Set<X> existingEquivalences = equivalenceMap.put(x, equivalenceClass);
             if (existingEquivalences != null) {
@@ -41,13 +41,13 @@ public class EquivalenceRelation<X extends Comparable<? super X>> {
 
     public Set<X> getEquivalenceClass(X x) {
         Set<X> equivalents = equivalenceMap.get(x);
-        return equivalents != null ? new TreeSet<X>(equivalents) : Collections.singleton(x);
+        return equivalents != null ? new TreeSet<>(equivalents) : Collections.singleton(x);
     }
 
     public void logEquivalences(Logger log) {
         if (log.isDebugEnabled()) {
             log.debug(LogBanner.start("Logging equivalences"));
-            Set<X> displayed = new HashSet<X>();
+            Set<X> displayed = new HashSet<>();
             for (Entry<X, Set<X>> entry : equivalenceMap.entrySet()) {
                 X x = entry.getKey();
                 Set<X> equivalences = entry.getValue();

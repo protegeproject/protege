@@ -19,10 +19,6 @@ import java.awt.*;
  */
 public class UsageTree extends OWLLinkedObjectTree {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 2978742855867968571L;
 
     private OWLEditorKit owlEditorKit;
 

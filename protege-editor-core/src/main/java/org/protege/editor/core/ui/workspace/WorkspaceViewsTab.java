@@ -24,10 +24,6 @@ import java.awt.*;
  */
 public class WorkspaceViewsTab extends WorkspaceTab implements Resettable {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 6574948332071917250L;
 
     private final Logger logger = LoggerFactory.getLogger(WorkspaceViewsTab.class);
 

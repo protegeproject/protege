@@ -25,26 +25,19 @@ import java.awt.*;
  */
 public class InferredAxiomsViewComponent extends AbstractActiveOntologyViewComponent {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 7129182885438253297L;
 
     private InferredAxiomsFrame frame;
 
     private OWLFrameList<OWLOntology> frameList;
 
-    private OWLModelManagerListener listener = new OWLModelManagerListener() {
-
-        public void handleChange(OWLModelManagerChangeEvent event) {
-            if(event.isType(EventType.ONTOLOGY_CLASSIFIED)) {
-                if(isSynchronizing()) {
-                    try {
-                            updateView(getOWLModelManager().getActiveOntology());
-                    }
-                    catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
+    private OWLModelManagerListener listener = event -> {
+        if(event.isType(EventType.ONTOLOGY_CLASSIFIED)) {
+            if(isSynchronizing()) {
+                try {
+                        updateView(getOWLModelManager().getActiveOntology());
+                }
+                catch (Exception e) {
+                    throw new RuntimeException(e);
                 }
             }
         }
@@ -60,7 +53,7 @@ public class InferredAxiomsViewComponent extends AbstractActiveOntologyViewCompo
     private JComponent getCenterPane() {
         setLayout(new BorderLayout());
         frame = new InferredAxiomsFrame(getOWLEditorKit());
-        frameList = new OWLFrameList<OWLOntology>(getOWLEditorKit(), frame);
+        frameList = new OWLFrameList<>(getOWLEditorKit(), frame);
         frameList.setRootObject(getOWLModelManager().getActiveOntology());
         return new JScrollPane(frameList);
     }

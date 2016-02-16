@@ -22,11 +22,7 @@ import java.util.List;
  */
 public class PluginInfoTableModel extends AbstractTableModel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 231294024758489767L;
-    private List<Bundle> bundles;
+        private List<Bundle> bundles;
     
     public enum Columns  {
         NAME("Name/ID"), VERSION("Version"), QUALIFIER("Qualifier");
@@ -44,7 +40,7 @@ public class PluginInfoTableModel extends AbstractTableModel {
 
 
     public PluginInfoTableModel() {
-        bundles = new ArrayList<Bundle>();
+        bundles = new ArrayList<>();
         for (Bundle b : ProtegeApplication.getContext().getBundles()) {
         	if (ProtegeApplication.isPlugin(b)) {
         		bundles.add(b);

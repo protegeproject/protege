@@ -31,7 +31,7 @@ public class Paragraph extends PageObject {
     private boolean wrapText = true;
 
 
-    private List<LinkSpan> linkSpans = new ArrayList<LinkSpan>();
+    private List<LinkSpan> linkSpans = new ArrayList<>();
 
     private Alignment alignment = Alignment.LEFT;
 
@@ -182,7 +182,7 @@ public class Paragraph extends PageObject {
         this.alignment = alignment;
     }
 
-    private Set<LinkSpan> highlightedLinkSpan = new HashSet<LinkSpan>();
+    private Set<LinkSpan> highlightedLinkSpan = new HashSet<>();
 
 //    public void setLinkHighlightLoaction(int x, int y) {
 //        this.linkHighlightX = x;
@@ -224,7 +224,7 @@ public class Paragraph extends PageObject {
     }
 
     public List<LinkSpan> getLinkSpans() {
-        return new ArrayList<LinkSpan>(linkSpans);
+        return new ArrayList<>(linkSpans);
     }
 
     public void layout(FontRenderContext fontRenderContext) {

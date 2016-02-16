@@ -30,7 +30,7 @@ public class AltStartupActionPluginLoader extends AbstractPluginLoader<AltStartu
 	
 	@Override
 	public Set<AltStartupActionPlugin> getPlugins() {
-		return new TreeSet<AltStartupActionPlugin>(super.getPlugins());
+		return new TreeSet<>(super.getPlugins());
 	}
 
 }

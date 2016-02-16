@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.inference;
 
-import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
 import org.protege.editor.owl.model.inference.ReasonerPreferences;
 import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
@@ -15,7 +14,7 @@ public class DisplayedInferencesPreferencePanel extends OWLPreferencesPanel {
     private static final long serialVersionUID = 8356095374634408957L;
     public static final String LABEL = "Displayed Inferences";
     private ReasonerPreferences preferences;
-    private EnumMap<OptionalInferenceTask, JCheckBox> enabledMap = new EnumMap<OptionalInferenceTask, JCheckBox>(OptionalInferenceTask.class);
+    private EnumMap<OptionalInferenceTask, JCheckBox> enabledMap = new EnumMap<>(OptionalInferenceTask.class);
 
     public void initialise() throws Exception {
         setLayout(new BorderLayout());

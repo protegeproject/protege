@@ -19,10 +19,6 @@ import java.awt.*;
 public class ObjectSelectorViewComponent extends AbstractOWLViewComponent {
 
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 3305793446146726647L;
 
 
     protected void initialiseOWLView() throws Exception {

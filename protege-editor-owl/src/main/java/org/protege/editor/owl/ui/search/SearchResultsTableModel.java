@@ -24,7 +24,7 @@ public class SearchResultsTableModel extends AbstractTableModel {
 
     private int categorySizeLimit = DEFAULT_CATEGORY_SIZE_LIMIT;
 
-    private java.util.List<ResultsTableModelRow> rows = new ArrayList<ResultsTableModelRow>();
+    private java.util.List<ResultsTableModelRow> rows = new ArrayList<>();
 
     public SearchResultsTableModel(OWLEditorKit editorKit) {
         this.editorKit = editorKit;

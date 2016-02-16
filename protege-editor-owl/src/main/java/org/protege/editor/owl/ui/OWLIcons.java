@@ -22,7 +22,7 @@ public class OWLIcons {
 
 
     static {
-        iconMap = new HashMap<String, Icon>();
+        iconMap = new HashMap<>();
     }
 
     /**

@@ -33,13 +33,13 @@ public class OWLClassDescriptionViewComponent extends AbstractOWLClassViewCompon
     private OWLFrameList<OWLClass> list;
 
     public void initialiseClassView() throws Exception {
-        list = new OWLFrameList<OWLClass>(getOWLEditorKit(), new OWLClassDescriptionFrame(getOWLEditorKit()));
+        list = new OWLFrameList<>(getOWLEditorKit(), new OWLClassDescriptionFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         JScrollPane sp = new JScrollPane(list);
         sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         add(sp);
         list.addToPopupMenu(new ConvertSelectionToEquivalentClassAction());
-        list.addToPopupMenu(new CreateNewEquivalentClassAction<OWLClass>());
+        list.addToPopupMenu(new CreateNewEquivalentClassAction<>());
         list.addToPopupMenu(new CreateClosureAxiomAction());
     }
 
@@ -66,10 +66,6 @@ public class OWLClassDescriptionViewComponent extends AbstractOWLClassViewCompon
 
     private class ConvertSelectionToEquivalentClassAction extends OWLFrameListPopupMenuAction<OWLClass> {
 
-        /**
-         * 
-         */
-        private static final long serialVersionUID = 8523837123917366996L;
 
 
         protected void initialise() throws Exception {
@@ -90,7 +86,7 @@ public class OWLClassDescriptionViewComponent extends AbstractOWLClassViewCompon
                 setEnabled(false);
                 return;
             }
-            for (Object selVal : list.getSelectedValues()) {
+            for (Object selVal : list.getSelectedValuesList()) {
                 if (!(selVal instanceof OWLSubClassAxiomFrameSectionRow)) {
                     setEnabled(false);
                     return;
@@ -109,8 +105,8 @@ public class OWLClassDescriptionViewComponent extends AbstractOWLClassViewCompon
     private void convertSelectedRowsToDefinedClass() {
         final Object[] selVals = list.getSelectedValues();
         if (selVals.length > 0){
-            Set<OWLClassExpression> descriptions = new HashSet<OWLClassExpression>();
-            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            Set<OWLClassExpression> descriptions = new HashSet<>();
+            List<OWLOntologyChange> changes = new ArrayList<>();
             for (Object selVal : selVals) {
                 if (selVal instanceof OWLSubClassAxiomFrameSectionRow) {
                     OWLSubClassAxiomFrameSectionRow row = (OWLSubClassAxiomFrameSectionRow) selVal;

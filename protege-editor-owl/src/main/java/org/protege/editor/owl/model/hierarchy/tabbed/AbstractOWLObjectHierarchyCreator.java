@@ -58,7 +58,7 @@ public abstract class AbstractOWLObjectHierarchyCreator {
 
 
     public List<OWLOntologyChange> createHierarchy() {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         changes.addAll(hierarchyCreationStart());
         for (Edge e : edges) {
             if (e.isRoot()) {

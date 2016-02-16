@@ -19,7 +19,7 @@ public abstract class AbstractNamespaceManager implements NamespaceManager {
 
 
     protected AbstractNamespaceManager() {
-        listeners = new ArrayList<NamespaceManagerListener>();
+        listeners = new ArrayList<>();
     }
 
 
@@ -34,14 +34,14 @@ public abstract class AbstractNamespaceManager implements NamespaceManager {
 
 
     protected void fireMappingAdded(String prefix, String namespace) {
-        for (NamespaceManagerListener listener : new ArrayList<NamespaceManagerListener>(listeners)) {
+        for (NamespaceManagerListener listener : new ArrayList<>(listeners)) {
             listener.mappingAdded(prefix, namespace);
         }
     }
 
 
     protected void fireMappingRemoved(String prefix, String namespace) {
-        for (NamespaceManagerListener listener : new ArrayList<NamespaceManagerListener>(listeners)) {
+        for (NamespaceManagerListener listener : new ArrayList<>(listeners)) {
             listener.mappingRemoved(prefix, namespace);
         }
     }

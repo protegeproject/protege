@@ -1,18 +1,39 @@
 package org.protege.editor.owl.model.search;
 
-import org.protege.editor.core.Disposable;
+import org.protege.editor.core.plugin.ProtegePluginInstance;
+import org.protege.editor.owl.OWLEditorKit;
 
-import org.semanticweb.owlapi.util.Monitorable;
+import org.semanticweb.owlapi.util.ProgressMonitor;
+
+import java.util.Collection;
 
 /**
- * Author: Josef Hardi <josef.hardi@stanford.edu><br>
- * Stanford University<br>
- * Bio-Medical Informatics Research Group<br>
- * Date: 04/11/2015
+ * Matthew Horridge
+ * Stanford Center for Biomedical Informatics Research
+ * 09/02/16
  */
-public interface SearchManager extends Monitorable, Disposable {
+public abstract class SearchManager implements ProtegePluginInstance {
 
-    SearchSettings getSearchSettings();
+    private OWLEditorKit editorKit = null;
 
-    void performSearch(String searchString, SearchResultHandler searchResultHandler);
+    public final void setup(OWLEditorKit editorKit) {
+        this.editorKit = editorKit;
+    }
+
+    public OWLEditorKit getEditorKit() {
+        if(editorKit == null) {
+            throw new RuntimeException("Not set up correctly");
+        }
+        return editorKit;
+    }
+
+    public abstract void dispose();
+
+    public abstract void addProgressMonitor(ProgressMonitor pm);
+
+    public abstract boolean isSearchType(SearchCategory category);
+
+    public abstract void setCategories(Collection<SearchCategory> categories);
+
+    public abstract void performSearch(String searchString, SearchResultHandler searchResultHandler);
 }

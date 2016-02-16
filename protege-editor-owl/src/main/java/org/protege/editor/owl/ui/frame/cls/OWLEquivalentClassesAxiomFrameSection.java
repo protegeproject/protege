@@ -22,7 +22,7 @@ public class OWLEquivalentClassesAxiomFrameSection extends AbstractOWLClassAxiom
 
     private static final String LABEL = "Equivalent To";
 
-    private Set<OWLClassExpression> added = new HashSet<OWLClassExpression>();
+    private Set<OWLClassExpression> added = new HashSet<>();
 
     private boolean inferredEquivalentClasses = true;
 
@@ -54,7 +54,7 @@ public class OWLEquivalentClassesAxiomFrameSection extends AbstractOWLClassAxiom
             return ont.getEquivalentClassesAxioms(descr.asOWLClass());
         }
         else{
-            Set<OWLEquivalentClassesAxiom> axioms = new HashSet<OWLEquivalentClassesAxiom>();
+            Set<OWLEquivalentClassesAxiom> axioms = new HashSet<>();
             for (OWLAxiom ax : ont.getGeneralClassAxioms()){
                 if (ax instanceof OWLEquivalentClassesAxiom &&
                     ((OWLEquivalentClassesAxiom)ax).getClassExpressions().contains(descr)){
@@ -70,39 +70,36 @@ public class OWLEquivalentClassesAxiomFrameSection extends AbstractOWLClassAxiom
         if (!inferredEquivalentClasses) {
             return;
         }
-        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_EQUIVALENT_CLASSES, 
-                                                                  new Runnable() {
-
-            public void run() {
-                final OWLReasoner reasoner = getOWLModelManager().getReasoner();
-                if (!reasoner.isConsistent()) {
-            		return;
-            	}
-                if (!reasoner.isSatisfiable(getRootObject())) {
-                    if (!getRootObject().isOWLNothing()) {
-                        OWLClass nothing = getOWLModelManager().getOWLDataFactory().getOWLNothing();
-                        addRow(new OWLEquivalentClassesAxiomFrameSectionRow(getOWLEditorKit(),
-                                                                            OWLEquivalentClassesAxiomFrameSection.this,
-                                                                            null,
-                                                                            getRootObject(),
-                                                                            getOWLDataFactory().getOWLEquivalentClassesAxiom(CollectionFactory.createSet(getRootObject(),
-                                                                                                                                                         nothing))));
+        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_EQUIVALENT_CLASSES,
+                () -> {
+                    final OWLReasoner reasoner = getOWLModelManager().getReasoner();
+                    if (!reasoner.isConsistent()) {
+                        return;
                     }
-                }
-                else{
-                    for (OWLClassExpression cls : reasoner.getEquivalentClasses(getRootObject())) {
-                        if (!added.contains(cls) && !cls.equals(getRootObject())) {
+                    if (!reasoner.isSatisfiable(getRootObject())) {
+                        if (!getRootObject().isOWLNothing()) {
+                            OWLClass nothing = getOWLModelManager().getOWLDataFactory().getOWLNothing();
                             addRow(new OWLEquivalentClassesAxiomFrameSectionRow(getOWLEditorKit(),
                                                                                 OWLEquivalentClassesAxiomFrameSection.this,
                                                                                 null,
                                                                                 getRootObject(),
                                                                                 getOWLDataFactory().getOWLEquivalentClassesAxiom(CollectionFactory.createSet(getRootObject(),
-                                                                                                                                                             cls))));
+                                                                                                                                                             nothing))));
                         }
                     }
-                }
-            }
-        });
+                    else{
+                        for (OWLClassExpression cls : reasoner.getEquivalentClasses(getRootObject())) {
+                            if (!added.contains(cls) && !cls.equals(getRootObject())) {
+                                addRow(new OWLEquivalentClassesAxiomFrameSectionRow(getOWLEditorKit(),
+                                                                                    OWLEquivalentClassesAxiomFrameSection.this,
+                                                                                    null,
+                                                                                    getRootObject(),
+                                                                                    getOWLDataFactory().getOWLEquivalentClassesAxiom(CollectionFactory.createSet(getRootObject(),
+                                                                                                                                                                 cls))));
+                            }
+                        }
+                    }
+                });
 
     }
 
@@ -123,7 +120,7 @@ public class OWLEquivalentClassesAxiomFrameSection extends AbstractOWLClassAxiom
     
     @Override
     public void handleEditingFinished(Set<OWLClassExpression> editedObjects) {
-    	editedObjects = new HashSet<OWLClassExpression>(editedObjects);
+    	editedObjects = new HashSet<>(editedObjects);
     	editedObjects.remove(getRootObject());
     	super.handleEditingFinished(editedObjects);
     }
@@ -139,7 +136,7 @@ public class OWLEquivalentClassesAxiomFrameSection extends AbstractOWLClassAxiom
 
 
     public boolean dropObjects(List<OWLObject> objects) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         for (OWLObject obj : objects) {
             if (obj instanceof OWLClassExpression) {
                 OWLClassExpression desc = (OWLClassExpression) obj;

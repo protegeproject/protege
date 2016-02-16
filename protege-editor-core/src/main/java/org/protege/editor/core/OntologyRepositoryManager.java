@@ -22,7 +22,7 @@ public class OntologyRepositoryManager {
     private List<OntologyRepository> repositories;
 
     private OntologyRepositoryManager() {
-        repositories = new ArrayList<OntologyRepository>();
+        repositories = new ArrayList<>();
     }
 
     public static synchronized OntologyRepositoryManager getManager() {

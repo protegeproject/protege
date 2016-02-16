@@ -19,10 +19,6 @@ import java.awt.event.ActionEvent;
  */
 public class CheckPluginsAction extends ProtegeAction {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1531046176436352912L;
 
 
     public void actionPerformed(ActionEvent event) {

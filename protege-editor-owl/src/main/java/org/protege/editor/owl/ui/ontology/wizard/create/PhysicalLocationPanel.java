@@ -50,11 +50,9 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
 
     private JList recentLocations;
 
-    private ListSelectionListener listSelectionListener = new ListSelectionListener() {
-        public void valueChanged(ListSelectionEvent e) {
-            if (!e.getValueIsAdjusting()) {
-                setBaseFromRecentLocationList();
-            }
+    private ListSelectionListener listSelectionListener = e -> {
+        if (!e.getValueIsAdjusting()) {
+            setBaseFromRecentLocationList();
         }
     };
 
@@ -126,7 +124,7 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
 
 
     private void browseForLocation() {
-        Set<String> exts = new HashSet<String>();
+        Set<String> exts = new HashSet<>();
         exts.add(".owl");
         exts.add(".rdf");
         File file = UIUtil.saveFile(new JFrame(), "Select a file", "OWL File", exts, getOntologyLocalName());
@@ -191,7 +189,7 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
 
     public void loadRecentLocations() {
         Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(ProtegeOWL.ID);
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         list = prefs.getStringList(RECENT_LOCATIONS_KEY, list);
         DefaultListModel model = new DefaultListModel();
         for (String s : list) {
@@ -212,7 +210,7 @@ public class PhysicalLocationPanel extends AbstractWizardPanel {
 
     public void storeRecentLocations() {
         Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(ProtegeOWL.ID);
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         DefaultListModel model = ((DefaultListModel) recentLocations.getModel());
         // Add in current file
         if (getLocationURL() != null) {

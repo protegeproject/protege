@@ -12,7 +12,6 @@ import java.net.URL;
 import java.util.prefs.Preferences;
 
 public class ResetPreferencesAction extends AltStartupAction {
-	private static final long serialVersionUID = 697953371040653824L;
 
 	public void initialise() throws Exception {
 
@@ -36,12 +35,13 @@ public class ResetPreferencesAction extends AltStartupAction {
 			}
 			JScrollPane scroller = new JScrollPane();
 			scroller.getViewport().add(pane);
-			Object reset = "Reset";
-			int ret = JOptionPane.showOptionDialog(getParent(), scroller, "Reset Preferences?", 
-													  JOptionPane.NO_OPTION, JOptionPane.INFORMATION_MESSAGE, 
-													  null, 
-													  new Object[] {reset, "Cancel"}, reset);
-			if (ret == 0) {
+			int ret = JOptionPane.showConfirmDialog(
+					getParent(),
+					scroller,
+					"Reset Preferences?",
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE);
+			if (ret == JOptionPane.YES_OPTION) {
 				Preferences p = Preferences.userRoot();
 				Preferences q = p.node(JavaBackedPreferencesImpl.PROTEGE_PREFS_KEY);
 				q.removeNode();

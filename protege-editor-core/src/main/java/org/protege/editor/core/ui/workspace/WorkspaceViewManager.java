@@ -22,9 +22,9 @@ import java.util.*;
  */
 public class WorkspaceViewManager {
 
-    private Set<WorkspaceViewsTab> registeredTabs = new HashSet<WorkspaceViewsTab>();
+    private Set<WorkspaceViewsTab> registeredTabs = new HashSet<>();
 
-    private Map<String, ViewComponentPlugin> pluginMap = new HashMap<String, ViewComponentPlugin>();
+    private Map<String, ViewComponentPlugin> pluginMap = new HashMap<>();
 
 
     public void registerViews(WorkspaceViewsTab tab) {
@@ -55,7 +55,7 @@ public class WorkspaceViewManager {
     
 
     public List<ViewComponentPlugin> getViewComponentPlugins() {
-        List<ViewComponentPlugin> list = new ArrayList<ViewComponentPlugin>();
+        List<ViewComponentPlugin> list = new ArrayList<>();
         list.addAll(pluginMap.values());
         return list;
     }

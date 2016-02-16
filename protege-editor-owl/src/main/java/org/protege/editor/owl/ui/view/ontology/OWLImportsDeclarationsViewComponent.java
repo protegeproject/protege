@@ -35,11 +35,9 @@ public class OWLImportsDeclarationsViewComponent extends AbstractOWLViewComponen
 
         list = new OntologyImportsList(getOWLEditorKit());
         list.setOntology(getOWLModelManager().getActiveOntology());
-        listener = new OWLModelManagerListener() {
-            public void handleChange(OWLModelManagerChangeEvent event) {
-                if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ONTOLOGY_RELOADED)) {
-                    list.setOntology(getOWLModelManager().getActiveOntology());
-                }
+        listener = event -> {
+            if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ONTOLOGY_RELOADED)) {
+                list.setOntology(getOWLModelManager().getActiveOntology());
             }
         };
         getOWLModelManager().addListener(listener);

@@ -47,8 +47,8 @@ public class FolderGroupManager extends CatalogEntryManager {
     private boolean recursive = true;
     private long timeOfCurrentUpdate;
     private boolean modified = false;
-    private Map<File, Collection<URI>> retainedFileToWebLocationMap = new TreeMap<File, Collection<URI>>();
-    private Map<URI, Collection<URI>> webLocationToFileLocationMap = new TreeMap<URI, Collection<URI>>();
+    private Map<File, Collection<URI>> retainedFileToWebLocationMap = new TreeMap<>();
+    private Map<URI, Collection<URI>> webLocationToFileLocationMap = new TreeMap<>();
 
 
     public static GroupEntry createGroupEntry(URI folder, boolean recursive, boolean autoUpdate, XmlBaseContext context) throws IOException {
@@ -56,7 +56,7 @@ public class FolderGroupManager extends CatalogEntryManager {
     }
 
     public FolderGroupManager() {
-        algorithms = new HashSet<Algorithm>();
+        algorithms = new HashSet<>();
         algorithms.add(new XmlBaseAlgorithm());
     }
 
@@ -114,7 +114,7 @@ public class FolderGroupManager extends CatalogEntryManager {
                 logger.debug("Update of group entry {} started at {}.", ge.getId(), new Date(timeOfCurrentUpdate));
 
             retainEntries();
-            examineDirectoryContents(folder, new HashSet<URI>());
+            examineDirectoryContents(folder, new HashSet<>());
             if (modified) {
                 clearEntries();
                 writeEntries();

@@ -33,7 +33,7 @@ public class CustomWorkspaceTabsManager {
 
     public CustomWorkspaceTabsManager() {
         prefs = PreferencesManager.getInstance().getApplicationPreferences(CUSTOM_TABS_PREFERENCES_KEY);
-        customTabs = prefs.getStringList(CUSTOM_TABS_PREFERENCES_KEY, new ArrayList<String>());
+        customTabs = prefs.getStringList(CUSTOM_TABS_PREFERENCES_KEY, new ArrayList<>());
     }
 
 
@@ -54,7 +54,7 @@ public class CustomWorkspaceTabsManager {
      * @return A list of custom tab plugins
      */
     public List<WorkspaceTabPlugin> getCustomTabPlugins(TabbedWorkspace workspace) {
-        List<WorkspaceTabPlugin> tabPlugins = new ArrayList<WorkspaceTabPlugin>();
+        List<WorkspaceTabPlugin> tabPlugins = new ArrayList<>();
         for(String tab : customTabs) {
             tabPlugins.add(getPluginForTabName(tab, workspace));
         }

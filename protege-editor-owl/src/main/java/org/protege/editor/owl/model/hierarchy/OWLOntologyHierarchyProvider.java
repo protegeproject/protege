@@ -35,14 +35,11 @@ public class OWLOntologyHierarchyProvider extends AbstractOWLObjectHierarchyProv
 
     private OWLModelManager mngr;
 
-    private OWLModelManagerListener modelManagerListener = new OWLModelManagerListener() {
-
-        public void handleChange(OWLModelManagerChangeEvent event) {
-            if(event.isType(EventType.ONTOLOGY_LOADED) ||
-               event.isType(EventType.ONTOLOGY_RELOADED) ||
-               event.isType(EventType.ONTOLOGY_CREATED)) {
-                rebuild();
-            }
+    private OWLModelManagerListener modelManagerListener = event -> {
+        if(event.isType(EventType.ONTOLOGY_LOADED) ||
+           event.isType(EventType.ONTOLOGY_RELOADED) ||
+           event.isType(EventType.ONTOLOGY_CREATED)) {
+            rebuild();
         }
     };
 
@@ -50,9 +47,9 @@ public class OWLOntologyHierarchyProvider extends AbstractOWLObjectHierarchyProv
     public OWLOntologyHierarchyProvider(OWLModelManager mngr) {
         super(mngr.getOWLOntologyManager());
         this.mngr = mngr;
-        roots = new HashSet<OWLOntology>();
-        parent2ChildMap = new HashMap<OWLOntology, Set<OWLOntology>>();
-        child2ParentMap = new HashMap<OWLOntology, Set<OWLOntology>>();
+        roots = new HashSet<>();
+        parent2ChildMap = new HashMap<>();
+        child2ParentMap = new HashMap<>();
         rebuild();
         mngr.addListener(modelManagerListener);
 
@@ -93,7 +90,7 @@ public class OWLOntologyHierarchyProvider extends AbstractOWLObjectHierarchyProv
     	synchronized (roots) {
     		Set<OWLOntology> children = parent2ChildMap.get(parent);
     		if(children == null) {
-    			children = new HashSet<OWLOntology>();
+    			children = new HashSet<>();
     			if(add) {
     				parent2ChildMap.put(parent, children);
     			}
@@ -106,7 +103,7 @@ public class OWLOntologyHierarchyProvider extends AbstractOWLObjectHierarchyProv
     	synchronized (roots) {
     		Set<OWLOntology> parents = child2ParentMap.get(child);
     		if(parents == null) {
-    			parents = new HashSet<OWLOntology>();
+    			parents = new HashSet<>();
     			if(add) {
     				child2ParentMap.put(child, parents);
     			}

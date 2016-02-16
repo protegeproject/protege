@@ -69,18 +69,16 @@ public class URLPage extends OntologyImportPage {
         urlPanel.requestFocus();
         getWizard().setNextFinishButtonEnabled(urlPanel.isValid());
         if (!displayed){
-        	urlPanel.addStatusChangedListener(new InputVerificationStatusChangedListener(){
-        		public void verifiedStatusChanged(boolean newState) {
-        			getWizard().setNextFinishButtonEnabled(newState);
-        		}
-        	});
+        	urlPanel.addStatusChangedListener(newState -> {
+                getWizard().setNextFinishButtonEnabled(newState);
+            });
         }
         displayed = true;
     }
 
     @Override
     public void aboutToHidePanel() {
-    	OntologyImportWizard wizard = (OntologyImportWizard) getWizard();
+    	OntologyImportWizard wizard = getWizard();
         wizard.setImportsAreFinal(false);
     	wizard.clearImports();
     	ImportInfo parameters = new ImportInfo();

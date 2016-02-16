@@ -24,7 +24,7 @@ public class PrefixMapperTableModel extends AbstractTableModel {
 	private final Logger logger = LoggerFactory.getLogger(PrefixMapperTableModel.class);
 	
 	public enum Column {
-		PREFIX_NAME, PREFIX;
+		PREFIX_NAME, PREFIX
 	}
 	
 	
@@ -39,8 +39,8 @@ public class PrefixMapperTableModel extends AbstractTableModel {
 
     public PrefixMapperTableModel(PrefixDocumentFormat prefixManager) {
     	this.prefixManager = prefixManager;
-        prefixValueMap = new HashMap<String, String>();
-        prefixes = new ArrayList<String>();
+        prefixValueMap = new HashMap<>();
+        prefixes = new ArrayList<>();
         refill();
     }
 

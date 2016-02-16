@@ -120,7 +120,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         this.owlEditorKit = owlEditorKit;
         this.renderExpression = renderExpression;
         this.renderIcon = renderIcon;
-        this.equivalentObjects = new HashSet<OWLObject>();
+        this.equivalentObjects = new HashSet<>();
 
         iconLabel = new JLabel("");
         iconLabel.setOpaque(false);
@@ -133,7 +133,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         renderingComponent.add(iconLabel);
         renderingComponent.add(textPane);
 
-        entityColorProviders = new ArrayList<OWLEntityColorProvider>();
+        entityColorProviders = new ArrayList<>();
         OWLEntityColorProviderPluginLoader loader = new OWLEntityColorProviderPluginLoader(getOWLModelManager());
         for (OWLEntityColorProviderPlugin plugin : loader.getPlugins()) {
             try {
@@ -145,9 +145,9 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                 logger.error("An error occurred whilst trying to load an OWLEntityColorProviderPlugin", e);
             }
         }
-        crossedOutEntities = new HashSet<OWLEntity>();
-        unsatisfiableNames = new HashSet<String>();
-        boxedNames = new HashSet<String>();
+        crossedOutEntities = new HashSet<>();
+        unsatisfiableNames = new HashSet<>();
+        boxedNames = new HashSet<>();
         prepareStyles();
         setupFont();
     }
@@ -784,16 +784,14 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                     // is inconsistent
                 	try {
                 		getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_CLASS_UNSATISFIABILITY,
-                				new Runnable() {
-                			public void run() {
-                				OWLReasoner reasoner = getOWLModelManager().getReasoner();
-                				boolean consistent = reasoner.isConsistent();
-                				if (!consistent || !getOWLModelManager().getReasoner().isSatisfiable((OWLClass) curEntity)) {
-                					// Paint red because of inconsistency
-                					doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
-                				}
-                			}
-                		});
+                                () -> {
+                                    OWLReasoner reasoner = getOWLModelManager().getReasoner();
+                                    boolean consistent = reasoner.isConsistent();
+                                    if (!consistent || !getOWLModelManager().getReasoner().isSatisfiable((OWLClass) curEntity)) {
+                                        // Paint red because of inconsistency
+                                        doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
+                                    }
+                                });
                 	}
                 	catch (Exception e) {
                 		logger.error("An error occurred whilst rendering a token. " +
@@ -907,17 +905,15 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private void highlightPropertyIfUnsatisfiable(final OWLEntity entity, final StyledDocument doc, final int tokenStartIndex, final int tokenLength) {
     	try {
-    		getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_OBJECT_PROPERTY_UNSATISFIABILITY, 
-    				new Runnable() {
-    			public void run() {
-    				OWLObjectProperty prop = (OWLObjectProperty) entity;
-    				OWLReasoner reasoner = getOWLModelManager().getReasoner();
-    				boolean consistent = reasoner.isConsistent();
-    				if(!consistent || reasoner.getBottomObjectPropertyNode().contains(prop)) {
-    					doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
-    				}
-    			}
-    		});
+    		getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_OBJECT_PROPERTY_UNSATISFIABILITY,
+                    () -> {
+                        OWLObjectProperty prop = (OWLObjectProperty) entity;
+                        OWLReasoner reasoner = getOWLModelManager().getReasoner();
+                        boolean consistent = reasoner.isConsistent();
+                        if(!consistent || reasoner.getBottomObjectPropertyNode().contains(prop)) {
+                            doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
+                        }
+                    });
     	}
     	catch (Exception e) {
     		logger.warn("An error occurred whilst highlighting an unsatisfiable property: {}", e);

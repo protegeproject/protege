@@ -42,7 +42,7 @@ public class CreateDefinedClassPanel extends JPanel implements VerifiedInputEdit
 
     private JRadioButton namedButton;
 
-    private List<InputVerificationStatusChangedListener> listeners = new ArrayList<InputVerificationStatusChangedListener>();
+    private List<InputVerificationStatusChangedListener> listeners = new ArrayList<>();
 
     private ActionListener buttonListener = new ActionListener(){
         public void actionPerformed(ActionEvent event) {
@@ -74,7 +74,7 @@ public class CreateDefinedClassPanel extends JPanel implements VerifiedInputEdit
         anonymousButton.addActionListener(buttonListener);
         namedButton.addActionListener(buttonListener);
 
-        entityCreatePanel = new OWLEntityCreationPanel<OWLClass>(eKit, null, OWLClass.class);
+        entityCreatePanel = new OWLEntityCreationPanel<>(eKit, null, OWLClass.class);
         entityCreatePanel.setEnabled(namedButton.isSelected());
         entityCreatePanel.setAlignmentY(0.0f);
         entityCreatePanel.setBorder(new EmptyBorder(0, 20, 0, 0));
@@ -155,9 +155,9 @@ public class CreateDefinedClassPanel extends JPanel implements VerifiedInputEdit
         final OWLClass owlEntity = creationSet.getOWLEntity();
         final OWLAxiom ax = eKit.getOWLModelManager().getOWLDataFactory().getOWLEquivalentClassesAxiom(owlEntity, desc);
 
-        final List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>(creationSet.getOntologyChanges());
+        final List<OWLOntologyChange> changes = new ArrayList<>(creationSet.getOntologyChanges());
         changes.add(new AddAxiom(eKit.getOWLModelManager().getActiveOntology(), ax));
 
-        return new OWLEntityCreationSet<OWLClass>(owlEntity, changes);
+        return new OWLEntityCreationSet<>(owlEntity, changes);
     }
 }

@@ -44,7 +44,7 @@ public class LoadedOntologyPage extends OntologyImportPage {
     private List<OWLOntology> getOntologies() {
         final OWLModelManager mngr = getOWLModelManager();
 
-        List<OWLOntology> ontologies = new ArrayList<OWLOntology>(mngr.getOntologies());
+        List<OWLOntology> ontologies = new ArrayList<>(mngr.getOntologies());
 
         ontologies.removeAll(mngr.getOWLOntologyManager().getImportsClosure(mngr.getActiveOntology()));
 
@@ -57,7 +57,7 @@ public class LoadedOntologyPage extends OntologyImportPage {
 
 
     private Set<OWLOntology> getOntologiesInSeries(OWLOntology ontology, Collection<OWLOntology> ontologies) {
-        Set<OWLOntology> ontologiesInSeries = new HashSet<OWLOntology>();
+        Set<OWLOntology> ontologiesInSeries = new HashSet<>();
         if (!ontology.getOntologyID().isAnonymous()){
             for (OWLOntology ont : ontologies){
                 if (!ont.getOntologyID().isAnonymous() &&
@@ -71,7 +71,7 @@ public class LoadedOntologyPage extends OntologyImportPage {
     
     @Override
     public void aboutToHidePanel() {
-    	OntologyImportWizard wizard = (OntologyImportWizard) getWizard();
+    	OntologyImportWizard wizard = getWizard();
         wizard.setImportsAreFinal(false);
     	wizard.clearImports();
         for (Object o : ontologyList.getSelectedValues()){
@@ -94,11 +94,9 @@ public class LoadedOntologyPage extends OntologyImportPage {
         setInstructions("Please select an existing (pre-loaded) ontology that you want to import.");
         ontologyList = new OWLObjectList(getOWLEditorKit());
         ontologyList.setCellRenderer(new OWLOntologyCellRenderer(getOWLEditorKit()));
-        ontologyList.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    updateState();
-                }
+        ontologyList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                updateState();
             }
         });
         parent.setLayout(new BorderLayout());

@@ -49,11 +49,7 @@ public class OntologyImportsList extends MList {
 
     private OntologyImportWizard wizard;
 
-    private OWLOntologyChangeListener ontChangeListener = new OWLOntologyChangeListener() {
-        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
-            handleOntologyChanges(changes);
-        }
-    };
+    private OWLOntologyChangeListener ontChangeListener = changes -> handleOntologyChanges(changes);
 
     public OntologyImportsList(OWLEditorKit eKit) {
         this.eKit = eKit;
@@ -105,7 +101,7 @@ public class OntologyImportsList extends MList {
             OWLOntologyManager manager = eKit.getModelManager().getOWLOntologyManager();
             OntologyCatalogManager catalogManager = eKit.getOWLModelManager().getOntologyCatalogManager();
             OWLOntology activeOntology = eKit.getModelManager().getActiveOntology();
-            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            List<OWLOntologyChange> changes = new ArrayList<>();
 
             for (ImportInfo importParameters : wizard.getImports()) {
                 IRI importedOntologyDocumentIRI = importParameters.getImportsDeclarationIRI();
@@ -115,22 +111,26 @@ public class OntologyImportsList extends MList {
                 }
                 OWLImportsDeclaration decl = manager.getOWLDataFactory().getOWLImportsDeclaration(importedOntologyDocumentIRI);
                 if (!manager.contains(importParameters.getOntologyID())) {
-                    manager.makeLoadImportRequest(decl);
-                    eKit.getModelManager().fireEvent(EventType.ONTOLOGY_LOADED);
-
-                    if (importParameters.getOntologyID() != null && !importParameters.getOntologyID().isAnonymous()) {
-                        OWLOntology importedOnt = manager.getOntology(importParameters.getOntologyID());
-                        if (importedOnt == null) {
-                            logger.warn("Imported ontology has unexpected id. " +
-                                    "During imports processing we anticipated " + importParameters.getOntologyID());
-                            logger.warn("Please notify the Protege developers via the protege 4 mailing list (p4-feedback@lists.stanford.edu)");
-                            continue;
+                    try {
+                        manager.loadOntology(importedOntologyDocumentIRI);
+                        eKit.getModelManager().fireEvent(EventType.ONTOLOGY_LOADED);
+                        if (importParameters.getOntologyID() != null && !importParameters.getOntologyID().isAnonymous()) {
+                            OWLOntology importedOnt = manager.getOntology(importParameters.getOntologyID());
+                            if (importedOnt == null) {
+                                logger.warn("Imported ontology has unexpected id. " +
+                                        "During imports processing we anticipated " + importParameters.getOntologyID());
+                                logger.warn("Please notify the Protege developers via the protege 4 mailing list (p4-feedback@lists.stanford.edu)");
+                                continue;
+                            }
+                            eKit.addRecent(manager.getOntologyDocumentIRI(importedOnt).toURI());
                         }
-                        eKit.addRecent(manager.getOntologyDocumentIRI(importedOnt).toURI());
+                        changes.add(new AddImport(ont, decl));
+                    } catch (OWLOntologyCreationException e) {
+                        logger.error("There was a problem loading the ontology from {}.  Error: {}", importedOntologyDocumentIRI, e.getMessage(), e);
+                        JOptionPane.showMessageDialog(this, "An error occurred whilst the ontology at " + importedOntologyDocumentIRI + " was being loaded.", "Error loading ontology", JOptionPane.ERROR_MESSAGE);
                     }
-
                 }
-                changes.add(new AddImport(ont, decl));
+
             }
             eKit.getModelManager().applyChanges(changes);
         }
@@ -167,7 +167,7 @@ public class OntologyImportsList extends MList {
     public void setOntology(OWLOntology ont) {
         this.ont = ont;
 
-        List<Object> data = new ArrayList<Object>();
+        List<Object> data = new ArrayList<>();
 
         data.add(directImportsHeader);
 

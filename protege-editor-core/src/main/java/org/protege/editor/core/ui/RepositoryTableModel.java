@@ -21,11 +21,6 @@ import java.util.List;
  */
 public class RepositoryTableModel extends AbstractTableModel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 7543477174882794254L;
-
     private OntologyRepository repository;
 
     private List<OntologyRepositoryEntry> entries;
@@ -34,7 +29,7 @@ public class RepositoryTableModel extends AbstractTableModel {
 
     public RepositoryTableModel(OntologyRepository repository) {
         this.repository = repository;
-        entries = new ArrayList<OntologyRepositoryEntry>(repository.getEntries());
+        entries = new ArrayList<>(repository.getEntries());
         Collections.sort(entries, new EntryShortNameURIComparator());
     }
 

@@ -59,34 +59,32 @@ public class OWLObjectPropertyAssertionAxiomFrameSection extends AbstractOWLFram
 
 
     protected void refillInferred() {
-        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_OBJECT_PROPERTY_ASSERTIONS, new Runnable() {
-                public void run() {
-                	if (!getOWLModelManager().getReasoner().isConsistent()) {
-                		return;
-                	}
-                    OWLDataFactory factory = getOWLDataFactory();
-                    if (!getRootObject().isAnonymous()){
-                        for (OWLObjectProperty prop : getReasoner().getRootOntology().getObjectPropertiesInSignature(true)) {
-                            if (prop.equals(factory.getOWLTopObjectProperty())) {
-                                continue;
-                            }
-                            NodeSet<OWLNamedIndividual> values = getReasoner().getObjectPropertyValues(getRootObject().asOWLNamedIndividual(), prop);
-                            for (OWLNamedIndividual ind : values.getFlattened()) {
-                                OWLObjectPropertyAssertionAxiom ax = getOWLDataFactory().getOWLObjectPropertyAssertionAxiom(prop,
-                                                                                                                            getRootObject(),
-                                                                                                                            ind);
-                                if (!added.contains(ax)) {
-                                    addRow(new OWLObjectPropertyAssertionAxiomFrameSectionRow(getOWLEditorKit(),
-                                                                                              OWLObjectPropertyAssertionAxiomFrameSection.this,
-                                                                                              null,
-                                                                                              getRootObject(),
-                                                                                              ax));
-                                }
-                            }
+        getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_OBJECT_PROPERTY_ASSERTIONS, () -> {
+            if (!getOWLModelManager().getReasoner().isConsistent()) {
+                return;
+            }
+            OWLDataFactory factory = getOWLDataFactory();
+            if (!getRootObject().isAnonymous()){
+                for (OWLObjectProperty prop : getReasoner().getRootOntology().getObjectPropertiesInSignature(true)) {
+                    if (prop.equals(factory.getOWLTopObjectProperty())) {
+                        continue;
+                    }
+                    NodeSet<OWLNamedIndividual> values = getReasoner().getObjectPropertyValues(getRootObject().asOWLNamedIndividual(), prop);
+                    for (OWLNamedIndividual ind : values.getFlattened()) {
+                        OWLObjectPropertyAssertionAxiom ax = getOWLDataFactory().getOWLObjectPropertyAssertionAxiom(prop,
+                                                                                                                    getRootObject(),
+                                                                                                                    ind);
+                        if (!added.contains(ax)) {
+                            addRow(new OWLObjectPropertyAssertionAxiomFrameSectionRow(getOWLEditorKit(),
+                                                                                      OWLObjectPropertyAssertionAxiomFrameSection.this,
+                                                                                      null,
+                                                                                      getRootObject(),
+                                                                                      ax));
                         }
                     }
                 }
-            });
+            }
+        });
     }
 
 

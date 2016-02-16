@@ -78,11 +78,9 @@ public class PrecomputeAction extends ProtegeOWLAction {
      * a each plugin must have a zero argument constructor.
      */
     public void initialise() throws Exception {
-        owlModelManagerListener = new OWLModelManagerListener() {
-            public void handleChange(OWLModelManagerChangeEvent event) {
-                if (event.isType(EventType.ONTOLOGY_CLASSIFIED)) {
-                    showClassificationResults();
-                }
+        owlModelManagerListener = event -> {
+            if (event.isType(EventType.ONTOLOGY_CLASSIFIED)) {
+                showClassificationResults();
             }
         };
         getOWLModelManager().addListener(owlModelManagerListener);

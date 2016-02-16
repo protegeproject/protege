@@ -12,17 +12,11 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import java.util.List;
 
 public class OWLInferredMemberListViewComponent extends OWLIndividualListViewComponent {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 8626425915826524799L;
-    private OWLSelectionModelListener refillOnClassSelectionListener = new OWLSelectionModelListener(){
-        public void selectionChanged() throws Exception {
+        private OWLSelectionModelListener refillOnClassSelectionListener = () -> {
             if (getOWLWorkspace().getOWLSelectionModel().getSelectedObject() instanceof OWLClass){
                 refill();
             }
-        }
-    };
+        };
 
 
     @Override
@@ -34,7 +28,7 @@ public class OWLInferredMemberListViewComponent extends OWLIndividualListViewCom
     
     @Override
     protected void setupActions() {
-    	; // no actions
+        // no actions
     }
     
     @Override

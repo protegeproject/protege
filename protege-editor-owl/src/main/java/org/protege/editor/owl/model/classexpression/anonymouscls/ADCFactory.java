@@ -31,7 +31,7 @@ public class ADCFactory extends OWLObjectVisitorAdapter {
 
     private AnonymousDefinedClassManager adcManager;
 
-    private Set<OWLClassExpression> descrs = new HashSet<OWLClassExpression>();
+    private Set<OWLClassExpression> descrs = new HashSet<>();
 
 
     public ADCFactory(AnonymousDefinedClassManager adcManager) {
@@ -40,7 +40,7 @@ public class ADCFactory extends OWLObjectVisitorAdapter {
 
 
     public List<OWLOntologyChange> getADCsForOntology(OWLOntology ont){
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         descrs.clear();
         for (OWLClassAxiom ax : ont.getGeneralClassAxioms()){
             ax.accept(this);

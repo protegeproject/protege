@@ -22,7 +22,7 @@ public class OWLSubClassAxiomFrameSection extends AbstractOWLClassAxiomFrameSect
 
     private static final String LABEL = "SubClass Of";
 
-    private Set<OWLClassExpression> added = new HashSet<OWLClassExpression>();
+    private Set<OWLClassExpression> added = new HashSet<>();
 
 
     public OWLSubClassAxiomFrameSection(OWLEditorKit editorKit, OWLFrame<OWLClass> frame) {
@@ -46,7 +46,7 @@ public class OWLSubClassAxiomFrameSection extends AbstractOWLClassAxiomFrameSect
             return ont.getSubClassAxiomsForSubClass(descr.asOWLClass());
         }
         else{
-            Set<OWLSubClassOfAxiom> axioms = new HashSet<OWLSubClassOfAxiom>();
+            Set<OWLSubClassOfAxiom> axioms = new HashSet<>();
             for (OWLAxiom ax : ont.getGeneralClassAxioms()){
                 if (ax instanceof OWLSubClassOfAxiom && ((OWLSubClassOfAxiom)ax).getSubClass().equals(descr)){
                     axioms.add((OWLSubClassOfAxiom)ax);
@@ -65,22 +65,20 @@ public class OWLSubClassAxiomFrameSection extends AbstractOWLClassAxiomFrameSect
         if(!reasoner.isSatisfiable(getRootObject())) {
             return;
         }
-            getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_SUPER_CLASSES, new Runnable() {
-                public void run() {
-                        for (Node<OWLClass> inferredSuperClasses : reasoner.getSuperClasses(getRootObject(), true)) {
-                            for (OWLClassExpression inferredSuperClass : inferredSuperClasses) {
-                                if (!added.contains(inferredSuperClass)) {
-                                    addInferredRowIfNontrivial(new OWLSubClassAxiomFrameSectionRow(getOWLEditorKit(),
-                                                                                                   OWLSubClassAxiomFrameSection.this,
-                                                                                                   null,
-                                                                                                   getRootObject(),
-                                                                                                   getOWLModelManager().getOWLDataFactory().getOWLSubClassOfAxiom(getRootObject(),
-                                                                                                                                                                  inferredSuperClass)));
-                                    added.add(inferredSuperClass);
-                                }
+            getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_SUPER_CLASSES, () -> {
+                    for (Node<OWLClass> inferredSuperClasses : reasoner.getSuperClasses(getRootObject(), true)) {
+                        for (OWLClassExpression inferredSuperClass : inferredSuperClasses) {
+                            if (!added.contains(inferredSuperClass)) {
+                                addInferredRowIfNontrivial(new OWLSubClassAxiomFrameSectionRow(getOWLEditorKit(),
+                                                                                               OWLSubClassAxiomFrameSection.this,
+                                                                                               null,
+                                                                                               getRootObject(),
+                                                                                               getOWLModelManager().getOWLDataFactory().getOWLSubClassOfAxiom(getRootObject(),
+                                                                                                                                                              inferredSuperClass)));
+                                added.add(inferredSuperClass);
                             }
                         }
-                }
+                    }
             });
 
     }
@@ -110,7 +108,7 @@ public class OWLSubClassAxiomFrameSection extends AbstractOWLClassAxiomFrameSect
 
 
     public boolean dropObjects(List<OWLObject> objects) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         for (OWLObject obj : objects) {
             if (obj instanceof OWLClassExpression) {
                 OWLClassExpression desc;

@@ -77,23 +77,16 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
                 setGlobalSelection(list.getSelectedValue());
             }
         });
-        listener = new OWLOntologyChangeListener() {
-            public void ontologiesChanged(
-                    List<? extends OWLOntologyChange> changes) {
-                processChanges(changes);
-            }
-        };
+        listener = changes -> processChanges(changes);
         getOWLModelManager().addOntologyChangeListener(listener);
 
         setupActions();
         changeListenerMediator = new ChangeListenerMediator();
         individualsInList = new TreeSet<>(getOWLModelManager().getOWLObjectComparator());
         refill();
-        modelManagerListener = new OWLModelManagerListener() {
-            public void handleChange(OWLModelManagerChangeEvent event) {
-                if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ONTOLOGY_RELOADED)) {
-                    refill();
-                }
+        modelManagerListener = event -> {
+            if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ONTOLOGY_RELOADED)) {
+                refill();
             }
         };
         getOWLModelManager().addListener(modelManagerListener);
@@ -103,11 +96,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
     protected void setupActions() {
         addAction(new AddIndividualAction(), "A", "A");
         addAction(new DeleteIndividualAction(getOWLEditorKit(),
-                                             new OWLEntitySetProvider<OWLNamedIndividual>() {
-                                                 public Set<OWLNamedIndividual> getEntities() {
-                                                     return getSelectedIndividuals();
-                                                 }
-                                             }), "B", "A");
+                () -> getSelectedIndividuals()), "B", "A");
     }
 
 
@@ -202,7 +191,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
                     }
                 }
                 if (!stillReferenced) {
-                    if (individualsInList.remove((OWLNamedIndividual) ent)) {
+                    if (individualsInList.remove(ent)) {
                         mod = true;
                     }
                 }
@@ -218,7 +207,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
         if (set == null) {
             return;
         }
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         changes.addAll(set.getOntologyChanges());
         changes.addAll(dofurtherCreateSteps(set.getOWLEntity()));
         getOWLModelManager().applyChanges(changes);
@@ -249,10 +238,6 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
 
 
     private class AddIndividualAction extends DisposableAction {
-        /**
-         * 
-         */
-        private static final long serialVersionUID = 4574601252717263757L;
 
         public AddIndividualAction() {
             super("Add individual", OWLIcons.getIcon("individual.add.png"));

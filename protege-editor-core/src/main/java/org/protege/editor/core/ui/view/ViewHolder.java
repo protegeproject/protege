@@ -62,7 +62,7 @@ public class ViewHolder extends JComponent implements Disposable {
         // a particular area they get stacked and are accessible
         // to the user.
         tabbedHolder = new ViewTabbedPane();
-        tabbedHolder.setTabPlacement(JTabbedPane.BOTTOM);
+        tabbedHolder.setTabPlacement(SwingConstants.BOTTOM);
         // Set the minimum size of the holder so that the
         // split panes can be dragged around easily.  We don't
         // want to set the size to zero, because this allows the

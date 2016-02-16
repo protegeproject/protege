@@ -29,22 +29,19 @@ public class OWLExpressionUserCache implements Disposable {
     private static final String ID = OWLExpressionUserCache.class.getName();
 
 
-    private Map<OWLClassExpression, String> renderingsCache = new HashMap<OWLClassExpression, String>();
+    private Map<OWLClassExpression, String> renderingsCache = new HashMap<>();
 
-    private List<String> cacheInternalForm = new ArrayList<String>();
+    private List<String> cacheInternalForm = new ArrayList<>();
     private List<String> cacheExternalForm = null;
 
     private OWLModelManager mngr;
 
-    private OWLModelManagerListener modelManagerListener = new OWLModelManagerListener(){
-
-        public void handleChange(OWLModelManagerChangeEvent event) {
-            if (event.getType().equals(EventType.ACTIVE_ONTOLOGY_CHANGED) ||
-                event.getType().equals(EventType.ENTITY_RENDERER_CHANGED) ||
-                event.getType().equals(EventType.ENTITY_RENDERING_CHANGED) || 
-                event.getType().equals(EventType.ONTOLOGY_RELOADED)){
-                refresh();
-            }
+    private OWLModelManagerListener modelManagerListener = event -> {
+        if (event.getType().equals(EventType.ACTIVE_ONTOLOGY_CHANGED) ||
+            event.getType().equals(EventType.ENTITY_RENDERER_CHANGED) ||
+            event.getType().equals(EventType.ENTITY_RENDERING_CHANGED) ||
+            event.getType().equals(EventType.ONTOLOGY_RELOADED)){
+            refresh();
         }
     };
 
@@ -84,7 +81,7 @@ public class OWLExpressionUserCache implements Disposable {
 
     public List<String> getRenderings() {
         if (cacheExternalForm == null){
-            cacheExternalForm = new ArrayList<String>();
+            cacheExternalForm = new ArrayList<>();
             for (String s : cacheInternalForm){
                 final String externalForm = fromInternalForm(s);
                 if (externalForm != null){
@@ -257,23 +254,19 @@ public class OWLExpressionUserCache implements Disposable {
 
     private OWLEntity parseOWLEntity(String name) {
         String[] s = name.split(DELIMITER);
-        if (s[0].equals(OWLCLASS)){
-            return mngr.getOWLDataFactory().getOWLClass(IRI.create(s[1]));
-        }
-        else if (s[0].equals(OWLOBJECTPROPERTY)){
-            return mngr.getOWLDataFactory().getOWLObjectProperty(IRI.create(s[1]));
-        }
-        else if (s[0].equals(OWLDATAPROPERTY)){
-            return mngr.getOWLDataFactory().getOWLDataProperty(IRI.create(s[1]));
-        }
-        else if (s[0].equals(OWLANNOTATIONPROPERTY)){
-            return mngr.getOWLDataFactory().getOWLAnnotationProperty(IRI.create(s[1]));
-        }
-        else if (s[0].equals(OWLINDIVIDUAL)){
-            return mngr.getOWLDataFactory().getOWLNamedIndividual(IRI.create(s[1]));
-        }
-        else if (s[0].equals(OWLDATATYPE)){
-            return mngr.getOWLDataFactory().getOWLDatatype(IRI.create(s[1]));
+        switch (s[0]) {
+            case OWLCLASS:
+                return mngr.getOWLDataFactory().getOWLClass(IRI.create(s[1]));
+            case OWLOBJECTPROPERTY:
+                return mngr.getOWLDataFactory().getOWLObjectProperty(IRI.create(s[1]));
+            case OWLDATAPROPERTY:
+                return mngr.getOWLDataFactory().getOWLDataProperty(IRI.create(s[1]));
+            case OWLANNOTATIONPROPERTY:
+                return mngr.getOWLDataFactory().getOWLAnnotationProperty(IRI.create(s[1]));
+            case OWLINDIVIDUAL:
+                return mngr.getOWLDataFactory().getOWLNamedIndividual(IRI.create(s[1]));
+            case OWLDATATYPE:
+                return mngr.getOWLDataFactory().getOWLDatatype(IRI.create(s[1]));
         }
         return null;
     }

@@ -1,5 +1,7 @@
 package org.protege.editor.owl.model.search.lucene;
 
+import org.protege.editor.owl.model.search.SearchManager;
+
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
@@ -13,7 +15,7 @@ import java.io.IOException;
  * Bio-Medical Informatics Research Group<br>
  * Date: 04/11/2015
  */
-public abstract class LuceneSearcher {
+public abstract class LuceneSearcher extends SearchManager {
 
     public abstract IndexSearcher getIndexSearcher();
 

@@ -21,7 +21,7 @@ import java.util.List;
 public class DLNameKeyPanel extends JPanel {
 
     public DLNameKeyPanel() {
-        List<NameObject> box = new ArrayList<NameObject>();
+        List<NameObject> box = new ArrayList<>();
         addExplanation(OWLIcons.getIcon("AL.png"),
                        "Attributive language.  This is the base language which allows:" + "<ul><li>Atomic negation (negation of concepts that do not appear on the left hand side of axioms)</li>" + "<li>Concept intersection</li>" + "<li>Universal restrictions</li>" + "<li>Limited existential quantification (restrictions that only have fillers " + "of Thing)</li></ul>",
                        box);
@@ -127,7 +127,7 @@ public class DLNameKeyPanel extends JPanel {
     public static void main(String[] args) {
         JFrame f = new JFrame();
         f.setContentPane(new DLNameKeyPanel());
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         f.setVisible(true);
     }
 }

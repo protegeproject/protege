@@ -52,13 +52,11 @@ public class FindInViewAction extends ProtegeOWLAction {
 
 
     public void initialise() throws Exception {
-        FocusManager.getCurrentManager().addPropertyChangeListener(listener = new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (evt.getPropertyName().equals("focusOwner")) {
-                    Component c = (Component) evt.getNewValue();
-                    Findable f = (Findable) SwingUtilities.getAncestorOfClass(Findable.class, c);
-                    setEnabled(f != null);
-                }
+        FocusManager.getCurrentManager().addPropertyChangeListener(listener = evt -> {
+            if (evt.getPropertyName().equals("focusOwner")) {
+                Component c = (Component) evt.getNewValue();
+                Findable f = (Findable) SwingUtilities.getAncestorOfClass(Findable.class, c);
+                setEnabled(f != null);
             }
         });
     }

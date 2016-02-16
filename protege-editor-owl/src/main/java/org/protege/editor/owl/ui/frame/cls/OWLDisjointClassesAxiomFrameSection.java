@@ -23,7 +23,7 @@ public class OWLDisjointClassesAxiomFrameSection extends AbstractOWLClassAxiomFr
 
     public static final String LABEL = "Disjoint With";
     
-    public Set<OWLClassExpression> added = new HashSet<OWLClassExpression>();
+    public Set<OWLClassExpression> added = new HashSet<>();
 
 
     public OWLDisjointClassesAxiomFrameSection(OWLEditorKit editorKit, OWLFrame<OWLClass> frame) {
@@ -47,7 +47,7 @@ public class OWLDisjointClassesAxiomFrameSection extends AbstractOWLClassAxiomFr
             return ont.getDisjointClassesAxioms(descr.asOWLClass());
         }
         else{
-            Set<OWLDisjointClassesAxiom> axioms = new HashSet<OWLDisjointClassesAxiom>();
+            Set<OWLDisjointClassesAxiom> axioms = new HashSet<>();
             for (OWLDisjointClassesAxiom ax : ont.getAxioms(AxiomType.DISJOINT_CLASSES)){
                 if (ax.getClassExpressions().contains(descr)){
                     axioms.add(ax);
@@ -70,30 +70,26 @@ public class OWLDisjointClassesAxiomFrameSection extends AbstractOWLClassAxiomFr
     
     @Override
     protected void refillInferred() {
-    	getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_DISJOINT_CLASSES, new Runnable() {
-
-			public void run() {
-				OWLReasoner reasoner = getOWLModelManager().getReasoner();
-				if (!reasoner.isConsistent()) {
-					return;
-				}
-				NodeSet<OWLClass> disjointFromRoot = reasoner.getSubClasses(getOWLDataFactory().getOWLObjectComplementOf(getRootObject()), true);
-				for (OWLClass c : disjointFromRoot.getFlattened()) {
-					if (!added.contains(c) && !c.equals(getRootObject())) {
-						addInferredRowIfNontrivial(new OWLDisjointClassesAxiomFrameSectionRow(
-								getOWLEditorKit(),
-								OWLDisjointClassesAxiomFrameSection.this,
-								null,
-								getRootObject(),
-								getOWLModelManager().getOWLDataFactory().getOWLDisjointClassesAxiom(getRootObject(), c)
-						    )
-						);
-						added.add(c);
-					}
-				}
-			}
-    		
-    	});
+    	getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_DISJOINT_CLASSES, () -> {
+            OWLReasoner reasoner = getOWLModelManager().getReasoner();
+            if (!reasoner.isConsistent()) {
+                return;
+            }
+            NodeSet<OWLClass> disjointFromRoot = reasoner.getSubClasses(getOWLDataFactory().getOWLObjectComplementOf(getRootObject()), true);
+            for (OWLClass c : disjointFromRoot.getFlattened()) {
+                if (!added.contains(c) && !c.equals(getRootObject())) {
+                    addInferredRowIfNontrivial(new OWLDisjointClassesAxiomFrameSectionRow(
+                            getOWLEditorKit(),
+                            OWLDisjointClassesAxiomFrameSection.this,
+                            null,
+                            getRootObject(),
+                            getOWLModelManager().getOWLDataFactory().getOWLDisjointClassesAxiom(getRootObject(), c)
+                        )
+                    );
+                    added.add(c);
+                }
+            }
+        });
     }
 
     public boolean checkEditorResults(OWLObjectEditor<Set<OWLClassExpression>> editor) {
@@ -113,8 +109,8 @@ public class OWLDisjointClassesAxiomFrameSection extends AbstractOWLClassAxiomFr
 
 
     public boolean dropObjects(List<OWLObject> objects) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-        Set<OWLClassExpression> descriptions = new HashSet<OWLClassExpression>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
+        Set<OWLClassExpression> descriptions = new HashSet<>();
         descriptions.add(getRootObject());
         for (OWLObject obj : objects) {
             if (obj instanceof OWLClassExpression) {

@@ -99,7 +99,7 @@ public class ExportInferredOntologyAction extends ProtegeOWLAction {
 				inferredOntologyGenerator.fillOntology(outputManager.getOWLDataFactory(), exportedOntology);
 
 				int currentTask = inferredAxiomGenerators.size();
-				List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+				List<OWLOntologyChange> changes = new ArrayList<>();
 
 				adjustProgress("Deleting trivial inferences", ++currentTask);
 				deleteTrivialAxioms(changes);
@@ -170,7 +170,7 @@ public class ExportInferredOntologyAction extends ProtegeOWLAction {
 	    		}
 	    	}
 	    	if (!precomputeNow.isEmpty()) {
-	    		reasoner.precomputeInferences(precomputeNow.toArray(new InferenceType[0]));
+	    		reasoner.precomputeInferences(precomputeNow.toArray(new InferenceType[precomputeNow.size()]));
 	    	}
 	    }
 	    

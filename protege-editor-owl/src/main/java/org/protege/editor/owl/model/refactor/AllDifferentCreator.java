@@ -33,11 +33,11 @@ public class AllDifferentCreator {
 
 
     public List<OWLOntologyChange> getChanges() {
-        Set<OWLIndividual> individuals = new HashSet<OWLIndividual>();
+        Set<OWLIndividual> individuals = new HashSet<>();
         for(OWLOntology ont : ontologies) {
             individuals.addAll(ont.getIndividualsInSignature());
         }
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         if(!individuals.isEmpty()) {
             changes.add(new AddAxiom(ont, dataFactory.getOWLDifferentIndividualsAxiom(individuals)));
         }

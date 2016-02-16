@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.*;
 
@@ -29,7 +28,7 @@ public class OntologyCatalogManager {
 	
 	public static final String TIMESTAMP        = "Timestamp";
 	    
-    private Map<File, XMLCatalog> localCatalogs = new HashMap<File, XMLCatalog>();
+    private Map<File, XMLCatalog> localCatalogs = new HashMap<>();
     
     private XMLCatalog activeCatalog;
     private File activeCatalogFolder;
@@ -41,9 +40,11 @@ public class OntologyCatalogManager {
     private static void backup(File folder, File catalogFile) {
 	    File backup;
 	    int i = 0;
-	    while ((backup = new File(folder, CATALOG_BACKUP_PREFIX + (i++) + ".xml")).exists()) {
-	        ;
-	    }
+	    while (true) {
+			if (!((backup = new File(folder, CATALOG_BACKUP_PREFIX + (i++) + ".xml")).exists())) {
+				break;
+			}
+		}
 	    catalogFile.renameTo(backup);
 	}
 	
@@ -71,7 +72,7 @@ public class OntologyCatalogManager {
 	}
 		
 	public OntologyCatalogManager() {
-    	entryManagers = new ArrayList<CatalogEntryManager>();
+    	entryManagers = new ArrayList<>();
     	CatalogEntryManagerLoader pluginLoader = new CatalogEntryManagerLoader();
     	for (CatalogEntryManagerPlugin plugin : pluginLoader.getPlugins()) {
     		try {
@@ -84,7 +85,7 @@ public class OntologyCatalogManager {
     }
 	
 	public OntologyCatalogManager(List<? extends CatalogEntryManager> entryManagers) {
-		this.entryManagers = new ArrayList<CatalogEntryManager>(entryManagers);
+		this.entryManagers = new ArrayList<>(entryManagers);
 	}
 	
 	public List<CatalogEntryManager>  getCatalogEntryManagers() {
@@ -166,7 +167,7 @@ public class OntologyCatalogManager {
     }
     
     public List<XMLCatalog> getAllCatalogs() {
-    	List<XMLCatalog> catalogs = new ArrayList<XMLCatalog>();
+    	List<XMLCatalog> catalogs = new ArrayList<>();
     	catalogs.addAll(getLocalCatalogs());
     	return catalogs;
     }
@@ -192,7 +193,7 @@ public class OntologyCatalogManager {
         return lib;
     }
     
-    public void reloadFolder(File dir) throws MalformedURLException, IOException {
+    public void reloadFolder(File dir) throws IOException {
     	localCatalogs.remove(dir);
     	localCatalogs.put(dir, CatalogUtilities.parseDocument(getCatalogFile(dir).toURI().toURL()));
     	activeCatalog = localCatalogs.get(activeCatalogFolder);

@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 
 import java.util.Optional;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -42,5 +43,16 @@ public class ThrowableInfo {
 
     public Optional<ThrowableInfo> getCause() {
         return cause;
+    }
+
+
+    @Override
+    public String toString() {
+        return toStringHelper("ThrowableInfo")
+                .add("className", className)
+                .add("message", message)
+                .add("stackTrace", stackTrace)
+                .add("cause", cause)
+                .toString();
     }
 }

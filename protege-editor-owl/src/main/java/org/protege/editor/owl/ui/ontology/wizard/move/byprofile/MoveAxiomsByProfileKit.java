@@ -34,14 +34,14 @@ public class MoveAxiomsByProfileKit extends MoveAxiomsKit {
 
 
     public List<MoveAxiomsKitConfigurationPanel> getConfigurationPanels() {
-        List<MoveAxiomsKitConfigurationPanel> panels = new ArrayList<MoveAxiomsKitConfigurationPanel>();
+        List<MoveAxiomsKitConfigurationPanel> panels = new ArrayList<>();
         panels.add(profileSelectorPanel);
         return panels;
     }
 
 
     public Set<OWLAxiom> getAxioms(Set<OWLOntology> sourceOntologies) {
-        Set<OWLAxiom> axioms = new HashSet<OWLAxiom>();
+        Set<OWLAxiom> axioms = new HashSet<>();
         for (OWLOntology ont: sourceOntologies){
             axioms.addAll(ont.getAxioms());
         }

@@ -60,7 +60,7 @@ public class OWLObjectPropertyCharacteristicsViewComponent extends AbstractOWLOb
         reflexiveCB = new JCheckBox("Reflexive");
         irreflexiveCB = new JCheckBox("Irreflexive");
 
-        checkBoxes = new ArrayList<JCheckBox>();
+        checkBoxes = new ArrayList<>();
         checkBoxes.add(functionalCB);
         checkBoxes.add(inverseFunctionalCB);
         checkBoxes.add(transitiveCB);
@@ -130,72 +130,42 @@ public class OWLObjectPropertyCharacteristicsViewComponent extends AbstractOWLOb
 
 
     private void setupSetters() {
-        addSetter(functionalCB, new PropertyCharacteristicSetter() {
-            public OWLAxiom getAxiom() {
-                return getOWLDataFactory().getOWLFunctionalObjectPropertyAxiom(getProperty());
-            }
-        });
+        addSetter(functionalCB, () -> getOWLDataFactory().getOWLFunctionalObjectPropertyAxiom(getProperty()));
 
-        addSetter(inverseFunctionalCB, new PropertyCharacteristicSetter() {
-            public OWLAxiom getAxiom() {
-                return getOWLDataFactory().getOWLInverseFunctionalObjectPropertyAxiom(getProperty());
-            }
-        });
+        addSetter(inverseFunctionalCB, () -> getOWLDataFactory().getOWLInverseFunctionalObjectPropertyAxiom(getProperty()));
 
-        addSetter(transitiveCB, new PropertyCharacteristicSetter() {
-            public OWLAxiom getAxiom() {
-                return getOWLDataFactory().getOWLTransitiveObjectPropertyAxiom(getProperty());
-            }
-        });
+        addSetter(transitiveCB, () -> getOWLDataFactory().getOWLTransitiveObjectPropertyAxiom(getProperty()));
 
-        addSetter(symmetricCB, new PropertyCharacteristicSetter() {
-            public OWLAxiom getAxiom() {
-                return getOWLDataFactory().getOWLSymmetricObjectPropertyAxiom(getProperty());
-            }
-        });
+        addSetter(symmetricCB, () -> getOWLDataFactory().getOWLSymmetricObjectPropertyAxiom(getProperty()));
 
-        addSetter(aSymmetricCB, new PropertyCharacteristicSetter() {
-            public OWLAxiom getAxiom() {
-                return getOWLDataFactory().getOWLAsymmetricObjectPropertyAxiom(getProperty());
-            }
-        });
+        addSetter(aSymmetricCB, () -> getOWLDataFactory().getOWLAsymmetricObjectPropertyAxiom(getProperty()));
 
-        addSetter(reflexiveCB, new PropertyCharacteristicSetter() {
-            public OWLAxiom getAxiom() {
-                return getOWLDataFactory().getOWLReflexiveObjectPropertyAxiom(getProperty());
-            }
-        });
+        addSetter(reflexiveCB, () -> getOWLDataFactory().getOWLReflexiveObjectPropertyAxiom(getProperty()));
 
-        addSetter(irreflexiveCB, new PropertyCharacteristicSetter() {
-            public OWLAxiom getAxiom() {
-                return getOWLDataFactory().getOWLIrreflexiveObjectPropertyAxiom(getProperty());
-            }
-        });
+        addSetter(irreflexiveCB, () -> getOWLDataFactory().getOWLIrreflexiveObjectPropertyAxiom(getProperty()));
     }
 
 
     private void addSetter(final JCheckBox checkBox, final PropertyCharacteristicSetter setter) {
-        checkBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	if (getProperty() == null) {
-            		return;
-            	}
-                if (checkBox.isSelected()) {
-                    FreshAxiomLocationPreferences preferences = FreshAxiomLocationPreferences.getPreferences();
-                    FreshAxiomLocationStrategyFactory strategyFactory = preferences.getFreshAxiomLocation().getStrategyFactory();
-                    FreshAxiomLocationStrategy strategy = strategyFactory.getStrategy(getOWLEditorKit());
-                    OWLAxiom ax = setter.getAxiom();
-                    OWLOntology ont = strategy.getFreshAxiomLocation(ax, getOWLModelManager());
-                    getOWLModelManager().applyChange(new AddAxiom(ont, ax));
+        checkBox.addActionListener(e -> {
+            if (getProperty() == null) {
+                return;
+            }
+            if (checkBox.isSelected()) {
+                FreshAxiomLocationPreferences preferences = FreshAxiomLocationPreferences.getPreferences();
+                FreshAxiomLocationStrategyFactory strategyFactory = preferences.getFreshAxiomLocation().getStrategyFactory();
+                FreshAxiomLocationStrategy strategy = strategyFactory.getStrategy(getOWLEditorKit());
+                OWLAxiom ax = setter.getAxiom();
+                OWLOntology ont = strategy.getFreshAxiomLocation(ax, getOWLModelManager());
+                getOWLModelManager().applyChange(new AddAxiom(ont, ax));
+            }
+            else {
+                List<OWLOntologyChange> changes = new ArrayList<>();
+                OWLAxiom ax = setter.getAxiom();
+                for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
+                    changes.add(new RemoveAxiom(ont, ax));
                 }
-                else {
-                    List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-                    OWLAxiom ax = setter.getAxiom();
-                    for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
-                        changes.add(new RemoveAxiom(ont, ax));
-                    }
-                    getOWLModelManager().applyChanges(changes);
-                }
+                getOWLModelManager().applyChanges(changes);
             }
         });
     }

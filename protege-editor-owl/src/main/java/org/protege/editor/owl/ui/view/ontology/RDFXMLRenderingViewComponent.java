@@ -14,10 +14,6 @@ import java.io.Writer;
  */
 public class RDFXMLRenderingViewComponent extends AbstractOntologyRenderingViewComponent {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 5902721119543731047L;
 
     protected void renderOntology(OWLOntology ontology, Writer writer) throws Exception {
         RDFXMLRenderer renderer = new RDFXMLRenderer(getOWLModelManager().getActiveOntology(),

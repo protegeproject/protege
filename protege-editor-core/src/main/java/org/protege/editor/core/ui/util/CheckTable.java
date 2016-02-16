@@ -36,13 +36,9 @@ public class CheckTable<O> extends JTable {
 
     private TableCellRenderer renderer;
 
-    private List<ListSelectionListener> checkSelListeners = new ArrayList<ListSelectionListener>();
+    private List<ListSelectionListener> checkSelListeners = new ArrayList<>();
 
     private DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer(){
-        /**
-         * 
-         */
-        private static final long serialVersionUID = 5322154037663255057L;
 
         public Component getTableCellRendererComponent(JTable jTable, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
             if (col == 0){
@@ -108,10 +104,6 @@ public class CheckTable<O> extends JTable {
 
         getInputMap().put(KeyStroke.getKeyStroke("SPACE"), "checkSelection");
         getActionMap().put("checkSelection", new AbstractAction(){
-            /**
-             * 
-             */
-            private static final long serialVersionUID = 6324092579357208331L;
 
             public void actionPerformed(ActionEvent event) {
                 checkSelection();
@@ -260,9 +252,9 @@ public class CheckTable<O> extends JTable {
 
 
     public static void main(String[] args) {
-        CheckTable<String> table = new CheckTable<String>("things"); // @@TODO ensure empty table still works
+        CheckTable<String> table = new CheckTable<>("things"); // @@TODO ensure empty table still works
         CheckTableModel<String> model = table.getModel(); // @@TODO ensure changes to the model directly affect the view
-        List<String> data = new ArrayList<String>();
+        List<String> data = new ArrayList<>();
         data.add("one");
         data.add("two");
         data.add("three");

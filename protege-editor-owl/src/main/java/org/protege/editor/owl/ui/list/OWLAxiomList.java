@@ -36,7 +36,7 @@ public class OWLAxiomList extends MList {
 
 
     public void setAxioms(Set<Set<OWLAxiom>> axiomSet, Set<OWLOntology> ontologies) {
-        List<Object> items = new ArrayList<Object>();
+        List<Object> items = new ArrayList<>();
         int count = 1;
         for (Set<OWLAxiom> axioms : axiomSet) {
             items.add("Explanation " + count + ": ");

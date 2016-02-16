@@ -24,7 +24,7 @@ public class OWLSubObjectPropertyAxiomSuperPropertyFrameSection extends Abstract
 
     public static final String LABEL = "SubProperty Of";
 
-    Set<OWLObjectPropertyExpression> added = new HashSet<OWLObjectPropertyExpression>();
+    Set<OWLObjectPropertyExpression> added = new HashSet<>();
 
 
     public OWLSubObjectPropertyAxiomSuperPropertyFrameSection(OWLEditorKit editorKit,
@@ -57,23 +57,21 @@ public class OWLSubObjectPropertyAxiomSuperPropertyFrameSection extends Abstract
 
     protected void refillInferred() {
         getOWLModelManager().getReasonerPreferences().executeTask(OptionalInferenceTask.SHOW_INFERRED_SUPER_OBJECT_PROPERTIES,
-                                                                  new Runnable() {
-            public void run() {
-            	if (!getOWLModelManager().getReasoner().isConsistent()) {
-            		return;
-            	}
-                for (OWLObjectPropertyExpression infSup : getOWLModelManager().getReasoner().getSuperObjectProperties(getRootObject(),true).getFlattened()) {
-                    if (!added.contains(infSup)) {
-                        addInferredRowIfNontrivial(new OWLSubObjectPropertyAxiomSuperPropertyFrameSectionRow(getOWLEditorKit(),
-                                                                                         OWLSubObjectPropertyAxiomSuperPropertyFrameSection.this,
-                                                                                         null,
-                                                                                         getRootObject(),
-                                                                                         getOWLDataFactory().getOWLSubObjectPropertyOfAxiom(getRootObject(),
-                                                                                                                                            infSup)));
+                () -> {
+                    if (!getOWLModelManager().getReasoner().isConsistent()) {
+                        return;
                     }
-                }
-            }
-        });
+                    for (OWLObjectPropertyExpression infSup : getOWLModelManager().getReasoner().getSuperObjectProperties(getRootObject(),true).getFlattened()) {
+                        if (!added.contains(infSup)) {
+                            addInferredRowIfNontrivial(new OWLSubObjectPropertyAxiomSuperPropertyFrameSectionRow(getOWLEditorKit(),
+                                                                                             OWLSubObjectPropertyAxiomSuperPropertyFrameSection.this,
+                                                                                             null,
+                                                                                             getRootObject(),
+                                                                                             getOWLDataFactory().getOWLSubObjectPropertyOfAxiom(getRootObject(),
+                                                                                                                                                infSup)));
+                        }
+                    }
+                });
     }
 
 

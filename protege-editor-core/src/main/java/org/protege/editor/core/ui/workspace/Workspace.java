@@ -43,10 +43,6 @@ import java.util.Set;
  */
 public abstract class Workspace extends JComponent implements Disposable {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1737700990946291204L;
 
     public static final int BOTTOM_RESULTS_VIEW = 0;
 
@@ -168,10 +164,6 @@ public abstract class Workspace extends JComponent implements Disposable {
                     if (!OSUtils.isOSX()) {
                         menu.addSeparator();
                         menu.add(new AbstractAction("About") {
-                            /**
-                             *
-                             */
-                            private static final long serialVersionUID = 3773470646910947172L;
 
                             public void actionPerformed(ActionEvent event) {
                                 AboutPanel.showDialog();
@@ -407,7 +399,7 @@ public abstract class Workspace extends JComponent implements Disposable {
 
 
         public Set<String> getNavigates() {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
     }
 }

@@ -20,7 +20,7 @@ public class ChildClassExtractor extends OWLAxiomVisitorAdapter {
 
     private OWLClass currentParentClass;
 
-    private Set<OWLClass> results = new HashSet<OWLClass>();
+    private Set<OWLClass> results = new HashSet<>();
 
 
     public void reset() {
@@ -36,7 +36,7 @@ public class ChildClassExtractor extends OWLAxiomVisitorAdapter {
 
 
     public Set<OWLClass> getResult() {
-        return new HashSet<OWLClass>(results);
+        return new HashSet<>(results);
     }
 
 
@@ -59,7 +59,7 @@ public class ChildClassExtractor extends OWLAxiomVisitorAdapter {
         if (!namedClassInEquivalentAxiom(axiom)){
             return;
         }
-        Set<OWLClassExpression> candidateDescriptions = new HashSet<OWLClassExpression>();
+        Set<OWLClassExpression> candidateDescriptions = new HashSet<>();
         boolean found = false;
         for (OWLClassExpression equivalentClass : axiom.getClassExpressions()) {
             if (!checker.containsConjunct(currentParentClass, equivalentClass)) {

@@ -22,10 +22,7 @@ import java.util.List;
  */
 public class OWLOntologySelectorPanel extends JPanel {
 
-    private OWLEditorKit owlEditorKit;
-
-    private OWLObjectList list;
-
+    private OWLObjectList<OWLOntology> list;
 
     public OWLOntologySelectorPanel(OWLEditorKit owlEditorKit) {
         this(owlEditorKit, owlEditorKit.getModelManager().getOntologies());
@@ -33,12 +30,11 @@ public class OWLOntologySelectorPanel extends JPanel {
 
 
     public OWLOntologySelectorPanel(OWLEditorKit owlEditorKit, Set<OWLOntology> ontologies) {
-        this.owlEditorKit = owlEditorKit;
-        list = new OWLObjectList(owlEditorKit);
+        list = new OWLObjectList<>(owlEditorKit);
         final OWLModelManager mngr = owlEditorKit.getModelManager();
-        final List<OWLOntology> orderedOntologies = new ArrayList<OWLOntology>(ontologies);
+        final List<OWLOntology> orderedOntologies = new ArrayList<>(ontologies);
         Collections.sort(orderedOntologies, mngr.getOWLObjectComparator());
-        list.setListData(orderedOntologies.toArray());
+        list.setListData(orderedOntologies.toArray(new OWLOntology [orderedOntologies.size()]));
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
     }
@@ -60,8 +56,8 @@ public class OWLOntologySelectorPanel extends JPanel {
 
 
     public Set<OWLOntology> getSelectedOntologies() {
-        Set<OWLOntology> ontologies = new HashSet<OWLOntology>();
-        for (Object o : list.getSelectedValues()) {
+        Set<OWLOntology> ontologies = new HashSet<>();
+        for (Object o : list.getSelectedValuesList()) {
             ontologies.add((OWLOntology) o);
         }
         return ontologies;

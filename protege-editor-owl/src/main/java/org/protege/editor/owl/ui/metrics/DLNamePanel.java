@@ -30,7 +30,7 @@ public class DLNamePanel extends JPanel {
 
 
     public DLNamePanel() {
-        icons = new ArrayList<Icon>();
+        icons = new ArrayList<>();
     }
 
 

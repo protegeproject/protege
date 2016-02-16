@@ -16,10 +16,6 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
  */
 public abstract class AbstractOWLIndividualViewComponent extends AbstractOWLSelectionViewComponent {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 4924001251482699052L;
 
 
     protected boolean isOWLIndividualView() {

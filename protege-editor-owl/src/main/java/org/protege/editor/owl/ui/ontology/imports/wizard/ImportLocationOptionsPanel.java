@@ -29,16 +29,16 @@ public class ImportLocationOptionsPanel extends JPanel {
 		optionsCount = 0;
 		
 		if (id != null && !id.isAnonymous()) {
-		    ontologyIDButton = new JRadioButton("Import using the ontology name: " + id.getOntologyIRI());
+		    ontologyIDButton = new JRadioButton("Import using the ontology name: " + id.getOntologyIRI().get());
 		    ontologyIDButton.setAlignmentX(LEFT_ALIGNMENT);
 		    add(ontologyIDButton);
 		    bg.add(ontologyIDButton);
 		    optionsCount++;
 		}
 
-    	boolean useVersionButton = (id.getVersionIRI().isPresent() && !id.getVersionIRI().equals(id.getOntologyIRI()));
+    	boolean useVersionButton = (id.getVersionIRI().isPresent() && !id.getVersionIRI().get().equals(id.getOntologyIRI().get()));
     	if (useVersionButton) {
-    		versionIDButton = new JRadioButton("Import using the ontology version (Recommended): " + id.getVersionIRI());
+    		versionIDButton = new JRadioButton("Import using the ontology version (Recommended): " + id.getVersionIRI().get());
     		versionIDButton.setAlignmentX(LEFT_ALIGNMENT);
     		add(versionIDButton);
     		bg.add(versionIDButton);
@@ -65,12 +65,9 @@ public class ImportLocationOptionsPanel extends JPanel {
     	    uriField = new JTextField();
     	    uriField.setAlignmentX(LEFT_ALIGNMENT);
     	    uriField.setEnabled(false);
-    	    userInputButton.addActionListener(new ActionListener() {
-    	       
-    	        public void actionPerformed(ActionEvent e) {
-    	            uriField.setEnabled(userInputButton.isSelected());
-    	        }
-    	    });
+    	    userInputButton.addActionListener(e -> {
+                uriField.setEnabled(userInputButton.isSelected());
+            });
     	    add(uriField);
     	    optionsCount++;
     	}

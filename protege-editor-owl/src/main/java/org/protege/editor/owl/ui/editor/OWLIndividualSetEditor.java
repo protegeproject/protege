@@ -22,13 +22,9 @@ public class OWLIndividualSetEditor extends AbstractOWLObjectEditor<Set<OWLNamed
 
     private OWLIndividualSelectorPanel panel;
 
-    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<InputVerificationStatusChangedListener>();
+    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<>();
     
-    private InputVerificationStatusChangedListener inputListener = new InputVerificationStatusChangedListener(){
-        public void verifiedStatusChanged(boolean newState) {
-            handleVerifyEditorContents();
-        }
-    };
+    private InputVerificationStatusChangedListener inputListener = newState -> handleVerifyEditorContents();
 
     public OWLIndividualSetEditor(OWLEditorKit owlEditorKit) {
         panel = new OWLIndividualSelectorPanel(owlEditorKit, ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -42,7 +38,7 @@ public class OWLIndividualSetEditor extends AbstractOWLObjectEditor<Set<OWLNamed
 
 
     public boolean setEditedObject(Set<OWLNamedIndividual> individuals) {
-        panel.setSelection(individuals != null ? individuals : Collections.EMPTY_SET);
+        panel.setSelection(individuals != null ? individuals : Collections.emptySet());
         return true;
     }
 

@@ -13,10 +13,7 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.OWLEntitySetProvider;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -34,15 +31,9 @@ import java.util.Set;
 public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEntityHierarchyViewComponent<OWLAnnotationProperty>
         implements CreateNewChildTarget, CreateNewSiblingTarget {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -2612515129566092096L;
-
     protected void performExtraInitialisation() throws Exception {
         addAction(new AbstractOWLTreeAction<OWLAnnotationProperty>("Add sub property", OWLIcons.getIcon("property.annotation.addsub.png"),
                                                                    getTree().getSelectionModel()){
-            private static final long serialVersionUID = 9185342735327230183L;
             public void actionPerformed(ActionEvent event) {
                 createNewChild();
             }
@@ -70,6 +61,10 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
         return getOWLModelManager().getOWLHierarchyManager().getOWLAnnotationPropertyHierarchyProvider();
     }
 
+    @Override
+    protected Optional<OWLObjectHierarchyProvider<OWLAnnotationProperty>> getInferredHierarchyProvider() {
+        return Optional.empty();
+    }
 
     protected OWLObject updateView() {
         return updateView(getOWLWorkspace().getOWLSelectionModel().getLastSelectedAnnotationProperty());
@@ -77,7 +72,7 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
 
 
     public List<OWLAnnotationProperty> find(String match) {
-        return new ArrayList<OWLAnnotationProperty>(getOWLModelManager().getOWLEntityFinder().getMatchingOWLAnnotationProperties(match));
+        return new ArrayList<>(getOWLModelManager().getOWLEntityFinder().getMatchingOWLAnnotationProperties(match));
     }
 
 
@@ -93,7 +88,7 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
         }
         OWLEntityCreationSet<OWLAnnotationProperty> set = getOWLWorkspace().createOWLAnnotationProperty();
         if (set != null) {
-            java.util.List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            java.util.List<OWLOntologyChange> changes = new ArrayList<>();
             changes.addAll(set.getOntologyChanges());
             OWLDataFactory df = getOWLModelManager().getOWLDataFactory();
             OWLAxiom ax = df.getOWLSubAnnotationPropertyOfAxiom(set.getOWLEntity(), selProp);
@@ -121,7 +116,7 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
         if (creationSet != null) {
             // Combine the changes that are required to create the OWLAnnotationProperty, with the
             // changes that are required to make it a sibling property.
-            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            List<OWLOntologyChange> changes = new ArrayList<>();
             changes.addAll(creationSet.getOntologyChanges());
             OWLModelManager mngr = getOWLModelManager();
             OWLDataFactory df = mngr.getOWLDataFactory();
@@ -137,7 +132,7 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
 
     private class InternalOWLEntitySetProvider implements OWLEntitySetProvider<OWLAnnotationProperty> {
         public Set<OWLAnnotationProperty> getEntities() {
-            return new HashSet<OWLAnnotationProperty>(getTree().getSelectedOWLObjects());
+            return new HashSet<>(getTree().getSelectedOWLObjects());
         }
     }
     

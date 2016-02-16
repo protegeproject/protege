@@ -47,18 +47,11 @@ public class PhysicalLocationPanel extends JPanel {
 
     private static final Color ROLL_OVER_COLOR = new Color(50, 50, 255);
 
-    private OWLEditorKit owlEditorKit;
+    private final OWLEditorKit owlEditorKit;
 
-    private MList ontologiesPanel;
+    private final MList ontologiesPanel;
 
-    private Set<OWLOntology> ontologies;
-
-    private ReloadMListButton reload;
-
-    private ShowFileMListButton showFile;
-
-    private SaveMListButton saveFile;
-
+    private final Set<OWLOntology> ontologies = new HashSet<>();
 
     public PhysicalLocationPanel(OWLEditorKit owlEditorKit) {
         this(owlEditorKit, owlEditorKit.getOWLModelManager().getOntologies());
@@ -67,46 +60,20 @@ public class PhysicalLocationPanel extends JPanel {
 
     public PhysicalLocationPanel(OWLEditorKit owlEditorKit, Set<OWLOntology> ontologies) {
         this.owlEditorKit = owlEditorKit;
-        this.ontologies = ontologies;
-        createUI();
-    }
+        this.ontologies.addAll(ontologies);
 
-
-    public Set<OWLOntology> getSelectedOntologies(){
-        Set<OWLOntology> onts = new HashSet<OWLOntology>();
-        for (Object sel : ontologiesPanel.getSelectedValues()){
-            if (sel instanceof OntologyListItem){
-                onts.add(((OntologyListItem)sel).ont);
-            }
-        }
-        return onts;
-    }
-
-
-    public void setOntologies(Set<OWLOntology> ontologies){
-        this.ontologies = ontologies;
-        reload();
-    }
-
-
-    private void createUI() {
         setLayout(new BorderLayout(3, 3));
-
-        reload = new ReloadMListButton();
-        showFile = new ShowFileMListButton();
-        saveFile = new SaveMListButton();
-
         ontologiesPanel = new MList(){
             protected List<MListButton> getButtons(Object value) {
-                List<MListButton> buttons  = new ArrayList<MListButton>(super.getButtons(value));
-                buttons.add(reload);
+                List<MListButton> buttons  = new ArrayList<>(super.getButtons(value));
+                buttons.add(new ReloadMListButton(e -> handleReload()));
                 OWLOntology ont = ((OntologyListItem)value).ont;
                 URI ontologyPhysicalURI = owlEditorKit.getModelManager().getOntologyPhysicalURI(ont);
                 if (UIUtil.isLocalFile(ontologyPhysicalURI)){
-                    buttons.add(showFile);
+                    buttons.add(new ShowFileMListButton(e -> handleShowFile()));
                 }
                 if (owlEditorKit.getModelManager().getDirtyOntologies().contains(ont)){
-                    buttons.add(saveFile);
+                    buttons.add(new SaveMListButton(e -> handleSave()));
                 }
                 return buttons;
             }
@@ -118,19 +85,38 @@ public class PhysicalLocationPanel extends JPanel {
         boxHolder.setOpaque(false);
         boxHolder.add(ontologiesPanel, BorderLayout.NORTH);
         add(ComponentFactory.createScrollPane(boxHolder), BorderLayout.CENTER);
+
     }
 
 
+    public Set<OWLOntology> getSelectedOntologies(){
+        Set<OWLOntology> onts = new HashSet<>();
+        for (Object sel : ontologiesPanel.getSelectedValues()){
+            if (sel instanceof OntologyListItem){
+                onts.add(((OntologyListItem)sel).ont);
+            }
+        }
+        return onts;
+    }
+
+
+    public void setOntologies(Set<OWLOntology> ontologies){
+        this.ontologies.clear();
+        this.ontologies.addAll(ontologies);
+        reload();
+    }
+
     private void load() {
         final OWLModelManager mngr = owlEditorKit.getModelManager();
-        Set<OWLOntology> ts = new TreeSet<OWLOntology>(mngr.getOWLObjectComparator());
+        Set<OWLOntology> ts = new TreeSet<>(mngr.getOWLObjectComparator());
         ts.addAll(ontologies);
 
-        java.util.List<OntologyListItem> items = new ArrayList<OntologyListItem>();
+        java.util.List<OntologyListItem> items = new ArrayList<>();
         for (OWLOntology ont : ts){
             items.add(new OntologyListItem(ont));
         }
-        ontologiesPanel.setListData(items.toArray());
+        OntologyListItem[] listData = items.toArray(new OntologyListItem[items.size()]);
+        ontologiesPanel.setListData(listData);
     }
 
 
@@ -147,49 +133,57 @@ public class PhysicalLocationPanel extends JPanel {
 
     public static void showDialog(OWLEditorKit owlEditorKit) {
         PhysicalLocationPanel panel = new PhysicalLocationPanel(owlEditorKit);
-        JOptionPane pane = new JOptionPane(panel, JOptionPane.PLAIN_MESSAGE, JOptionPane.CLOSED_OPTION);
+        JOptionPane pane = new JOptionPane(panel, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION);
         JDialog dlg = pane.createDialog(owlEditorKit.getWorkspace(), "Ontology source locations");
         dlg.setResizable(true);
         dlg.setVisible(true);
     }
 
 
-    private void handleSave(OWLOntology ont){
-        try {
-            owlEditorKit.getOWLModelManager().save(ont);
-            owlEditorKit.addRecent(owlEditorKit.getOWLModelManager().getOntologyPhysicalURI(ont));
-            SaveConfirmationPanel.showDialog(owlEditorKit, Collections.singleton(ont));
-            reload();
-        }
-        catch (OWLOntologyStorageException e) {
-            ErrorLogPanel.showErrorDialog(e);
+    private void handleSave(){
+        if (ontologiesPanel.getSelectedValue() instanceof OntologyListItem) {
+            OntologyListItem item = (OntologyListItem) ontologiesPanel.getSelectedValue();
+            OWLOntology ont = item.ont;
+            try {
+                owlEditorKit.getOWLModelManager().save(ont);
+                owlEditorKit.addRecent(owlEditorKit.getOWLModelManager().getOntologyPhysicalURI(ont));
+                SaveConfirmationPanel.showDialog(owlEditorKit, Collections.singleton(ont));
+                reload();
+            } catch (OWLOntologyStorageException e) {
+                ErrorLogPanel.showErrorDialog(e);
+            }
         }
     }
 
 
-    private void handleReload(OWLOntology ont){
+    private void handleReload(){
         try {
-            owlEditorKit.getModelManager().reload(ont);
+            if (ontologiesPanel.getSelectedValue() instanceof OntologyListItem) {
+                OntologyListItem item = (OntologyListItem) ontologiesPanel.getSelectedValue();
+                owlEditorKit.getModelManager().reload(item.ont);
+            }
         }
         catch (OWLOntologyCreationException e) {
             JOptionPane.showMessageDialog(owlEditorKit.getWorkspace(),
                                           "<html>Failed to reload ontology<p><p>" +
-                                          owlEditorKit.getModelManager().getRendering(ont) +
                                           ".</html>");
         }
     }
 
 
-    private void handleShowFile(OWLOntology ont){
-        URI physicalURI = owlEditorKit.getOWLModelManager().getOntologyPhysicalURI(ont);
-        if (!UIUtil.isLocalFile(physicalURI)) {
-            throw new IllegalArgumentException("URI must be a file URI!");
-        }
-        try {
-            FileUtils.showFile(new File(physicalURI));
-        }
-        catch (IOException ex) {
-            logger.error("An error occurred whilst attempting to show a file in the Operating System.", ex);
+    private void handleShowFile(){
+        if (ontologiesPanel.getSelectedValue() instanceof OntologyListItem) {
+            OntologyListItem item = (OntologyListItem) ontologiesPanel.getSelectedValue();
+            OWLOntology ont = item.ont;
+            URI physicalURI = owlEditorKit.getOWLModelManager().getOntologyPhysicalURI(ont);
+            if (!UIUtil.isLocalFile(physicalURI)) {
+                throw new IllegalArgumentException("URI must be a file URI!");
+            }
+            try {
+                FileUtils.showFile(new File(physicalURI));
+            } catch (IOException ex) {
+                logger.error("An error occurred whilst attempting to show a file in the Operating System.", ex);
+            }
         }
     }
 
@@ -306,16 +300,9 @@ public class PhysicalLocationPanel extends JPanel {
         }
     }
 
-    private class ReloadMListButton extends MListButton {
-        protected ReloadMListButton() {
-            super("Reload", ROLL_OVER_COLOR, new ActionListener(){
-                public void actionPerformed(ActionEvent event) {
-                    if (ontologiesPanel.getSelectedValue() instanceof OntologyListItem) {
-                        OntologyListItem item = (OntologyListItem) ontologiesPanel.getSelectedValue();
-                        handleReload(item.ont);
-                    }
-                }
-            });
+    private static class ReloadMListButton extends MListButton {
+        protected ReloadMListButton(ActionListener actionListener) {
+            super("Reload", ROLL_OVER_COLOR, actionListener);
         }
 
         public void paintButtonContent(Graphics2D g) {
@@ -329,17 +316,10 @@ public class PhysicalLocationPanel extends JPanel {
         }
     }
 
-    private class ShowFileMListButton extends MListButton {
+    private static class ShowFileMListButton extends MListButton {
 
-        protected ShowFileMListButton() {
-            super("Show source file", ROLL_OVER_COLOR, new ActionListener(){
-                public void actionPerformed(ActionEvent event) {
-                    if (ontologiesPanel.getSelectedValue() instanceof OntologyListItem) {
-                        OntologyListItem item = (OntologyListItem) ontologiesPanel.getSelectedValue();
-                        handleShowFile(item.ont);
-                    }
-                }
-            });
+        protected ShowFileMListButton(ActionListener actionListener) {
+            super("Show source file", ROLL_OVER_COLOR, actionListener);
         }
 
         public void paintButtonContent(Graphics2D g) {
@@ -352,17 +332,10 @@ public class PhysicalLocationPanel extends JPanel {
         }
     }
 
-    private class SaveMListButton extends MListButton {
+    private static class SaveMListButton extends MListButton {
 
-        protected SaveMListButton() {
-            super("Save ontology", ROLL_OVER_COLOR, new ActionListener(){
-                public void actionPerformed(ActionEvent event) {
-                    if (ontologiesPanel.getSelectedValue() instanceof OntologyListItem) {
-                        OntologyListItem item = (OntologyListItem) ontologiesPanel.getSelectedValue();
-                        handleSave(item.ont);
-                    }
-                }
-            });
+        protected SaveMListButton(ActionListener actionListener) {
+            super("Save ontology", ROLL_OVER_COLOR, actionListener);
         }
 
         public void paintButtonContent(Graphics2D g) {

@@ -25,10 +25,6 @@ import java.util.Set;
  */
 public class FilePathPanel extends JPanel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 8238154511092480343L;
 
     private String fileChooserText;
 
@@ -51,8 +47,8 @@ public class FilePathPanel extends JPanel {
 
     public FilePathPanel(String fileChooserText, Set<String> extensions) {
         this.fileChooserText = fileChooserText;
-        this.extensions = new HashSet<String>(extensions);
-        listeners = new ArrayList<ChangeListener>();
+        this.extensions = new HashSet<>(extensions);
+        listeners = new ArrayList<>();
         setLayout(new BorderLayout(3, 3));
         textField = ComponentFactory.createTextField();
         add(textField, BorderLayout.NORTH);
@@ -144,7 +140,7 @@ public class FilePathPanel extends JPanel {
 
 
     protected void fireChange() {
-        for (ChangeListener listener : new ArrayList<ChangeListener>(listeners)) {
+        for (ChangeListener listener : new ArrayList<>(listeners)) {
             listener.stateChanged(new ChangeEvent(this));
         }
     }

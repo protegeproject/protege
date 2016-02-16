@@ -17,10 +17,9 @@ public class NextCatalogManager extends CatalogEntryManager {
 
     
     public String getDescription(Entry entry) {
-        StringBuffer sb = new StringBuffer("<html><body><b>Import Repository ");
-        sb.append(((NextCatalogEntry) entry).getCatalog());
-        sb.append("</b></body></html>");
-        return sb.toString();
+        return "<html><body><b>Import Repository " +
+                ((NextCatalogEntry) entry).getCatalog() +
+                "</b></body></html>";
     }
 
     

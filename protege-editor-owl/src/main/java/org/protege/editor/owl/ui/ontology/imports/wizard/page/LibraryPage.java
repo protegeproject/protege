@@ -44,29 +44,24 @@ public class LibraryPage extends OntologyImportPage {
 
 
     protected void createUI(JComponent parent) {
-        setInstructions("The list below shows ontologies that are contained in the available ontology libaries.  Select the ones you want to import.");;
+        setInstructions("The list below shows ontologies that are contained in the available ontology libaries.  Select the ones you want to import.");
         parent.setLayout(new BorderLayout());
         importListModel = new DefaultListModel();
         importList = new JList(importListModel);
         importList.setCellRenderer(new Renderer());
         calculatePossibleImports();
-        importList.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    updateNextButtonEnabled();
-                }
+        importList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                updateNextButtonEnabled();
             }
         });
         
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
         JButton addRepository = new JButton("Edit Repositories");
-        addRepository.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent arg0) {
-				handleEditRepositories();
-			}
-		});
+        addRepository.addActionListener(arg0 -> {
+            handleEditRepositories();
+        });
         buttonPanel.add(addRepository);
         
 		parent.add(buttonPanel, BorderLayout.NORTH);
@@ -108,7 +103,7 @@ public class LibraryPage extends OntologyImportPage {
 
     @Override
     public void aboutToHidePanel() {
-        OntologyImportWizard wizard = (OntologyImportWizard) getWizard();
+        OntologyImportWizard wizard = getWizard();
         wizard.setImportsAreFinal(true);
         wizard.setCustomizeImports(false);
         wizard.clearImports();

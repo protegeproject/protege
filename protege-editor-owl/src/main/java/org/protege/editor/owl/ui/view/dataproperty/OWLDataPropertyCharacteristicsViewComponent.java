@@ -25,10 +25,6 @@ public class OWLDataPropertyCharacteristicsViewComponent extends AbstractOWLData
 //    private static final Logger logger = LoggerFactory.getLogger(OWLDataPropertyCharacteristicsViewComponent.class);
 
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 161692781388151940L;
 
     private JCheckBox checkBox;
 
@@ -74,10 +70,8 @@ public class OWLDataPropertyCharacteristicsViewComponent extends AbstractOWLData
             }
         };
         getOWLModelManager().addOntologyChangeListener(listener);
-        checkBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                updateOntology();
-            }
+        checkBox.addActionListener(e -> {
+            updateOntology();
         });
     }
 
@@ -96,7 +90,7 @@ public class OWLDataPropertyCharacteristicsViewComponent extends AbstractOWLData
             getOWLModelManager().applyChange(new AddAxiom(ont, ax));
         }
         else {
-            List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+            List<OWLOntologyChange> changes = new ArrayList<>();
             for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
                 changes.add(new RemoveAxiom(ont, ax));
             }

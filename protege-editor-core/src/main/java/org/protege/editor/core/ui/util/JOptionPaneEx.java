@@ -61,10 +61,6 @@ public class JOptionPaneEx {
     public static int showValidatingConfirmDialog(Component parent, String title, JComponent component, int messageType, int optionType, final JComponent defaultFocusedComponent) {
         if (component instanceof VerifiedInputEditor) {
             final VerifyingOptionPane optionPane = new VerifyingOptionPane(component, messageType, optionType) {
-                /**
-                 *
-                 */
-                private static final long serialVersionUID = 7128847118051849761L;
 
                 public void selectInitialValue() {
                     // This is overridden so that the option pane dialog default
@@ -74,11 +70,7 @@ public class JOptionPaneEx {
                     }
                 }
             };
-            final InputVerificationStatusChangedListener verificationListener = new InputVerificationStatusChangedListener() {
-                public void verifiedStatusChanged(boolean verified) {
-                    optionPane.setOKEnabled(verified);
-                }
-            };
+            final InputVerificationStatusChangedListener verificationListener = optionPane::setOKEnabled;
             ((VerifiedInputEditor) component).addStatusChangedListener(verificationListener);
 
             final JDialog dlg = createDialog(parent, title, optionPane, defaultFocusedComponent);

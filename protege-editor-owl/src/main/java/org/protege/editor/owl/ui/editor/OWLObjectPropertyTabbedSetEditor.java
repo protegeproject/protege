@@ -29,13 +29,9 @@ public class OWLObjectPropertyTabbedSetEditor extends AbstractOWLObjectEditor<Se
 	private OWLObjectPropertySetEditor descriptionEditor;
     private OWLObjectPropertySelectorPanel propertySelectorPanel;
 
-    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<InputVerificationStatusChangedListener>();
+    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<>();
     
-    private InputVerificationStatusChangedListener inputListener = new InputVerificationStatusChangedListener(){
-        public void verifiedStatusChanged(boolean newState) {
-            handleVerifyEditorContents();
-        }
-    };
+    private InputVerificationStatusChangedListener inputListener = newState -> handleVerifyEditorContents();
     
     public OWLObjectPropertyTabbedSetEditor(OWLEditorKit owlEditorKit) {
         tabbedPane = new JTabbedPane();

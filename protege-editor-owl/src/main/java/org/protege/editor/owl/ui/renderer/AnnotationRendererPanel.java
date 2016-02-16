@@ -86,10 +86,8 @@ public class AnnotationRendererPanel extends JPanel {
                 return col > 0;
             }
         };
-        model.addTableModelListener(new TableModelListener(){
-            public void tableChanged(TableModelEvent tableModelEvent) {
-                dirty = true;
-            }
+        model.addTableModelListener(tableModelEvent -> {
+            dirty = true;
         });
         model.addColumn("Annotation IRI");
 
@@ -141,7 +139,7 @@ public class AnnotationRendererPanel extends JPanel {
             if (langsAsString.length() != 0) {
                 langsAsString.append(", ");
             }
-            if (lang == OWLRendererPreferences.NO_LANGUAGE_SET){
+            if (lang.equals(OWLRendererPreferences.NO_LANGUAGE_SET)) {
                 lang = OWLRendererPreferences.NO_LANGUAGE_SET_USER_TOKEN;
             }
             langsAsString.append(lang);
@@ -154,13 +152,13 @@ public class AnnotationRendererPanel extends JPanel {
     protected void applyChanges() {
         if (dirty){
             // @@TODO change this to get annotation properties
-            java.util.List<IRI> iris = new ArrayList<IRI>();
+            java.util.List<IRI> iris = new ArrayList<>();
             for (int i=0; i<model.getRowCount(); i++){
                 IRI iri = (IRI)model.getValueAt(i, 0);
                 iris.add(iri);
             }
             String langsAsString = languageField.getText();
-            java.util.List<String> langs = new ArrayList<String>();
+            java.util.List<String> langs = new ArrayList<>();
             if (langsAsString != null){
                 for (String token : langsAsString.split(",")){
                     token = token.trim();

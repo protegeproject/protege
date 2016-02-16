@@ -22,7 +22,7 @@ import java.util.Set;
 
     public static final String LABEL = "Different Individuals";
 
-    private Set<OWLIndividual> added = new HashSet<OWLIndividual>();
+    private Set<OWLIndividual> added = new HashSet<>();
 
 
     protected void clear() {

@@ -22,15 +22,11 @@ import java.awt.*;
  */
 public class OWLDataTypeDescriptionViewComponent extends AbstractOWLDataTypeViewComponent {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 4103047350123901528L;
-    private OWLFrameList<OWLDatatype> list;
+        private OWLFrameList<OWLDatatype> list;
 
 
     public void initialiseView() throws Exception {
-        list = new OWLFrameList<OWLDatatype>(getOWLEditorKit(),
+        list = new OWLFrameList<>(getOWLEditorKit(),
                                              new OWLDatatypeDescriptionFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         add(new JScrollPane(list));

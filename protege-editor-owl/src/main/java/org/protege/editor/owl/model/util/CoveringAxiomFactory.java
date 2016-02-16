@@ -31,7 +31,7 @@ public class CoveringAxiomFactory extends OWLClassExpressionVisitorAdapter {
     public CoveringAxiomFactory(OWLDataFactory owlDataFactory, OWLObjectHierarchyProvider<OWLClass> provider) {
         this.owlDataFactory = owlDataFactory;
         this.provider = provider;
-        operands = new HashSet<OWLClassExpression>();
+        operands = new HashSet<>();
     }
 
 

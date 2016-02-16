@@ -29,10 +29,6 @@ import java.awt.event.MouseEvent;
  */
 public class OntologyImportsAndNavigationPanel extends JPanel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 7247887353859536512L;
 
     private OWLEditorKit owlEditorKit;
 
@@ -44,16 +40,13 @@ public class OntologyImportsAndNavigationPanel extends JPanel {
     public OntologyImportsAndNavigationPanel(OWLEditorKit editorKit) {
         this.owlEditorKit = editorKit;
         setLayout(new BorderLayout());
-        tree = new OWLModelManagerTree<OWLOntology>(owlEditorKit, new OWLOntologyHierarchyProvider(owlEditorKit.getModelManager()));
+        tree = new OWLModelManagerTree<>(owlEditorKit, new OWLOntologyHierarchyProvider(owlEditorKit.getModelManager()));
         add(new JScrollPane(tree));
-        tree.addTreeSelectionListener(new TreeSelectionListener() {
-
-            public void valueChanged(TreeSelectionEvent e) {
-                OWLOntology ont = tree.getSelectedOWLObject();
-                if (ont != null) {
-                    owlEditorKit.getModelManager().setActiveOntology(ont);
-                    owlEditorKit.getWorkspace().getOWLSelectionModel().setSelectedObject(ont);
-                }
+        tree.addTreeSelectionListener(e -> {
+            OWLOntology ont = tree.getSelectedOWLObject();
+            if (ont != null) {
+                owlEditorKit.getModelManager().setActiveOntology(ont);
+                owlEditorKit.getWorkspace().getOWLSelectionModel().setSelectedObject(ont);
             }
         });
         tree.addMouseListener(new MouseAdapter() {

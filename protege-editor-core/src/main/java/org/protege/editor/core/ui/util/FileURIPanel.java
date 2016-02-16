@@ -33,10 +33,6 @@ public class FileURIPanel extends JPanel {
     private static final long serialVersionUID = -9037381161423211140L;
 
     private Action browseAction = new AbstractAction("Browse...") {
-        /**
-         * 
-         */
-        private static final long serialVersionUID = 7684199291744099622L;
 
         public void actionPerformed(ActionEvent e) {
             handleBrowse();
@@ -58,7 +54,7 @@ public class FileURIPanel extends JPanel {
         holder.add(textField = new JTextField(30), BorderLayout.NORTH);
         holder.add(new JButton(browseAction), BorderLayout.EAST);
         add(holder, BorderLayout.NORTH);
-        listeners = new ArrayList<ChangeListener>();
+        listeners = new ArrayList<>();
         textField.getDocument().addDocumentListener(new DocumentListener() {
             public void changedUpdate(DocumentEvent e) {
             }
@@ -77,10 +73,7 @@ public class FileURIPanel extends JPanel {
 
 
     private void handleBrowse() {
-        JFrame parent = null;//(JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, this);
-        if (parent == null) {
-            parent = new JFrame();
-        }
+        JFrame parent = new JFrame();
         File f = UIUtil.openFile(parent, "Select an ontology file", "OWL File", fileExtensions);
         if (f != null) {
             textField.setText(f.getAbsolutePath());
@@ -104,7 +97,7 @@ public class FileURIPanel extends JPanel {
 
 
     protected void fireStateChanged() {
-        for (ChangeListener listener : new ArrayList<ChangeListener>(listeners)) {
+        for (ChangeListener listener : new ArrayList<>(listeners)) {
             listener.stateChanged(new ChangeEvent(this));
         }
     }
@@ -112,14 +105,5 @@ public class FileURIPanel extends JPanel {
 
     public URI getURI() throws URISyntaxException {
         return new URI(textField.getText());
-    }
-
-
-    public static void main(String[] args) {
-        JFrame f = new JFrame();
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setContentPane(new FileURIPanel(new HashSet<String>(Arrays.asList("owl"))));
-        f.setVisible(true);
-        f.pack();
     }
 }

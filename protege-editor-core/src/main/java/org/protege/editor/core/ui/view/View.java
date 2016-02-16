@@ -21,10 +21,7 @@ import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -44,13 +41,6 @@ import java.util.Set;
  * that contains a label and view manipulation buttons.
  */
 public class View extends JComponent implements NodeComponent, Disposable {
-
-
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 2974633149164991481L;
-
 
     private final Logger logger = LoggerFactory.getLogger(View.class);
 
@@ -136,8 +126,8 @@ public class View extends JComponent implements NodeComponent, Disposable {
                 }
             }
         });
-        additionalViewActionPlugins = new HashSet<ViewActionPlugin>();
-        addedViewActions = new HashSet<ViewAction>();
+        additionalViewActionPlugins = new HashSet<>();
+        addedViewActions = new HashSet<>();
     }
 
 
@@ -163,6 +153,30 @@ public class View extends JComponent implements NodeComponent, Disposable {
         return componentNode;
     }
 
+    public void addViewMode(final ViewMode viewMode) {
+        viewBarComponent.addMode(viewMode);
+        char ch = Character.toLowerCase(viewMode.getName().charAt(0));
+        getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(ch), viewMode);
+        getActionMap().put(viewMode, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setViewMode(viewMode);
+            }
+        });
+    }
+
+    public Optional<ViewMode> getViewMode() {
+        return viewBarComponent.getViewMode();
+    }
+
+
+    public void setViewMode(ViewMode mode) {
+        viewBarComponent.setViewMode(mode);
+    }
+
+    public void addViewModeChangedHandler(ViewModeChangedHandler handler) {
+        viewBarComponent.addViewModeChangedHandler(handler);
+    }
 
     /**
      * Gets the <code>ViewComponentPlugin</code> Id.  This
@@ -218,7 +232,7 @@ public class View extends JComponent implements NodeComponent, Disposable {
 
     private void createViewToolBar() {
         ViewToolBarActionPluginLoader loader = new ViewToolBarActionPluginLoader(workspace.getEditorKit(), this);
-        java.util.List<ViewActionPlugin> plugins = new ArrayList<ViewActionPlugin>(loader.getPlugins());
+        java.util.List<ViewActionPlugin> plugins = new ArrayList<>(loader.getPlugins());
         plugins.addAll(additionalViewActionPlugins);
         Collections.sort(plugins, new ToolBarActionComparator());
         String lastGroup = null;
@@ -233,7 +247,7 @@ public class View extends JComponent implements NodeComponent, Disposable {
                 if (action.getValue(AbstractAction.SHORT_DESCRIPTION) == null) {
                     action.putValue(AbstractAction.SHORT_DESCRIPTION, action.getValue(AbstractAction.NAME));
                 }
-                viewBarComponent.getViewBar().addAction(action);
+                viewBarComponent.addAction(action);
                 // Handle accelerators
                 KeyStroke acceleratorKeyStroke = (KeyStroke) action.getValue(AbstractAction.ACCELERATOR_KEY);
                 if (acceleratorKeyStroke != null) {
@@ -257,6 +271,9 @@ public class View extends JComponent implements NodeComponent, Disposable {
         }
     }
 
+    protected void addMode(ViewMode viewMode) {
+        viewBarComponent.addMode(viewMode);
+    }
 
     protected void addAction(final ProtegeAction action, final String group, final String groupIndex) {
         ViewActionPlugin plugin = new ViewActionPlugin() {
@@ -319,10 +336,6 @@ public class View extends JComponent implements NodeComponent, Disposable {
         viewBarComponent.getViewBar().getViewBanner().addAction(new AbstractAction("Split vertically",
                                                                                    Icons.getIcon(
                                                                                            SPLIT_VERTICALLY_ICON_NAME)) {
-            /**
-                                                                                             * 
-                                                                                             */
-                                                                                            private static final long serialVersionUID = 8586844910392022364L;
 
             public void actionPerformed(ActionEvent e) {
                 splitVertically();
@@ -332,10 +345,6 @@ public class View extends JComponent implements NodeComponent, Disposable {
                                                                                    Icons.getIcon(
                                                                                            SPLIT_HORIZONTALLY_ICON_NAME)) {
 
-            /**
-                                                                                             * 
-                                                                                             */
-                                                                                            private static final long serialVersionUID = 650343120768163122L;
 
             public void actionPerformed(ActionEvent e) {
                 splitHorizontally();
@@ -343,10 +352,6 @@ public class View extends JComponent implements NodeComponent, Disposable {
         });
         viewBarComponent.getViewBar().getViewBanner().addAction(new AbstractAction("Float",
                                                                                    Icons.getIcon(FLOAT_ICON_NAME)) {
-            /**
-                                                                                     * 
-                                                                                     */
-                                                                                    private static final long serialVersionUID = 680867093090160266L;
 
             public void actionPerformed(ActionEvent e) {
                 copyAndFloatView();
@@ -354,10 +359,6 @@ public class View extends JComponent implements NodeComponent, Disposable {
         });
         viewBarComponent.getViewBar().getViewBanner().addAction(new AbstractAction("Close",
                                                                                    Icons.getIcon(CLOSE_ICON_NAME)) {
-            /**
-                                                                                     * 
-                                                                                     */
-                                                                                    private static final long serialVersionUID = 7953501606173990976L;
 
             public void actionPerformed(ActionEvent e) {
                 closeView();
@@ -600,4 +601,5 @@ public class View extends JComponent implements NodeComponent, Disposable {
     public void addedToNode(ComponentNode node) {
         this.componentNode = node;
     }
+
 }

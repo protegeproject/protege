@@ -77,10 +77,7 @@ public class SearchResultsPanel extends JPanel {
 
     private SearchResultsTableModel model;
 
-    private SearchResultClickedListener searchResultClickedListener = new SearchResultClickedListener() {
-        @Override
-        public void handleSearchResultClicked(SearchResult searchResult, MouseEvent e) {
-        }
+    private SearchResultClickedListener searchResultClickedListener = (searchResult, e) -> {
     };
 
 
@@ -115,10 +112,8 @@ public class SearchResultsPanel extends JPanel {
                 handleMouseReleased(e);
             }
         });
-        scrollPane.getViewport().addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                handleScrollpaneViewportChanged();
-            }
+        scrollPane.getViewport().addChangeListener(e -> {
+            handleScrollpaneViewportChanged();
         });
     }
 
@@ -221,7 +216,7 @@ public class SearchResultsPanel extends JPanel {
     }
 
     public java.util.List<OWLEntity> getSelectedEntities() {
-        java.util.List<OWLEntity> results = new ArrayList<OWLEntity>();
+        java.util.List<OWLEntity> results = new ArrayList<>();
         for (int selIndex : resultsTable.getSelectedRows()) {
             Optional<OWLEntity> entity = getEntityAtRow(selIndex);
             if (entity.isPresent()) {
@@ -355,7 +350,7 @@ public class SearchResultsPanel extends JPanel {
                     styledStringPanel.setBackground(table.getBackground());
                     styledStringPanel.setForeground(table.getForeground());
                 }
-                Style highlightStyle = ProtegeStyles.getStyles().getHighlightStyle();
+                Style highlightStyle = ProtegeStyles.getHighlightStyle();
                 for (SearchResultMatch match : searchResult.getMatches()) {
                     int from = match.getStart();
                     int to = match.getOffset();

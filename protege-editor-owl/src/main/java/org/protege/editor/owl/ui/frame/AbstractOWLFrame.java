@@ -28,8 +28,8 @@ public abstract class AbstractOWLFrame<R extends Object> implements OWLFrame<R> 
 
     public AbstractOWLFrame(OWLOntologyManager owlOntologyManager) {
         this.owlOntologyManager = owlOntologyManager;
-        listeners = new ArrayList<OWLFrameListener>();
-        sections = new ArrayList<OWLFrameSection>();
+        listeners = new ArrayList<>();
+        sections = new ArrayList<>();
     }
 
 
@@ -56,9 +56,7 @@ public abstract class AbstractOWLFrame<R extends Object> implements OWLFrame<R> 
 
 
     public void dispose() {
-        for (OWLFrameSection section : sections) {
-            section.dispose();
-        }
+        sections.forEach(OWLFrameSection::dispose);
     }
 
 

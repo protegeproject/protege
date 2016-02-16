@@ -37,19 +37,19 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
     private Map<OWLEntity, Set<OWLAxiom>> axiomsByEntityMap;
 
     // axioms that cannot be indexed by entity
-    private Set<OWLAxiom> additionalAxioms = new HashSet<OWLAxiom>();
+    private Set<OWLAxiom> additionalAxioms = new HashSet<>();
 
     private int usageCount;
 
-    private Set<UsageFilter> filters = new HashSet<UsageFilter>();
+    private Set<UsageFilter> filters = new HashSet<>();
 
 
     public UsageByEntityTreeModel(OWLEditorKit owlEditorKit) {
         super(new DefaultMutableTreeNode("No usage"));
         owlModelManager = owlEditorKit.getModelManager();
         axiomSorter = new AxiomSorter();
-        nodeMap = new HashMap<OWLEntity, DefaultMutableTreeNode>();
-        axiomsByEntityMap = new TreeMap<OWLEntity, Set<OWLAxiom>>(owlModelManager.getOWLObjectComparator());
+        nodeMap = new HashMap<>();
+        axiomsByEntityMap = new TreeMap<>(owlModelManager.getOWLObjectComparator());
     }
 
     public UsageByEntityTreeModel(OWLEditorKit owlEditorKit, OWLEntity entity) {
@@ -150,7 +150,7 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
             usageCount++;
             Set<OWLAxiom> axioms = axiomsByEntityMap.get(ent);
             if (axioms == null) {
-                axioms = new HashSet<OWLAxiom>();
+                axioms = new HashSet<>();
                 axiomsByEntityMap.put(ent, axioms);
             }
             axioms.add(currentAxiom);

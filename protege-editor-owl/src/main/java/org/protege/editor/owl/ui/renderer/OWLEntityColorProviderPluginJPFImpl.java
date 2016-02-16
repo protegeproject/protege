@@ -46,7 +46,7 @@ public class OWLEntityColorProviderPluginJPFImpl implements OWLEntityColorProvid
 
     public OWLEntityColorProvider newInstance() throws ClassNotFoundException, IllegalAccessException,
                                                        InstantiationException {
-        ExtensionInstantiator<OWLEntityColorProvider> instantiator = new ExtensionInstantiator<OWLEntityColorProvider>(
+        ExtensionInstantiator<OWLEntityColorProvider> instantiator = new ExtensionInstantiator<>(
                 extension);
         OWLEntityColorProvider prov = instantiator.instantiate();
         prov.setup(owlModelManager);

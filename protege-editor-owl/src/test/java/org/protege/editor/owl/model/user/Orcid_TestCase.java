@@ -7,7 +7,7 @@ import org.junit.runner.RunWith;
 
 import java.net.URI;
 
-import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 @RunWith(org.mockito.runners.MockitoJUnitRunner.class)

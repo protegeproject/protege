@@ -1,26 +1,31 @@
 package org.protege.editor.owl.ui.view;
 
-import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.view.View;
+import org.protege.editor.core.ui.view.ViewMode;
+import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.util.OWLUtilities;
 import org.protege.editor.owl.ui.OWLObjectComparatorAdapter;
 import org.protege.editor.owl.ui.action.OWLObjectHierarchyDeleter;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.protege.editor.owl.ui.tree.OWLObjectTree;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
-import org.semanticweb.owlapi.util.OWLEntitySetProvider;
 
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -34,92 +39,132 @@ import java.util.Set;
 public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntity> extends AbstractOWLSelectionViewComponent
  implements Findable<E>, Deleteable, HasDisplayDeprecatedEntities {
 
+    private OWLObjectTree<E> assertedTree;
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -5980351290853739210L;
-
-    private OWLObjectTree<E> tree;
+    private Optional<OWLObjectTree<E>> inferredTree;
 
     private TreeSelectionListener listener;
 
     private OWLObjectHierarchyDeleter<E> hierarchyDeleter;
 
+    private final ViewModeComponent<OWLObjectTree<E>> viewModeComponent = new ViewModeComponent<>();
+
 
     final public void initialiseView() throws Exception {
-        setLayout(new BorderLayout(7, 7));
-
-        tree = new OWLModelManagerTree<E>(getOWLEditorKit(), getHierarchyProvider());
+        setLayout(new BorderLayout(0, 0));
+        add(viewModeComponent, BorderLayout.CENTER);
+        assertedTree = new OWLModelManagerTree<>(getOWLEditorKit(), getHierarchyProvider());
 
         // ordering based on default, but putting Nothing at the top
-        final Comparator<OWLObject> comp = getOWLModelManager().getOWLObjectComparator();
-        tree.setOWLObjectComparator(new OWLObjectComparatorAdapter<OWLObject>(comp) {
-            public int compare(OWLObject o1, OWLObject o2) {
-                if (getOWLDataFactory().getOWLNothing().equals(o1)) {
-                    return -1;
-                }
-                else if (getOWLDataFactory().getOWLNothing().equals(o2)) {
-                    return 1;
-                }
-                else {
-                	boolean deprecated1 = OWLUtilities.isDeprecated(getOWLModelManager(), o1);
-                	boolean deprecated2 = OWLUtilities.isDeprecated(getOWLModelManager(), o2);
-                	if (deprecated1 != deprecated2) {
-                		return deprecated1 ? 1 : -1;
-                	}
-                    return comp.compare(o1, o2);
-                }
-            }
-        });
+        OWLObjectComparatorAdapter<OWLObject> treeNodeComp = createComparator(getOWLModelManager());
+        assertedTree.setOWLObjectComparator(treeNodeComp);
+
 
         // render keywords should be on now for class expressions
-        final TreeCellRenderer treeCellRenderer = tree.getCellRenderer();
+        final TreeCellRenderer treeCellRenderer = assertedTree.getCellRenderer();
         if (treeCellRenderer instanceof OWLCellRenderer){
             ((OWLCellRenderer) treeCellRenderer).setHighlightKeywords(true);
         }
 
-        initSelectionManagement();
-        add(ComponentFactory.createScrollPane(tree));
+        viewModeComponent.add(assertedTree, ViewMode.ASSERTED, true);
+
+
         performExtraInitialisation();
         E entity = getSelectedEntity();
         if (entity != null) {
             setGlobalSelection(entity);
         }
-        tree.getModel().addTreeModelListener(new TreeModelListener() {
+        TreeModelListener treeModelListener = new TreeModelListener() {
+            @Override
             public void treeNodesChanged(TreeModelEvent e) {
             }
-
-
             public void treeNodesInserted(TreeModelEvent e) {
                 ensureSelection();
             }
-
-
             public void treeNodesRemoved(TreeModelEvent e) {
                 ensureSelection();
             }
-
-
             public void treeStructureChanged(TreeModelEvent e) {
                 ensureSelection();
             }
-        });
-        tree.addMouseListener(new MouseAdapter() {
+        };
+        assertedTree.getModel().addTreeModelListener(treeModelListener);
+
+        assertedTree.addMouseListener(new MouseAdapter() {
             public void mouseReleased(MouseEvent e) {
                 transmitSelection();
             }
         });
-        hierarchyDeleter = new OWLObjectHierarchyDeleter<E>(getOWLEditorKit(),
+
+
+        Optional<OWLObjectHierarchyProvider<E>> inferredHierarchyProvider = getInferredHierarchyProvider();
+        if (inferredHierarchyProvider.isPresent()) {
+            inferredTree = Optional.of(new OWLModelManagerTree<>(getOWLEditorKit(), inferredHierarchyProvider.get()));
+            inferredTree.get().setBackground(OWLFrameList.INFERRED_BG_COLOR);
+            inferredTree.get().setOWLObjectComparator(treeNodeComp);
+            inferredTree.get().getModel().addTreeModelListener(treeModelListener);
+            inferredTree.get().addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    transmitSelection();
+                }
+            });
+            viewModeComponent.add(inferredTree.get(), ViewMode.INFERRED, true);
+            getView().addViewMode(ViewMode.ASSERTED);
+            getView().addViewMode(ViewMode.INFERRED);
+            getView().addViewModeChangedHandler(this::switchViewMode);
+        }
+        else {
+            inferredTree = Optional.empty();
+        }
+
+        hierarchyDeleter = new OWLObjectHierarchyDeleter<>(getOWLEditorKit(),
                                                                    getHierarchyProvider(),
-                                                                   new OWLEntitySetProvider<E>() {
-                                                                       public Set<E> getEntities() {
-                                                                           return new HashSet<E>(tree.getSelectedOWLObjects());
-                                                                       }
-                                                                   },
+                                                                    () -> new HashSet<>(assertedTree.getSelectedOWLObjects()),
                                                                    getCollectiveTypeName());
+        listener = e -> transmitSelection();
+        assertedTree.addTreeSelectionListener(listener);
+        if (inferredTree.isPresent()) {
+            inferredTree.get().addTreeSelectionListener(listener);
+        }
+
         setShowDeprecatedEntities(true);
 
+    }
+
+    protected boolean isInAssertedMode() {
+        return getView().getViewMode().equals(Optional.of(ViewMode.ASSERTED));
+    }
+
+    private static OWLObjectComparatorAdapter<OWLObject> createComparator(OWLModelManager modelManager) {
+        final Comparator<OWLObject> comp = modelManager.getOWLObjectComparator();
+        return new OWLObjectComparatorAdapter<OWLObject>(comp) {
+            public int compare(OWLObject o1, OWLObject o2) {
+                if (modelManager.getOWLDataFactory().getOWLNothing().equals(o1)) {
+                    return -1;
+                }
+                else if (modelManager.getOWLDataFactory().getOWLNothing().equals(o2)) {
+                    return 1;
+                }
+                else {
+                    boolean deprecated1 = OWLUtilities.isDeprecated(modelManager, o1);
+                    boolean deprecated2 = OWLUtilities.isDeprecated(modelManager, o2);
+                    if (deprecated1 != deprecated2) {
+                        return deprecated1 ? 1 : -1;
+                    }
+                    return comp.compare(o1, o2);
+                }
+            }
+        };
+    }
+
+    private void switchViewMode(Optional<ViewMode> viewMode) {
+        E sel = viewModeComponent.getComponentForCurrentViewMode().getSelectedOWLObject();
+        viewModeComponent.setViewMode(viewMode);
+        if(sel != null) {
+            setSelectedEntity(sel);
+        }
+        updateView();
     }
 
 
@@ -127,6 +172,8 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
 
     protected abstract OWLObjectHierarchyProvider<E> getHierarchyProvider();
+
+    protected abstract Optional<OWLObjectHierarchyProvider<E>> getInferredHierarchyProvider();
 
 
     /**
@@ -139,34 +186,32 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
 
     public void setSelectedEntity(E entity) {
-        tree.setSelectedOWLObject(entity);
+        getTree().setSelectedOWLObject(entity);
     }
 
 
     public void setSelectedEntities(Set<E> entities) {
-        tree.setSelectedOWLObjects(entities);
+        getTree().setSelectedOWLObjects(entities);
     }
 
 
     public E getSelectedEntity() {
-        return tree.getSelectedOWLObject();
+        return getTree().getSelectedOWLObject();
     }
 
 
     public Set<E> getSelectedEntities() {
-        return new HashSet<E>(tree.getSelectedOWLObjects());
+        return new HashSet<>(getTree().getSelectedOWLObjects());
     }
 
 
     private void ensureSelection() {
-        SwingUtilities.invokeLater(new Runnable(){
-            public void run() {
-                final E entity = getSelectedEntity();
-                if (entity != null) {
-                    E treeSel = tree.getSelectedOWLObject();
-                    if (treeSel == null || !treeSel.equals(entity)) {
-                        tree.setSelectedOWLObject(entity);
-                    }
+        SwingUtilities.invokeLater(() -> {
+            final E entity = getSelectedEntity();
+            if (entity != null) {
+                E treeSel = getTree().getSelectedOWLObject();
+                if (treeSel == null || !treeSel.equals(entity)) {
+                    getTree().setSelectedOWLObject(entity);
                 }
             }
         });
@@ -174,27 +219,19 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
 
     public boolean requestFocusInWindow() {
-        return tree.requestFocusInWindow();
+        return getTree().requestFocusInWindow();
     }
 
 
     protected OWLObjectTree<E> getTree() {
-        return tree;
-    }
-
-
-
-
-    private void initSelectionManagement() {
-        // Hook up a selection listener so that we can transmit our
-        // selection to the main selection model
-
-        listener = new TreeSelectionListener() {
-            public void valueChanged(TreeSelectionEvent e) {
-                transmitSelection();
-            }
-        };
-        tree.addTreeSelectionListener(listener);
+        Optional<ViewMode> viewMode= getView().getViewMode();
+        return viewModeComponent.getComponentForViewMode(viewMode);
+//        if(!viewMode.isPresent() || !inferredTree.isPresent() || viewMode.get().equals(ViewMode.ASSERTED)) {
+//            return assertedTree;
+//        }
+//        else {
+//            return inferredTree.get();
+//        }
     }
 
 
@@ -219,35 +256,35 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
 
     protected E updateView(E selEntity) {
-        if (tree.getSelectedOWLObject() == null) {
+        if (getTree().getSelectedOWLObject() == null) {
             if (selEntity != null) {
-                tree.setSelectedOWLObject(selEntity);
-            }
-            else {
-                // Don't need to do anything - both null
+                getTree().setSelectedOWLObject(selEntity);
             }
         }
         else {
-            if (!tree.getSelectedOWLObject().equals(selEntity)) {
-                tree.setSelectedOWLObject(selEntity);
+            if (!getTree().getSelectedOWLObject().equals(selEntity)) {
+                getTree().setSelectedOWLObject(selEntity);
             }
         }
-
         return selEntity;
     }
 
 
     public void disposeView() {
-        // Dispose of the tree selection listener
-        if (tree != null) {
-            tree.removeTreeSelectionListener(listener);
-            tree.dispose();
+        // Dispose of the assertedTree selection listener
+        if (assertedTree != null) {
+            assertedTree.removeTreeSelectionListener(listener);
+            assertedTree.dispose();
+        }
+        if (inferredTree.isPresent()) {
+            inferredTree.get().removeTreeSelectionListener(listener);
+            inferredTree.get().dispose();
         }
     }
 
 
     protected OWLObject getObjectToCopy() {
-        return tree.getSelectedOWLObject();
+        return getTree().getSelectedOWLObject();
     }
 
     //////////////////////////////////////////////////////////////////////////////////////
@@ -275,7 +312,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
 
     public boolean canDelete() {
-        return !tree.getSelectedOWLObjects().isEmpty();
+        return !getTree().getSelectedOWLObjects().isEmpty();
     }
 
     //////////////////////////////////////////////////////////////////////////////////////

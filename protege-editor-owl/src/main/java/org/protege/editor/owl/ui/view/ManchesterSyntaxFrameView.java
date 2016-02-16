@@ -58,10 +58,8 @@ public class ManchesterSyntaxFrameView extends AbstractOWLSelectionViewComponent
                 bw.close();
                 textArea.setText(w.getBuffer().toString());
 
-                SwingUtilities.invokeLater(new Runnable(){
-                    public void run() {
-                        scroller.getViewport().setViewPosition(new Point(0, 0));
-                    }
+                SwingUtilities.invokeLater(() -> {
+                    scroller.getViewport().setViewPosition(new Point(0, 0));
                 });
             }
             catch (Exception e) {

@@ -207,25 +207,31 @@ public class PluginRegistryImpl implements PluginRegistry {
             logger.info(AUTO_UPDATE, "{}Checking {}", pad(depth), node);
 
             // see if this is a plugin file
-            UpdateChecker checker = new UpdateChecker(node, Optional.empty());
-            try {
-                Optional<PluginInfo> parsedInfo = checker.run();
-                if (parsedInfo.isPresent()) {
-                    PluginInfo info = parsedInfo.get();
-                    logger.debug(AUTO_UPDATE, "{}URL {} has valid plugin info: {}", pad(depth), node, info.getId());
-                    if (!bundleByIds.containsKey(info.getId())) {
-                        installs.add(info);
-                        logger.debug(AUTO_UPDATE, "{}URL {} is a download", pad(depth), node);
+            if (!node.toString().endsWith(".repository")) {
+                UpdateChecker checker = new UpdateChecker(node, Optional.empty());
+                try {
+                    Optional<PluginInfo> parsedInfo = checker.run();
+                    if (parsedInfo.isPresent()) {
+                        PluginInfo info = parsedInfo.get();
+                        logger.debug(AUTO_UPDATE, "{}URL {} has valid plugin info: {}", pad(depth), node, info.getId());
+                        if (!bundleByIds.containsKey(info.getId())) {
+                            installs.add(info);
+                            logger.debug(AUTO_UPDATE, "{}URL {} is a download", pad(depth), node);
 
+                        }
+                        Bundle bundle = bundleByIds.get(info.getId());
+                        if (bundle != null && bundle.getVersion().compareTo(info.getAvailableVersion()) < 0 && !selfUpdatingBundleIds.contains(info.getId())) {
+                            info.setPluginDescriptor(bundle);
+                            updates.add(info);
+                            logger.debug(AUTO_UPDATE, "{}URL {} is an update", pad(depth), node);
+                        }
                     }
-                    Bundle bundle = bundleByIds.get(info.getId());
-                    if (bundle != null && bundle.getVersion().compareTo(info.getAvailableVersion()) < 0 && !selfUpdatingBundleIds.contains(info.getId())) {
-                        info.setPluginDescriptor(bundle);
-                        updates.add(info);
-                        logger.debug(AUTO_UPDATE, "{}URL {} is an update", pad(depth), node);
-                    }
+                } catch (PluginDocumentParseException e) {
+                    logger.info(AUTO_UPDATE, "{}{}", pad(depth + 1), e.getMessage());
+                    readRegistry(node, depth + 1);
                 }
-            } catch (PluginDocumentParseException e) {
+            }
+            else {
                 readRegistry(node, depth + 1);
             }
         }

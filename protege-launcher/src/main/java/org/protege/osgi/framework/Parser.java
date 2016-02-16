@@ -26,7 +26,7 @@ public class Parser {
 
     private Map<String, String> frameworkProperties;
     private Map<String, String> systemProperties;
-    private List<BundleSearchPath> searchPaths = new ArrayList<BundleSearchPath>();
+    private List<BundleSearchPath> searchPaths = new ArrayList<>();
 
     public Parser() {
         factory = DocumentBuilderFactory.newInstance();
@@ -45,8 +45,8 @@ public class Parser {
     }
 
     public void reset() {
-        frameworkProperties = new TreeMap<String, String>();
-        systemProperties = new TreeMap<String, String>();
+        frameworkProperties = new TreeMap<>();
+        systemProperties = new TreeMap<>();
         searchPaths.clear();
     }
 
@@ -84,7 +84,7 @@ public class Parser {
     }
 
     private Map<String, String> readProperties(NodeList nodes) {
-        Map<String, String> properties = new TreeMap<String, String>();
+        Map<String, String> properties = new TreeMap<>();
         for (int i = 0; i < nodes.getLength(); i++) {
             Node propertyNode = nodes.item(i);
             if (propertyNode instanceof Element && propertyNode.getNodeName().equals(PROPERTY)) {

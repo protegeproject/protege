@@ -16,11 +16,6 @@ import java.util.prefs.BackingStoreException;
  */
 public class JavaBackedPreferencesImpl implements Preferences {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1974522185816507186L;
-
     public static final String PROTEGE_PREFS_KEY = "PROTEGE_PREFERENCES";
 
     private java.util.prefs.Preferences preferences;
@@ -81,7 +76,7 @@ public class JavaBackedPreferencesImpl implements Preferences {
             return def;
         }
         int size = listPrefs.getInt("listSize", 0);
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         for(int i = 0; i < size; i++) {
             list.add(listPrefs.get(Integer.toString(i), ""));
         }
@@ -164,7 +159,7 @@ public class JavaBackedPreferencesImpl implements Preferences {
             return def;
         }
         int size = listPrefs.getInt("listSize", 0);
-        List<byte []> list = new ArrayList<byte []>();
+        List<byte []> list = new ArrayList<>();
         for(int i = 0; i < size; i++) {
             list.add(listPrefs.getByteArray(Integer.toString(i), new byte [] {0}));
         }

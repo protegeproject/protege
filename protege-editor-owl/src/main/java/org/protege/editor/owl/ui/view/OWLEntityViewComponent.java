@@ -22,24 +22,15 @@ import java.awt.*;
  */
 public class OWLEntityViewComponent extends AbstractOWLViewComponent {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 6575290959317277113L;
 
     private OWLFrameList<OWLEntity> list;
 
-    private OWLSelectionModelListener listener = new OWLSelectionModelListener() {
-
-        public void selectionChanged() throws Exception {
-            updateFrame();
-        }
-    };
+    private OWLSelectionModelListener listener = () -> updateFrame();
 
 
     protected void initialiseOWLView() throws Exception {
         setLayout(new BorderLayout());
-        list = new OWLFrameList<OWLEntity>(getOWLEditorKit(), new OWLEntityFrame(getOWLEditorKit()));
+        list = new OWLFrameList<>(getOWLEditorKit(), new OWLEntityFrame(getOWLEditorKit()));
         updateFrame();
         getOWLWorkspace().getOWLSelectionModel().addListener(listener);
         add(new JScrollPane(list));

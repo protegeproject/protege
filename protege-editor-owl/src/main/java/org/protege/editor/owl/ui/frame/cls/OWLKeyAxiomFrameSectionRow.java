@@ -55,5 +55,5 @@ public class OWLKeyAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLCl
 
 
     public List<OWLPropertyExpression> getManipulatableObjects() {
-        return new ArrayList<OWLPropertyExpression>(getAxiom().getPropertyExpressions());
+        return new ArrayList<>(getAxiom().getPropertyExpressions());
     }}

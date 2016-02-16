@@ -22,7 +22,7 @@ public class SearchResultSet {
     private Map<SearchCategoryGroupKey, List<SearchResult>> searchResultsByCategory;
 
     public SearchResultSet(Collection<SearchResult> searchResults) {
-        this.searchResults = new ArrayList<SearchResult>(searchResults);
+        this.searchResults = new ArrayList<>(searchResults);
         buildCatResults();
     }
 
@@ -51,11 +51,11 @@ public class SearchResultSet {
         if (catResults == null) {
             return Collections.emptyList();
         }
-        return new ArrayList<SearchResult>(catResults);
+        return new ArrayList<>(catResults);
     }
 
     public List<SearchResult> getCategoryResults(String category, int limit) {
-        List<SearchResult> trimmedResult = new ArrayList<SearchResult>();
+        List<SearchResult> trimmedResult = new ArrayList<>();
         SearchCategoryGroupKey key = getKeyForCategory(category);
         if (key == null) {
             return Collections.emptyList();
@@ -86,14 +86,14 @@ public class SearchResultSet {
 
 
     private void buildCatResults() {
-        searchResultsByCategory = new HashMap<SearchCategoryGroupKey, List<SearchResult>>();
+        searchResultsByCategory = new HashMap<>();
         for (SearchResult searchResult : searchResults) {
             String subcategory = searchResult.getGroupDescription();
             SearchCategory category = searchResult.getCategory();
             SearchCategoryGroupKey key = new SearchCategoryGroupKey(category, subcategory);
             List<SearchResult> catResults = searchResultsByCategory.get(key);
             if (catResults == null) {
-                catResults = new ArrayList<SearchResult>();
+                catResults = new ArrayList<>();
                 searchResultsByCategory.put(key, catResults);
             }
             catResults.add(searchResult);

@@ -39,7 +39,7 @@ public class UsagePreferences {
 
 
     public Set<UsageFilter> getActiveFilters() {
-        Set<UsageFilter> activeFilters = new HashSet<UsageFilter>();
+        Set<UsageFilter> activeFilters = new HashSet<>();
         for (UsageFilter filter : UsageFilter.values()){
             if (isFilterActive(filter)){
                 activeFilters.add(filter);

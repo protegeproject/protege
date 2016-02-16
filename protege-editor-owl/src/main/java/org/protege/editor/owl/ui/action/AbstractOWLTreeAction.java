@@ -33,11 +33,7 @@ public abstract class AbstractOWLTreeAction<E extends OWLEntity> extends Disposa
     public AbstractOWLTreeAction(String name, Icon icon, TreeSelectionModel selectionModel) {
         super(name, icon);
         this.selectionModel = selectionModel;
-        this.selectionListener = new TreeSelectionListener() {
-            public void valueChanged(TreeSelectionEvent e) {
-                reactToSelection();
-            }
-        };
+        this.selectionListener = e -> reactToSelection();
         selectionModel.addTreeSelectionListener(selectionListener);
         setEnabled(canPerform(getSelectedOWLEntity()));
     }

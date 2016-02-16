@@ -25,14 +25,14 @@ public class ConvertAssertionsOnPunsToAnnotations extends ProtegeOWLAction {
 
         OWLDataFactory df = getOWLDataFactory();
         Set<OWLOntology> onts = getOWLModelManager().getOntologies();
-        Set<OWLIndividual> inds = new HashSet<OWLIndividual>();
+        Set<OWLIndividual> inds = new HashSet<>();
 
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         for (OWLOntology ont : onts) {
             inds.addAll(ont.getIndividualsInSignature());
         }
 
-        Set<OWLDataProperty> props = new HashSet<OWLDataProperty>();
+        Set<OWLDataProperty> props = new HashSet<>();
         for (OWLIndividual ind : inds) {
 
             if (isPunForClass(ind)){

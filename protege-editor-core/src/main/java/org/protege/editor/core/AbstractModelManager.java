@@ -25,7 +25,7 @@ public abstract class AbstractModelManager implements ModelManager {
 
     private final Logger logger = LoggerFactory.getLogger(AbstractModelManager.class);
 
-    private Map<Object, Disposable> objects = new HashMap<Object, Disposable>();
+    private Map<Object, Disposable> objects = new HashMap<>();
 
 
     protected AbstractModelManager() {

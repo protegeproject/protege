@@ -9,7 +9,7 @@ import java.util.List;
 public abstract class NewEntryPanel extends JPanel {
 	private static final long serialVersionUID = -706694344158933046L;
 	
-	private List<Runnable> listeners = new ArrayList<Runnable>();
+	private List<Runnable> listeners = new ArrayList<>();
 
 	public abstract Entry getEntry();
 	

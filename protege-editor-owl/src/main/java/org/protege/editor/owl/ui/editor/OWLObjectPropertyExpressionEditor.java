@@ -27,13 +27,9 @@ public class OWLObjectPropertyExpressionEditor extends AbstractOWLObjectEditor<O
     private OWLObjectPropertySelectorPanel namedObjectPropertySelector;
     private JCheckBox inverseCheckBox;
 
-    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<InputVerificationStatusChangedListener>();
+    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<>();
     
-    private InputVerificationStatusChangedListener inputListener = new InputVerificationStatusChangedListener(){
-        public void verifiedStatusChanged(boolean newState) {
-            handleVerifyEditorContents();
-        }
-    };
+    private InputVerificationStatusChangedListener inputListener = newState -> handleVerifyEditorContents();
 
     public OWLObjectPropertyExpressionEditor(OWLEditorKit owlEditorKit) {
     	editor = new JPanel();
@@ -42,12 +38,9 @@ public class OWLObjectPropertyExpressionEditor extends AbstractOWLObjectEditor<O
         namedObjectPropertySelector.addStatusChangedListener(inputListener);
         editor.add(namedObjectPropertySelector, BorderLayout.CENTER);
         inverseCheckBox = new JCheckBox("Inverse Property");
-        inverseCheckBox.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				handleVerifyEditorContents();
-			}
-		});
+        inverseCheckBox.addActionListener(e -> {
+            handleVerifyEditorContents();
+        });
         editor.add(inverseCheckBox, BorderLayout.SOUTH);
     }
 
@@ -58,7 +51,7 @@ public class OWLObjectPropertyExpressionEditor extends AbstractOWLObjectEditor<O
     }
 
     public boolean setEditedObject(OWLObjectPropertyExpression p) {
-    	inverseCheckBox.setSelected(p != null ? p.getSimplified().isAnonymous() : false);
+    	inverseCheckBox.setSelected(p != null && p.getSimplified().isAnonymous());
         namedObjectPropertySelector.setSelection(p != null ? p.getNamedProperty() : null);
         return true;
     }

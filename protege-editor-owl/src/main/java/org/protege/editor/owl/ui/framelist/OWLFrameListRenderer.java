@@ -55,7 +55,7 @@ public class OWLFrameListRenderer implements ListCellRenderer, RendererWithInset
         highlightUnsatisfiableClasses = true;
         highlightUnsatisfiableProperties = true;
         annotationRendererEnabled = true;
-        crossedOutEntities = new HashSet<OWLEntity>();
+        crossedOutEntities = new HashSet<>();
     }
 
 
@@ -144,6 +144,9 @@ public class OWLFrameListRenderer implements ListCellRenderer, RendererWithInset
                 annotationRenderer.setInlineDatatypeRendering(
                         getAnnotationLiteralDatatypeRendering()
                 );
+                annotationRenderer.setThumbnailRendering(
+                        getInlineThumbnailRendering()
+                );
                 return annotationRenderer.getListCellRendererComponent(list,
                                                                        annotationAssertionAxiom,
                                                                        index,
@@ -174,6 +177,10 @@ public class OWLFrameListRenderer implements ListCellRenderer, RendererWithInset
 
     private InlineAnnotationRendering getRenderAnnotationAnnotationsInline() {
         return OWLRendererPreferences.getInstance().isDisplayAnnotationAnnotationsInline() ? RENDER_COMPOUND_ANNOTATIONS_INLINE : DO_NOT_RENDER_COMPOUND_ANNOTATIONS_INLINE;
+    }
+
+    private InlineThumbnailRendering getInlineThumbnailRendering() {
+        return OWLRendererPreferences.getInstance().isDisplayThumbnailsInline() ? InlineThumbnailRendering.DISPLAY_THUMBNAILS_INLINE : InlineThumbnailRendering.DO_NOT_DISPLAY_THUMBNAILS_INLINE;
     }
 
     public void setWrap(boolean b) {

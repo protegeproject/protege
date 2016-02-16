@@ -67,10 +67,7 @@ public class VacuousAxiomVisitor implements OWLAxiomVisitorEx<Boolean> {
 
 	@Override
 	public Boolean visit(OWLDisjointClassesAxiom axiom) {
-		if (axiom.getClassExpressions().size() == 2 && axiom.getClassExpressions().contains(factory.getOWLNothing())) {
-			return true;
-		}
-		return false;
+		return axiom.getClassExpressions().size() == 2 && axiom.getClassExpressions().contains(factory.getOWLNothing());
 	}
 
 	@Override
@@ -95,18 +92,12 @@ public class VacuousAxiomVisitor implements OWLAxiomVisitorEx<Boolean> {
 
 	@Override
 	public Boolean visit(OWLDisjointDataPropertiesAxiom axiom) {
-		if (axiom.getProperties().size() == 2 && axiom.getProperties().contains(factory.getOWLBottomDataProperty())) {
-			return true;
-		}
-		return false;
+		return axiom.getProperties().size() == 2 && axiom.getProperties().contains(factory.getOWLBottomDataProperty());
 	}
 
 	@Override
 	public Boolean visit(OWLDisjointObjectPropertiesAxiom axiom) {
-		if (axiom.getProperties().size() == 2 && axiom.getProperties().contains(factory.getOWLBottomObjectProperty())) {
-			return true;
-		}
-		return false;
+		return axiom.getProperties().size() == 2 && axiom.getProperties().contains(factory.getOWLBottomObjectProperty());
 	}
 
 	@Override

@@ -32,7 +32,7 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
 
     private JPanel cardPanel;
 
-    private List<ViewsPane> viewsPanes = new ArrayList<ViewsPane>();
+    private List<ViewsPane> viewsPanes = new ArrayList<>();
 
     private static final String CLASSES_PANEL = "Classes";
 
@@ -57,10 +57,8 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
         cardPanel.setLayout(cardLayout);
         cardPanel.add(new JPanel(), BLANK_PANEL);
         createViewPanes(false);
-        getOWLWorkspace().getOWLSelectionModel().addListener(new OWLSelectionModelListener() {
-            public void selectionChanged() throws Exception {
-                processSelection();
-            }
+        getOWLWorkspace().getOWLSelectionModel().addListener(() -> {
+            processSelection();
         });
         getView().setShowViewBar(false);
         processSelection();

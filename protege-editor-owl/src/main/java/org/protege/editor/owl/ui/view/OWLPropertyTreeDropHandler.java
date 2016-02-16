@@ -28,7 +28,7 @@ public abstract class OWLPropertyTreeDropHandler<N extends OWLPropertyExpression
 
 
     public void move(N child, N fromParent, N toParent) {
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         OWLDataFactory df = owlModelManager.getOWLDataFactory();
         changes.add(new AddAxiom(owlModelManager.getActiveOntology(), getAxiom(df, child, toParent)));
 

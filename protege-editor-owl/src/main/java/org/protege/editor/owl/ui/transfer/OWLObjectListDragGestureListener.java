@@ -50,8 +50,8 @@ public class OWLObjectListDragGestureListener extends OWLObjectDragGestureListen
 
 
     protected List<OWLObject> getSelectedObjects() {
-        List<OWLObject> selObjects = new ArrayList<OWLObject>();
-        for (Object o : owlObjectList.getSelectedValues()) {
+        List<OWLObject> selObjects = new ArrayList<>();
+        for (Object o : owlObjectList.getSelectedValuesList()) {
             if (o instanceof OWLObject) {
                 selObjects.add((OWLObject) o);
             }

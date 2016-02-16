@@ -3,8 +3,12 @@ package org.protege.editor.owl.ui.view.cls;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.cls.InferredSuperClassHierarchyProvider;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
+import org.semanticweb.owlapi.model.OWLClass;
+
+import java.util.Optional;
 
 
 /**
@@ -18,19 +22,12 @@ import org.protege.editor.owl.ui.framelist.OWLFrameList;
  */
 public class InferredSuperClassHierarchyViewComponent extends AbstractSuperClassHierarchyViewComponent {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1125962405110757405L;
 
     private InferredSuperClassHierarchyProvider provider;
 
-    private OWLModelManagerListener l = new OWLModelManagerListener(){
-
-        public void handleChange(OWLModelManagerChangeEvent event) {
-            if (event.getType() == EventType.REASONER_CHANGED){
-                getOWLClassHierarchyProvider().setReasoner(getOWLModelManager().getReasoner());
-            }
+    private OWLModelManagerListener l = event -> {
+        if (event.getType() == EventType.REASONER_CHANGED){
+            getOWLClassHierarchyProvider().setReasoner(getOWLModelManager().getReasoner());
         }
     };
 
@@ -53,5 +50,10 @@ public class InferredSuperClassHierarchyViewComponent extends AbstractSuperClass
             provider.setReasoner(getOWLModelManager().getReasoner());
         }
         return provider;
+    }
+
+    @Override
+    protected Optional<OWLObjectHierarchyProvider<OWLClass>> getInferredHierarchyProvider() {
+        return Optional.empty();
     }
 }

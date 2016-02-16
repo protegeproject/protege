@@ -21,13 +21,9 @@ public class OWLObjectPropertyEditor extends AbstractOWLObjectEditor<OWLObjectPr
 
     private OWLObjectPropertySelectorPanel editor;
 
-    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<InputVerificationStatusChangedListener>();
+    private Set<InputVerificationStatusChangedListener> listeners = new HashSet<>();
     
-    private InputVerificationStatusChangedListener inputListener = new InputVerificationStatusChangedListener(){
-        public void verifiedStatusChanged(boolean newState) {
-            handleVerifyEditorContents();
-        }
-    };
+    private InputVerificationStatusChangedListener inputListener = newState -> handleVerifyEditorContents();
 
     public OWLObjectPropertyEditor(OWLEditorKit owlEditorKit) {
         editor = new OWLObjectPropertySelectorPanel(owlEditorKit);

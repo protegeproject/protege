@@ -39,21 +39,16 @@ public class FolderGroupPanel extends NewEntryPanel {
         physicalLocationPanel.add(new JLabel("Directory: "));
         physicalLocationField = new JTextField();
         physicalLocationField.setPreferredSize(new JTextField("/home/tredmond/Shared/ontologies/simple/pizza-good.owl").getPreferredSize());
-        physicalLocationField.addActionListener(new ActionListener() {
-            
-            public void actionPerformed(ActionEvent e) {
-                fireListeners();
-            }
+        physicalLocationField.addActionListener(e -> {
+            fireListeners();
         });
         physicalLocationPanel.add(physicalLocationField);
         JButton browse = new JButton("Browse");
-        browse.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {       
-                File f =  UIUtil.chooseFolder(FolderGroupPanel.this, "Folder for Ontology Repository");
-                if (f != null) {
-                    physicalLocationField.setText(f.getPath());
-                    fireListeners();
-                }
+        browse.addActionListener(e -> {
+            File f =  UIUtil.chooseFolder(FolderGroupPanel.this, "Folder for Ontology Repository");
+            if (f != null) {
+                physicalLocationField.setText(f.getPath());
+                fireListeners();
             }
         });
         physicalLocationPanel.add(browse);
