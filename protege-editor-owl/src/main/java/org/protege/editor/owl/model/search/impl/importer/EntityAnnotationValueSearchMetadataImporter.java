@@ -31,7 +31,7 @@ public class EntityAnnotationValueSearchMetadataImporter extends EntityBasedSear
     public void generateSearchMetadataFor(OWLEntity entity, String entityRendering, final SearchContext context, SearchMetadataDB db) {
         for (OWLOntology ontology : context.getOntologies()) {
             for (final OWLAnnotation annotation : EntitySearcher.getAnnotations(entity, ontology)) {
-                String groupDescription = context.getRendering(annotation);
+                String groupDescription = context.getRendering(annotation.getProperty());
                 StyledString ren = context.getStyledStringRendering(annotation);
                 SearchMetadata md = new SearchMetadata(SearchCategory.ANNOTATION_VALUE, groupDescription, entity, entityRendering, ren.getString()) {
                     @Override
