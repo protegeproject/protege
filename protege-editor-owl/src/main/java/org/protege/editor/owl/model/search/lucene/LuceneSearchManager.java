@@ -49,8 +49,6 @@ public class LuceneSearchManager extends LuceneSearcher {
 
     private OWLEditorKit editorKit;
 
-    private OWLOntology activeOntology;
-
     private Set<SearchCategory> categories = new HashSet<>();
 
     private ExecutorService service = Executors.newSingleThreadExecutor();
@@ -97,17 +95,7 @@ public class LuceneSearchManager extends LuceneSearcher {
     }
 
     private void handleModelManagerEvent(OWLModelManagerChangeEvent event) {
-        OWLOntology ontology = editorKit.getOWLModelManager().getActiveOntology();
         if (isCacheMutatingEvent(event)) {
-            boolean success = changeActiveOntology(ontology);
-            if (success) {
-                IndexDelegator indexDelegator = indexDelegatorCache.get(activeOntology);
-                if (indexDelegator == null) {
-                    indexDelegator = new IndexDelegator(activeOntology);
-                    indexDelegatorCache.put(activeOntology, indexDelegator);
-                }
-                this.indexDelegator = indexDelegator;
-            }
             markCacheAsStale();
         }
         else if (isCacheSavingEvent(event)) {
@@ -115,17 +103,14 @@ public class LuceneSearchManager extends LuceneSearcher {
         }
     }
 
-    private boolean changeActiveOntology(OWLOntology ontology) {
-        if (activeOntology == null) {
-            activeOntology = ontology;
-            return true;
-        } else {
-            if (!activeOntology.equals(ontology)) {
-                activeOntology = ontology;
-                return true;
-            }
+    private void prepareIndexDelegator() {
+        OWLOntology activeOntology = editorKit.getOWLModelManager().getActiveOntology();
+        IndexDelegator indexDelegator = indexDelegatorCache.get(activeOntology);
+        if (indexDelegator == null) {
+            indexDelegator = new IndexDelegator(activeOntology);
+            indexDelegatorCache.put(activeOntology, indexDelegator);
         }
-        return false;
+        this.indexDelegator = indexDelegator;
     }
 
     private void markCacheAsStale() {
@@ -133,7 +118,7 @@ public class LuceneSearchManager extends LuceneSearcher {
     }
 
     private boolean isCacheMutatingEvent(OWLModelManagerChangeEvent event) {
-        return event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ENTITY_RENDERER_CHANGED);
+        return event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ENTITY_RENDERER_CHANGED) || event.isType(EventType.ENTITY_RENDERING_CHANGED);
     }
 
     private boolean isCacheSavingEvent(OWLModelManagerChangeEvent event) {
@@ -191,6 +176,7 @@ public class LuceneSearchManager extends LuceneSearcher {
     @Override
     public void performSearch(String searchString, SearchResultHandler searchResultHandler) {
         if (lastSearchId.getAndIncrement() == 0) {
+            prepareIndexDelegator();
             service.submit(this::buildingIndex);
         }
         SearchQueries searchQueries = prepareQuery(searchString);
