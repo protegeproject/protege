@@ -1486,10 +1486,4 @@
         <name value="Default search"/>
         <class value="org.protege.editor.owl.model.search.impl.DefaultSearchManager"/>
     </extension>
-
-   <extension id="NciSearchManager" point="org.protege.editor.owl.searchmanager">
-        <name value="Lucene search for NCI"/>
-        <class value="org.protege.editor.owl.model.search.nci.NciSearchManager"/>
-    </extension>
-
 </plugin>

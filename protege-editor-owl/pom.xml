@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -9,13 +10,13 @@
         <relativePath>../</relativePath>
     </parent>
 
-	<!-- groupId and version are inherited from the parent -->	
+    <!-- groupId and version are inherited from the parent -->
     <artifactId>protege-editor-owl</artifactId>
     <packaging>bundle</packaging>
 
     <name>protege-editor-owl</name>
     <description>OWL ontology editing infrastructure used by the Protege desktop application.</description>
-    
+
     <dependencies>
         <dependency>
             <groupId>edu.stanford.protege</groupId>
@@ -74,42 +75,18 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-core</artifactId>
-            <version>5.3.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-analyzers-common</artifactId>
-            <version>5.3.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-queryparser</artifactId>
-            <version>5.3.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-analyzers-phonetic</artifactId>
-            <version>5.3.1</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>6.8.7</version>
             <scope>test</scope>
         </dependency>
-        
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-			<scope>test</scope>
-		</dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
@@ -144,28 +121,16 @@
                     <instructions>
                         <Bundle-Activator>org.protege.editor.owl.ProtegeOWL</Bundle-Activator>
                         <Bundle-SymbolicName>org.protege.editor.owl;singleton:=true</Bundle-SymbolicName>
-                        <Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
-                        <Embed-Dependency>
-                            org.protege.xmlcatalog,
-                            lucene-core,
-                            lucene-analyzers-common,
-                            lucene-queryparser,
-                            lucene-analyzers-phonetic
-                        </Embed-Dependency>
+                        <Embed-Dependency>org.protege.xmlcatalog</Embed-Dependency>
                         <Export-Package>
-                            org.protege.editor.owl.*;version=${project.version}
-                            org.protege.xmlcatalog.*,
-                            org.apache.lucene.*,
-                            org.apache.commons.*
+                            org.protege.editor.owl.*;version=${project.version},
                         </Export-Package>
                         <_exportcontents>
                             org.protege.xmlcatalog.*,
                         </_exportcontents>
                         <Import-Package>
                             org.eclipse.core.runtime;registry=split,
-                            org.apache.*;resolution:=optional,
                             javax.inject.*;version=1.0,
-                            javax.*;resolution:=optional,
                             *
                         </Import-Package>
                     </instructions>
@@ -198,20 +163,20 @@
         </plugins>
     </build>
 
-	<profiles>
-		<profile>
-			<id>ide</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-dependency-plugin</artifactId>
-					</plugin>
-					<plugin>
-						<artifactId>maven-resources-plugin</artifactId>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+    <profiles>
+        <profile>
+            <id>ide</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

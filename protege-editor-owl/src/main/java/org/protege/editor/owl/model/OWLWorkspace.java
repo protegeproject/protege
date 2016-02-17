@@ -54,7 +54,7 @@ import org.protege.editor.owl.ui.renderer.OWLIconProvider;
 import org.protege.editor.owl.ui.renderer.OWLIconProviderImpl;
 import org.protege.editor.owl.ui.renderer.OWLOntologyCellRenderer;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
-import org.protege.editor.owl.ui.search.nci.SearchDialogPanel;
+import org.protege.editor.owl.ui.search.SearchDialogPanel;
 import org.protege.editor.owl.ui.util.OWLComponentFactory;
 import org.protege.editor.owl.ui.util.OWLComponentFactoryImpl;
 
