@@ -17,6 +17,7 @@ import java.util.Map;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class PrefixedOWLEntityAnnotationValueRenderer extends OWLEntityAnnotationValueRenderer implements PrefixBasedRenderer {
+
 	private PrefixManager prefixManager;
     
     public void initialise() {
@@ -35,16 +36,21 @@ public class PrefixedOWLEntityAnnotationValueRenderer extends OWLEntityAnnotatio
 
     	for (Map.Entry<String, String> prefixName2PrefixEntry : prefixManager.getPrefixName2PrefixMap().entrySet()) {
     		String prefixName = prefixName2PrefixEntry.getKey();
-    		String prefix     = prefixName2PrefixEntry.getValue();
-    		if (uriStr.startsWith(prefix)){
-    			if (!prefixName.equals(":")) {
-    				return escape(prefixName + shortForm);
-    			}
-    			else {
-    			    return escape(shortForm);
-    			}
-    		}
-    	}
+			if (!shortForm.startsWith(prefixName)) {
+				String prefix = prefixName2PrefixEntry.getValue();
+				if (uriStr.startsWith(prefix)){
+                    if (!prefixName.equals(":")) {
+                        return escape(prefixName + shortForm);
+                    }
+                    else {
+                        return escape(shortForm);
+                    }
+                }
+			}
+			else {
+				return escape(shortForm);
+			}
+		}
     	return entity.getIRI().toQuotedString();
     }
 }
