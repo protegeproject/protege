@@ -182,6 +182,9 @@ public class EntityCreationMetadataPreferencesPanel extends OWLPreferencesPanel 
         if(trimmedText.isEmpty()) {
             return Optional.empty();
         }
+        if(text.startsWith("<") && text.endsWith(">")) {
+            return Optional.of(IRI.create(new URI(trimmedText.substring(1, trimmedText.length() - 1))));
+        }
         for (Namespaces ns : Namespaces.values()) {
             if (trimmedText.startsWith(ns.name().toLowerCase() + ":")) {
                 return Optional.of(IRI.create(ns.toString() + text.substring(ns.name().length() + 1)));
