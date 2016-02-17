@@ -34,7 +34,6 @@ import java.util.List;
  *
  */
 public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype> {
-    private static final long serialVersionUID = 1925753640367589134L;
 
     private AbstractOWLViewComponent vc;
 
@@ -76,10 +75,10 @@ public class OWLDataTypeSelectorPanel extends AbstractSelectorPanel<OWLDatatype>
     }
 
     private class OWLDatatypeListView extends AbstractOWLViewComponent {
-        private static final long serialVersionUID = -2407766608313199261L;
-        private OWLOntologyChangeListener ontologyChangeListener = new UpdateDatatypeListListener();
-        private OWLModelManagerListener p4Listener = new ActiveOntologyChangedListener();
 
+        private OWLOntologyChangeListener ontologyChangeListener = new UpdateDatatypeListListener();
+
+        private OWLModelManagerListener p4Listener = new ActiveOntologyChangedListener();
 
         protected void initialiseOWLView() throws Exception {
             setLayout(new BorderLayout());
