@@ -8,6 +8,7 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -45,6 +46,9 @@ public class InferredObjectPropertyHierarchyProvider extends OWLObjectPropertyHi
     }
 
     public Set<OWLObjectProperty> getUnfilteredChildren(OWLObjectProperty objectProperty) {
+        if(!getReasoner().isConsistent()) {
+            return Collections.emptySet();
+        }
         Set<OWLObjectPropertyExpression> subs = getReasoner().getSubObjectProperties(objectProperty, true).getFlattened();
         subs.remove(objectProperty);
         subs.remove(mngr.getOWLDataFactory().getOWLBottomObjectProperty());
@@ -59,6 +63,9 @@ public class InferredObjectPropertyHierarchyProvider extends OWLObjectPropertyHi
 
 
     public Set<OWLObjectProperty> getParents(OWLObjectProperty objectProperty) {
+        if(!getReasoner().isConsistent()) {
+            return Collections.emptySet();
+        }
         Set<OWLObjectPropertyExpression> supers = getReasoner().getSuperObjectProperties(objectProperty, true).getFlattened();
         supers.remove(objectProperty);
         Set<OWLObjectProperty> parents = new HashSet<>();
@@ -72,6 +79,9 @@ public class InferredObjectPropertyHierarchyProvider extends OWLObjectPropertyHi
 
 
     public Set<OWLObjectProperty> getEquivalents(OWLObjectProperty objectProperty) {
+        if(!getReasoner().isConsistent()) {
+            return Collections.emptySet();
+        }
         Set<OWLObjectPropertyExpression> equivs = getReasoner().getEquivalentObjectProperties(objectProperty).getEntities();
         equivs.remove(objectProperty);
         Set<OWLObjectProperty> ret = new HashSet<>();
