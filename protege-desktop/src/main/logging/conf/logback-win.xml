@@ -3,7 +3,7 @@
 
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <Pattern>%highlight(%msg) %n</Pattern>
+            <Pattern>%msg %n</Pattern>
         </encoder>
     </appender>
 
