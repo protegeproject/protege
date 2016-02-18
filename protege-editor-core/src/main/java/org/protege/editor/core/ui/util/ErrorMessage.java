@@ -5,8 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Matthew Horridge
@@ -39,12 +40,15 @@ public class ErrorMessage {
                 new Object[]{VIEW_LOG, OK},
                 OK
         );
-        if(ret == 0) {
-            try {
-                FileUtils.showFile(new File("logs/protege.log"));
-            } catch (IOException e) {
-                logger.error("An error occurred whilst trying to show a file in the OS: {}", e.getMessage(), e);
-            }
+        if(ret != 0) {
+            return;
+        }
+        try {
+            String userHome = System.getProperty("user.home");
+            Path logFilePath = Paths.get(userHome, ".Protege", "logs", "protege.log");
+            FileUtils.showFile(logFilePath.toFile());
+        } catch (IOException e) {
+            logger.error("An error occurred whilst trying to show a file in the OS: {}", e.getMessage(), e);
         }
     }
 }
