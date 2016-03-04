@@ -122,6 +122,7 @@ public class SearchDialogPanel extends JPanel {
             @Override
             public void windowOpened(WindowEvent e) {
                 searchDialogPanel.searchField.requestFocusInWindow();
+                searchDialogPanel.searchField.selectAll();
             }
         });
         return dialog;
