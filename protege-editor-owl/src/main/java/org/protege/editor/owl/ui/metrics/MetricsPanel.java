@@ -247,6 +247,7 @@ public class MetricsPanel extends JPanel {
         List<OWLMetric<?>> metrics = new ArrayList<>();
         metrics.add(new AxiomCount(getOntology()));
         metrics.add(new LogicalAxiomCount(getOntology()));
+        metrics.add(new AxiomTypeMetric(getOntology(), AxiomType.DECLARATION));
         metrics.add(new ReferencedClassCount(getOntology()));
         metrics.add(new ReferencedObjectPropertyCount(getOntology()));
         metrics.add(new ReferencedDataPropertyCount(getOntology()));
