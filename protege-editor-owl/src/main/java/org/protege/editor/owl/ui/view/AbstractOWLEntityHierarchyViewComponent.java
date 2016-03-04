@@ -127,9 +127,6 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
         if (inferredTree.isPresent()) {
             inferredTree.get().addTreeSelectionListener(listener);
         }
-
-        setShowDeprecatedEntities(true);
-
     }
 
     protected boolean isInAssertedMode() {
