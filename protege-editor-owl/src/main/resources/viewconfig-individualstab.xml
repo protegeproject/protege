@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <layout>
-    <VSNode splits="0.17102917458542274 0.1611743932860385 0.48029643212853873">
-        <CNode>
-            <Component label="Class hierarchy">
-                <Property id="pluginId" value="org.protege.editor.owl.OWLAssertedClassHierarchy"/>
-            </Component>
-        </CNode>
-        <CNode>
-            <Component label="Individuals">
-                <Property id="pluginId" value="org.protege.editor.owl.OWLMembersList"/>
-            </Component>
-        </CNode>
+    <VSNode splits="0.3 0.7">
+        <HSNode splits="0.5 0.5">
+            <CNode>
+                <Component label="Class hierarchy">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLAssertedClassHierarchy"/>
+                </Component>
+            </CNode>
+            <CNode>
+                <Component label="Individuals">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLMembersList"/>
+                </Component>
+            </CNode>
+        </HSNode>
         <HSNode splits="0.375 0.625">
             <CNode>
                 <Component label="Annotations">
