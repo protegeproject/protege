@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.tree;
 
+import org.protege.editor.core.ui.menu.MenuBuilder;
+import org.protege.editor.core.ui.menu.PopupMenuId;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
@@ -36,6 +38,8 @@ import java.io.StringWriter;
 import java.util.*;
 import java.util.List;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Author: Matthew Horridge<br>
  * The University Of Manchester<br>
@@ -66,6 +70,8 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
     private boolean altDown;
 
     private Point mouseDownPos;
+
+    private Optional<PopupMenuId> popupMenuId = Optional.empty();
 
 
     public OWLObjectTree(OWLEditorKit eKit, OWLObjectHierarchyProvider<N> provider) {
@@ -119,6 +125,9 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
                 if (e.getClickCount() == 3 && e.isControlDown() && e.isShiftDown()) {
                     reload();
                 }
+                if(e.isPopupTrigger()) {
+                    showPopupMenu(e);
+                }
             }
         });
 
@@ -128,6 +137,9 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
                 // the key that corresponds to the menu accelerator key (CTRL on Windows, and
                 // CMD on the Mac).
                 altDown = e.isAltDown();
+                if (e.isPopupTrigger()) {
+                    showPopupMenu(e);
+                }
             }
         });
 
@@ -146,6 +158,35 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         getSelectionModel().addTreeSelectionListener(event -> {
             scrollPathToVisible(event.getNewLeadSelectionPath());
         });
+    }
+
+    /**
+     * Sets the popupMenuId for this tree.
+     * @param popupMenuId The id.  Not {@code null}.
+     */
+    public void setPopupMenuId(PopupMenuId popupMenuId) {
+        this.popupMenuId = Optional.of(checkNotNull(popupMenuId));
+    }
+
+    /**
+     * Clears the popupMenuId for this tree.
+     */
+    public void clearPopupMenuId() {
+        this.popupMenuId = Optional.empty();
+    }
+
+    private Optional<PopupMenuId> getPopupMenuId() {
+        return popupMenuId;
+    }
+
+    private void showPopupMenu(MouseEvent e) {
+        if(!getPopupMenuId().isPresent()) {
+            return;
+        }
+        MenuBuilder menuBuilder = new MenuBuilder(eKit);
+        PopupMenuId popupMenuId = getPopupMenuId().get();
+        JPopupMenu popupMenu = menuBuilder.buildPopupMenu(popupMenuId);
+        popupMenu.show(this, e.getX(), e.getY());
     }
 
 

@@ -186,6 +186,10 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
         getTree().setSelectedOWLObject(entity);
     }
 
+    public OWLObjectTree<E> getAssertedTree() {
+        return assertedTree;
+    }
+
 
     public void setSelectedEntities(Set<E> entities) {
         getTree().setSelectedOWLObjects(entities);
@@ -223,12 +227,6 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
     protected OWLObjectTree<E> getTree() {
         Optional<ViewMode> viewMode= getView().getViewMode();
         return viewModeComponent.getComponentForViewMode(viewMode);
-//        if(!viewMode.isPresent() || !inferredTree.isPresent() || viewMode.get().equals(ViewMode.ASSERTED)) {
-//            return assertedTree;
-//        }
-//        else {
-//            return inferredTree.get();
-//        }
     }
 
 

@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.view.cls;
 
+import org.protege.editor.core.ui.menu.PopupMenuId;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
@@ -84,6 +85,7 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
                 handleAdd(child, parent);
             }
         });
+        getAssertedTree().setPopupMenuId(new PopupMenuId("[AssertedClassHierarchy]"));
     }
 
 
