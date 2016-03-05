@@ -24,11 +24,11 @@ import java.util.List;
  */
 public abstract class OWLObjectDragGestureListener implements DragGestureListener {
 
-    private Cursor dragCursor = Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
+    private final Cursor dragCursor = Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
 
-    private JComponent component;
+    private final JComponent component;
 
-    private OWLEditorKit owlEditorKit;
+    private final OWLEditorKit owlEditorKit;
 
 
     protected OWLObjectDragGestureListener(OWLEditorKit owlEditorKit, JComponent component) {
@@ -52,7 +52,7 @@ public abstract class OWLObjectDragGestureListener implements DragGestureListene
 //            dge.startDrag(dragCursor, createImage(), getImageOffset(), transferable, new OWLDragSourceAdapter());
 //        } else {
         setupDragOriginator();
-        dge.startDrag(dragCursor, transferable, new OWLDragSourceAdapter());
+        dge.startDrag(dragCursor, transferable, new OWLDragSourceAdapter(component));
 //        }
     }
 
@@ -93,8 +93,13 @@ public abstract class OWLObjectDragGestureListener implements DragGestureListene
     }
 
 
-    private class OWLDragSourceAdapter extends DragSourceAdapter {
+    private static class OWLDragSourceAdapter extends DragSourceAdapter {
 
+        private Component component;
+
+        public OWLDragSourceAdapter(Component component) {
+            this.component = component;
+        }
 
         public void dragDropEnd(DragSourceDropEvent dsde) {
             if (component instanceof OWLObjectDragSource) {
