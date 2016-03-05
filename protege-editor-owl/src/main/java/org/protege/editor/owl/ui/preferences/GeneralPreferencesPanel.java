@@ -50,6 +50,8 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
 
     private JSpinner autoExpandMaxChildSizeSpinner;
 
+    private final JCheckBox dragAndDropEnabled = new JCheckBox("Allow drag and drop in trees");
+
 
     private JComboBox<SearchManagerPlugin> searchManagerPluginComboBox = new JComboBox<>();
 
@@ -73,7 +75,7 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
         prefs.setAutoExpansionEnabled(autoExpandEnabledCheckBox.isSelected());
         prefs.setAutoExpansionDepthLimit((Integer)autoExpandMaxDepthSpinner.getValue());
         prefs.setAutoExpansionChildLimit((Integer) autoExpandMaxChildSizeSpinner.getValue());
-
+        prefs.setDragEnabled(dragAndDropEnabled.isSelected());
         SearchManagerPlugin plugin = (SearchManagerPlugin) searchManagerPluginComboBox.getSelectedItem();
         if(plugin != null) {
             getOWLEditorKit().getSearchManagerSelector().setCurrentPluginId(plugin.getId());
@@ -124,6 +126,8 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
         autoExpandMaxDepthSpinner = new JSpinner(new SpinnerNumberModel(prefs.getAutoExpansionDepthLimit(), 1, Integer.MAX_VALUE, 1));
         autoExpandMaxChildSizeSpinner = new JSpinner(new SpinnerNumberModel(prefs.getAutoExpansionChildLimit(), 1, Integer.MAX_VALUE, 1));
 
+        dragAndDropEnabled.setSelected(prefs.isDragEnabled());
+
         panel.addSeparator();
         panel.addGroup("");
         panel.addGroupComponent(autoExpandEnabledCheckBox);
@@ -131,6 +135,8 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
         panel.addGroupComponent(autoExpandMaxDepthSpinner);
         panel.addGroup("Maximum child cut off");
         panel.addGroupComponent(autoExpandMaxChildSizeSpinner);
+        panel.addVerticalPadding();
+        panel.addGroupComponent(dragAndDropEnabled);
 
         // Search
 
