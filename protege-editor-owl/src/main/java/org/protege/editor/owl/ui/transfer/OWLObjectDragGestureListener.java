@@ -44,16 +44,10 @@ public abstract class OWLObjectDragGestureListener implements DragGestureListene
         if (getSelectedObjects().isEmpty()) {
             return;
         }
-        // TODO: !!!
         TransferableOWLObject transferable = new TransferableOWLObject(owlEditorKit.getModelManager(),
                                                                        getSelectedObjects());
-//        if (DragSource.isDragImageSupported()) {
-//            setupDragOriginator();
-//            dge.startDrag(dragCursor, createImage(), getImageOffset(), transferable, new OWLDragSourceAdapter());
-//        } else {
         setupDragOriginator();
         dge.startDrag(dragCursor, transferable, new OWLDragSourceAdapter(component));
-//        }
     }
 
 

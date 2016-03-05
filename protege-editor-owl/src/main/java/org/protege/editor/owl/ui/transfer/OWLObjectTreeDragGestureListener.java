@@ -7,6 +7,7 @@ import org.semanticweb.owlapi.model.OWLObject;
 import javax.swing.*;
 import javax.swing.tree.TreePath;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,28 +22,27 @@ import java.util.List;
  */
 public class OWLObjectTreeDragGestureListener extends OWLObjectDragGestureListener {
 
-    private OWLObjectTree tree;
+    private final OWLObjectTree<? extends OWLObject> tree;
 
 
-    public OWLObjectTreeDragGestureListener(OWLEditorKit owlEditorKit, OWLObjectTree tree) {
+    public OWLObjectTreeDragGestureListener(OWLEditorKit owlEditorKit, OWLObjectTree<? extends OWLObject> tree) {
         super(owlEditorKit, tree);
         this.tree = tree;
     }
 
 
     protected List<OWLObject> getSelectedObjects() {
-        return tree.getSelectedOWLObjects();
+        return new ArrayList<>(tree.getSelectedOWLObjects());
     }
 
     protected JComponent getRendererComponent() {
-        JComponent c = (JComponent) tree.getCellRenderer().getTreeCellRendererComponent(tree,
-                                                                                        tree.getSelectionPath().getLastPathComponent(),
-                                                                                        false,
-                                                                                        true,
-                                                                                        true,
-                                                                                        0,
-                                                                                        false);
-        return c;
+        return (JComponent) tree.getCellRenderer().getTreeCellRendererComponent(tree,
+                tree.getSelectionPath().getLastPathComponent(),
+                false,
+                true,
+                true,
+                0,
+                false);
     }
 
 
