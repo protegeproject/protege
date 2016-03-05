@@ -66,6 +66,32 @@ public class MenuBuilder {
         return menuBar;
     }
 
+    public JPopupMenu buildPopupMenu(final PopupMenuId menuId) {
+        JPopupMenu popupMenu = new JPopupMenu();
+        parentChildMap.clear();
+        Map<String, MenuActionPlugin> idPluginMap = getPlugins();
+        for (MenuActionPlugin plugin : idPluginMap.values()) {
+            MenuActionPlugin parent = idPluginMap.get(plugin.getParentId());
+            getChildren(parent).add(plugin);
+        }
+        // Should now have a hierarchy of plugins
+        Collection<MenuActionPlugin> popupPlugins = getSortedList(getChildren(null));
+        String lastGroup = "";
+        for(MenuActionPlugin plugin : popupPlugins) {
+            if(PopupMenuId.isPopupMenuId(plugin.getParentId())) {
+                PopupMenuId popupMenuId = new PopupMenuId(plugin.getParentId());
+                if (popupMenuId.equals(menuId)) {
+                    if (!lastGroup.isEmpty() && !lastGroup.equals(plugin.getGroup())) {
+                        popupMenu.add(new JSeparator());
+                    }
+                    lastGroup = plugin.getGroup();
+                    addMenu(plugin, popupMenu);
+                }
+            }
+        }
+        return popupMenu;
+    }
+
     private void addMenu(MenuActionPlugin plugin, JComponent menuContainer) {
         List<MenuActionPlugin> children = getSortedList(getChildren(plugin));
 

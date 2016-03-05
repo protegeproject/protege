@@ -30,8 +30,7 @@ import java.util.Set;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> implements RefreshableComponent {
-	private static final long serialVersionUID = 9168555447316716896L;
-	
+
     private OWLModelManagerListener listener;
 
     private OWLEntityRendererListener rendererListener;
