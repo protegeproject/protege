@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.transfer;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.tree.OWLObjectTree;
+import org.protege.editor.owl.ui.tree.OWLTreePreferences;
 import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.swing.*;
@@ -57,5 +58,10 @@ public class OWLObjectTreeDragGestureListener extends OWLObjectDragGestureListen
         Rectangle rowBounds = tree.getRowBounds(tree.getRowForPath(selPath));
         Point pt = tree.getMousePosition();
         return new Point(rowBounds.x - pt.x, rowBounds.y - pt.y);
+    }
+
+    @Override
+    protected boolean canPerformDrag() {
+        return OWLTreePreferences.getInstance().isDragEnabled();
     }
 }
