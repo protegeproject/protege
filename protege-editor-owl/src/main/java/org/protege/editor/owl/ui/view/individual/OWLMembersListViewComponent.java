@@ -1,11 +1,16 @@
 package org.protege.editor.owl.ui.view.individual;
 
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
+import org.protege.editor.owl.ui.OWLIcons;
+import org.protege.editor.owl.ui.renderer.OWLIconProviderImpl;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.search.EntitySearcher;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * Author: drummond<br>
@@ -26,7 +31,7 @@ import java.util.*;
  */
 public class OWLMembersListViewComponent extends OWLIndividualListViewComponent {
 
-    private static final long serialVersionUID = -6015526995379146198L;
+    private final JLabel typeLabel = new JLabel();
 
     private OWLSelectionModelListener l = () -> {
         if (getOWLWorkspace().getOWLSelectionModel().getSelectedObject() instanceof OWLClass) {
@@ -34,11 +39,15 @@ public class OWLMembersListViewComponent extends OWLIndividualListViewComponent 
         }
     };
 
-
     @Override
     public void initialiseIndividualsView() throws Exception {
         super.initialiseIndividualsView();
         getOWLWorkspace().getOWLSelectionModel().addListener(l);
+        JComponent typePanel = new Box(BoxLayout.X_AXIS);
+        typePanel.add(new JLabel("For: "));
+        typePanel.add(typeLabel);
+        typePanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));
+        add(typePanel, BorderLayout.NORTH);
     }
 
 
@@ -46,6 +55,8 @@ public class OWLMembersListViewComponent extends OWLIndividualListViewComponent 
         individualsInList.clear();
         OWLClass cls = getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass();
         if (cls != null) {
+            typeLabel.setText(getOWLModelManager().getRendering(cls));
+            typeLabel.setIcon(getOWLWorkspace().getOWLIconProvider().getIcon(cls));
             Collection<OWLIndividual> individuals = EntitySearcher.getIndividuals(cls, getOntologies());
             for (OWLIndividual ind : individuals) {
                 if (!ind.isAnonymous()) {
@@ -55,6 +66,10 @@ public class OWLMembersListViewComponent extends OWLIndividualListViewComponent 
             if (cls.equals(getOWLModelManager().getOWLDataFactory().getOWLThing())) {
                 individualsInList.addAll(getUntypedIndividuals());
             }
+        }
+        else {
+            typeLabel.setIcon(null);
+            typeLabel.setText("Nothing selected");
         }
         reset();
     }
