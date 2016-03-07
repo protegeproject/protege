@@ -75,7 +75,7 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
         prefs.setAutoExpansionEnabled(autoExpandEnabledCheckBox.isSelected());
         prefs.setAutoExpansionDepthLimit((Integer)autoExpandMaxDepthSpinner.getValue());
         prefs.setAutoExpansionChildLimit((Integer) autoExpandMaxChildSizeSpinner.getValue());
-        prefs.setDragEnabled(dragAndDropEnabled.isSelected());
+        prefs.setTreeDragAndDropEnabled(dragAndDropEnabled.isSelected());
         SearchManagerPlugin plugin = (SearchManagerPlugin) searchManagerPluginComboBox.getSelectedItem();
         if(plugin != null) {
             getOWLEditorKit().getSearchManagerSelector().setCurrentPluginId(plugin.getId());
@@ -126,7 +126,7 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
         autoExpandMaxDepthSpinner = new JSpinner(new SpinnerNumberModel(prefs.getAutoExpansionDepthLimit(), 1, Integer.MAX_VALUE, 1));
         autoExpandMaxChildSizeSpinner = new JSpinner(new SpinnerNumberModel(prefs.getAutoExpansionChildLimit(), 1, Integer.MAX_VALUE, 1));
 
-        dragAndDropEnabled.setSelected(prefs.isDragEnabled());
+        dragAndDropEnabled.setSelected(prefs.isTreeDragAndDropEnabled());
 
         panel.addSeparator();
         panel.addGroup("");

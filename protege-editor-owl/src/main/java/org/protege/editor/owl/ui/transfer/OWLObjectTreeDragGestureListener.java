@@ -62,6 +62,7 @@ public class OWLObjectTreeDragGestureListener extends OWLObjectDragGestureListen
 
     @Override
     protected boolean canPerformDrag() {
-        return OWLTreePreferences.getInstance().isDragEnabled();
+        // Can always drag from a tree (if not always drop on it)
+        return true;
     }
 }

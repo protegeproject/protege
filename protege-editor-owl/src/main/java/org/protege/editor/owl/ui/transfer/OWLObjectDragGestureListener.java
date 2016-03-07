@@ -2,13 +2,12 @@ package org.protege.editor.owl.ui.transfer;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.model.OWLObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.dnd.DragGestureEvent;
-import java.awt.dnd.DragGestureListener;
-import java.awt.dnd.DragSourceAdapter;
-import java.awt.dnd.DragSourceDropEvent;
+import java.awt.dnd.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
@@ -30,6 +29,8 @@ public abstract class OWLObjectDragGestureListener implements DragGestureListene
 
     private final OWLEditorKit owlEditorKit;
 
+    private static final Logger logger = LoggerFactory.getLogger(OWLObjectDragGestureListener.class);
+
 
     protected OWLObjectDragGestureListener(OWLEditorKit owlEditorKit, JComponent component) {
         this.component = component;
@@ -47,7 +48,11 @@ public abstract class OWLObjectDragGestureListener implements DragGestureListene
         TransferableOWLObject transferable = new TransferableOWLObject(owlEditorKit.getModelManager(),
                                                                        getSelectedObjects());
         setupDragOriginator();
-        dge.startDrag(dragCursor, transferable, new OWLDragSourceAdapter(component));
+        try {
+            dge.startDrag(dragCursor, transferable, new OWLDragSourceAdapter(component));
+        } catch (InvalidDnDOperationException e) {
+            logger.debug("Invalid drop operation");
+        }
     }
 
 

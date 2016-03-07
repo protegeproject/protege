@@ -3,6 +3,7 @@ package org.protege.editor.owl.ui.view;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.ui.action.AbstractDeleteEntityAction;
 import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
+import org.protege.editor.owl.ui.tree.OWLTreePreferences;
 import org.semanticweb.owlapi.model.*;
 
 import javax.swing.*;
@@ -87,7 +88,7 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
 
 
             public boolean canDrop(Object child, Object parent) {
-                return canAcceptDrop(child, parent);
+                return OWLTreePreferences.getInstance().isTreeDragAndDropEnabled() && canAcceptDrop(child, parent);
             }
         });
     }

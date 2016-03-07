@@ -27,7 +27,7 @@ public class OWLTreePreferences {
 
     private static final String TREE_DEPTH_LIMIT_KEY = "TREE_DEPTH_LIMIT";
 
-    private static final String DRAG_ENABLED_KEY = "DRAG_ENABLED";
+    private static final String TREE_DRAG_AND_DROP_ENABLED_KEY = "TREE_DRAG_AND_DROP_ENABLED";
 
     public static synchronized OWLTreePreferences getInstance() {
         if(instance == null) {
@@ -67,12 +67,12 @@ public class OWLTreePreferences {
         getPreferences().putBoolean(AUTO_EXPAND_ENABLED_KEY, enabled);
     }
 
-    public boolean isDragEnabled() {
-        return getPreferences().getBoolean(DRAG_ENABLED_KEY, true);
+    public boolean isTreeDragAndDropEnabled() {
+        return getPreferences().getBoolean(TREE_DRAG_AND_DROP_ENABLED_KEY, true);
     }
 
-    public void setDragEnabled(boolean enabled) {
-        getPreferences().putBoolean(DRAG_ENABLED_KEY, enabled);
+    public void setTreeDragAndDropEnabled(boolean enabled) {
+        getPreferences().putBoolean(TREE_DRAG_AND_DROP_ENABLED_KEY, enabled);
     }
 
 
