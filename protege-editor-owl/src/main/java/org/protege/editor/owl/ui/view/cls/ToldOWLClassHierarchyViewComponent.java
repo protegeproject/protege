@@ -9,6 +9,7 @@ import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
 import org.protege.editor.owl.ui.action.DeleteClassAction;
 import org.protege.editor.owl.ui.tree.OWLObjectTreeNode;
 import org.protege.editor.owl.ui.tree.OWLTreeDragAndDropHandler;
+import org.protege.editor.owl.ui.tree.OWLTreePreferences;
 import org.protege.editor.owl.ui.view.CreateNewChildTarget;
 import org.protege.editor.owl.ui.view.CreateNewSiblingTarget;
 import org.protege.editor.owl.ui.view.CreateNewTarget;
@@ -72,16 +73,22 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
         
         getTree().setDragAndDropHandler(new OWLTreeDragAndDropHandler<OWLClass>() {
             public boolean canDrop(Object child, Object parent) {
-                return child instanceof OWLClass;
+                return OWLTreePreferences.getInstance().isTreeDragAndDropEnabled() && child instanceof OWLClass;
             }
 
 
             public void move(OWLClass child, OWLClass fromParent, OWLClass toParent) {
+                if(!OWLTreePreferences.getInstance().isTreeDragAndDropEnabled()) {
+                    return;
+                }
                 handleMove(child, fromParent, toParent);
             }
 
 
             public void add(OWLClass child, OWLClass parent) {
+                if(!OWLTreePreferences.getInstance().isTreeDragAndDropEnabled()) {
+                    return;
+                }
                 handleAdd(child, parent);
             }
         });

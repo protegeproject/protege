@@ -113,7 +113,8 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         setScrollsOnExpand(true);
         setAutoscrolls(true);
         setExpandsSelectedPaths(true);
-        DropTarget dt = new DropTarget(this, new OWLObjectTreeDropTargetListener(this));
+        OWLTreePreferences treePreferences = OWLTreePreferences.getInstance();
+        DropTarget dt = new DropTarget(this, new OWLObjectTreeDropTargetListener(this, treePreferences));
         DragSource dragSource = DragSource.getDefaultDragSource();
         dragSource.createDefaultDragGestureRecognizer(this,
                                                       DnDConstants.ACTION_COPY_OR_MOVE,
@@ -571,6 +572,10 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
             return false;
         }
 
+        if(!OWLTreePreferences.getInstance().isTreeDragAndDropEnabled()) {
+            return false;
+        }
+
         TreePath dropPath = getPathForLocation(pt.x, pt.y);
         if (dropPath == null) {
             // If the object hasn't been dropped on a node, then don't accept drop
@@ -709,7 +714,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         // Paint drop node
-        if (dropRow != -1) {
+        if (OWLTreePreferences.getInstance().isTreeDragAndDropEnabled() && dropRow != -1) {
             Rectangle r = getRowBounds(dropRow);
             if (r == null) {
                 return;

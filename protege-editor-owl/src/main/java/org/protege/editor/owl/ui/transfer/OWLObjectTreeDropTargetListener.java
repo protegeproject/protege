@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.transfer;
 
 import org.protege.editor.owl.ui.table.OWLObjectDropTargetListener;
 import org.protege.editor.owl.ui.tree.OWLObjectTree;
+import org.protege.editor.owl.ui.tree.OWLTreePreferences;
 
 import java.awt.*;
 import java.awt.dnd.DropTargetDragEvent;
@@ -20,12 +21,14 @@ import java.awt.dnd.DropTargetEvent;
  */
 public class OWLObjectTreeDropTargetListener extends OWLObjectDropTargetListener {
 
-    private OWLObjectTree tree;
+    private final OWLObjectTree tree;
 
+    private final OWLTreePreferences treePreferences;
 
-    public OWLObjectTreeDropTargetListener(OWLObjectTree component) {
+    public OWLObjectTreeDropTargetListener(OWLObjectTree component, OWLTreePreferences treePreferences) {
         super(component);
         this.tree = component;
+        this.treePreferences = treePreferences;
     }
 
 
@@ -54,7 +57,7 @@ public class OWLObjectTreeDropTargetListener extends OWLObjectDropTargetListener
 
 
     protected boolean isDropAcceptable(DropTargetDropEvent event) {
-        return super.isDropAcceptable(event);
+        return treePreferences.isTreeDragAndDropEnabled() && super.isDropAcceptable(event);
     }
 
 
