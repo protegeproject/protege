@@ -137,6 +137,7 @@ public class IRITextEditor implements OWLObjectEditor<IRI>, VerifiedInputEditor 
 	}
 
 	public void clear() {
+		iriTextField.setText("");
 	}
 
 	public void dispose() {
