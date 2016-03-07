@@ -159,6 +159,7 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
                     }
                 }
                 else {
+                    editor.clear();
                     editor.setEditedObject(null);
                 }
             }
@@ -168,6 +169,7 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
             for (int i = 0; i < editors.size(); i++) {
                 OWLObjectEditor<? extends OWLAnnotationValue> editor = editors.get(i);
                 editor.setEditedObject(null);
+                editor.clear();
                 if(lastEditorName.equals(editor.getEditorTypeName())) {
                     tabIndex = i;
                 }
