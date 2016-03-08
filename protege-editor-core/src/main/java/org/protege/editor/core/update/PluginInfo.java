@@ -6,6 +6,7 @@ import org.osgi.framework.Version;
 import org.protege.editor.core.plugin.PluginUtilities;
 
 import java.net.URL;
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -22,19 +23,20 @@ public class PluginInfo {
 
     private Bundle b;
 
-    private Version availableVersion;
 
-    private URL downloadURL;
+    private final String id;
 
-    private URL readmeURI;
+    private final Version availableVersion;
 
-    private String author;
+    private final URL downloadURL;
 
-    private String license;
+    private Optional<URL> readmeURI;
 
-    private String id;
+    private Optional<String> author;
 
-    private String label;
+    private Optional<String> license;
+
+    private Optional<String> label;
 
 
     public PluginInfo(String id, Version availableVersion, URL downloadURL) {
@@ -50,17 +52,17 @@ public class PluginInfo {
 
 
     public void setReadmeURI(URL readmeURI) {
-        this.readmeURI = readmeURI;
+        this.readmeURI = Optional.ofNullable(readmeURI);
     }
 
 
     public void setAuthor(String author) {
-        this.author = author;
+        this.author = Optional.ofNullable(author);
     }
 
 
     public void setLicense(String license) {
-        this.license = license;
+        this.license = Optional.ofNullable(license);
     }
 
 
@@ -69,11 +71,11 @@ public class PluginInfo {
     }
 
 
-    public Version getCurrentVersion() {
+    public Optional<Version> getCurrentVersion() {
         if(b == null) {
-            return null;
+            return Optional.empty();
         }
-        return PluginUtilities.getBundleVersion(b);
+        return Optional.ofNullable(PluginUtilities.getBundleVersion(b));
     }
 
 
@@ -87,17 +89,17 @@ public class PluginInfo {
     }
 
 
-    public URL getReadmeURI() {
+    public Optional<URL> getReadmeURI() {
         return readmeURI;
     }
 
 
-    public String getAuthor() {
+    public Optional<String> getAuthor() {
         return author;
     }
 
 
-    public String getLicense() {
+    public Optional<String> getLicense() {
         return license;
     }
 
@@ -108,7 +110,7 @@ public class PluginInfo {
 
 
     public void setLabel(String label) {
-        this.label = label;
+        this.label = Optional.ofNullable(label);
     }
 
     /**
@@ -116,10 +118,10 @@ public class PluginInfo {
      * @return The label.  Not {@code null}.
      */
     public String getLabel() {
-        if (label == null){
+        if (!label.isPresent()){
             return id;
         }
-        return label;
+        return label.get();
     }
     
     public String toString() {
