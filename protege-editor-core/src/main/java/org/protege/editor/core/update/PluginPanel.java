@@ -4,6 +4,7 @@ package org.protege.editor.core.update;
 import com.google.common.collect.ListMultimap;
 import org.protege.editor.core.ui.util.LinkLabel;
 import org.protege.editor.core.ui.util.NativeBrowserLauncher;
+import org.protege.editor.core.ui.util.TableUtils;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -47,43 +48,30 @@ public class PluginPanel extends JPanel {
 
     private Map<PluginInfo, ContentMimePair> updateInfoReadmeMap = new HashMap<>();
 
-    private Set<PluginTable> tables = new HashSet<>();
+    private PluginTable pluginTable;
 
     private JCheckBox alwaysShow;
 
 
-    public PluginPanel(ListMultimap<String, PluginInfo> downloadsProviders) {
+    public PluginPanel(List<PluginInfo> pluginInfoList) {
         setPreferredSize(new Dimension(600, 600));
         setLayout(new BorderLayout(2, 2));
-
 
         JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         sp.setBorder(new EmptyBorder(6, 6, 6, 6));
         sp.setResizeWeight(0.5);
 
-        final JTabbedPane tabbedPane = new JTabbedPane();
 
-        for (String label : downloadsProviders.keySet()){
-            final PluginTable table = new PluginTable(downloadsProviders.get(label));
-            tables.add(table);
-            tabbedPane.addTab(label, table);
+        pluginTable = new PluginTable(pluginInfoList);
+        pluginTable.addListSelectionListener(e -> {
+            PluginInfo info = pluginTable.getCurrentUpdateInfo();
+            updateInfoPanel(info);
+        });
 
-            table.addListSelectionListener(e -> {
-                PluginInfo info = table.getCurrentUpdateInfo();
-                updateInfoPanel(info);
-            });
-        }
-        tabbedPane.setSelectedIndex(0);
-
-        sp.setLeftComponent(tabbedPane);
-        sp.setRightComponent(createInfoBox());
+        sp.setTopComponent(new JScrollPane(pluginTable));
+        sp.setBottomComponent(createInfoBox());
 
         add(sp, BorderLayout.CENTER);
-
-        tabbedPane.addChangeListener(event -> {
-            PluginTable table = (PluginTable)tabbedPane.getSelectedComponent();
-            updateInfoPanel(table.getCurrentUpdateInfo());
-        });
 
         alwaysShow = new JCheckBox("Always check for updates on startup.", PluginManager.getInstance().isAutoUpdateEnabled());
         alwaysShow.addActionListener(event -> {
@@ -148,7 +136,7 @@ public class PluginPanel extends JPanel {
     private Component createDocPanel() {
         createTextPanel();
         readmeScroller = new JScrollPane(readmePane,
-                                         JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                                         JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                                          JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         readmeScroller.setOpaque(false);
 
@@ -253,16 +241,12 @@ public class PluginPanel extends JPanel {
 
 
     public List<PluginInfo> getPluginsToInstall() {
-        List<PluginInfo> plugins = new ArrayList<>();
-        for (PluginTable table : tables){
-            plugins.addAll(table.getSelectedUpdateInfo());
-        }
-        return plugins;
+        return pluginTable.getSelectedUpdateInfo();
     }
 
 
-    public static List<PluginInfo> showDialog(ListMultimap<String, PluginInfo> plugins, Component parent) {
-        PluginPanel panel = new PluginPanel(plugins);
+    public static List<PluginInfo> showDialog(List<PluginInfo> pluginInfoList, Component parent) {
+        PluginPanel panel = new PluginPanel(pluginInfoList);
         final String installOption = "Install";
         final String notNowOption = "Not now";
         Object [] options = new String []{installOption, notNowOption};
