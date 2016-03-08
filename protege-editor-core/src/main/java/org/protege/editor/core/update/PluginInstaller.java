@@ -110,8 +110,8 @@ public class PluginInstaller {
         } catch (BundleException e) {
             if(e.getType() == BundleException.RESOLVE_ERROR) {
                 logger.error("An error occurred whilst installing the {} plugin.  " +
-                                "This error was caused because the version of this plugin ({})" +
-                                "was either missing some other components that are not installed or, more likely," +
+                                "This error was caused because the version of this plugin ({}) " +
+                                "was either missing some other components that are not installed, or" +
                                 "it is not compatible with this version of Protégé.",
                         info.getLabel(),
                         info.getAvailableVersion(),
