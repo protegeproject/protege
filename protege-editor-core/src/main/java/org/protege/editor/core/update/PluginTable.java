@@ -70,11 +70,11 @@ public class PluginTable extends JPanel {
             table.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
             table.setShowGrid(true);
             table.setRowMargin(1);
-            table.setGridColor(Color.LIGHT_GRAY);
+            table.setGridColor(new Color(220, 220, 220));
+            table.setShowVerticalLines(false);
             table.setRowHeight(table.getRowHeight() + 5);
             table.setRowSelectionAllowed(true);
             table.setColumnSelectionAllowed(false);
-            TableUtils.pack(table, true, false, 3);
 
             final JScrollPane tableSp = new JScrollPane(table);
 
