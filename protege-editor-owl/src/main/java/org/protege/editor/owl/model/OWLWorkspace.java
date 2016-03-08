@@ -181,6 +181,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         reselectionEventTypes.add(EventType.ENTITY_RENDERER_CHANGED);
         reselectionEventTypes.add(EventType.ONTOLOGY_VISIBILITY_CHANGED);
         reselectionEventTypes.add(EventType.REASONER_CHANGED);
+        reselectionEventTypes.add(EventType.ONTOLOGY_CLASSIFIED);
 
         hiddenAnnotationURIs = new HashSet<>();
         hiddenAnnotationURIs.addAll(AnnotationPreferences.getHiddenAnnotationURIs());
@@ -279,8 +280,6 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
                 break;
             case ONTOLOGY_CLASSIFIED:
                 updateReasonerStatus(false);
-                verifySelection();
-                updateReasonerStatus(false);
                 break;
             case ABOUT_TO_CLASSIFY:
             case REASONER_CHANGED:
@@ -334,10 +333,10 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         return component instanceof JTextComponent || component instanceof JLabel || component instanceof JTree || component instanceof JList || component instanceof JTable;
     }
 
-    protected void verifySelection(Set<? extends OWLEntity> entities) {
+    private void verifySelection(Set<? extends OWLEntity> entities) {
         Set<OWLEntity> unreferencedEntities = new HashSet<>(entities);
         for (OWLEntity entity : entities) {
-            if (entity != null) {
+            if (entity != null && !entity.isBuiltIn()) {
                 for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
                     if (ont.containsEntityInSignature(entity)) {
                         unreferencedEntities.remove(entity);
@@ -352,36 +351,29 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     }
 
 
-    protected void verifySelection() {
+    private void verifySelection() {
         logger.debug("--- Verifying selection ---");
         OWLSelectionModel selectionModel = getOWLSelectionModel();
 
         OWLClass lastSelectedClass = selectionModel.getLastSelectedClass();
-        selectionModel.setSelectedEntity(lastSelectedClass);
         logger.debug("Last selected class: {}", lastSelectedClass);
 
         OWLObjectProperty lastSelectedObjectProperty = selectionModel.getLastSelectedObjectProperty();
-        selectionModel.setSelectedEntity(lastSelectedObjectProperty);
         logger.debug("Last selected object property: {}", lastSelectedObjectProperty);
 
         OWLDataProperty lastSelectedDataProperty = selectionModel.getLastSelectedDataProperty();
-        selectionModel.setSelectedEntity(lastSelectedDataProperty);
         logger.debug("Last selected data property: {}", lastSelectedDataProperty);
 
         OWLAnnotationProperty lastSelectedAnnotationProperty = selectionModel.getLastSelectedAnnotationProperty();
-        selectionModel.setSelectedEntity(lastSelectedAnnotationProperty);
         logger.debug("Last selected annotation property: " + lastSelectedAnnotationProperty);
 
         OWLNamedIndividual lastSelectedIndividual = selectionModel.getLastSelectedIndividual();
-        selectionModel.setSelectedEntity(lastSelectedIndividual);
         logger.debug("Last selected individual: {}", lastSelectedIndividual);
 
         OWLDatatype lastSelectedDatatype = selectionModel.getLastSelectedDatatype();
-        selectionModel.setSelectedEntity(lastSelectedDatatype);
         logger.debug("Last selected datatype: {}", lastSelectedDatatype);
 
         OWLEntity selectedEntity = selectionModel.getSelectedEntity();
-        selectionModel.setSelectedEntity(selectedEntity);
         logger.debug("Last selected entity: {}", selectedEntity);
 
         verifySelection(CollectionFactory.createSet(lastSelectedClass, lastSelectedDataProperty, lastSelectedObjectProperty, lastSelectedAnnotationProperty, lastSelectedIndividual, lastSelectedDatatype, selectedEntity));
