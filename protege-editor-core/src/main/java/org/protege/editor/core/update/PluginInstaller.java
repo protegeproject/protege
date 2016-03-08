@@ -1,6 +1,7 @@
 package org.protege.editor.core.update;
 
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 import org.protege.editor.core.FileUtils;
 import org.protege.editor.core.ProtegeApplication;
@@ -106,25 +107,6 @@ public class PluginInstaller {
             }
         } catch (IOException | URISyntaxException  t) {
             logger.error("An error occurred whilst downloading and installing the {} plugin: {}", info.getLabel(), t.getMessage(), t);
-            return InstallerResult.ERROR;
-        } catch (BundleException e) {
-            if(e.getType() == BundleException.RESOLVE_ERROR) {
-                logger.error("An error occurred whilst installing the {} plugin.  " +
-                                "This error was caused because the version of this plugin ({}) " +
-                                "was either missing some other components that are not installed, or" +
-                                "it is not compatible with this version of Protégé.",
-                        info.getLabel(),
-                        info.getAvailableVersion(),
-                        e);
-            }
-            else {
-                logger.error("An error occurred whilst installing the {} plugin.  " +
-                                "It is likely that this error occurred due to a version conflict. " +
-                                "Please check that the version of this plugin ({}) is compatible with " +
-                                "this version of Protégé.",
-                        info.getLabel(),
-                        info.getAvailableVersion());
-            }
             return InstallerResult.ERROR;
         }
         finally {
@@ -317,12 +299,18 @@ public class PluginInstaller {
         return Optional.empty();
     }
 
-    private boolean installPlugin(File pluginLocation, PluginInfo info) throws BundleException {
+    private boolean installPlugin(File pluginLocation, PluginInfo info) {
         if (info.getPluginDescriptor() == null) {  // download not an update...
             logger.info("Installing the {} plugin", info.getLabel());
-            Bundle b = ProtegeApplication.getContext().installBundle("file:" + pluginLocation.getPath());
-            b.start();
-            return true;
+            BundleContext context = ProtegeApplication.getContext();
+            try {
+                Bundle b = context.installBundle("file:" + pluginLocation.getPath());
+                b.start();
+                return true;
+            } catch (BundleException e) {
+                logger.info("The {} plugin requires a restart of Protégé (Reason: {})", info.getLabel(), e.getMessage());
+                return false;
+            }
         }
         else {
             logger.info("The {} plugin requires a restart of Protégé", info.getLabel());
