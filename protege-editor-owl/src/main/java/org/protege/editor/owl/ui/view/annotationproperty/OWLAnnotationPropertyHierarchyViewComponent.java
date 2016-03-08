@@ -33,21 +33,23 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
 
     protected void performExtraInitialisation() throws Exception {
         addAction(new AbstractOWLTreeAction<OWLAnnotationProperty>("Add sub property", OWLIcons.getIcon("property.annotation.addsub.png"),
-                                                                   getTree().getSelectionModel()){
+                getTree().getSelectionModel()) {
             public void actionPerformed(ActionEvent event) {
                 createNewChild();
             }
+
             protected boolean canPerform(OWLAnnotationProperty prop) {
                 return canCreateNewChild();
             }
         }, "A", "A");
 
         addAction(new AbstractOWLTreeAction<OWLAnnotationProperty>("Add sibling property", OWLIcons.getIcon("property.annotation.addsib.png"),
-                                                                   getTree().getSelectionModel()){
+                getTree().getSelectionModel()) {
 
             public void actionPerformed(ActionEvent event) {
                 createNewSibling();
             }
+
             protected boolean canPerform(OWLAnnotationProperty cls) {
                 return canCreateNewSibling();
             }
@@ -77,25 +79,22 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
 
 
     public boolean canCreateNewChild() {
-        return getSelectedEntity() != null;
+        return true;
     }
 
 
     public void createNewChild() {
-        OWLAnnotationProperty selProp = getSelectedEntity();
-        if (selProp == null) {
-            return;
-        }
+        List<OWLOntologyChange> changes = new ArrayList<>();
         OWLEntityCreationSet<OWLAnnotationProperty> set = getOWLWorkspace().createOWLAnnotationProperty();
-        if (set != null) {
-            java.util.List<OWLOntologyChange> changes = new ArrayList<>();
-            changes.addAll(set.getOntologyChanges());
-            OWLDataFactory df = getOWLModelManager().getOWLDataFactory();
+        changes.addAll(set.getOntologyChanges());
+        OWLDataFactory df = getOWLModelManager().getOWLDataFactory();
+        OWLAnnotationProperty selProp = getSelectedEntity();
+        if (selProp != null) {
             OWLAxiom ax = df.getOWLSubAnnotationPropertyOfAxiom(set.getOWLEntity(), selProp);
             changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
-            getOWLModelManager().applyChanges(changes);
-            setGlobalSelection(set.getOWLEntity());
         }
+        getOWLModelManager().applyChanges(changes);
+        setGlobalSelection(set.getOWLEntity());
     }
 
 
@@ -131,16 +130,17 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
 
 
     private class InternalOWLEntitySetProvider implements OWLEntitySetProvider<OWLAnnotationProperty> {
+
         public Set<OWLAnnotationProperty> getEntities() {
             return new HashSet<>(getTree().getSelectedOWLObjects());
         }
     }
-    
+
     public class DeleteAnnotationPropertyAction extends AbstractDeleteEntityAction<OWLAnnotationProperty> {
 
 
         /**
-         * 
+         *
          */
         private static final long serialVersionUID = -4871539633257400493L;
 
@@ -156,10 +156,10 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
          */
         public DeleteAnnotationPropertyAction() {
             super("Delete selected properties",
-                  OWLIcons.getIcon("property.annotation.delete.png"),
-                  getOWLEditorKit(),
-                  getHierarchyProvider(),
-                  new InternalOWLEntitySetProvider());
+                    OWLIcons.getIcon("property.annotation.delete.png"),
+                    getOWLEditorKit(),
+                    getHierarchyProvider(),
+                    new InternalOWLEntitySetProvider());
         }
 
 
