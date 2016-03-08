@@ -13,6 +13,9 @@ import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.core.ui.util.VerifyingOptionPane;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.event.EventType;
+import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
+import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.util.OWLAxiomInstance;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.axiom.AxiomAnnotationPanel;
@@ -71,6 +74,8 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
     public static final int BUTTON_DIMENSION = 14;
 
     public static final int BUTTON_MARGIN = 3;
+
+    private final OWLModelManagerListener modelManagerListener;
 
     private OWLEditorKit editorKit;
 
@@ -141,6 +146,13 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
         addListSelectionListener(selListener);
 
         setUI(new OWLFrameListUI());
+
+        modelManagerListener = event -> {
+            if(event.isType(EventType.ONTOLOGY_CLASSIFIED) || event.isType(EventType.REASONER_CHANGED)) {
+                setRootObject(getRootObject());
+            }
+        };
+        editorKit.getOWLModelManager().addListener(modelManagerListener);
     }
 
 
@@ -304,6 +316,7 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
             }
         }
         frame.dispose();
+        editorKit.getOWLModelManager().removeListener(modelManagerListener);
     }
 
     private void refillRows() {
