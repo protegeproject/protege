@@ -17,10 +17,7 @@ import org.semanticweb.owlapi.model.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 /**
@@ -119,11 +116,17 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
         }
         List<OWLOntologyChange> changes = new ArrayList<>();
         // remove before adding in case the user is moving to the same class (or we could check)
-        changes.add(new RemoveAxiom(getOWLModelManager().getActiveOntology(),
-                					df.getOWLSubClassOfAxiom(child, fromParent)));
-        if (!df.getOWLThing().equals(toParent)) {
-            changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(),
-                                     df.getOWLSubClassOfAxiom(child, toParent)));
+
+
+        OWLSubClassOfAxiom existingNonAnnotatedAxiom = df.getOWLSubClassOfAxiom(child, fromParent);
+        for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
+            Set<OWLAxiom> axiomsToRemove = ont.getAxiomsIgnoreAnnotations(existingNonAnnotatedAxiom);
+            for(OWLAxiom ax : axiomsToRemove) {
+                changes.add(new RemoveAxiom(ont, ax));
+                // Preserve the annotations
+                OWLAxiom axToAdd = df.getOWLSubClassOfAxiom(child, toParent, ax.getAnnotations());
+                changes.add(new AddAxiom(ont, axToAdd));
+            }
         }
         getOWLModelManager().applyChanges(changes);
     }
