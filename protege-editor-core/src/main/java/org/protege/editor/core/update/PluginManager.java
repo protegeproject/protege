@@ -3,9 +3,12 @@ package org.protege.editor.core.update;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.editorkit.EditorKitManager;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.progress.BackgroundTask;
+import org.protege.editor.core.ui.workspace.WorkspaceFrame;
+import org.protege.editor.core.ui.workspace.WorkspaceManager;
 
 import javax.swing.*;
 import java.net.MalformedURLException;

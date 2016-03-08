@@ -2,16 +2,16 @@ package org.protege.editor.core.update;
 
 
 import com.google.common.collect.ListMultimap;
-import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.LinkLabel;
 import org.protege.editor.core.ui.util.NativeBrowserLauncher;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.*;
+import javax.swing.text.Document;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.StyleSheet;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,11 +37,11 @@ public class PluginPanel extends JPanel {
 
 
 
-    private JLabel authorLabel;
+    private final JLabel authorLabel = new JLabel("");
 
-    private JLabel licenseLabel;
+    private LinkLabel licenseLabel;
 
-    private JEditorPane readmePane;
+    private final JEditorPane readmePane = new JEditorPane();
 
     private JScrollPane readmeScroller;
 
@@ -53,6 +53,7 @@ public class PluginPanel extends JPanel {
 
 
     public PluginPanel(ListMultimap<String, PluginInfo> downloadsProviders) {
+        setPreferredSize(new Dimension(600, 600));
         setLayout(new BorderLayout(2, 2));
 
 
@@ -95,12 +96,11 @@ public class PluginPanel extends JPanel {
 
     private Component createInfoBox() {
         Box infoBox = new Box(BoxLayout.PAGE_AXIS);
-        infoBox.setBorder(ComponentFactory.createTitledBorder("Plugin info"));
-        infoBox.add(Box.createRigidArea(new Dimension(0, 10)));
+        infoBox.add(Box.createRigidArea(new Dimension(0, 7)));
         infoBox.add(createAuthorPanel());
-        infoBox.add(Box.createRigidArea(new Dimension(0, 10)));
+        infoBox.add(Box.createRigidArea(new Dimension(0, 7)));
         infoBox.add(createLicensePanel());
-        infoBox.add(Box.createRigidArea(new Dimension(0, 20)));
+        infoBox.add(Box.createRigidArea(new Dimension(0, 7)));
         infoBox.add(createDocPanel());
         return infoBox;
     }
@@ -113,7 +113,6 @@ public class PluginPanel extends JPanel {
         label.setFont(font);
         label.setAlignmentX(0.0f);
         box.add(label);
-        authorLabel = new JLabel("");
         authorLabel.setFont(font);
 
         box.add(authorLabel);
@@ -147,7 +146,7 @@ public class PluginPanel extends JPanel {
 
 
     private Component createDocPanel() {
-        readmePane = createTextPanel();
+        createTextPanel();
         readmeScroller = new JScrollPane(readmePane,
                                          JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                                          JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -157,19 +156,17 @@ public class PluginPanel extends JPanel {
     }
 
 
-    private JEditorPane createTextPanel() {
+    private void createTextPanel() {
         JEditorPane pane = new JEditorPane();
         pane.setBorder(new EmptyBorder(12, 12, 12, 12));
         pane.setPreferredSize(new Dimension(300, 200));
         pane.setEditable(false);
-        pane.setFont(new Font("SansSerif", Font.PLAIN, 9));
         pane.addHyperlinkListener(event -> {
             if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED &&
                 event.getURL() != null) {
                 NativeBrowserLauncher.openURL(event.getURL().toString());
             }
         });
-        return pane;
     }
 
 
@@ -237,6 +234,20 @@ public class PluginPanel extends JPanel {
         textEditor.setText(content.content);
         SwingUtilities.invokeLater(() -> {
             scroller.getViewport().setViewPosition(new Point(0, 0));
+            Document document = readmePane.getDocument();
+            if(document instanceof HTMLDocument) {
+                HTMLDocument htmlDocument = (HTMLDocument) document;
+                StyleSheet styleSheet = htmlDocument.getStyleSheet();
+                styleSheet.addRule("body {" +
+                        "font-family: Helvetica Neue, Helvetica, Arial, Sans-Serif; " +
+                        "font-weight: 300; " +
+                        "font-size: 10px; " +
+                        "color: #808080; " +
+                        "padding-left: 10px; " +
+                        "padding-right: 10px; " +
+                        "padding-top: 2px; " +
+                        "}");
+            }
         });
     }
 
