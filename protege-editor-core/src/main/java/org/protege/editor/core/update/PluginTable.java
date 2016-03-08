@@ -58,6 +58,7 @@ public class PluginTable extends JPanel {
         setPreferredSize(new Dimension(500, 200));
         waitLabel = new JLabel("Checking for plugins...", Icons.getIcon("busy.gif"), SwingConstants.CENTER);
         add(waitLabel, BorderLayout.CENTER);
+        handleTableShown();
     }
 
 
@@ -75,6 +76,8 @@ public class PluginTable extends JPanel {
             table.setRowHeight(table.getRowHeight() + 5);
             table.setRowSelectionAllowed(true);
             table.setColumnSelectionAllowed(false);
+
+            TableUtils.pack(table, true, false, 1);
 
             final JScrollPane tableSp = new JScrollPane(table);
 

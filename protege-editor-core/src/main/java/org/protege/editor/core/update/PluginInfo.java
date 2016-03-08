@@ -70,6 +70,9 @@ public class PluginInfo {
 
 
     public Version getCurrentVersion() {
+        if(b == null) {
+            return null;
+        }
         return PluginUtilities.getBundleVersion(b);
     }
 

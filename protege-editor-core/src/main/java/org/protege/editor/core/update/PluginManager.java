@@ -1,14 +1,9 @@
 package org.protege.editor.core.update;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
 import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.editorkit.EditorKitManager;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.progress.BackgroundTask;
-import org.protege.editor.core.ui.workspace.WorkspaceFrame;
-import org.protege.editor.core.ui.workspace.WorkspaceManager;
 
 import javax.swing.*;
 import java.net.MalformedURLException;
@@ -16,8 +11,6 @@ import java.net.URL;
 import java.util.Date;
 import java.util.List;
 
-import static org.protege.editor.core.update.PluginRegistryImpl.PluginRegistryType.PLUGIN_DOWNLOAD_REGISTRY;
-import static org.protege.editor.core.update.PluginRegistryImpl.PluginRegistryType.PLUGIN_UPDATE_REGISTRY;
 
 /**
  * Author: Matthew Horridge<br>
@@ -110,24 +103,21 @@ public class PluginManager {
     private void runSearch(SearchType searchType) {
         final BackgroundTask autoUpdateTask = ProtegeApplication.getBackgroundTaskManager().startTask("autoupdate");
         Runnable runnable = () -> {
-            PluginRegistry updatesProvider = new PluginRegistryImpl(getPluginRegistryLocation());
+            PluginRegistry registry = new PluginRegistryImpl(getPluginRegistryLocation());
             try {
-                updatesProvider.reload();
+                registry.reload();
                 getPrefs().putLong(LAST_RUN_PREFS_KEY, System.currentTimeMillis());
             }
             finally {
                 ProtegeApplication.getBackgroundTaskManager().endTask(autoUpdateTask);
-                ListMultimap<String, PluginInfo> map = ArrayListMultimap.create();
-                List<PluginInfo> availableUpdates = updatesProvider.getAvailableUpdates();
-                map.putAll(PLUGIN_UPDATE_REGISTRY.getLabel(), availableUpdates);
-                map.putAll(PLUGIN_DOWNLOAD_REGISTRY.getLabel(), updatesProvider.getAvailableInstalls());
-                if (searchType == SearchType.UPDATES_ONLY) {
-                    if (!availableUpdates.isEmpty()) {
-                        showUpdatesDialog(map);
-                    }
+                List<PluginInfo> availablePlugins = registry.getAvailablePlugins();
+                if (searchType == SearchType.UPDATES_AND_INSTALLS) {
+                    showPluginsDialog(availablePlugins);
                 }
-                if(searchType == SearchType.UPDATES_AND_INSTALLS) {
-                    showUpdatesDialog(map);
+                else {
+                    if(!availablePlugins.isEmpty()) {
+                        showPluginsDialog(availablePlugins);
+                    }
                 }
             }
         };
@@ -136,9 +126,9 @@ public class PluginManager {
         t.start();
     }
 
-    private void showUpdatesDialog(ListMultimap<String, PluginInfo> downloadsProviders) {
+    private void showPluginsDialog(List<PluginInfo> pluginInfoList) {
        SwingUtilities.invokeLater(() -> {
-           List<PluginInfo> selUpdates = PluginPanel.showDialog(downloadsProviders, null);
+           List<PluginInfo> selUpdates = PluginPanel.showDialog(pluginInfoList, null);
            if (!selUpdates.isEmpty()){
                PluginInstaller installer = new PluginInstaller(selUpdates);
                installer.run();
