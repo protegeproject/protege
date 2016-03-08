@@ -161,26 +161,26 @@ public class PluginPanel extends JPanel {
     private void updateInfoPanel(final PluginInfo info) {
         updateDocPanel(new ContentMimePair("", ""), readmePane, readmeScroller);
         if (info != null){
-            authorLabel.setText(info.getAuthor());
-            licenseLabel.setText(info.getLicense());
+            authorLabel.setText(info.getAuthor().orElse(""));
+            licenseLabel.setText(info.getLicense().orElse(""));
 
             ContentMimePair readme = updateInfoReadmeMap.get(info);
             if (readme != null){
                 updateDocPanel(readme, readmePane, readmeScroller);
             }
             else{
-                Runnable loadContent = () -> {
-                    final ContentMimePair readme1 = getContent(info.getReadmeURI());
-                    updateInfoReadmeMap.put(info, readme1);
-                    SwingUtilities.invokeLater(new Runnable(){
-                        public void run() {
+                if (info.getReadmeURI().isPresent()) {
+                    Runnable loadContent = () -> {
+                        final ContentMimePair readme1 = getContent(info.getReadmeURI().get());
+                        updateInfoReadmeMap.put(info, readme1);
+                        SwingUtilities.invokeLater(() -> {
                             updateDocPanel(readme1, readmePane, readmeScroller);
-                        }
-                    });
-                };
-                Thread t = new Thread(loadContent, "Load plugin info");
-                t.setPriority(Thread.MIN_PRIORITY);
-                t.start();
+                        });
+                    };
+                    Thread t = new Thread(loadContent, "Load plugin info");
+                    t.setPriority(Thread.MIN_PRIORITY);
+                    t.start();
+                }
             }
         }
         else{
