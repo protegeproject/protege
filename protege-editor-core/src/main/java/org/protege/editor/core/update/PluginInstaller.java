@@ -17,6 +17,7 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.zip.ZipEntry;
@@ -33,7 +34,7 @@ public class PluginInstaller {
 
     private static final Logger logger = LoggerFactory.getLogger(PluginInstaller.class);
 
-    private List<PluginInfo> updates;
+    private final List<PluginInfo> updates;
 
     public enum InstallerResult {
         DOWNLOADED, ERROR, INSTALLED;
@@ -41,7 +42,7 @@ public class PluginInstaller {
 
 
     public PluginInstaller(List<PluginInfo> updates) {
-        this.updates = updates;
+        this.updates = new ArrayList<>(updates);
     }
 
 
@@ -186,20 +187,10 @@ public class PluginInstaller {
 
     private static Optional<File> copyPluginToInstallLocation(File downloadedPlugin, PluginInfo info) throws URISyntaxException {
 
-        final Optional<File> existingPluginLocation = getPluginFileName(info);
-
-
         final Optional<File> backupFileName = moveExistingPluginToBackupLocation(info);
-
-        final File downloadedPluginDestination;
-
-        if(existingPluginLocation.isPresent()) {
-            downloadedPluginDestination = existingPluginLocation.get();
-        }
-        else {
-            final File pluginsFolder = new File(System.getProperty(ProtegeApplication.BUNDLE_DIR_PROP));
-            downloadedPluginDestination = new File(pluginsFolder, info.getId() + ".jar");
-        }
+        final File pluginsFolder = new File(System.getProperty(ProtegeApplication.BUNDLE_DIR_PROP));
+        final String destinationFileName = String.format("%s-%s.jar", info.getId(), info.getAvailableVersion());
+        final File downloadedPluginDestination = new File(pluginsFolder, destinationFileName);
 
         try {
             FileUtils.copyFile(downloadedPlugin, downloadedPluginDestination);
