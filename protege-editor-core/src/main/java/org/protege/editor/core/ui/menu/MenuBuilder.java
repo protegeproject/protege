@@ -60,10 +60,17 @@ public class MenuBuilder {
         // Should now have a hierarchy of plugins
         List<MenuActionPlugin> topLevelMenus = getSortedList(getChildren(null));
         for (MenuActionPlugin plugin : topLevelMenus) {
-            addMenu(plugin, menuBar);
+            if (!isPopupMenuItem(plugin)) {
+                addMenu(plugin, menuBar);
+            }
         }
 
         return menuBar;
+    }
+
+    private static boolean isPopupMenuItem(MenuActionPlugin plugin) {
+        String parentId = plugin.getParentId();
+        return parentId != null && PopupMenuId.isPopupMenuId(parentId);
     }
 
     public JPopupMenu buildPopupMenu(final PopupMenuId menuId) {
@@ -78,7 +85,7 @@ public class MenuBuilder {
         Collection<MenuActionPlugin> popupPlugins = getSortedList(getChildren(null));
         String lastGroup = "";
         for(MenuActionPlugin plugin : popupPlugins) {
-            if(PopupMenuId.isPopupMenuId(plugin.getParentId())) {
+            if(isPopupMenuItem(plugin)) {
                 PopupMenuId popupMenuId = new PopupMenuId(plugin.getParentId());
                 if (popupMenuId.equals(menuId)) {
                     if (!lastGroup.isEmpty() && !lastGroup.equals(plugin.getGroup())) {
