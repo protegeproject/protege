@@ -9,7 +9,6 @@ import org.semanticweb.owlapi.util.EscapeUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.ImageObserver;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -415,8 +414,11 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
     }
 
     private boolean isImageAddress(IRI iri) {
-        String iriString = iri.toString();
-        return iriString.endsWith(".png") || iriString.endsWith(".jpg") || iriString.endsWith(".jpeg");
+        String iriString = iri.toString().toLowerCase();
+        return iriString.endsWith(".png")
+                || iriString.endsWith(".jpg")
+                || iriString.endsWith(".jpeg")
+                || iriString.endsWith(".gif");
     }
 
     /**
@@ -458,23 +460,38 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
      * @return A list of paragraphs that represent the rendering of the literal.
      */
     private List<Paragraph> renderLiteral(Page page, OWLLiteral literal, Color foreground, Color background, boolean isSelected) {
-        String rendering = EscapeUtils.unescapeString(literal.getLiteral()).trim();
-        List<Paragraph> result = new ArrayList<>();
-        if (rendering.length() > 0) {
-            List<LinkSpan> linkSpans = extractLinks(rendering);
-            Paragraph literalParagraph = new Paragraph(rendering, linkSpans);
-            literalParagraph.setForeground(foreground);
-            page.add(literalParagraph);
-            result.add(literalParagraph);
-            Paragraph tagParagraph = literalParagraph;//new Paragraph("");
-            tagParagraph.append("    ", foreground);
-            page.add(tagParagraph);
-            result.add(tagParagraph);
-            tagParagraph.setMarginTop(2);
-            tagParagraph.setTabCount(2);
-//            appendTag(tagParagraph, literal, foreground, isSelected);
+        if(isLiteralRenderableAsIRI(literal)) {
+            return renderIRI(page, IRI.create(literal.getLiteral()), foreground, background, isSelected, hasFocus());
         }
-        return result;
+        else {
+            String rendering = EscapeUtils.unescapeString(literal.getLiteral()).trim();
+            List<Paragraph> result = new ArrayList<>();
+            if (rendering.length() > 0) {
+                List<LinkSpan> linkSpans = extractLinks(rendering);
+                Paragraph literalParagraph = new Paragraph(rendering, linkSpans);
+                literalParagraph.setForeground(foreground);
+                page.add(literalParagraph);
+                result.add(literalParagraph);
+                Paragraph tagParagraph = literalParagraph;//new Paragraph("");
+                tagParagraph.append("    ", foreground);
+                page.add(tagParagraph);
+                result.add(tagParagraph);
+                tagParagraph.setMarginTop(2);
+                tagParagraph.setTabCount(2);
+            }
+            return result;
+        }
+    }
+
+    private boolean isLiteralRenderableAsIRI(OWLLiteral literal) {
+        String candidateIri = literal.getLiteral();
+        if(candidateIri.startsWith("http://")) {
+            return true;
+        }
+        else if(candidateIri.startsWith("https://")) {
+            return true;
+        }
+        return false;
     }
 
     private void appendTag(Paragraph tagParagraph, OWLLiteral literal, Color foreground, boolean isSelected) {
