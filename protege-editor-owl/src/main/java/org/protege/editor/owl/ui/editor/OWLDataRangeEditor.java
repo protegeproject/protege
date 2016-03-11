@@ -94,5 +94,6 @@ public class OWLDataRangeEditor extends AbstractOWLObjectEditor<OWLDataRange> {
 
 
     public void dispose() {
+        datatypeList.dispose();
     }
 }
