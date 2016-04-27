@@ -15,16 +15,14 @@ import java.awt.*;
  */
 public class PluginInfoTable extends JTable {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -6344747415695178548L;
-
     public PluginInfoTable() {
         super(new PluginInfoTableModel());
         setRowHeight(getRowHeight() + 10);
         getColumnModel().setColumnMargin(6);
         setGridColor(Color.LIGHT_GRAY);
         setShowHorizontalLines(true);
+        setShowVerticalLines(false);
+        getColumnModel().getColumn(1).setMaxWidth(80);
+        getColumnModel().getColumn(2).setMaxWidth(80);
     }
 }
