@@ -123,9 +123,12 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
             Set<OWLAxiom> axiomsToRemove = ont.getAxiomsIgnoreAnnotations(existingNonAnnotatedAxiom);
             for(OWLAxiom ax : axiomsToRemove) {
                 changes.add(new RemoveAxiom(ont, ax));
-                // Preserve the annotations
-                OWLAxiom axToAdd = df.getOWLSubClassOfAxiom(child, toParent, ax.getAnnotations());
-                changes.add(new AddAxiom(ont, axToAdd));
+                // Preserve the annotations.  If there are no annotations then don't add it if it's a subclass of
+                // owl:Thing
+                if (!ax.getAnnotations().isEmpty() || !toParent.isOWLThing()) {
+                    OWLAxiom axToAdd = df.getOWLSubClassOfAxiom(child, toParent, ax.getAnnotations());
+                    changes.add(new AddAxiom(ont, axToAdd));
+                }
             }
         }
         getOWLModelManager().applyChanges(changes);
