@@ -470,7 +470,6 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
 
 
         public void visit(SWRLRule rule) {
-
         }
     }
 
