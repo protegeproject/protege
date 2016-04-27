@@ -1,5 +1,6 @@
 package org.protege.editor.core.update;
 
+import org.protege.editor.core.ui.about.PluginInfoTable;
 import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
 import org.protege.editor.core.ui.preferences.PreferencesPanel;
 
@@ -58,5 +59,11 @@ public class PluginPreferencesPanel extends PreferencesPanel {
         JButton resetToDefaultRegistry = new JButton("Reset to default registry location");
         resetToDefaultRegistry.addActionListener(e -> pluginRegistryEditor.setText(PluginManager.DEFAULT_REGISTRY));
         panel.addIndentedGroupComponent(resetToDefaultRegistry);
+
+        panel.addSeparator();
+        panel.addGroup("Installed plugins");
+        JScrollPane pluginInfoScrollPane = new JScrollPane(new PluginInfoTable());
+        pluginInfoScrollPane.setPreferredSize(new Dimension(500, 300));
+        panel.addGroupComponent(pluginInfoScrollPane);
     }
 }
