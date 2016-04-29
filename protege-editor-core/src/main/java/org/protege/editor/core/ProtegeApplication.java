@@ -57,9 +57,9 @@ import java.util.List;
 public class ProtegeApplication implements BundleActivator {
 
     private final static Logger logger = LoggerFactory.getLogger(ProtegeApplication.class);
-    
+
     public static final String BUNDLE_WITHOUT_PLUGIN_XML = "No-Plugin-XML";
-    
+
     public static final String BUNDLE_DIR_PROP = "org.protege.plugin.dir";
 
     public static final String RUN_ONCE = "PROTEGE_OSGI_RUN_ONCE";
@@ -80,9 +80,11 @@ public class ProtegeApplication implements BundleActivator {
 
     private static LogManager logManager = new LogManager(new LogViewImpl());
 
+    private boolean initialized = false;
+
     public void start(final BundleContext context) {
         logManager.bind();
-    	context.addFrameworkListener(event -> {
+        context.addFrameworkListener(event -> {
             if (event.getType() == FrameworkEvent.STARTED) {
                 reallyStart(context);
             }
@@ -90,26 +92,25 @@ public class ProtegeApplication implements BundleActivator {
         });
 
     }
-    
+
     public void reallyStart(BundleContext context) {
-    	try {
-    		ProtegeApplication.context = context;
-    		displayPlatform();
-    		initApplication();
+        try {
+            ProtegeApplication.context = context;
+            displayPlatform();
+            initApplication();
 
 
-    		if (OSUtils.isOSX()) {
-    			ProtegeAppleApplication.getInstance();
-    		}
+            if (OSUtils.isOSX()) {
+                ProtegeAppleApplication.getInstance();
+            }
 
-    		ProtegeManager.getInstance().initialise(this);
-    		startApplication();
+            ProtegeManager.getInstance().initialise(this);
+            startApplication();
 
 
-    	}
-    	catch (Throwable t) {
-    		logger.error("Exception caught starting Protege", t);
-    	}
+        } catch (Throwable t) {
+            logger.error("Exception caught starting Protege", t);
+        }
     }
 
 
@@ -151,7 +152,7 @@ public class ProtegeApplication implements BundleActivator {
         logger.info(LogBanner.start("Plugins"));
         int pluginCount = 0;
         for (Bundle plugin : context.getBundles()) {
-        	if (isPlugin(plugin)) {
+            if (isPlugin(plugin)) {
                 if (isActive(plugin)) {
                     logger.info("Plugin: {} ({})", getNiceBundleName(plugin), plugin.getVersion());
                     pluginCount++;
@@ -162,14 +163,14 @@ public class ProtegeApplication implements BundleActivator {
                 }
             }
         }
-        if(pluginCount == 0) {
+        if (pluginCount == 0) {
             logger.info("No plugins installed");
         }
         logger.info(LogBanner.end());
         for (Bundle plugin : context.getBundles()) {
-        	if (isPlugin(plugin)) {
-        		pluginSanityCheck(plugin);
-        	}
+            if (isPlugin(plugin)) {
+                pluginSanityCheck(plugin);
+            }
         }
     }
 
@@ -207,14 +208,14 @@ public class ProtegeApplication implements BundleActivator {
 
 
     private boolean pluginSanityCheck(Bundle b) {
-    	boolean passed = true;
+        boolean passed = true;
         boolean hasPluginXml = (b.getResource("/plugin.xml") != null);
         if (b.getHeaders().get(BUNDLE_WITHOUT_PLUGIN_XML) == null && !hasPluginXml) {
             logger.info("\t" + getNiceBundleName(b) + " Plugin has no plugin.xml resource");
             passed = false;
         }
         if (hasPluginXml && !isSingleton(b)) {
-            logger.warn("\t" + getNiceBundleName(b) + " plugin is not a singleton so its plugin.xml will not be seen by the registry." );
+            logger.warn("\t" + getNiceBundleName(b) + " plugin is not a singleton so its plugin.xml will not be seen by the registry.");
             passed = false;
         }
         return passed;
@@ -223,12 +224,12 @@ public class ProtegeApplication implements BundleActivator {
     public static boolean isActive(Bundle b) {
         return b.getState() == Bundle.ACTIVE;
     }
-    
+
     public static boolean isPlugin(Bundle b) {
         String location = b.getLocation();
-    	return location != null && location.contains("plugin");
+        return location != null && location.contains("plugin");
     }
-    
+
     public static boolean isSingleton(Bundle b) {
         StringBuffer singleton1 = new StringBuffer(Constants.SINGLETON_DIRECTIVE);
         singleton1.append(":=true");
@@ -237,7 +238,7 @@ public class ProtegeApplication implements BundleActivator {
         return ((String) b.getHeaders().get(Constants.BUNDLE_SYMBOLICNAME)).contains(singleton1.toString()) ||
                 ((String) b.getHeaders().get(Constants.BUNDLE_SYMBOLICNAME)).contains(singleton2.toString());
     }
-    
+
     public static String getNiceBundleName(Bundle b) {
         String name = (String) b.getHeaders().get(Constants.BUNDLE_NAME);
         if (name == null) {
@@ -247,13 +248,16 @@ public class ProtegeApplication implements BundleActivator {
     }
 
     protected ProtegeApplication initApplication() throws Exception {
-        PluginUtilities.getInstance().initialise(context);
-        loadDefaults();
-        initializeLookAndFeel();
-//        checkConfiguration();
-        setupExceptionHandler();
-        processCommandLineURIs();  // plugins may set arguments
-        loadRecentEditorKits();
+        try {
+            PluginUtilities.getInstance().initialise(context);
+            loadDefaults();
+            initializeLookAndFeel();
+            setupExceptionHandler();
+            processCommandLineURIs();  // plugins may set arguments
+            loadRecentEditorKits();
+        } finally {
+            initialized = true;
+        }
         return this;
     }
 
@@ -329,8 +333,7 @@ public class ProtegeApplication implements BundleActivator {
                 }
                 setupDefaults(defaults);
 
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 logger.error("An error occurred during Look&Feel initialization", e);
             }
         }
@@ -359,7 +362,7 @@ public class ProtegeApplication implements BundleActivator {
         defaults.put("TitledBorder.border", commonBorder);
 
     }
-    
+
     private void setupExceptionHandler() {
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
             logger.error("Uncaught Exception in thread '{}'", t.getName(), e);
@@ -379,14 +382,12 @@ public class ProtegeApplication implements BundleActivator {
                     try {
                         URI uri = new URI(arg);
                         commandLineURIs.add(uri);
-                    }
-                    catch (URISyntaxException e) {
+                    } catch (URISyntaxException e) {
                         logger.error("An error occurred when processing the command line argument: {}", arg, e);
                     }
                 }
             }
-        }
-        catch (Throwable t) { // it is not important enough to stop anything.
+        } catch (Throwable t) { // it is not important enough to stop anything.
             logger.warn("Error processing command line arguments " + t);
         }
     }
@@ -414,7 +415,7 @@ public class ProtegeApplication implements BundleActivator {
     private void checkForUpdates() {
         try {
             logger.info(LogBanner.start("Auto-update Check"));
-            if(!PluginManager.getInstance().isAutoUpdateEnabled()) {
+            if (!PluginManager.getInstance().isAutoUpdateEnabled()) {
                 logger.info("Auto-update is disabled");
                 return;
             }
@@ -457,6 +458,7 @@ public class ProtegeApplication implements BundleActivator {
      */
     private void createAndSetupDefaultEditorKit() {
         try {
+            logger.info("Creating and setting up empty (default) editor kit");
             ProtegeManager pm = ProtegeManager.getInstance();
             List<EditorKitFactoryPlugin> editorKitFactoryPlugins = pm.getEditorKitFactoryPlugins();
             if (!editorKitFactoryPlugins.isEmpty()) {
@@ -466,8 +468,7 @@ public class ProtegeApplication implements BundleActivator {
             else {
                 ErrorMessage.showErrorMessage("Fatal Error", "An error occurred that prevented Protégé from starting");
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             ErrorLogPanel.showErrorDialog(e);
         }
     }
@@ -475,6 +476,7 @@ public class ProtegeApplication implements BundleActivator {
 
     private void createAndSetupDefaultEditorKit(URI uri) {
         try {
+            logger.info("Creating and setting up (default) editor kit for {}", uri);
             ProtegeManager pm = ProtegeManager.getInstance();
             List<EditorKitFactoryPlugin> editorKitFactoryPlugins = pm.getEditorKitFactoryPlugins();
             if (!editorKitFactoryPlugins.isEmpty()) {
@@ -484,8 +486,7 @@ public class ProtegeApplication implements BundleActivator {
             else {
                 ErrorMessage.showErrorMessage("Fatal Error", "An error occurred that prevented Protégé from starting");
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             ErrorLogPanel.showErrorDialog(e);
         }
     }
@@ -505,7 +506,6 @@ public class ProtegeApplication implements BundleActivator {
 //    public static ErrorLog getErrorLog() {
 //        return errorLog;
 //    }
-
 
 
     public static BackgroundTaskManager getBackgroundTaskManager() {
@@ -541,8 +541,7 @@ public class ProtegeApplication implements BundleActivator {
                 Thread.sleep(1000);
                 System.exit(0);
             }
-        }
-        catch (Throwable t) {
+        } catch (Throwable t) {
             logger.error("An error occurred when shutting down Protégé.", t);
         }
         return true;
@@ -560,13 +559,14 @@ public class ProtegeApplication implements BundleActivator {
 
 
     public void editURI(URI uri) throws Exception {
-        ProtegeManager pm = ProtegeManager.getInstance();
-        for (EditorKitFactoryPlugin plugin : pm.getEditorKitFactoryPlugins()) {
-            if (plugin.newInstance().canLoad(uri)) {
-                pm.loadAndSetupEditorKitFromURI(plugin, uri);
-//                welcomeFrame.setVisible(false);
-                break;
-            }
+        logger.info("Received request to edit document at {}", uri);
+        if (initialized) {
+            logger.info("Application is initialized.  Opening URI.");
+            createAndSetupDefaultEditorKit(uri);
+        }
+        else {
+            logger.info("Application is not initialized.  Adding URI to command line URIs.");
+            commandLineURIs.add(uri);
         }
     }
 
