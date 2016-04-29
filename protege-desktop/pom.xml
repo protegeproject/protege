@@ -19,6 +19,7 @@
 		<conf.mem.xmx>500M</conf.mem.xmx>
 		<conf.mem.xms>200M</conf.mem.xms>
 		<conf.extra.args>-XX:CompileCommand=exclude,javax/swing/text/GlyphView,getBreakSpot</conf.extra.args>
+		<osx.bundle.name>Protégé.app</osx.bundle.name>
 	</properties>
 
 	<repositories>
@@ -168,6 +169,7 @@
 							</execution>
 						</executions>
 					</plugin>
+
 				</plugins>
 			</build>
 		</profile>

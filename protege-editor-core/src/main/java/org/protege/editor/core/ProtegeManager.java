@@ -124,12 +124,12 @@ public class ProtegeManager {
      * @param plugin The <code>EditorKitFactoryPlugin</code> that describes the <code>EditorKitFactory</code> which will
      *               be used to create the <code>EditorKit</code>.
      */
-    public boolean createAndSetupNewEditorKit(EditorKitFactoryPlugin plugin) throws Exception {
+    public synchronized boolean createAndSetupNewEditorKit(EditorKitFactoryPlugin plugin) throws Exception {
         EditorKitFactory editorKitFactory = getEditorKitFactory(plugin);
         return createAndSetupNewEditorKit(editorKitFactory) != null;
     }
 
-    public EditorKit createAndSetupNewEditorKit(EditorKitFactory editorKitFactory) throws Exception {
+    public synchronized EditorKit createAndSetupNewEditorKit(EditorKitFactory editorKitFactory) throws Exception {
         if (editorKitFactory != null) {
             boolean success = false;
             EditorKit editorKit = editorKitFactory.createEditorKit();
@@ -161,7 +161,7 @@ public class ProtegeManager {
      *               be used to create the <code>EditorKit</code>.
      * @param uri The ontology <code>URI</code> with which the new <code>EditorKit</code> will be instantiated
      */
-    public EditorKit createAndSetupNewEditorKit(EditorKitFactory editorKitFactory, URI uri) throws Exception {
+    public synchronized EditorKit createAndSetupNewEditorKit(EditorKitFactory editorKitFactory, URI uri) throws Exception {
         if (editorKitFactory != null) {
             boolean success = false;
             EditorKit editorKit = editorKitFactory.createEditorKit();
@@ -173,6 +173,7 @@ public class ProtegeManager {
                     if(getEditorKitManager().getEditorKitCount() == 1) {
                         firstEditorKit = new WeakReference<>(editorKit);
                     }
+                    closeFirstEditorKitIfNotModified();
                     return editorKit;
                 }
             }
@@ -186,7 +187,7 @@ public class ProtegeManager {
     }
 
 
-    public boolean createAndSetupNewEditorKit(EditorKitFactoryPlugin plugin, URI uri) throws Exception {
+    public synchronized boolean createAndSetupNewEditorKit(EditorKitFactoryPlugin plugin, URI uri) throws Exception {
         EditorKitFactory editorKitFactory = getEditorKitFactory(plugin);
         return createAndSetupNewEditorKit(editorKitFactory, uri) != null;
     }
@@ -198,7 +199,7 @@ public class ProtegeManager {
      * @param plugin The <code>EditorKitFactoryPlugin</code> that describes the <code>EditorKitFactory</code> which will
      *               be used to create the <code>EditorKit</code>.
      */
-    public boolean openAndSetupEditorKit(EditorKitFactoryPlugin plugin) throws Exception {
+    public synchronized boolean openAndSetupEditorKit(EditorKitFactoryPlugin plugin) throws Exception {
         EditorKitFactory editorKitFactory = getEditorKitFactory(plugin);
         if (editorKitFactory != null) {
             boolean success = false;
@@ -221,6 +222,9 @@ public class ProtegeManager {
     }
 
     private void closeFirstEditorKitIfNotModified() {
+        if(firstEditorKit == null) {
+            return;
+        }
         EditorKit firstEditorKit = this.firstEditorKit.get();
         if(firstEditorKit == null) {
             return;
@@ -232,7 +236,7 @@ public class ProtegeManager {
     }
 
 
-    public boolean loadAndSetupEditorKitFromURI(EditorKitFactoryPlugin plugin, URI uri) throws Exception {
+    public synchronized boolean loadAndSetupEditorKitFromURI(EditorKitFactoryPlugin plugin, URI uri) throws Exception {
         EditorKitFactory editorKitFactory = getEditorKitFactory(plugin);
         if (editorKitFactory != null) {
             boolean success = false;
