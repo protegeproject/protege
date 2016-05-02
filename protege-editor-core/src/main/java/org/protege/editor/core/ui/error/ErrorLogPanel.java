@@ -1,8 +1,13 @@
 package org.protege.editor.core.ui.error;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 
 /**
@@ -13,10 +18,7 @@ import java.awt.event.ActionEvent;
  */
 public class ErrorLogPanel extends JPanel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -8745982593246886108L;
+    private static final Logger logger = LoggerFactory.getLogger(ErrorLogPanel.class);
 
     private ErrorLog errorLog;
 
@@ -91,15 +93,21 @@ public class ErrorLogPanel extends JPanel {
 
     /**
      * Shows a local error dialog for displaying one exception
-     * @param throwable The exception to be displayed
+     * @param throwable The exception to be displayed.
      */
     public static void showErrorDialog(Throwable throwable) {
-        ErrorLog errorLog = new ErrorLog();
-        if (throwable != null) {
-            errorLog.logError(throwable);
-        }
-        ErrorLogPanel panel = new ErrorLogPanel(errorLog, null);
-        JOptionPane.showMessageDialog(null, panel, "Error", JOptionPane.ERROR_MESSAGE);
+        logger.error("An error was thrown: {}", throwable.getMessage(), throwable);
+        JTextArea textPane = new JTextArea(15, 80);
+        textPane.setLineWrap(false);
+        textPane.setEditable(false);
+        StringWriter sw = new StringWriter();
+        throwable.printStackTrace(new PrintWriter(sw));
+        textPane.setText(sw.toString());
+        textPane.setFont(new Font("Monospaced", Font.PLAIN, 12));
+
+        JScrollPane sp = new JScrollPane(textPane);
+        sp.setPreferredSize(new Dimension(800, 300));
+        JOptionPane.showMessageDialog(null, sp, "An error has occurred", JOptionPane.ERROR_MESSAGE);
     }
 
 }
