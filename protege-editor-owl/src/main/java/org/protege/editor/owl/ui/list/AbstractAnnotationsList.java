@@ -5,6 +5,7 @@ import org.protege.editor.core.ui.list.MListItem;
 import org.protege.editor.core.ui.list.MListSectionHeader;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.AnnotationContainer;
+import org.protege.editor.owl.model.entity.AnnotationPropertyComparator;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.editor.OWLAnnotationEditor;
 import org.protege.editor.owl.ui.renderer.OWLAnnotationCellRenderer2;
@@ -15,6 +16,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 /*
 * Copyright (C) 2007, University of Manchester
@@ -34,9 +37,6 @@ import java.util.List;
  * that allows us to get the annotations.
  */
 public abstract class AbstractAnnotationsList<O extends AnnotationContainer> extends MList {
-
-    private static final long serialVersionUID = -2246627783362209148L;
-
 
     private static final String HEADER_TEXT = "Annotations";
 
@@ -68,13 +68,9 @@ public abstract class AbstractAnnotationsList<O extends AnnotationContainer> ext
         }
     };
 
-    private ListCellRenderer delegate;
-
-
 
     public AbstractAnnotationsList(OWLEditorKit eKit) {
         this.editorKit = eKit;
-        delegate = getCellRenderer();
         setCellRenderer(new OWLAnnotationCellRenderer2(eKit));
         addMouseListener(mouseListener);
         eKit.getOWLModelManager().addOntologyChangeListener(ontChangeListener);
@@ -113,13 +109,23 @@ public abstract class AbstractAnnotationsList<O extends AnnotationContainer> ext
     public void setRootObject(O root){
         this.root = root;
 
-        java.util.List<Object> data = new ArrayList<>();
+        List<Object> data = new ArrayList<>();
 
         data.add(header);
 
         if (root != null){
-            // @@TODO ordering
-            for (OWLAnnotation annot : root.getAnnotations()){
+            List<OWLAnnotation> annotations = new ArrayList<>(root.getAnnotations());
+            Comparator<OWLObject> owlObjectComparator = editorKit.getOWLModelManager().getOWLObjectComparator();
+            AnnotationPropertyComparator annotationPropertyComparator =
+                    AnnotationPropertyComparator.withDefaultOrdering(owlObjectComparator);
+            annotations.sort((a1, a2) -> {
+                int propComp = annotationPropertyComparator.compare(a1.getProperty(), a2.getProperty());
+                if(propComp != 0) {
+                    return propComp;
+                }
+                return owlObjectComparator.compare(a1.getValue(), a2.getValue());
+            });
+            for (OWLAnnotation annot : annotations){
                 data.add(new AnnotationsListItem(annot));
             }
         }
