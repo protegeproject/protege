@@ -433,7 +433,15 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
         for (OWLEntity entity : entities) {
             Icon icon = getIcon(entity);
             OWLModelManager modelManager = editorKit.getOWLModelManager();
-            Paragraph paragraph = new Paragraph(modelManager.getRendering(entity), new OWLEntityLink(editorKit, entity));
+            String paraText;
+            String entityRendering = modelManager.getRendering(entity);
+            if(entityRendering.isEmpty()) {
+                paraText = entity.getIRI().toString();
+            }
+            else {
+                paraText = entityRendering;
+            }
+            Paragraph paragraph = new Paragraph(paraText, new OWLEntityLink(editorKit, entity));
             paragraph.setIcon(icon);
             page.add(paragraph);
             paragraphs.add(paragraph);
