@@ -54,6 +54,10 @@ public class AnnotationPropertyComparator implements Comparator<OWLAnnotationPro
                     Obo2OWLConstants.Obo2OWLVocabulary.IRI_IAO_0000115.getIRI(),
                     SKOSVocabulary.DEFINITION.getIRI(),
                     SKOSVocabulary.NOTE.getIRI(),
+                    DublinCoreVocabulary.DESCRIPTION.getIRI(),
+
+                    DublinCoreVocabulary.CREATOR.getIRI(),
+                    DublinCoreVocabulary.CONTRIBUTOR.getIRI(),
 
                     OWLRDFVocabulary.RDFS_COMMENT.getIRI(),
 
