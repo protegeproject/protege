@@ -1,12 +1,14 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
-import org.coode.owlapi.manchesterowlsyntax.ManchesterOWLSyntaxEditorParser;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.classexpression.OWLExpressionParserException;
 import org.protege.editor.owl.model.parser.ParserUtil;
 import org.protege.editor.owl.model.parser.ProtegeOWLEntityChecker;
-import org.semanticweb.owlapi.expression.ParserException;
+import org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntaxParserImpl;
+import org.semanticweb.owlapi.manchestersyntax.renderer.ParserException;
+import org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration;
 import org.semanticweb.owlapi.model.SWRLRule;
+import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
 
 /**
  * Author: drummond<br>
@@ -31,19 +33,13 @@ class SWRLRuleChecker implements OWLExpressionChecker<SWRLRule> {
         createObject(text);
     }
 
-  /*
-   * Workaround for owlapi feature request 2896097.  Remove this fix when 
-   * the simple rule renderer and parser is implemented.  Svn at time of 
-   * commit is approximately 16831
-   */
     public SWRLRule createObject(String text) throws OWLExpressionParserException {
-        ManchesterOWLSyntaxEditorParser parser = new ManchesterOWLSyntaxEditorParser(mngr.getOWLDataFactory(), 
-                                                                                     text);
+        ManchesterOWLSyntaxParser parser = new ManchesterOWLSyntaxParserImpl(OWLOntologyLoaderConfiguration::new, mngr.getOWLDataFactory());
         parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr.getOWLEntityFinder()));
+        parser.setStringToParse(text);
         try {
             return (SWRLRule) parser.parseRuleFrame().iterator().next().getAxiom();
-        }
-        catch (ParserException e) {
+        } catch (ParserException e) {
             throw ParserUtil.convertException(e);
         }
     }
