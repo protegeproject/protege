@@ -60,6 +60,7 @@ public class AnnotationPropertyComparator implements Comparator<OWLAnnotationPro
                     DublinCoreVocabulary.RIGHTS.getIRI(),
                     // No constant for license (nb license is a more specific form of dc:rights)
                     IRI.create("http://purl.org/dc/terms/license"),
+                    DublinCoreVocabulary.PUBLISHER.getIRI(),
 
                     DublinCoreVocabulary.CREATOR.getIRI(),
                     DublinCoreVocabulary.CONTRIBUTOR.getIRI(),
