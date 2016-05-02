@@ -24,19 +24,19 @@ import java.util.*;
  */
 public class PreferencesDialogPanel extends JPanel implements Disposable {
 
-    private static final long serialVersionUID = 6338996558666619642L;
-
     public static final String RESET_PREFERENCES_CONFIRMATION_DIALOG_TITLE = "Reset preferences?";
 
     public static final String RESET_PREFERENCES_CONFIRMATION_DIALOG_MESSAGE = "Are you sure you want to reset all preferences to their default settings";
+
     public static final int DIALOG_DEFAULT_WIDTH = 850;
-    public static final int DIALOG_DEFAULT_HEIGHT = 725;
 
-    private Map<String, PreferencesPanel> map;
+    public static final int DIALOG_DEFAULT_HEIGHT = 600;
 
-    private Map<String, JComponent> scrollerMap;
+    private final Map<String, PreferencesPanel> map = new HashMap<>();
 
-    private JTabbedPane tabbedPane;
+    private final Map<String, JComponent> componentMap = new HashMap<>();
+
+    private final JTabbedPane tabbedPane = new JTabbedPane();
 
     private static final String PREFS_HISTORY_PANEL_KEY = "prefs.history.panel";
 
@@ -46,17 +46,13 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
     private final Logger logger = LoggerFactory.getLogger(PreferencesDialogPanel.class);
 
     public PreferencesDialogPanel(EditorKit editorKit) {
-        map = new HashMap<>();
-        scrollerMap = new HashMap<>();
         setLayout(new BorderLayout());
-        tabbedPane = new JTabbedPane();
+
         PreferencesPanelPluginLoader loader = new PreferencesPanelPluginLoader(editorKit);
-        Set<PreferencesPanelPlugin> plugins = new TreeSet<>(new Comparator<PreferencesPanelPlugin>() {
-            public int compare(PreferencesPanelPlugin o1, PreferencesPanelPlugin o2) {
+        Set<PreferencesPanelPlugin> plugins = new TreeSet<>((o1, o2) -> {
                 String s1 = o1.getLabel();
                 String s2 = o2.getLabel();
                 return s1.compareTo(s2);
-            }
         });
         plugins.addAll(loader.getPlugins());
         for (PreferencesPanelPlugin plugin : plugins) {
@@ -64,17 +60,23 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
                 PreferencesPanel panel = plugin.newInstance();
                 panel.initialise();
                 final String label = plugin.getLabel();
-                final JScrollPane scroller = new JScrollPane(panel);
-                scroller.setBorder(new EmptyBorder(0, 0, 0, 0));
+                final JScrollPane sp = new JScrollPane(panel);
+                sp.setBorder(new EmptyBorder(0, 0, 0, 0));
                 map.put(label, panel);
-                scrollerMap.put(label, scroller);
-                tabbedPane.addTab(label, scroller);
+                componentMap.put(label, sp);
+                tabbedPane.addTab(label, sp);
             }
             catch (Throwable e) {
                 logger.warn("An error occurred whilst trying to instantiate the preferences panel plugin '{}': {}", plugin.getLabel(), e);
             }
         }
         add(tabbedPane);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int margin = 300;
+        int prefWidth = Math.min(screenSize.width - margin, DIALOG_DEFAULT_WIDTH);
+        int prefHeight = Math.min(screenSize.height - margin, DIALOG_DEFAULT_HEIGHT);
+        setPreferredSize(new Dimension(prefWidth, prefHeight));
+
     }
 
     public void dispose() {
@@ -113,15 +115,6 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
         return null;
     }
 
-    public Dimension getPreferredSize() {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = Math.min(screenSize.width - 100, DIALOG_DEFAULT_WIDTH);
-        int height = Math.min(screenSize.height - 100, DIALOG_DEFAULT_HEIGHT);
-        return new Dimension(width, height);
-    }
-
-    
-
     public static void showPreferencesDialog(String selectedPanel, EditorKit editorKit) {
         final PreferencesDialogPanel preferencesPanel = new PreferencesDialogPanel(editorKit);
         
@@ -132,7 +125,7 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
         if (selectedPanel == null){
             selectedPanel = prefs.getString(PREFS_HISTORY_PANEL_KEY, null);
         }
-        Component c = preferencesPanel.scrollerMap.get(selectedPanel);
+        Component c = preferencesPanel.componentMap.get(selectedPanel);
         if (c != null) {
             preferencesPanel.tabbedPane.setSelectedComponent(c);
         }

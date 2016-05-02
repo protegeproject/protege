@@ -6,7 +6,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 /*
  * WARNING - This code was liberally stolen from PreferencesDialogPanel
@@ -23,6 +25,7 @@ public class TabbedReasonerPreferencesPanel extends OWLPreferencesPanel {
     public void initialise() throws Exception {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.setPreferredSize(new Dimension(600, 400));
         InferencePreferencePluginLoader loader = new InferencePreferencePluginLoader(getOWLEditorKit());
         Set<InferencePreferencePlugin> plugins = new TreeSet<>(new Comparator<InferencePreferencePlugin>() {
             public int compare(InferencePreferencePlugin o1, InferencePreferencePlugin o2) {
