@@ -41,15 +41,14 @@ import java.util.List;
 public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewComponent
         implements Findable<OWLNamedIndividual>, Deleteable, CreateNewTarget, RefreshableComponent {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -1519269944342726754L;
     private OWLObjectList<OWLNamedIndividual> list;
+
     private OWLOntologyChangeListener listener;
+
     private ChangeListenerMediator changeListenerMediator;
+
     private OWLModelManagerListener modelManagerListener;
-    private int selectionMode = ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
+
     private boolean selectionChangedByUser = true;
 
     protected Set<OWLNamedIndividual> individualsInList;
@@ -68,6 +67,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
 
     public void initialiseIndividualsView() throws Exception {
         list = new OWLObjectList<>(getOWLEditorKit());
+        int selectionMode = ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
         list.setSelectionMode(selectionMode);
         setLayout(new BorderLayout());
         add(new JScrollPane(list));

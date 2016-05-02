@@ -70,6 +70,7 @@ public class OWLMembersListViewComponent extends OWLIndividualListViewComponent 
         else {
             typeLabel.setIcon(null);
             typeLabel.setText("Nothing selected");
+            individualsInList.addAll(getUntypedIndividuals());
         }
         reset();
     }
