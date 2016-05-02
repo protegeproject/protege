@@ -334,14 +334,18 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     }
 
     private void verifySelection(Set<? extends OWLEntity> entities) {
-        Set<OWLEntity> unreferencedEntities = new HashSet<>(entities);
+        Set<OWLEntity> unreferencedEntities = new HashSet<>();
         for (OWLEntity entity : entities) {
             if (entity != null && !entity.isBuiltIn()) {
+                boolean unreferenced = true;
                 for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
                     if (ont.containsEntityInSignature(entity)) {
-                        unreferencedEntities.remove(entity);
+                        unreferenced = false;
                         break;
                     }
+                }
+                if(unreferenced) {
+                    unreferencedEntities.add(entity);
                 }
             }
         }
