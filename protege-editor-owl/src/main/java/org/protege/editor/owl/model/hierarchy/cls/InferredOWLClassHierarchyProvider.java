@@ -88,8 +88,7 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
     			subs.add(owlNothing);
     		}
     		else if (object.isOWLNothing()) {
-    			subs.addAll(getReasoner().getUnsatisfiableClasses().getEntities());
-    			subs.remove(owlNothing);
+    			subs.addAll(getReasoner().getUnsatisfiableClasses().getEntitiesMinus(owlNothing));
     		}
     		else {
     			// Class which is not Thing or Nothing
@@ -168,9 +167,7 @@ public class InferredOWLClassHierarchyProvider extends AbstractOWLObjectHierarch
             if (!getReasoner().isSatisfiable(object)) {
                 return Collections.emptySet();
             }
-            Set<OWLClass> equivalents = getReasoner().getEquivalentClasses(object).getEntities();
-            equivalents.remove(object);
-            return equivalents;
+            return getReasoner().getEquivalentClasses(object).getEntitiesMinus(object);
         }
         finally {
 //            getReadLock().unlock();
