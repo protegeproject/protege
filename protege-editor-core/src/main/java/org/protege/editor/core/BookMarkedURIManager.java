@@ -81,11 +81,10 @@ public class BookMarkedURIManager {
 
     private static List<String> getDefaults() {
         List<String> defaults = new ArrayList<>();
+        defaults.add("http://protege.stanford.edu/ontologies/pizza/pizza.owl");
         defaults.add("http://owl.man.ac.uk/2006/07/sssw/people.owl");
-        defaults.add("http://www.co-ode.org/ontologies/pizza/pizza.owl");
         defaults.add("http://protege.cim3.net/file/pub/ontologies/koala/koala.owl");
         defaults.add("http://protege.cim3.net/file/pub/ontologies/camera/camera.owl");
-        defaults.add("http://protege.cim3.net/file/pub/ontologies/ka/ka.owl");
         defaults.add("http://protege.cim3.net/file/pub/ontologies/travel/travel.owl");
         defaults.add("http://www.w3.org/TR/owl-guide/wine.rdf");
 
