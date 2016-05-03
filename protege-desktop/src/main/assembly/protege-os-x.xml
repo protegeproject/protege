@@ -61,6 +61,8 @@
                     <exclude>META-INF/**/*</exclude>
                 </excludes>
             </unpackOptions>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
         </dependencySet>
 
     </dependencySets>
