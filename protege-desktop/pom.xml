@@ -192,8 +192,8 @@
 										<bundledJreAsFallback>false</bundledJreAsFallback>
 										<bundledJre64Bit>true</bundledJre64Bit>
 										<runtimeBits>64</runtimeBits>
-										<initialHeapSize>200</initialHeapSize>
-										<maxHeapSize>500</maxHeapSize>
+										<initialHeapSize>${conf.mem.xms}</initialHeapSize>
+										<maxHeapSize>${conf.mem.xmx}</maxHeapSize>
 										<opts>
 											<opt>-DentityExpansionLimit=100000000</opt>
 											<opt>-Dlogback.configurationFile=conf/logback-win.xml</opt>
