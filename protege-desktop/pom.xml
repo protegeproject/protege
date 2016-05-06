@@ -176,7 +176,7 @@
 							<execution>
 								<configuration>
 									<headerType>console</headerType>
-									<outfile>${win.dir}/Protégé.exe</outfile>
+									<outfile>target/Protégé.exe</outfile>
 									<dontWrapJar>true</dontWrapJar>
 									<jar>bin/protege-launcher.jar</jar>
 									<errTitle>Protégé</errTitle>
@@ -192,8 +192,8 @@
 										<bundledJreAsFallback>false</bundledJreAsFallback>
 										<bundledJre64Bit>true</bundledJre64Bit>
 										<runtimeBits>64</runtimeBits>
-										<initialHeapSize>${conf.mem.xms}</initialHeapSize>
-										<maxHeapSize>${conf.mem.xmx}</maxHeapSize>
+										<initialHeapSize>200</initialHeapSize>
+										<maxHeapSize>500</maxHeapSize>
 										<opts>
 											<opt>-DentityExpansionLimit=100000000</opt>
 											<opt>-Dlogback.configurationFile=conf/logback-win.xml</opt>
