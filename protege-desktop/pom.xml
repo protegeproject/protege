@@ -176,10 +176,10 @@
 							<execution>
 								<configuration>
 									<headerType>gui</headerType>
-									<outfile>target/Protégé.exe</outfile>
+									<outfile>target/Protege.exe</outfile>
 									<dontWrapJar>true</dontWrapJar>
 									<jar>bin/protege-launcher.jar</jar>
-									<errTitle>Protégé</errTitle>
+									<errTitle>Protege</errTitle>
 									<icon>src/main/resources/app/Protege.ico</icon>
 									<classPath>
 										<mainClass>org.protege.osgi.framework.Launcher</mainClass>
@@ -209,7 +209,7 @@
 										<txtProductVersion>Protégé ${project.version}</txtProductVersion>
 										<productName>Protégé</productName>
 										<internalName>Protege</internalName>
-										<originalFilename>Protégé.exe</originalFilename>
+										<originalFilename>Protege.exe</originalFilename>
 									</versionInfo>
 								</configuration>
 								<phase>package</phase>

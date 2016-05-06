@@ -30,7 +30,7 @@
             <outputDirectory>.</outputDirectory>
             <fileMode>0755</fileMode>
             <includes>
-                <include>Protégé.exe</include>
+                <include>Protege.exe</include>
             </includes>
         </fileSet>
 
