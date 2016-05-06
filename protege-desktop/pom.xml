@@ -10,7 +10,7 @@
 	
 	<!-- groupId and version are inherited from the parent -->	
 	<artifactId>protege-desktop</artifactId>
-	<packaging>pom</packaging>
+	<packaging>jar</packaging>
 
 	<name>protege-desktop</name>
 	<description>Standard build of the Protege Desktop ontology editor.</description>
@@ -114,6 +114,9 @@
 	<build>
 		<plugins>
 			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>
 					<execution>
@@ -141,8 +144,83 @@
 	<profiles>
 		<profile>
 			<id>release</id>
+			<properties>
+				<win.dir>target/Protege-${project.version}-win/Protege-${project.version}</win.dir>
+			</properties>
 			<build>
 				<plugins>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.8</version>
+						<executions>
+							<execution>
+								<phase>compile</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<target>
+										<mkdir dir="${win.dir}"/>
+									</target>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>com.akathist.maven.plugins.launch4j</groupId>
+						<artifactId>launch4j-maven-plugin</artifactId>
+						<version>1.7.10</version>
+						<executions>
+							<execution>
+								<configuration>
+									<headerType>console</headerType>
+									<outfile>${win.dir}/Protégé.exe</outfile>
+									<dontWrapJar>true</dontWrapJar>
+									<jar>bin/protege-launcher.jar</jar>
+									<errTitle>Protégé</errTitle>
+									<icon>src/main/resources/app/Protege.ico</icon>
+									<classPath>
+										<mainClass>org.protege.osgi.framework.Launcher</mainClass>
+										<addDependencies>false</addDependencies>
+										<preCp>bundles/guava.jar;bundles/logback-classic.jar;bundles/logback-core.jar;bundles/slf4j-api.jar;bin/org.apache.felix.main.jar;bin/protege-launcher.jar</preCp>
+									</classPath>
+									<jre>
+										<minVersion>1.8.0</minVersion>
+										<path>jre</path>
+										<bundledJreAsFallback>false</bundledJreAsFallback>
+										<bundledJre64Bit>true</bundledJre64Bit>
+										<runtimeBits>64</runtimeBits>
+										<initialHeapSize>${conf.mem.xms}</initialHeapSize>
+										<maxHeapSize>${conf.mem.xmx}</maxHeapSize>
+										<opts>
+											<opt>-DentityExpansionLimit=100000000</opt>
+											<opt>-Dlogback.configurationFile=conf/logback-win.xml</opt>
+											<opt>-Dfile.encoding=utf-8</opt>
+										</opts>
+									</jre>
+									<versionInfo>
+										<fileVersion>5.0.0.0</fileVersion>
+										<txtFileVersion>Protégé ${project.version}</txtFileVersion>
+										<fileDescription>Protégé Ontology Editor</fileDescription>
+										<copyright>Stanford University</copyright>
+										<productVersion>5.0.0.0</productVersion>
+										<txtProductVersion>Protégé ${project.version}</txtProductVersion>
+										<productName>Protégé</productName>
+										<internalName>Protege</internalName>
+										<originalFilename>Protégé.exe</originalFilename>
+									</versionInfo>
+								</configuration>
+								<phase>package</phase>
+								<goals>
+									<goal>launch4j</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+
 					<plugin>
 						<artifactId>maven-assembly-plugin</artifactId>
 						<version>2.4</version>

@@ -25,6 +25,15 @@
             <filtered>true</filtered>
         </fileSet>
 
+        <fileSet>
+            <directory>target/Protege-${project.version}-win/Protege-${project.version}</directory>
+            <outputDirectory>.</outputDirectory>
+            <fileMode>0755</fileMode>
+            <includes>
+                <include>Protégé.exe</include>
+            </includes>
+        </fileSet>
+
     </fileSets>
 
     <dependencySets>
