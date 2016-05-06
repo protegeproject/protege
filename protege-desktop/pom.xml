@@ -175,7 +175,7 @@
 						<executions>
 							<execution>
 								<configuration>
-									<headerType>console</headerType>
+									<headerType>gui</headerType>
 									<outfile>target/Protégé.exe</outfile>
 									<dontWrapJar>true</dontWrapJar>
 									<jar>bin/protege-launcher.jar</jar>
