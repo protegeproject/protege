@@ -374,6 +374,7 @@ public class ProtegeApplication implements BundleActivator {
         try {
             commandLineURIs = new ArrayList<>();
             for (String arg : PlatformArguments.getArguments(context)) {
+                logger.info("Processing command line argument: {}", arg);
                 File f = new File(arg);
                 if (f.exists()) {
                     commandLineURIs.add(f.toURI());
