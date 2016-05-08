@@ -43,12 +43,6 @@ public class ErrorMessage {
         if(ret != 0) {
             return;
         }
-        try {
-            String userHome = System.getProperty("user.home");
-            Path logFilePath = Paths.get(userHome, ".Protege", "logs", "protege.log");
-            FileUtils.showFile(logFilePath.toFile());
-        } catch (IOException e) {
-            logger.error("An error occurred whilst trying to show a file in the OS: {}", e.getMessage(), e);
-        }
+        FileUtils.showLogFile();
     }
 }
