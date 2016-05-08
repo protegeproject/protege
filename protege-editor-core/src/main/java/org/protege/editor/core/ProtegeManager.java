@@ -130,10 +130,10 @@ public class ProtegeManager {
     }
 
     public synchronized EditorKit createAndSetupNewEditorKit(EditorKitFactory editorKitFactory) throws Exception {
+        logger.debug("[ProtegeManager] Creating and setting up new EditorKit.  Factory: {}", editorKitFactory);
         if (editorKitFactory != null) {
             boolean success = false;
             EditorKit editorKit = editorKitFactory.createEditorKit();
-
             try {
                 if (editorKit.handleNewRequest()) {
                     getEditorKitManager().addEditorKit(editorKit);
@@ -162,6 +162,7 @@ public class ProtegeManager {
      * @param uri The ontology <code>URI</code> with which the new <code>EditorKit</code> will be instantiated
      */
     public synchronized EditorKit createAndSetupNewEditorKit(EditorKitFactory editorKitFactory, URI uri) throws Exception {
+        logger.debug("[ProtegeManager] Creating and setting up new EditorKit.  Factory: {}, URI: {}", editorKitFactory, uri);
         if (editorKitFactory != null) {
             boolean success = false;
             EditorKit editorKit = editorKitFactory.createEditorKit();
@@ -237,6 +238,7 @@ public class ProtegeManager {
 
 
     public synchronized boolean loadAndSetupEditorKitFromURI(EditorKitFactoryPlugin plugin, URI uri) throws Exception {
+        logger.debug("[ProtegeManager] Creating and loading EditorKit.  Factory: {}, URI: {}", plugin, uri);
         EditorKitFactory editorKitFactory = getEditorKitFactory(plugin);
         if (editorKitFactory != null) {
             boolean success = false;
