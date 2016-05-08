@@ -377,6 +377,7 @@ public class ProtegeApplication implements BundleActivator {
                 logger.info("Processing command line argument: {}", arg);
                 File f = new File(arg);
                 if (f.exists()) {
+                    logger.debug("Command line argument is a file");
                     commandLineURIs.add(f.toURI());
                 }
                 else {
@@ -401,9 +402,11 @@ public class ProtegeApplication implements BundleActivator {
 
 
     private void startApplication() throws Exception {
+        logger.debug("Starting application");
         if (commandLineURIs != null && !commandLineURIs.isEmpty()) {
             // Open any command line URIs
             for (URI uri : commandLineURIs) {
+                logger.debug("Opening command line argument: {}", uri);
                 createAndSetupDefaultEditorKit(uri);
             }
         }
