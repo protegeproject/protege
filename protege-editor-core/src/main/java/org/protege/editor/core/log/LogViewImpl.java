@@ -1,6 +1,8 @@
 package org.protege.editor.core.log;
 
 
+import org.protege.editor.core.FileUtils;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -23,6 +25,9 @@ public class LogViewImpl implements LogView {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton clearLogButton = new JButton("Clear log");
         clearLogButton.addActionListener(e -> clearView());
+        JButton showLogFile = new JButton("Show log file");
+        showLogFile.addActionListener(e -> FileUtils.showLogFile());
+        buttonPanel.add(showLogFile);
         buttonPanel.add(clearLogButton);
         view.add(buttonPanel, BorderLayout.SOUTH);
         list.setFont(new Font("monospaced", Font.PLAIN, 12));

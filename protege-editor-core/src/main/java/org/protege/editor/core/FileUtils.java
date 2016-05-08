@@ -3,11 +3,14 @@ package org.protege.editor.core;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 
 /**
@@ -134,5 +137,16 @@ public class FileUtils {
         }
         return File.createTempFile(filename,
                                    targetName.substring(extensionIndex));
+    }
+
+    public static void showLogFile() {
+        try {
+            String userHome = System.getProperty("user.home");
+            Path logFilePath = Paths.get(userHome, ".Protege", "logs", "protege.log");
+            FileUtils.showFile(logFilePath.toFile());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "An error occurred whilst trying to show the log file: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            logger.error("An error occurred whilst trying to show a file in the OS: {}", e.getMessage(), e);
+        }
     }
 }
