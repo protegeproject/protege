@@ -181,17 +181,18 @@
 									<jar>bin/protege-launcher.jar</jar>
 									<errTitle>Protege</errTitle>
 									<icon>src/main/resources/app/Protege.ico</icon>
+									<stayAlive>true</stayAlive>
+									<chdir>.</chdir>
 									<classPath>
 										<mainClass>org.protege.osgi.framework.Launcher</mainClass>
 										<addDependencies>false</addDependencies>
 										<preCp>bundles/guava.jar;bundles/logback-classic.jar;bundles/logback-core.jar;bundles/slf4j-api.jar;bin/org.apache.felix.main.jar;bin/protege-launcher.jar</preCp>
 									</classPath>
 									<jre>
-										<minVersion>1.8.0</minVersion>
 										<path>jre</path>
+										<minVersion>1.8.0</minVersion>
 										<bundledJreAsFallback>false</bundledJreAsFallback>
 										<bundledJre64Bit>true</bundledJre64Bit>
-										<runtimeBits>64</runtimeBits>
 										<initialHeapSize>${conf.mem.xms}</initialHeapSize>
 										<maxHeapSize>${conf.mem.xmx}</maxHeapSize>
 										<opts>
