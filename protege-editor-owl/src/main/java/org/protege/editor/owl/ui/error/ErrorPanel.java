@@ -34,7 +34,7 @@ public class ErrorPanel<O extends Throwable> extends JPanel {
     private JTabbedPane tabs;
 
 
-    public ErrorPanel(final ErrorExplainer.ErrorExplanation<O> explanation, URI loc) {
+    public ErrorPanel(final ErrorExplainer.ErrorExplanation<? extends O> explanation, URI loc) {
 
         setLayout(new BorderLayout(12, 12));
         setBorder(new EmptyBorder(7, 7, 7, 7));

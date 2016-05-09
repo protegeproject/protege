@@ -12,6 +12,7 @@ import org.semanticweb.owlapi.io.OWLParser;
 import org.semanticweb.owlapi.io.OWLParserException;
 import org.semanticweb.owlapi.io.UnparsableOntologyException;
 import org.semanticweb.owlapi.model.OWLDocumentFormat;
+import org.semanticweb.owlapi.model.OWLDocumentFormatFactory;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.owlxml.parser.OWLXMLParser;
 import org.semanticweb.owlapi.rdf.rdfxml.parser.RDFParserException;
@@ -116,7 +117,7 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
         // RDF/XML syntax
         errorFilter.addExplanationFactory(RDFParserException.class, new ErrorExplainer.ErrorExplanationFactory<RDFParserException>(){
             public <T extends RDFParserException> ErrorExplainer.ErrorExplanation<T> createExplanation(T throwable) {
-                return new ErrorExplainer.ParseErrorExplanation(throwable, throwable.getMessage(), throwable.getLineNumber(), throwable.getColumnNumber());
+                return new ErrorExplainer.ParseErrorExplanation<>(throwable, throwable.getMessage(), throwable.getLineNumber(), throwable.getColumnNumber());
             }
         });
 
@@ -124,7 +125,7 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
         // Will catch functional syntax/OBO but only use it for the specified exceptions (below)
         ErrorExplainer.ErrorExplanationFactory<OWLParserException> owlParserExceptionExplanationFac = new ErrorExplainer.ErrorExplanationFactory<OWLParserException>(){
             public <T extends OWLParserException> ErrorExplainer.ErrorExplanation<T> createExplanation(T throwable) {
-                return new ErrorExplainer.ParseErrorExplanation(throwable, throwable.getMessage(), throwable.getLineNumber(), 0);
+                return new ErrorExplainer.ParseErrorExplanation<>(throwable, throwable.getMessage(), throwable.getLineNumber(), 0);
             }
         };
         errorFilter.addExplanationFactory(OWLParserException.class, owlParserExceptionExplanationFac);
@@ -133,7 +134,7 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
         // Manchester Syntax
         errorFilter.addExplanationFactory(ParserException.class, new ErrorExplainer.ErrorExplanationFactory<ParserException>(){
             public <T extends ParserException> ErrorExplainer.ErrorExplanation<T> createExplanation(T throwable) {
-                return new ErrorExplainer.ParseErrorExplanation(throwable, throwable.getMessage(), throwable.getLineNumber(), throwable.getColumnNumber());
+                return new ErrorExplainer.ParseErrorExplanation<>(throwable, throwable.getMessage(), throwable.getLineNumber(), throwable.getColumnNumber());
             }
         });
 
@@ -145,20 +146,8 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
 
         private JTabbedPane tabs;
 
-        private Map<Class<? extends OWLDocumentFormat>, String> format2ParserMap = new HashMap<>();
-
         public ParseErrorsPanel(UnparsableOntologyException e, final URI loc) {
             setLayout(new BorderLayout(12, 12));
-
-            // hack as there is no way to get from an ontology format to a parser
-            // this must be updated if the supported parsers are changed
-            format2ParserMap.put(RDFXMLDocumentFormat.class, RDFXMLParser.class.getSimpleName());
-            format2ParserMap.put(OWLXMLDocumentFormat.class, OWLXMLParser.class.getSimpleName());
-            format2ParserMap.put(ManchesterSyntaxDocumentFormat.class, ManchesterOWLSyntaxParser.class.getSimpleName());
-            format2ParserMap.put(TurtleDocumentFormat.class, TurtleOntologyParser.class.getSimpleName());
-            format2ParserMap.put(FunctionalSyntaxDocumentFormat.class, OWLFunctionalSyntaxOWLParser.class.getSimpleName());
-            format2ParserMap.put(OBODocumentFormat.class, OBOFormatParser.class.getSimpleName());
-
 
             tabs = new JTabbedPane();
             tabs.setPreferredSize(new Dimension(700, 500));
@@ -166,15 +155,19 @@ public class OntologyLoadErrorHandlerUI implements OntologyLoadErrorHandler {
 
             final java.util.List<OWLParser> parsers = new ArrayList<>(e.getExceptions().keySet());
 
+            int counter = 1;
             for (OWLParser parser : parsers){
                 Throwable parseError = e.getExceptions().get(parser);
                 ErrorExplainer.ErrorExplanation<? extends Throwable> explanation = errorExplainer.getErrorExplanation(parseError, true);
-                final ErrorPanel<? extends Throwable> errorPanel = new ParseErrorPanel(explanation, loc);
-                tabs.addTab(parser.getClass().getSimpleName(), errorPanel);
+                final ErrorPanel<? extends Throwable> errorPanel = new ParseErrorPanel<>(explanation, loc);
+                OWLDocumentFormatFactory supportedFormatFactory = parser.getSupportedFormat();
+                OWLDocumentFormat documentFormat = supportedFormatFactory.get();
+                tabs.addTab("(" + counter + ") " + documentFormat.getKey(), errorPanel);
+                counter++;
             }
 
             add(new JLabel("<html>Could not parse the ontology found at: " + loc +
-                           "<p>The following parsers were tried:</html>"), BorderLayout.NORTH);
+                           "<p>The following formats were tried:</html>"), BorderLayout.NORTH);
 
             add(tabs, BorderLayout.CENTER);
         }
