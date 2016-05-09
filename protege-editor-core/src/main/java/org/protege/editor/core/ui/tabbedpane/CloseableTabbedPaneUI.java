@@ -7,6 +7,9 @@ import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Optional;
 
 
 /**
@@ -22,9 +25,11 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
 
     public static final int TAB_HEIGHT = 20;
 
-    public static final Color TEXT_COLOR = new Color(84, 84, 84);
+    public static final Color TEXT_COLOR = new Color(50, 50, 50);
 
-    public static final Color SEL_TEXT_COLOR = new Color(32, 32, 32);
+    public static final Color HIGH_CONTRAST_TEXT_COLOR = new Color(20, 20, 20);
+
+    public static final Color SEL_TEXT_COLOR = new Color(10, 10, 10);
 
     public static final String CLOSE_SYMBOL = "\u00D7";
 
@@ -48,9 +53,6 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
 
     public static final Color SEL_TAB_BOTTOM_COLOR = new Color(213, 213, 213);
 
-//    public static final Color[] topBorderColorGradient = new Color[]{SEL_TAB_BOTTOM_COLOR,
-//            new Color(SEL_TAB_BOTTOM_COLOR.getRed(), SEL_TAB_BOTTOM_COLOR.getGreen(), SEL_TAB_BOTTOM_COLOR.getBlue(), 0)};
-
     public static final Color[] selTabColorGradient = new Color[]{
             SEL_TAB_TOP_COLOR,
             SEL_TAB_BOTTOM_COLOR
@@ -58,7 +60,7 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
 
     public static final Color TAB_BORDER_COLOR = new Color(155, 155, 155);
 
-    public static final Color TAB_BORDER_COLOR_BOTTOM = new Color(220, 220, 220);
+    public static final Color HIGH_CONTRAST_TAB_BORDER_COLOR = new Color(80, 80, 80);
 
     public static final Insets emptyInsets = new Insets(0, 0, 0, 0);
 
@@ -74,9 +76,6 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
     public static final Color DROP_SHADOW_BOTTOM_COLOR = new Color(50, 50, 50, 20);
 
     public static final Color[] dropShadowColorGradient = new Color[]{DROP_SHADOW_TOP_COLOR, DROP_SHADOW_BOTTOM_COLOR};
-
-    public static final float[] topBorderGradient = new float[]{0.0f, 1f};
-
 
     public static final Font OS_X_FONT = new Font("Helvetica Neue", Font.PLAIN, 12);
 
@@ -113,6 +112,26 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
             tabPane.setFont(OS_X_FONT);
         }
     }
+
+    private boolean isHighContrast() {
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Optional<Boolean> highContrast = Optional.ofNullable((Boolean)toolkit.getDesktopProperty( "win.highContrast.on" ));
+        return highContrast.orElse(false);
+    }
+
+    private Color getTextColor() {
+        if(isHighContrast()) {
+            return HIGH_CONTRAST_TEXT_COLOR;
+        }
+        else {
+            return TEXT_COLOR;
+        }
+    }
+
+    private Color getSelTextColor() {
+        return SEL_TEXT_COLOR;
+    }
+
 
     @Override
     protected int getTabRunOverlay(int tabPlacement) {
@@ -172,10 +191,10 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
         Object antiAliasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         if (isSelected) {
-            g.setColor(SEL_TEXT_COLOR);
+            g.setColor(getSelTextColor());
         }
         else {
-            g.setColor(TEXT_COLOR);
+            g.setColor(getTextColor());
         }
         g.drawString(title, textRect.x, textRect.y + metrics.getAscent());
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, antiAliasing);
@@ -292,10 +311,10 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
         }
         g2.setPaint(paint);
         if (isSelected) {
-            g.setColor(SEL_TEXT_COLOR);
+            g.setColor(getSelTextColor());
         }
         else {
-            g.setColor(TEXT_COLOR);
+            g.setColor(getTextColor());
         }
         if(tabClosability == TabClosability.CLOSABLE) {
             Object antialias = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
@@ -305,7 +324,7 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
             g.drawString(CLOSE_SYMBOL, x + w - width - TAB_PADDING, y + (h - fm.getHeight()) / 2 + fm.getAscent());
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, antialias);
         }
-        g.setColor(TAB_BORDER_COLOR);
+        g.setColor(getTabBorderColor());
         // TOP
         g.drawLine(x, y, x + w - 1, y);
         if (isFirstTabInRun(tabIndex)) {
@@ -351,7 +370,7 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
 
 //        g2.setPaint(paint);
 
-        g.setColor(TAB_BORDER_COLOR);
+        g.setColor(getTabBorderColor());
         // Top
         g.drawLine(x, y, x + w, y);
         g.drawLine(x, y + TOP_CONTENT_BORDER_HEIGHT, x + w, y + TOP_CONTENT_BORDER_HEIGHT);
@@ -360,6 +379,15 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
             g.setColor(SEL_TAB_BOTTOM_COLOR);
             Rectangle r = getTabBounds(tabPane, selectedIndex);
             g.drawLine(r.x, y, r.x + r.width - 1, y);
+        }
+    }
+
+    private Color getTabBorderColor() {
+        if(isHighContrast()) {
+            return HIGH_CONTRAST_TAB_BORDER_COLOR;
+        }
+        else {
+            return TAB_BORDER_COLOR;
         }
     }
 
