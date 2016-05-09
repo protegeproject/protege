@@ -21,7 +21,7 @@ import java.net.URI;
 public class ParseErrorPanel<O extends Throwable> extends ErrorPanel<O>{
 
 
-	public ParseErrorPanel(final ErrorExplainer.ErrorExplanation<O> oErrorExplanation, URI loc) {
+	public ParseErrorPanel(final ErrorExplainer.ErrorExplanation<? extends O> oErrorExplanation, URI loc) {
         super(oErrorExplanation, loc);
     }
 
