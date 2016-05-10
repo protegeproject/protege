@@ -14,7 +14,7 @@ import java.net.URI;
 import java.util.Collections;
 
 
-public class FolderTest extends TestCase {
+public class Folder_IT extends TestCase {
 	/*
 	 * there is something funny about this.  You would think that something 
 	 * much smaller would be enough but with 100 it doesn't work.
