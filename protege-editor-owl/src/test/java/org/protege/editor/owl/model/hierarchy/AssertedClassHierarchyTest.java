@@ -1,6 +1,7 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import org.protege.editor.owl.util.JunitUtil;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.OWLRendererException;
@@ -10,15 +11,19 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.util.Set;
 
-public class AssertedClassHierarchyTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+public class AssertedClassHierarchyTest {
     
     public static String NEW_ONTOLOGY_URI = "http://www.tigraworld.com/protege/1";
     
     private OWLOntologyManager manager;
     private OWLDataFactory factory;
     AssertedClassHierarchyProvider hierarchy;
-    
-    protected void init() {
+
+    @Before
+    public void init() {
         manager = OWLManager.createOWLOntologyManager();
         factory = manager.getOWLDataFactory();
         hierarchy = new AssertedClassHierarchyProvider(manager);
@@ -37,7 +42,8 @@ public class AssertedClassHierarchyTest extends TestCase {
         hierarchy.setOntologies(manager.getOntologies());
         return ontology;
     }
-    
+
+    @Test
     public void testSimpleLoop() throws OWLOntologyCreationException, URISyntaxException, OWLOntologyChangeException {
         String namespace = "http://tigraworld.com/protege/simpleLoop.owl#";
         installOntology("src/test/resources/ontologies/tree/simpleLoop.owl");
@@ -71,7 +77,8 @@ public class AssertedClassHierarchyTest extends TestCase {
 
         assertEquals(0, hierarchy.getChildren(c).size());
     }
-    
+
+    @Test
     public void testTwoParents() throws OWLOntologyCreationException, URISyntaxException {
         String namespace = "http://tigraworld.com/protege/twoParents.owl#";
         installOntology("src/test/resources/ontologies/tree/twoParents.owl");
@@ -93,9 +100,9 @@ public class AssertedClassHierarchyTest extends TestCase {
         assertEquals(1, hierarchy.getChildren(b).size());
         assertTrue(hierarchy.getChildren(b).contains(e));
     }
-    
-    public void testAddGCA() 
-    throws OWLOntologyCreationException, URISyntaxException, OWLOntologyChangeException, OWLRendererException {
+
+    @Test
+    public void testAddGCA() throws OWLOntologyCreationException, URISyntaxException, OWLOntologyChangeException, OWLRendererException {
         String namespace = "http://tigraworld.com/protege/twoParents.owl#";
         installOntology("src/test/resources/ontologies/tree/twoParents.owl");
         
@@ -123,6 +130,7 @@ public class AssertedClassHierarchyTest extends TestCase {
         assertEquals(3, hierarchy.getChildren(factory.getOWLThing()).size());
     }
 
+    @Test
     public void testRemoveNonOrphaned() throws OWLOntologyCreationException, URISyntaxException, OWLOntologyChangeException {
         OWLOntology ontology = createOntology();
         OWLClass a = factory.getOWLClass(IRI.create(NEW_ONTOLOGY_URI + "#A"));

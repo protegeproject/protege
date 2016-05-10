@@ -68,13 +68,6 @@
             <artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>6.8.7</version>
-            <scope>test</scope>
-        </dependency>
-        
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -142,12 +135,6 @@
                         <goals>
                             <goal>test</goal>
                         </goals>
-                        <configuration>
-                            <skip>false</skip>
-                            <suiteXmlFiles>
-                                <suiteXmlFile>src/test/resources/unit-tests.xml</suiteXmlFile>
-                            </suiteXmlFiles>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

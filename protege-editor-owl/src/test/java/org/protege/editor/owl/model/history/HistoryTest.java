@@ -1,13 +1,17 @@
 package org.protege.editor.owl.model.history;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HistoryTest extends TestCase {
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+public class HistoryTest {
     public static final String NS = "http://protege.org/ontologies/History.owl";
     public static final String ALT_NS = "http://protege.org/ontologies/HistoryII.owl";
     public static final OWLClass A = OWLManager.getOWLDataFactory().getOWLClass(IRI.create(NS + "#A"));
@@ -26,30 +30,29 @@ public class HistoryTest extends TestCase {
     private OWLOntology ontology1, ontology2;
     private HistoryManager historyManager;
     
-    @Override
-    protected void setUp() throws OWLOntologyCreationException {
+    @Before
+    public void setUp() throws OWLOntologyCreationException {
         manager = OWLManager.createOWLOntologyManager();
         factory = manager.getOWLDataFactory();
         ontology1 = manager.createOntology(IRI.create(NS));
         ontology2 = manager.createOntology(IRI.create(ALT_NS));
-        List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
+        List<OWLOntologyChange> changes = new ArrayList<>();
         changes.add(new AddAxiom(ontology1, AXIOM1));
         changes.add(new AddAxiom(ontology2, AXIOM2));
         manager.applyChanges(changes);
         historyManager = new HistoryManagerImpl(manager);
-        manager.addOntologyChangeListener(new OWLOntologyChangeListener() {
-            
-            public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
-                historyManager.logChanges(changes);
-            }
+        manager.addOntologyChangeListener(changes1 -> {
+            historyManager.logChanges(changes1);
         });
     }
-    
+
+    @Test
     public void testIntialState() {
         assertTrue(!historyManager.canRedo());
         assertTrue(!historyManager.canUndo());
     }
-    
+
+    @Test
     public void testTwoRedos() {
         OWLAxiom axiom3 = factory.getOWLSubClassOfAxiom(D, A);
         manager.addAxiom(ontology1, axiom3);
@@ -73,6 +76,7 @@ public class HistoryTest extends TestCase {
         assertTrue(historyManager.canUndo());
     }
 
+    @Test
     public void testReverseChanges01() {
         OWLAxiom axiom3 = factory.getOWLSubClassOfAxiom(D, A);
         OWLAxiom axiom4 = factory.getOWLSubClassOfAxiom(E, D);
@@ -103,6 +107,7 @@ public class HistoryTest extends TestCase {
         
     }
 
+    @Test
     public void testReverseChanges02() {
         OWLAxiom axiom3 = factory.getOWLSubClassOfAxiom(D, A);
         OWLAxiom axiom4 = factory.getOWLSubClassOfAxiom(E, D);
@@ -134,6 +139,7 @@ public class HistoryTest extends TestCase {
 
     }
 
+    @Test
     public void testReverseChanges03() {
         OWLAxiom axiom3 = factory.getOWLSubClassOfAxiom(D, A);
         OWLAxiom axiom4 = factory.getOWLSubClassOfAxiom(E, D);
@@ -162,7 +168,8 @@ public class HistoryTest extends TestCase {
         assertTrue(ontology1.containsAxiom(axiom4));          
         
     }
-    
+
+    @Test
     public void testReverseChanges04() {
         OWLAxiom axiom3 = factory.getOWLSubClassOfAxiom(D, A);
         OWLAxiom axiom4 = factory.getOWLSubClassOfAxiom(E, D);
