@@ -29,11 +29,11 @@ import java.util.*;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: Mar 19, 2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
- * <p/>
+
+
  * Represents a view on a model.  A <code>View</code> contains
  * a <code>ViewComponent</code>, which is a type of supported
  * plugin.  The view also contains a header, which consists of a

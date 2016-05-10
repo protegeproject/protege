@@ -9,7 +9,7 @@ import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
  * The University Of Manchester<br>
  * Bio-Health Informatics Group<br>
  * Date: 15-Feb-2007<br><br>
- * <p/>
+
  * A utility class which binds an object property expression and individual together.
  */
 public class OWLObjectPropertyIndividualPair {

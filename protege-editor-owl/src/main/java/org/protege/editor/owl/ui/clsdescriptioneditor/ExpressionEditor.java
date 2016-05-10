@@ -33,10 +33,10 @@ import java.util.StringTokenizer;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: May 4, 2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * An editor that can be used to edit text containing class
  * expressions.  The editor is backed by a parser that checks
  * that the text is well formed and provides feedback if the

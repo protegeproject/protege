@@ -8,10 +8,10 @@ import org.semanticweb.owlapi.model.IRI;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: 31-Aug-2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * A default implementation of the missing import handler.
  */
 public class MissingImportHandlerImpl implements MissingImportHandler {

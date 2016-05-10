@@ -13,10 +13,10 @@ import javax.swing.*;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: Mar 21, 2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * A <code>ViewComponent</code> is the plugin part to a
  * <code>View</code>.  <code>TabViewPlugins</code> should
  * subclass this class and create their view UI in the

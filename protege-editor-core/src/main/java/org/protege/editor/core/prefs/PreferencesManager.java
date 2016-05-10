@@ -11,15 +11,15 @@ package org.protege.editor.core.prefs;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: 20-Jun-2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * The preferences manager provides a global point for access to
  * application preferences and other sets of preferences.  Plugin
  * developers may use the preferences sets mechanisms to create and
  * store preferences for their own plugins.
- * <p/>
+
  * For plugins, typical use is to store preferences in a preference
  * set.  For example suppose a plugin stored data about the size of a
  * component - the xSize and the ySize.  To store these the plugin might

@@ -16,11 +16,11 @@ import java.net.URL;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: Mar 18, 2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  * Represents a tab in a <code>TabbedWorkspace</code>.
- * <p/>
+
  * This is a core plugin type.
  */
 public abstract class WorkspaceTab extends JComponent implements ProtegePluginInstance {

@@ -18,10 +18,10 @@ import java.util.Iterator;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: Apr 2, 2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * A renderer that renders objects using the Manchester OWL Syntax.
  * Axiom level OWLObjects are rendered in Manchester "style"
  */

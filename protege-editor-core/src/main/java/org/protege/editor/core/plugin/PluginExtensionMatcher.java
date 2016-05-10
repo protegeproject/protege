@@ -15,10 +15,10 @@ import org.eclipse.core.runtime.IExtension;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: Mar 17, 2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * This interface is used by the plugin utilities to filter
  * out certain types of plugin extensions.  Users of
  * <code>PluginExtensionMatcher</code> implementations should

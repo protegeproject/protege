@@ -74,7 +74,7 @@ public final class StyledString implements CharSequence, Comparable<StyledString
      * to <tt>length() - 1</tt>.  The first {@code char} value of the sequence is at
      * index zero, the next at index one, and so on, as for array
      * indexing. </p>
-     * <p/>
+
      * <p>If the {@code char} value specified by the index is a
      * <a href="Character.html#unicode">surrogate</a>, the surrogate
      * value is returned.

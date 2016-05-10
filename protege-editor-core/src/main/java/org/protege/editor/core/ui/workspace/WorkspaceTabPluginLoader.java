@@ -18,10 +18,10 @@ import org.protege.editor.core.plugin.PluginProperties;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: Mar 18, 2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * A utility class that loads <code>WorkspaceTabPlugin</code>s.  The
  * tab plugins are filtered so that <code>WorkspaceTabPlugin</code>s
  * that apply to a specific workspace are loaded.

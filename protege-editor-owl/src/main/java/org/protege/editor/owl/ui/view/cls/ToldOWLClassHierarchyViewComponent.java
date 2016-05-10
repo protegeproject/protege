@@ -26,10 +26,10 @@ import java.util.*;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: Mar 21, 2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * A view that contains a JTree that displays a
  * hierarchy of OWLClasses. The class hierarchy
  * is derived from told information.

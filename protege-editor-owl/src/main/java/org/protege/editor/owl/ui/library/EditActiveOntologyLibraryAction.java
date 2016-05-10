@@ -15,7 +15,7 @@ import java.io.IOException;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: 24-Aug-2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */

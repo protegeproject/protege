@@ -11,7 +11,7 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: 13-May-2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */

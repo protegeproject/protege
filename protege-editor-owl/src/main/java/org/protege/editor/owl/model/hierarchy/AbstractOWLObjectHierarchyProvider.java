@@ -16,10 +16,10 @@ import static java.util.stream.Collectors.toSet;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: 01-Jun-2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * A basic partial implementation of a hierarchy provider, which
  * handles listeners and event firing, and also provides basic
  * implementations of method such as getAncestors, getDescendants etc.

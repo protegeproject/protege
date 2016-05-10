@@ -35,7 +35,7 @@ import java.util.List;
  * Bio-Health Informatics Group<br>
  * Date: 29-Jan-2007<br>
  * <br>
- * <p/> This definitely needs a rethink - it is a totally inefficient hack!
+  This definitely needs a rethink - it is a totally inefficient hack!
  */
 
 public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewComponent

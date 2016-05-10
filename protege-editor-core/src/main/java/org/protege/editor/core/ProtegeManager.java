@@ -17,9 +17,9 @@ import java.util.Map;
 /**
  * Author: Matthew Horridge<br> The University Of Manchester<br> Medical Informatics Group<br> Date: Mar 15,
  * 2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br> www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * ProtegeManager is a singleton that manages the Protege application. This means that the <code>ProtegeManager</code>
  * manages the creation and deletion of <code>EditorKit</code>s.  A list of the installed
  * <code>EditorKitFactoryPlugin</code>s

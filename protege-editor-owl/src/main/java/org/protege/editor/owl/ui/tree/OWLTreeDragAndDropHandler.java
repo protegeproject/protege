@@ -11,7 +11,7 @@ package org.protege.editor.owl.ui.tree;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: 04-Jun-2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */

@@ -13,17 +13,17 @@ import java.util.Set;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: 14-Jun-2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * A utility class that can be used to extract the fillers
  * of existential (OWLObjectSomeValuesFroms) that restrict
  * a specified property.  This class is a visitor and should
  * be used to visit <code>OWLClassExpression</code>s - only existential
  * (and hasValue) restrictions are processed.
- * <p/>
- * <p/>
+
+
  * Visiting the following descriptions,
  * <code>
  * A
@@ -33,7 +33,7 @@ import java.util.Set;
  * p only E
  * </code>
  * would return the set <code>{B, (C and D)}</code>.
- * <p/>
+
  */
 public class ObjectSomeValuesFromFillerExtractor extends OWLClassExpressionVisitorAdapter {
 

@@ -21,7 +21,7 @@ import java.util.Set;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: Sep 21, 2005<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */

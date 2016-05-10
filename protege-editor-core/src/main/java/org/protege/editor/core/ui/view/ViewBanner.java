@@ -14,10 +14,10 @@ import java.util.ArrayList;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: 22-May-2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * A component that displays a "banner" with
  * white text and a coloured  background.
  */
@@ -180,7 +180,7 @@ public class ViewBanner extends JPanel {
      * <code>Graphics</code> object to protect the rest of the
      * paint code from irrevocable changes
      * (for example, <code>Graphics.translate</code>).
-     * <p/>
+
      * If you override this in a subclass you should not make permanent
      * changes to the passed in <code>Graphics</code>. For example, you
      * should not alter the clip <code>Rectangle</code> or modify the
@@ -192,7 +192,7 @@ public class ViewBanner extends JPanel {
      * if this component is opaque, you must completely fill in the background
      * in a non-opaque color. If you do not honor the opaque property you
      * will likely see visual artifacts.
-     * <p/>
+
      * The passed in <code>Graphics</code> object might
      * have a transform other than the identify transform
      * installed on it.  In this case, you might get

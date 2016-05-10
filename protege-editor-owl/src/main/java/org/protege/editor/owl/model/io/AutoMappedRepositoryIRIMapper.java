@@ -10,7 +10,7 @@ import java.net.URI;
 /**
  * Author: drummond<br>
  * http://www.cs.man.ac.uk/~drummond/<br><br>
- * <p/>
+
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
  * Date: Sep 1, 2008<br><br>
@@ -18,9 +18,9 @@ import java.net.URI;
  * A custom URIMapper.  This is used by the various parsers to
  * convert ontology URIs into physical URIs that point to concrete
  * representations of ontologies.
- * <p/>
+
  * The mapper uses the following strategy:
- * <p/>
+
  * It looks in auto-mapped libraries.  These are folder libraries
  * that correspond to folders where the "root ontologies" have been
  * loaded from.  If the mapper finds an ontology that has a mapping

@@ -14,10 +14,10 @@ import java.io.IOException;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: 20-Jul-2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * A library contains a set of ontologies.  Each ontology
  * is intuitvely identified by a logical URI - the ontology URI.
  * If a library contains an ontology then the library can provide

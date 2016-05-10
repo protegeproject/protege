@@ -12,10 +12,10 @@ import java.util.Optional;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: 22-May-2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * A component that comprises a <code>ViewBanner</code>
  * and a toolbar that holds actions.
  */

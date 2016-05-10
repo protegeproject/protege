@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
  * The University Of Manchester<br>
  * Bio-Health Informatics Group<br>
  * Date: 22-Feb-2007<br><br>
- * <p/>
+
  * A base class for actions which perform an action based on the selected entity.
  */
 public abstract class SelectedOWLEntityAction extends ProtegeOWLAction {

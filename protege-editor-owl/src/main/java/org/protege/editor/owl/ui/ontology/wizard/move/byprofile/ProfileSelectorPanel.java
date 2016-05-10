@@ -16,7 +16,7 @@ import javax.swing.*;
 /**
  * Author: drummond<br>
  * http://www.cs.man.ac.uk/~drummond/<br><br>
- * <p/>
+
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
  * Date: Dec 3, 2008<br><br>
