@@ -14,10 +14,10 @@ import java.util.function.Predicate;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: 01-Jun-2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * An interface to an object that can provide a hierarchy of objects, for
  * example a class, property or individual hierarchy.
  */

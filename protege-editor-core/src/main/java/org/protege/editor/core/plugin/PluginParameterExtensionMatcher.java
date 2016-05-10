@@ -18,10 +18,10 @@ import java.util.Map;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: Mar 22, 2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * An implementation of <code>PluginExtensionMatcher</code> that returns the
  * extensions that match a given set of parameters.
  */

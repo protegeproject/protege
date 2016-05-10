@@ -23,10 +23,10 @@ import java.util.*;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: Mar 27, 2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * The <code>MenuBuilder</code> constructs a <code>JMenuBar</code> based on the
  * installed menu action plugins.
  */

@@ -13,10 +13,10 @@ import java.awt.*;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: Mar 20, 2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * A <code>ViewContainer</code> holds one component
  * which is either a <code>View</code> or a split pane
  * which contains two <code>View</code>s.

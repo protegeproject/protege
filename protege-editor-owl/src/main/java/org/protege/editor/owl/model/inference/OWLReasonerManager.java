@@ -13,10 +13,10 @@ import java.util.Set;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: 19-Jun-2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * The reasoner manager manages a "global" reaoner instance, but
  * also provides the ability to create new instances of the currently
  * selected reasoner.

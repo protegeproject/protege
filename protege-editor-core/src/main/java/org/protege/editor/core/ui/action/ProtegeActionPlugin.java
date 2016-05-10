@@ -11,10 +11,10 @@ import javax.swing.*;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: Mar 28, 2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * A plugin that descirbes a <code>ProtegeAction</code>.
  * The plugin describes essential information such as the
  * name of the action, the tooltip and the icon.  The plugin

@@ -10,10 +10,10 @@ import java.net.URL;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: Mar 18, 2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * A <code>ProtegePlugin</code> that creates <code>WorkspaceTab</code>s.
  * The has a reference to the <code>TabbedWorkspace</code> that it is
  * creating the tabs for.

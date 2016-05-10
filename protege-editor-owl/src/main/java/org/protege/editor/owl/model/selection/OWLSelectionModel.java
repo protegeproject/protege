@@ -9,11 +9,11 @@ import org.semanticweb.owlapi.model.*;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: Mar 27, 2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
- * <p/>
+
+
  * An <code>OWLSelectionModel</code> keeps track
  * of a list of <code>OWLObjects</code>.  If the list
  * of objects changes, any listeners are notified.  Note that

@@ -10,7 +10,7 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: Mar 19, 2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */

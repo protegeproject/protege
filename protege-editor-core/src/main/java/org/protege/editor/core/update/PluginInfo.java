@@ -16,7 +16,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * The University Of Manchester<br>
  * Bio-Health Informatics Group<br>
  * Date: 18-Jun-2007<br><br>
- * <p/>
+
  * Encapsulates information about a new version of a plugin.
  */
 public class PluginInfo {

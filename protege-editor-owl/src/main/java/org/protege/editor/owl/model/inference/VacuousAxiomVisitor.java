@@ -6,7 +6,7 @@ import org.semanticweb.owlapi.model.*;
 
 /**
  * This class performs simple heuristics to detect vacuous axioms.
- * <p/>
+
  * The motivation for this class is that certain inference processes will generate vacuous axioms as entailments.  The vacuous axioms 
  * are distracting and do not provide any addition information.  
  * 

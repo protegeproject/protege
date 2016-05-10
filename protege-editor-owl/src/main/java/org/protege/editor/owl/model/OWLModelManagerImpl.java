@@ -58,10 +58,10 @@ import java.util.concurrent.TimeUnit;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: Mar 17, 2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * The <code>OWLModelManager</code> acts as a controller
  * over a collection of ontologies (ontologies that are
  * related to each other via owl:imports) and the various

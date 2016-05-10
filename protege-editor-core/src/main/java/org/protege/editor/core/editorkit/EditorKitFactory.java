@@ -8,11 +8,11 @@ import java.net.URI;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: Mar 16, 2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
- * <p/>
+
+
  * <code>EditorKit</code> factories are responsible
  * for creating clsdescriptioneditor kits.  They are a type of plugin
  * to the application.

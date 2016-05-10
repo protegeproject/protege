@@ -12,22 +12,22 @@ import java.net.URI;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: Mar 15, 2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
- * <p/>
- * <p/>
+
+
+
  * The EditorKit provides a connection between
  * some kind of "ontology model" (or knowledgebase) and
  * a UI for that model/knowledgebase.  The model, whatever
  * it might be is managed by a <code>ModelManager</code>.  The
  * UI comes in the form of a <code>Workspace</code>.
- * <p/>
+
  * Each <code>Workspace</code> has a reference to its
  * <code>EditorKit</code>, and each <code>ModelManager</code>
  * has a reference to its <code>EditorKit</code>.
- * <p/>
+
  * Each <code>EditorKit</code> has an ID, which determines its
  * type.  This is used by views, and other plugins such as menu
  * items that are only applicable to certain types of <code>EditorKit</code>s.

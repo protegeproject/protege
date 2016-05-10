@@ -11,7 +11,7 @@ import java.util.List;
  * The University Of Manchester<br>
  * Bio-Health Informatics Group<br>
  * Date: 19-Jan-2007<br><br>
- * <p/>
+
  * An <code>OWLFrameSectionRow</code> constitues a row in a frame section, which represents
  * an axiom.
  */

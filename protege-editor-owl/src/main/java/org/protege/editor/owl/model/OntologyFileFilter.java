@@ -9,10 +9,10 @@ import java.io.FileFilter;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: 23-Aug-2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * A file filter that accepts probable ontology files.
  */
 public class OntologyFileFilter implements FileFilter {

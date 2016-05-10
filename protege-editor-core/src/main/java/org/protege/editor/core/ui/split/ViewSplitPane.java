@@ -10,13 +10,13 @@ import java.awt.event.ContainerListener;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: Mar 19, 2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * This is a customisation of a <code>JSplitPane</code>
  * that modifies the split pane dividers and borders.
- * <p/>
+
  * The split pane UI is replaced so that the divider
  * and borders are "flat".  The split pane also changes
  * the size of the splitter depending on the number of

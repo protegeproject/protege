@@ -16,9 +16,9 @@ import java.util.List;
 /**
  * Author: Matthew Horridge<br> The University Of Manchester<br> Medical Informatics Group<br> Date: Mar 17,
  * 2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br> www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * A <code>TabbedWorkspace</code> represents a <code>Workspace</code> that contains tabs.  The tabs are loaded
  * automatically depending on the <code>Workspace</code> clsdescriptioneditor kit.
  */

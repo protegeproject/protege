@@ -17,10 +17,10 @@ import java.net.URL;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: Mar 28, 2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * An implementation of the <code>WorkspaceTabPlugin</code> that uses
  * the Java Plugin Framework to obtain the details of the plugins
  */

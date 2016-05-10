@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Author: drummond<br>
  * http://www.cs.man.ac.uk/~drummond/<br><br>
- * <p/>
+
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
  * Date: Sep 1, 2008<br><br>
@@ -24,9 +24,9 @@ import java.util.Map;
  * A custom URIMapper.  This is used by the various parsers to
  * convert ontology URIs into physical URIs that point to concrete
  * representations of ontologies.
- * <p/>
+
  * The mapper uses the following strategy:
- * <p/>
+
  * The system turns to the "Missing Import Handler", which may
  * try to obtain the physical URI (usually by adding a library or
  * by specifying a file etc.)

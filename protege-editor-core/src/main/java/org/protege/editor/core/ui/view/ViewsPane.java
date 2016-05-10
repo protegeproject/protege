@@ -19,9 +19,9 @@ import java.util.Set;
 /**
  * Author: Matthew Horridge<br> The University Of Manchester<br> Medical Informatics Group<br> Date:
  * 15-May-2006<br><br>
- * <p/>
+
  * matthew.horridge@cs.man.ac.uk<br> www.cs.man.ac.uk/~horridgm<br><br>
- * <p/>
+
  * A panel that contains views.  Each panel has an id.
  */
 public class ViewsPane extends JPanel {
