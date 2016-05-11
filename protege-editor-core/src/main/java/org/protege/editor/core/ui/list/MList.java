@@ -1,5 +1,7 @@
 package org.protege.editor.core.ui.list;
 
+import org.protege.editor.core.ui.util.UIUtil;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
@@ -24,6 +26,10 @@ public class MList extends JList {
     private static final int BUTTON_DIMENSION = 16;
 
     private static final int BUTTON_MARGIN = 2;
+
+    private static final Color FRAME_SECTION_HEADER_FOREGROUND = Color.GRAY;
+
+    private static final Color FRAME_SECTION_HEADER_HIGH_CONTRAST_FOREGROUND = new Color(40, 40, 40);
 
     private Font sectionHeaderFont = new Font("Lucida Grande", Font.PLAIN, 10);
     
@@ -433,7 +439,7 @@ public class MList extends JList {
             g2.setColor(this.getSelectionForeground());
         }
         else {
-            g2.setColor(Color.GRAY);
+            g2.setColor(getSectionHeaderForeground());
         }
         int baseLine = rowBounds.y + (getButtonDimension() + BUTTON_MARGIN - g2.getFontMetrics().getHeight()) / 2 + g2.getFontMetrics().getAscent();
         Font oldFont = g2.getFont();
@@ -441,7 +447,16 @@ public class MList extends JList {
         g2.drawString(header.getName(), 5, baseLine);
         g2.setFont(oldFont);
     }
-    
+
+    private Color getSectionHeaderForeground() {
+        if(UIUtil.isHighContrastOn()) {
+            return FRAME_SECTION_HEADER_HIGH_CONTRAST_FOREGROUND;
+        }
+        else {
+            return FRAME_SECTION_HEADER_FOREGROUND;
+        }
+    }
+
     private Font getSectionHeaderFont() {
         Font font = getFont();
         if(font != null) {

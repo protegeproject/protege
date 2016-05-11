@@ -15,6 +15,7 @@ import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -259,6 +260,17 @@ public class UIUtil {
         }
         String scheme = uri.getScheme();
         return scheme != null && FILE_URI_SCHEME.equals(scheme.toLowerCase());
+    }
+
+    /**
+     * Determines whether the user is on Windows and if so whether the "high contrast" setting
+     * is set to on.
+     * @return {@code true} if on, otherwise {@code false}
+     */
+    public static boolean isHighContrastOn() {
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Optional<Boolean> highContrast = Optional.ofNullable((Boolean)toolkit.getDesktopProperty( "win.highContrast.on" ));
+        return highContrast.orElse(false);
     }
 
 }

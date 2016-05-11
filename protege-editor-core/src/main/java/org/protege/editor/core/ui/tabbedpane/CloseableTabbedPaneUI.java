@@ -1,5 +1,7 @@
 package org.protege.editor.core.ui.tabbedpane;
 
+import org.protege.editor.core.ui.util.UIUtil;
+
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
@@ -113,14 +115,9 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
         }
     }
 
-    private boolean isHighContrast() {
-        Toolkit toolkit = Toolkit.getDefaultToolkit();
-        Optional<Boolean> highContrast = Optional.ofNullable((Boolean)toolkit.getDesktopProperty( "win.highContrast.on" ));
-        return highContrast.orElse(false);
-    }
 
     private Color getTextColor() {
-        if(isHighContrast()) {
+        if(UIUtil.isHighContrastOn()) {
             return HIGH_CONTRAST_TEXT_COLOR;
         }
         else {
@@ -383,7 +380,7 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
     }
 
     private Color getTabBorderColor() {
-        if(isHighContrast()) {
+        if(UIUtil.isHighContrastOn()) {
             return HIGH_CONTRAST_TAB_BORDER_COLOR;
         }
         else {
