@@ -134,13 +134,9 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
         createPopupMenu();
 
         inferredRowButtons = new ArrayList<>();
-        inferredRowButtons.add(new ExplainButton(e -> {
-            invokeExplanationHandler();
-        }));
+        inferredRowButtons.add(new ExplainButton(e -> invokeExplanationHandler()));
 
-        axiomAnnotationButton = new AxiomAnnotationButton(event -> {
-            invokeAxiomAnnotationHandler();
-        });
+        axiomAnnotationButton = new AxiomAnnotationButton(event -> invokeAxiomAnnotationHandler());
 
         changeListenerMediator = new ChangeListenerMediator();
         addListSelectionListener(selListener);
