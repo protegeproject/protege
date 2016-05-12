@@ -45,18 +45,18 @@ public class WebConnectionIRIMapper implements OWLOntologyIRIMapper {
             return ontologyIRI;
         }
         catch (MalformedURLException e) {
-            logger.info("Unresolvable owl:imports: {}.  The imported ontology document IRI is malformed.");
+            logger.info("Imported ontology document IRI {} is malformed.", ontologyIRI);
         }
         catch (FileNotFoundException e) {
-            logger.info("Unresolvable owl:imports: {}. Checked to see if the imported ontology document exists on the Web, but it does not. (File Not Found)", ontologyIRI);
+            logger.info("Imported ontology document {} does not exist on the Web (File Not Found).", ontologyIRI);
         }
         catch (UnknownHostException e) {
             String host = e.getMessage();
-            logger.info("Unresolvable owl:imports: {}. Cannot connect to {} (Unknown Host).", ontologyIRI, host);
+            logger.info("Imported ontology document {} could not be retrieved. Cannot connect to {} (Unknown Host).", ontologyIRI, host);
         }
         catch (IOException e) {
             // Can't open the stream - problem resolving the URI
-            logger.info("Tried, but could not open a stream to imported ontology IRI {}.", ontologyIRI, e);
+            logger.info("Imported ontology document {} could not be retrieved: {}", ontologyIRI, e.getMessage());
         }
         return null;
     }
