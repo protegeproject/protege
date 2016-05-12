@@ -5,10 +5,10 @@ import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URLConnection;
+import java.net.*;
 
 /**
  * Author: drummond<br>
@@ -24,29 +24,39 @@ import java.net.URLConnection;
 
  * The mapper uses the following strategy:
 
- * The system attemps to resolve the logical URI.  If
- * this succeeds then the logical URI is returned.
+ * The system attempts to resolve the imported IRI.  If
+ * this succeeds then the imported IRI is returned.
 
  */
 public class WebConnectionIRIMapper implements OWLOntologyIRIMapper {
 
     private final Logger logger = LoggerFactory.getLogger(WebConnectionIRIMapper.class);
 
-
     public IRI getDocumentIRI(IRI ontologyIRI) {
         // We can't find a local version of the ontology. Can we resolve the URI?
+
+        // First check that the URI can be resolved.
+        final URI documentURI = ontologyIRI.toURI();
         try {
-            // First check that the URI can be resolved.
-            final URI potentialPhysicalURI = ontologyIRI.toURI();
-            URLConnection conn = potentialPhysicalURI.toURL().openConnection();
+            final URL documentURL = documentURI.toURL();
+            URLConnection conn = documentURL.openConnection();
             InputStream is = conn.getInputStream();
             is.close();
-            return IRI.create(potentialPhysicalURI);
+            return ontologyIRI;
+        }
+        catch (MalformedURLException e) {
+            logger.info("Unresolvable owl:imports: {}.  The imported ontology document IRI is malformed.");
+        }
+        catch (FileNotFoundException e) {
+            logger.info("Unresolvable owl:imports: {}. Checked to see if the imported ontology document exists on the Web, but it does not. (File Not Found)", ontologyIRI);
+        }
+        catch (UnknownHostException e) {
+            String host = e.getMessage();
+            logger.info("Unresolvable owl:imports: {}. Cannot connect to {} (Unknown Host).", ontologyIRI, host);
         }
         catch (IOException e) {
             // Can't open the stream - problem resolving the URI
-            logger.error("Cannot open a stream to {}.", ontologyIRI, e);
-            // Delegate to the missing imports handler
+            logger.info("Tried, but could not open a stream to imported ontology IRI {}.", ontologyIRI, e);
         }
         return null;
     }
