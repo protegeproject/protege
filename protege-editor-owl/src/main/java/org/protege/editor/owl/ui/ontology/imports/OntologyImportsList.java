@@ -39,7 +39,7 @@ public class OntologyImportsList extends MList {
 
     private final Logger logger = LoggerFactory.getLogger(OntologyImportsList.class);
 
-    private OWLEditorKit eKit;
+    private OWLEditorKit editorKit;
 
     private OWLOntology ont;
 
@@ -51,11 +51,11 @@ public class OntologyImportsList extends MList {
 
     private OWLOntologyChangeListener ontChangeListener = changes -> handleOntologyChanges(changes);
 
-    public OntologyImportsList(OWLEditorKit eKit) {
-        this.eKit = eKit;
+    public OntologyImportsList(OWLEditorKit editorKit) {
+        this.editorKit = editorKit;
         setFixedCellHeight(-1);
 
-//        setCellRenderer(new OWLOntologyCellRenderer(eKit){
+//        setCellRenderer(new OWLOntologyCellRenderer(editorKit){
 //            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 //                if (value instanceof OntologyImportItem){
 //                    value = ((OntologyImportItem)value).getImportDeclaration().getIRI();
@@ -64,7 +64,7 @@ public class OntologyImportsList extends MList {
 //            }
 //        });
 
-        setCellRenderer(new OntologyImportsItemRenderer(eKit));
+        setCellRenderer(new OntologyImportsItemRenderer(editorKit));
 
         directImportsHeader = new MListSectionHeader() {
 
@@ -88,80 +88,82 @@ public class OntologyImportsList extends MList {
             }
         };
 
-        eKit.getOWLModelManager().addOntologyChangeListener(ontChangeListener);
+        editorKit.getOWLModelManager().addOntologyChangeListener(ontChangeListener);
     }
 
 
     protected void handleAdd() {
         // don't need to check the section as only the direct imports can be added
-        wizard = new OntologyImportWizard((Frame) SwingUtilities.getAncestorOfClass(Frame.class, eKit.getWorkspace()), eKit);
+        wizard = new OntologyImportWizard((Frame) SwingUtilities.getAncestorOfClass(Frame.class, editorKit.getWorkspace()), editorKit);
         int ret = wizard.showModalDialog();
 
         if (ret == Wizard.FINISH_RETURN_CODE) {
-            OWLOntologyManager manager = eKit.getModelManager().getOWLOntologyManager();
-            OntologyCatalogManager catalogManager = eKit.getOWLModelManager().getOntologyCatalogManager();
-            OWLOntology activeOntology = eKit.getModelManager().getActiveOntology();
-            List<OWLOntologyChange> changes = new ArrayList<>();
-
-            for (ImportInfo importParameters : wizard.getImports()) {
-                IRI importedOntologyDocumentIRI = importParameters.getImportsDeclarationIRI();
-                URI physicalLocation = importParameters.getPhysicalLocation();
-                if (willRedirectTotheWrongPlace(catalogManager, importedOntologyDocumentIRI, physicalLocation)) {
-                    addImportMapping(activeOntology, importedOntologyDocumentIRI, IRI.create(physicalLocation));
-                }
-                OWLImportsDeclaration decl = manager.getOWLDataFactory().getOWLImportsDeclaration(importedOntologyDocumentIRI);
-                if (!manager.contains(importParameters.getOntologyID())) {
-                    try {
-                        manager.loadOntology(importedOntologyDocumentIRI);
-                        eKit.getModelManager().fireEvent(EventType.ONTOLOGY_LOADED);
-                        if (importParameters.getOntologyID() != null && !importParameters.getOntologyID().isAnonymous()) {
-                            OWLOntology importedOnt = manager.getOntology(importParameters.getOntologyID());
-                            if (importedOnt == null) {
-                                logger.warn("Imported ontology has unexpected id. " +
-                                        "During imports processing we anticipated " + importParameters.getOntologyID());
-                                logger.warn("Please notify the Protege developers via the protege 4 mailing list (p4-feedback@lists.stanford.edu)");
-                                continue;
-                            }
-                            eKit.addRecent(manager.getOntologyDocumentIRI(importedOnt).toURI());
-                        }
-                        changes.add(new AddImport(ont, decl));
-                    } catch (OWLOntologyCreationException e) {
-                        logger.error("There was a problem loading the ontology from {}.  Error: {}", importedOntologyDocumentIRI, e.getMessage(), e);
-                        JOptionPane.showMessageDialog(this, "An error occurred whilst the ontology at " + importedOntologyDocumentIRI + " was being loaded.", "Error loading ontology", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-
-            }
-            eKit.getModelManager().applyChanges(changes);
+            AddImportsStrategy strategy = new AddImportsStrategy(editorKit, ont, wizard.getImports());
+            strategy.addImports();
+//            OWLOntologyManager manager = editorKit.getModelManager().getOWLOntologyManager();
+//            OntologyCatalogManager catalogManager = editorKit.getOWLModelManager().getOntologyCatalogManager();
+//            OWLOntology activeOntology = editorKit.getModelManager().getActiveOntology();
+//            List<OWLOntologyChange> changes = new ArrayList<>();
+//
+//            for (ImportInfo importParameters : wizard.getImports()) {
+//                IRI importedOntologyDocumentIRI = importParameters.getImportsDeclarationIRI();
+//                URI physicalLocation = importParameters.getPhysicalLocation();
+//                if (willRedirectTotheWrongPlace(catalogManager, importedOntologyDocumentIRI, physicalLocation)) {
+//                    addImportMapping(activeOntology, importedOntologyDocumentIRI, IRI.create(physicalLocation));
+//                }
+//                OWLImportsDeclaration decl = manager.getOWLDataFactory().getOWLImportsDeclaration(importedOntologyDocumentIRI);
+//                if (!manager.contains(importParameters.getOntologyID())) {
+//                    try {
+//                        manager.loadOntology(importedOntologyDocumentIRI);
+//                        editorKit.getModelManager().fireEvent(EventType.ONTOLOGY_LOADED);
+//                        if (importParameters.getOntologyID() != null && !importParameters.getOntologyID().isAnonymous()) {
+//                            OWLOntology importedOnt = manager.getOntology(importParameters.getOntologyID());
+//                            if (importedOnt == null) {
+//                                logger.warn("Imported ontology has unexpected id. " +
+//                                        "During imports processing we anticipated " + importParameters.getOntologyID());
+//                                logger.warn("Please notify the Protege developers via the protege 4 mailing list (p4-feedback@lists.stanford.edu)");
+//                                continue;
+//                            }
+//                            editorKit.addRecent(manager.getOntologyDocumentIRI(importedOnt).toURI());
+//                        }
+//                        changes.add(new AddImport(ont, decl));
+//                    } catch (OWLOntologyCreationException e) {
+//                        logger.error("There was a problem loading the ontology from {}.  Error: {}", importedOntologyDocumentIRI, e.getMessage(), e);
+//                        JOptionPane.showMessageDialog(this, "An error occurred whilst the ontology at " + importedOntologyDocumentIRI + " was being loaded.", "Error loading ontology", JOptionPane.ERROR_MESSAGE);
+//                    }
+//                }
+//
+//            }
+//            editorKit.getModelManager().applyChanges(changes);
         }
     }
 
-    private boolean willRedirectTotheWrongPlace(OntologyCatalogManager catalogManager, IRI importLocation, URI physicalLocation) {
-        if (catalogManager.getRedirect(importLocation.toURI()) == null) {
-            return !importLocation.equals(IRI.create(physicalLocation));
-        }
-        else {
-            return !physicalLocation.equals(catalogManager.getRedirect(importLocation.toURI()));
-        }
-    }
-
-    private void addImportMapping(OWLOntology ontology, IRI importLocation, IRI physicalLocation) {
-        OWLOntologyManager manager = ontology.getOWLOntologyManager();
-
-        manager.addIRIMapper(new SimpleIRIMapper(importLocation, physicalLocation));
-        IRI importersDocumentLocation = manager.getOntologyDocumentIRI(ontology);
-        if (UIUtil.isLocalFile(importersDocumentLocation.toURI())) {
-            File f = new File(importersDocumentLocation.toURI());
-            XMLCatalog catalog = eKit.getModelManager().addRootFolder(f.getParentFile());
-            URI physicalUri = CatalogUtilities.relativize(physicalLocation.toURI(), catalog);
-            catalog.addEntry(0, new UriEntry("Imports Wizard Entry", catalog, importLocation.toURI().toString(), physicalUri, null));
-            try {
-                CatalogUtilities.save(catalog, OntologyCatalogManager.getCatalogFile(f.getParentFile()));
-            } catch (IOException e) {
-                logger.warn("An error occurred whilst saving the catalog file: {}", e);
-            }
-        }
-    }
+//    private boolean willRedirectTotheWrongPlace(OntologyCatalogManager catalogManager, IRI importLocation, URI physicalLocation) {
+//        if (catalogManager.getRedirect(importLocation.toURI()) == null) {
+//            return !importLocation.equals(IRI.create(physicalLocation));
+//        }
+//        else {
+//            return !physicalLocation.equals(catalogManager.getRedirect(importLocation.toURI()));
+//        }
+//    }
+//
+//    private void addImportMapping(OWLOntology ontology, IRI importLocation, IRI physicalLocation) {
+//        OWLOntologyManager manager = ontology.getOWLOntologyManager();
+//
+//        manager.addIRIMapper(new SimpleIRIMapper(importLocation, physicalLocation));
+//        IRI importersDocumentLocation = manager.getOntologyDocumentIRI(ontology);
+//        if (UIUtil.isLocalFile(importersDocumentLocation.toURI())) {
+//            File f = new File(importersDocumentLocation.toURI());
+//            XMLCatalog catalog = editorKit.getModelManager().addRootFolder(f.getParentFile());
+//            URI physicalUri = CatalogUtilities.relativize(physicalLocation.toURI(), catalog);
+//            catalog.addEntry(0, new UriEntry("Imports Wizard Entry", catalog, importLocation.toURI().toString(), physicalUri, null));
+//            try {
+//                CatalogUtilities.save(catalog, OntologyCatalogManager.getCatalogFile(f.getParentFile()));
+//            } catch (IOException e) {
+//                logger.warn("An error occurred whilst saving the catalog file: {}", e);
+//            }
+//        }
+//    }
 
 
     public void setOntology(OWLOntology ont) {
@@ -173,18 +175,18 @@ public class OntologyImportsList extends MList {
 
         // @@TODO ordering
         for (OWLImportsDeclaration decl : ont.getImportsDeclarations()) {
-            data.add(new OntologyImportItem(ont, decl, eKit));
+            data.add(new OntologyImportItem(ont, decl, editorKit));
         }
 
         data.add(indirectImportsHeader);
 
         // @@TODO ordering
         try {
-            for (OWLOntology ontRef : eKit.getOWLModelManager().getOWLOntologyManager().getImportsClosure(ont)) {
+            for (OWLOntology ontRef : editorKit.getOWLModelManager().getOWLOntologyManager().getImportsClosure(ont)) {
                 if (!ontRef.equals(ont)) {
                     for (OWLImportsDeclaration dec : ontRef.getImportsDeclarations()) {
                         if (!data.contains(dec)) {
-                            data.add(new OntologyImportItem(ontRef, dec, eKit));
+                            data.add(new OntologyImportItem(ontRef, dec, editorKit));
                         }
                     }
                 }
@@ -216,7 +218,7 @@ public class OntologyImportsList extends MList {
 
 
     public void dispose() {
-        eKit.getOWLModelManager().removeOntologyChangeListener(ontChangeListener);
+        editorKit.getOWLModelManager().removeOntologyChangeListener(ontChangeListener);
     }
 
     @Override
