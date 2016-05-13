@@ -47,6 +47,8 @@ public class MetricsPanel extends JPanel {
 
     public MetricsPanel(OWLEditorKit editorKit) {
         this.owlEditorKit = editorKit;
+        setBackground(Color.WHITE);
+        setOpaque(true);
         initialiseOWLView();
         createPopupMenu();
     }
