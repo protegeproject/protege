@@ -4,6 +4,8 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 
@@ -28,16 +30,26 @@ import java.net.URI;
  * auto-mapped file is returned.
  */
 public class AutoMappedRepositoryIRIMapper implements OWLOntologyIRIMapper {
-    private OntologyCatalogManager libraryManager;
+
+    private final Logger logger = LoggerFactory.getLogger(AutoMappedRepositoryIRIMapper.class);
+
+    private final OntologyCatalogManager ontologyCatalogManager;
     
 
-    public AutoMappedRepositoryIRIMapper(OWLModelManager mngr)  {
-        libraryManager = mngr.getOntologyCatalogManager();
+    public AutoMappedRepositoryIRIMapper(OntologyCatalogManager ontologyCatalogManager) {
+        this.ontologyCatalogManager = ontologyCatalogManager;
     }
 
 
-    public IRI getDocumentIRI(IRI logicalURI) {
-    	URI u = libraryManager.getRedirect(logicalURI.toURI());
-    	return u != null ? IRI.create(u) : null;
+    public IRI getDocumentIRI(IRI importedIRI) {
+    	URI u = ontologyCatalogManager.getRedirect(importedIRI.toURI());
+        if (u == null) {
+            logger.info("Imported ontology document {} was not resolved to any documents defined in the ontology catalog.", importedIRI);
+            return null;
+        }
+        else {
+            logger.info("Imported ontology document {} was resolved to {} by the ontology catalog.", importedIRI, u);
+            return IRI.create(u);
+        }
     }
 }

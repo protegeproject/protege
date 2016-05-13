@@ -2,6 +2,8 @@ package org.protege.editor.owl.model.event;
 
 import org.protege.editor.owl.model.OWLModelManager;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
+
 /**
  * Author: Matthew Horridge<br>
  * The University Of Manchester<br>
@@ -35,5 +37,14 @@ public class OWLModelManagerChangeEvent {
 
     public boolean isType(EventType type) {
         return this.type.equals(type);
+    }
+
+
+    @Override
+    public String toString() {
+        return toStringHelper("OWLModelManagerChangeEvent")
+                .addValue(source)
+                .addValue(type)
+                .toString();
     }
 }

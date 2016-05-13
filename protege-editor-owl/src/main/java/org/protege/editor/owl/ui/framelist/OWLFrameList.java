@@ -257,7 +257,7 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
 
 
     private void showPopupMenu(MouseEvent e) {
-        for (OWLFrameListPopupMenuAction action : actions) {
+        for (OWLFrameListPopupMenuAction<?> action : actions) {
             action.updateState();
         }
         popupMenu.show(this, e.getX(), e.getY());

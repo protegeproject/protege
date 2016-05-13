@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model;
 
-import com.google.common.base.Stopwatch;
+import com.google.common.base.*;
 import org.protege.editor.core.AbstractModelManager;
 import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
@@ -46,11 +46,14 @@ import org.semanticweb.owlapi.util.SimpleIRIMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.*;
 import java.io.File;
 import java.net.ProtocolException;
 import java.net.URI;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.*;
 
 
 /**
@@ -104,7 +107,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
      */
     private final OWLOntologyManager manager;
 
-    private final OntologyCatalogManager ontologyLibraryManager = new OntologyCatalogManager();
+    private final OntologyCatalogManager ontologyCatalogManager = new OntologyCatalogManager();
 
     private ExplanationManager explanationManager;
 
@@ -152,11 +155,11 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         manager.addOntologyLoaderListener(this);
 
         // URI mappers for loading - added in reverse order
-        AutoMappedRepositoryIRIMapper autoMappedRepositoryIRIMapper = new AutoMappedRepositoryIRIMapper(this);
         PriorityCollection<OWLOntologyIRIMapper> iriMappers = manager.getIRIMappers();
         iriMappers.clear();
         iriMappers.add(userResolvedIRIMapper);
         iriMappers.add(new WebConnectionIRIMapper());
+        AutoMappedRepositoryIRIMapper autoMappedRepositoryIRIMapper = new AutoMappedRepositoryIRIMapper(ontologyCatalogManager);
         iriMappers.add(autoMappedRepositoryIRIMapper);
 
 
@@ -230,7 +233,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     public OntologyCatalogManager getOntologyCatalogManager() {
-        return ontologyLibraryManager;
+        return ontologyCatalogManager;
     }
 
 
@@ -273,21 +276,16 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 File parentFile = new File(uri).getParentFile();
                 addRootFolder(parentFile);
             }
-            OWLOntology ontology = null;
-            try {
-                ontology = manager.loadOntologyFromOntologyDocument(IRI.create(uri));
-                setActiveOntology(ontology);
-                fireEvent(EventType.ONTOLOGY_LOADED);
-                OWLOntologyID id = ontology.getOntologyID();
-                if (!id.isAnonymous()) {
-                    manager.getIRIMappers().add(new SimpleIRIMapper(id.getDefaultDocumentIRI().get(), IRI.create(uri)));
-                }
-            } catch (OWLOntologyCreationException ooce) {
-                logger.info("Failed to load ontology: {}", ooce);
-                // will be handled by the loadErrorHandler, so ignore
-            }
-            return ontology != null;
-        } finally {
+            OntologyLoader loader = new OntologyLoader(this, userResolvedIRIMapper);
+            Optional<OWLOntology> loadedOntology = loader.loadOntology(uri);
+            return loadedOntology.isPresent();
+        }
+        catch (OWLOntologyCreationException e) {
+            OWLOntologyID id = new OWLOntologyID(com.google.common.base.Optional.of(IRI.create(uri)), com.google.common.base.Optional.<IRI>absent());
+            handleLoadError(id, uri, e);
+            return false;
+        }
+        finally {
             logger.info("Loading for ontology and imports closure successfully completed in {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
             logger.info(LogBanner.end());
         }
@@ -303,20 +301,24 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     public void finishedLoadingOntology(LoadingFinishedEvent event) {
         if (!event.isSuccessful()) {
             Exception e = event.getException();
-            if (loadErrorHandler != null) {
-                try {
-                    loadErrorHandler.handleErrorLoadingOntology(event.getOntologyID(), event.getDocumentIRI().toURI(), e);
-                } catch (Throwable e1) {
-                    // if, for any reason, the loadErrorHandler cannot report the error
-                    ErrorLogPanel.showErrorDialog(e1);
-                }
-            }
+            handleLoadError(event.getOntologyID(), event.getDocumentIRI().toURI(), event.getException());
         }
         fireAfterLoadEvent(event.getOntologyID(), event.getDocumentIRI().toURI());
     }
 
+    private void handleLoadError(OWLOntologyID owlOntologyID, URI documentURI, Exception e) {
+        if (loadErrorHandler != null) {
+            try {
+                loadErrorHandler.handleErrorLoadingOntology(owlOntologyID, documentURI, e);
+            } catch (Throwable e1) {
+                // if, for any reason, the loadErrorHandler cannot report the error
+                ErrorLogPanel.showErrorDialog(e1);
+            }
+        }
+    }
+
     public XMLCatalog addRootFolder(File dir) {
-        return ontologyLibraryManager.addFolder(dir);
+        return ontologyCatalogManager.addFolder(dir);
     }
 
     private void fireBeforeLoadEvent(OWLOntologyID ontologyID, URI physicalURI) {
@@ -785,14 +787,23 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     public void fireEvent(EventType type) {
         logger.debug("Firing event {}", type);
-        OWLModelManagerChangeEvent event = new OWLModelManagerChangeEvent(this, type);
-        for (OWLModelManagerListener listener : new ArrayList<>(modelManagerChangeListeners)) {
-            try {
-                listener.handleChange(event);
-            } catch (Throwable e) {
-                logger.warn("Exception thrown by listener: {}.  Detatching bad listener.", listener.getClass().getName());
-                modelManagerChangeListeners.remove(listener);
+        Runnable r = () -> {
+            OWLModelManagerChangeEvent event = new OWLModelManagerChangeEvent(this, type);
+            logger.debug("Firing model manager event: {}", event);
+            for (OWLModelManagerListener listener : new ArrayList<>(modelManagerChangeListeners)) {
+                try {
+                    listener.handleChange(event);
+                } catch (Throwable e) {
+                    logger.warn("Exception thrown by listener: {}.  Detatching bad listener.", listener.getClass().getName());
+                    modelManagerChangeListeners.remove(listener);
+                }
             }
+        };
+        if(SwingUtilities.isEventDispatchThread()) {
+            r.run();
+        }
+        else {
+            SwingUtilities.invokeLater(r);
         }
     }
 

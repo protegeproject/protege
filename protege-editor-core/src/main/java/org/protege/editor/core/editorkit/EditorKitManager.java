@@ -61,7 +61,7 @@ public class EditorKitManager {
     /**
      * Gets the <code>WorkspaceManager</code> that corresponds
      * to this <code>EditorKitManager</code>.  The <code>WorkspaceManager</code>
-     * is used to manage the "view" part of the clsdescriptioneditor kit model view controller.
+     * is used to manage the "view" part of the editor kit model view controller.
      */
     public WorkspaceManager getWorkspaceManager() {
         return workspaceManager;
