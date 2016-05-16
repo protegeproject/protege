@@ -35,13 +35,13 @@ import java.util.List;
  */
 public class MetricsPanel extends JPanel {
 
-    private Map<String, OWLMetricManager> metricManagerMap;
+    private final Map<String, OWLMetricManager> metricManagerMap = new LinkedHashMap<>();
 
-    private Map<OWLMetricManager, MetricsTableModel> tableModelMap;
+    private final Map<OWLMetricManager, MetricsTableModel> tableModelMap = new HashMap<>();
 
     private OWLEditorKit owlEditorKit;
 
-    private JPopupMenu popupMenu;
+    private final JPopupMenu popupMenu = new JPopupMenu();
 
     private AxiomCountMetric lastMetric;
 
@@ -55,13 +55,9 @@ public class MetricsPanel extends JPanel {
 
 
     private void createPopupMenu() {
-        popupMenu = new JPopupMenu();
-        popupMenu.add(new AbstractAction("Show axioms") {
-            public void actionPerformed(ActionEvent e) {
-                showAxiomTypeDialog();
-
-            }
-        });
+        JMenuItem showAxioms = new JMenuItem("Show axioms");
+        popupMenu.add(showAxioms);
+        showAxioms.addActionListener(e -> showAxiomTypeDialog());
     }
 
 
@@ -86,8 +82,6 @@ public class MetricsPanel extends JPanel {
 
 
     protected void initialiseOWLView() {
-        metricManagerMap = new LinkedHashMap<>();
-        tableModelMap = new HashMap<>();
         createBasicMetrics();
         createClassAxiomMetrics();
         createObjectPropertyAxiomMetrics();
