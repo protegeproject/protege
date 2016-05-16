@@ -511,7 +511,10 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                  * See http://protegewiki.stanford.edu/wiki/OWL2RDFParserDeclarationRequirement
                  */
                 IRI documentIRI = IRI.create(documentURI);
-                manager.saveOntology(ont, format, documentIRI);
+                OntologySaver saver = OntologySaver.builder()
+                        .addOntology(ont, format, documentIRI)
+                        .build();
+                saver.saveOntologies();
                 manager.setOntologyDocumentIRI(ont, documentIRI);
                 logger.info("Saved ontology {} to {} in {} format", ont.getOntologyID(), documentIRI, format);
 

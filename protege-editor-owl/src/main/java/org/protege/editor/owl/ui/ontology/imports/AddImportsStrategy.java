@@ -82,14 +82,7 @@ public class AddImportsStrategy {
     }
 
     private void showProgressDialog(boolean b) {
-        if (!SwingUtilities.isEventDispatchThread()) {
-            SwingUtilities.invokeLater(() -> {
-                dlg.setVisible(b);
-            });
-        }
-        else {
-            dlg.setVisible(b);
-        }
+        dlg.setVisible(b);
     }
 
     private List<OWLOntologyChange> loadImportsInternal() {
@@ -97,7 +90,7 @@ public class AddImportsStrategy {
         for (ImportInfo importParameters : importInfo) {
             logger.info(LogBanner.start("Importing ontology and imports closure"));
             logger.info("Processing {}", importParameters.getImportsDeclarationIRI());
-            SwingUtilities.invokeLater(() -> dlg.setMessage("Importing " + importParameters.getImportsDeclarationIRI()));
+            dlg.setMessage("Importing " + importParameters.getImportsDeclarationIRI());
             IRI importedOntologyDocumentIRI = importParameters.getImportsDeclarationIRI();
             URI physicalLocation = importParameters.getPhysicalLocation();
 

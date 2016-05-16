@@ -55,6 +55,11 @@ public abstract class FocusedComponentAction<C extends ActionTarget> extends Pro
             return;
         }
 
+        if(c instanceof JTable) {
+            setEnabled(true);
+            return;
+        }
+
         C target = getTarget();
         if (currentTarget != null) {
             detatchListener();

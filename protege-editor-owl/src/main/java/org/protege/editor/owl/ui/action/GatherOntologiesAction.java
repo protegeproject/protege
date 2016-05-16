@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.action;
 
+import org.protege.editor.owl.model.io.OntologySaver;
 import org.protege.editor.owl.ui.GatherOntologiesPanel;
 import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
 import org.semanticweb.owlapi.model.*;
@@ -29,6 +30,7 @@ public class GatherOntologiesAction extends ProtegeOWLAction {
         boolean errors = false;
         OWLDocumentFormat saveAsFormat = panel.getOntologyFormat();
         File saveAsLocation = panel.getSaveLocation();
+        OntologySaver.Builder ontologySaverBuilder = OntologySaver.builder();
         for (OWLOntology ont : panel.getOntologiesToSave()) {
             final OWLDocumentFormat format;
             OWLOntologyManager man = getOWLModelManager().getOWLOntologyManager();
@@ -53,15 +55,18 @@ public class GatherOntologiesAction extends ProtegeOWLAction {
             File originalFile = new File(originalPath);
             String originalFileName = originalFile.getName();
             File saveAsFile = new File(saveAsLocation, originalFileName);
-            try {
-                man.saveOntology(ont, format, IRI.create(saveAsFile));
-            }
-            catch (OWLOntologyStorageException e1) {
-                LoggerFactory.getLogger(GatherOntologiesAction.class)
-                        .error("An error occurred whilst saving a gathered ontology: {}", e1);
-                errors = true;
-            }
+
+            ontologySaverBuilder.addOntology(ont, format, IRI.create(saveAsFile));
         }
+        try {
+            ontologySaverBuilder.build().saveOntologies();
+        }
+        catch (OWLOntologyStorageException e1) {
+            LoggerFactory.getLogger(GatherOntologiesAction.class)
+                    .error("An error occurred whilst saving a gathered ontology: {}", e1);
+            errors = true;
+        }
+
         if (errors) {
             JOptionPane.showMessageDialog(getWorkspace(),
                                           "There were errors when saving the ontologies.  Please check the log for details.",
