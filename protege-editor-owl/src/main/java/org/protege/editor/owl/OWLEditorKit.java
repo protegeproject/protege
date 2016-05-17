@@ -238,15 +238,10 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
 
     public void handleSave() throws Exception {
+        logger.info(LogBanner.start("Saving Workspace and Ontologies"));
         try {
-            logger.info(LogBanner.start("Saving Workspace and Ontologies"));
-            Set<OWLOntology> dirtyOntologies = getModelManager().getDirtyOntologies();
-            getWorkspace().save();
-            if (dirtyOntologies.isEmpty()) {
-                logger.info("No ontology changes detected.  Not writing any ontology documents.");
-                return;
-            }
             try {
+                getWorkspace().save();
                 getModelManager().save();
                 newPhysicalURIs.forEach(this::addRecent);
                 newPhysicalURIs.clear();
