@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Optional;
 
 
 /**
@@ -89,17 +89,7 @@ public class OntologyFormatPanel extends JPanel {
         formatComboBox.removeItemListener(l);
     }
 
-
-    /**
-     * @deprecated Use the other showDialog instead.  This one doesn't explain itself.
-     */
-    @Deprecated
-    public static OWLDocumentFormat showDialog(OWLEditorKit editorKit, OWLDocumentFormat defaultFormat) {
-        return showDialog(editorKit, defaultFormat, null);
-    }
-
-    
-    public static OWLDocumentFormat showDialog(OWLEditorKit editorKit, OWLDocumentFormat defaultFormat, String message) {
+    public static Optional<OWLDocumentFormat> showDialog(OWLEditorKit editorKit, OWLDocumentFormat defaultFormat, String message) {
     	OntologyFormatPanel panel = new OntologyFormatPanel();
     	if (message != null){
     		panel.setMessage(message);
@@ -114,13 +104,13 @@ public class OntologyFormatPanel extends JPanel {
                     JOptionPane.OK_CANCEL_OPTION,
     				JOptionPane.PLAIN_MESSAGE);
     		if (ret != JOptionPane.OK_OPTION) {
-    			return null;
+    			return Optional.empty();
     		}
 
     		selectedFormat = panel.getSelectedFormat();
     	}
     	while (!isFormatOk(editorKit, selectedFormat));
-    	return selectedFormat;
+    	return Optional.of(selectedFormat);
     }
     
     private static boolean isFormatOk(OWLEditorKit editorKit, OWLDocumentFormat format) {
