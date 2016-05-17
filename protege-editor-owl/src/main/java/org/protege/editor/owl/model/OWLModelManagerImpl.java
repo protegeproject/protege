@@ -394,8 +394,8 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     @Override
     public OWLOntology reload(OWLOntology ont) throws OWLOntologyCreationException {
         try {
-            OntologyReloader reloader = new OntologyReloader(manager);
-            reloader.reload(ont);
+            OntologyReloader reloader = new OntologyReloader(ont);
+            reloader.reload();
             // Rebuild the cache in case the imports closure has changed
             rebuildActiveOntologiesCache();
             refreshRenderer();
@@ -405,31 +405,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         }
         return ont;
     }
-//    public OWLOntology reload(OWLOntology ont) throws OWLOntologyCreationException {
-//        IRI ontologyDocumentIRI = IRI.create(getOntologyPhysicalURI(ont));
-//        manager.removeOntology(ont);
-//        boolean wasTheActiveOntology = false;
-//        if (ont.equals(activeOntology)) {
-//            wasTheActiveOntology = true;
-//            activeOntology = null;
-//        }
-//        dirtyOntologies.remove(ont.getOntologyID());
-//        try {
-//            ont = manager.loadOntologyFromOntologyDocument(ontologyDocumentIRI);
-//        } catch (Throwable t) {
-//            ((OWLOntologyManagerImpl) manager).ontologyCreated(ont);  // put it back - a hack but it works
-//            manager.setOntologyDocumentIRI(ont, ontologyDocumentIRI);
-//            throw (t instanceof OWLOntologyCreationException) ? (OWLOntologyCreationException) t : new OWLOntologyCreationException(t);
-//        }
-//        if (wasTheActiveOntology) {
-//            activeOntology = ont;
-//        }
-//        rebuildActiveOntologiesCache();
-//        refreshRenderer();
-//        fireEvent(EventType.ONTOLOGY_RELOADED);
-//        return ont;
-//    }
-
 
     public boolean removeOntology(OWLOntology ont) {
         if (manager.contains(ont.getOntologyID()) && manager.getOntologies().size() > 1) {
@@ -734,6 +709,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
+        logger.info("Handing ontology changes: {}", changes.size());
         getHistoryManager().logChanges(changes);
         boolean refreshActiveOntology = false;
         for (OWLOntologyChange change : changes) {

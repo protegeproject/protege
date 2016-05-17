@@ -291,8 +291,7 @@ public interface OWLModelManager extends ModelManager, HasActiveOntology {
 
 
     /*
-     * Actually returns a ProtegeOWLOntologyManager - but unfortunately byte-code
-     * views this as an incompatible interface change.
+     * Gets the OWLOntologyManager
      */
     OWLOntologyManager getOWLOntologyManager();
 

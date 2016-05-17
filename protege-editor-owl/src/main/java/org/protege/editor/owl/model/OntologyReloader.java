@@ -1,12 +1,23 @@
 package org.protege.editor.owl.model;
 
+import com.google.common.base.Stopwatch;
+import com.google.common.util.concurrent.*;
 import org.protege.editor.core.log.LogBanner;
+import org.protege.editor.owl.ui.util.ProgressDialog;
+import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.parameters.OntologyCopy;
+import org.semanticweb.owlapi.util.PriorityCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Matthew Horridge
@@ -17,37 +28,30 @@ public class OntologyReloader {
 
     private static final Logger logger = LoggerFactory.getLogger(OntologyReloader.class);
 
-    private final OWLOntologyManager manager;
+    private final OWLOntology ontologyToReload;
 
-    public OntologyReloader(OWLOntologyManager manager) {
-        this.manager = manager;
+    private final ProgressDialog dlg = new ProgressDialog();
+
+    private final ListeningExecutorService executorService = MoreExecutors.listeningDecorator(
+            Executors.newSingleThreadExecutor()
+    );
+
+    public OntologyReloader(OWLOntology ontologyToReload) {
+        this.ontologyToReload = ontologyToReload;
     }
 
     /**
      * Reloads the specified ontology.  Either the ontology is successfully reloaded or it is left intact.
-     * @param ont The ontology to be reloaded.
      * @throws OWLOntologyCreationException
      */
-    public void reload(final OWLOntology ont) throws OWLOntologyCreationException {
+    public void reload() throws OWLOntologyCreationException {
         logger.info(LogBanner.start("Reloading ontology"));
-        logger.info("Reloading ontology: {}", ont.getOntologyID());
-        IRI ontologyDocumentIRI = manager.getOntologyDocumentIRI(ont);
-        IRI tempDocumentIRI = IRI.create(ontologyDocumentIRI.toString() + ".tmp");
-        // Set a temporary Id - anonymous - so that the ontology can be reloaded in the same
-        // manager (so that imports don't have to be reloaded)
-        manager.applyChange(new SetOntologyID(ont, new OWLOntologyID()));
-        // Set a temporary document IRI so that the ontology isn't refound by its document IRI
-        manager.setOntologyDocumentIRI(ont, tempDocumentIRI);
+        logger.info("Reloading ontology: {}", ontologyToReload.getOntologyID());
         try {
             // Load the ontology as a fresh ontology
-            OWLOntology reloadedOnt = manager.loadOntologyFromOntologyDocument(ontologyDocumentIRI);
-            // We don't need the ontology in the manager now.
-            manager.removeOntology(reloadedOnt);
-            // Compute a diff between the original and the reloaded ontology
-            List<OWLOntologyChange> changes = new ArrayList<>();
-            generateChangesToTransferContent(reloadedOnt, ont, changes);
-            logger.info("    Applying {} change(s) to patch ontology to reloaded ontology", changes.size());
-            manager.applyChanges(changes);
+            List<OWLOntologyChange> changes = reloadOntologyAndGetPatch();
+            logger.info("Applying {} change(s) to patch ontology to reloaded ontology", changes.size());
+            ontologyToReload.getOWLOntologyManager().applyChanges(changes);
         } catch (Throwable t) {
             if (t instanceof OWLOntologyCreationException) {
                 throw (OWLOntologyCreationException) t;
@@ -56,11 +60,71 @@ public class OntologyReloader {
                 throw new OWLOntologyCreationException(t);
             }
         }
-        finally {
-            // Restore DocumentIRI
-            manager.setOntologyDocumentIRI(ont, ontologyDocumentIRI);
-            logger.info(LogBanner.end());
+    }
+
+    private List<OWLOntologyChange> reloadOntologyAndGetPatch() throws OWLOntologyCreationException {
+        ListenableFuture<List<OWLOntologyChange>> future = executorService.submit(this::performReloadAndGetPatch);
+        Futures.addCallback(future, new FutureCallback<List<OWLOntologyChange>>() {
+            @Override
+            public void onSuccess(List<OWLOntologyChange> result) {
+                dlg.setVisible(false);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                dlg.setVisible(false);
+            }
+        });
+        if (!future.isDone()) {
+            dlg.setVisible(true);
         }
+        try {
+            return future.get();
+        } catch (InterruptedException e) {
+            throw new OWLOntologyCreationException(e);
+        } catch (ExecutionException e) {
+            if(e.getCause() instanceof OWLOntologyCreationException) {
+                throw (OWLOntologyCreationException) e.getCause();
+            }
+            else {
+                logger.error("An error occurred whilst reloading the ontology: {}", e.getMessage(), e);
+                throw new OWLOntologyCreationException(e);
+            }
+        }
+    }
+
+    private List<OWLOntologyChange> performReloadAndGetPatch() throws OWLOntologyCreationException {
+        dlg.setMessage("Reloading ontology");
+        OWLOntologyManager reloadingManager = OWLManager.createOWLOntologyManager();
+        PriorityCollection<OWLOntologyIRIMapper> iriMappers = reloadingManager.getIRIMappers();
+        iriMappers.clear();
+        // Should be able to share these
+        iriMappers.add(ontologyToReload.getOWLOntologyManager().getIRIMappers());
+        Stopwatch sw = Stopwatch.createStarted();
+        long freeMemory0 = Runtime.getRuntime().freeMemory();
+        // We might need declarations and imports for parsing the reloaded ontology.  Copy as much as we really need.
+        OWLOntologyManager manager = ontologyToReload.getOWLOntologyManager();
+        for(OWLOntology o : manager.getOntologies()) {
+            // We don't need the ontology that we want to reload
+            if (!o.equals(ontologyToReload)) {
+                reloadingManager.createOntology(o.getOntologyID());
+                reloadingManager.setOntologyDocumentIRI(o, manager.getOntologyDocumentIRI(o));
+                Set<OWLDeclarationAxiom> axioms = o.getAxioms(AxiomType.DECLARATION);
+                logger.info("Copying {} declaration axioms from {} for reloading", axioms.size(), o.getOntologyID());
+                reloadingManager.addAxioms(o, axioms);
+            }
+        }
+        sw.stop();
+        long freeMemory1 = Runtime.getRuntime().freeMemory();
+        long usedMemMb = (long)((freeMemory0 - freeMemory1) / (1024 * 1024.0));
+        logger.info("Copied ontologies in {} ms.  Used: {} MB", sw.elapsed(TimeUnit.MILLISECONDS), usedMemMb);
+
+        IRI ontologyDocumentIRI = manager.getOntologyDocumentIRI(ontologyToReload);
+        OWLOntology reloadedOntology = reloadingManager.loadOntologyFromOntologyDocument(ontologyDocumentIRI);
+        List<OWLOntologyChange> changes = new ArrayList<>();
+        // Compute a diff between the original and the reloaded ontology
+        generateChangesToTransferContent(reloadedOntology, ontologyToReload, changes);
+        return changes;
     }
 
     /**
@@ -70,7 +134,7 @@ public class OntologyReloader {
      *           imports and axioms) as the from ontology
      * @param changeList A list that will be filled with changes
      */
-    private void generateChangesToTransferContent(OWLOntology from, OWLOntology to, List<OWLOntologyChange> changeList) {
+    private static void generateChangesToTransferContent(OWLOntology from, OWLOntology to, List<OWLOntologyChange> changeList) {
         for(OWLImportsDeclaration decl : from.getImportsDeclarations()) {
             if (!to.getImportsDeclarations().contains(decl)) {
                 changeList.add(new AddImport(to, decl));
