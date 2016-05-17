@@ -275,7 +275,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     private boolean handleSaveAs(OWLOntology ont) throws Exception {
         OWLOntologyManager man = getModelManager().getOWLOntologyManager();
         OWLDocumentFormat oldFormat = man.getOntologyFormat(ont);
-        OWLDocumentFormat format = OntologyFormatPanel.showDialog(this, oldFormat,
+        java.util.Optional<OWLDocumentFormat> format = OntologyFormatPanel.showDialog(this, oldFormat,
                 String.format("<html><body>" +
                         "<div>Choose a format to use when saving the <span style='font-weight: bold;'>'%s'</span> ontology.</div>" +
                         "<div style='padding-top: 20px; color: gray'; width: 150px;>" +
@@ -283,22 +283,22 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
                         "we recommend that you use the standard RDF/XML format, " +
                         "or a widely supported format such as Turtle)</div>" +
                         "</body></html>", getModelManager().getRendering(ont)));
-        if (format == null) {
+        if (!format.isPresent()) {
             logger.info("No ontology document format has been selected.  Aborting saveAs.");
             return false;
         }
-        if (oldFormat instanceof PrefixDocumentFormat && format instanceof PrefixDocumentFormat) {
+        if (oldFormat instanceof PrefixDocumentFormat && format.get() instanceof PrefixDocumentFormat) {
             PrefixDocumentFormat oldPrefixes = (PrefixDocumentFormat) oldFormat;
             for (String name : oldPrefixes.getPrefixNames()) {
                 String prefix = oldPrefixes.getPrefix(name);
                 if (prefix != null) {
-                    ((PrefixDocumentFormat) format).setPrefix(name, prefix);
+                    ((PrefixDocumentFormat) format.get()).setPrefix(name, prefix);
                 }
             }
         }
         File file = getSaveAsOWLFile(ont);
         if (file != null) {
-            man.setOntologyFormat(ont, format);
+            man.setOntologyFormat(ont, format.get());
             man.setOntologyDocumentIRI(ont, IRI.create(file));
             getModelManager().save(ont);
             addRecent(file.toURI());
