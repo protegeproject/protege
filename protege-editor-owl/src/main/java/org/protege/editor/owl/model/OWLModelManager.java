@@ -91,14 +91,6 @@ public interface OWLModelManager extends ModelManager, HasActiveOntology {
      */
     void save(OWLOntology ont) throws OWLOntologyStorageException;
 
-
-    /**
-     * @throws OWLOntologyStorageException if a problem occurs during the save
-     * @deprecated - this method would require user interaction - use <code>OWLEditorKit.saveAs()</code> instead
-     */
-    @Deprecated
-    void saveAs() throws OWLOntologyStorageException;
-
     /**
      * Checks if the ontology has been changed since it was loaded or last saved.
      * @param ontology
