@@ -1,6 +1,7 @@
 package org.protege.editor.owl.model.io;
 
 import com.google.common.util.concurrent.*;
+import org.protege.editor.owl.model.IOListenerManager;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.ui.util.ProgressDialog;
@@ -94,7 +95,7 @@ public class OntologyLoader {
         return modelManager.getOWLOntologyManager();
     }
 
-    private Optional<OWLOntology> loadOntologyInternal(URI uri) throws OWLOntologyCreationException {
+    private Optional<OWLOntology> loadOntologyInternal(URI documentURI) throws OWLOntologyCreationException {
 
         // I think the loading manager needs to be a concurrent manager because we
         // copy over the ontologies and the ontologies have to be concurrent ontology implementations
@@ -109,18 +110,39 @@ public class OntologyLoader {
         loadingManager.addOntologyLoaderListener(new ProgressDialogOntologyLoaderListener(dlg, logger));
         OWLOntologyLoaderConfiguration configuration = new OWLOntologyLoaderConfiguration();
         configuration = configuration.setMissingImportHandlingStrategy(MissingImportHandlingStrategy.SILENT);
-        IRIDocumentSource documentSource = new IRIDocumentSource(IRI.create(uri));
+        IRIDocumentSource documentSource = new IRIDocumentSource(IRI.create(documentURI));
         OWLOntology ontology = loadingManager.loadOntologyFromOntologyDocument(documentSource, configuration);
         for (OWLOntology loadedOntology : loadingManager.getOntologies()) {
-            getOntologyManager().copyOntology(loadedOntology, OntologyCopy.MOVE);
+            OWLOntologyManager modelManager = getOntologyManager();
+            fireBeforeLoad(loadedOntology, documentURI);
+            modelManager.copyOntology(loadedOntology, OntologyCopy.MOVE);
+            fireAfterLoad(loadedOntology, documentURI);
         }
         modelManager.setActiveOntology(ontology);
         modelManager.fireEvent(EventType.ONTOLOGY_LOADED);
         OWLOntologyID id = ontology.getOntologyID();
         if (!id.isAnonymous()) {
-            getOntologyManager().getIRIMappers().add(new SimpleIRIMapper(id.getDefaultDocumentIRI().get(), IRI.create(uri)));
+            getOntologyManager().getIRIMappers().add(new SimpleIRIMapper(id.getDefaultDocumentIRI().get(), IRI.create(documentURI)));
         }
         return Optional.of(ontology);
+    }
+
+
+
+    private void fireBeforeLoad(OWLOntology loadedOntology, URI documentURI) {
+        if(modelManager instanceof IOListenerManager) {
+            ((IOListenerManager) modelManager).fireAfterLoadEvent(
+                    loadedOntology.getOntologyID(),
+                    documentURI);
+        }
+    }
+
+    private void fireAfterLoad(OWLOntology loadedOntology, URI documentURI) {
+        if(modelManager instanceof IOListenerManager) {
+            ((IOListenerManager) modelManager).fireAfterLoadEvent(
+                    loadedOntology.getOntologyID(),
+                    documentURI);
+        }
     }
 
 }

@@ -79,64 +79,73 @@ public class OntologySourcesChangedHandlerUI implements OntologySourcesListener 
 
 
     public void ontologySourcesChanged(OntologySourcesChangeEvent event) {
-        handlingChange = true;
-        Set<OWLOntology> onts = event.getOntologies();
-        if (onts.size() == 1){
-            OWLOntology ont = onts.iterator().next();
-            StringBuilder message = new StringBuilder("<html>An ontology has changed outside of Protege.");
-            message.append("<p><p><code>").append(eKit.getModelManager().getRendering(ont)).append("</code>");
-            message.append("<p><p>Would you like to reload?");
-            if (eKit.getModelManager().getDirtyOntologies().contains(ont)){
-                message.append("<p><p><b>Warning: this ontology has been edited so you will lose local changes</b>");
-            }
-            message.append("</html>");
-            if (JOptionPane.showConfirmDialog(eKit.getWorkspace(),
-                                              message.toString(),
-                                              TITLE,
-                                              JOptionPane.YES_NO_OPTION,
-                                              JOptionPane.WARNING_MESSAGE) == JOptionPane.OK_OPTION){
-                try {
-                    eKit.getModelManager().reload(ont);
-                }
-                catch (OWLOntologyCreationException e) {
-                    handleFailedToReload(ont);
-                }
-            }
-            else{
-                getSourcesManager().ignoreUpdates(onts);
-            }
+        if(handlingChange) {
+            return;
         }
-        else{
-            ontologiesPanel = new OWLOntologySelectorPanel2(eKit, onts);
-            ontologiesPanel.add(new JLabel("<html>The following ontologies have changed outside of Protege.<p><p>Would you like to reload?</html>"), BorderLayout.NORTH);
-
-
-            final Set<OWLOntology> ignoreOnts = new HashSet<>(onts);
-
-            if (JOptionPaneEx.showConfirmDialog(eKit.getWorkspace(),
-                                                TITLE,
-                                                ontologiesPanel,
-                                                JOptionPane.WARNING_MESSAGE,
-                                                JOptionPane.YES_NO_OPTION,
-                                                null) == JOptionPane.OK_OPTION){
-
-                final Set<OWLOntology> reloadOnts = getFilteredValues();
-                ignoreOnts.removeAll(reloadOnts);
-                for (OWLOntology ont : reloadOnts){
+        handlingChange = true;
+        try {
+            Set<OWLOntology> onts = event.getOntologies();
+            if (onts.size() == 1){
+                OWLOntology ont = onts.iterator().next();
+                StringBuilder message = new StringBuilder("<html>An ontology has changed outside of Protege.");
+                message.append("<p><p><b>").append(eKit.getModelManager().getRendering(ont)).append("</b>");
+                message.append("<p><p>Would you like to reload?");
+                if (eKit.getModelManager().getDirtyOntologies().contains(ont)){
+                    message.append("<p><p><b>Warning: this ontology has been edited so you will lose local changes</b>");
+                }
+                message.append("</html>");
+                if (JOptionPane.showConfirmDialog(eKit.getWorkspace(),
+                                                  message.toString(),
+                                                  TITLE,
+                                                  JOptionPane.YES_NO_OPTION,
+                                                  JOptionPane.WARNING_MESSAGE) == JOptionPane.OK_OPTION){
                     try {
+                        getSourcesManager().markSources();
                         eKit.getModelManager().reload(ont);
                     }
                     catch (OWLOntologyCreationException e) {
                         handleFailedToReload(ont);
                     }
                 }
+                else{
+                    getSourcesManager().ignoreUpdates(onts);
+                }
             }
+            else{
+                ontologiesPanel = new OWLOntologySelectorPanel2(eKit, onts);
+                ontologiesPanel.add(new JLabel("<html>The following ontologies have changed outside of Protege.<p><p>Would you like to reload?</html>"), BorderLayout.NORTH);
 
-            if (!ignoreOnts.isEmpty()){
-                getSourcesManager().ignoreUpdates(ignoreOnts);
+
+                final Set<OWLOntology> ignoreOnts = new HashSet<>(onts);
+
+                if (JOptionPaneEx.showConfirmDialog(eKit.getWorkspace(),
+                                                    TITLE,
+                                                    ontologiesPanel,
+                                                    JOptionPane.WARNING_MESSAGE,
+                                                    JOptionPane.YES_NO_OPTION,
+                                                    null) == JOptionPane.OK_OPTION){
+
+                    getSourcesManager().markSources();
+                    final Set<OWLOntology> reloadOnts = getFilteredValues();
+                    ignoreOnts.removeAll(reloadOnts);
+                    for (OWLOntology ont : reloadOnts){
+                        try {
+                            eKit.getModelManager().reload(ont);
+                        }
+                        catch (OWLOntologyCreationException e) {
+                            handleFailedToReload(ont);
+                        }
+                    }
+                }
+
+                if (!ignoreOnts.isEmpty()){
+                    getSourcesManager().ignoreUpdates(ignoreOnts);
+                }
             }
+        } finally {
+            handlingChange = false;
         }
-        handlingChange = false;
+
     }
 
 

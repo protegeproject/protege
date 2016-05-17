@@ -3,13 +3,11 @@ package org.protege.editor.owl.model.io;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.Timer;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URI;
 import java.util.*;
@@ -35,40 +33,24 @@ public class OntologySourcesManager extends IOListener implements Disposable {
 
     private static final Logger logger = LoggerFactory.getLogger(OntologySourcesManager.class);
 
-    private Map<URI, Long> timestamps = new HashMap<>();
+    private final Map<URI, Long> timestamps = new HashMap<>();
 
-    private Timer timer;
+    private final OWLModelManager modelManager;
 
-    private OWLModelManager mngr;
+    private final List<OntologySourcesListener> listeners = new ArrayList<>();
 
-
-
-    private List<OntologySourcesListener> listeners = new ArrayList<>();
-
-    private ActionListener timerAction = event -> checkSources();
-
-
-    public OntologySourcesManager(OWLModelManager mngr) {
-        this.mngr = mngr;
-        mngr.addIOListener(this);
+    public OntologySourcesManager(OWLModelManager modelManager) {
+        this.modelManager = modelManager;
+        modelManager.addIOListener(this);
     }
 
-
-    public void setTimer(int millisecs){
-        if (timer != null){
-            stopTimer();
-        }
-        if (millisecs > 0){
-        timer = new Timer(millisecs, timerAction);
-        startTimer();
-        }
-        else{
-            timer = null;
+    public void markSources() {
+        for(OWLOntology ontology : modelManager.getOntologies()) {
+            update(ontology.getOWLOntologyManager().getOntologyDocumentIRI(ontology).toURI());
         }
     }
 
     public void checkSources() {
-        stopTimer();
         Set<OWLOntology> changedOntologies = getChangedOntologies();
         if (!changedOntologies.isEmpty()){
             OntologySourcesListener.OntologySourcesChangeEvent event = new OntologySourcesListener.OntologySourcesChangeEvent(getChangedOntologies());
@@ -76,15 +58,13 @@ public class OntologySourcesManager extends IOListener implements Disposable {
                 l.ontologySourcesChanged(event);
             }
         }
-        startTimer();
     }
-
 
     private Set<OWLOntology> getChangedOntologies() {
         logger.debug(LogBanner.start("Ontology Sources Manager"));
         Set<OWLOntology> changedOntologies = new HashSet<>();
-        for (OWLOntology ont : mngr.getOntologies()){
-            URI uri = mngr.getOntologyPhysicalURI(ont);
+        for (OWLOntology ont : modelManager.getOntologies()){
+            URI uri = modelManager.getOntologyPhysicalURI(ont);
             logger.debug("Checking to see if ontology document has changed.");
             logger.debug("    Ontology: {}", ont.getOntologyID());
             logger.debug("    Document: {}", uri);
@@ -116,13 +96,11 @@ public class OntologySourcesManager extends IOListener implements Disposable {
         }
     }
 
-    private void update(URI uri) {
-        stopTimer();
-        Optional<Long> timestamp = getTimestampOfUri(uri);
+    private void update(URI documentUri) {
+        Optional<Long> timestamp = getTimestampOfUri(documentUri);
         if (timestamp.isPresent()){
-            timestamps.put(uri, timestamp.get());
+            timestamps.put(documentUri, timestamp.get());
         }
-        startTimer();
     }
 
 
@@ -162,7 +140,6 @@ public class OntologySourcesManager extends IOListener implements Disposable {
 
 
     public void dispose() {
-        stopTimer();
         timestamps.clear();
     }
 
@@ -176,27 +153,12 @@ public class OntologySourcesManager extends IOListener implements Disposable {
 
 
     public void ignoreUpdates(Set<OWLOntology> onts) {
-        stopTimer();
         for (OWLOntology ont : onts){
-            URI uri = mngr.getOntologyPhysicalURI(ont);
+            URI uri = modelManager.getOntologyPhysicalURI(ont);
             Optional<Long> timestamp = getTimestampOfUri(uri);
             if (timestamp.isPresent()){
                 timestamps.put(uri, timestamp.get());
             }
-        }
-        startTimer();
-    }
-
-
-    private void startTimer(){
-        if (timer != null){
-            timer.start();
-        }
-    }
-
-    private void stopTimer(){
-        if (timer != null){
-            timer.stop();
         }
     }
 }

@@ -3,6 +3,7 @@ package org.protege.editor.owl.model;
 import com.google.common.base.Stopwatch;
 import com.google.common.util.concurrent.*;
 import org.protege.editor.core.log.LogBanner;
+import org.protege.editor.owl.model.io.IOListener;
 import org.protege.editor.owl.ui.util.ProgressDialog;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -32,12 +34,15 @@ public class OntologyReloader {
 
     private final ProgressDialog dlg = new ProgressDialog();
 
+    private final OWLModelManager modelManager;
+
     private final ListeningExecutorService executorService = MoreExecutors.listeningDecorator(
             Executors.newSingleThreadExecutor()
     );
 
-    public OntologyReloader(OWLOntology ontologyToReload) {
+    public OntologyReloader(OWLOntology ontologyToReload, OWLModelManager modelManager) {
         this.ontologyToReload = ontologyToReload;
+        this.modelManager = modelManager;
     }
 
     /**
@@ -51,7 +56,12 @@ public class OntologyReloader {
             // Load the ontology as a fresh ontology
             List<OWLOntologyChange> changes = reloadOntologyAndGetPatch();
             logger.info("Applying {} change(s) to patch ontology to reloaded ontology", changes.size());
-            ontologyToReload.getOWLOntologyManager().applyChanges(changes);
+            if (!changes.isEmpty()) {
+                ontologyToReload.getOWLOntologyManager().applyChanges(changes);
+                if(modelManager instanceof IOListenerManager) {
+                    ((IOListenerManager) modelManager).fireAfterLoadEvent(ontologyToReload.getOntologyID(), ontologyToReload.getOWLOntologyManager().getOntologyDocumentIRI(ontologyToReload).toURI());
+                }
+            }
         } catch (Throwable t) {
             if (t instanceof OWLOntologyCreationException) {
                 throw (OWLOntologyCreationException) t;
