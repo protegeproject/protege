@@ -70,7 +70,7 @@ import java.util.concurrent.*;
  * related to each other via owl:imports) and the various
  * UI components that are used to access the ontology.
  */
-public class OWLModelManagerImpl extends AbstractModelManager implements OWLModelManager, OWLEntityRendererListener, OWLOntologyChangeListener, OWLOntologyLoaderListener {
+public class OWLModelManagerImpl extends AbstractModelManager implements OWLModelManager, OWLEntityRendererListener, OWLOntologyChangeListener, OWLOntologyLoaderListener, IOListenerManager {
 
     private final Logger logger = LoggerFactory.getLogger(OWLModelManagerImpl.class);
 
@@ -321,7 +321,8 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         return ontologyCatalogManager.addFolder(dir);
     }
 
-    private void fireBeforeLoadEvent(OWLOntologyID ontologyID, URI physicalURI) {
+    @Override
+    public void fireBeforeLoadEvent(OWLOntologyID ontologyID, URI physicalURI) {
         for (IOListener listener : new ArrayList<>(ioListeners)) {
             try {
                 listener.beforeLoad(new IOListenerEvent(ontologyID, physicalURI));
@@ -332,7 +333,8 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     }
 
 
-    private void fireAfterLoadEvent(OWLOntologyID ontologyID, URI physicalURI) {
+    @Override
+    public void fireAfterLoadEvent(OWLOntologyID ontologyID, URI physicalURI) {
         for (IOListener listener : new ArrayList<>(ioListeners)) {
             try {
                 listener.afterLoad(new IOListenerEvent(ontologyID, physicalURI));
@@ -394,7 +396,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     @Override
     public OWLOntology reload(OWLOntology ont) throws OWLOntologyCreationException {
         try {
-            OntologyReloader reloader = new OntologyReloader(ont);
+            OntologyReloader reloader = new OntologyReloader(ont, this);
             reloader.reload();
             // Rebuild the cache in case the imports closure has changed
             rebuildActiveOntologiesCache();
@@ -524,7 +526,8 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     }
 
 
-    private void fireBeforeSaveEvent(OWLOntologyID ontologyID, URI physicalURI) {
+    @Override
+    public void fireBeforeSaveEvent(OWLOntologyID ontologyID, URI physicalURI) {
         for (IOListener listener : new ArrayList<>(ioListeners)) {
             try {
                 listener.beforeSave(new IOListenerEvent(ontologyID, physicalURI));
@@ -535,7 +538,8 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     }
 
 
-    private void fireAfterSaveEvent(OWLOntologyID ontologyID, URI physicalURI) {
+    @Override
+    public void fireAfterSaveEvent(OWLOntologyID ontologyID, URI physicalURI) {
         for (IOListener listener : new ArrayList<>(ioListeners)) {
             try {
                 listener.afterSave(new IOListenerEvent(ontologyID, physicalURI));
