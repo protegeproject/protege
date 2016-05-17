@@ -713,7 +713,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
-        logger.info("Handing ontology changes: {}", changes.size());
         getHistoryManager().logChanges(changes);
         boolean refreshActiveOntology = false;
         for (OWLOntologyChange change : changes) {
