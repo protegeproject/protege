@@ -21,8 +21,11 @@ public class ProgressDialog {
      */
     public ProgressDialog() {
         dlg.setUndecorated(true);
-        dlg.getContentPane().setLayout(new BorderLayout());
-        dlg.getContentPane().add(view.asJComponent(), BorderLayout.NORTH);
+        JPanel contentPane = new JPanel();
+        contentPane.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
+        dlg.setContentPane(contentPane);
+        contentPane.setLayout(new BorderLayout());
+        contentPane.add(view.asJComponent(), BorderLayout.NORTH);
     }
 
     /**
