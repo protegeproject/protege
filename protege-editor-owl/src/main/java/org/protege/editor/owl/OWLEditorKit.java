@@ -245,7 +245,6 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
                 getModelManager().save();
                 newPhysicalURIs.forEach(this::addRecent);
                 newPhysicalURIs.clear();
-                logger.info("Saved ontologies");
             }
             catch (OWLOntologyStorageException e) {
                 OWLOntology ont = getModelManager().getActiveOntology();
