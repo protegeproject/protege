@@ -113,7 +113,7 @@ public class OntologyFormatPanel extends JPanel {
                     "Select an ontology format",
                     JOptionPane.OK_CANCEL_OPTION,
     				JOptionPane.PLAIN_MESSAGE);
-    		if (ret == JOptionPane.CANCEL_OPTION) {
+    		if (ret != JOptionPane.OK_OPTION) {
     			return null;
     		}
 
