@@ -102,6 +102,7 @@ public class MetricsPanel extends JPanel {
     private void createUI() {
         setLayout(new BorderLayout());
         Box box = new Box(BoxLayout.Y_AXIS);
+        box.setBackground(Color.WHITE);
         for (String metricsSet : metricManagerMap.keySet()) {
             MetricsTableModel tableModel = new MetricsTableModel(metricManagerMap.get(metricsSet));
             tableModelMap.put(metricManagerMap.get(metricsSet), tableModel);
@@ -209,8 +210,10 @@ public class MetricsPanel extends JPanel {
                 }
             });
             JLabel titleLabel = new JLabel(metricsSet);
+            titleLabel.setOpaque(false);
             titleLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
             tablePanel.add(titleLabel, BorderLayout.NORTH);
+            tablePanel.setOpaque(false);
             JPanel tableHolder = new JPanel(new BorderLayout());
             tableHolder.setBorder(BorderFactory.createEmptyBorder(5, 20, 0, 0));
             tableHolder.add(table);
@@ -225,8 +228,8 @@ public class MetricsPanel extends JPanel {
             box.setOpaque(false);
         }
         JScrollPane sp = new JScrollPane(box);
-        sp.setOpaque(true);
-        sp.setBackground(Color.WHITE);
+        sp.getViewport().setOpaque(true);
+        sp.getViewport().setBackground(Color.WHITE);
         JScrollBar verticalScrollBar = sp.getVerticalScrollBar();
         verticalScrollBar.setBlockIncrement(50);
         verticalScrollBar.setUnitIncrement(50);
