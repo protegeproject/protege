@@ -9,6 +9,7 @@ done
 cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 java -Xmx${conf.mem.xmx}M -Xms${conf.mem.xms}M \
+     -Xss${conf.mem.xss}M \
      -Dlogback.configurationFile=conf/logback.xml \
      -DentityExpansionLimit=100000000 \
      -Dfile.encoding=UTF-8 \
