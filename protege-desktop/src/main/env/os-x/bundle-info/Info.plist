@@ -91,6 +91,7 @@
         <key>JVMOptions</key>
         <array>
             <string>-Dapple.laf.useScreenMenuBar=true</string>
+            <string>-Xss${conf.mem.xss}M</string>
             <string>-Xdock:name=Protégé</string>
             <string>-DentityExpansionLimit=100000000</string>
             <string>-Dlogback.configurationFile=conf/logback.xml</string>
