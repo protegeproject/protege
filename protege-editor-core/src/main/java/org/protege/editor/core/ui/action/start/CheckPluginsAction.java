@@ -1,8 +1,11 @@
 package org.protege.editor.core.ui.action.start;
 
 import org.protege.editor.core.update.PluginManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 
 /**
  * Author: drummond<br>
@@ -13,11 +16,15 @@ import java.awt.event.ActionEvent;
  * Date: Nov 6, 2008<br><br>
  */
 public class CheckPluginsAction extends AltStartupAction {
-    private static final long serialVersionUID = 1531046176436352912L;
 
+    private static final Logger logger = LoggerFactory.getLogger(CheckPluginsAction.class);
 
     public void actionPerformed(ActionEvent event) {
-        PluginManager.getInstance().runCheckForPlugins();
+        try {
+            PluginManager.getInstance().runCheckForPlugins();
+        } catch (IOException e) {
+            logger.warn("A problem occurred whilst checking for plugin updates: {}", e.getMessage());
+        }
     }
 
 

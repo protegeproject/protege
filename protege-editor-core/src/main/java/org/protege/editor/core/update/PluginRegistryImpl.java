@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.*;
 /*
 * Copyright (C) 2007, University of Manchester
@@ -175,8 +176,10 @@ public class PluginRegistryImpl implements PluginRegistry {
                     }
                 }
                 reader.close();
+            } catch (UnknownHostException ex) {
+                logger.info(AUTO_UPDATE, "{}    Cannot open remote plugin registry at {} (Unknown Host)", pad(depth), ex.getMessage());
             } catch (IOException ex) {
-                logger.warn(AUTO_UPDATE, "{}    Cannot open remote plugin registry at {}.  Reason: {}", pad(depth), ex.getMessage(), ex);
+                logger.info(AUTO_UPDATE, "{}    Cannot read plugin registry at {}.  Reason: {}", pad(depth), node, ex.getMessage());
             }
         }
     }
