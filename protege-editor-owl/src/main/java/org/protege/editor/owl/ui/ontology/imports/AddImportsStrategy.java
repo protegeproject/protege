@@ -58,7 +58,6 @@ public class AddImportsStrategy {
 
     public void addImports() {
         addImportsInOtherThread();
-        showProgressDialog(true);
     }
 
     private void addImportsInOtherThread() {
@@ -71,19 +70,19 @@ public class AddImportsStrategy {
                     editorKit.getModelManager().applyChanges(result);
                     logger.info("Finished adding imports");
                 });
-                showProgressDialog(false);
+                dlg.setVisible(false);
             }
 
             @Override
             public void onFailure(Throwable t) {
-                showProgressDialog(false);
+                dlg.setVisible(false);
             }
         });
+        if (!future.isDone()) {
+            dlg.setVisible(true);
+        }
     }
 
-    private void showProgressDialog(boolean b) {
-        dlg.setVisible(b);
-    }
 
     private List<OWLOntologyChange> loadImportsInternal() {
         List<OWLOntologyChange> changes = new ArrayList<>();
