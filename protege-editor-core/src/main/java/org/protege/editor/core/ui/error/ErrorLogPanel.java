@@ -107,7 +107,10 @@ public class ErrorLogPanel extends JPanel {
 
         JScrollPane sp = new JScrollPane(textPane);
         sp.setPreferredSize(new Dimension(800, 300));
-        JOptionPane.showMessageDialog(null, sp, "An error has occurred", JOptionPane.ERROR_MESSAGE);
+        JOptionPane op = new JOptionPane(sp, JOptionPane.ERROR_MESSAGE);
+        JDialog dlg = op.createDialog(null, "An error has occurred");
+        dlg.setResizable(true);
+        dlg.setVisible(true);
     }
 
 }
