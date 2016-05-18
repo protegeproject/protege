@@ -183,8 +183,10 @@ public abstract class Workspace extends JComponent implements Disposable {
 
         windowMenu.add(menu);
 
+        String currentLookAndFeelName = UIManager.getLookAndFeel().getClass().getName();
+
         Preferences p = PreferencesManager.getInstance().getApplicationPreferences(ProtegeApplication.LOOK_AND_FEEL_KEY);
-        String selectedLookAndFeelClassName = p.getString(ProtegeApplication.LOOK_AND_FEEL_CLASS_NAME, "");
+        String selectedLookAndFeelClassName = p.getString(ProtegeApplication.LOOK_AND_FEEL_CLASS_NAME, currentLookAndFeelName);
 
         addLookAndFeelMenuItem(
                 menu,
@@ -216,7 +218,7 @@ public abstract class Workspace extends JComponent implements Disposable {
                 lafShortName = shortName.get();
             }
             else {
-                Class cls = Class.forName(lookAndFeelClassName);
+                Class<?> cls = Class.forName(lookAndFeelClassName);
                 LookAndFeel laf = (LookAndFeel) cls.newInstance();
                 lafShortName = laf.getName();
             }
@@ -236,7 +238,7 @@ public abstract class Workspace extends JComponent implements Disposable {
 
     private void setLookAndFeel(String clsName, String shortName) {
         try {
-            Class lookAndFeelClass = Class.forName(clsName);
+            Class<?> lookAndFeelClass = Class.forName(clsName);
             LookAndFeel lookAndFeel = (LookAndFeel) lookAndFeelClass.newInstance();
             UIManager.setLookAndFeel(lookAndFeel);
             SwingUtilities.updateComponentTreeUI(Workspace.this);
