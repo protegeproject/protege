@@ -28,6 +28,7 @@ public class ImportConfirmationPage extends AbstractOWLWizardPanel {
 	public static final String ID = "ImportConfirmationPage";
 
     private JComponent importedOntologiesComponent;
+
     private TitledBorder titledBorder;
 
     private Object backPanelDescriptor;
