@@ -4,8 +4,12 @@ import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.progress.BackgroundTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
@@ -17,7 +21,7 @@ import java.util.List;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: 25-Aug-2006<br><br>
-
+ * <p/>
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
@@ -32,6 +36,8 @@ public class PluginManager {
     public static final String PLUGIN_REGISTRY_KEY = "plugin.registry-5.0.url";
 
     public static final String DEFAULT_REGISTRY = "https://raw.githubusercontent.com/protegeproject/autoupdate/master/update-info/5.0.0/plugins.repository";
+
+    private final Logger logger = LoggerFactory.getLogger(PluginManager.class);
 
     private static enum SearchType {
         UPDATES_ONLY,
@@ -65,26 +71,26 @@ public class PluginManager {
 
 
     public URL getPluginRegistryLocation() {
-    	String pluginRegistryLoc = getPrefs().getString(PLUGIN_REGISTRY_KEY, DEFAULT_REGISTRY);
+        String pluginRegistryLoc = getPrefs().getString(PLUGIN_REGISTRY_KEY, DEFAULT_REGISTRY);
         try {
             return new URL(pluginRegistryLoc);
-        }
-        catch (MalformedURLException e) {
+        } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
     }
 
 
     public void setPluginRegistryLocation(URL url) {
-    	String oldPluginRegistryLoc = getPrefs().getString(PLUGIN_REGISTRY_KEY, DEFAULT_REGISTRY);
-    	String newPluginRegistryLoc = url.toString();
-    	if (!newPluginRegistryLoc.equals(oldPluginRegistryLoc)) {
-    		getPrefs().putString(PLUGIN_REGISTRY_KEY, newPluginRegistryLoc);
-    	}
+        String oldPluginRegistryLoc = getPrefs().getString(PLUGIN_REGISTRY_KEY, DEFAULT_REGISTRY);
+        String newPluginRegistryLoc = url.toString();
+        if (!newPluginRegistryLoc.equals(oldPluginRegistryLoc)) {
+            getPrefs().putString(PLUGIN_REGISTRY_KEY, newPluginRegistryLoc);
+        }
     }
 
     /**
      * Gets the date that auto-update was last run.
+     *
      * @return The date which auto-update was last run.  Not {@code null}.
      */
     public Date getLastAutoUpdateDate() {
@@ -96,8 +102,16 @@ public class PluginManager {
         runSearch(SearchType.UPDATES_ONLY);
     }
 
-    public void runCheckForPlugins() {
+    public void runCheckForPlugins() throws IOException {
+        ensureConnectionToPluginRegistry();
         runSearch(SearchType.UPDATES_AND_INSTALLS);
+    }
+
+    private void ensureConnectionToPluginRegistry() throws IOException {
+        URL registryLocation = getPluginRegistryLocation();
+        HttpURLConnection connection = (HttpURLConnection) registryLocation.openConnection();
+        connection.setRequestMethod("HEAD");
+        connection.getResponseCode();
     }
 
     private void runSearch(SearchType searchType) {
@@ -107,15 +121,14 @@ public class PluginManager {
             try {
                 registry.reload();
                 getPrefs().putLong(LAST_RUN_PREFS_KEY, System.currentTimeMillis());
-            }
-            finally {
+            } finally {
                 ProtegeApplication.getBackgroundTaskManager().endTask(autoUpdateTask);
                 List<PluginInfo> availablePlugins = registry.getAvailablePlugins();
                 if (searchType == SearchType.UPDATES_AND_INSTALLS) {
                     showPluginsDialog(availablePlugins);
                 }
                 else {
-                    if(!availablePlugins.isEmpty()) {
+                    if (!availablePlugins.isEmpty()) {
                         showPluginsDialog(availablePlugins);
                     }
                 }
@@ -127,13 +140,13 @@ public class PluginManager {
     }
 
     private void showPluginsDialog(List<PluginInfo> pluginInfoList) {
-       SwingUtilities.invokeLater(() -> {
-           List<PluginInfo> selUpdates = PluginPanel.showDialog(pluginInfoList, null);
-           if (!selUpdates.isEmpty()){
-               PluginInstaller installer = new PluginInstaller(selUpdates);
-               installer.run();
-           }
-       });
+        SwingUtilities.invokeLater(() -> {
+            List<PluginInfo> selUpdates = PluginPanel.showDialog(pluginInfoList, null);
+            if (!selUpdates.isEmpty()) {
+                PluginInstaller installer = new PluginInstaller(selUpdates);
+                installer.run();
+            }
+        });
     }
 
 }
