@@ -89,6 +89,7 @@ public class OntologySaver {
             IRI documentIRI = descriptor.getDocumentIRI();
             dlg.setSubMessage(String.format("Location: %s", formatIRI(documentIRI)));
             ontology.saveOntology(descriptor.getDocumentFormat(), documentIRI);
+
         }
         return null;
     }

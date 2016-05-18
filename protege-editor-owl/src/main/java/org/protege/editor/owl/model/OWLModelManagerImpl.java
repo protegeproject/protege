@@ -492,6 +492,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                         .addOntology(ont, format, documentIRI)
                         .build();
                 saver.saveOntologies();
+                ensureCatalogFileExists();
                 manager.setOntologyDocumentIRI(ont, documentIRI);
                 logger.info("Saved ontology {} to {} in {} format", ont.getOntologyID(), documentIRI, format);
 
@@ -513,6 +514,20 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             else {
                 throw e;
             }
+        }
+    }
+
+    private void ensureCatalogFileExists() {
+        try {
+            OWLOntology activeOntology = getActiveOntology();
+            IRI ontologyDocumentIRI = manager.getOntologyDocumentIRI(activeOntology);
+            if("file".equals(ontologyDocumentIRI.getScheme())) {
+                File file = new File(ontologyDocumentIRI.toURI());
+                File parentDirectory = file.getParentFile();
+                getOntologyCatalogManager().ensureCatalogExists(parentDirectory);
+            }
+        } catch (IllegalArgumentException e) {
+            logger.error("A problem occurred when trying to save the catalog file: {}", e.getMessage());
         }
     }
 

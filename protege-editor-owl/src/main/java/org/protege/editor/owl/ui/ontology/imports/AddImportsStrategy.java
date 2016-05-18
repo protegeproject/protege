@@ -62,7 +62,7 @@ public class AddImportsStrategy {
     }
 
     private void addImportsInOtherThread() {
-        ListenableFuture<List<OWLOntologyChange>> future = service.submit(() -> loadImportsInternal());
+        ListenableFuture<List<OWLOntologyChange>> future = service.submit(this::loadImportsInternal);
         Futures.addCallback(future, new FutureCallback<List<OWLOntologyChange>>() {
             @Override
             public void onSuccess(List<OWLOntologyChange> result) {
@@ -105,16 +105,12 @@ public class AddImportsStrategy {
             if (!man.contains(importParameters.getOntologyID())) {
                 try {
                     OWLOntologyManager loadingManager = OWLManager.createConcurrentOWLOntologyManager();
-                    PriorityCollection<OWLOntologyIRIMapper> iriMappers = loadingManager.getIRIMappers();
-                    iriMappers.clear();
-                    iriMappers.add(new UserResolvedIRIMapper(new MissingImportHandlerUI(editorKit)));
-                    iriMappers.add(new WebConnectionIRIMapper());
-                    iriMappers.add(new AutoMappedRepositoryIRIMapper(editorKit.getOWLModelManager().getOntologyCatalogManager()));
-
+                    loadingManager.getIRIMappers()
+                            .add(man.getIRIMappers());
                     ProgressDialogOntologyLoaderListener listener = new ProgressDialogOntologyLoaderListener(dlg, logger);
                     loadingManager.addOntologyLoaderListener(listener);
                     loadingManager.loadOntologyFromOntologyDocument(
-                            new IRIDocumentSource(importedOntologyDocumentIRI),
+                            new IRIDocumentSource(IRI.create(physicalLocation)),
                             new OWLOntologyLoaderConfiguration().setMissingImportHandlingStrategy(MissingImportHandlingStrategy.SILENT));
                     loadingManager.removeOntologyLoaderListener(listener);
 //                        editorKit.getModelManager().fireEvent(EventType.ONTOLOGY_LOADED);
