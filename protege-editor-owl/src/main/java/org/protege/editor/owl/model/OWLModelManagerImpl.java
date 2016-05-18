@@ -530,17 +530,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             logger.error("A problem occurred when trying to save the catalog file: {}", e.getMessage());
         }
     }
-
-    /**
-     * @throws OWLOntologyStorageException if a problem occurs during the save
-     * @deprecated - this method would require user interaction - use <code>OWLEditorKit.saveAs()</code> instead
-     */
-    @Deprecated
-    public void saveAs() throws OWLOntologyStorageException {
-        save();
-    }
-
-
+    
     @Override
     public void fireBeforeSaveEvent(OWLOntologyID ontologyID, URI physicalURI) {
         for (IOListener listener : new ArrayList<>(ioListeners)) {
