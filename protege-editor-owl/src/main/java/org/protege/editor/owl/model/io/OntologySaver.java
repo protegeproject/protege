@@ -1,6 +1,8 @@
 package org.protege.editor.owl.model.io;
 
 import com.google.common.util.concurrent.*;
+import org.apache.commons.io.FileUtils;
+import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.owl.ui.util.ProgressDialog;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDocumentFormat;
@@ -11,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -83,12 +86,32 @@ public class OntologySaver {
      */
     private Void saveOntologyInternal() throws OWLOntologyStorageException {
         for (OntologySaveDescriptor descriptor : saveDescriptors) {
-            OWLOntology ontology = descriptor.getOntology();
-            OntologyIRIShortFormProvider sfp = new OntologyIRIShortFormProvider();
-            dlg.setMessage(String.format("Saving ontology: %s", sfp.getShortForm(ontology)));
-            IRI documentIRI = descriptor.getDocumentIRI();
-            dlg.setSubMessage(String.format("Location: %s", formatIRI(documentIRI)));
-            ontology.saveOntology(descriptor.getDocumentFormat(), documentIRI);
+            try {
+                OWLOntology ontology = descriptor.getOntology();
+                OntologyIRIShortFormProvider sfp = new OntologyIRIShortFormProvider();
+                String ontologyShortForm = sfp.getShortForm(ontology);
+                logger.info("Saving {}", ontologyShortForm);
+                dlg.setMessage(String.format("Saving ontology: %s", ontologyShortForm));
+                IRI documentIRI = descriptor.getDocumentIRI();
+                dlg.setSubMessage(String.format("Location: %s", formatIRI(documentIRI)));
+                if ("file".equals(documentIRI.getScheme())) {
+                    // Save temp file first and then copy over.
+                    File tempFile = File.createTempFile("temp-ontology", "");
+                    logger.info("Saving ontology to temp file: {}", tempFile);
+                    ontology.saveOntology(descriptor.getDocumentFormat(), IRI.create(tempFile));
+                    File destFile = new File(documentIRI.toURI());
+                    logger.info("Copying ontology from temp file ({}) to actual destination ({})", tempFile, destFile);
+                    FileUtils.copyFile(tempFile, destFile);
+                    logger.info("Removing temp file: {}", tempFile);
+                    FileUtils.deleteQuietly(tempFile);
+                }
+                else {
+                    logger.info("Saving ontology to: {}", documentIRI);
+                    ontology.saveOntology(descriptor.getDocumentFormat(), documentIRI);
+                }
+            } catch (IOException e) {
+                throw new OWLOntologyStorageException(e);
+            }
 
         }
         return null;
