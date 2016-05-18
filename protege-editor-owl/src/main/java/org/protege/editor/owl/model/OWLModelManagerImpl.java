@@ -446,14 +446,25 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
      * Save all of the ontologies that are editable and that have been modified.
      */
     public void save() throws OWLOntologyStorageException {
-        for (OWLOntologyID ontId : new HashSet<>(dirtyOntologies)) {
+        HashSet<OWLOntology> ontologiesToSave = new HashSet<>();
+        for (OWLOntologyID ontId : dirtyOntologies) {
             if (manager.contains(ontId)) {
-                save(manager.getOntology(ontId));
+                ontologiesToSave.add(manager.getOntology(ontId));
             }
             else {
                 dirtyOntologies.remove(ontId);
             }
         }
+        for(OWLOntology ontology : manager.getOntologies()) {
+            IRI documentIRI = manager.getOntologyDocumentIRI(ontology);
+            if(!"file".equals(documentIRI.getScheme())) {
+                ontologiesToSave.add(ontology);
+            }
+        }
+        for(OWLOntology ontology : ontologiesToSave) {
+            save(ontology);
+        }
+
     }
 
 
@@ -530,7 +541,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             logger.error("A problem occurred when trying to save the catalog file: {}", e.getMessage());
         }
     }
-    
+
     @Override
     public void fireBeforeSaveEvent(OWLOntologyID ontologyID, URI physicalURI) {
         for (IOListener listener : new ArrayList<>(ioListeners)) {
