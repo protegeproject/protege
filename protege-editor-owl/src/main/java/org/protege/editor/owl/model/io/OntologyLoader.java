@@ -16,9 +16,12 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.net.URI;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
 /**
  * Matthew Horridge
@@ -112,12 +115,23 @@ public class OntologyLoader {
         configuration = configuration.setMissingImportHandlingStrategy(MissingImportHandlingStrategy.SILENT);
         IRIDocumentSource documentSource = new IRIDocumentSource(IRI.create(documentURI));
         OWLOntology ontology = loadingManager.loadOntologyFromOntologyDocument(documentSource, configuration);
+        Set<OWLOntology> alreadyLoadedOntologies = new HashSet<>();
         for (OWLOntology loadedOntology : loadingManager.getOntologies()) {
-            OWLOntologyManager modelManager = getOntologyManager();
-            fireBeforeLoad(loadedOntology, documentURI);
-            modelManager.copyOntology(loadedOntology, OntologyCopy.MOVE);
-            fireAfterLoad(loadedOntology, documentURI);
+            if (!modelManager.getOntologies().contains(loadedOntology)) {
+                OWLOntologyManager modelManager = getOntologyManager();
+                fireBeforeLoad(loadedOntology, documentURI);
+                modelManager.copyOntology(loadedOntology, OntologyCopy.MOVE);
+                fireAfterLoad(loadedOntology, documentURI);
+            }
+            else {
+                alreadyLoadedOntologies.add(loadedOntology);
+            }
         }
+        if(!alreadyLoadedOntologies.isEmpty()) {
+            displayOntologiesAlreadyLoadedMessage(alreadyLoadedOntologies);
+        }
+
+
         modelManager.setActiveOntology(ontology);
         modelManager.fireEvent(EventType.ONTOLOGY_LOADED);
         OWLOntologyID id = ontology.getOntologyID();
@@ -127,6 +141,23 @@ public class OntologyLoader {
         return Optional.of(ontology);
     }
 
+    private void displayOntologiesAlreadyLoadedMessage(Set<OWLOntology> alreadyLoadedOntologies) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html><body>");
+        sb.append("The following ontologies are already loaded in this workspace<br><br>");
+        for(OWLOntology alreadyLoadedOntology : alreadyLoadedOntologies) {
+            String ren = modelManager.getRendering(alreadyLoadedOntology);
+            sb.append("<b>");
+            sb.append(ren);
+            sb.append("</b><br>");
+        }
+        sb.append("<br>");
+        sb.append("They have not been replaced/overwritten");
+        sb.append("</body></html>");
+
+        SwingUtilities.invokeLater(() ->
+                JOptionPane.showMessageDialog(null, sb.toString(), "Workspace already contains loaded ontologies", JOptionPane.WARNING_MESSAGE));
+    }
 
 
     private void fireBeforeLoad(OWLOntology loadedOntology, URI documentURI) {
