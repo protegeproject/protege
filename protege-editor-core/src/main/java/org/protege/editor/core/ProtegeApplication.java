@@ -137,8 +137,8 @@ public class ProtegeApplication implements BundleActivator {
     private void displayPlatform() {
         Bundle thisBundle = context.getBundle();
         Version v = PluginUtilities.getBundleVersion(thisBundle);
-        logger.info(LogBanner.start("Protégé"));
-        logger.info("Protégé Desktop");
+        logger.info(LogBanner.start("Protege"));
+        logger.info("Protege Desktop");
         logger.info("Version {}.{}.{}, Build {}", v.getMajor(), v.getMinor(), v.getMicro(), v.getQualifier());
         logger.info("");
         logger.info("");
