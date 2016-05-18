@@ -52,6 +52,8 @@ public class Wizard extends WindowAdapter implements PropertyChangeListener {
      */
     public static final String CANCEL_BUTTON_ACTION_COMMAND = "CancelButtonActionCommand";
 
+    public static final int MARGIN = 100;
+
     // The i18n text used for the buttons. Loaded from a property resource file.
 
     static String BACK_TEXT;
@@ -182,11 +184,11 @@ public class Wizard extends WindowAdapter implements PropertyChangeListener {
         wizardDialog.pack();
         Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension wizardDimension = wizardDialog.getSize();
-        if(wizardDimension.width > screenDimension.width) {
-            wizardDimension.width = screenDimension.width - 10;
+        if(wizardDimension.width > screenDimension.width - MARGIN) {
+            wizardDimension.width = screenDimension.width - MARGIN;
         }
-        if(wizardDimension.height > screenDimension.height) {
-            wizardDimension.height = screenDimension.height - 10;
+        if(wizardDimension.height > screenDimension.height - MARGIN) {
+            wizardDimension.height = screenDimension.height - MARGIN;
         }
         wizardDialog.setLocation((screenDimension.width - wizardDimension.width) / 2,
                                  (screenDimension.height - wizardDimension.height) / 2);
