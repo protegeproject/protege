@@ -73,11 +73,13 @@ public class MList extends JList {
 
     private List<MListButton> editAndDeleteButtonList = Arrays.asList(editButton, deleteButton);
 
+    private List<MListButton> editButtonList = Arrays.asList(editButton);
+
     private List<MListButton> deleteButtonList = Arrays.asList(deleteButton);
 
     public int lastMousePositionCellIndex = 0;
 
-
+    
     public MList() {
         ListCellRenderer renderer = this.getCellRenderer();
         this.ren = new MListCellRenderer();
@@ -233,13 +235,14 @@ public class MList extends JList {
     }
 
     protected List<MListButton> getListItemButtons(MListItem item) {
-        if (item.isDeleteable()) {
-            if (item.isEditable()) {
-                return this.editAndDeleteButtonList;
-            }
-            else {
-                return this.deleteButtonList;
-            }
+        if(item.isDeleteable() && item.isEditable()) {
+            return this.editAndDeleteButtonList;
+        }
+        if(item.isDeleteable()) {
+            return deleteButtonList;
+        }
+        if(item.isEditable()) {
+            return editButtonList;
         }
         return Collections.emptyList();
     }
