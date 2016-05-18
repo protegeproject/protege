@@ -455,11 +455,10 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 dirtyOntologies.remove(ontId);
             }
         }
-        for(OWLOntology ontology : manager.getOntologies()) {
-            IRI documentIRI = manager.getOntologyDocumentIRI(ontology);
-            if(!"file".equals(documentIRI.getScheme())) {
-                ontologiesToSave.add(ontology);
-            }
+        OWLOntology activeOntology = getActiveOntology();
+        IRI documentIRI = manager.getOntologyDocumentIRI(activeOntology);
+        if(!"file".equals(documentIRI.getScheme())) {
+            ontologiesToSave.add(activeOntology);
         }
         for(OWLOntology ontology : ontologiesToSave) {
             save(ontology);
