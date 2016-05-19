@@ -211,7 +211,7 @@ public class ProtegeApplication implements BundleActivator {
         boolean passed = true;
         boolean hasPluginXml = (b.getResource("/plugin.xml") != null);
         if (b.getHeaders().get(BUNDLE_WITHOUT_PLUGIN_XML) == null && !hasPluginXml) {
-            logger.info("\t" + getNiceBundleName(b) + " Plugin has no plugin.xml resource");
+            logger.debug("\t" + getNiceBundleName(b) + " Plugin has no plugin.xml resource");
             passed = false;
         }
         if (hasPluginXml && !isSingleton(b)) {
