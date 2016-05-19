@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>edu.stanford.protege</groupId>
 		<artifactId>protege-parent</artifactId>
-		<version>5.0.0-RC2-SNAPSHOT</version>
+		<version>5.0.0-RC2</version>
 		<relativePath>../</relativePath>
 	</parent>
 	
@@ -163,7 +163,7 @@
 								</goals>
 								<configuration>
 									<target>
-										<mkdir dir="${win.dir}"/>
+										<mkdir dir="${win.dir}" />
 									</target>
 								</configuration>
 							</execution>
