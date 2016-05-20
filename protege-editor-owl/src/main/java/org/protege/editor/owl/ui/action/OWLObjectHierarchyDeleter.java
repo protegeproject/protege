@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.action;
 
+import com.google.common.base.Stopwatch;
+import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.owl.OWLEditorKit;
@@ -7,11 +9,15 @@ import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.util.OWLEntityDeleter;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.util.OWLEntitySetProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -21,6 +27,8 @@ import java.util.Set;
  * Date: 02-May-2007<br><br>
  */
 public class OWLObjectHierarchyDeleter<E extends OWLEntity> {
+
+    private final Logger logger = LoggerFactory.getLogger(OWLObjectHierarchyDeleter.class);
 
     private OWLEditorKit owlEditorKit;
 
@@ -147,12 +155,19 @@ public class OWLObjectHierarchyDeleter<E extends OWLEntity> {
     }
 
 
-    private void deleteDescendants(Set<E> selents) {
+    private void deleteDescendants(Set<E> selectedEntities) {
+        logger.info(LogBanner.start("Deleting descendants"));
+        logger.info("Deleting descendants of {}", selectedEntities);
         Set<E> ents = new HashSet<>();
-        for (E ent : selents) {
+        Stopwatch stopwatch = Stopwatch.createStarted();
+        for (E ent : selectedEntities) {
+            logger.info("Retrieving descendants of {}", ent);
             ents.add(ent);
             ents.addAll(hierarchyProvider.getDescendants(ent));
         }
+        stopwatch.stop();
+        logger.info("Retrieved {} entities to delete in {} ms", ents.size(), stopwatch.elapsed(TimeUnit.MILLISECONDS));
         delete(ents);
+        logger.info(LogBanner.end());
     }
 }
