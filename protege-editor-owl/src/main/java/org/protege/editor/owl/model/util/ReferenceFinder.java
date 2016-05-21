@@ -1,13 +1,13 @@
 package org.protege.editor.owl.model.util;
 
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Multimap;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.Imports;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -21,6 +21,7 @@ public class ReferenceFinder {
 
     /**
      * Gets the references set for the specified entities in the specified ontology.
+     *
      * @param entities The entities whose references are to be retrieved. Not {@code null}.
      * @param ontology The ontology.  Not {@code null}.
      * @return The ReferenceSet that contains axioms that reference the specified entities and ontology annotations
@@ -32,25 +33,47 @@ public class ReferenceFinder {
             Collection<? extends OWLEntity> entities,
             OWLOntology ontology) {
 
+
         ImmutableSet.Builder<OWLAxiom> axiomSetBuilder = ImmutableSet.builder();
 
         ImmutableSet.Builder<OWLAnnotation> ontologyAnnotationSetBuilder = ImmutableSet.builder();
 
-        Multimap<IRI, OWLAnnotationAssertionAxiom> annotationAssertionsByIri = HashMultimap.create();
-        Multimap<IRI, OWLAnnotation> ontologyAnnotationsByIri = HashMultimap.create();
-        Multimap<OWLEntity, OWLAnnotation> ontologyAnnotationsByProperty = HashMultimap.create();
 
-        buildIndex(ontology,
-                annotationAssertionsByIri,
-                ontologyAnnotationsByIri,
-                ontologyAnnotationsByProperty);
-
-        for(OWLEntity entity : entities) {
+        Set<IRI> entityIRIs = new HashSet<>(entities.size());
+        for (OWLEntity entity : entities) {
             Set<OWLAxiom> refs = ontology.getReferencingAxioms(entity, Imports.EXCLUDED);
             axiomSetBuilder.addAll(refs);
-            axiomSetBuilder.addAll(annotationAssertionsByIri.get(entity.getIRI()));
-            ontologyAnnotationSetBuilder.addAll(ontologyAnnotationsByIri.get(entity.getIRI()));
-            ontologyAnnotationSetBuilder.addAll(ontologyAnnotationsByProperty.get(entity));
+            entityIRIs.add(entity.getIRI());
+        }
+
+        // Optimisation for the case where there is just one entity.
+        if(entityIRIs.size() == 1) {
+            entityIRIs = Collections.singleton(entityIRIs.iterator().next());
+        }
+
+        for (OWLAnnotationAssertionAxiom axiom : ontology.getAxioms(AxiomType.ANNOTATION_ASSERTION)) {
+            OWLAnnotationSubject subject = axiom.getSubject();
+            if (subject instanceof IRI && entityIRIs.contains(subject)) {
+                axiomSetBuilder.add(axiom);
+            }
+            else {
+                OWLAnnotationValue value = axiom.getValue();
+                if (value instanceof IRI && entityIRIs.contains(value)) {
+                    axiomSetBuilder.add(axiom);
+                }
+            }
+        }
+
+        for (OWLAnnotation annotation : ontology.getAnnotations()) {
+            OWLAnnotationValue value = annotation.getValue();
+            if (value instanceof IRI && entityIRIs.contains(value)) {
+                ontologyAnnotationSetBuilder.add(annotation);
+            }
+            else {
+                if (entities.contains(annotation.getProperty())) {
+                    ontologyAnnotationSetBuilder.add(annotation);
+                }
+            }
         }
 
         return new ReferenceSet(
@@ -59,31 +82,6 @@ public class ReferenceFinder {
                 ontologyAnnotationSetBuilder.build()
         );
 
-    }
-
-    private static void buildIndex(OWLOntology ontology,
-                                   Multimap<IRI, OWLAnnotationAssertionAxiom> annotationAssertionsByIri,
-                                   Multimap<IRI, OWLAnnotation> ontologyAnnotationsByIri,
-                                   Multimap<OWLEntity, OWLAnnotation> ontologyAnnotationsByProperty) {
-
-        for(OWLAnnotationAssertionAxiom axiom : ontology.getAxioms(AxiomType.ANNOTATION_ASSERTION)) {
-            OWLAnnotationSubject subject = axiom.getSubject();
-            if(subject instanceof IRI) {
-                annotationAssertionsByIri.put((IRI) subject, axiom);
-            }
-            OWLAnnotationValue value = axiom.getValue();
-            if(value instanceof IRI) {
-                annotationAssertionsByIri.put((IRI) value, axiom);
-            }
-        }
-
-        for(OWLAnnotation annotation : ontology.getAnnotations()) {
-            OWLAnnotationValue value = annotation.getValue();
-            if(value instanceof IRI) {
-                ontologyAnnotationsByIri.put((IRI) value, annotation);
-            }
-            ontologyAnnotationsByProperty.put(annotation.getProperty(), annotation);
-        }
     }
 
 
