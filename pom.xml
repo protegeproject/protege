@@ -224,6 +224,9 @@
 							<version>1.9</version>
 						</dependency>
 					</dependencies>
+					<configuration>
+						<autoVersionSubmodules>true</autoVersionSubmodules>
+					</configuration>
 				</plugin>
 
 				<plugin>
