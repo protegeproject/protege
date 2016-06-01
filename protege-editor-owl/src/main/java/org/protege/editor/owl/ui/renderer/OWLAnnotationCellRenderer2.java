@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.renderer;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.util.LiteralChecker;
 import org.protege.editor.owl.ui.list.AbstractAnnotationsList;
 import org.protege.editor.owl.ui.renderer.layout.*;
 import org.semanticweb.owlapi.model.*;
@@ -325,7 +326,12 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
             }
 
             public List<Paragraph> visit(OWLLiteral literal) {
-                return renderLiteral(page, literal, defaultForeground, defaultBackground, isSelected);
+                boolean inLexicalSpace = LiteralChecker.isLiteralIsInLexicalSpace(literal);
+                Color foreground = defaultForeground;
+                if (!inLexicalSpace) {
+                    foreground = Color.RED;
+                }
+                return renderLiteral(page, literal, foreground, defaultBackground, isSelected);
             }
         });
         applyGlobalFormattingToAnnotationValueParagraphs(paragraphs);

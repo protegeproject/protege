@@ -9,6 +9,7 @@ package org.protege.editor.owl.ui.editor;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.classexpression.OWLExpressionParserException;
 import org.protege.editor.owl.model.parser.OWLLiteralParser;
+import org.protege.editor.owl.model.util.LiteralChecker;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLAutoCompleter;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
@@ -18,11 +19,12 @@ import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -49,8 +51,13 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
 
     private OWLDatatype lastDatatype;
 
+    private final OWLEditorKit editorKit;
+
+    private final JLabel messageLabel = new JLabel();
+
 
     public OWLConstantEditor(OWLEditorKit owlEditorKit) {
+        this.editorKit = owlEditorKit;
         dataFactory = owlEditorKit.getModelManager().getOWLDataFactory();
         annotationContent = new JTextArea(8, 40);
         annotationContent.setWrapStyleWord(true);
@@ -63,13 +70,61 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         datatypeComboBox.addActionListener(e -> {
             OWLDatatype owlDatatype = getSelectedDatatype();
             boolean b = owlDatatype == null;
+            validateContent();
             toggleLanguage(b);
+        });
+
+        annotationContent.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                validateContent();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                validateContent();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+
+            }
         });
 
         removeNonSelectableDatatypes(datatypeComboBox);
 
         setupAutoCompleter(owlEditorKit);
         layoutComponents();
+    }
+
+    private void validateContent() {
+        clearErrorMessage();
+        if(getLexicalValue().isEmpty()) {
+            return;
+        }
+        Optional<OWLDatatype> datatype = Optional.ofNullable(getSelectedDatatype());
+        datatype.ifPresent(d -> {
+            if(!LiteralChecker.isLiteralIsInLexicalSpace(getEditedObject())) {
+                    annotationContent.setForeground(Color.RED);
+                String message = String.format(
+                        "The entered value is not valid for the specified datatype (%s)",
+                        editorKit.getOWLModelManager().getRendering(d));
+                displayErrorMessage(message);
+            }
+        });
+    }
+
+    private void displayErrorMessage(String message) {
+        messageLabel.setText(message);
+        messageLabel.setForeground(Color.RED);
+        annotationContent.setToolTipText(message);
+    }
+
+    private void clearErrorMessage() {
+        messageLabel.setText("Value");
+        messageLabel.setForeground(null);
+        annotationContent.setToolTipText(null);
+        annotationContent.setForeground(null);
     }
 
     /**
@@ -111,7 +166,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
     public OWLLiteral getEditedObject() {
         lastDatatype = null;
         lastLanguage = null;
-        String value = annotationContent.getText().trim();
+        String value = getLexicalValue();
         if (isDatatypeSelected()) {
             lastDatatype = getSelectedDatatype();
             return dataFactory.getOWLLiteral(value, getSelectedDatatype());
@@ -123,6 +178,10 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         OWLLiteralParser parser = new OWLLiteralParser(dataFactory);
 
         return parser.parseLiteral(value);
+    }
+
+    private String getLexicalValue() {
+        return annotationContent.getText().trim();
     }
 
     public Set<OWLLiteral> getEditedObjects() {
@@ -207,7 +266,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
                         0,
                         0));
 
-        add(new JLabel("Value"),
+        add(messageLabel,
                 new GridBagConstraints(1,
                         0,
                         5,
@@ -219,7 +278,6 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
                         new Insets(7, 7, 0, 7),
                         0,
                         0));
-
 
         add(new JLabel("Type"),
                 new GridBagConstraints(1,
