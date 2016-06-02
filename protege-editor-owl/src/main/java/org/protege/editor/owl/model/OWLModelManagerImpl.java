@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model;
 
-import com.google.common.base.*;
+import com.google.common.base.Stopwatch;
 import org.protege.editor.core.AbstractModelManager;
 import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
@@ -48,12 +48,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.io.File;
-import java.net.ProtocolException;
 import java.net.URI;
 import java.util.*;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.*;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -61,10 +58,10 @@ import java.util.concurrent.*;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: Mar 17, 2006<br><br>
-
+ * <p/>
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
-
+ * <p/>
  * The <code>OWLModelManager</code> acts as a controller
  * over a collection of ontologies (ontologies that are
  * related to each other via owl:imports) and the various
@@ -129,7 +126,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     // error handlers
 
-    private SaveErrorHandler saveErrorHandler;
+//    private SaveErrorHandler saveErrorHandler;
 
     private OntologyLoadErrorHandler loadErrorHandler;
 
@@ -279,13 +276,11 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             OntologyLoader loader = new OntologyLoader(this, userResolvedIRIMapper);
             Optional<OWLOntology> loadedOntology = loader.loadOntology(uri);
             return loadedOntology.isPresent();
-        }
-        catch (OWLOntologyCreationException e) {
+        } catch (OWLOntologyCreationException e) {
             OWLOntologyID id = new OWLOntologyID(com.google.common.base.Optional.of(IRI.create(uri)), com.google.common.base.Optional.<IRI>absent());
             handleLoadError(id, uri, e);
             return false;
-        }
-        finally {
+        } finally {
             logger.info("Loading for ontology and imports closure successfully completed in {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
             logger.info(LogBanner.end());
         }
@@ -444,7 +439,11 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     /**
      * Save all of the ontologies that are editable and that have been modified.
+     *
+     * This method should not be used as the behaviour is not clear.  The save(OWLOntology) method should be used
+     * instead.
      */
+    @Deprecated
     public void save() throws OWLOntologyStorageException {
         HashSet<OWLOntology> ontologiesToSave = new HashSet<>();
         for (OWLOntologyID ontId : dirtyOntologies) {
@@ -455,12 +454,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 dirtyOntologies.remove(ontId);
             }
         }
-        OWLOntology activeOntology = getActiveOntology();
-        IRI documentIRI = manager.getOntologyDocumentIRI(activeOntology);
-        if(!"file".equals(documentIRI.getScheme())) {
-            ontologiesToSave.add(activeOntology);
-        }
-        for(OWLOntology ontology : ontologiesToSave) {
+        for (OWLOntology ontology : ontologiesToSave) {
             save(ontology);
         }
 
@@ -469,69 +463,48 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     public void save(OWLOntology ont) throws OWLOntologyStorageException {
         final URI documentURI = manager.getOntologyDocumentIRI(ont).toURI();
-        try {
-            fireBeforeSaveEvent(ont.getOntologyID(), documentURI);
+
+        fireBeforeSaveEvent(ont.getOntologyID(), documentURI);
 
 
-            if (!UIUtil.isLocalFile(documentURI)) {
-                // I'm not sure why this changed, but this protocol exception is caught and then the
-                // saveAs dialog is shown
-                throw new OWLOntologyStorageException(
-                        new ProtocolException("Cannot save file to remote location: " + documentURI));
-            }
-            else {
-                final OWLDocumentFormat format;
-                final OWLDocumentFormat previousFormat = manager.getOntologyFormat(ont);
-                if(previousFormat == null) {
-                    format = new RDFXMLDocumentFormat();
-                    logger.info("No document format for {} has been found.  " +
+        final OWLDocumentFormat format;
+        final OWLDocumentFormat previousFormat = manager.getOntologyFormat(ont);
+        if (previousFormat == null) {
+            format = new RDFXMLDocumentFormat();
+            logger.info("No document format for {} has been found.  " +
                             "Using the {} format.",
-                            ont.getOntologyID(), format);
-                }
-                else {
-                    format = previousFormat;
-                }
+                    ont.getOntologyID(), format);
+        }
+        else {
+            format = previousFormat;
+        }
                 /*
                  * Using the addMissingTypes call here for RDF/XML files can result in OWL Full output
                  * and can also result in data corruption.
                  *
                  * See http://protegewiki.stanford.edu/wiki/OWL2RDFParserDeclarationRequirement
                  */
-                IRI documentIRI = IRI.create(documentURI);
-                OntologySaver saver = OntologySaver.builder()
-                        .addOntology(ont, format, documentIRI)
-                        .build();
-                saver.saveOntologies();
-                ensureCatalogFileExists();
-                manager.setOntologyDocumentIRI(ont, documentIRI);
-                logger.info("Saved ontology {} to {} in {} format", ont.getOntologyID(), documentIRI, format);
+        IRI documentIRI = IRI.create(documentURI);
+        OntologySaver saver = OntologySaver.builder()
+                .addOntology(ont, format, documentIRI)
+                .build();
+        saver.saveOntologies();
+        ensureCatalogFileExists();
+        manager.setOntologyDocumentIRI(ont, documentIRI);
+        logger.info("Saved ontology {} to {} in {} format", ont.getOntologyID(), documentIRI, format);
 
-                dirtyOntologies.remove(ont.getOntologyID());
+        dirtyOntologies.remove(ont.getOntologyID());
 
-                fireEvent(EventType.ONTOLOGY_SAVED);
-                fireAfterSaveEvent(ont.getOntologyID(), documentURI);
-            }
+        fireEvent(EventType.ONTOLOGY_SAVED);
+        fireAfterSaveEvent(ont.getOntologyID(), documentURI);
 
-
-        } catch (OWLOntologyStorageException e) {
-            if (saveErrorHandler != null) {
-                try {
-                    saveErrorHandler.handleErrorSavingOntology(ont, documentURI, e);
-                } catch (Exception e1) {
-                    throw new OWLOntologyStorageException(e1);
-                }
-            }
-            else {
-                throw e;
-            }
-        }
     }
 
     private void ensureCatalogFileExists() {
         try {
             OWLOntology activeOntology = getActiveOntology();
             IRI ontologyDocumentIRI = manager.getOntologyDocumentIRI(activeOntology);
-            if("file".equals(ontologyDocumentIRI.getScheme())) {
+            if ("file".equals(ontologyDocumentIRI.getScheme())) {
                 File file = new File(ontologyDocumentIRI.toURI());
                 File parentDirectory = file.getParentFile();
                 getOntologyCatalogManager().ensureCatalogExists(parentDirectory);
@@ -796,7 +769,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 }
             }
         };
-        if(SwingUtilities.isEventDispatchThread()) {
+        if (SwingUtilities.isEventDispatchThread()) {
             r.run();
         }
         else {
@@ -982,12 +955,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     public void setMissingImportHandler(MissingImportHandler missingImportHandler) {
         userResolvedIRIMapper.setMissingImportHandler(missingImportHandler);
     }
-
-
-    public void setSaveErrorHandler(SaveErrorHandler handler) {
-        this.saveErrorHandler = handler;
-    }
-
 
     public void setLoadErrorHandler(OntologyLoadErrorHandler handler) {
         this.loadErrorHandler = handler;
