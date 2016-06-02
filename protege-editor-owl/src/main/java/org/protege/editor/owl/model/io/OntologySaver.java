@@ -109,7 +109,8 @@ public class OntologySaver {
                     logger.info("Saving ontology to: {}", documentIRI);
                     ontology.saveOntology(descriptor.getDocumentFormat(), documentIRI);
                 }
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 throw new OWLOntologyStorageException(e);
             }
 

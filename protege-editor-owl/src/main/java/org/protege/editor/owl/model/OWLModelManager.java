@@ -299,8 +299,14 @@ public interface OWLModelManager extends ModelManager, HasActiveOntology {
 
     void setMissingImportHandler(MissingImportHandler handler);
 
+    /**
+     * Do not use this to handle save errors
+     * @param handler
+     */
+    @Deprecated
+    default void setSaveErrorHandler(SaveErrorHandler handler) {
 
-    void setSaveErrorHandler(SaveErrorHandler handler);
+    }
 
 
     void setLoadErrorHandler(OntologyLoadErrorHandler handler);

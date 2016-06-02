@@ -14,6 +14,7 @@ import org.protege.editor.core.editorkit.EditorKitDescriptor;
 import org.protege.editor.core.editorkit.RecentEditorKitManager;
 import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
+import org.protege.editor.core.util.StringAbbreviator;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLModelManagerImpl;
 import org.protege.editor.owl.model.OWLWorkspace;
@@ -36,11 +37,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.io.File;
-import java.net.ProtocolException;
 import java.net.URI;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -90,7 +88,6 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
         modelManager.setExplanationManager(new ExplanationManager(this));
         modelManager.setMissingImportHandler(new MissingImportHandlerUI(this));
-        modelManager.setSaveErrorHandler(this::handleSaveError);
 
         ontologyChangeListener = owlOntologyChanges -> modifiedDocument = true;
         modelManager.addOntologyChangeListener(ontologyChangeListener);
@@ -237,41 +234,104 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     }
 
 
-    public void handleSave() throws Exception {
+    public void handleSave() {
         logger.info(LogBanner.start("Saving Workspace and Ontologies"));
         try {
-            try {
-                getWorkspace().save();
-                getModelManager().save();
-                newPhysicalURIs.forEach(this::addRecent);
-                newPhysicalURIs.clear();
+            OWLOntologyManager ontologyManager = getOWLModelManager().getOWLOntologyManager();
+            Set<OWLOntology> ontologiesToSave = new HashSet<>();
+            Set<OWLOntology> ontologiesToSaveAs = new HashSet<>();
+            OWLOntology activeOntology = modelManager.getActiveOntology();
+            IRI activeOntologyDocumentIRI = ontologyManager.getOntologyDocumentIRI(activeOntology);
+            if(!"file".equalsIgnoreCase(activeOntologyDocumentIRI.getScheme())) {
+                logger.info("Will prompt 'Save As' for the active ontology because it was not loaded from a local file");
+                ontologiesToSaveAs.add(activeOntology);
             }
-            catch (OWLOntologyStorageException e) {
-                OWLOntology ont = getModelManager().getActiveOntology();
-                OWLDocumentFormat format = getModelManager().getOWLOntologyManager().getOntologyFormat(ont);
-                String message = String.format("Could not save ontology in the specified format (%s).\nPlease select 'Save As' and choose another format.", format);
-                logger.warn(message);
-                ErrorLogPanel.showErrorDialog(new OWLOntologyStorageException(message, e));
+            for(OWLOntology dirtyOntology : getOWLModelManager().getDirtyOntologies()) {
+                String ontologyRendering = getModelManager().getRendering(dirtyOntology);
+                if(!"file".equals(ontologyManager.getOntologyDocumentIRI(dirtyOntology).getScheme())) {
+                    logger.info("Will prompt 'Save As' for the {} ontology because it was not loaded from a local file " +
+                            "but has been modified", ontologyRendering);
+                    ontologiesToSaveAs.add(dirtyOntology);
+                }
+                else {
+                    logger.info("Will save the {} ontology because it has been modified", ontologyRendering);
+                    ontologiesToSave.add(dirtyOntology);
+                }
             }
+            Map<OWLOntology, OWLOntologyStorageException> saveErrors = new LinkedHashMap<>();
+            for(OWLOntology ontology : ontologiesToSaveAs) {
+                try {
+                    if(!handleSaveAs(ontology)) {
+                        // SaveAs aborted.  Abort all?
+                        return;
+                    }
+                } catch (OWLOntologyStorageException e) {
+                    saveErrors.put(ontology, e);
+                }
+            }
+            for(OWLOntology ontology : ontologiesToSave) {
+                try {
+                    getOWLModelManager().save(ontology);
+                } catch (OWLOntologyStorageException e) {
+                    saveErrors.put(ontology, e);
+                }
+            }
+            getWorkspace().save();
+            newPhysicalURIs.forEach(this::addRecent);
+            newPhysicalURIs.clear();
+            handleSaveErrors(saveErrors);
+
         } finally {
             logger.info(LogBanner.end());
         }
 
     }
 
+    private void handleSaveErrors(Map<OWLOntology, OWLOntologyStorageException> saveErrors) {
+        if(saveErrors.isEmpty()) {
+            return;
+        }
+        StringBuilder errorMessage = new StringBuilder();
+        errorMessage.append("<html><body><b>Some errors where encountered during the save operation.</b><br><br>" +
+                "The following ontologies were not saved:<br><br>");
+        for(OWLOntology erroredOntology : saveErrors.keySet()) {
+            OWLOntologyStorageException error = saveErrors.get(erroredOntology);
+            logger.error("An error occurred whilst saving the {} ontology: {}", error.getMessage(), error);
+            String rendering = getModelManager().getRendering(erroredOntology);
+            errorMessage
+                    .append("<b>")
+                    .append(rendering)
+                    .append("</b><br><span style=\"color:gray;\">Reason: ")
+                    .append(StringAbbreviator.abbreviateString(error.getMessage().trim(), 100).replace("\n", "<br>"))
+                    .append("</span><br><br>");
+        }
+        JOptionPane.showMessageDialog(getWorkspace(), errorMessage.toString(), "Save Errors", JOptionPane.ERROR_MESSAGE);
+    }
 
-    public void handleSaveAs() throws Exception {
+
+
+    /**
+     * Saves the active ontology
+     * @throws Exception
+     */
+    public void handleSaveAs() {
         final OWLOntology ont = getModelManager().getActiveOntology();
-        handleSaveAs(ont);
+        try {
+            handleSaveAs(ont);
+        } catch (OWLOntologyStorageException e) {
+            Map<OWLOntology, OWLOntologyStorageException> saveErrorMap = new HashMap<>();
+            saveErrorMap.put(ont, e);
+            handleSaveErrors(saveErrorMap);
+        }
     }
 
 
     /**
-     * This should only save the specified ontology
-     * @param ont the ontology to save
-     * @throws Exception
+     * Saves the specified ontology to a location that is specified by the user before the save operation.
+     * @param ont the ontology to save.
+     * @throws OWLOntologyStorageException if there was a problem saving the ontology.
      */
-    private boolean handleSaveAs(OWLOntology ont) throws Exception {
+    private boolean handleSaveAs(OWLOntology ont) throws OWLOntologyStorageException {
         OWLOntologyManager man = getModelManager().getOWLOntologyManager();
         OWLDocumentFormat oldFormat = man.getOntologyFormat(ont);
         java.util.Optional<OWLDocumentFormat> format = OntologyFormatPanel.showDialog(this, oldFormat,
@@ -337,17 +397,6 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         EditorKitDescriptor descriptor = new EditorKitDescriptor(label, getEditorKitFactory());
         descriptor.setURI(URI_KEY, physicalURI);
         RecentEditorKitManager.getInstance().add(descriptor);
-    }
-
-
-    private void handleSaveError(OWLOntology ont, URI physicalURIForOntology, OWLOntologyStorageException e) throws Exception {
-        // catch the case where the user is trying to save an ontology that has been loaded from the web
-        if (e.getCause() != null && e.getCause() instanceof ProtocolException) {
-            handleSaveAs(ont);
-        }
-        else {
-            throw e;
-        }
     }
 
     private void loadIOListenerPlugins() {
