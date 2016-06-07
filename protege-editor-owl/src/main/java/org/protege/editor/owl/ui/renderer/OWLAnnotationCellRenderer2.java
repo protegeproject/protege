@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.renderer;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.entity.AnnotationPropertyComparator;
 import org.protege.editor.owl.model.util.LiteralChecker;
 import org.protege.editor.owl.ui.list.AbstractAnnotationsList;
 import org.protege.editor.owl.ui.renderer.layout.*;
@@ -13,10 +14,8 @@ import java.awt.*;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -322,7 +321,7 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
             }
 
             public List<Paragraph> visit(OWLAnonymousIndividual individual) {
-                return renderAnonymousIndividual(page, individual);
+                return renderAnonymousIndividual(page, individual, defaultForeground, defaultBackground, isSelected);
             }
 
             public List<Paragraph> visit(OWLLiteral literal) {
@@ -573,11 +572,41 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
      * @param individual The individual.
      * @return A list of paragraphs that represent the rendering of the individual.
      */
-    private List<Paragraph> renderAnonymousIndividual(Page page, OWLAnonymousIndividual individual) {
-        String rendering = editorKit.getOWLModelManager().getRendering(individual);
-        Paragraph paragraph = page.addParagraph(rendering);
-        paragraph.setIcon(getIcon(individual));
-        return Arrays.asList(paragraph);
+    private List<Paragraph> renderAnonymousIndividual(Page page, OWLAnonymousIndividual individual, Color foreground, Color background, boolean selected) {
+        OWLModelManager modelManager = editorKit.getOWLModelManager();
+        page.addParagraph("[", foreground).setOpacity(0.6);
+        Page typesPage = new Page();
+        page.add(typesPage);
+        typesPage.setMarginLeft(40);
+        typesPage.setMarginBottom(7);
+
+        Comparator<OWLObject> c = editorKit.getModelManager().getOWLObjectComparator();
+
+        OWLOntology ont = modelManager.getActiveOntology();
+        ont.getClassAssertionAxioms(individual).stream()
+                .filter(ax -> !ax.getClassExpression().isAnonymous())
+                .map(ax -> ax.getClassExpression().asOWLClass())
+                .sorted(c)
+                .forEach(cls -> renderEntities(typesPage, Collections.singleton(cls)));
+
+        Comparator<OWLAnnotationProperty> propertyComparator = AnnotationPropertyComparator.withDefaultOrdering(c);
+        Comparator<OWLObject> valueComparator = editorKit.getOWLModelManager().getOWLObjectComparator();
+
+        Comparator<OWLAnnotationAssertionAxiom> annotationAssertionAxiomComparator = Comparator
+                .comparing(OWLAnnotationAssertionAxiom::getProperty, propertyComparator)
+                .thenComparing(OWLAnnotationAssertionAxiom::getValue, valueComparator);
+
+        ont.getAnnotationAssertionAxioms(individual).stream()
+                .sorted(annotationAssertionAxiomComparator)
+                .forEach(ax -> {
+                    Page annotationsPage = new Page();
+                    renderCellValue(annotationsPage, ax.getAnnotation(), foreground, background, selected);
+                    page.add(annotationsPage);
+                    annotationsPage.setMarginLeft(40);
+                });
+
+        page.addParagraph("]", foreground).setOpacity(0.6);
+        return Collections.emptyList();
     }
 
 
