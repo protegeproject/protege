@@ -38,7 +38,10 @@ public class AboutPanel extends JPanel {
         Bundle application = applicationContext.getBundle();
         Version v = PluginUtilities.getBundleVersion(application);
 
-        String versionString = "Version " + v.getMajor() + "." + v.getMinor() + "." + v.getMicro() +  " (Build " + v.getQualifier() + ")";
+        String versionString = String.format("Version %d.%d.%d", v.getMajor(), v.getMinor(), v.getMicro());
+        if(!v.getQualifier().isEmpty()) {
+            versionString += " Build " + v.getQualifier();
+        }
         JLabel label = new JLabel(versionString, JLabel.CENTER);
         logoPanel.add(label, BorderLayout.SOUTH);
         logoPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 20, 5));
