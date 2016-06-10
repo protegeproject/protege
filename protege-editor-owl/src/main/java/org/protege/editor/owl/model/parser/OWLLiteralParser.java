@@ -49,7 +49,7 @@ public class OWLLiteralParser {
                 return lit.get();
             }
         }
-        return dataFactory.getOWLLiteral(value, OWL2Datatype.RDF_PLAIN_LITERAL);
+        return dataFactory.getOWLLiteral(value, "");
     }
 
     private static class LiteralParser {

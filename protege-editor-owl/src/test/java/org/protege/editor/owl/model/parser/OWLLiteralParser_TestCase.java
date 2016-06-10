@@ -147,4 +147,11 @@ public class OWLLiteralParser_TestCase {
         OWLLiteral literal = parser.parseLiteral("Blah");
         assertThat(literal.getLiteral(), is("Blah"));
     }
+
+    @Test
+    public void shouldNotParseOutLang() {
+        OWLLiteral literal = parser.parseLiteral("Hello@World");
+        assertThat(literal.getLiteral(), is("Hello@World"));
+        assertThatLiteralHasDatatype(literal, OWL2Datatype.RDF_PLAIN_LITERAL);
+    }
 }
