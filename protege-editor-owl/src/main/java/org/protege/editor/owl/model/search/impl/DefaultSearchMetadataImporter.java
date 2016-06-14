@@ -3,7 +3,6 @@ package org.protege.editor.owl.model.search.impl;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.search.SearchCategory;
 import org.protege.editor.owl.model.search.SearchContext;
-import org.protege.editor.owl.model.search.SearchSettings;
 import org.protege.editor.owl.model.search.impl.importer.AxiomAnnotationSearchMetadataImporter;
 import org.protege.editor.owl.model.search.impl.importer.DisplayNameSearchMetadataImporter;
 import org.protege.editor.owl.model.search.impl.importer.EntityAnnotationValueSearchMetadataImporter;
@@ -32,11 +31,10 @@ import java.util.Set;
 public class DefaultSearchMetadataImporter implements SearchMetadataImporter {
 
 
-    public SearchMetadataDB getSearchMetadata(final OWLEditorKit editorKit, SearchSettings settings) {
+    public SearchMetadataDB getSearchMetadata(final OWLEditorKit editorKit, Set<SearchCategory> categories) {
         SearchContext context = new SearchContext(editorKit);
         SearchMetadataDB db = new SearchMetadataDB();
 
-        Set<SearchCategory> categories = settings.getSearchCategories();
         getEntityBasedSearchMetadata(categories, context, db);
         getAxiomBasedSearchMetadata(categories, context, db);
         getOntologyBasedSearchMetadata(categories, context, db);
