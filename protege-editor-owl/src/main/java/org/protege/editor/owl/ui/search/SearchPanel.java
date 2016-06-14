@@ -3,8 +3,6 @@ package org.protege.editor.owl.ui.search;
 import com.google.common.base.Optional;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.search.SearchResultSet;
-import org.protege.editor.owl.model.search.SearchResult;
-import org.protege.editor.owl.model.search.SearchResultHandler;
 import org.protege.editor.owl.ui.transfer.TransferableOWLObject;
 import org.protege.editor.owl.ui.view.ViewClipboard;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -15,8 +13,9 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Author: Matthew Horridge<br>
@@ -66,6 +65,7 @@ public class SearchPanel extends JPanel {
     }
 
     public void setSearchString(String searchString) {
+        checkNotNull(searchString);
         this.searchString = toLowerCase(searchString);
         searchOptionsPanel.refresh();
         doSearch();
@@ -80,11 +80,10 @@ public class SearchPanel extends JPanel {
             searchResultsPanel.clearSearchResults();
             return;
         }
-        editorKit.getSearchManager().performSearch(searchString, new SearchResultHandler() {
-            public void searchFinished(Collection<SearchResult> searchResults) {
-                int categorySizeLimit = getCategoryLimit();
-                searchResultsPanel.setSearchResults(new SearchResultSet(searchResults), categorySizeLimit);
-            }
+        editorKit.getSearchManager().performSearch(searchString, searchResults -> {
+            int categorySizeLimit = getCategoryLimit();
+            SearchResultSet searchResultSet = new SearchResultSet(searchResults);
+            SwingUtilities.invokeLater(() -> searchResultsPanel.setSearchResults(searchResultSet, categorySizeLimit));
         });
     }
 
