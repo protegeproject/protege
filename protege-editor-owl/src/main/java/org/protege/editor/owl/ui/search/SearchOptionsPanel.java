@@ -137,9 +137,12 @@ public class SearchOptionsPanel extends JPanel {
         bottomPanel.add(Box.createHorizontalStrut(10));
         searchProgressBar = new JProgressBar();
         searchProgressBar.putClientProperty("JComponent.sizeVariant", "small");
-
+        searchProgressBar.setVisible(false);
+        
         searchProgressLabel.setFont(new Font("verdana", Font.PLAIN, 9));
         searchProgressLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+        searchProgressLabel.setVisible(false);
+
         bottomPanel.add(searchProgressBar);
         bottomPanel.add(searchProgressLabel);
         editorKit.getSearchManager().addProgressMonitor(new org.semanticweb.owlapi.util.ProgressMonitor() {

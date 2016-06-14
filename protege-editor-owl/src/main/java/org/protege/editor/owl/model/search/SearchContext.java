@@ -19,13 +19,13 @@ import java.util.Set;
  * Bio-Medical Informatics Research Group<br>
  * Date: 03/10/2012
  */
-public class SearchMetadataImportContext {
+public class SearchContext {
 
     private OWLEditorKit editorKit;
 
     private final OWLObjectStyledStringRenderer styledStringRenderer;
 
-    public SearchMetadataImportContext(OWLEditorKit editorKit) {
+    public SearchContext(OWLEditorKit editorKit) {
         this.editorKit = editorKit;
         ShortFormProvider sfp = new OWLEditorKitShortFormProvider(editorKit);
         OntologyIRIShortFormProvider ontsfp = new OWLEditorKitOntologyShortFormProvider(editorKit);
@@ -35,6 +35,10 @@ public class SearchMetadataImportContext {
 
     public OWLEditorKit getEditorKit() {
         return editorKit;
+    }
+
+    public OWLOntology getActiveOntology() {
+        return editorKit.getOWLModelManager().getActiveOntology();
     }
 
     public Set<OWLOntology> getOntologies() {

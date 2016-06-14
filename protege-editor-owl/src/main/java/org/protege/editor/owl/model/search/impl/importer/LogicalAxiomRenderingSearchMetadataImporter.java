@@ -1,6 +1,9 @@
-package org.protege.editor.owl.model.search.importer;
+package org.protege.editor.owl.model.search.impl.importer;
 
 import org.protege.editor.owl.model.search.*;
+import org.protege.editor.owl.model.search.impl.AxiomBasedSearchMetadataImporter;
+import org.protege.editor.owl.model.search.impl.SearchMetadata;
+import org.protege.editor.owl.model.search.impl.SearchMetadataDB;
 import org.protege.editor.owl.ui.renderer.styledstring.StyledString;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -22,7 +25,7 @@ public class LogicalAxiomRenderingSearchMetadataImporter extends AxiomBasedSearc
     }
 
     @Override
-    public void generateSearchMetadataFor(final OWLAxiom axiom, OWLEntity axiomSubject, String axiomSubjectRendering, final SearchMetadataImportContext context, SearchMetadataDB db) {
+    public void generateSearchMetadataFor(final OWLAxiom axiom, OWLEntity axiomSubject, String axiomSubjectRendering, final SearchContext context, SearchMetadataDB db) {
         StyledString rendering = context.getStyledStringRendering(axiom);
         String groupDescription = axiom.getAxiomType().getName();
         SearchMetadata md = new SearchMetadata(SearchCategory.LOGICAL_AXIOM, groupDescription, axiomSubject, axiomSubjectRendering, rendering.getString()) {
