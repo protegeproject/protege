@@ -3,6 +3,7 @@ package org.protege.editor.owl.model.search;
 import com.google.common.collect.ImmutableList;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
+import org.protege.editor.owl.model.search.impl.DefaultSearchManager;
 import org.protege.editor.owl.OWLEditorKit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

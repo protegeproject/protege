@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.search;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Author: Matthew Horridge<br>
@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface SearchResultHandler {
 
-    void searchFinished(List<SearchResult> searchResults);
+    void searchFinished(Collection<SearchResult> searchResults);
 }

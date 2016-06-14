@@ -1,25 +1,41 @@
-package org.protege.editor.owl.model.search;
+package org.protege.editor.owl.model.search.impl;
 
-import com.google.common.base.Stopwatch;
-import com.google.common.collect.ImmutableList;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.model.search.ResultItem;
+import org.protege.editor.owl.model.search.SearchCategory;
+import org.protege.editor.owl.model.search.SearchManager;
+import org.protege.editor.owl.model.search.SearchResult;
+import org.protege.editor.owl.model.search.SearchResultHandler;
+import org.protege.editor.owl.model.search.SearchResultMatch;
+import org.protege.editor.owl.model.search.SearchSettings;
+import org.protege.editor.owl.model.search.SearchStringParser;
+
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.util.ProgressMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.swing.SwingUtilities;
+
+import com.google.common.base.Stopwatch;
+import com.google.common.collect.ImmutableList;
 
 /**
  * Author: Matthew Horridge<br>
@@ -29,17 +45,21 @@ import java.util.regex.Pattern;
  */
 public class DefaultSearchManager extends SearchManager {
 
-    private final Logger logger = LoggerFactory.getLogger(DefaultSearchManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(DefaultSearchManager.class);
 
     private OWLEditorKit editorKit;
+
+    private Set<SearchCategory> categories = new HashSet<>();
 
     private ExecutorService service = Executors.newSingleThreadExecutor();
 
     private AtomicLong lastSearchId = new AtomicLong(0);
 
-    private Set<SearchCategory> categories = new HashSet<>();
+    private SearchSettings settings = new SearchSettings();
 
-    private List<SearchMetadata> searchMetadataCache = new ArrayList<>();
+    private List<SearchMetadata> searchMetadataCache = new ArrayList<SearchMetadata>();
+
+    private SearchStringParser searchStringParser = new SearchStringParserImpl();
 
     private OWLOntologyChangeListener ontologyChangeListener;
 
@@ -50,7 +70,7 @@ public class DefaultSearchManager extends SearchManager {
     private final List<ProgressMonitor> progressMonitors = new ArrayList<>();
 
     public DefaultSearchManager() {
-
+        // NO-OP
     }
 
     @Override
@@ -72,15 +92,18 @@ public class DefaultSearchManager extends SearchManager {
         progressMonitors.add(pm);
     }
 
-
     @Override
     public void dispose() {
-        if(editorKit == null) {
+        if (editorKit == null) {
             return;
         }
         OWLModelManager modelMan = editorKit.getOWLModelManager();
         modelMan.removeOntologyChangeListener(ontologyChangeListener);
         modelMan.removeListener(modelManagerListener);
+    }
+
+    public PatternBasedInputHandler getSearchInputHandler() {
+        return new PatternBasedInputHandler();
     }
 
     private void handleModelManagerEvent(OWLModelManagerChangeEvent event) {
@@ -118,56 +141,60 @@ public class DefaultSearchManager extends SearchManager {
             searchMetadataCache.clear();
             List<SearchMetadataImporter> importerList = importManager.getImporters();
             for (SearchMetadataImporter importer : importerList) {
-                SearchMetadataDB db = importer.getSearchMetadata(editorKit, categories);
+                SearchMetadataDB db = importer.getSearchMetadata(editorKit, settings);
                 searchMetadataCache.addAll(db.getResults());
             }
             stopwatch.stop();
-            logger.info("    ...rebuilt search metadata cache in {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
+            logger.info("...rebuilt search metadata cache in {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
         }
         finally {
             fireIndexingFinished();
         }
-
     }
 
-
     @Override
-    public void performSearch(final SearchRequest searchRequest, final SearchResultHandler searchResultHandler) {
+    public void performSearch(final String searchString, final SearchResultHandler searchResultHandler) {
         if (lastSearchId.getAndIncrement() == 0) {
             service.submit(this::rebuildMetadataCache);
         }
-        service.submit(new SearchCallable(lastSearchId.incrementAndGet(), searchRequest, searchResultHandler));
+        List<Pattern> searchPattern = prepareSearchPattern(searchString);
+        service.submit(new SearchCallable(lastSearchId.incrementAndGet(), searchPattern, searchResultHandler));
     }
 
+    private List<Pattern> prepareSearchPattern(String searchString) {
+        PatternBasedInputHandler handler = new PatternBasedInputHandler();
+        searchStringParser.parse(searchString, handler);
+        return handler.getQueryObject();
+    }
 
     private class SearchCallable implements Runnable {
 
         private long searchId;
 
-        private SearchRequest searchRequest;
+        private List<Pattern> searchPattern;
 
         private SearchResultHandler searchResultHandler;
 
-        private SearchCallable(long searchId, SearchRequest searchRequest, SearchResultHandler searchResultHandler) {
+        private SearchCallable(long searchId, List<Pattern> searchPattern, SearchResultHandler searchResultHandler) {
             this.searchId = searchId;
-            this.searchRequest = searchRequest;
+            this.searchPattern = searchPattern;
             this.searchResultHandler = searchResultHandler;
         }
 
+        @Override
         public void run() {
             StringBuilder patternString = new StringBuilder();
-            for(Iterator<Pattern> it = searchRequest.getSearchPatterns().iterator(); it.hasNext(); ) {
+            for(Iterator<Pattern> it = searchPattern.iterator(); it.hasNext(); ) {
                 Pattern pattern = it.next();
                 patternString.append(pattern.pattern());
                 if (it.hasNext()) {
                     patternString.append("  AND  ");
                 }
             }
-            logger.info("Starting search {} (pattern: {})", searchId, patternString);
+            logger.debug("Starting search {} (pattern: {})", searchId, patternString);
+
             List<SearchResult> results = new ArrayList<>();
-
-
-            long searchStartTime = System.currentTimeMillis();
+            Stopwatch stopwatch = Stopwatch.createStarted();
             fireSearchStarted();
             long count = 0;
             int total = searchMetadataCache.size();
@@ -175,21 +202,21 @@ public class DefaultSearchManager extends SearchManager {
             for (SearchMetadata searchMetadata : searchMetadataCache) {
                 if (!isLatestSearch()) {
                     // New search started
-                    logger.info("    Terminating search {} prematurely", searchId);
+                    logger.info("... terminating search {} prematurely", searchId);
                     return;
                 }
                 String text = searchMetadata.getSearchString();
                 boolean matchedAllPatterns = true;
                 int startIndex = 0;
                 ImmutableList.Builder<SearchResultMatch> matchesBuilder = ImmutableList.builder();
-                for(Pattern pattern : searchRequest.getSearchPatterns()) {
+                for(Pattern pattern : searchPattern) {
                     if(startIndex >= text.length()) {
                         matchedAllPatterns = false;
                         break;
                     }
                     Matcher matcher = pattern.matcher(text);
                     if (matcher.find()) {
-                        SearchResultMatch match = new SearchResultMatch(pattern, matcher.start(), matcher.end());
+                        SearchResultMatch match = new SearchResultMatch(pattern.pattern(), matcher.start(), matcher.end()-matcher.start());
                         matchesBuilder.add(match);
                         startIndex = matcher.end() + 1;
                     }
@@ -199,8 +226,8 @@ public class DefaultSearchManager extends SearchManager {
                     }
                 }
                 if (matchedAllPatterns) {
-
-                    results.add(new SearchResult(searchMetadata, matchesBuilder.build()));
+                    ResultItem resultItem = new SearchMetadataWrapper(searchMetadata);
+                    results.add(new SearchResult(resultItem, matchesBuilder.build()));
                 }
                 count++;
                 int nextPercent = (int) ((count * 100) / total);
@@ -210,9 +237,8 @@ public class DefaultSearchManager extends SearchManager {
                 }
             }
             DefaultSearchManager.this.fireSearchFinished();
-            long searchEndTime = System.currentTimeMillis();
-            long searchTime = searchEndTime - searchStartTime;
-            logger.info("    Finished search {} in {} ms ({} results)", searchId, searchTime, results.size());
+            stopwatch.stop();
+            logger.debug("... finished search {} in {} ms ({} results)", searchId, stopwatch.elapsed(TimeUnit.MILLISECONDS), results.size());
             fireSearchFinished(results, searchResultHandler);
         }
 
@@ -225,22 +251,16 @@ public class DefaultSearchManager extends SearchManager {
                 searchResultHandler.searchFinished(results);
             }
             else {
-                SwingUtilities.invokeLater(() -> {
-                    searchResultHandler.searchFinished(results);
-                });
+                SwingUtilities.invokeLater(() -> searchResultHandler.searchFinished(results));
             }
         }
-
-
     }
-
 
     private void fireIndexingFinished() {
         SwingUtilities.invokeLater(() -> {
             for (ProgressMonitor pm : progressMonitors) {
                 pm.setFinished();
                 pm.setIndeterminate(false);
-
             }
         });
     }
@@ -267,7 +287,6 @@ public class DefaultSearchManager extends SearchManager {
     private void fireSearchProgressed(final long progress, final int found) {
         SwingUtilities.invokeLater(() -> {
             for (ProgressMonitor pm : progressMonitors) {
-                pm.setProgress(progress);
                 if (found > 1 || found == 0) {
                     pm.setMessage(found + " results");
                 }
@@ -285,6 +304,4 @@ public class DefaultSearchManager extends SearchManager {
             }
         });
     }
-
-
 }
