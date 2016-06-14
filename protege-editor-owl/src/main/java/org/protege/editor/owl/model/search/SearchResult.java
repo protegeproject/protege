@@ -67,8 +67,7 @@ public class SearchResult implements Comparable<SearchResult> {
 
     @Override
     public int hashCode() {
-        return SearchResult.class.getSimpleName().hashCode() + getCategory().hashCode()
-                + getGroupDescription().hashCode() + getSubject().hashCode();
+        return SearchResult.class.getSimpleName().hashCode() + resultItem.hashCode() + matches.hashCode();
     }
 
     @Override
@@ -80,9 +79,7 @@ public class SearchResult implements Comparable<SearchResult> {
             return false;
         }
         SearchResult other = (SearchResult) obj;
-        return this.getCategory().equals(other.getCategory())
-                && this.getGroupDescription().equals(other.getGroupDescription())
-                && this.getSubject().equals(other.getSubject());
+        return this.resultItem.equals(other.resultItem) && this.matches.equals(other.matches);
     }
 
     @Override
