@@ -1484,7 +1484,7 @@
 
     <extension id="DefaultSearchManager" point="org.protege.editor.owl.searchmanager">
         <name value="Default search"/>
-        <class value="org.protege.editor.owl.model.search.DefaultSearchManager"/>
+        <class value="org.protege.editor.owl.model.search.impl.DefaultSearchManager"/>
     </extension>
 
 

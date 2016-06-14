@@ -1,4 +1,4 @@
-package org.protege.editor.owl.model.search;
+package org.protege.editor.owl.model.search.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class SearchMetadataDB {
 
-    private List<SearchMetadata> results = new ArrayList<>();
+    private List<SearchMetadata> results = new ArrayList<SearchMetadata>();
 
     public void addResult(SearchMetadata searchMetadata) {
         results.add(searchMetadata);

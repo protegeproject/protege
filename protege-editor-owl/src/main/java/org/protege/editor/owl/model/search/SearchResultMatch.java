@@ -1,9 +1,5 @@
 package org.protege.editor.owl.model.search;
 
-import com.google.common.base.MoreObjects;
-
-import java.util.regex.Pattern;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -11,28 +7,28 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class SearchResultMatch implements Comparable<SearchResultMatch> {
 
-    private Pattern pattern;
+    private String matchString;
 
     private int start;
 
-    private int end;
+    private int offset;
 
-    public SearchResultMatch(Pattern pattern, int start, int end) {
-        this.pattern = checkNotNull(pattern);
+    public SearchResultMatch(String matchString, int start, int offset) {
+        this.matchString = checkNotNull(matchString);
         this.start = start;
-        this.end = end;
+        this.offset = offset;
     }
 
-    public Pattern getPattern() {
-        return pattern;
+    public String getMatchString() {
+        return matchString;
     }
 
     public int getStart() {
         return start;
     }
 
-    public int getEnd() {
-        return end;
+    public int getOffset() {
+        return offset;
     }
 
     @Override
@@ -41,19 +37,19 @@ public class SearchResultMatch implements Comparable<SearchResultMatch> {
         if(startDiff != 0) {
             return startDiff;
         }
-        final int endDiff = this.end - other.end;
+        final int endDiff = this.offset - other.offset;
         if(endDiff != 0) {
             return endDiff;
         }
-        return pattern.pattern().compareTo(other.pattern.pattern());
+        return matchString.compareTo(other.matchString);
     }
 
     @Override
     public int hashCode() {
         return "SearchResultMatch".hashCode()
-                + pattern.hashCode()
+                + matchString.hashCode()
                 + start
-                + end;
+                + offset;
     }
 
     @Override
@@ -65,17 +61,17 @@ public class SearchResultMatch implements Comparable<SearchResultMatch> {
             return false;
         }
         SearchResultMatch other = (SearchResultMatch) o;
-        return this.pattern.equals(other.pattern)
+        return this.matchString.equals(other.matchString)
                 && this.start == other.start
-                && this.end == other.end;
+                && this.offset == other.offset;
     }
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper("SearchResultMatch")
-                      .addValue(pattern)
-                      .add("start", start)
-                      .add("end", end)
-                      .toString();
+        StringBuilder sb = new StringBuilder();
+        return sb.append("match: ").append(matchString).append(", ")
+                 .append("startIndex: ").append(start).append(", ")
+                 .append("offset: ").append(offset)
+                 .toString();
     }
 }

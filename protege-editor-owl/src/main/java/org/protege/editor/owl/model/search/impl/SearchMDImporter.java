@@ -1,4 +1,4 @@
-package org.protege.editor.owl.model.search;
+package org.protege.editor.owl.model.search.impl;
 
 
 /**

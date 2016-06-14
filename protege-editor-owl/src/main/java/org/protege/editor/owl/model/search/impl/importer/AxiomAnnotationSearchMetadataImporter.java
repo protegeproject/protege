@@ -1,6 +1,9 @@
-package org.protege.editor.owl.model.search.importer;
+package org.protege.editor.owl.model.search.impl.importer;
 
 import org.protege.editor.owl.model.search.*;
+import org.protege.editor.owl.model.search.impl.AxiomBasedSearchMetadataImporter;
+import org.protege.editor.owl.model.search.impl.SearchMetadata;
+import org.protege.editor.owl.model.search.impl.SearchMetadataDB;
 import org.protege.editor.owl.ui.renderer.styledstring.StyledString;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAnnotation;
@@ -23,13 +26,13 @@ public class AxiomAnnotationSearchMetadataImporter extends AxiomBasedSearchMetad
     }
 
     @Override
-    public void generateSearchMetadataFor(OWLAxiom axiom, OWLEntity axiomSubject, String axiomSubjectRendering, SearchMetadataImportContext context, SearchMetadataDB db) {
+    public void generateSearchMetadataFor(OWLAxiom axiom, OWLEntity axiomSubject, String axiomSubjectRendering, SearchContext context, SearchMetadataDB db) {
         for (OWLAnnotation annotation : axiom.getAnnotations()) {
             generateSearchMetadataForAnnotation(annotation, axiomSubject, axiomSubjectRendering, context, db);
         }
     }
 
-    private void generateSearchMetadataForAnnotation(final OWLAnnotation annotation, OWLEntity axiomSubject, String axiomSubjectRendering, final SearchMetadataImportContext context, SearchMetadataDB db) {
+    private void generateSearchMetadataForAnnotation(final OWLAnnotation annotation, OWLEntity axiomSubject, String axiomSubjectRendering, final SearchContext context, SearchMetadataDB db) {
         String group = context.getRendering(annotation.getProperty());
         StyledString ren = context.getStyledStringRendering(annotation);
         SearchMetadata md = new SearchMetadata(SearchCategory.ANNOTATION_VALUE, group, axiomSubject, axiomSubjectRendering, ren.getString()) {

@@ -1,4 +1,4 @@
-package org.protege.editor.owl.model.search;
+package org.protege.editor.owl.model.search.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
 public class SearchMetadataImportManager {
 
     public List<SearchMetadataImporter> getImporters() {
-        List<SearchMetadataImporter> importers = new ArrayList<>();
+        List<SearchMetadataImporter> importers = new ArrayList<SearchMetadataImporter>();
         importers.add(new DefaultSearchMetadataImporter());
         return importers;
     }

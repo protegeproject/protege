@@ -11,14 +11,11 @@ import org.protege.editor.owl.model.search.SearchResultSet;
 import org.protege.editor.owl.model.util.OWLUtilities;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.protege.editor.owl.ui.renderer.context.OWLObjectRenderingContext;
-import org.protege.editor.owl.ui.renderer.styledstring.*;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
@@ -31,6 +28,15 @@ import java.util.Collection;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import org.protege.editor.owl.ui.renderer.styledstring.FontWeightAttribute;
+import org.protege.editor.owl.ui.renderer.styledstring.ForegroundAttribute;
+import org.protege.editor.owl.ui.renderer.styledstring.OWLObjectStyledStringRenderer;
+import org.protege.editor.owl.ui.renderer.styledstring.ProtegeStyles;
+import org.protege.editor.owl.ui.renderer.styledstring.StrikeThroughAttribute;
+import org.protege.editor.owl.ui.renderer.styledstring.Style;
+import org.protege.editor.owl.ui.renderer.styledstring.StyledString;
+import org.protege.editor.owl.ui.renderer.styledstring.StyledStringPanel;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -41,10 +47,9 @@ public class SearchResultsPanel extends JPanel {
 
     public static final int HEADER_SPACING = 10;
 
-    public static final int CATEGORY_COLUMN_PREFERRED_WIDTH = 60;
-
-    public static final int ENTITY_COLUMN_PREFERRED_WIDTH = 200;
-
+    public static final int CATEGORY_COLUMN_PREFERRED_WIDTH = 120;
+    public static final int ENTITY_COLUMN_PREFERRED_WIDTH = 220;
+    public static final int MATCH_COLUMN_PREFERRED_WIDTH = 640;
 
     private OWLEditorKit editorKit;
 
@@ -66,12 +71,22 @@ public class SearchResultsPanel extends JPanel {
         model = new SearchResultsTableModel(editorKit);
         setLayout(new BorderLayout());
 
-        resultsTable = new JTable(model);
+        resultsTable = new JTable(model) {
+            @Override
+            public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+                Component component = super.prepareRenderer(renderer, row, column);
+                int rendererWidth = component.getPreferredSize().width;
+                TableColumn tableColumn = getColumnModel().getColumn(column);
+                tableColumn.setPreferredWidth(Math.max(rendererWidth + getIntercellSpacing().width, tableColumn.getPreferredWidth()));
+                return component;
+            }
+        };
         resultsTable.setIntercellSpacing(new Dimension(0, 0));
+        resultsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        resultsTable.setRowMargin(0);
 
         scrollPane = new JScrollPane(resultsTable);
         scrollPane.setBorder(null);
-        resultsTable.setRowMargin(0);
         add(scrollPane);
 
         setupColumnRenderers();
@@ -99,7 +114,9 @@ public class SearchResultsPanel extends JPanel {
         TableColumn entityColumn = columnModel.getColumn(1);
         entityColumn.setCellRenderer(new ResultsTableCellRendererWrapper(new EntityRenderer()));
         entityColumn.setPreferredWidth(ENTITY_COLUMN_PREFERRED_WIDTH);
-        columnModel.getColumn(2).setCellRenderer(new ResultsTableCellRendererWrapper(new EntityFinderResultsRenderer(editorKit)));
+        TableColumn matchColumn = columnModel.getColumn(2);
+        matchColumn.setCellRenderer(new ResultsTableCellRendererWrapper(new EntityFinderResultsRenderer(editorKit)));
+        matchColumn.setPreferredWidth(MATCH_COLUMN_PREFERRED_WIDTH);
     }
 
     private void handleScrollpaneViewportChanged() {
@@ -228,7 +245,7 @@ public class SearchResultsPanel extends JPanel {
         model.setResultList(results);
         Font font = OWLRendererPreferences.getInstance().getFont();
         resultsTable.setFont(font);
-        resultsTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+//        resultsTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
         int rowHeight = font.getSize() + 4;
         resultsTable.setRowHeight(rowHeight);
         for (int i = 1; i < model.getRowCount(); i++) {
@@ -321,7 +338,7 @@ public class SearchResultsPanel extends JPanel {
                 Style highlightStyle = ProtegeStyles.getHighlightStyle();
                 for (SearchResultMatch match : searchResult.getMatches()) {
                     int from = match.getStart();
-                    int to = match.getEnd();
+                    int to = match.getStart() + match.getOffset(); // to replace match.getEnd()
                     builder.applyStyle(from, to, highlightStyle);
                 }
                 styledStringPanel.setStyledString(builder.build());
@@ -386,7 +403,7 @@ public class SearchResultsPanel extends JPanel {
                 if (searchResult.getCategory() == SearchCategory.DISPLAY_NAME) {
                     for (SearchResultMatch match : searchResult.getMatches()) {
                         int start = match.getStart();
-                        int end = match.getEnd();
+                        int end = match.getStart() + match.getOffset(); // to replace match.getEnd()
                         builder.applyStyleAttributes(start, end, FontWeightAttribute.getBoldFontWeight());
                     }
                 }
