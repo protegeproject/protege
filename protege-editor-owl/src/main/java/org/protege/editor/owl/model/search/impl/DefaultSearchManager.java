@@ -11,7 +11,6 @@ import org.protege.editor.owl.model.search.SearchManager;
 import org.protege.editor.owl.model.search.SearchResult;
 import org.protege.editor.owl.model.search.SearchResultHandler;
 import org.protege.editor.owl.model.search.SearchResultMatch;
-import org.protege.editor.owl.model.search.SearchSettings;
 import org.protege.editor.owl.model.search.SearchStringParser;
 
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
@@ -54,8 +53,6 @@ public class DefaultSearchManager extends SearchManager {
     private ExecutorService service = Executors.newSingleThreadExecutor();
 
     private AtomicLong lastSearchId = new AtomicLong(0);
-
-    private SearchSettings settings = new SearchSettings();
 
     private List<SearchMetadata> searchMetadataCache = new ArrayList<SearchMetadata>();
 
@@ -141,7 +138,7 @@ public class DefaultSearchManager extends SearchManager {
             searchMetadataCache.clear();
             List<SearchMetadataImporter> importerList = importManager.getImporters();
             for (SearchMetadataImporter importer : importerList) {
-                SearchMetadataDB db = importer.getSearchMetadata(editorKit, settings);
+                SearchMetadataDB db = importer.getSearchMetadata(editorKit, categories);
                 searchMetadataCache.addAll(db.getResults());
             }
             stopwatch.stop();
