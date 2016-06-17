@@ -85,6 +85,7 @@
             <string>bundles/slf4j-api.jar</string>
             <string>bin/org.apache.felix.main.jar</string>
             <string>bin/protege-launcher.jar</string>
+            <string>bin/maven-artifact.jar</string>
         </array>
         <key>JVMVersion</key>
         <string>1.8+</string>
