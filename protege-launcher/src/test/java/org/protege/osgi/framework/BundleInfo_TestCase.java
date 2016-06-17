@@ -14,6 +14,7 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -33,6 +34,7 @@ public class BundleInfo_TestCase {
 
     @Mock
     private Version theVersion;
+
     private Version otherVersion;
 
     @Before
@@ -114,24 +116,40 @@ public class BundleInfo_TestCase {
 
     @Test
     public void should_compareByVersion() {
-        int result = -6;
-        when(theVersion.compareTo(otherVersion)).thenReturn(result);
+        when(theVersion.toString()).thenReturn("1.0.0");
+        when(otherVersion.toString()).thenReturn("2.0.0");
         BundleInfo otherBundleInfo = new BundleInfo(bundleFile, symbolicName, Optional.of(otherVersion));
-        assertThat(bundleInfo.compareByVersion(otherBundleInfo), is(result));
+        assertThat(bundleInfo.compareByVersion(otherBundleInfo), is(lessThan(0)));
     }
 
     @Test
     public void shouldReturn_true_For_isNewerVersionThan() {
-        int result = 5;
-        when(theVersion.compareTo(otherVersion)).thenReturn(result);
+        when(theVersion.toString()).thenReturn("1.1.0");
+        when(otherVersion.toString()).thenReturn("1.0.0");
+        BundleInfo otherBundleInfo = new BundleInfo(bundleFile, symbolicName, Optional.of(otherVersion));
+        assertThat(bundleInfo.isNewerVersionThan(otherBundleInfo), is(true));
+    }
+
+    @Test
+    public void shouldReturn_true_For_isNewerVersionThan_Beta_vs_Alpha() {
+        when(theVersion.toString()).thenReturn("1.0.0-beta");
+        when(otherVersion.toString()).thenReturn("1.0.0-alpha");
+        BundleInfo otherBundleInfo = new BundleInfo(bundleFile, symbolicName, Optional.of(otherVersion));
+        assertThat(bundleInfo.isNewerVersionThan(otherBundleInfo), is(true));
+    }
+
+    @Test
+    public void shouldReturn_true_For_isNewerVersionThan_Beta_10_vs_Beta_9() {
+        when(theVersion.toString()).thenReturn("1.0.0-beta-10");
+        when(otherVersion.toString()).thenReturn("1.0.0-beta-9");
         BundleInfo otherBundleInfo = new BundleInfo(bundleFile, symbolicName, Optional.of(otherVersion));
         assertThat(bundleInfo.isNewerVersionThan(otherBundleInfo), is(true));
     }
 
     @Test
     public void shouldReturn_false_For_isNewerVersionThan() {
-        int result = 0;
-        when(theVersion.compareTo(otherVersion)).thenReturn(result);
+        when(theVersion.toString()).thenReturn("1.0.0");
+        when(otherVersion.toString()).thenReturn("1.1.0");
         BundleInfo otherBundleInfo = new BundleInfo(bundleFile, symbolicName, Optional.of(otherVersion));
         assertThat(bundleInfo.isNewerVersionThan(otherBundleInfo), is(false));
     }
@@ -154,4 +172,12 @@ public class BundleInfo_TestCase {
         assertThat(bundleInfo.isNewerTimestampThan(otherBundleInfo), is(false));
     }
 
+    @Test
+    public void shouldFindReleasesNewerThanSnapshots() {
+        Version newerVersion = new Version(1, 2, 3);
+        Version olderVersion = new Version(1, 2, 3, "SNAPSHOT");
+        BundleInfo newerBundleInfo = new BundleInfo(mock(File.class), symbolicName, Optional.of(newerVersion));
+        BundleInfo olderBundleInfo = new BundleInfo(mock(File.class), symbolicName, Optional.of(olderVersion));
+        assertThat(newerBundleInfo.isNewerVersionThan(olderBundleInfo), is(true));
+    }
 }

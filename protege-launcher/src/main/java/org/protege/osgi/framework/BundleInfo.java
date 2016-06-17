@@ -1,6 +1,7 @@
 package org.protege.osgi.framework;
 
 import com.google.common.base.Objects;
+import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.osgi.framework.Version;
 
 import java.io.File;
@@ -62,7 +63,9 @@ public class BundleInfo {
     public int compareByVersion(BundleInfo other) {
         if(version.isPresent()) {
             if(other.version.isPresent()) {
-                return version.get().compareTo(other.version.get());
+                ComparableVersion thisVersion = new ComparableVersion(version.get().toString());
+                ComparableVersion otherVersion = new ComparableVersion(other.version.get().toString());
+                return thisVersion.compareTo(otherVersion);
             }
             else {
                 return BEFORE_OTHER;
