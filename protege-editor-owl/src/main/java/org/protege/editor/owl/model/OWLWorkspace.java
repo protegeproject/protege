@@ -526,6 +526,10 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         JMenu reasonerMenu = getReasonerMenu(menuBar);
 
+        if(reasonerMenu == null) {
+            return;
+        }
+
         reasonerMenu.removeAll();
 
         startReasonerAction.setEditorKit(getOWLEditorKit());
