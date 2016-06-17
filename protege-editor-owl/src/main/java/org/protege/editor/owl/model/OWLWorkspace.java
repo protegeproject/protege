@@ -330,7 +330,12 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     }
 
     private boolean isComponentFontSizeSensitive(Component component) {
-        return component instanceof JTextComponent || component instanceof JLabel || component instanceof JTree || component instanceof JList || component instanceof JTable;
+        return component instanceof JTextComponent ||
+                component instanceof JLabel ||
+                component instanceof JTree ||
+                component instanceof JList ||
+                component instanceof JTable ||
+                component instanceof JMenuItem;
     }
 
     private void verifySelection(Set<? extends OWLEntity> entities) {
@@ -436,14 +441,16 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         updateTitleBar();
 
         JMenu windowMenu = getWindowMenu(menuBar);
-        windowMenu.addSeparator();
-        windowMenu.add(new AbstractAction("Refresh user interface") {
+        if (windowMenu != null) {
+            windowMenu.addSeparator();
+            windowMenu.add(new AbstractAction("Refresh user interface") {
 
 
-            public void actionPerformed(ActionEvent e) {
-                refreshComponents();
-            }
-        });
+                public void actionPerformed(ActionEvent e) {
+                    refreshComponents();
+                }
+            });
+        }
     }
 
     private class ExtraReasonerMenuActionPlugin extends ProtegeActionPluginJPFImpl {
