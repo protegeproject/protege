@@ -4,6 +4,7 @@ import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.OWLAxiomTypeFramePanel;
+import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.semanticweb.owlapi.metrics.*;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -108,7 +109,9 @@ public class MetricsPanel extends JPanel {
             tableModelMap.put(metricManagerMap.get(metricsSet), tableModel);
             final JTable table = new JTable(tableModel);
             table.setGridColor(new Color(240, 240, 240));
-            table.setRowHeight(table.getRowHeight() + 4);
+            int fontSize = OWLRendererPreferences.getInstance().getFontSize();
+            table.setRowHeight(table.getRowHeight() + ( 2 * fontSize / 4));
+            table.setFont(OWLRendererPreferences.getInstance().getFont());
             table.setShowGrid(true);
             table.getColumnModel().getColumn(1).setMaxWidth(150);
             table.addMouseListener(new MouseAdapter() {
