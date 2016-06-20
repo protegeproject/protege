@@ -137,6 +137,7 @@ public class ProtegeApplication implements BundleActivator {
     private void displayPlatform() {
         Bundle thisBundle = context.getBundle();
         Version v = PluginUtilities.getBundleVersion(thisBundle);
+
         logger.info(LogBanner.start("Protege"));
         logger.info("Protege Desktop");
         logger.info("Version {}.{}.{}, Build {}", v.getMajor(), v.getMinor(), v.getMicro(), v.getQualifier());
@@ -361,6 +362,11 @@ public class ProtegeApplication implements BundleActivator {
 
         defaults.put("TitledBorder.border", commonBorder);
 
+        Preferences rendererPrefs = PreferencesManager.getInstance().getApplicationPreferences(
+                "org.protege.editor.owl.ui.renderer.OWLRendererPreferences"
+        );
+        int fontSize = rendererPrefs.getInt("FONT_SIZE", 12);
+        Fonts.updateUIDefaultsFontSize(fontSize);
     }
 
     private void setupExceptionHandler() {

@@ -17,7 +17,6 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
-import java.awt.font.NumericShaper;
 import java.util.*;
 import java.util.List;
 
@@ -109,9 +108,11 @@ public class MetricsPanel extends JPanel {
             tableModelMap.put(metricManagerMap.get(metricsSet), tableModel);
             final JTable table = new JTable(tableModel);
             table.setGridColor(new Color(240, 240, 240));
-            int fontSize = OWLRendererPreferences.getInstance().getFontSize();
-            table.setRowHeight(table.getRowHeight() + ( 2 * fontSize / 4));
-            table.setFont(OWLRendererPreferences.getInstance().getFont());
+            FontMetrics fontMetrics = table.getFontMetrics(table.getFont());
+            table.setRowHeight((fontMetrics.getLeading() * 2)
+                    + fontMetrics.getMaxAscent() 
+                    + fontMetrics.getMaxDescent()
+                    + 4);
             table.setShowGrid(true);
             table.getColumnModel().getColumn(1).setMaxWidth(150);
             table.addMouseListener(new MouseAdapter() {
@@ -214,7 +215,6 @@ public class MetricsPanel extends JPanel {
             });
             JLabel titleLabel = new JLabel(metricsSet);
             titleLabel.setOpaque(false);
-            titleLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
             tablePanel.add(titleLabel, BorderLayout.NORTH);
             tablePanel.setOpaque(false);
             JPanel tableHolder = new JPanel(new BorderLayout());

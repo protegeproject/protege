@@ -61,7 +61,7 @@ public class LinkLabel extends JLabel {
                 activateLink();
             }
         });
-        setFont(getFont().deriveFont(Font.BOLD, 12.0f));
+        setFont(getFont().deriveFont(Font.BOLD));
     }
 
 

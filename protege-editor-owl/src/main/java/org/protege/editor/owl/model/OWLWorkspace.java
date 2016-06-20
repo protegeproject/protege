@@ -304,34 +304,22 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
 
     public void refreshComponents() {
-        refreshComponents(this);
+        refreshComponents(SwingUtilities.getAncestorOfClass(Frame.class, this));
     }
 
     public void refreshComponents(Component component) {
+        if(component == null) {
+            return;
+        }
         if (component instanceof Container) {
             Container cont = (Container) component;
             for (Component childComp : cont.getComponents()) {
                 refreshComponents(childComp);
             }
         }
-        if (isComponentFontSizeSensitive(component)) {
-            Font f = component.getFont();
-            if (f != null) {
-                component.setFont(f.deriveFont(f.getStyle(), OWLRendererPreferences.getInstance().getFontSize()));
-            }
-        }
         if (component instanceof RefreshableComponent) {
             ((RefreshableComponent) component).refreshComponent();
         }
-    }
-
-    private boolean isComponentFontSizeSensitive(Component component) {
-        return component instanceof JTextComponent ||
-                component instanceof JLabel ||
-                component instanceof JTree ||
-                component instanceof JList ||
-                component instanceof JTable ||
-                component instanceof JMenuItem;
     }
 
     private void verifySelection(Set<? extends OWLEntity> entities) {
