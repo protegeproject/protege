@@ -110,7 +110,7 @@ public class MetricsPanel extends JPanel {
             table.setGridColor(new Color(240, 240, 240));
             FontMetrics fontMetrics = table.getFontMetrics(table.getFont());
             table.setRowHeight((fontMetrics.getLeading() * 2)
-                    + fontMetrics.getMaxAscent() 
+                    + fontMetrics.getMaxAscent()
                     + fontMetrics.getMaxDescent()
                     + 4);
             table.setShowGrid(true);
