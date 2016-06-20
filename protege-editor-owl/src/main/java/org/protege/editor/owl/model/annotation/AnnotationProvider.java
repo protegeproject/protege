@@ -24,10 +24,11 @@ public final class AnnotationProvider {
 
     public Optional<OWLAnnotation> getAnnotation(OWLDataFactory dataFactory) {
         Optional<OWLAnnotationValue> annotationValue = annotationValueProvider.getAnnotationValue(dataFactory);
-        if(!annotationValue.isPresent()) {
-            return Optional.empty();
-        }
-        OWLAnnotationProperty property = dataFactory.getOWLAnnotationProperty(annotationPropertyIriProvider.get());
-        return Optional.of(dataFactory.getOWLAnnotation(property, annotationValue.get()));
+        return annotationValue.map(v -> {
+                    IRI iri = annotationPropertyIriProvider.get();
+                    OWLAnnotationProperty property = dataFactory.getOWLAnnotationProperty(iri);
+                    return dataFactory.getOWLAnnotation(property, annotationValue.get());
+                }
+        );
     }
 }
