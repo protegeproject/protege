@@ -53,13 +53,6 @@ public class ViewBanner extends JPanel {
         setBackground(backgroundColor);
         labelPanel = new JPanel(new BorderLayout());
         add(labelPanel, BorderLayout.NORTH);
-//        JLabel l = new JLabel(labelText);
-//        l.setForeground(Color.WHITE);
-//        l.setBorder(BorderFactory.createCompoundBorder(
-//                BorderFactory.createLineBorder(Color.DARK_GRAY),
-//                BorderFactory.createEmptyBorder(1, 1, 1, 1)
-//        ));
-//        add(l, BorderLayout.NORTH);
         labelPanel.setBackground(null);
         labelPanel.setOpaque(true);
         label = new JLabel();

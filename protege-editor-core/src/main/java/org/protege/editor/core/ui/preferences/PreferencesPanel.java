@@ -19,11 +19,6 @@ import java.awt.*;
  */
 public abstract class PreferencesPanel extends JPanel implements ProtegePluginInstance {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -8206871260849152828L;
-
     private String label;
 
     private EditorKit editorKit;
@@ -50,11 +45,6 @@ public abstract class PreferencesPanel extends JPanel implements ProtegePluginIn
 
     protected void addVerticalStrut(final int size) {
         add(new JPanel() {
-            /**
-             * 
-             */
-            private static final long serialVersionUID = -1660234580003844634L;
-
             public Dimension getPreferredSize() {
                 return new Dimension(size, size);
             }

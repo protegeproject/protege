@@ -57,6 +57,8 @@ public class Paragraph extends PageObject {
 
     private Paragraph(AttributedString paragraphText, List<LinkSpan> linkSpans) {
         this.paragraphText = paragraphText;
+        Font font = OWLRendererPreferences.getInstance().getFont();
+        this.paragraphText.addAttribute(TextAttribute.FAMILY, font.getFamily());
         this.linkSpans.addAll(linkSpans);
         computePlainString();
         int fontSize = OWLRendererPreferences.getInstance().getFontSize();
@@ -228,7 +230,6 @@ public class Paragraph extends PageObject {
     }
 
     public void layout(FontRenderContext fontRenderContext) {
-
         clear();
 
         AttributedString as;

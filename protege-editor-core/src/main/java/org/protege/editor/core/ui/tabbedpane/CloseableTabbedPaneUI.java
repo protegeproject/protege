@@ -25,7 +25,7 @@ import java.util.Optional;
  */
 public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
 
-    public static final int TAB_HEIGHT = 20;
+//    public static final int TAB_HEIGHT = 20;
 
     public static final Color TEXT_COLOR = new Color(50, 50, 50);
 
@@ -79,7 +79,12 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
 
     public static final Color[] dropShadowColorGradient = new Color[]{DROP_SHADOW_TOP_COLOR, DROP_SHADOW_BOTTOM_COLOR};
 
-    public static final Font OS_X_FONT = new Font("Helvetica Neue", Font.PLAIN, 12);
+    public static final Font OS_X_FONT = new Font("Helvetica Neue", Font.PLAIN, getFontSize());
+
+    private static int getFontSize() {
+        Font font = UIManager.getDefaults().getFont("TabbedPane.font");
+        return font != null ? font.getSize() : 12;
+    }
 
 
     public static enum TabClosability {
@@ -115,6 +120,11 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
         }
     }
 
+    @Override
+    public void installUI(JComponent c) {
+        super.installUI(c);
+        tabPane.setFont(UIManager.getFont("TabbedPane.font"));
+    }
 
     private Color getTextColor() {
         if(UIUtil.isHighContrastOn()) {
@@ -248,27 +258,31 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
 
     public Rectangle getTabBounds(JTabbedPane pane, int i) {
         Rectangle tabBounds = super.getTabBounds(pane, i);
-        tabBounds.height = TAB_HEIGHT;
+        tabBounds.height = getTabHeight();
         return tabBounds;
     }
 
     @Override
     protected int calculateMaxTabHeight(int tabPlacement) {
-        return TAB_HEIGHT;
+        return getTabHeight();
     }
 
     @Override
     protected int calculateTabAreaHeight(int tabPlacement, int horizRunCount, int maxTabHeight) {
-        return TAB_HEIGHT * horizRunCount;
+        return maxTabHeight * horizRunCount;
     }
 
     protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) {
         if (tabPane.getComponentCount() > 1) {
-            return TAB_HEIGHT;
+            return getTabHeight();
         }
         else {
             return 0;
         }
+    }
+
+    private int getTabHeight() {
+        return getFontMetrics().getMaxAscent() + 6;
     }
 
 
