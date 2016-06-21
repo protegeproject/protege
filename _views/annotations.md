@@ -35,6 +35,8 @@ On the right hand side you specify a value for the annotation.  You can specify:
 
 ## Ontology Annotations
 
-The annotations on the active ontology are shown in the Ontology Annotations view.
+The annotations on the active ontology are shown in the Ontology Annotations view.  This view also shows the Ontology IRI and Ontology Version IRI pair for the active ontology.  Both of these fields will be empty in the case of an anonymous ontology.  If an ontology has an Ontology IRI then the Ontology Version IRI may be empty.
+
+In the example below, which is taken from the UBERON ontology, the Ontology IRI is ```http://purl.obolibrary.org/obo/uberon.owl``` and the Ontology version IRI is ```http://purl.obolibrary.org/obo/uberon/releases/2016-06-12/uberon.owl```.
 
 ![ontology-annotations-view]({{site.baseurl}}/assets/views/annotations/ontology-annotations.png "The ontology annotation editor")
