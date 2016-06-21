@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model.search.impl.importer;
 
 import org.protege.editor.owl.model.search.SearchCategory;
+import org.protege.editor.owl.model.search.SearchMetadata;
 import org.protege.editor.owl.model.search.impl.EntityBasedSearchMDImporter;
-import org.protege.editor.owl.model.search.impl.SearchMetadata;
 import org.protege.editor.owl.model.search.impl.SearchMetadataDB;
 import org.protege.editor.owl.model.search.impl.SearchMetadataImportContext;
 import org.protege.editor.owl.ui.renderer.styledstring.StyledString;
