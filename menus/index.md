@@ -11,6 +11,7 @@ description: Explains what each menu item in Protégé does
 	<div style="padding: 10px; padding-bottom: 30px;">
 		<div style="font-weight: bold;">
 			{{menu.parent}}  |  {{menu.title}}
+			{% if menu.accelerator %}
 			<span style="font-weight: 300; font-size: 12px; color: gray;">
 				<span style="padding: 0 0 10px 10px">
 					Windows: <b>Ctrl-{{menu.accelerator  | replace: 'Shift', '&#x21E7;'}}</b>
@@ -19,6 +20,7 @@ description: Explains what each menu item in Protégé does
 					Mac: <b>&#x2318;{{menu.accelerator  | replace: 'Shift', '&#x21E7;'}}</b>
 				</span>
 			</span>
+			{% endif %}
 		</div>
 
 		<div>
