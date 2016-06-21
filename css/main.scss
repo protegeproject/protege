@@ -8,7 +8,7 @@
 // Our variables
 $base-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 $base-font-size:   16px;
-$base-font-weight: 400;
+$base-font-weight: 300;
 $small-font-size:  $base-font-size * 0.875;
 $base-line-height: 1.5;
 
@@ -51,8 +51,3 @@ $on-laptop:        800px;
         "layout",
         "syntax-highlighting"
 ;
-
-.accelerator {
-	font-size: 10pt;
-	font-family: courier;
-}
