@@ -3,10 +3,7 @@ title: Class Description
 blurb: Displays the logical description for the selected class
 layout: view
 ---
-
 The class description view is the core of the class editor.  It allows the logical description of the selected class to be edited using Manchester OWL Syntax.
-
-{% include view-image src="class-description" %}
 
 The sections are
 

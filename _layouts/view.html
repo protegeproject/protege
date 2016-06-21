@@ -13,7 +13,13 @@
         {% if page.menuPath %}
         <div class="menuPath">Window > Views > {{page.menuPath}}</div>
         {% endif %}
-        <!-- {% assign imgpath = (page.path | remove: "_views/" | replace: ".md", ".png" ) %} -->
+
+
+        <div class="img">
+
+        {% assign filename = (page.title | replace: " ", "-" | downcase ) %}
+
+        {% include view-image src=filename %}
 
         {{page.content}}
 

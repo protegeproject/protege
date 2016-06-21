@@ -8,10 +8,6 @@ The ontology metrics view displays entity and axiom counts for the axioms in the
 
 For the different types of axiom metrics in this view, for example, ```SubClassOf```, right clicking (or pressing Cmd and clicking on a Mac) will display a popup menu which can be used to show the axioms in question.
 
-<span class="img">
-<img align="right" src="{{site.baseurl}}/assets/views/ontology-metrics/ontology-metrics.png" width="50%"/>
-</span>
-
 * **Axioms** - the combined logical and non-logical axiom count
 * **Logical axioms** - the number of logical axioms
 * **Declaration axioms count** - the number of declaration axioms.  Declaration

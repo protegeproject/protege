@@ -3,13 +3,6 @@ title: Annotations
 layout: view
 blurb: Displays annotation assertions for the selected entity.
 ---
-
-An annotation assertion consists of a subject that is the target of the assertion, an [annotation property](http://www.w3.org/TR/owl2-syntax/#Annotation_Properties), and an annotation value.  The value may be either a [literal](http://www.w3.org/TR/owl2-syntax/#Literals), [IRI](http://www.w3.org/TR/owl2-syntax/#IRIs) (of an entity in the ontology or external to the ontology) or an [anonymous individual](http://www.w3.org/TR/owl2-syntax/#Anonymous_Individuals).  The annotations view displays annotations whose subject is the IRI of the selected entity in {{site.protege}}.
-
-## Annotations view
-
-{% include view-image src="annotations" %}
-
 The annotations view displays annotation assertions for the selected entity.  The view lists annotations sorted by their annotation property.  Certain well known properties, for example ```rdfs:label``` have a higher priority in the sorting over other annotation properties and will always appear at the top of the view.
 
 For each annotation displayed in the view, the rendering includes the annotation property (shown in blue), the annotation value datatype of language tag (shown in light gray) and the actual annotation value.
