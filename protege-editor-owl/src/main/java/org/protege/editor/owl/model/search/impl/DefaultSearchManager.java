@@ -5,7 +5,6 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.model.search.ResultItem;
 import org.protege.editor.owl.model.search.SearchCategory;
 import org.protege.editor.owl.model.search.SearchManager;
 import org.protege.editor.owl.model.search.SearchResult;
@@ -223,8 +222,7 @@ public class DefaultSearchManager extends SearchManager {
                     }
                 }
                 if (matchedAllPatterns) {
-                    ResultItem resultItem = new SearchMetadataWrapper(searchMetadata);
-                    results.add(new SearchResult(resultItem, matchesBuilder.build()));
+                    results.add(new SearchResult(searchMetadata, matchesBuilder.build()));
                 }
                 count++;
                 int nextPercent = (int) ((count * 100) / total);
