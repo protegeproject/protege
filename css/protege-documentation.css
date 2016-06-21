@@ -5,3 +5,12 @@
 .main-page-description {
   color: gray;
 }
+
+.img img {
+  padding: 10px;
+}
+
+.accelerator {
+	font-size: 10pt;
+	font-family: courier;
+}
