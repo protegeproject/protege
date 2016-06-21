@@ -1,7 +1,7 @@
 ---
 title: Save As
 parent: File
-accelerator: shift S
+accelerator: Shift S
 ---
 Displays the file save dialog to save the current active ontology to a local
 file.  This can be used to save ontologies that were loaded from the Web to
