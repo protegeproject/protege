@@ -1,6 +1,5 @@
-package org.protege.editor.owl.model.search.impl;
+package org.protege.editor.owl.model.search;
 
-import org.protege.editor.owl.model.search.SearchCategory;
 import org.protege.editor.owl.ui.renderer.styledstring.StyledString;
 import org.semanticweb.owlapi.model.OWLObject;
 

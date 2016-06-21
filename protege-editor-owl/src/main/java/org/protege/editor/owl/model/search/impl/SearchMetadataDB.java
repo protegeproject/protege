@@ -1,5 +1,7 @@
 package org.protege.editor.owl.model.search.impl;
 
+import org.protege.editor.owl.model.search.SearchMetadata;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
