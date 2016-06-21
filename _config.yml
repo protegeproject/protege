@@ -3,8 +3,8 @@ title: Protégé 5 Documentation
 version: 5.0.0
 email: protege@protege.stanford.edu
 description: This is the documentation for Protégé 5.0.0.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://protegeproject.github.io/protege" # the base hostname & protocol for your site
+baseurl: "/protege" # the subpath of your site, e.g. /blog
+url: "http://protegeproject.github.io" # the base hostname & protocol for your site
 twitter_username: protegeproject
 github_username:  protegeproject
 protege: Protégé
