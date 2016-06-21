@@ -2,7 +2,6 @@ package org.protege.editor.owl.model.search.impl;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.search.SearchCategory;
-import org.protege.editor.owl.model.search.SearchContext;
 import org.protege.editor.owl.model.search.impl.importer.AxiomAnnotationSearchMetadataImporter;
 import org.protege.editor.owl.model.search.impl.importer.DisplayNameSearchMetadataImporter;
 import org.protege.editor.owl.model.search.impl.importer.EntityAnnotationValueSearchMetadataImporter;
@@ -32,7 +31,7 @@ public class DefaultSearchMetadataImporter implements SearchMetadataImporter {
 
 
     public SearchMetadataDB getSearchMetadata(final OWLEditorKit editorKit, Set<SearchCategory> categories) {
-        SearchContext context = new SearchContext(editorKit);
+        SearchMetadataImportContext context = new SearchMetadataImportContext(editorKit);
         SearchMetadataDB db = new SearchMetadataDB();
 
         getEntityBasedSearchMetadata(categories, context, db);
@@ -42,7 +41,7 @@ public class DefaultSearchMetadataImporter implements SearchMetadataImporter {
         return db;
     }
 
-    private void getEntityBasedSearchMetadata(Set<SearchCategory> categories, SearchContext context, SearchMetadataDB db) {
+    private void getEntityBasedSearchMetadata(Set<SearchCategory> categories, SearchMetadataImportContext context, SearchMetadataDB db) {
 
         List<EntityBasedSearchMDImporter> importers = getEntityBasedSearchMetadataImporters(categories);
 
@@ -56,7 +55,7 @@ public class DefaultSearchMetadataImporter implements SearchMetadataImporter {
         }
     }
 
-    private void getSearchMetadataForEntity(OWLEntity entity, SearchContext context, SearchMetadataDB db, List<EntityBasedSearchMDImporter> importers) {
+    private void getSearchMetadataForEntity(OWLEntity entity, SearchMetadataImportContext context, SearchMetadataDB db, List<EntityBasedSearchMDImporter> importers) {
         String entityRendering = context.getRendering(entity);
         for (EntityBasedSearchMDImporter importer : importers) {
             importer.generateSearchMetadataFor(entity, entityRendering, context, db);
@@ -64,13 +63,13 @@ public class DefaultSearchMetadataImporter implements SearchMetadataImporter {
     }
 
 
-    private void getAxiomBasedSearchMetadata(Set<SearchCategory> categories, SearchContext context, SearchMetadataDB db) {
+    private void getAxiomBasedSearchMetadata(Set<SearchCategory> categories, SearchMetadataImportContext context, SearchMetadataDB db) {
         for (AxiomType<?> axiomType : AxiomType.AXIOM_TYPES) {
             getSearchMetadataForAxiomsOfType(axiomType, categories, context, db);
         }
     }
 
-    private void getSearchMetadataForAxiomsOfType(AxiomType<?> axiomType, Set<SearchCategory> categories, SearchContext context, SearchMetadataDB db) {
+    private void getSearchMetadataForAxiomsOfType(AxiomType<?> axiomType, Set<SearchCategory> categories, SearchMetadataImportContext context, SearchMetadataDB db) {
         for (AxiomBasedSearchMetadataImporter importer : getAxiomBasedSearchMetadataImporters(categories, axiomType)) {
             for (OWLOntology ontology : context.getOntologies()) {
                 for (OWLAxiom ax : ontology.getAxioms(axiomType)) {
@@ -86,7 +85,7 @@ public class DefaultSearchMetadataImporter implements SearchMetadataImporter {
     }
 
 
-    private void getOntologyBasedSearchMetadata(Set<SearchCategory> categories, SearchContext context, SearchMetadataDB db) {
+    private void getOntologyBasedSearchMetadata(Set<SearchCategory> categories, SearchMetadataImportContext context, SearchMetadataDB db) {
         List<OntologyBasedSearchMDImporter> ontologyBasedSearchMDImporters = getOntologyBasedSearchMetadataImporters(categories);
         for (OWLOntology ontology : context.getOntologies()) {
             for (OntologyBasedSearchMDImporter importer : ontologyBasedSearchMDImporters) {

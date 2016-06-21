@@ -4,6 +4,7 @@ import org.protege.editor.owl.model.search.*;
 import org.protege.editor.owl.model.search.impl.EntityBasedSearchMDImporter;
 import org.protege.editor.owl.model.search.impl.SearchMetadata;
 import org.protege.editor.owl.model.search.impl.SearchMetadataDB;
+import org.protege.editor.owl.model.search.impl.SearchMetadataImportContext;
 
 import org.semanticweb.owlapi.model.OWLEntity;
 
@@ -25,7 +26,7 @@ public class EntityIRISearchMetadataImporter extends EntityBasedSearchMDImporter
     }
 
     @Override
-    public void generateSearchMetadataFor(OWLEntity entity, String entityRendering, SearchContext context, SearchMetadataDB db) {
+    public void generateSearchMetadataFor(OWLEntity entity, String entityRendering, SearchMetadataImportContext context, SearchMetadataDB db) {
         SearchMetadata md = new SearchMetadata(SearchCategory.IRI, GROUP_DESCRIPTION, entity, entityRendering, entity.getIRI().toString());
         db.addResult(md);
     }
