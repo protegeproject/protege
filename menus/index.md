@@ -2,14 +2,13 @@
 title: Menus
 layout: default
 main: true
-sortingIndex: 2
 description: Explains what each menu item in Protégé does
 ---
 # Menu Items
 <div>
 {% assign sorted_menus = (site.menus | sort: 'title') %}
 {% for menu in sorted_menus %}
-	<div style="padding: 10px;">
+	<div style="padding: 10px; padding-bottom: 30px;">
 		<div style="font-weight: bold;">
 			{{menu.parent}}  |  {{menu.title}}
 			<span style="font-weight: 300; font-size: 12px; color: gray;">
