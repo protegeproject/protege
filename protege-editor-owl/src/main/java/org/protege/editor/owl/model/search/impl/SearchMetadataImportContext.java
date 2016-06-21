@@ -1,4 +1,4 @@
-package org.protege.editor.owl.model.search;
+package org.protege.editor.owl.model.search.impl;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLEditorKitOntologyShortFormProvider;
@@ -19,13 +19,13 @@ import java.util.Set;
  * Bio-Medical Informatics Research Group<br>
  * Date: 03/10/2012
  */
-public class SearchContext {
+public class SearchMetadataImportContext {
 
     private OWLEditorKit editorKit;
 
     private final OWLObjectStyledStringRenderer styledStringRenderer;
 
-    public SearchContext(OWLEditorKit editorKit) {
+    public SearchMetadataImportContext(OWLEditorKit editorKit) {
         this.editorKit = editorKit;
         ShortFormProvider sfp = new OWLEditorKitShortFormProvider(editorKit);
         OntologyIRIShortFormProvider ontsfp = new OWLEditorKitOntologyShortFormProvider(editorKit);

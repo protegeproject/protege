@@ -1,7 +1,6 @@
 package org.protege.editor.owl.model.search.impl;
 
 import org.protege.editor.owl.model.search.SearchCategory;
-import org.protege.editor.owl.model.search.SearchContext;
 
 import org.semanticweb.owlapi.model.OWLEntity;
 
@@ -18,5 +17,5 @@ public abstract class EntityBasedSearchMDImporter {
 
     public abstract boolean isImporterFor(Set<SearchCategory> categories);
 
-    public abstract void generateSearchMetadataFor(OWLEntity entity, String entityRendering, SearchContext context, SearchMetadataDB db);
+    public abstract void generateSearchMetadataFor(OWLEntity entity, String entityRendering, SearchMetadataImportContext context, SearchMetadataDB db);
 }

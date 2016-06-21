@@ -1,7 +1,6 @@
 package org.protege.editor.owl.model.search.impl;
 
 import org.protege.editor.owl.model.search.SearchCategory;
-import org.protege.editor.owl.model.search.SearchContext;
 
 import org.semanticweb.owlapi.model.OWLOntology;
 
@@ -18,5 +17,5 @@ public abstract class OntologyBasedSearchMDImporter extends SearchMDImporter {
 
     public abstract boolean isImporterFor(Set<SearchCategory> categories);
 
-    public abstract void generateSearchMetadata(OWLOntology ontology, SearchContext context, SearchMetadataDB db);
+    public abstract void generateSearchMetadata(OWLOntology ontology, SearchMetadataImportContext context, SearchMetadataDB db);
 }
