@@ -15,3 +15,11 @@ plugin.xml
 .idea
 *.iml
 build/
+
+_site
+_views
+_posts
+_menus
+assets
+installation
+
