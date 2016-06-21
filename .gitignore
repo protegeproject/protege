@@ -2,3 +2,5 @@ _site
 
 .idea
 *.iml
+
+.sass*
