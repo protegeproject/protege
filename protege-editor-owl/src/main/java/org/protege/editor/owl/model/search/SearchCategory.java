@@ -14,6 +14,8 @@ public enum SearchCategory {
 
     ANNOTATION_VALUE,
 
-    LOGICAL_AXIOM
+    LOGICAL_AXIOM,
+
+    OTHER
 
 }
