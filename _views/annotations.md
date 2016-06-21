@@ -32,3 +32,9 @@ On the right hand side you specify a value for the annotation.  You can specify:
 * An **Entity IRI** that points to an entity in the ontology or imports closure.
 * An **Arbitrary IRI** that may point at anything.
 * An **Anonymous Individual** and associated property values.
+
+## Ontology Annotations
+
+The annotations on the active ontology are shown in the Ontology Annotations view.
+
+![ontology-annotations-view]({{site.baseurl}}/assets/views/annotations/ontology-annotations.png "The ontology annotation editor")
