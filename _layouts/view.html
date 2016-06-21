@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+  {% include head.html %}
+
+  <body>
+
+    {% include header.html %}
+
+    <div class="page-content">
+      <div class="wrapper">
+        <h1>{{page.title}}</h1>
+
+        {% assign imgpath = (page.path | remove: "_views/" | replace: ".md", ".png" ) %}
+        <!-- <div style="display: flex; flex-direction: row; flex-grow: 1;"> -->
+          <!-- {{page.content | remove: "<p>" | remove: "</p>"}} -->
+        <!-- <div style="flex-grow: 1; min-width: 300px;"> -->
+          <!-- <img src="{{imgpath}}"/> -->
+        <!-- </div> -->
+
+        {{page.content}}
+
+
+      </div>
+    </div>
+
+    {% include footer.html %}
+
+  </body>
+
+</html>

@@ -1,12 +1,27 @@
-<html>
-<body>
-<p>
-  Protégé is a free, open-source platform that provides a growing user community
-with a suite of tools to construct domain models and knowledge-based applications
-with ontologies.
-</p>
-<p>
-  This is the user manual for Protégé.
-</p>
-</body>
-</html>
+---
+layout: default
+---
+
+<div class="home">
+
+  <h1 class="page-heading">Protege Documentation</h1>
+
+  This is the official documentation for {{site.protver}}.  You can find
+  information about the {{site.protege}} user interface including descriptions
+  of the various <a href="views">views</a> and <a href="menus">menu</a> items.
+
+
+
+  {% assign sorted_pages = (site.pages | sort: 'title') %}
+  {% for page in sorted_pages %}
+    {% if page.main %}
+    <div class="main-page">
+      <a class="page-link" href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
+      {%if page.description%}
+      <div class="main-page-description">{{page.description}}</div>
+      {%endif%}
+    </div>
+    {% endif %}
+  {% endfor %}
+
+</div>
