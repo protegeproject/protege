@@ -2,7 +2,7 @@
 title: Ontology Metrics
 layout: view
 blurb: Displays entity and axiom counts for the active ontology and its imports closure
-path: Ontology views > Ontology metrics
+menuPath: Ontology views > Ontology metrics
 ---
 The ontology metrics view displays entity and axiom counts for the axioms in the active ontology and its imports closure.  Descriptions (and where appropriate links to the W3C documentation) are listed below.
 
