@@ -2,8 +2,9 @@
 title: Ontology Metrics
 layout: view
 blurb: Displays entity and axiom counts for the active ontology and its imports closure
+path: Ontology views > Ontology metrics
 ---
-The metrics view displays entity and axiom counts for the axioms in the active ontology and its imports closure.  Descriptions (and where appropriate links to the W3C documentation) are listed below.
+The ontology metrics view displays entity and axiom counts for the axioms in the active ontology and its imports closure.  Descriptions (and where appropriate links to the W3C documentation) are listed below.
 
 For the different types of axiom metrics in this view, for example, ```SubClassOf```, right clicking (or pressing Cmd and clicking on a Mac) will display a popup menu which can be used to show the axioms in question.
 
@@ -19,10 +20,12 @@ axioms are added under the hood in Protégé and cannot be seen in the user inte
 object propeeties, data properties and individuals in the signature of the
 imports closure of the active ontology.  In other words, the number of distinct
 classes, object properties, data properties and individuals that are mentioned
-in the ontology.
+in the ontology.  The numbers here include built in entities, such as ```owl:Thing```
+if they are explicitly mentioned in the ontology.  For example, an ontology
+that contains the single axiom ```SubClassOf(A owl:Thing)``` will have a class count of 2.
 * **DL Expressivity** - the [Description Logic](https://en.wikipedia.org/wiki/Description_logic) expressivity of the ontology.  This is the name of the Description Logic that the ontology uses. It
 depends upon the kinds of axioms in the ontology and the kinds of class expressions
-used in the ontology.
+used in the ontology.  The maximum expressivity of an OWL 2 (DL) ontology is SROIQ(D).  The maximum expressivity of an OWL 1 ontology is SHOIN(D).  
 
 ## Class Axioms
 
