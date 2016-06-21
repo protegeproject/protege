@@ -8,13 +8,15 @@ An annotation assertion consists of a subject that is the target of the assertio
 
 ## Annotations view
 
+{% include view-image src="annotations" %}
+
 The annotations view displays annotation assertions for the selected entity.  The view lists annotations sorted by their annotation property.  Certain well known properties, for example ```rdfs:label``` have a higher priority in the sorting over other annotation properties and will always appear at the top of the view.
 
 For each annotation displayed in the view, the rendering includes the annotation property (shown in blue), the annotation value datatype of language tag (shown in light gray) and the actual annotation value.
 
 Annotations on annotations are shown inline by default.  In the image below, the definition annotation has two other annotations on it. These can be hidden by toggling [Display axiom annotations inline]({{site.baseurl}}/menus/display-axiom-annotations-inline).
 
-![annotations]({{site.baseurl}}/assets/views/annotations/annotations.png "The annotations view")
+
 
 ## Annotation editor
 

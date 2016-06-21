@@ -6,7 +6,7 @@ layout: view
 
 The class description view is the core of the class editor.  It allows the logical description of the selected class to be edited using Manchester OWL Syntax.
 
-![Class Description View]({{site.baseurl}}/assets/views/class-description/class-description-view.png)
+{% include view-image src="class-description" %}
 
 The sections are
 
