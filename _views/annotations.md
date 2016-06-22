@@ -15,7 +15,10 @@ Annotations on annotations are shown inline by default.  In the image below, the
 
 To edit an annotation, or add a new annotation, you should use the annotation editor, which is displayed when you click the (+) button or the edit button (o) or when you double click on an annotation.
 
-![annotations-editor]({{site.baseurl}}/assets/views/annotations/annotations-editor.png "The annotation editor")
+<figure>
+  <img src="{{site.baseurl}}/assets/views/annotations/annotations-editor.png" alt="The annotation editor">
+  <figcaption>The annotation editor.  The annotation property is specified by selecting it from the tree on the left hand side.  The value is entered into one of the tabs on the right hand side.</figcaption>
+</figure>
 
 The annotation editor is split into a left hand side pane and a right hand side pane.
 
@@ -34,4 +37,7 @@ The annotations on the active ontology are shown in the Ontology Annotations vie
 
 In the example below, which is taken from the UBERON ontology, the Ontology IRI is ```http://purl.obolibrary.org/obo/uberon.owl``` and the Ontology version IRI is ```http://purl.obolibrary.org/obo/uberon/releases/2016-06-12/uberon.owl```.
 
-![ontology-annotations-view]({{site.baseurl}}/assets/views/annotations/ontology-annotations.png "The ontology annotation editor")
+<figure>
+  <img src="{{site.baseurl}}/assets/views/annotations/ontology-annotations.png" alt="The ontology annotation editor"/>
+  <figcaption>The ontology annotations view</figcaption>
+</figure>
