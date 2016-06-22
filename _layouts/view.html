@@ -15,16 +15,17 @@
         {% endif %}
 
 
-        <div class="img">
+        <div>
 
         {% assign filename = (page.title | replace: " ", "-" | downcase ) %}
 
         {% include view-image src=filename %}
+        </div>
 
         {{page.content}}
 
 
-      </div>
+
     </div>
 
     {% include footer.html %}

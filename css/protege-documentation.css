@@ -6,8 +6,9 @@
   color: gray;
 }
 
-.img img {
-  padding: 10px;
+img {
+  max-width: 100%;
+  height: auto;
 }
 
 .accelerator {
