@@ -41,6 +41,10 @@ The solid yellow icons denote classes that are not defined classes (i.e. aren't 
 <figcaption>An example of a primitive class</figcaption>
 </figure>
 
+## Font Weight
+
+The class hierarchy view may show some names in a bold font and others in a regular font.  Roughly speaking, classes whose names are shown in a bold font are described using axioms in the active ontology.  This means that the class appears on the left hand side of a SubClassOf axiom, in an EquivalentClasses axiom, in a DisjointUnion axiom or in a DisjointClasses axiom.  Classes whose names are shown in a regular weight font are merely referenced in the imports closure of the active ontology.
+
 ## Drag and Drop
 
 It is possible to edit some of the SubClassOf axioms in the ontology by dragging and dropping tree nodes in the asserted class hierarchy.  Drag and Drop only works for primitive classes - that is, classes that have a solid yellow icon.  Dropping a class on top of an other class will make it a SubClassOf that other class.
