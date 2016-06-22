@@ -23,3 +23,23 @@ li {
   color: gray;
   padding-bottom: 20px;
 }
+
+figure {
+  text-align: center;
+}
+
+figcaption {
+  color: #A0A0A0;
+  font-size: smaller;
+  margin-bottom: 1em;
+  max-width: 30em;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+figure > img {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
