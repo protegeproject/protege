@@ -2,10 +2,11 @@
 title: Class hierarchy
 layout: view
 blurb: Displays the asserted or inferred class hierarchy for the active ontologies.
+menuPath: Class views > Class hierarchy
 ---
 The class hierarchy view displays the asserted and inferred class hierarchies.  The asserted class hierarchy is visible by default.
 
-The asserted class hierarchy view is one of the primary navigation devices in {{site.protege}}.  It is presented as a tree where children represent subclasses of the parent class.  A class will be shown under another class if it is asserted to be a SubClassOf that other class, or if it is asserted to be EquivalentTo a class expression that is an intersection containing that other class as an operand.  For example, if the ontology contains ```A SubClassOf B```, then ```A``` will appear under ```B``` in the tree.  Similarly, if the ontology contains ```E Equivalent to B and hasPart some C``` then ```E``` will also be shown as a chid of ```B``` in the tree.  Any classes that are not asserted to be a subclass of some other class will show up directly under owl:Thing (the root).
+The asserted class hierarchy view is one of the primary navigation devices in {{site.protege}}.  It is presented as a tree where children represent subclasses of the parent class.  A class will be shown under another class if it is asserted to be a SubClassOf that other class, or if it is asserted to be EquivalentTo a class expression that is an intersection containing that other class as an operand.  For example, if the ontology contains ```A SubClassOf B```, then ```A``` will appear under ```B``` in the tree.  Similarly, if the ontology contains ```E Equivalent to B and hasPart some C``` then ```E``` will also be shown as a chid of ```B``` in the tree.  Any classes that are not asserted to be a subclass of some other class will show up directly under ```owl:Thing``` (the root).
 
 ## Cycles
 
