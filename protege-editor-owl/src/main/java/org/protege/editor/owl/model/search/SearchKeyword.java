@@ -1,10 +1,12 @@
 package org.protege.editor.owl.model.search;
 
 /**
- * @author Josef Hardi <johardi@stanford.edu> <br>
- * Stanford Center for Biomedical Informatics Research
+ * @author Josef Hardi <johardi@stanford.edu><br>
+ * Stanford University<br>
+ * Bio-Medical Informatics Research Group<br>
+ * Date: 22/06/2016
  */
-public class SearchKeyword implements SearchInput {
+public class SearchKeyword {
 
     public enum Occurance { INCLUDE, EXCLUDE, OPTIONAL }
 
@@ -80,27 +82,40 @@ public class SearchKeyword implements SearchInput {
     }
 
     @Override
-    public String asSearchString() {
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof SearchKeyword)) {
+            return false;
+        }
+        SearchKeyword other = (SearchKeyword) obj;
+        return field.equals(other.field) && keyword.equals(other.keyword) && occurance.equals(other.occurance)
+                && isCaseSensitive == other.isCaseSensitive && ignoreWhitespace == other.ignoreWhitespace
+                && searchWholeWords == other.searchWholeWords && searchByRegex == other.searchByRegex
+                && searchByPhonetic == other.searchByPhonetic;
+    }
+
+    @Override
+    public int hashCode() {
+        int hashCode = 31 * field.hashCode() + keyword.hashCode() + occurance.hashCode();
+        hashCode += (isCaseSensitive ? 1 : 0);
+        hashCode += (ignoreWhitespace ? 1 : 0);
+        hashCode += (searchWholeWords ? 1 : 0);
+        hashCode += (searchByRegex ? 1 : 0);
+        hashCode += (searchByPhonetic ? 1 : 0);
+        return hashCode;
+    }
+
+    @Override
+    public String toString() {
         String buffer = keyword;
         if (searchWholeWords || searchByRegex) {
             buffer = "\"" + buffer + "\"";
-        }
-        if (searchByPhonetic) {
-            buffer = "~" + buffer;
-        }
-        if (occurance == Occurance.INCLUDE) {
-            buffer = "+" + buffer;
-        } else if (occurance == Occurance.EXCLUDE) {
-            buffer = "-" + buffer;
         }
         if (hasField()) {
             buffer = field + ":" + buffer;
         }
         return buffer;
-    }
-
-    @Override
-    public String toString() {
-        return asSearchString();
     }
 }
