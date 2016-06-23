@@ -1,8 +1,7 @@
 package org.protege.editor.owl.model.search.impl;
 
 import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
-import org.protege.editor.owl.model.search.CompoundKeyword;
-import org.protege.editor.owl.model.search.SearchInputHandler;
+import org.protege.editor.owl.model.search.SearchInput;
 import org.protege.editor.owl.model.search.SearchKeyword;
 import org.protege.editor.owl.model.search.SearchKeyword.Occurance;
 import org.protege.editor.owl.model.search.SearchStringParser;
@@ -16,8 +15,8 @@ import org.protege.editor.owl.model.search.SearchStringParser;
 public class SearchStringParserImpl implements SearchStringParser {
 
     @Override
-    public void parse(String searchString, SearchInputHandler handler) {
-        CompoundKeyword compoundKeyword = new CompoundKeyword();
+    public SearchInput parse(String searchString) {
+        SearchInput.Builder builder = new SearchInput.Builder();
         OWLEntityFinderPreferences prefs = OWLEntityFinderPreferences.getInstance();
         for (String splitSearchString : searchString.split("\\s+")) {
             SearchKeyword keyword = new SearchKeyword("",
@@ -28,8 +27,8 @@ public class SearchStringParserImpl implements SearchStringParser {
                     prefs.isWholeWords(),
                     prefs.isUseRegularExpressions(),
                     false);
-            compoundKeyword.add(keyword);
+            builder.add(keyword);
         }
-        handler.handle(compoundKeyword);
+        return builder.build();
     }
 }
