@@ -8,6 +8,7 @@ import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.search.SearchCategory;
 import org.protege.editor.owl.model.search.SearchManager;
 import org.protege.editor.owl.model.search.SearchMetadata;
+import org.protege.editor.owl.model.search.SearchInput;
 import org.protege.editor.owl.model.search.SearchResult;
 import org.protege.editor.owl.model.search.SearchResultHandler;
 import org.protege.editor.owl.model.search.SearchResultMatch;
@@ -99,10 +100,6 @@ public class DefaultSearchManager extends SearchManager {
         modelMan.removeListener(modelManagerListener);
     }
 
-    public PatternBasedInputHandler getSearchInputHandler() {
-        return new PatternBasedInputHandler();
-    }
-
     private void handleModelManagerEvent(OWLModelManagerChangeEvent event) {
         if (isCacheMutatingEvent(event)) {
             markCacheAsStale();
@@ -159,9 +156,10 @@ public class DefaultSearchManager extends SearchManager {
     }
 
     private List<Pattern> prepareSearchPattern(String searchString) {
-        PatternBasedInputHandler handler = new PatternBasedInputHandler();
-        searchStringParser.parse(searchString, handler);
-        return handler.getQueryObject();
+        SearchInput searchInput = searchStringParser.parse(searchString);
+        RegexPatternQueryBuilder builder = new RegexPatternQueryBuilder();
+        searchInput.accept(builder);
+        return builder.build();
     }
 
     private class SearchCallable implements Runnable {
