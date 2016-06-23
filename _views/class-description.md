@@ -10,11 +10,13 @@ The sections are
 
 * **EquivalentTo**.  Each entry specifies a class expression that is equivalent to the current selected class.
 * **SubClassOf**.  Each entry specifies a class expression that the current selected class is a subclass of.  In other words, each entry is a superclass of the current selected class.
-* **SubClassOf (Anonymous Ancestor)** Protege searches all ancestors of the selected class and accumulates all of their anonymous superclasses which are then displayed in this section.
+* **General Class Axioms**.  Each entry shows a General Class Axiom that contains the current selected class in its signature (i.e. mentions the current selected class).
 * **Instances**.  Each entry specifies an individual that has the current selected class as its type in a class assertion axiom.
 * **DisjointWith**. Each entry specifies a list of classes that this class is disjoint with. A DisjointClasses axiom can contain 2 or more classes (the current selected class is removed from the list for clarity)
 * **Target for Key** Specifies a mixed list of object and data properties that act as a key for instances of the current selected class.  Keys are a new feature in OWL 2 and consist of a set of properties.  For a given individual the particular values of these properties taken together imply distinctness.  For example, a key consisting of hasSurname and hasDateOfBirth could be used (in a limited setting) to imply distinctness of the individuals in the class Person.
 * **Disjoint Union Of** Specifies that this class is the main class in a DisjointUnion class axiom.
+* **SubClassOf (Anonymous Ancestor)** Protege searches all ancestors of the selected class and accumulates all of their anonymous superclasses which are then displayed in this section.
+
 
 ## Adding and Editing Class Expressions
 
