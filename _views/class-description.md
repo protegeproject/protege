@@ -21,7 +21,7 @@ The sections are
 Adding or editing Equivalent classes or Superclasses displays a dialog that contains multiple editors. The editors range from a simple tree from which a class can be picked, to restriction creators that help produce simple restrictions with a named filler, to a fully functioning expression editor. The editor set is pluggable so developers can add further tool support.
 
 <figure>
-  <img src="{{site.baseurl}}/assets/views/class-description/class-expression-editor.png"/>
+  <img src="{{site.baseurl}}/assets/views/class-description/class-expression-editor.png" style="max-width: 657px;"/>
   <figcaption>The class expression editor showing the class expression editing tab.  There are also tabs for selecting classes from a tree view, or creating object and data restrictions by picking properties and classes from a tree view.</figcaption>
 </figure>
 
@@ -39,6 +39,6 @@ Right clicking on a line in the Class Description view displays a popup menu off
 * **Create closure axiom** - Applicable only to selected rows in the SubClassOf section containing class expressions of the form ```p some A```.  Accumulates all the fillers of ```some``` restrictions on the associated property and adds a new SubClassOf axiom with a class expression that is an AllValuesFrom restriction along the property with a filler that is a disjunction of the fillers of the selected SomeValuesFrom restrictions.  For example, if the selected class is ```A``` and the selected rows contain ```p some B``` and ```p some C```, then ```A``` will also be made a SubClassOf ```p only (B or C)```.
 
 <figure>
-  <img src="{{site.baseurl}}/assets/views/class-description/class-description-popup-menu.png"/>
+  <img src="{{site.baseurl}}/assets/views/class-description/class-description-popup-menu.png" style="max-width: 600px;"/>
   <figcaption>The popup menu for the class description view.</figcaption>
 </figure>
