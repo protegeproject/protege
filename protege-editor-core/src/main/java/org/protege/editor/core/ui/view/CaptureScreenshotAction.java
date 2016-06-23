@@ -48,46 +48,53 @@ public class CaptureScreenshotAction extends ProtegeAction {
 
 
     private void takeScreenCaptureOfCurrentView() {
-//        try {
-            if (currentView == null) {
-                return;
+        if (currentView == null) {
+            return;
+        }
+        Component currentFocusOwner = currentView;
+        WorkspaceFrame frame = ProtegeManager.getInstance().getFrame(getWorkspace());
+        int ret = JOptionPane.showConfirmDialog(frame, captureTypePanel, "Capture type", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (ret != JOptionPane.OK_OPTION) {
+            return;
+        }
+        CaptureType captureType = captureTypePanel.getSelectedCaptureType();
+        Component component = captureType.getComponentToCapture(currentFocusOwner);
+        Dimension size = component.getSize();
+        double scaleFactor = captureTypePanel.getScaleFactor();
+        final BufferedImage bufferedImage = new BufferedImage(
+                (int) (size.width * scaleFactor),
+                (int) (size.height * scaleFactor),
+                BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = (Graphics2D) bufferedImage.getGraphics();
+
+        g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+        g.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+        g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+
+        g.scale(scaleFactor, scaleFactor);
+
+        component.paintAll(g);
+
+
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(new Transferable() {
+            public DataFlavor[] getTransferDataFlavors() {
+                return new DataFlavor[]{DataFlavor.imageFlavor};
             }
-            Component currentFocusOwner = currentView;
-            WorkspaceFrame frame = ProtegeManager.getInstance().getFrame(getWorkspace());
-            int ret = JOptionPane.showConfirmDialog(frame, captureTypePanel, "Capture type", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-            if (ret != JOptionPane.OK_OPTION) {
-                return;
+
+            public boolean isDataFlavorSupported(DataFlavor flavor) {
+                return flavor.equals(DataFlavor.imageFlavor);
             }
-            CaptureType captureType = captureTypePanel.getSelectedCaptureType();
-            Component component = captureType.getComponentToCapture(currentFocusOwner);
-            Dimension size = component.getSize();
-            final BufferedImage bufferedImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
-            Graphics g = bufferedImage.getGraphics();
-            component.paintAll(g);
 
-
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            clipboard.setContents(new Transferable() {
-                public DataFlavor[] getTransferDataFlavors() {
-                    return new DataFlavor[] {DataFlavor.imageFlavor};
-                }
-
-                public boolean isDataFlavorSupported(DataFlavor flavor) {
-                    return flavor.equals(DataFlavor.imageFlavor);
-                }
-
-                public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
-                    return bufferedImage;
-                }
-            }, null);
-//            File file = captureTypePanel.getFile();
-//            File tempFile = File.createTempFile("Screen-Capture", "png");
-//            ImageIO.write(bufferedImage, "png", tempFile);
-//        }
-//        catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
+            public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+                return bufferedImage;
+            }
+        }, null);
     }
 
     private void handleFocusManagerPropertyChange(PropertyChangeEvent evt) {
@@ -195,13 +202,13 @@ public class CaptureScreenshotAction extends ProtegeAction {
                     Component contentParent = component;
                     while (true) {
                         Container parent = contentParent.getParent();
-                        if(parent instanceof JViewport) {
+                        if (parent instanceof JViewport) {
                             break;
                         }
-                        if(parent instanceof ViewHolder) {
+                        if (parent instanceof ViewHolder) {
                             break;
                         }
-                        if(parent == null) {
+                        if (parent == null) {
                             break;
                         }
                         contentParent = parent;
@@ -219,9 +226,11 @@ public class CaptureScreenshotAction extends ProtegeAction {
 
         private static CaptureType lastCaptureType = CaptureType.VIEW_HOLDER;
 
+        private final JSpinner scaleFactorSpinner = new JSpinner(new SpinnerNumberModel(4, 1, 10, 1.0));
+
         private List<JRadioButton> captureTypeButtons = new ArrayList<>();
 
-//        private final JTextField pathField;
+        //        private final JTextField pathField;
 
         private CaptureTypePanel() {
             setLayout(new GridBagLayout());
@@ -240,20 +249,13 @@ public class CaptureScreenshotAction extends ProtegeAction {
                 add(typeButton, getGBG(buttonX, currentRow, 0.0, BASELINE_LEADING, NONE));
                 currentRow++;
             }
-//            add(new JSeparator(), new GridBagConstraints(0, currentRow, 3, 1, 100.0, 0.0, CENTER, HORIZONTAL, new Insets(5, 2, 5, 2), 0, 0));
-//            currentRow++;
-//            add(new JLabel("Save to:"), getGBG(0, currentRow, 0.0, BASELINE_TRAILING, NONE));
-//            pathField = new JTextField(50);
-//            add(pathField, getGBG(1, currentRow, 100.0, BASELINE, HORIZONTAL));
-//            add(new JButton(new AbstractAction("Browse...") {
-//                public void actionPerformed(ActionEvent e) {
-//                    Component parent = SwingUtilities.getAncestorOfClass(Window.class, getParent());
-//                    File file = UIUtil.saveFile(parent, "Save as", "Save screen capture to", Collections.<String>emptySet(), "screenshot.png");
-//                    if (file != null) {
-//                        pathField.setText(file.getAbsolutePath());
-//                    }
-//                }
-//            }), getGBG(2, currentRow, 0.0, BASELINE_LEADING, NONE));
+            add(new JSeparator(), new GridBagConstraints(0, currentRow, 3, 1, 100.0, 0.0, CENTER, HORIZONTAL, new Insets(5, 2, 5, 2), 0, 0));
+            currentRow++;
+            add(new JLabel("Scale factor"),
+                    new GridBagConstraints(0, currentRow, 1, 1, 0, 0, BASELINE_TRAILING, NONE, new Insets(0, 0, 0, 0), 0, 0));
+            add(scaleFactorSpinner,
+                    new GridBagConstraints(1, currentRow, 2, 1, 0, 0, BASELINE_LEADING, NONE, new Insets(0, 0, 0, 0), 0, 0));
+
         }
 
         public CaptureType getSelectedCaptureType() {
@@ -269,16 +271,14 @@ public class CaptureScreenshotAction extends ProtegeAction {
             return null;
         }
 
-//        public File getFile() {
-//            return new File(pathField.getText().trim());
-//        }
+        public double getScaleFactor() {
+            return (double) scaleFactorSpinner.getValue();
+        }
 
         private static GridBagConstraints getGBG(int x, int y, double wX, int anchor, int fill) {
             return new GridBagConstraints(x, y, 1, 1, wX, 0.0, anchor, fill, new Insets(0, 0, 2, 2), 0, 0);
         }
     }
-
-
 
 
 }
