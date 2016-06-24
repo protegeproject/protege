@@ -15,10 +15,13 @@ These are some of the views that are available in {{site.protege}} {{site.versio
 
 {% for view in sorted_views %}
 
-	<div style="padding: 20px;">
-		<h2>
+	<div style="padding: 10px;">
+		<div style="font-weight: bold;">
 			<a href="{{site.baseurl}}{{view.url}}">{{view.title}}</a>
-		</h2>
+		</div>
+		<div style="color: gray; font-size: smaller;">
+			{{view.menuPath}}
+		</div>
 		<div>
 				{{view.blurb}}
 		</div>
