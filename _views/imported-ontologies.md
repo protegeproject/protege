@@ -1,7 +1,7 @@
 ---
 title: Imported Ontologies
 blurb: Displays the direct and indirect imports for the active ontology
-menuPath: Ontology Views > Imported Ontologies
+menuPath: Ontology views > Imported Ontologies
 layout: view
 ---
 
