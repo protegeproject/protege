@@ -103,7 +103,7 @@ only screen and (max-width: 760px),
 		border: none;
 		border-bottom: 1px solid #eee;
 		position: relative;
-		padding-left: 35%;
+		padding-left: 25%;
 	}
 
 	td:before {
@@ -112,7 +112,7 @@ only screen and (max-width: 760px),
 		/* Top/left values mimic padding */
 		top: 6px;
 		left: 6px;
-		width: 35%;
+		width: 25%;
 		padding-right: 10px;
 		white-space: nowrap;
 	}
