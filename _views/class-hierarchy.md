@@ -1,5 +1,5 @@
 ---
-title: Class hierarchy
+title: Class Hierarchy
 layout: view
 blurb: Displays the asserted or inferred class hierarchy for the active ontologies.
 menuPath: Class views > Class hierarchy

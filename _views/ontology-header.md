@@ -1,5 +1,5 @@
 ---
-title: Ontology header
+title: Ontology Header
 blurb: Displays the active ontology IRI, ontology version IRI and ontology annotations.
 menuPath: Ontology views > Ontology Header
 layout: view
