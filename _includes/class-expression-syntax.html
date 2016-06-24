@@ -1,0 +1,143 @@
+<table>
+    <tr>
+        <th> Keyword </th>
+        <th> Example </th>
+        <th> Intuitive Meaning </th>
+    </tr>
+    <tr>
+    <td>
+        <span class="ms-rkw">some</span>
+    </td>
+    <td>
+        <span class="expr">hasPet <span class="ms-rkw">some</span> Dog</span>
+    </td>
+    <td>
+        Things that have a pet that is a Dog
+        <div class="tip">This is the most common type of class expression.  Also known as, an "SomeValueFrom restriction" or an "Existential Restriction"</div>
+    </td>
+  </tr>
+    <tr>
+    <td>
+        <span class="ms-rkw">value</span>
+    </td>
+    <td>
+        <span class="expr">hasPet <span class="ms-rkw">value</span> Tibbs</span>
+    </td>
+    <td>
+        Things that have a pet that is Tibbs.
+        <div class="tip">Here, Tibbs is a specific individual.  Intuitively this would describe Tibb's owners.
+            Note that this is a short cut for, and logically equivalent to, (<span class="expr">hasPet <span class="ms-rkw">some</span> {Tibbs}</span>), where the curly brackets describe a class of specific individuals - in this case, a class of one individual that is Tibbs.
+
+            Also known as a "HasValue restriction"
+        </div>
+    </td>
+    </tr>
+
+    <tr>
+        <td>
+            <span class="ms-rkw">only</span>
+        </td>
+        <td>
+            <span class="expr">hasPet  <span class="ms-rkw">only</span> Cat</span>
+        </td>
+        <td>
+            Things that have pets that are only Cats.
+            <div class="tip">Note that this does not mean that these things must have a Cat, but if they do have a pet then it will be a Cat.
+
+                Also known as an "AllValuesFrom restriction" or a "Universal restriction"
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="ms-rkw">min</span>
+        </td>
+        <td>
+            hasPet <span class="ms-rkw">min</span> 3 Cat
+        </td>
+        <td>
+            Things that have at least three pets that are Cats.
+
+            Also known as a "Min cardinality restriction"
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="ms-rkw">max</span>
+        </td>
+        <td>
+            <span class="expr">hasPet <span class="ms-rkw">max</span> 5 Dog</span>
+        </td>
+        <td>
+            Things that have at most five pets that are Dogs.
+            <div class="tip">
+                Note that there may be more than five pets in total e.g. three Cats and five Dogs, but the number of Dogs will not be more than five.  This class expression also means that there may be no pets at all.
+
+                            Also known as a "Max cardinality restriction"
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="ms-rkw">exactly</span>
+        </td>
+        <td>
+            <span class="expr">hasPet <span class="ms-rkw">exactly</span> 2 GoldFish</span>
+        </td>
+        <td>
+            Things that have exactly 2 GoldFish as pets.
+            <div class="tip">
+                Note that there may be more than two pets, but two of the pets are GoldFish - no more and no less.
+
+                            Also known as an "Exact cardinality restriction"
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="ms-bkw">and</span>
+        </td>
+        <td>
+            <span class="expr">Person <span class="ms-bkw">and</span> (hasPet <span class="ms-rkw">some</span> Cat)</span>
+        </td>
+        <td>
+            People that have a pet that's a Cat.
+            <div class="tip">
+                Here we have a class name and a complex class expression combined with the <span class="ms-bkw">and</span> keyword.  The brackets are optional in this particular case, but have been included for clarity.
+
+                Also known as an "Intersection" or a "Conjunction".  We also say that each class expression in the conjunction is a "conjunct".
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="ms-bkw">or</span>
+        </td>
+        <td>
+            <span class="expr">(hasPet <span class="ms-rkw">some</span> Cat) <span class="ms-bkw">or</span> (hasPet <span class="ms-rkw">some</span> Cat)</span>
+        </td>
+        <td>
+            People that have a pet that's a Cat or have a pet that's a Dog
+            <div class="tip">
+                Note that the <span class="ms-bkw">or</span> is not exclusive.  That is, this class includes the things that have a Cat as a pet, or have a Dog as a pet, or have both a pet Dot and a pet Cat.
+                Note that we could have also written this example as (hasPet <span class="ms-rkw">some</span> (Cat <span class="ms-bkw">or</span> Dog))
+                Also known as a "Union" or a "Disjunction".  We also say that each class expression in the disjunction is a "disjunct".
+            </div>
+        </td>
+    </tr>
+    <td>
+        <span class="ms-bkw">not</span>
+    </td>
+    <td>
+        <span class="expr"><span class="ms-bkw">not</span> (hasPet <span class="ms-rkw">some</span> Dog)</span>
+    </td>
+    <td>
+        Things that do not have a pet that's a dog.
+        <div class="tip">
+        This includes things that either do not have any pet, or if they have a pet then it's not a Dog.
+        Note that this is logically equivalent to <span class="expr">(hasPet <span class="ms-rkw">only</span> (<span class="ms-bkw">not</span> Dog))</span>
+
+        Also known as a "negation".
+      </div>
+    </td>
+</table>

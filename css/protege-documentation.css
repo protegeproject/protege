@@ -44,3 +44,44 @@ figure > img {
   margin-right: auto;
   margin-left: auto;
 }
+
+table {
+    border-collapse: collapse;
+}
+
+th {
+  padding: 10px;
+  text-align: left;
+  font-weight: bold;
+  border-top: 1px solid #E0E0E0;
+  border-bottom: 1px solid #E0E0E0;
+  border-left: 0;
+  border-right: 0;
+  background: #f0f0f0;
+  color: #707070;
+}
+td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: top;
+}
+
+.ms-rkw {
+  font-weight: 400;
+  color: #aa00aa;
+}
+
+.ms-bkw {
+  font-weight: 400;
+  color: #00aaff;
+}
+
+.expr {
+    white-space: nowrap;
+}
+
+.tip {
+  color: #A0A0A0;
+  font-size: smaller;
+}
