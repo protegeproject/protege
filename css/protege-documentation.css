@@ -85,3 +85,42 @@ td {
   color: #A0A0A0;
   font-size: smaller;
 }
+
+
+@media
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+
+	/* Force table to not be like tables anymore */
+	table, thead, tbody, th, td, tr {
+		display: block;
+	}
+
+	tr { border-bottom: 1px solid #a0a0a0; }
+
+	td {
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #eee;
+		position: relative;
+		padding-left: 35%;
+	}
+
+	td:before {
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 35%;
+		padding-right: 10px;
+		white-space: nowrap;
+	}
+
+	/*
+	Label the data
+	*/
+	td:nth-of-type(1):before { content: "Keyword"; color: #707070; font-weight: bold;}
+	td:nth-of-type(2):before { content: "Example"; color: #707070; font-weight: bold;}
+	td:nth-of-type(3):before { content: "Intuitive Meaning"; color: #707070; font-weight: bold;}
+}
