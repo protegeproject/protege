@@ -30,16 +30,3 @@ On the right hand side you specify a value for the annotation.  You can specify:
 * An **Entity IRI** that points to an entity in the ontology or imports closure.
 * An **Arbitrary IRI** that may point at anything.
 * An **Anonymous Individual** and associated property values.
-
-## Ontology Annotations
-
-The annotations on the active ontology are shown in the Ontology Annotations view.  This view also shows the Ontology IRI and Ontology Version IRI pair for the active ontology.  Both of these fields will be empty in the case of an anonymous ontology.  If an ontology has an Ontology IRI then the Ontology Version IRI may be empty.
-
-In the example below, which is taken from the UBERON ontology, the Ontology IRI is http://purl.obolibrary.org/obo/uberon.owl.
-
-In the example below the Ontology version IRI is http://purl.obolibrary.org/obo/uberon/releases/2016-06-12/uberon.owl.
-
-<figure>
-  <img src="{{site.baseurl}}/assets/views/annotations/ontology-annotations.png" alt="The ontology annotation editor"/>
-  <figcaption>The ontology annotations view</figcaption>
-</figure>
