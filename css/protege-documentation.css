@@ -12,8 +12,8 @@ img {
 }
 
 .accelerator {
-	font-size: 10pt;
-	font-family: courier;
+  font-weight: bold;
+  color: #6495ED;
 }
 
 li {

@@ -5,22 +5,52 @@ main: true
 description: Explains what each menu item in Protégé does
 ---
 # Menu Items
+
+<div>
+	Filter by menu: <select id="menuFilter"></select>
+</div>
+
+<script>
+var menus = [];
+menus.push("");
+
+$("#menuFilter").on("click", function(e) {
+  var selectedMenu = $("#menuFilter").find(":selected").text();
+  if(selectedMenu === "") {
+		$(".menu-item").show();
+	}
+	else {
+		$(".menu-item").hide();
+		$("[data-parent=" + selectedMenu + "]").show();
+	}
+});
+
+</script>
+
 <div>
 {% assign sorted_menus = (site.menus | sort: 'title') %}
 {% for menu in sorted_menus %}
-	<div style="padding: 10px; padding-bottom: 30px;">
+  <script>
+	if($.inArray("{{menu.parent}}", menus) === -1) {
+		menus.push("{{menu.parent}}");
+	}
+	</script>
+	<div class="menu-item" data-parent="{{menu.parent}}" style="padding-top: 10px; padding-bottom: 30px;">
 		<div style="font-weight: bold;">
-			{{menu.parent}}  |  {{menu.title}}
+			{{menu.title}}
 			{% if menu.accelerator %}
 			<span style="font-weight: 300; font-size: 12px; color: gray;">
 				<span style="padding: 0 0 10px 10px">
-					Windows: <b>Ctrl-{{menu.accelerator  | replace: 'Shift', '&#x21E7;'}}</b>
+					Windows: <span class="accelerator">Ctrl-{{menu.accelerator  | replace: 'Shift', '&#x21E7;'}}</span>
 				</span>
 				<span  style="padding: 0 0 10px 10px">
-					Mac: <b>&#x2318;{{menu.accelerator  | replace: 'Shift', '&#x21E7;'}}</b>
+					Mac: <span class="accelerator">&#x2318;{{menu.accelerator  | replace: 'Shift', '&#x21E7;'}}</span>
 				</span>
 			</span>
 			{% endif %}
+			<div style="font-size: smaller; color: gray; font-weight: 300;">
+			{{menu.parent}}  > {{menu.title}}
+			</div>
 		</div>
 
 		<div>
@@ -30,3 +60,10 @@ description: Explains what each menu item in Protégé does
 	</div>
 {% endfor %}
 </div>
+
+<script>
+	for(var i=0; i < menus.length; i++) {
+		var menu = menus[i];
+		$("<option/>", {value: menu, html: menu}).appendTo("#menuFilter");
+	}
+</script>
