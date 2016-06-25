@@ -1,5 +1,5 @@
 ---
-title: OS X Installation
+title: Windows Installation
 layout: default
 ---
 
