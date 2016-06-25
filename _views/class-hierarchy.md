@@ -30,10 +30,27 @@ New classes can be inserted into the class hierarchy using the class creation bu
   <figcaption>The class hierarchy toolbar.  From left to right the buttons are: "Add SubClass", "Add sibling class", "Delete selected class"</figcaption>
 </figure>
 
-* **Add Sibling Class Menu Item** - Make sure that the Asserted class hierarchy is selected.Right click (or CMD+Click on a Mac) a class in the class hierarchy.  The popup menu will be displayed.  Select the "Add subclass..." item from the menu. A dialog will be displayed for specifying the name of the new class.  The new class will be inserted as a subclass of the class that was clicked.
-* **Add Sibling Class Menu Item** -  Make sure that the Asserted class hierarchy is selected. Right click (or CMD+Click on a Mac) a class in the class hierarchy.  The popup menu will be displayed.  Select the "Add sibling class..." item from the menu. A dialog will be displayed for specifying the name of the new class.  The new class will be inserted as a sibling class of the selected class.
+* **Add Sibling Class Popup Menu Item** - Make sure that the Asserted class hierarchy is selected.Right click (or CMD+Click on a Mac) a class in the class hierarchy.  The popup menu will be displayed.  Select the "Add subclass..." item from the menu. A dialog will be displayed for specifying the name of the new class.  The new class will be inserted as a subclass of the class that was clicked.
+* **Add Sibling Class Popup Menu Item** -  Make sure that the Asserted class hierarchy is selected. Right click (or CMD+Click on a Mac) a class in the class hierarchy.  The popup menu will be displayed.  Select the "Add sibling class..." item from the menu. A dialog will be displayed for specifying the name of the new class.  The new class will be inserted as a sibling class of the selected class.
 * **Add SubClass Keyboard Shortcut** - Make sure that the Asserted class hierarchy is selected. Select a class and press ```Ctrl+E``` on Windows/Linux or ```Cmd+E``` on a Mac.  A dialog will be displayed for specifying the name of the new class.  The new class will be inserted as a subclass of the selected class.
 * **Add Sibling Class Keyboard Shortcut** - Make sure that the Asserted class hierarchy is selected. Select a class that the new class will be a sibling of and press  ```Ctrl+Shift+E``` on Windows/Linux or ```Cmd+Shift+E``` on a Mac.  A dialog will be displayed for specifying the name of the new class.  The new class will be inserted as a sibling class of the selected class.
+
+## Deleting classes
+
+The class hierarchy can be used to delete classes (axioms that mention the classes will be removed from the ontology).  Select the class (or classes) to be deleted and then activate delete:
+
+* **Delete selected class** - Make sure that the Asserted class hierarchy is selected. Select the class (or classes to be deleted). Press the "Delete selected class" button on the class hierarchy toolbar.
+* **Delete class Menu Item** - Make sure that the Asserted class hierarchy is selected. Select the class (or classes to be deleted). Select the "Delete class..." item from the Edit menu.
+* **Delete Keyboard Shortcut** - Make sure that the Asserted class hierarchy is selected. Select the class (or classes to be deleted).  Press the ```Delete``` button.
+
+After activating delete in one of the ways described above, the "Delete class" dialog will be displayed (shown below).  Select the option to either delete the selected class, or delete the selected class and all of the descendants of the selected class in the asserted class hierarchy.  Protégé will compute the classes to be deleted based on the selected option and will then remove all axioms that mention these classes from the set of active ontologies. 
+
+<figure>
+  <img src="{{site.baseurl}}/assets/views/class-hierarchy/delete-class-dialog.png" style="max-width: 600px;"/>
+  <figcaption>The delete class dialog.  Here, the class Car is being deleted.</figcaption>
+</figure>
+
+
 
 ## Icons
 
