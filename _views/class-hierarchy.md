@@ -16,6 +16,25 @@ Note that names in the class hierarchy are quoted using single quotes if the nam
 
 The asserted class hierarchy is shown by default.  To switch to the inferred hierarchy either select "Inferred" from the drop-down or press 'i' when the hierarchy has the focus.  If the inferred hierarchy is shown, the asserted hierarchy can be displayed by selecting "Asserted" from the drop-down or press 'a' when the hierarchy has the focus.
 
+## Inserting New Classes
+
+In order to insert new classes into the class hierarchy, the **Asserted** class hierarchy must be selected.
+
+New classes can be inserted into the class hierarchy using the class creation buttons at the top of the hierarchy, by using the popup menu that is displayed by right clicking (CMD+Click on a Mac) on the class hierarchy, or by using keyboard shortcuts.  These mechanisms are described in more detail below.
+
+* **Add SubClass Button** - Make sure that the Asserted class hierarchy is selected. Select a class and press the "Add SubClass" button.  A dialog will be displayed for specifying the name of the new class.  The new class will be inserted as a subclass of the selected class.
+* **Add Sibling Class Button** -  Make sure that the Asserted class hierarchy is selected. Select a class that the new class will be a sibling of and press the "Add Sibling" button.  A dialog will be displayed for specifying the name of the new class.  The new class will be inserted as a sibling class of the selected class.
+
+<figure>
+  <img src="{{site.baseurl}}/assets/views/class-hierarchy/class-hierarchy-toolbar.png" width="120px"/>
+  <figcaption>The class hierarchy toolbar.  From left to right the buttons are: "Add SubClass", "Add sibling class", "Delete selected class"</figcaption>
+</figure>
+
+* **Add Sibling Class Menu Item** - Make sure that the Asserted class hierarchy is selected.Right click (or CMD+Click on a Mac) a class in the class hierarchy.  The popup menu will be displayed.  Select the "Add subclass..." item from the menu. A dialog will be displayed for specifying the name of the new class.  The new class will be inserted as a subclass of the class that was clicked.
+* **Add Sibling Class Menu Item** -  Make sure that the Asserted class hierarchy is selected. Right click (or CMD+Click on a Mac) a class in the class hierarchy.  The popup menu will be displayed.  Select the "Add sibling class..." item from the menu. A dialog will be displayed for specifying the name of the new class.  The new class will be inserted as a sibling class of the selected class.
+* **Add SubClass Keyboard Shortcut** - Make sure that the Asserted class hierarchy is selected. Select a class and press ```Ctrl+E``` on Windows/Linux or ```Cmd+E``` on a Mac.  A dialog will be displayed for specifying the name of the new class.  The new class will be inserted as a subclass of the selected class.
+* **Add Sibling Class Keyboard Shortcut** - Make sure that the Asserted class hierarchy is selected. Select a class that the new class will be a sibling of and press  ```Ctrl+Shift+E``` on Windows/Linux or ```Cmd+Shift+E``` on a Mac.  A dialog will be displayed for specifying the name of the new class.  The new class will be inserted as a sibling class of the selected class.
+
 ## Icons
 
 The class hierarchy contains two types of icons: Solid yellow icons and yellow icons with three white lines through the middle, representing the equivalence symbol.
