@@ -6,15 +6,17 @@ description: Explains what each menu item in Protégé does
 ---
 # Menu Items
 
-<div>
-	Filter by menu: <select id="menuFilter"></select>
+<div style="border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; margin-bottom: 10px;">
+	<div>
+		Filter by menu: <select id="menuFilter"></select>
+	</div>
 </div>
 
 <script>
 var menus = [];
 menus.push("");
 
-$("#menuFilter").on("click", function(e) {
+$("#menuFilter").on("change", function(e) {
   var selectedMenu = $("#menuFilter").find(":selected").text();
   if(selectedMenu === "") {
 		$(".menu-item").show();
