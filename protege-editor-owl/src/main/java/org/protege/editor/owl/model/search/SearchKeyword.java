@@ -8,23 +8,21 @@ package org.protege.editor.owl.model.search;
  */
 public class SearchKeyword {
 
-    public enum Occurance { INCLUDE, EXCLUDE, OPTIONAL }
-
     private String field;
     private String keyword;
+    private String syntacticKeyword;
 
-    private Occurance occurance = Occurance.OPTIONAL;
     private boolean isCaseSensitive = false;
     private boolean ignoreWhitespace = true;
     private boolean searchWholeWords = false;
     private boolean searchByRegex = false;
     private boolean searchByPhonetic = false;
 
-    public SearchKeyword(String field, String keyword, Occurance occurance, boolean isCaseSensitive, boolean ignoreWhitespace,
+    public SearchKeyword(String field, String keyword, String syntacticKeyword, boolean isCaseSensitive, boolean ignoreWhitespace,
             boolean searchWholeWords, boolean searchByRegex, boolean searchByPhonetic) {
         this.field = field;
         this.keyword = keyword;
-        this.occurance = occurance;
+        this.syntacticKeyword = syntacticKeyword;
         this.isCaseSensitive = isCaseSensitive;
         this.ignoreWhitespace = ignoreWhitespace;
         this.searchWholeWords = searchWholeWords;
@@ -57,8 +55,8 @@ public class SearchKeyword {
         return keyword;
     }
 
-    public Occurance occurance() {
-        return occurance;
+    public String getSyntacticString() {
+        return syntacticKeyword;
     }
 
     public boolean isCaseSensitive() {
@@ -90,7 +88,7 @@ public class SearchKeyword {
             return false;
         }
         SearchKeyword other = (SearchKeyword) obj;
-        return field.equals(other.field) && keyword.equals(other.keyword) && occurance.equals(other.occurance)
+        return field.equals(other.field) && keyword.equals(other.keyword) && syntacticKeyword.equals(other.syntacticKeyword)
                 && isCaseSensitive == other.isCaseSensitive && ignoreWhitespace == other.ignoreWhitespace
                 && searchWholeWords == other.searchWholeWords && searchByRegex == other.searchByRegex
                 && searchByPhonetic == other.searchByPhonetic;
@@ -98,7 +96,7 @@ public class SearchKeyword {
 
     @Override
     public int hashCode() {
-        int hashCode = 31 * field.hashCode() + keyword.hashCode() + occurance.hashCode();
+        int hashCode = 31 * field.hashCode() + keyword.hashCode() + syntacticKeyword.hashCode();
         hashCode += (isCaseSensitive ? 1 : 0);
         hashCode += (ignoreWhitespace ? 1 : 0);
         hashCode += (searchWholeWords ? 1 : 0);
@@ -109,13 +107,6 @@ public class SearchKeyword {
 
     @Override
     public String toString() {
-        String buffer = keyword;
-        if (searchWholeWords || searchByRegex) {
-            buffer = "\"" + buffer + "\"";
-        }
-        if (hasField()) {
-            buffer = field + ":" + buffer;
-        }
-        return buffer;
+        return getField() + ": " + getSyntacticString();
     }
 }
