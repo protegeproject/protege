@@ -3,7 +3,6 @@ package org.protege.editor.owl.model.search.impl;
 import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
 import org.protege.editor.owl.model.search.SearchInput;
 import org.protege.editor.owl.model.search.SearchKeyword;
-import org.protege.editor.owl.model.search.SearchKeyword.Occurance;
 import org.protege.editor.owl.model.search.SearchStringParser;
 
 /**
@@ -21,7 +20,7 @@ public class SearchStringParserImpl implements SearchStringParser {
         for (String splitSearchString : searchString.split("\\s+")) {
             SearchKeyword keyword = new SearchKeyword("",
                     splitSearchString,
-                    Occurance.INCLUDE,
+                    splitSearchString,
                     prefs.isCaseSensitive(),
                     prefs.isIgnoreWhiteSpace(),
                     prefs.isWholeWords(),
