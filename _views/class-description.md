@@ -17,6 +17,15 @@ The sections are
 * **Disjoint Union Of** Specifies that this class is the main class in a DisjointUnion class axiom.
 * **SubClassOf (Anonymous Ancestor)** Protege searches all ancestors of the selected class and accumulates all of their anonymous superclasses which are then displayed in this section.
 
+## Inferred information
+
+Inferred information is shown inline with a yellow background.
+
+<figure>
+  <img src="{{site.baseurl}}/assets/views/class-description/class-description-inferred-information.png" style="max-width: 600px;"/>
+  <figcaption>The class description view showing a mix of asserted and inferred information.  The rows with the yellow background are inferred.  Here, the selected class is asserted to be a subclass of "Aircraft" and "hasManufacturer value Boeing" and is inferred to be a subclass of "BoeingAircraft".</figcaption>
+</figure>
+
 
 ## Adding and Editing Class Expressions
 
