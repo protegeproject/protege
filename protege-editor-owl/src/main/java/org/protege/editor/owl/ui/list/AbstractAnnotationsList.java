@@ -105,10 +105,17 @@ public abstract class AbstractAnnotationsList<O extends AnnotationContainer> ext
         }
     }
 
+    protected OWLOntology getActiveOntology() {
+        return editorKit.getOWLModelManager().getActiveOntology();
+    }
+
 
     public void setRootObject(O root){
         this.root = root;
+        refill(root);
+    }
 
+    protected void refill(O root) {
         List<Object> data = new ArrayList<>();
 
         data.add(header);

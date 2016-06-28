@@ -94,17 +94,26 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
             return;
         }
         OWLAxiom newAxiom = createAxiom(editedObjects.iterator().next());
-        if (newAxiom != null){ // the editor should protect from this, but just in case
-        	A oldAxiom = getAxiom();
-        	Set<OWLAnnotation> axiomAnnotations = oldAxiom.getAnnotations();
-        	if (!axiomAnnotations.isEmpty()) {
-        		newAxiom = newAxiom.getAnnotatedAxiom(axiomAnnotations);
-        	}
-            List<OWLOntologyChange> changes = new ArrayList<>();
-            changes.add(new RemoveAxiom(getOntology(), oldAxiom));
-            changes.add(new AddAxiom(getOntology(), newAxiom));
-            getOWLModelManager().applyChanges(changes);
+        // the editor should protect from this, but just in case
+        if (newAxiom == null) {
+            return;
         }
+        A oldAxiom = getAxiom();
+        Set<OWLAnnotation> axiomAnnotations = oldAxiom.getAnnotations();
+        if (!axiomAnnotations.isEmpty()) {
+            newAxiom = newAxiom.getAnnotatedAxiom(axiomAnnotations);
+        }
+        List<OWLOntologyChange> changes = new ArrayList<>();
+        OWLOntology ontology = getOntology();
+        if(ontology != null) {
+            changes.add(new RemoveAxiom(ontology, oldAxiom));
+            changes.add(new AddAxiom(ontology, newAxiom));
+        }
+        else {
+            OWLOntology activeOntology = getOWLModelManager().getActiveOntology();
+            changes.add(new AddAxiom(activeOntology, newAxiom));
+        }
+        getOWLModelManager().applyChanges(changes);
     }
 
 
