@@ -97,8 +97,6 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
 
     private OWLFrameListRenderer cellRenderer;
 
-    private AxiomAnnotationPanel axiomAnnotationPanel;
-
     private ListSelectionListener selListener = event -> handleSelectionEvent(event);
 
     private boolean axiomSelectionGlobal = true;
@@ -298,9 +296,6 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
     }
 
     public void dispose() {
-        if (axiomAnnotationPanel != null) {
-            axiomAnnotationPanel.dispose();
-        }
         removeListSelectionListener(selListener);
         frame.removeFrameListener(listener);
         for (OWLFrameListPopupMenuAction<R> action : actions) {
@@ -381,7 +376,7 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
                 if (sel instanceof OWLFrameSectionRow) {
                     final OWLFrameSectionRow row = (OWLFrameSectionRow) sel;
                     OWLAxiom ax = row.getAxiom();
-                    if (ax != null) {
+                    if (ax != null && row.getOntology() != null) {
                         editorKit.getWorkspace().getOWLSelectionModel().setSelectedAxiom(new OWLAxiomInstance(ax, row.getOntology()));
                     }
                 }
@@ -513,18 +508,28 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
         if (!(obj instanceof OWLFrameSectionRow)) {
             return;
         }
-        OWLFrameSectionRow row = (OWLFrameSectionRow) obj;
+        OWLFrameSectionRow<?,?,?> row = (OWLFrameSectionRow<?,?,?>) obj;
         OWLAxiom ax = row.getAxiom();
 
-        if (axiomAnnotationPanel == null) {
+        AxiomAnnotationPanel axiomAnnotationPanel;
             axiomAnnotationPanel = new AxiomAnnotationPanel(editorKit);
+
+        OWLOntology ontology = row.getOntology();
+        final OWLAxiomInstance axiomInstance;
+        if(ontology != null) {
+            axiomInstance = new OWLAxiomInstance(ax, ontology);
         }
-        axiomAnnotationPanel.setAxiomInstance(new OWLAxiomInstance(ax, row.getOntology()));
+        else {
+            OWLOntology activeOntology = editorKit.getOWLModelManager().getActiveOntology();
+            axiomInstance = new OWLAxiomInstance(ax, activeOntology);
+        }
+        axiomAnnotationPanel.setAxiomInstance(axiomInstance);
         new UIHelper(editorKit).showDialog("Annotations for " + ax.getAxiomType().toString(), axiomAnnotationPanel, JOptionPane.CLOSED_OPTION);
+        axiomAnnotationPanel.dispose();
     }
 
 
-    private boolean isAnnotationPresent(OWLFrameSectionRow row) {
+    private boolean isAnnotationPresent(OWLFrameSectionRow<?,?,?> row) {
         OWLAxiom ax = row.getAxiom();
         return (!ax.getAnnotations().isEmpty());
     }
