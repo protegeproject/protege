@@ -26,7 +26,7 @@ New classes can be inserted into the class hierarchy using the class creation bu
 * **Add Sibling Class Button** -  Make sure that the Asserted class hierarchy is selected. Select a class that the new class will be a sibling of and press the "Add Sibling" button.  A dialog will be displayed for specifying the name of the new class.  The new class will be inserted as a sibling class of the selected class.
 
 <figure>
-  <img src="{{site.baseurl}}/assets/views/class-hierarchy/class-hierarchy-toolbar.png" width="120px"/>
+  <img src="{{site.baseurl}}/assets/views/class-hierarchy/class-hierarchy-toolbar.png" style="max-width: 120px;"/>
   <figcaption>The class hierarchy toolbar.  From left to right the buttons are: "Add SubClass", "Add sibling class", "Delete selected class"</figcaption>
 </figure>
 
@@ -43,10 +43,10 @@ The class hierarchy can be used to delete classes (axioms that mention the class
 * **Delete class Menu Item** - Make sure that the Asserted class hierarchy is selected. Select the class (or classes to be deleted). Select the "Delete class..." item from the Edit menu.
 * **Delete Keyboard Shortcut** - Make sure that the Asserted class hierarchy is selected. Select the class (or classes to be deleted).  Press the ```Delete``` button.
 
-After activating delete in one of the ways described above, the "Delete class" dialog will be displayed (shown below).  Select the option to either delete the selected class, or delete the selected class and all of the descendants of the selected class in the asserted class hierarchy.  Protégé will compute the classes to be deleted based on the selected option and will then remove all axioms that mention these classes from the set of active ontologies. 
+After activating delete in one of the ways described above, the "Delete class" dialog will be displayed (shown below).  Select the option to either delete the selected class, or delete the selected class and all of the descendants of the selected class in the asserted class hierarchy.  Protégé will compute the classes to be deleted based on the selected option and will then remove all axioms that mention these classes from the set of active ontologies.
 
 <figure>
-  <img src="{{site.baseurl}}/assets/views/class-hierarchy/delete-class-dialog.png" style="max-width: 600px;"/>
+  <img src="{{site.baseurl}}/assets/views/class-hierarchy/delete-class-dialog.png" style=" width: 100%; max-width: 600px;"/>
   <figcaption>The delete class dialog.  Here, the class Car is being deleted.</figcaption>
 </figure>
 
@@ -59,14 +59,14 @@ The class hierarchy contains two types of icons: Solid yellow icons and yellow i
 The icons containing the equivalence symbol (three white lines) denote classes that are asserted to be equivalent to some other class expression.  These are known as defined classes.
 
 <figure>
-  <img src="{{site.baseurl}}/assets/views/class-hierarchy/defined-class-example.png" width="55px"/>
+  <img src="{{site.baseurl}}/assets/views/class-hierarchy/defined-class-example.png" style="max-width: 55px;"/>
   <figcaption>An example of a defined class</figcaption>
 </figure>
 
 The solid yellow icons denote classes that are not defined classes (i.e. aren't asserted to be equivalent to some other class expression).  These classes are known as primitive classes.
 
 <figure>
-<img src="{{site.baseurl}}/assets/views/class-hierarchy/primitive-class-example.png" width="55px"/>
+<img src="{{site.baseurl}}/assets/views/class-hierarchy/primitive-class-example.png" style="max-width: 55px;"/>
 <figcaption>An example of a primitive class</figcaption>
 </figure>
 
@@ -75,7 +75,7 @@ The solid yellow icons denote classes that are not defined classes (i.e. aren't 
 The class hierarchy view may show some names in a bold font and others in a regular font.  Roughly speaking, classes whose names are shown in a bold font are described using axioms in the active ontology.  This means that the class appears on the left hand side of a SubClassOf axiom, in an EquivalentClasses axiom, in a DisjointUnion axiom or in a DisjointClasses axiom.  Classes whose names are shown in a regular weight font are merely referenced in the imports closure of the active ontology.
 
 <figure>
-<img src="{{site.baseurl}}/assets/views/class-hierarchy/class-hierarchy-bolding.png" width="150px"/>
+<img src="{{site.baseurl}}/assets/views/class-hierarchy/class-hierarchy-bolding.png" style="max-width: 150px;"/>
 <figcaption>An example the bolding used in the class hierarchy.  Class B is shown in bold because the active ontology contains axioms that describe it.  Class A is not shown in bold because it is merely referenced by the active ontology (in the description of class B).</figcaption>
 </figure>
 
@@ -88,7 +88,7 @@ It is possible to edit some of the SubClassOf axioms in the ontology by dragging
 Classes that appear in a cycle of SubClassOf axioms, for example ```A SubClassOf B```, ```B SubClassOf C``` and ```C SubClassOf A``` will be collapsed and shown together, with one tree node for each class in the cycle so that each class may be selected.  An example is shown below.  
 
 <figure>
-<img src="{{site.baseurl}}/assets/views/class-hierarchy/class-hierarchy-cylces.png" width="200px"/>
+<img src="{{site.baseurl}}/assets/views/class-hierarchy/class-hierarchy-cylces.png" style="max-width: 200px;"/>
 <figcaption>An example of a cycle in the class hierarchy.  Classes in the cycle are displayed as equivalences, with a node for each class.</figcaption>
 </figure>
 
