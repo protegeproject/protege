@@ -17,6 +17,8 @@ The Object Property characteristics view displays the asserted characteristics f
 * **Reflexive** - asserts that the selected property is Reflexive.  Asserting that a property is reflexive causes every single individual to be related to itself via that property.  
 * **Irreflexive** - asserts that the selected property is Irreflexive. Asserting that a property is irreflexive means that an individual cannot be related to itself via that property.  
 
+For more information on property characteristics and for some concrete examples please [see the W3C OWL primer](http://www.w3.org/TR/owl2-primer/#Property_Characteristics).
+
 ## Adding and Deleting a Property Characteristic
 
 To add a given characteristic for a property, the property should be selected and the associated characteristic checkbox should be checked.  The relevant axiom for the characteristic will be added to the active ontology.
