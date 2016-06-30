@@ -19,7 +19,7 @@ The sections are
 
 ## Inferred information
 
-Inferred information is shown inline with a yellow background.
+Inferred information is shown inline with a yellow background.  Note that inferred information is not displayed by default for some sections.  In order to turn displayed inferred information on or off the [Reasoner Preferences]({{site.baseurl}}/preferences/reasoner) panel should be used.
 
 <figure>
   <img src="{{site.baseurl}}/assets/views/class-description/class-description-inferred-information.png" style="max-width: 600px;"/>
