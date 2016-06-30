@@ -20,3 +20,12 @@ To add an individual as an instance of the selected class press the "Add Individ
 </figure>
 
 To delete individuals select the individuals to be deleted from the list.  Press the "Delete individual(s)" toolbar button.  All axioms that reference the selected individuals (contain one or more of the selected individuals in their signature) will be removed from the set of active ontologies.
+
+## Searching for Individuals in the View
+
+To search for individuals within the Instances view, make sure that the view is focused and either select "Find in View..." from the "Edit" menu or press ```Ctrl+Shift+F``` (or ```Cmd+Shift+F``` on a Mac).  A popup dialog will be displayed that allows the view to be searched.  Enter the partial name of the individual to be found and then double click it to select it from the search results.
+
+<figure>
+  <img src="{{site.baseurl}}/assets/views/instances/instances-find-in-view-dialog.png" style="max-width: 300px"/>
+  <figcaption>The instances view "Find in View" dialog.</figcaption>
+</figure>
