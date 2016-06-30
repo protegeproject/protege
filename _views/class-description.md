@@ -6,16 +6,16 @@ menuPath: Class views > Class Description
 ---
 The class description view is the core of the class editor.  It allows the logical description of the selected class to be edited using Manchester OWL Syntax.  The view comprises a number of sections, which are described below.  Each line in a section corresponds to an axiom in one of the loaded ontologies.
 
-The sections are
+The sections are:
 
-* **EquivalentTo**.  Each entry specifies a class expression that is equivalent to the current selected class.  Inferred equivalent classes are displayed in this section with a yellow background.  Note that inferred equivalent classes will only be displayed if this option is enabled in the [Reasoner Preferences]({{site.baseurl}}/preferences/reasoner).
-* **SubClassOf**.  Each entry specifies a class expression that the current selected class is a subclass of.  In other words, each entry is a superclass of the current selected class.  Inferred superclasses are displayed in this section with a yellow background.  Note that inferred superclasses will only be displayed if this option is enabled in the [Reasoner Preferences]({{site.baseurl}}/preferences/reasoner).
+* **EquivalentTo**.  Each entry specifies a [class expression]({{site.baseurl}}/class-expression-syntax) that is equivalent to the current selected class.  Inferred equivalent classes are displayed in this section with a yellow background.  Note that inferred equivalent classes will only be displayed if this option is enabled in the [Reasoner Preferences]({{site.baseurl}}/preferences/reasoner).
+* **SubClassOf**.  Each entry specifies a [class expression]({{site.baseurl}}/class-expression-syntax) that the current selected class is a subclass of.  In other words, each entry is a superclass of the current selected class.  Inferred superclasses are displayed in this section with a yellow background.  Note that inferred superclasses will only be displayed if this option is enabled in the [Reasoner Preferences]({{site.baseurl}}/preferences/reasoner).
 * **General Class Axioms**.  Each entry shows a General Class Axiom that contains the current selected class in its signature (i.e. mentions the current selected class).
 * **Instances**.  Each entry specifies an individual that has the current selected class as its type in a class assertion axiom.  Inferred instances are displayed in this section with a yellow background.  Note that inferred instances will only be displayed if this option is enabled in the [Reasoner Preferences]({{site.baseurl}}/preferences/reasoner).
-* **DisjointWith**. Each entry specifies a list of classes that this class is disjoint with. A DisjointClasses axiom can contain 2 or more classes (the current selected class is removed from the list for clarity).  Inferred disjoint classes will be displayed in this section with a yellow background.  Note that inferred disjoint classes are not shown by default and will only be displayed if this option is enabled in the [Reasoner Preferences]({{site.baseurl}}/preferences/reasoner).
+* **DisjointWith**. Each entry specifies a list of [class expressions]({{site.baseurl}}/class-expression-syntax) that this class is disjoint with. A DisjointClasses axiom can contain 2 or more classes (the current selected class is removed from the list for clarity).  Inferred disjoint classes will be displayed in this section with a yellow background.  Note that inferred disjoint classes are not shown by default and will only be displayed if this option is enabled in the [Reasoner Preferences]({{site.baseurl}}/preferences/reasoner).
 * **Target for Key** Specifies a mixed list of object and data properties that act as a key for instances of the current selected class.  Keys are a new feature in OWL 2 and consist of a set of properties.  For a given individual the particular values of these properties taken together imply distinctness.  For example, a key consisting of hasSurname and hasDateOfBirth could be used (in a limited setting) to imply distinctness of the individuals in the class Person.
 * **Disjoint Union Of** Specifies that this class is the main class in a DisjointUnion class axiom.
-* **SubClassOf (Anonymous Ancestor)** Protege searches all ancestors of the selected class and accumulates all of their anonymous superclasses which are then displayed in this section.
+* **SubClassOf (Anonymous Ancestor)** Protege examines ancestors of the selected class and accumulates all of their superclasses which are then displayed in this section.
 
 ## Inferred information
 
@@ -29,7 +29,7 @@ Inferred information is shown inline with a yellow background.  Note that inferr
 
 ## Adding and Editing Class Expressions
 
-Adding or editing Equivalent classes or Superclasses displays a dialog that contains multiple editors. The editors range from a simple tree from which a class can be picked, to restriction creators that help produce simple restrictions with a named filler, to a fully functioning expression editor. The editor set is pluggable so developers can add further tool support.
+Adding or editing Equivalent classes or Superclasses displays a dialog that contains multiple class expression editors. The editors range from a simple tree from which a class can be picked to a complete OWL class expression editor.  The class expression editor uses the [Manchester OWL Syntax]({{site.baseurl}}/class-expression-syntax).
 
 <figure>
   <img src="{{site.baseurl}}/assets/views/class-description/class-expression-editor.png" style="max-width: 657px;"/>
