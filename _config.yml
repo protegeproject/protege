@@ -20,3 +20,6 @@ collections:
   views:
     output: true
     permalink: views/:title/
+  preferences:
+    output: true
+    permalink: preferences/:title/
