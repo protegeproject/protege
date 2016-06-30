@@ -66,7 +66,6 @@ public class CaptureScreenshotAction extends ProtegeAction {
                 (int) (size.height * scaleFactor),
                 BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = (Graphics2D) bufferedImage.getGraphics();
-
         g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
@@ -78,7 +77,7 @@ public class CaptureScreenshotAction extends ProtegeAction {
 
         g.scale(scaleFactor, scaleFactor);
 
-        component.paintAll(g);
+        component.print(g);
 
 
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
