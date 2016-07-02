@@ -4,7 +4,7 @@ blurb: Displays the logical description for the selected class
 layout: view
 menuPath: Class views > Class Description
 ---
-The class description view is the core of the class editor.  It allows the logical description of the selected class to be edited using Manchester OWL Syntax.  The view comprises a number of sections, which are described below.  Each line in a section corresponds to an axiom in one of the loaded ontologies.
+The class description view is the core of the class editor.  It allows the logical description of the selected class to be edited using Manchester OWL Syntax.  The view follows the [common view look and feel]({{site.baseurl}}/view-look-and-feel) and comprises a number of sections, which are described below.  Each line in a section corresponds to an axiom in one of the loaded ontologies.
 
 The sections are:
 
