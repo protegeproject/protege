@@ -43,7 +43,7 @@ A row that has a yellow background represents an **inferred** row.  In other wor
 
 <figure>
 <img src="{{site.baseurl}}/assets/frame/inferred-row.png" style="max-width: 100%;"/>
-<figcaption>An example of an inferred row.</figcaption>
+<figcaption>An example of an inferred row.  Note the pale yellow background that indicates that the row is inferred and the underlying axiom is entailed by the active ontologies but is not asserted in any of the active ontologies.</figcaption>
 </figure>
 
 ## Row Buttons
