@@ -8521,7 +8521,7 @@
                 text-anchor="end"
                 alignment-baseline="hanging">
             Explain inference
-            <tspan x="701" y="730" dy="2.1em" font-size="12" fill="#A0A0A0">Pressing this button would explain, AmericanHot SubClassOf hasTopping some TomatoTopping.</tspan>
+            <tspan x="701" y="730" dy="2.1em" font-size="12" fill="#A0A0A0">Pressing this button would explain, AmericanHot SubClassOf SpicyPizza.</tspan>
         </text>
 
         <line
