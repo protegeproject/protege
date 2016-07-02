@@ -30,16 +30,33 @@ Sections that can have rows added to them have a + button (Add button) to the ri
 
 Each row in a section typically represents a single axiom (or statement) in one of the active ontologies. For example, in the class description view shown above, the "SubClass Of" section contains the row "hasTopping some TomatoTopping".  This particular row represents the axiom "AmericanHot SubClassOf hasTopping some TomatoTopping" (since the view is displaying information for the class "AmericanHot").  We say that this is the underlying axiom for this row.
 
-### Asserted and Inferred Rows
+## Asserted and Inferred Rows
 
 A row that has a white background represents an **asserted** row.  In other words, the axiom that is represented by the row has been asserted into one of the active ontologies.  The afore mentioned row containing "hasTopping some TomatoTopping" in an example of an asserted row.  Hovering over an asserted row will cause a tooltip to be displayed that shows the ontology that the axiom is asserted in. Finally, rows whose underlying axioms are asserted in the active ontology are highlighted in bold.
 
+<figure>
+<img src="{{site.baseurl}}/assets/frame/asserted-row.png" style="max-width: 100%;"/>
+<figcaption>An example of an asserted row.</figcaption>
+</figure>
 
 A row that has a yellow background represents an **inferred** row.  In other words, the axiom that is represented by the row has been inferred and is not contained in one of the active ontologies.  In the class description view shown above, the row containing "SpicyPizza" is an example of such a row.  This row means that the axiom "AmericanHot SubClassOf SpicyPizza" is inferred.
 
-### Row Buttons
+<figure>
+<img src="{{site.baseurl}}/assets/frame/inferred-row.png" style="max-width: 100%;"/>
+<figcaption>An example of an inferred row.</figcaption>
+</figure>
 
-Each row has a series of *row buttons* that are located on the right hand side of it.  The standard buttons for an assert row are "Explain inference", "Annotations", "Remove" (Delete) and "Edit".  The standard buttons for an inferred row are "Explain inference" and "Annotations".  These buttons offer the following functionality:
+## Row Buttons
+Each row has a series of *row buttons* that are located on the right hand side of it.  The standard buttons for an assert row are "Explain inference", "Annotations", "Remove" (Delete) and "Edit".  The standard buttons for an inferred row are "Explain inference" and "Annotations".  
+
+<figure>
+<img src="{{site.baseurl}}/assets/frame/row-buttons.png" style="width: 150px; max-width: 100%;"/>
+<figcaption>
+The standard row buttons for an asserted row.  From left to right: "Explain inference", "Annotations", "Delete" and "Edit".
+</figcaption>
+</figure>
+
+These buttons offer the following functionality:
 
 * **Explain inference** <img src="{{site.baseurl}}/assets/frame/button-explain-inference.png" width="22px"/> - Explains why the axiom underlying the row in question follows from the set of active ontologies.  This button is available for both asserted and inferred rows.  This is because of the fact that there can be multiple explanations for a given axiom and there may be other reasons as to why the axiom can be inferred other than the fact that it is asserted.
 
@@ -48,3 +65,14 @@ Each row has a series of *row buttons* that are located on the right hand side o
 * **Delete** <img src="{{site.baseurl}}/assets/frame/button-delete.png" width="22px"/> - Removes the row and hence removes the underlying axiom from its containing ontology.  
 
 * **Edit** <img src="{{site.baseurl}}/assets/frame/button-edit.png" width="22px"/> - Displays a popup editor that allows the row content (and hence underlying axiom) to be edited.
+
+## Section Header Keyboard Shortcuts
+
+* **Enter/Return** - If a section header is selected, pressing Enter/Return is equivalent to pressing the + button for that section header.  For example, pressing enter if the "SubClass Of" header is selected in the Class Description View will display the dialog to enter a class expression that will be added as a row in this section.
+
+
+## Row Keyboard Shortcuts
+
+* **Enter/Return** - If a row is selected, pressing Enter/Return is a shortcut for pressing the edit button for that row.  
+
+* **Ctrl+Delete (Cmd+Delete)** - If a row is selected, then pressing Ctrl+Delete (Cmd+Delete on a Mac) is a shortcut for pressing the Delete button.
