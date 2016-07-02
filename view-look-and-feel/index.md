@@ -1,9 +1,9 @@
 ---
-title: Frames
+title: Standard View Look and Feel
 layout: default
 ---
 
-# Protégé Views
+# Standard View Look and Feel
 
 Many of the views in the Protégé distribution, such as the [Class Description]({{site.baseurl}}/views/class-description) view shown below, have a consistent look and feel.  A typical view consist of a list of *Sections*, and each Section contains a list of *Rows*.  
 
