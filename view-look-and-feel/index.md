@@ -3,9 +3,9 @@ title: Standard View Look and Feel
 layout: default
 ---
 
-# Standard View Look and Feel
+# Common View Look and Feel
 
-Many of the views in the Protégé distribution, such as the [Class Description]({{site.baseurl}}/views/class-description) view shown below, have a consistent look and feel.  A typical view consist of a list of *Sections*, and each Section contains a list of *Rows*.  
+Many of the views in the Protégé distribution, such as the [Class Description]({{site.baseurl}}/views/class-description) view shown below, have a common look and feel.  A typical view consist of a list of *Sections*, and each Section contains a list of *Rows*.  
 
 An example of such a view is the [Class Description]({{site.baseurl}}/views/class-description) view, which contains sections such as "Equivalent To", "SubClass Of" and "Disjoint With" (amongst others).  These sections are pertinent to the current selected class, and a given section contains rows that are pertinent to that section.  For example, the "SubClass Of" section contains rows that contain class expressions that the current selected class is a subclass of.  Similarly, the "Equivalent To" section contains rows that contain class expressions that the current selected class is equivalent to.
 
