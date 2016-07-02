@@ -36,7 +36,7 @@ A row that has a white background represents an **asserted** row.  In other word
 
 <figure>
 <img src="{{site.baseurl}}/assets/frame/asserted-row.png" style="max-width: 100%;"/>
-<figcaption>An example of an asserted row.</figcaption>
+<figcaption>An example of an asserted row.  Note the white background that indicates the underlying axiom is asserted.  In this particular case, the row is shown in bold, which indicates that the underlying axiom is asserted in the active ontology.</figcaption>
 </figure>
 
 A row that has a yellow background represents an **inferred** row.  In other words, the axiom that is represented by the row has been inferred and is not contained in one of the active ontologies.  In the class description view shown above, the row containing "SpicyPizza" is an example of such a row.  This row means that the axiom "AmericanHot SubClassOf SpicyPizza" is inferred.
