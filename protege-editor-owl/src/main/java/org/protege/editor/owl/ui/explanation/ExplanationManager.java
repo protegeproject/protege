@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.explanation;
 
+import org.protege.editor.core.Disposable;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -14,7 +15,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ExplanationManager {
+public class ExplanationManager implements Disposable {
 
 	private final Logger logger = LoggerFactory.getLogger(ExplanationManager.class);
 
@@ -26,7 +27,7 @@ public class ExplanationManager {
 		this.editorKit = editorKit;
 		reload();
 	}
-	
+
 	public void reload() {
 		ExplanationPluginLoader loader = new ExplanationPluginLoader(editorKit);
 		explanationServices.clear();
@@ -82,9 +83,9 @@ public class ExplanationManager {
             @Override
             public void componentHidden(ComponentEvent e) {
                 explanation.dispose();
+                dlg.dispose();
             }
         });
-        dlg.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         dlg.setModal(false);
         dlg.setResizable(true);
         dlg.pack();
@@ -95,4 +96,11 @@ public class ExplanationManager {
         String rendering = editorKit.getOWLModelManager().getRendering(entailment).replaceAll("\\s", " ");
         return "Explanation for " + rendering;
     }
+
+	@Override
+	public void dispose() throws Exception {
+		for (ExplanationService teacher : explanationServices) {
+			teacher.dispose();
+		}
+	}
 }
