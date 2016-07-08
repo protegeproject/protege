@@ -680,7 +680,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             if (adcManager != null) {
                 change = adcManager.getChangeRewriter().rewriteChange(change);
             }
-            manager.applyChange(change);
+            applyChanges(Arrays.asList(change));
         } catch (OWLOntologyChangeException e) {
             throw new OWLRuntimeException(e);
         }
@@ -693,7 +693,15 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             if (adcManager != null) {
                 changes = adcManager.getChangeRewriter().rewriteChanges(changes);
             }
-            manager.applyChanges(changes);
+            logger.info(LogBanner.start("Applying changes"));
+            logger.info("Number of requested changes: {}", changes.size());
+            List<OWLOntologyChange> minimizedChanges = new ChangeListMinimizer().getMinimisedChanges(changes);
+            logger.info("Number of minimized changes: {}", minimizedChanges.size());
+            logger.info(LogBanner.end());
+            if(minimizedChanges.isEmpty()) {
+                return;
+            }
+            manager.applyChanges(minimizedChanges);
         } catch (OWLOntologyChangeException e) {
             throw new OWLRuntimeException(e);
         }
@@ -701,6 +709,9 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
+        if(changes.isEmpty()) {
+            return;
+        }
         getHistoryManager().logChanges(changes);
         boolean refreshActiveOntology = false;
         for (OWLOntologyChange change : changes) {
