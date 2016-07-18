@@ -41,6 +41,7 @@ public class InconsistentOntologyManager extends OWLEditorKitHook  {
 			if (ret == 0) {
 				lastSelectedPlugin = intro.getSelectedPlugin();
 				InconsistentOntologyPluginInstance i = lastSelectedPlugin.newInstance();
+				i.initialise();
 				i.setup(owlEditorKit);
 				i.explain(owlEditorKit.getOWLModelManager().getActiveOntology());
 				explanations.add(i);
