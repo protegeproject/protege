@@ -129,12 +129,14 @@ public class Launcher {
     private void addShutdownHook() {
         Thread hook = new Thread(() -> {
             try {
+                logger.info("----------------------- Shutting down Protege -----------------------");
                 if (framework.getState() == Bundle.ACTIVE) {
                     framework.stop();
                     framework.waitForStop(0);
                 }
+                cleanup();
             } catch (Throwable t) {
-                logger.error("Error shuting down OSGi session: {}", t);
+                logger.error("Error shutting down OSGi session: {}", t.getMessage(), t);
             }
         }, "Close OSGi Session");
         Runtime.getRuntime().addShutdownHook(hook);
@@ -144,12 +146,11 @@ public class Launcher {
         Thread shutdownThread = new Thread(() -> {
             try {
                 framework.waitForStop(0);
-                cleanup();
                 if (exitOnOSGiShutDown) {
                     System.exit(0);
                 }
             } catch (Throwable t) {
-                t.printStackTrace();
+                logger.error("Error on shutdown: {}", t.getMessage(), t);
             }
         }, "OSGi Shutdown Thread");
         shutdownThread.start();
@@ -196,6 +197,7 @@ public class Launcher {
     }
 
     protected void cleanup() {
+        logger.info("Cleaning up temporary directories");
         delete(frameworkDir);
     }
 
