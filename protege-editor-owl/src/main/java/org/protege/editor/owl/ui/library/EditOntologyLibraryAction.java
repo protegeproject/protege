@@ -1,6 +1,12 @@
 package org.protege.editor.owl.ui.library;
 
+import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.ProtegeManager;
+import org.protege.editor.core.editorkit.EditorKitManager;
 import org.protege.editor.core.ui.util.UIUtil;
+import org.protege.editor.core.ui.workspace.WorkspaceFrame;
+import org.protege.editor.core.ui.workspace.WorkspaceManager;
+import org.protege.editor.owl.model.OWLWorkspace;
 import org.protege.editor.owl.ui.action.ProtegeOWLAction;
 import org.slf4j.LoggerFactory;
 
@@ -20,12 +26,16 @@ import java.util.Collections;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class EditOntologyLibraryAction extends ProtegeOWLAction {
-    private static final long serialVersionUID = -4297673435512878237L;
 
 
     public void actionPerformed(ActionEvent e) {
     	try {
-    		File catalogFile = UIUtil.openFile(getOWLWorkspace(), "Choose catalog file containing ontology repository information", "Choose XML Catalog", Collections.singleton("xml"));
+			WorkspaceFrame frame = ProtegeManager.getInstance().getFrame(getOWLWorkspace());
+			File catalogFile = UIUtil.openFile(
+					frame,
+					"Choose catalog file containing ontology repository information",
+					"Choose XML Catalog",
+					Collections.singleton("xml"));
     		if (catalogFile != null) {
     			OntologyLibraryPanel.showDialog(getOWLEditorKit(), catalogFile);
     		}
