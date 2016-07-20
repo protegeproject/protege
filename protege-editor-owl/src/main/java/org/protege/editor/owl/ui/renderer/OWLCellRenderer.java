@@ -712,7 +712,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             }
         }
 
-        highlightText(doc);
+        highlightText(doc, selected);
         if(selected) {
             if (selectionForeground != null) {
                 doc.setCharacterAttributes(0, doc.getLength(), selectionForeground, false);
@@ -721,7 +721,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     }
 
 
-    protected void highlightText(StyledDocument doc) {
+    protected void highlightText(StyledDocument doc, boolean selected) {
         // Highlight text
         StringTokenizer tokenizer = new StringTokenizer(textPane.getText(), " []{}(),\n\t'", true);
         linkRendered = false;
@@ -740,7 +740,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                     }
                 }
             }
-            renderToken(curToken, tokenStartIndex, doc);
+            renderToken(curToken, tokenStartIndex, doc, selected);
 
             tokenStartIndex += curToken.length();
         }
@@ -754,7 +754,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     private boolean linkRendered = false;
     private boolean parenthesisRendered = false;
 
-    protected void renderToken(final String curToken, final int tokenStartIndex, final StyledDocument doc) {
+    protected void renderToken(final String curToken, final int tokenStartIndex, final StyledDocument doc, boolean selected) {
 
         boolean enclosedByBracket = false;
         if (parenthesisRendered){
@@ -774,7 +774,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             // Not a keyword, so might be an entity (or delim)
             final OWLEntity curEntity = getOWLModelManager().getOWLEntityFinder().getOWLEntity(curToken);
             if (curEntity != null) {
-                if (focusedEntity != null) {
+                if (focusedEntity != null && !selected) {
                     if (curEntity.equals(focusedEntity)) {
                         doc.setCharacterAttributes(tokenStartIndex, tokenLength, focusedEntityStyle, true);
                     }
