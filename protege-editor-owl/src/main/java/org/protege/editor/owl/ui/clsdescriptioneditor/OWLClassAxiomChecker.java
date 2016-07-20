@@ -6,9 +6,12 @@ import org.protege.editor.owl.model.parser.ParserUtil;
 import org.protege.editor.owl.model.parser.ProtegeOWLEntityChecker;
 import org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntaxParserImpl;
 import org.semanticweb.owlapi.manchestersyntax.renderer.ParserException;
+import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClassAxiom;
 import org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
+
+import java.util.Collections;
 
 
 /**
@@ -42,7 +45,15 @@ class OWLClassAxiomChecker implements OWLExpressionChecker<OWLClassAxiom> {
         parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr.getOWLEntityFinder()));
         parser.setStringToParse(text);
         try {
-            return (OWLClassAxiom) parser.parseAxiom();
+            OWLAxiom ax = parser.parseAxiom();
+            if(ax instanceof OWLClassAxiom) {
+                return (OWLClassAxiom) ax;
+            }
+            else {
+                throw new OWLExpressionParserException(
+                        "Expected a class axiom of the form C SubClassOf D, C EquivalentTo D, or C DisjointWith D"
+                        , 0, 0, true, true, true, false, false, false, Collections.emptySet());
+            }
         }
         catch (ParserException e) {
             throw ParserUtil.convertException(e);
