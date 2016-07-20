@@ -476,11 +476,6 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
 
     protected class UsageTreeNode extends DefaultMutableTreeNode {
 
-        /**
-         * 
-         */
-        private static final long serialVersionUID = -53617232488795863L;
-
         private OWLOntology ont;
 
         private OWLAxiom axiom;
