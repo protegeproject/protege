@@ -397,7 +397,7 @@ public class RenameEntitiesPanel extends JPanel implements VerifiedInputEditor {
 
 
         protected void renderToken(String curToken, int tokenStartIndex, StyledDocument doc) {
-            super.renderToken(curToken, tokenStartIndex, doc);
+            super.renderToken(curToken, tokenStartIndex, doc, false);
             logger.debug("CurrentToken: {}", curToken);
             if (curToken.startsWith("(")){
                 inURI = true;
