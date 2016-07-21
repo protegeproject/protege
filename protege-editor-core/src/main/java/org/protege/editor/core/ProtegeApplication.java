@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
+import javax.swing.plaf.basic.BasicTreeUI;
 import java.awt.*;
 import java.io.File;
 import java.net.URI;
@@ -365,6 +366,13 @@ public class ProtegeApplication implements BundleActivator {
         Preferences rendererPrefs = PreferencesManager.getInstance().getApplicationPreferences(
                 "org.protege.editor.owl.ui.renderer.OWLRendererPreferences"
         );
+
+        defaults.put("Tree.paintLines", true);
+        defaults.put("Tree.drawVerticalLines", true);
+        defaults.put("Tree.drawHorizontalLines", true);
+        defaults.put("Tree.hash", new Color(230, 230, 230));
+
+
         int fontSize = rendererPrefs.getInt("FONT_SIZE", 12);
         Fonts.updateUIDefaultsFontSize(fontSize);
     }

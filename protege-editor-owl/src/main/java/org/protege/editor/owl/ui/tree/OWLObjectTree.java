@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.tree;
 
+import com.google.common.eventbus.Subscribe;
+import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.core.ui.menu.MenuBuilder;
 import org.protege.editor.core.ui.menu.PopupMenuId;
 import org.protege.editor.owl.OWLEditorKit;
@@ -49,7 +51,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObjectDropTarget, OWLObjectDragSource, HasExpandAll, HasCopySubHierarchyToClipboard, Copyable {
+public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObjectDropTarget, OWLObjectDragSource, HasExpandAll, HasCopySubHierarchyToClipboard, Copyable, RefreshableComponent {
 
     private Map<OWLObject, Set<OWLObjectTreeNode<N>>> nodeMap;
 
@@ -84,6 +86,8 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
     public OWLObjectTree(OWLEditorKit eKit, OWLObjectHierarchyProvider<N> provider, Set<N> rootObjects,
                          Comparator<OWLObject> owlObjectComparator) {
         this.eKit = eKit;
+        setupLineStyle();
+
 
         ToolTipManager.sharedInstance().registerComponent(this);
 
@@ -142,6 +146,15 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         });
     }
 
+    private void setupLineStyle() {
+        if(OWLTreePreferences.getInstance().isPaintLines()) {
+            putClientProperty("JTree.lineStyle", "Angled");
+        }
+        else {
+            putClientProperty("JTree.lineStyle", "None");
+        }
+    }
+
     private void expandDescendantsOfRowAt(final int x, int y) {
         // It's necessary to traverse all rows to find the path where the user clicked.  This is because
         // the getRowAt(X,Y) call only returns a row index if the actual node rendering is clicked.  We
@@ -153,6 +166,16 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
                 break;
             }
         }
+    }
+
+    /**
+     * Clears the data displayed by the component and
+     * reloads data.
+     */
+    @Override
+    final public void refreshComponent() {
+        setupLineStyle();
+        reload();
     }
 
     /**

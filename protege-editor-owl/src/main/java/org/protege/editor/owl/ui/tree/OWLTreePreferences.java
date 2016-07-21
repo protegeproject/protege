@@ -17,6 +17,7 @@ import org.protege.editor.core.prefs.PreferencesManager;
  */
 public class OWLTreePreferences {
 
+
     private static OWLTreePreferences instance;
 
     private static final String TREE_PREFS_KEY = "TREE_PREFERENCES";
@@ -28,6 +29,9 @@ public class OWLTreePreferences {
     private static final String TREE_DEPTH_LIMIT_KEY = "TREE_DEPTH_LIMIT";
 
     private static final String TREE_DRAG_AND_DROP_ENABLED_KEY = "TREE_DRAG_AND_DROP_ENABLED";
+
+    private static final String TREE_PAINT_LINES = "TREE_PAINT_LINES";
+
 
     public static synchronized OWLTreePreferences getInstance() {
         if(instance == null) {
@@ -81,6 +85,11 @@ public class OWLTreePreferences {
     }
 
 
+    public boolean isPaintLines() {
+        return getPreferences().getBoolean(TREE_PAINT_LINES, true);
+    }
 
-
+    public void setPaintLines(boolean paintLines) {
+        getPreferences().putBoolean(TREE_PAINT_LINES, paintLines);
+    }
 }
