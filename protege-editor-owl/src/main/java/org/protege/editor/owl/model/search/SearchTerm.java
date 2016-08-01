@@ -6,7 +6,7 @@ package org.protege.editor.owl.model.search;
  * Bio-Medical Informatics Research Group<br>
  * Date: 22/06/2016
  */
-public class SearchKeyword {
+public class SearchTerm {
 
     private String field;
     private String keyword;
@@ -18,8 +18,8 @@ public class SearchKeyword {
     private boolean searchByRegex = false;
     private boolean searchByPhonetic = false;
 
-    public SearchKeyword(String field, String keyword, String syntacticKeyword, boolean isCaseSensitive, boolean ignoreWhitespace,
-            boolean searchWholeWords, boolean searchByRegex, boolean searchByPhonetic) {
+    public SearchTerm(String field, String keyword, String syntacticKeyword, boolean isCaseSensitive, boolean ignoreWhitespace,
+                      boolean searchWholeWords, boolean searchByRegex, boolean searchByPhonetic) {
         this.field = field;
         this.keyword = keyword;
         this.syntacticKeyword = syntacticKeyword;
@@ -30,12 +30,12 @@ public class SearchKeyword {
         this.searchByPhonetic = searchByPhonetic;
     }
 
-    public SearchKeyword(String field, String keyword) {
+    public SearchTerm(String field, String keyword) {
         this.field = field;
         this.keyword = keyword;
     }
 
-    public SearchKeyword(String keyword) {
+    public SearchTerm(String keyword) {
         this("", keyword);
     }
 
@@ -84,10 +84,10 @@ public class SearchKeyword {
         if (obj == this) {
             return true;
         }
-        if (!(obj instanceof SearchKeyword)) {
+        if (!(obj instanceof SearchTerm)) {
             return false;
         }
-        SearchKeyword other = (SearchKeyword) obj;
+        SearchTerm other = (SearchTerm) obj;
         return field.equals(other.field) && keyword.equals(other.keyword) && syntacticKeyword.equals(other.syntacticKeyword)
                 && isCaseSensitive == other.isCaseSensitive && ignoreWhitespace == other.ignoreWhitespace
                 && searchWholeWords == other.searchWholeWords && searchByRegex == other.searchByRegex

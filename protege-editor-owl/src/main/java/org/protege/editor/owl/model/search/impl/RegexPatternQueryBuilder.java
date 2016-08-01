@@ -2,7 +2,7 @@ package org.protege.editor.owl.model.search.impl;
 
 import org.protege.editor.owl.model.search.SearchInput;
 import org.protege.editor.owl.model.search.SearchInputVisitor;
-import org.protege.editor.owl.model.search.SearchKeyword;
+import org.protege.editor.owl.model.search.SearchTerm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class RegexPatternQueryBuilder implements SearchInputVisitor {
 
     @Override
     public void visit(SearchInput searchInput) {
-        for (SearchKeyword searchString : searchInput) {
+        for (SearchTerm searchString : searchInput) {
             int flags = Pattern.DOTALL | (searchString.isCaseSensitive() ? 0 : Pattern.CASE_INSENSITIVE);
             String keywordString = searchString.getString();
             if (searchString.searchWholeWords()) {
