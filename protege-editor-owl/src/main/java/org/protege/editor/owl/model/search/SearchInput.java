@@ -10,11 +10,11 @@ import java.util.List;
  * Bio-Medical Informatics Research Group<br>
  * Date: 22/06/2016
  */
-public class SearchInput implements Iterable<SearchKeyword> {
+public class SearchInput implements Iterable<SearchTerm> {
 
-    private List<SearchKeyword> keywords;
+    private List<SearchTerm> keywords;
 
-    private SearchInput(List<SearchKeyword> keywords) {
+    private SearchInput(List<SearchTerm> keywords) {
         this.keywords = keywords;
     }
 
@@ -27,7 +27,7 @@ public class SearchInput implements Iterable<SearchKeyword> {
     }
 
     @Override
-    public final Iterator<SearchKeyword> iterator() {
+    public final Iterator<SearchTerm> iterator() {
         return keywords.iterator();
     }
 
@@ -37,13 +37,13 @@ public class SearchInput implements Iterable<SearchKeyword> {
 
     public static class Builder {
 
-        private final List<SearchKeyword> keywords = new ArrayList<>();
+        private final List<SearchTerm> keywords = new ArrayList<>();
 
         public Builder() {
             // NO-OP
         }
 
-        public Builder add(SearchKeyword keyword) {
+        public Builder add(SearchTerm keyword) {
             keywords.add(keyword);
             return this;
         }
