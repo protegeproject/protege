@@ -219,7 +219,7 @@ public class PhysicalLocationPanel extends JPanel {
 
 
         public boolean isDeleteable() {
-            return true;
+            return !ont.equals(owlEditorKit.getModelManager().getActiveOntology());
         }
 
 

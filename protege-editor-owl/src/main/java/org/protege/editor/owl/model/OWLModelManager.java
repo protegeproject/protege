@@ -65,7 +65,8 @@ public interface OWLModelManager extends ModelManager, HasActiveOntology {
     /**
      * Remove the given ontology from the model manager.
      * Cannot remove the last ontology from the model manager.
-     * @param ont the ontology to remove
+     * Cannot remove the active ontology from the model manager.
+     * @param ont the ontology to remove.
      * @return false if the ontology cannot be removed
      *         (eg if it does not exist or is the last open ontology)
      */

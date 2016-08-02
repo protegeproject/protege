@@ -12,7 +12,6 @@ import org.protege.editor.owl.model.search.SearchManagerPlugin;
 import org.protege.editor.owl.model.search.SearchManagerSelector;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditorPreferences;
 import org.protege.editor.owl.ui.tree.OWLTreePreferences;
-import org.protege.editor.owl.ui.tree.TreePreferencesChangedEvent;
 
 import javax.swing.*;
 import java.awt.*;
