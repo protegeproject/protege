@@ -404,30 +404,20 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     }
 
     public boolean removeOntology(OWLOntology ont) {
-        if (manager.contains(ont.getOntologyID()) && manager.getOntologies().size() > 1) {
-
-            boolean resetActiveOntologyRequired = ont.equals(activeOntology);
-            activeOntologies.remove(ont);
-            dirtyOntologies.remove(ont.getOntologyID());
-            manager.removeOntology(ont);
-
-            if (resetActiveOntologyRequired) {
-                OWLOntology newActiveOnt = null;
-                if (!activeOntologies.isEmpty()) {
-                    newActiveOnt = activeOntologies.iterator().next();
-                }
-                if (newActiveOnt == null && !manager.getOntologies().isEmpty()) {
-                    newActiveOnt = manager.getOntologies().iterator().next();
-                }
-
-                setActiveOntology(newActiveOnt, true);
-            }
-            else {
-                setActiveOntology(activeOntology, true);
-            }
-            return true;
+        if (ont.equals(activeOntology)) {
+            logger.debug("Request received to remove an ontology that is the active ontology.  Cannot remove the active ontology.  Ignoring request.");
+            return false;
         }
-        return false;
+        if (manager.contains(ont.getOntologyID()) && manager.getOntologies().size() == 1) {
+            logger.debug("Request received to remove the one and only ontology that is open.  This is not allowed.  Ignoring request.");
+            return false;
+        }
+        activeOntologies.remove(ont);
+        dirtyOntologies.remove(ont.getOntologyID());
+        manager.removeOntology(ont);
+        setActiveOntology(activeOntology, true);
+
+        return true;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -439,7 +429,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     /**
      * Save all of the ontologies that are editable and that have been modified.
-     *
+     * <p/>
      * This method should not be used as the behaviour is not clear.  The save(OWLOntology) method should be used
      * instead.
      */
@@ -698,7 +688,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             List<OWLOntologyChange> minimizedChanges = new ChangeListMinimizer().getMinimisedChanges(changes);
             logger.info("Number of minimized changes: {}", minimizedChanges.size());
             logger.info(LogBanner.end());
-            if(minimizedChanges.isEmpty()) {
+            if (minimizedChanges.isEmpty()) {
                 return;
             }
             manager.applyChanges(minimizedChanges);
@@ -709,7 +699,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
     public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
-        if(changes.isEmpty()) {
+        if (changes.isEmpty()) {
             return;
         }
         getHistoryManager().logChanges(changes);
