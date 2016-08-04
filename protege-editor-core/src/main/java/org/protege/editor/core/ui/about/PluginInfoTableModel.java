@@ -7,8 +7,15 @@ import org.osgi.framework.Version;
 import org.protege.editor.core.ProtegeApplication;
 
 import javax.swing.table.AbstractTableModel;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+
+import static java.lang.String.*;
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.nullsFirst;
+import static java.util.Comparator.nullsLast;
+import static java.util.stream.Collectors.toList;
 
 
 /**
@@ -16,23 +23,23 @@ import java.util.List;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: 01-Sep-2006<br><br>
-
+ * <p/>
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class PluginInfoTableModel extends AbstractTableModel {
 
-        private List<Bundle> bundles;
-    
-    public enum Columns  {
+    private List<Bundle> bundles;
+
+    public enum Columns {
         NAME("Name/ID"), VERSION("Version"), QUALIFIER("Qualifier");
-        
+
         private String name;
-        
+
         private Columns(String name) {
             this.name = name;
         }
-        
+
         public String getName() {
             return name;
         }
@@ -40,12 +47,12 @@ public class PluginInfoTableModel extends AbstractTableModel {
 
 
     public PluginInfoTableModel() {
-        bundles = new ArrayList<>();
-        for (Bundle b : ProtegeApplication.getContext().getBundles()) {
-        	if (ProtegeApplication.isPlugin(b)) {
-        		bundles.add(b);
-        	}
-        }
+        bundles = Arrays.stream(ProtegeApplication.getContext().getBundles())
+                .filter(ProtegeApplication::isPlugin)
+                .sorted(comparing(
+                        b -> (String) b.getHeaders().get(Constants.BUNDLE_NAME),
+                        nullsLast(CASE_INSENSITIVE_ORDER)))
+                .collect(toList());
     }
 
 
@@ -64,21 +71,21 @@ public class PluginInfoTableModel extends AbstractTableModel {
         String version_name = (String) bundle.getHeaders().get(Constants.BUNDLE_VERSION);
         Version v = null;
         if (version_name != null) {
-             v = new Version(version_name);
+            v = new Version(version_name);
         }
         switch (Columns.values()[columnIndex]) {
-        case NAME:
-        	String name = (String) bundle.getHeaders().get(Constants.BUNDLE_NAME);
-        	if (name == null) {
-        		name = bundle.getSymbolicName();
-        	}
-            return name;
-        case VERSION:
-            return v == null ? "" : "" + v.getMajor() + "." + v.getMinor() + "." + v.getMicro();
-        case QUALIFIER:
-            return v.getQualifier();
-        default:
-            throw new RuntimeException("Programmer error - missed a case");
+            case NAME:
+                String name = (String) bundle.getHeaders().get(Constants.BUNDLE_NAME);
+                if (name == null) {
+                    name = bundle.getSymbolicName();
+                }
+                return name;
+            case VERSION:
+                return v == null ? "" : "" + v.getMajor() + "." + v.getMinor() + "." + v.getMicro();
+            case QUALIFIER:
+                return v.getQualifier();
+            default:
+                throw new RuntimeException("Programmer error - missed a case");
         }
     }
 
