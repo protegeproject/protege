@@ -333,7 +333,7 @@ public class ProtegeApplication implements BundleActivator {
                     UIManager.put("ClassLoader", this.getClass().getClassLoader());
                     UIManager.setLookAndFeel(lafClsName);
                 }
-                setupDefaults(defaults);
+                setupDefaults(defaults, lafClsName);
 
             } catch (Exception e) {
                 logger.error("An error occurred during Look&Feel initialization", e);
@@ -341,7 +341,7 @@ public class ProtegeApplication implements BundleActivator {
         }
     }
 
-    private void setupDefaults(UIDefaults defaults) {
+    private void setupDefaults(UIDefaults defaults, String lafClassName) {
         // TODO: Move this to somewhere more sensible
 
         defaults.put("TabbedPaneUI", CloseableTabbedPaneUI.class.getName());
@@ -370,7 +370,10 @@ public class ProtegeApplication implements BundleActivator {
         defaults.put("Tree.paintLines", true);
         defaults.put("Tree.drawVerticalLines", true);
         defaults.put("Tree.drawHorizontalLines", true);
-        defaults.put("Tree.hash", new Color(230, 230, 230));
+        // Set the color for non-Protege LAFS - the line color is too light for the dotted LAF.
+        if (!ProtegeProperties.PLASTIC_LAF_NAME.equals(lafClassName)) {
+            defaults.put("Tree.hash", new Color(230, 230, 230));
+        }
 
 
         int fontSize = rendererPrefs.getInt("FONT_SIZE", 12);
