@@ -26,6 +26,7 @@ public class FindInViewAction extends ProtegeOWLAction {
     private PropertyChangeListener listener;
 
 
+    @SuppressWarnings("unchecked")
     public void actionPerformed(ActionEvent e) {
         // We actually don't need to do anything here,
         // because this will be handled by virtue of the
@@ -35,7 +36,7 @@ public class FindInViewAction extends ProtegeOWLAction {
         if(focusOwner == null) {
             return;
         }
-        Findable f = (Findable) SwingUtilities.getAncestorOfClass(Findable.class, focusOwner);
+        Findable<OWLEntity> f = (Findable<OWLEntity>) SwingUtilities.getAncestorOfClass(Findable.class, focusOwner);
         if(f == null) {
             return;
         }
@@ -55,7 +56,7 @@ public class FindInViewAction extends ProtegeOWLAction {
         FocusManager.getCurrentManager().addPropertyChangeListener(listener = evt -> {
             if (evt.getPropertyName().equals("focusOwner")) {
                 Component c = (Component) evt.getNewValue();
-                Findable f = (Findable) SwingUtilities.getAncestorOfClass(Findable.class, c);
+                Findable<?> f = (Findable<?>) SwingUtilities.getAncestorOfClass(Findable.class, c);
                 setEnabled(f != null);
             }
         });
