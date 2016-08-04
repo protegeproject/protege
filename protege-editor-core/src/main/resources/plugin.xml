@@ -76,7 +76,7 @@
 
     <extension id="menu.file.close" 
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Close"/>
+        <name value="Close window"/>
         <toolTip value="Close the current set of ontologies"/>
         <class value="org.protege.editor.core.ui.action.CloseAction"/>
         <path value="org.protege.editor.core.application.menu.FileMenu/SlotY-M"/>
