@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.find;
 
+import org.protege.editor.core.ui.util.AugmentedJTextField;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
@@ -30,16 +31,16 @@ public class OWLEntityFindPanel extends JPanel {
 
     private OWLEditorKit owlEditorKit;
 
-    private Findable findable;
+    private Findable<?> findable;
 
-    private JTextField textField;
+    private final JTextField textField = new AugmentedJTextField("Enter search text");
 
     private JList resultsList;
 
     Timer findTimer;
 
 
-    public OWLEntityFindPanel(OWLEditorKit owlEditorKit, Findable findable) {
+    public OWLEntityFindPanel(OWLEditorKit owlEditorKit, Findable<?> findable) {
         this.owlEditorKit = owlEditorKit;
         this.findable = findable;
         createUI();
@@ -59,15 +60,12 @@ public class OWLEntityFindPanel extends JPanel {
 
     private void createUI() {
         setLayout(new BorderLayout(7, 7));
-        textField = new JTextField();
         JPanel textFieldPanel = new JPanel(new BorderLayout());
         textFieldPanel.add(textField);
-        textFieldPanel.setBorder(ComponentFactory.createTitledBorder("Find"));
         add(textFieldPanel, BorderLayout.NORTH);
         resultsList = new OWLObjectList(owlEditorKit);
         JPanel resultsListPanel = new JPanel(new BorderLayout());
         resultsListPanel.add(ComponentFactory.createScrollPane(resultsList));
-        resultsListPanel.setBorder(ComponentFactory.createTitledBorder("Results"));
         add(resultsListPanel, BorderLayout.CENTER);
         textField.getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e) {
