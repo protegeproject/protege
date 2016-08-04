@@ -66,10 +66,16 @@ public class EntityCreationMetadataPreferencesPanel extends OWLPreferencesPanel 
         PreferencesLayoutPanel panel = new PreferencesLayoutPanel();
         add(panel, BorderLayout.NORTH);
 
+        String helpText = "<html><body>" +
+                "Use Ctrl+Space to auto-complete name if property exists, or enter complete IRI.<br>" +
+                "Well known prefix names can also be used e.g. dc:creator" +
+                "</body></html>";
+
         panel.addGroupComponent(createdByAnnotationEnabled);
         panel.addVerticalPadding();
         panel.addGroup("Creator property");
         panel.addGroupComponent(createdByPropertyIriField);
+        panel.addHelpText(helpText);
         panel.addVerticalPadding();
         panel.addGroup("Creator value");
         panel.addGroupComponent(useUserName);
@@ -82,6 +88,7 @@ public class EntityCreationMetadataPreferencesPanel extends OWLPreferencesPanel 
         panel.addVerticalPadding();
         panel.addGroup("Date property");
         panel.addGroupComponent(creationDatePropertyIriField);
+        panel.addHelpText(helpText);
         panel.addVerticalPadding();
         panel.addGroup("Date value format");
         panel.addGroupComponent(iso8601Radio);
@@ -128,8 +135,7 @@ public class EntityCreationMetadataPreferencesPanel extends OWLPreferencesPanel 
     }
 
     private String renderIRI(IRI iri) {
-        OWLAnnotationProperty property = getOWLModelManager().getOWLDataFactory().getOWLAnnotationProperty(iri);
-        return getOWLModelManager().getRendering(property);
+        return iri.toString();
     }
 
     private void updateOrcidRadioButton() {
@@ -146,9 +152,9 @@ public class EntityCreationMetadataPreferencesPanel extends OWLPreferencesPanel 
 
         try {
             prefsManager.setCreatedByAnnotationEnabled(createdByAnnotationEnabled.isSelected());
-            Optional<IRI> iri = getIri(createdByPropertyIriField.getText().trim());
+            Optional<IRI> iri = parseIri(createdByPropertyIriField.getText().trim());
             if (iri.isPresent()) {
-                prefsManager.setCreatedByAnnotationPropertyIRI(DublinCoreVocabulary.CREATOR.getIRI());
+                prefsManager.setCreatedByAnnotationPropertyIRI(iri.get());
             }
         } catch (URISyntaxException e) {
             logger.warn("Invalid IRI specified for creator annotation property: {}", e.getMessage());
@@ -156,7 +162,7 @@ public class EntityCreationMetadataPreferencesPanel extends OWLPreferencesPanel 
 
         try {
             prefsManager.setCreationDateAnnotationEnabled(creationDateAnnotationEnabled.isSelected());
-            Optional<IRI> iri = getIri(creationDatePropertyIriField.getText().trim());
+            Optional<IRI> iri = parseIri(creationDatePropertyIriField.getText().trim());
             if (iri.isPresent()) {
                 prefsManager.setCreationDateAnnotationPropertyIRI(iri.get());
             }
@@ -177,19 +183,33 @@ public class EntityCreationMetadataPreferencesPanel extends OWLPreferencesPanel 
         prefsManager.setCreatedByValueOrcid(useOrcid.isSelected());
     }
 
-    private Optional<IRI> getIri(String text) throws URISyntaxException {
+    private Optional<IRI> parseIri(String text) throws URISyntaxException {
         String trimmedText = text.trim();
         if(trimmedText.isEmpty()) {
             return Optional.empty();
         }
+        OWLAnnotationProperty property = getOWLModelManager().getOWLEntityFinder().getOWLAnnotationProperty(trimmedText);
+        if(property != null) {
+            return Optional.of(property.getIRI());
+        }
         if(text.startsWith("<") && text.endsWith(">")) {
             return Optional.of(IRI.create(new URI(trimmedText.substring(1, trimmedText.length() - 1))));
+        }
+
+        try {
+            URI uri = new URI(trimmedText);
+            if(uri.isAbsolute()) {
+                return Optional.of(IRI.create(uri));
+            }
+        } catch (URISyntaxException e) {
+            return Optional.empty();
         }
         for (Namespaces ns : Namespaces.values()) {
             if (trimmedText.startsWith(ns.name().toLowerCase() + ":")) {
                 return Optional.of(IRI.create(ns.toString() + text.substring(ns.name().length() + 1)));
             }
         }
+
         return Optional.of(IRI.create(new URI(trimmedText)));
     }
 
