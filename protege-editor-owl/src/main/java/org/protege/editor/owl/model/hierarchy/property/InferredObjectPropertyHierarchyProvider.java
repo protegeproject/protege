@@ -7,6 +7,8 @@ import org.protege.editor.owl.model.hierarchy.OWLObjectPropertyHierarchyProvider
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -25,6 +27,8 @@ public class InferredObjectPropertyHierarchyProvider extends OWLObjectPropertyHi
     private final OWLModelManagerListener listener;
 
     private OWLModelManager mngr;
+
+    private final static Logger logger = LoggerFactory.getLogger(InferredObjectPropertyHierarchyProvider.class);
 
     public static final String ID = "inferredObjectPropertyHierarchyProvider";
 
@@ -46,51 +50,66 @@ public class InferredObjectPropertyHierarchyProvider extends OWLObjectPropertyHi
     }
 
     public Set<OWLObjectProperty> getUnfilteredChildren(OWLObjectProperty objectProperty) {
-        if(!getReasoner().isConsistent()) {
+        try {
+            if(!getReasoner().isConsistent()) {
+                return Collections.emptySet();
+            }
+            Set<OWLObjectPropertyExpression> subs = getReasoner().getSubObjectProperties(objectProperty, true).getFlattened();
+            subs.remove(objectProperty);
+            subs.remove(mngr.getOWLDataFactory().getOWLBottomObjectProperty());
+            Set<OWLObjectProperty> children = new HashSet<>();
+            for (OWLObjectPropertyExpression p : subs) {
+                if (p instanceof OWLObjectProperty) {
+                    children.add((OWLObjectProperty) p);
+                }
+            }
+            return children;
+        } catch (Exception e) {
+            logger.error("An error occurred whilst asking the reasoner for the sub-properties of an object property: {}", e.getMessage(), e);
             return Collections.emptySet();
         }
-        Set<OWLObjectPropertyExpression> subs = getReasoner().getSubObjectProperties(objectProperty, true).getFlattened();
-        subs.remove(objectProperty);
-        subs.remove(mngr.getOWLDataFactory().getOWLBottomObjectProperty());
-        Set<OWLObjectProperty> children = new HashSet<>();
-        for (OWLObjectPropertyExpression p : subs) {
-            if (p instanceof OWLObjectProperty) {
-                children.add((OWLObjectProperty) p);
-            }
-        }
-        return children;
     }
 
 
     public Set<OWLObjectProperty> getParents(OWLObjectProperty objectProperty) {
-        if(!getReasoner().isConsistent()) {
+        try {
+            if(!getReasoner().isConsistent()) {
+                return Collections.emptySet();
+            }
+            Set<OWLObjectPropertyExpression> supers = getReasoner().getSuperObjectProperties(objectProperty, true).getFlattened();
+            supers.remove(objectProperty);
+            Set<OWLObjectProperty> parents = new HashSet<>();
+            for (OWLObjectPropertyExpression p : supers) {
+                if (p instanceof OWLObjectProperty) {
+                    parents.add((OWLObjectProperty) p);
+                }
+            }
+            return parents;
+        } catch (Exception e) {
+            logger.error("An error occurred whilst asking the reasoner for the super-properties of an object property: {}", e.getMessage(), e);
             return Collections.emptySet();
         }
-        Set<OWLObjectPropertyExpression> supers = getReasoner().getSuperObjectProperties(objectProperty, true).getFlattened();
-        supers.remove(objectProperty);
-        Set<OWLObjectProperty> parents = new HashSet<>();
-        for (OWLObjectPropertyExpression p : supers) {
-            if (p instanceof OWLObjectProperty) {
-                parents.add((OWLObjectProperty) p);
-            }
-        }
-        return parents;
     }
 
 
     public Set<OWLObjectProperty> getEquivalents(OWLObjectProperty objectProperty) {
-        if(!getReasoner().isConsistent()) {
+        try {
+            if(!getReasoner().isConsistent()) {
+                return Collections.emptySet();
+            }
+            Set<OWLObjectPropertyExpression> equivs = getReasoner().getEquivalentObjectProperties(objectProperty).getEntities();
+            equivs.remove(objectProperty);
+            Set<OWLObjectProperty> ret = new HashSet<>();
+            for (OWLObjectPropertyExpression p : equivs) {
+                if (p instanceof OWLObjectProperty) {
+                    ret.add((OWLObjectProperty) p);
+                }
+            }
+            return ret;
+        } catch (Exception e) {
+            logger.error("An error occurred whilst asking the reasoner for the equivalent-properties of an object property: {}", e.getMessage(), e);
             return Collections.emptySet();
         }
-        Set<OWLObjectPropertyExpression> equivs = getReasoner().getEquivalentObjectProperties(objectProperty).getEntities();
-        equivs.remove(objectProperty);
-        Set<OWLObjectProperty> ret = new HashSet<>();
-        for (OWLObjectPropertyExpression p : equivs) {
-            if (p instanceof OWLObjectProperty) {
-                ret.add((OWLObjectProperty) p);
-            }
-        }
-        return ret;
     }
 
     @Override
