@@ -3,6 +3,7 @@ package org.protege.editor.owl.ui.annotation;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
 import org.protege.editor.core.ui.util.AugmentedJTextField;
+import org.protege.editor.core.ui.util.TextFieldSearchHandler;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.annotation.EntityCreationMetadataPreferences;
@@ -13,11 +14,16 @@ import org.protege.editor.owl.model.user.UserPreferences;
 import org.protege.editor.owl.model.util.DateFormatter;
 import org.protege.editor.owl.model.util.ISO8601Formatter;
 import org.protege.editor.owl.model.util.TimestampFormatter;
+import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLAutoCompleter;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
+import org.protege.editor.owl.ui.find.OWLEntityFindPanel;
 import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
+import org.protege.editor.owl.ui.selector.OWLAnnotationPropertySelectorPanel;
+import org.protege.editor.owl.ui.view.Findable;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.vocab.DublinCoreVocabulary;
 import org.semanticweb.owlapi.vocab.Namespaces;
 import org.slf4j.Logger;
@@ -29,8 +35,8 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
+import java.util.List;
 
 /**
  * Matthew Horridge
@@ -43,11 +49,11 @@ public class EntityCreationMetadataPreferencesPanel extends OWLPreferencesPanel 
 
     private final JCheckBox createdByAnnotationEnabled = new JCheckBox("Annotate new entities with creator (user)");
 
-    private final JTextField createdByPropertyIriField = new AugmentedJTextField(40, "Enter annotation property name");
+    private final AugmentedJTextField createdByPropertyIriField = new AugmentedJTextField(40, "Enter annotation property name");
 
     private final JCheckBox creationDateAnnotationEnabled = new JCheckBox("Annotate new entities with creation date/time");
 
-    private final JTextField creationDatePropertyIriField = new AugmentedJTextField(40, "Enter annotation property name");
+    private final AugmentedJTextField creationDatePropertyIriField = new AugmentedJTextField(40, "Enter annotation property name");
 
     private final JRadioButton iso8601Radio = new JRadioButton("ISO-8601");
 
@@ -75,6 +81,16 @@ public class EntityCreationMetadataPreferencesPanel extends OWLPreferencesPanel 
         panel.addVerticalPadding();
         panel.addGroup("Creator property");
         panel.addGroupComponent(createdByPropertyIriField);
+        TextFieldSearchHandler annotationPropertySearchHandler = textField -> {
+            OWLAnnotationProperty prop = new UIHelper(getOWLEditorKit()).pickAnnotationProperty();
+            if (prop == null) {
+                return Optional.empty();
+            }
+            else {
+                return Optional.of(getOWLModelManager().getRendering(prop));
+            }
+        };
+        createdByPropertyIriField.setSearchHandler(annotationPropertySearchHandler);
         panel.addHelpText(helpText);
         panel.addVerticalPadding();
         panel.addGroup("Creator value");
@@ -88,6 +104,7 @@ public class EntityCreationMetadataPreferencesPanel extends OWLPreferencesPanel 
         panel.addVerticalPadding();
         panel.addGroup("Date property");
         panel.addGroupComponent(creationDatePropertyIriField);
+        creationDatePropertyIriField.setSearchHandler(annotationPropertySearchHandler);
         panel.addHelpText(helpText);
         panel.addVerticalPadding();
         panel.addGroup("Date value format");
