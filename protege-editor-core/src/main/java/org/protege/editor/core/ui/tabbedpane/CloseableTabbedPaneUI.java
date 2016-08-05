@@ -1,5 +1,6 @@
 package org.protege.editor.core.ui.tabbedpane;
 
+import org.protege.editor.core.platform.OSUtils;
 import org.protege.editor.core.ui.util.UIUtil;
 
 import javax.swing.*;
@@ -115,7 +116,7 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
         tabAreaInsets.left = 0;
         selectedTabPadInsets = emptyInsets;
         tabInsets = selectedTabPadInsets;
-        if (UIManager.getLookAndFeel().getName().contains("OS X")) {
+        if (OSUtils.isOSX()) {
             tabPane.setFont(OS_X_FONT);
         }
     }
@@ -123,7 +124,12 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
     @Override
     public void installUI(JComponent c) {
         super.installUI(c);
-        tabPane.setFont(UIManager.getFont("TabbedPane.font"));
+        if (OSUtils.isOSX()) {
+            tabPane.setFont(OS_X_FONT);
+        }
+        else {
+            tabPane.setFont(UIManager.getFont("TabbedPane.font"));
+        }
     }
 
     private Color getTextColor() {
