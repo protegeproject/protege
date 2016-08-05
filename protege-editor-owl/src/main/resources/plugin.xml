@@ -1130,9 +1130,9 @@
 
     <extension id="file.editactiveontologylibrary"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Edit active ontology library..."/>
+        <name value="Edit active ontology catalog..."/>
         <class value="org.protege.editor.owl.ui.library.EditActiveOntologyLibraryAction"/>
-        <toolTip value="View, add and edit the active ontology library"/>
+        <toolTip value="View, add and edit the active ontology catalog (catalog.xml file)"/>
         <path value="org.protege.editor.core.application.menu.FileMenu/SlotD-A"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="L"/>
@@ -1140,9 +1140,9 @@
 
     <extension id="file.editontologylibrary"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Edit ontology libraries..."/>
+        <name value="Edit ontology catalog file..."/>
         <class value="org.protege.editor.owl.ui.library.EditOntologyLibraryAction"/>
-        <toolTip value="View, add and edit the ontology libraries"/>
+        <toolTip value="View, add and edit an ontology catalog file"/>
         <path value="org.protege.editor.core.application.menu.FileMenu/SlotD-B"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
