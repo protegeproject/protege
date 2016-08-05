@@ -1,5 +1,6 @@
 package org.protege.editor.core;
 
+import org.protege.editor.core.platform.OSUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +15,10 @@ import java.awt.*;
 public class Fonts {
 
     private static final Logger logger = LoggerFactory.getLogger(Fonts.class);
+
+    private static final Font OS_X_SMALL_DIALOG_FONT = new Font("Helvetica Neue", Font.PLAIN, 10);
+
+    private static final Font SMALL_DIALOG_FONT = new Font("Dialog", Font.PLAIN, 10);
 
     /**
      * Scales the font size in the UI based on a default font size of 12.
@@ -35,5 +40,14 @@ public class Fonts {
                         logger.debug("Set {} to {}", k, scaledFont.getSize());
                     }
                 });
+    }
+
+    public static Font getSmallDialogFont() {
+        if(OSUtils.isOSX()) {
+            return OS_X_SMALL_DIALOG_FONT;
+        }
+        else {
+            return SMALL_DIALOG_FONT;
+        }
     }
 }
