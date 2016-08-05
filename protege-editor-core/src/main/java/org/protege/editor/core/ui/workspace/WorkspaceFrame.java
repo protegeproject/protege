@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -130,7 +131,7 @@ public class WorkspaceFrame extends JFrame {
 
 
     private void createUI() {
-        JPanel contentPane = new JPanel(new BorderLayout(7, 7));
+        JPanel contentPane = new JPanel(new BorderLayout(0, 0));
         setContentPane(contentPane);
         // Menu bar
         createMenuBar();
@@ -144,10 +145,8 @@ public class WorkspaceFrame extends JFrame {
         }
         setIconImage(((ImageIcon) Icons.getIcon("logo32.gif")).getImage());
 
-        JComponent statusArea = workspace.getStatusArea();
-        if (statusArea != null) {
-            contentPane.add(statusArea, BorderLayout.SOUTH);
-        }
+        Optional<JComponent> statusArea = workspace.getStatusArea();
+        statusArea.ifPresent(sa -> contentPane.add(sa, BorderLayout.SOUTH));
     }
 
 

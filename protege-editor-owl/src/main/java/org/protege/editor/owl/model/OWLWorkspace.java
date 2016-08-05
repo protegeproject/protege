@@ -5,9 +5,11 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IRegistryEventListener;
+import org.protege.editor.core.Fonts;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.editorkit.EditorKit;
+import org.protege.editor.core.platform.OSUtils;
 import org.protege.editor.core.plugin.AbstractPluginLoader;
 import org.protege.editor.core.plugin.PluginUtilities;
 import org.protege.editor.core.ui.RefreshableComponent;
@@ -119,7 +121,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private ExplainInconsistentOntologyAction explainInconsistentOntologyAction = new ExplainInconsistentOntologyAction();
 
-    private JLabel reasonerStatus = new JLabel();
+    private final JLabel reasonerStatus = new JLabel();
 
     private final JCheckBox displayReasonerResults = new JCheckBox("Show Inferences");
 
@@ -217,6 +219,12 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             ReasonerPreferences prefs = mngr.getOWLReasonerManager().getReasonerPreferences();
             prefs.setShowInferences(displayReasonerResults.isSelected());
         });
+
+
+        reasonerStatus.setFont(Fonts.getSmallDialogFont());
+        displayReasonerResults.putClientProperty("JComponent.sizeVariant", "small");
+        displayReasonerResults.setFont(Fonts.getSmallDialogFont());
+
 
         new OntologySourcesChangedHandlerUI(this);
     }
@@ -976,20 +984,20 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         return true;
     }
 
-    public JComponent getStatusArea() {
+    public java.util.Optional<JComponent> getStatusArea() {
         if (statusArea == null) {
             statusArea = new JPanel();
-            statusArea.setBorder(BorderFactory.createEmptyBorder(0, 0, 2, 2));
+            statusArea.setBorder(BorderFactory.createEmptyBorder(0, 0, 1, 1));
             statusArea.setLayout(new BoxLayout(statusArea, BoxLayout.X_AXIS));
             statusArea.add(Box.createHorizontalGlue());
             statusArea.add(customizedProtege);
             statusArea.add(Box.createHorizontalGlue());
             statusArea.add(reasonerStatus);
-            statusArea.add(Box.createHorizontalStrut(15));
+            statusArea.add(Box.createHorizontalStrut(10));
             statusArea.add(displayReasonerResults);
-            statusArea.add(Box.createHorizontalStrut(20));
+            statusArea.add(Box.createHorizontalStrut(10));
         }
-        return statusArea;
+        return java.util.Optional.of(statusArea);
     }
 
     public WorkspaceTab createWorkspaceTab(final String name) {
