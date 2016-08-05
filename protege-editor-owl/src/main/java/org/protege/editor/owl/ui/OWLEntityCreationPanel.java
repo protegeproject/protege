@@ -14,6 +14,8 @@ import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.vocab.Namespaces;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -69,10 +71,29 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
     private final JTextArea messageArea = new JTextArea(1, FIELD_WIDTH);
 
 
-    public OWLEntityCreationPanel(OWLEditorKit owlEditorKit, String message, Class<T> type) {
+
+    /**
+     * Create a new entity creation panel.
+     * @param owlEditorKit The relevant editor kit.
+     * @param message Not used.
+     * @param type The type of entity to be created.
+     */
+    @Deprecated
+    public OWLEntityCreationPanel(@Nonnull OWLEditorKit owlEditorKit, @Deprecated String message, @Nonnull Class<T> type) {
         this.owlEditorKit = owlEditorKit;
         this.type = type;
-        createUI(message);
+        createUI();
+    }
+
+    /**
+     * Create a new entity creation panel.
+     * @param owlEditorKit The relevant editor kit.
+     * @param type The type of entity to be created.
+     */
+    public OWLEntityCreationPanel(@Nonnull OWLEditorKit owlEditorKit, @Nonnull Class<T> type) {
+        this.owlEditorKit = owlEditorKit;
+        this.type = type;
+        createUI();
     }
 
 
@@ -87,7 +108,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
     }
 
 
-    private void createUI(String message) {
+    private void createUI() {
         setLayout(new BorderLayout());
         JPanel holder = new JPanel(new GridBagLayout());
         add(holder);
@@ -257,16 +278,35 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
     }
 
 
-    public static <T extends OWLEntity> OWLEntityCreationSet<T> showDialog(OWLEditorKit owlEditorKit, String message, Class<T> type) {
+    /**
+     * @deprecated Use the showDialog method that does not accept a message as a parameter.
+     */
+    @Deprecated
+    public static <T extends OWLEntity> OWLEntityCreationSet<T> showDialog(@Nonnull OWLEditorKit owlEditorKit, @Nullable String message, @Nonnull Class<T> type) {
+        return showDialog(owlEditorKit, type);
+    }
 
-            OWLEntityCreationPanel panel = new OWLEntityCreationPanel<>(owlEditorKit, message, type);
-            int ret = new UIHelper(owlEditorKit).showValidatingDialog("Create a new " + type.getSimpleName(), panel, panel.userSuppliedNameField);
-            if (ret == JOptionPane.OK_OPTION) {
-                return panel.getOWLEntityCreationSet();
-            }
-            else {
-                return null;
-            }
+    /**
+     * Display a dialog asking a user to create a new entity of a given type.
+     * @param owlEditorKit The relevant editor kit.
+     * @param type The type.
+     * @param <T> The entity type.
+     * @return The OWLEntityCreationSet that can be used to perform the actual creation, or {@code null} if the dialog
+     * display was cancelled by the user.
+     */
+    @Nullable
+    public static <T extends OWLEntity> OWLEntityCreationSet<T> showDialog(@Nonnull OWLEditorKit owlEditorKit, @Nonnull Class<T> type) {
+        OWLEntityCreationPanel<T> panel = new OWLEntityCreationPanel<>(owlEditorKit, type);
+        int ret = new UIHelper(owlEditorKit).showValidatingDialog(
+                "Create a new " + type.getSimpleName(),
+                panel,
+                panel.userSuppliedNameField);
+        if (ret == JOptionPane.OK_OPTION) {
+            return panel.getOWLEntityCreationSet();
+        }
+        else {
+            return null;
+        }
     }
 
 

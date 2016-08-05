@@ -936,32 +936,32 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
 
     public OWLEntityCreationSet<OWLClass> createOWLClass() {
-        return OWLEntityCreationPanel.showDialog(getOWLEditorKit(), "Please enter a class name", OWLClass.class);
+        return OWLEntityCreationPanel.showDialog(getOWLEditorKit(), OWLClass.class);
     }
 
 
     public OWLEntityCreationSet<OWLObjectProperty> createOWLObjectProperty() {
-        return OWLEntityCreationPanel.showDialog(getOWLEditorKit(), "Please enter an object property name", OWLObjectProperty.class);
+        return OWLEntityCreationPanel.showDialog(getOWLEditorKit(), OWLObjectProperty.class);
     }
 
 
     public OWLEntityCreationSet<OWLDataProperty> createOWLDataProperty() {
-        return OWLEntityCreationPanel.showDialog(getOWLEditorKit(), "Please enter a data property name", OWLDataProperty.class);
+        return OWLEntityCreationPanel.showDialog(getOWLEditorKit(), OWLDataProperty.class);
     }
 
 
     public OWLEntityCreationSet<OWLAnnotationProperty> createOWLAnnotationProperty() {
-        return OWLEntityCreationPanel.showDialog(getOWLEditorKit(), "Please enter an annotation property name", OWLAnnotationProperty.class);
+        return OWLEntityCreationPanel.showDialog(getOWLEditorKit(), OWLAnnotationProperty.class);
     }
 
 
     public OWLEntityCreationSet<OWLNamedIndividual> createOWLIndividual() {
-        return OWLEntityCreationPanel.showDialog(getOWLEditorKit(), "Please enter an individual name", OWLNamedIndividual.class);
+        return OWLEntityCreationPanel.showDialog(getOWLEditorKit(), OWLNamedIndividual.class);
     }
 
 
     public OWLEntityCreationSet<OWLDatatype> createOWLDatatype() {
-        return OWLEntityCreationPanel.showDialog(getOWLEditorKit(), "Please enter a datatype name", OWLDatatype.class);
+        return OWLEntityCreationPanel.showDialog(getOWLEditorKit(), OWLDatatype.class);
     }
 
 

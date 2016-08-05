@@ -26,7 +26,7 @@ public interface OWLSelectionModel {
      * @return The selected <code>OWLClass</code>, or <code>null</code>
      *         if a class is not selected.
      */
-    public OWLClass getLastSelectedClass();
+    OWLClass getLastSelectedClass();
 
 
     /**
@@ -34,7 +34,7 @@ public interface OWLSelectionModel {
      * @return The selected <code>OWLObjectProperty</code>, or <code>null</code>
      *         if there is no selected property.
      */
-    public OWLObjectProperty getLastSelectedObjectProperty();
+    OWLObjectProperty getLastSelectedObjectProperty();
 
 
     /**
@@ -42,14 +42,14 @@ public interface OWLSelectionModel {
      * @return The selected <code>OWLDataProperty</code>, or <code>null</code>
      *         if there is no selected property.
      */
-    public OWLDataProperty getLastSelectedDataProperty();
+    OWLDataProperty getLastSelectedDataProperty();
 
     /**
      * Gets the most recently selected annotation property
      * @return The selected <code>OWLAnnotationProperty</code>, or <code>null</code>
      *         if there is no selected property.
      */
-    public OWLAnnotationProperty getLastSelectedAnnotationProperty();
+    OWLAnnotationProperty getLastSelectedAnnotationProperty();
 
 
     /**
@@ -57,7 +57,7 @@ public interface OWLSelectionModel {
      * @return The selected individual, or <code>null</code> if
      *         there is no selected individual.
      */
-    public OWLNamedIndividual getLastSelectedIndividual();
+    OWLNamedIndividual getLastSelectedIndividual();
 
 
     /**
@@ -65,20 +65,20 @@ public interface OWLSelectionModel {
      * @return The selected datatype, or <code>null</code> if
      *         there is no selected datatype.
      */
-    public OWLDatatype getLastSelectedDatatype();
+    OWLDatatype getLastSelectedDatatype();
 
 
     /**
      * Gets the last selected entity.
      * @return The <code>OWLEntity</code> that was last selected.
      */
-    public OWLEntity getSelectedEntity();
+    OWLEntity getSelectedEntity();
 
     /**
      * If any of the last selected entities are equal to
      * the specified entity then the selection is cleared.
      */
-    public void clearLastSelectedEntity(OWLEntity entity);
+    void clearLastSelectedEntity(OWLEntity entity);
 
 
     /**
@@ -86,25 +86,25 @@ public interface OWLSelectionModel {
      * selection method depending on the type of entity.
      * @param entity The entity to be selected.  Must not be <code>null</code>.
      */
-    public void setSelectedEntity(OWLEntity entity);
+    void setSelectedEntity(OWLEntity entity);
 
 
     /**
      * Instances of an axiom wrt the containing ontology
      */
-    public void setSelectedAxiom(OWLAxiomInstance axiomInstance);
+    void setSelectedAxiom(OWLAxiomInstance axiomInstance);
 
     /**
      * Instances of an axiom wrt the containing ontology
      * @return and OWLAxiomInstance (an axiom, ontology pair)
      */
-    public OWLAxiomInstance getLastSelectedAxiomInstance();
+    OWLAxiomInstance getLastSelectedAxiomInstance();
 
 
-    public void setSelectedObject(OWLObject object);
+    void setSelectedObject(OWLObject object);
 
 
-    public OWLObject getSelectedObject();
+    OWLObject getSelectedObject();
 
 
     /**
@@ -112,7 +112,7 @@ public interface OWLSelectionModel {
      * @param listener The listener to to be added.  This listener will be notified
      *                 of any changes to the set of selected objects.
      */
-    public void addListener(OWLSelectionModelListener listener);
+    void addListener(OWLSelectionModelListener listener);
 
 
     /**
@@ -120,5 +120,5 @@ public interface OWLSelectionModel {
      * listener was not added then this method will have no effect.
      * @param listener The listener to remove.
      */
-    public void removeListener(OWLSelectionModelListener listener);
+    void removeListener(OWLSelectionModelListener listener);
 }
