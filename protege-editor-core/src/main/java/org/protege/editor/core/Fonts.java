@@ -23,7 +23,7 @@ public class Fonts {
     public static void updateUIDefaultsFontSize(int fontSize) {
         UIDefaults lookAndFeelDefaults = UIManager.getLookAndFeelDefaults();
         double scale = fontSize / 12.0;
-        logger.info("Font scale factor: {}", scale);
+        logger.debug("Font scale factor: {}", scale);
         lookAndFeelDefaults.keySet().stream()
                 .filter(k -> k.toString().toLowerCase().endsWith("font"))
                 .forEach(k -> {
@@ -32,7 +32,7 @@ public class Fonts {
                         Font scaledFont = font.deriveFont((float) scale * font.getSize());
                         // Place the scaled font in the developer defaults then we don't clobber the L&F defaults.
                         UIManager.put(k, scaledFont);
-                        logger.info("Set {} to {}", k, scaledFont.getSize());
+                        logger.debug("Set {} to {}", k, scaledFont.getSize());
                     }
                 });
     }
