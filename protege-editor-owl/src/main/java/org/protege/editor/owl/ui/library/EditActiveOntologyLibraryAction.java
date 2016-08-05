@@ -44,7 +44,7 @@ public class EditActiveOntologyLibraryAction extends ProtegeOWLAction {
     }
 
     private void showCatalogNotPresentMessage() {
-        JOptionPane.showMessageDialog(getWorkspace(), "Catalog for active ontology is not present.  Please save your ontology first.", "Catalog not present", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(getWorkspace(), "<html><body><b>The catalog file for the active ontology is not present.</b><br>Please save your ontology first.</body></html>", "Catalog not present", JOptionPane.INFORMATION_MESSAGE);
     }
 
 
