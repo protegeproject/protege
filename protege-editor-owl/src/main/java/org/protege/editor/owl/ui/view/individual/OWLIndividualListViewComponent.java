@@ -57,18 +57,12 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
         public void valueChanged(ListSelectionEvent e) {
             if (!e.getValueIsAdjusting()) {
                 if (list.getSelectedValue() != null && selectionChangedByUser) {
-                    transmitSelection();
+                    setGlobalSelection(list.getSelectedValue());
                 }
                 changeListenerMediator.fireStateChanged(OWLIndividualListViewComponent.this);
             }
         }
     };
-
-    private void transmitSelection() {
-        setGlobalSelection(list.getSelectedValue());
-    }
-
-    private boolean showing = isShowing();
 
 
     public void initialiseIndividualsView() throws Exception {
@@ -80,7 +74,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
         list.addListSelectionListener(listSelectionListener);
         list.addMouseListener(new MouseAdapter() {
             public void mouseReleased(MouseEvent e) {
-                transmitSelection();
+                setGlobalSelection(list.getSelectedValue());
             }
         });
         listener = changes -> processChanges(changes);
@@ -96,13 +90,6 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
             }
         };
         getOWLModelManager().addListener(modelManagerListener);
-
-        addHierarchyListener(e -> {
-            if(!showing && isShowing() && isSynchronizing()) {
-                transmitSelection();
-            }
-            showing = isShowing();
-        });
     }
 
 
