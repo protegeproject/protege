@@ -18,6 +18,8 @@ import org.semanticweb.owlapi.model.parameters.Imports;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.util.*;
 
 
@@ -40,6 +42,8 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
     private static final Icon ADD_SUB_ICON = OWLIcons.getIcon("class.add.sub.png");
 
     private static final Icon ADD_SIBLING_ICON = OWLIcons.getIcon("class.add.sib.png");
+
+    private boolean showing = isShowing();
 
     public void performExtraInitialisation() throws Exception {
         // Add in the manipulation actions - we won't need to keep track
@@ -93,6 +97,13 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
             }
         });
         getAssertedTree().setPopupMenuId(new PopupMenuId("[AssertedClassHierarchy]"));
+
+        addHierarchyListener(e -> {
+            if(!showing && isShowing() && isSynchronizing()) {
+                transmitSelection();
+            }
+            showing = isShowing();
+        });
     }
 
 

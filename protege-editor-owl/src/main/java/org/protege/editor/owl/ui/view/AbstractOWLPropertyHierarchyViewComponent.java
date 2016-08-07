@@ -20,6 +20,8 @@ import java.util.Set;
 public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLProperty> extends AbstractOWLEntityHierarchyViewComponent<O>
         implements Findable<O>, Deleteable, CreateNewChildTarget, CreateNewSiblingTarget {
 
+    private boolean showing = isShowing();
+
     protected abstract OWLSubPropertyAxiom getSubPropertyAxiom(O child, O parent);
 
 
@@ -90,6 +92,13 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
             public boolean canDrop(Object child, Object parent) {
                 return OWLTreePreferences.getInstance().isTreeDragAndDropEnabled() && canAcceptDrop(child, parent);
             }
+        });
+
+        addHierarchyListener(e -> {
+            if(!showing && isShowing() && isSynchronizing()) {
+                transmitSelection();
+            }
+            showing = isShowing();
         });
     }
 
