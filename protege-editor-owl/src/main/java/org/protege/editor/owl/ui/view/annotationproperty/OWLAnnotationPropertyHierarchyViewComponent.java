@@ -31,8 +31,6 @@ import java.util.*;
 public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEntityHierarchyViewComponent<OWLAnnotationProperty>
         implements CreateNewChildTarget, CreateNewSiblingTarget {
 
-    private boolean showing = isShowing();
-
     protected void performExtraInitialisation() throws Exception {
         addAction(new AbstractOWLTreeAction<OWLAnnotationProperty>("Add sub property", OWLIcons.getIcon("property.annotation.addsub.png"),
                 getTree().getSelectionModel()) {
@@ -58,13 +56,6 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
         }, "A", "B");
 
         addAction(new DeleteAnnotationPropertyAction(), "B", "A");
-
-        addHierarchyListener(e -> {
-            if(!showing && isShowing() && isSynchronizing()) {
-                transmitSelection();
-            }
-            showing = isShowing();
-        });
     }
 
 
