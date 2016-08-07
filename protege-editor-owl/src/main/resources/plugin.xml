@@ -52,7 +52,7 @@
 
     <extension id="OWLClassSelectorWrapper"
                point="org.protege.editor.owl.ui_editor_description">
-        <label value="Class hierarchy"/>
+        <label value="Classes"/>
         <class value="org.protege.editor.owl.ui.editor.OWLClassSelectorWrapper"/>
         <index value="B"/>
     </extension>
@@ -362,7 +362,7 @@
 
     <extension id="OWLAssertedClassHierarchy"
                point="org.protege.editor.core.application.ViewComponent">
-        <label value="Class hierarchy"/>
+        <label value="Classes"/>
         <class value="org.protege.editor.owl.ui.view.cls.ToldOWLClassHierarchyViewComponent"/>
         <headerColor value="@org.protege.classcolor"/>
         <category value="@org.protege.classcategory"/>
@@ -429,7 +429,7 @@
 
     <extension id="OWLObjectPropertyTree"
                point="org.protege.editor.core.application.ViewComponent">
-        <label value="Object property hierarchy"/>
+        <label value="Object properties"/>
         <class value="org.protege.editor.owl.ui.view.objectproperty.OWLObjectPropertyHierarchyViewComponent"/>
         <headerColor value="@org.protege.objectpropertycolor"/>
         <category value="@org.protege.objectpropertycategory"/>
@@ -490,7 +490,7 @@
 
     <extension id="OWLDataPropertyTree"
                point="org.protege.editor.core.application.ViewComponent">
-        <label value="Data property hierarchy"/>
+        <label value="Data properties"/>
         <class value="org.protege.editor.owl.ui.view.dataproperty.OWLDataPropertyHierarchyViewComponent"/>
         <headerColor value="@org.protege.datapropertycolor"/>
         <category value="@org.protege.datapropertycategory"/>
@@ -619,7 +619,7 @@
 
     <extension id="OWLAnnotationPropertyTree"
                point="org.protege.editor.core.application.ViewComponent">
-        <label value="Annotation property hierarchy"/>
+        <label value="Annotation properties"/>
         <class value="org.protege.editor.owl.ui.view.annotationproperty.OWLAnnotationPropertyHierarchyViewComponent"/>
         <headerColor value="@org.protege.annotationscolor"/>
         <category value="@org.protege.annotationpropertycategory"/>
