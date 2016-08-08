@@ -2,16 +2,16 @@
 <layout>
     <VSNode splits="0.375 0.625">
         <CNode>
-            <Component label="Class hierarchy">
+            <Component label="Classes">
                 <Property id="pluginId" value="org.protege.editor.owl.OWLAssertedClassHierarchy"/>
             </Component>
-            <Component label="Object property hierarchy">
+            <Component label="Object properties">
                 <Property id="pluginId" value="org.protege.editor.owl.OWLObjectPropertyTree"/>
             </Component>
-            <Component label="Data property hierarchy">
+            <Component label="Data properties">
                 <Property id="pluginId" value="org.protege.editor.owl.OWLDataPropertyTree"/>
             </Component>
-            <Component label="Annotation property hierarchy">
+            <Component label="Annotation properties">
                 <Property id="pluginId" value="org.protege.editor.owl.OWLAnnotationPropertyTree"/>
             </Component>
             <Component label="Datatypes">
