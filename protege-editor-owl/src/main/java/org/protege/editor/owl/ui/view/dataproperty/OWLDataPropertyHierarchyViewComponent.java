@@ -2,12 +2,15 @@ package org.protege.editor.owl.ui.view.dataproperty;
 
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
+import org.protege.editor.owl.model.selection.SelectionDriver;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.view.AbstractOWLPropertyHierarchyViewComponent;
 import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLSubPropertyAxiom;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Optional;
 
 
@@ -17,7 +20,9 @@ import java.util.Optional;
  * Bio-Health Informatics Group<br>
  * Date: 23-Jan-2007<br><br>
  */
-public class OWLDataPropertyHierarchyViewComponent extends AbstractOWLPropertyHierarchyViewComponent<OWLDataProperty> {
+public class OWLDataPropertyHierarchyViewComponent
+        extends AbstractOWLPropertyHierarchyViewComponent<OWLDataProperty>
+        implements SelectionDriver {
 
 
 
@@ -62,5 +67,15 @@ public class OWLDataPropertyHierarchyViewComponent extends AbstractOWLPropertyHi
 
     protected Icon getDeleteIcon() {
         return OWLIcons.getIcon("property.data.delete.png");
+    }
+
+    @Override
+    public Component asComponent() {
+        return this;
+    }
+
+    @Override
+    public Optional<OWLObject> getSelection() {
+        return Optional.ofNullable(getSelectedEntity());
     }
 }

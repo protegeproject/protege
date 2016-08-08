@@ -6,6 +6,7 @@ import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.model.selection.SelectionDriver;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.protege.editor.owl.model.util.OWLEntityDeleter;
 import org.protege.editor.owl.ui.OWLIcons;
@@ -22,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -37,7 +39,7 @@ import java.util.List;
  * Date: Jun 5, 2009<br><br>
  */
 public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
-        implements Findable<OWLDatatype> {
+        implements Findable<OWLDatatype>, SelectionDriver {
 
 
     private OWLObjectList<OWLDatatype> list;
@@ -55,7 +57,7 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
             }
         }
     };
-
+    
     private OWLOntologyChangeListener ontChangeListener = changes -> handleChanges(changes);
     
     private OWLModelManagerListener modelManagerListener = event -> {
@@ -191,5 +193,15 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
 
     public void show(OWLDatatype dt) {
         updateView(dt);
+    }
+
+    @Override
+    public Component asComponent() {
+        return this;
+    }
+
+    @Override
+    public Optional<OWLObject> getSelection() {
+        return Optional.ofNullable(list.getSelectedValue());
     }
 }

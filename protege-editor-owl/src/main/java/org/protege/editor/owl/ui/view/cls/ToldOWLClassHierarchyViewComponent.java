@@ -1,9 +1,11 @@
 package org.protege.editor.owl.ui.view.cls;
 
 import org.protege.editor.core.ui.menu.PopupMenuId;
+import org.protege.editor.core.util.HandlerRegistration;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
+import org.protege.editor.owl.model.selection.SelectionDriver;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
 import org.protege.editor.owl.ui.action.DeleteClassAction;
@@ -17,8 +19,10 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.Imports;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.*;
+import java.util.List;
 
 
 /**
@@ -35,7 +39,7 @@ import java.util.*;
  * is derived from told information.
  */
 public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarchyViewComponent
-        implements CreateNewTarget, CreateNewChildTarget, CreateNewSiblingTarget {
+        implements CreateNewTarget, CreateNewChildTarget, CreateNewSiblingTarget, SelectionDriver {
 
     private static final Icon ADD_SUB_ICON = OWLIcons.getIcon("class.add.sub.png");
 
@@ -44,7 +48,7 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
     public void performExtraInitialisation() throws Exception {
         // Add in the manipulation actions - we won't need to keep track
         // of these, as this will be done by the view - i.e. we won't
-        // need to dispose of these actions.0
+        // need to dispose of these actions.
 
         addAction(new AbstractOWLTreeAction<OWLClass>("Add subclass", ADD_SUB_ICON,
                 getTree().getSelectionModel()) {
@@ -238,5 +242,20 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
             // Select the new class
             getTree().setSelectedOWLObject(creationSet.getOWLEntity());
         }
+    }
+
+    @Override
+    public Component asComponent() {
+        return this;
+    }
+
+    @Override
+    public Optional<OWLObject> getSelection() {
+        return Optional.ofNullable(getSelectedEntity());
+    }
+
+    @Override
+    public void disposeView() {
+        super.disposeView();
     }
 }

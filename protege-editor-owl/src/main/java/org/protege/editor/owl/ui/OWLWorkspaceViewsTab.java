@@ -5,13 +5,19 @@ import org.protege.editor.core.ui.view.View;
 import org.protege.editor.core.ui.view.ViewComponent;
 import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.core.ui.workspace.WorkspaceViewsTab;
+import org.protege.editor.core.util.HandlerRegistration;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLEntityDisplayProvider;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.selection.SelectionDriver;
+import org.protege.editor.owl.model.selection.SelectionPlane;
+import org.protege.editor.owl.model.selection.SelectionPlaneImpl;
 import org.protege.editor.owl.ui.view.AbstractOWLSelectionViewComponent;
 import org.semanticweb.owlapi.model.*;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -23,8 +29,7 @@ import javax.swing.*;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLWorkspaceViewsTab extends WorkspaceViewsTab {
-
+public class OWLWorkspaceViewsTab extends WorkspaceViewsTab implements SelectionPlane {
 
 
     private OWLEntityDisplayProvider provider = new OWLEntityDisplayProvider() {
@@ -36,6 +41,8 @@ public class OWLWorkspaceViewsTab extends WorkspaceViewsTab {
             return OWLWorkspaceViewsTab.this;
         }
     };
+
+    private SelectionPlane selectionPlaneDelegate;
 
 
     private boolean canDisplay(OWLEntity owlEntity) {
@@ -70,6 +77,7 @@ public class OWLWorkspaceViewsTab extends WorkspaceViewsTab {
 
     public void initialise() {
         super.initialise();
+        selectionPlaneDelegate = new SelectionPlaneImpl(getOWLEditorKit().getOWLWorkspace().getOWLSelectionModel());
         getOWLEditorKit().getWorkspace().registerOWLEntityDisplayProvider(provider);
     }
 
@@ -79,6 +87,15 @@ public class OWLWorkspaceViewsTab extends WorkspaceViewsTab {
         super.dispose();
     }
 
+    @Override
+    public HandlerRegistration registerSelectionDriver(SelectionDriver driver) {
+        return selectionPlaneDelegate.registerSelectionDriver(driver);
+    }
+
+    @Override
+    public void transmitSelection(SelectionDriver driver, OWLObject selection) {
+        selectionPlaneDelegate.transmitSelection(driver, selection);
+    }
 
     public OWLModelManager getOWLModelManager() {
         return (OWLModelManager) getWorkspace().getEditorKit().getModelManager();
@@ -88,6 +105,15 @@ public class OWLWorkspaceViewsTab extends WorkspaceViewsTab {
     public OWLEditorKit getOWLEditorKit() {
         return (OWLEditorKit) getWorkspace().getEditorKit();
     }
+
+
+
+
+
+
+
+
+
 
 
     class NavFinder implements OWLEntityVisitor{
