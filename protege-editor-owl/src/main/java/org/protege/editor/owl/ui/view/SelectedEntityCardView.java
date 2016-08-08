@@ -4,6 +4,7 @@ import org.protege.editor.core.ui.util.Resettable;
 import org.protege.editor.core.ui.view.ViewsPane;
 import org.protege.editor.core.ui.view.ViewsPaneMemento;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
+import org.protege.editor.owl.ui.util.NothingSelectedPanel;
 import org.semanticweb.owlapi.model.*;
 
 import javax.swing.*;
@@ -21,16 +22,11 @@ import java.util.List;
  */
 public class SelectedEntityCardView extends AbstractOWLViewComponent implements Resettable {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -287697571704681093L;
-
     public static final String ID = "org.protege.editor.owl.SelectedEntityView";
 
-    private CardLayout cardLayout = new CardLayout();
+    private final CardLayout cardLayout = new CardLayout();
 
-    private JPanel cardPanel;
+    private final JPanel cardPanel = new JPanel();
 
     private List<ViewsPane> viewsPanes = new ArrayList<>();
 
@@ -52,14 +48,11 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
 
     protected void initialiseOWLView() throws Exception {
         setLayout(new BorderLayout());
-        cardPanel = new JPanel();
         add(cardPanel);
         cardPanel.setLayout(cardLayout);
-        cardPanel.add(new JPanel(), BLANK_PANEL);
+        cardPanel.add(new NothingSelectedPanel(), BLANK_PANEL);
         createViewPanes(false);
-        getOWLWorkspace().getOWLSelectionModel().addListener(() -> {
-            processSelection();
-        });
+        getOWLWorkspace().getOWLSelectionModel().addListener(this::processSelection);
         getView().setShowViewBar(false);
         processSelection();
     }
