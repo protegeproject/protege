@@ -3,9 +3,13 @@ package org.protege.editor.owl.ui.view;
 import org.protege.editor.core.ui.util.Resettable;
 import org.protege.editor.core.ui.view.ViewsPane;
 import org.protege.editor.core.ui.view.ViewsPaneMemento;
-import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
+import org.protege.editor.core.util.HandlerRegistration;
+import org.protege.editor.owl.model.selection.SelectionDriver;
+import org.protege.editor.owl.model.selection.SelectionPlane;
 import org.protege.editor.owl.ui.util.NothingSelectedPanel;
 import org.semanticweb.owlapi.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +24,7 @@ import java.util.List;
  * Bio-Health Informatics Group<br>
  * Date: 02-Mar-2007<br><br>
  */
-public class SelectedEntityCardView extends AbstractOWLViewComponent implements Resettable {
+public class SelectedEntityCardView extends AbstractOWLViewComponent implements Resettable, SelectionPlane {
 
     public static final String ID = "org.protege.editor.owl.SelectedEntityView";
 
@@ -44,6 +48,8 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
 
     private static final String BLANK_PANEL = "Blank";
 
+
+    private static final Logger logger = LoggerFactory.getLogger(SelectedEntityCardView.class);
 
 
     protected void initialiseOWLView() throws Exception {
@@ -170,5 +176,17 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
             pane.saveViews();
             pane.dispose();
         }
+    }
+
+    @Override
+    public HandlerRegistration registerSelectionDriver(SelectionDriver driver) {
+        return () -> {};
+    }
+
+    @Override
+    public void transmitSelection(SelectionDriver driver, OWLObject selection) {
+        // Since we display the current selection we don't initiate selection changes.  If a user drops a nagivation
+        // driving view on to this card view then it's probably an error.
+        logger.debug("[SelectedEntityCardView] Ignoring request to transmit selection");
     }
 }
