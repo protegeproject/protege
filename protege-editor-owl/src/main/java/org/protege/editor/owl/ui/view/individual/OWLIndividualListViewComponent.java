@@ -6,6 +6,7 @@ import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.model.selection.SelectionDriver;
 import org.protege.editor.owl.model.util.OWLEntityDeleter;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.action.DeleteIndividualAction;
@@ -39,7 +40,7 @@ import java.util.List;
  */
 
 public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewComponent
-        implements Findable<OWLNamedIndividual>, Deleteable, CreateNewTarget, RefreshableComponent {
+        implements Findable<OWLNamedIndividual>, Deleteable, CreateNewTarget, RefreshableComponent, SelectionDriver {
 
     private OWLObjectList<OWLNamedIndividual> list;
 
@@ -283,5 +284,15 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
     
     public void setIndividualListColor(Color c) {
         list.setBackground(c);
+    }
+
+    @Override
+    public Component asComponent() {
+        return this;
+    }
+
+    @Override
+    public Optional<OWLObject> getSelection() {
+        return Optional.ofNullable(getSelectedIndividual());
     }
 }

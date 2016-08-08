@@ -4,6 +4,7 @@ import org.protege.editor.core.ui.view.ViewComponent;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLWorkspace;
+import org.protege.editor.owl.model.selection.SelectionPlane;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLObject;
 
@@ -11,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -23,11 +25,6 @@ import java.util.List;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public abstract class AbstractOWLViewComponent extends ViewComponent {
-
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -3089829405015180530L;
 
     public OWLModelManager getOWLModelManager() {
         return getOWLWorkspace().getOWLEditorKit().getModelManager();
@@ -42,7 +39,7 @@ public abstract class AbstractOWLViewComponent extends ViewComponent {
     protected abstract void initialiseOWLView() throws Exception;
 
 
-    final public void initialise() throws Exception {
+    public final void initialise() throws Exception {
         initialiseOWLView();
 
         prepareCopyable();
@@ -50,7 +47,6 @@ public abstract class AbstractOWLViewComponent extends ViewComponent {
         prepareCuttable();
         // add refresh components here (perhaps) when the class trees don't do their crazy stuff
     }
-
 
     private void prepareCopyable() {
         // The "global" copy action should take precedence over anything, so remove any
@@ -108,6 +104,7 @@ public abstract class AbstractOWLViewComponent extends ViewComponent {
 
     final public void dispose() {
         disposeOWLView();
+        super.dispose();
     }
 
 

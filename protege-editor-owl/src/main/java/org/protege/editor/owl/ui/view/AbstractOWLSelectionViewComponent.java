@@ -3,17 +3,22 @@ package org.protege.editor.owl.ui.view;
 import org.protege.editor.core.ProtegeProperties;
 import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.core.ui.view.ViewComponentPlugin;
+import org.protege.editor.core.util.HandlerRegistration;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
+import org.protege.editor.owl.model.selection.SelectionDriver;
+import org.protege.editor.owl.model.selection.SelectionPlane;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererListener;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.semanticweb.owlapi.model.*;
 
+import javax.swing.*;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -97,6 +102,17 @@ public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewC
 
         initialiseView();
         updateViewContentAndHeader();
+        if(this instanceof SelectionDriver) {
+            getSelectionPlane().ifPresent(plane -> {
+                HandlerRegistration registration = plane.registerSelectionDriver((SelectionDriver) this);
+                addHandlerRegistration(registration);
+            });
+
+        }
+    }
+
+    private Optional<SelectionPlane> getSelectionPlane() {
+        return Optional.ofNullable((SelectionPlane) SwingUtilities.getAncestorOfClass(SelectionPlane.class, this));
     }
 
 
@@ -112,7 +128,12 @@ public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewC
     protected void setGlobalSelection(OWLEntity owlEntity) {
         if (getView() != null) {
             if (getView().isSyncronizing()) {
-                getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(owlEntity);
+                if(this instanceof SelectionDriver) {
+                    getSelectionPlane().ifPresent(d -> d.transmitSelection((SelectionDriver) this, owlEntity));
+                }
+                else {
+                    getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(owlEntity);
+                }
             }
         }
     }

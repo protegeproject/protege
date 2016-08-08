@@ -178,6 +178,7 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
     private void updateSelectedObject(OWLObject selObj) {
         selectedObject = selObj;
         updateLastSelection();
+        logger.debug("Set the selected object to: {}", selObj);
         fireSelectionChanged();
     }
 

@@ -29,7 +29,6 @@ public class WorkspaceViewsTab extends WorkspaceTab implements Resettable {
 
     private ViewsPane viewsPane;
 
-
     public ViewsPane getViewsPane() {
         return viewsPane;
     }

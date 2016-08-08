@@ -76,7 +76,7 @@ public class ViewComponentFactory implements ComponentFactory {
                             add(msgLabel, BorderLayout.CENTER);
                         }
 
-                        public void dispose() throws Exception {
+                        public void dispose() {
                             // do nothing
                         }
                     };

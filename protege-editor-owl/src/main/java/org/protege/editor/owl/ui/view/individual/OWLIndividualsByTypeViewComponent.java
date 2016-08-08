@@ -4,6 +4,7 @@ import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.core.ui.view.DisposableAction;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.IndividualsByTypeHierarchyProvider;
+import org.protege.editor.owl.model.selection.SelectionDriver;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.action.DeleteIndividualAction;
 import org.protege.editor.owl.ui.tree.CountingOWLObjectTreeCellRenderer;
@@ -23,10 +24,8 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -36,7 +35,7 @@ import java.util.Set;
  * Date: 24-May-2007<br><br>
  */
 public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewComponent
-        implements Findable<OWLNamedIndividual>, CreateNewTarget, RefreshableComponent {
+        implements Findable<OWLNamedIndividual>, CreateNewTarget, RefreshableComponent, SelectionDriver {
 
 
     private OWLObjectTree<OWLObject> tree;
@@ -261,5 +260,15 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
 
     public void removeChangeListener(ChangeListener listener) {
         changeListenerMediator.removeChangeListener(listener);
+    }
+
+    @Override
+    public Component asComponent() {
+        return this;
+    }
+
+    @Override
+    public Optional<OWLObject> getSelection() {
+        return Optional.ofNullable(tree.getSelectedOWLObject());
     }
 }
