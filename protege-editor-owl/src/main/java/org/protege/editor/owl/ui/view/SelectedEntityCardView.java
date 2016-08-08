@@ -11,6 +11,7 @@ import org.semanticweb.owlapi.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
@@ -32,7 +33,7 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
 
     private final JPanel cardPanel = new JPanel();
 
-    private List<ViewsPane> viewsPanes = new ArrayList<>();
+    private final List<ViewsPane> viewsPanes = new ArrayList<>();
 
     private static final String CLASSES_PANEL = "Classes";
 
@@ -133,32 +134,32 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
         }
         else {
             entity.accept(new OWLEntityVisitor() {
-                public void visit(OWLClass cls) {
+                public void visit(@Nonnull OWLClass cls) {
                     selectPanel(CLASSES_PANEL);
                 }
 
 
-                public void visit(OWLObjectProperty property) {
+                public void visit(@Nonnull OWLObjectProperty property) {
                     selectPanel(OBJECT_PROPERTIES_PANEL);
                 }
 
 
-                public void visit(OWLDataProperty property) {
+                public void visit(@Nonnull OWLDataProperty property) {
                     selectPanel(DATA_PROPERTIES_PANEL);
                 }
 
 
-                public void visit(OWLAnnotationProperty property) {
+                public void visit(@Nonnull OWLAnnotationProperty property) {
                     selectPanel(ANNOTATION_PROPERTIES_PANEL);
                 }
 
 
-                public void visit(OWLNamedIndividual individual) {
+                public void visit(@Nonnull OWLNamedIndividual individual) {
                     selectPanel(INDIVIDUALS_PANEL);
                 }
 
 
-                public void visit(OWLDatatype dataType) {
+                public void visit(@Nonnull OWLDatatype dataType) {
                     selectPanel(DATATYPES_PANEL);
                 }
             });
@@ -185,7 +186,7 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
 
     @Override
     public void transmitSelection(SelectionDriver driver, OWLObject selection) {
-        // Since we display the current selection we don't initiate selection changes.  If a user drops a nagivation
+        // Since we display the current selection we don't initiate selection changes.  If a user drops a navigation
         // driving view on to this card view then it's probably an error.
         logger.debug("[SelectedEntityCardView] Ignoring request to transmit selection");
     }
