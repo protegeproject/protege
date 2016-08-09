@@ -29,14 +29,15 @@ public class AddEntityIcon implements Icon {
         Object antiAliasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
 
 
-        entityIcon.paintIcon(c, g, x, y + 3);
-        int xC = getIconWidth() + x - 5;
+        entityIcon.paintIcon(c, g, x, y);
+        int addCrossLegLength = 2;
+        int xC = x + entityIcon.getIconWidth() + addCrossLegLength;
         int yC = y + 4;
         g2.setStroke(ADD_SYMBOL_STROKE);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
         g.setColor(entityColor);
-        g.drawLine(xC - 3, yC, xC + 3, yC);
-        g.drawLine(xC, yC - 3, xC, yC + 3);
+        g.drawLine(xC - addCrossLegLength, yC, xC + addCrossLegLength, yC);
+        g.drawLine(xC, yC - addCrossLegLength, xC, yC + addCrossLegLength);
 
         g2.setStroke(stroke);
         g2.setColor(color);
