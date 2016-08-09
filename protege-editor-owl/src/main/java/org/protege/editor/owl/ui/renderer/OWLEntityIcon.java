@@ -13,15 +13,24 @@ public abstract class OWLEntityIcon implements Icon {
 
     private static int DEFAULT_PADDING_PX = 2;
 
-    private SizeBias sizeBias;
+    private final SizeBias sizeBias;
 
-    protected OWLEntityIcon(SizeBias sizeBias) {
+    private final FillType fillType;
+
+    protected OWLEntityIcon(SizeBias sizeBias, FillType fillType) {
         this.sizeBias = sizeBias;
+        this.fillType = fillType;
+    }
+
+    public abstract Color getEntityColor();
+
+    public FillType getFillType() {
+        return fillType;
     }
 
     protected int getSize() {
         int size;
-        int fontSize = OWLRendererPreferences.getInstance().getFontSize();
+        int fontSize = 12;//OWLRendererPreferences.getInstance().getFontSize();
         int idealSize = fontSize + getPadding() * 2;
         if(sizeBias.equals(SizeBias.EVEN)) {
             size = (idealSize / 2) * 2;
@@ -64,8 +73,13 @@ public abstract class OWLEntityIcon implements Icon {
         return getSize();
     }
     
-    public static enum SizeBias {
+    public enum SizeBias {
         ODD,
         EVEN
+    }
+
+    public enum FillType {
+        FILLED,
+        HOLLOW
     }
 }

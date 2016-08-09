@@ -12,6 +12,8 @@ public class OWLClassIcon extends OWLEntityIcon {
 
     public static final Color COLOR = OWLSystemColors.getOWLClassColor();
 
+    public static final BasicStroke HOLLOW_STROKE = new BasicStroke(2);
+
     private Type type;
 
     public enum Type {
@@ -19,10 +21,22 @@ public class OWLClassIcon extends OWLEntityIcon {
         DEFINED
     }
 
+    public OWLClassIcon() {
+        this(Type.PRIMITIVE, FillType.FILLED);
+    }
 
     public OWLClassIcon(Type type) {
-        super(SizeBias.EVEN);
+        this(type, FillType.FILLED);
+    }
+
+    public OWLClassIcon(Type type, FillType fillType) {
+        super(SizeBias.EVEN, fillType);
         this.type = type;
+    }
+
+    @Override
+    public Color getEntityColor() {
+        return COLOR;
     }
 
     /**
@@ -36,15 +50,31 @@ public class OWLClassIcon extends OWLEntityIcon {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         Color oldColor = g.getColor();
-        g.setColor(Color.LIGHT_GRAY);
-        int size = getSize() - 2 * getPadding();
-        g.fillOval(x, y, size, size);
-        g.setColor(COLOR);
+        Stroke oldStroke = g2.getStroke();
 
-        g.fillOval(x + 1, y + 1, size - 2, size - 2);
+        int size = getSize() - 2 * getPadding();
+
+        if(getFillType() == FillType.FILLED) {
+            g.setColor(Color.LIGHT_GRAY);
+            g.fillOval(x, y, size, size);
+            g.setColor(COLOR);
+            g.fillOval(x + 1, y + 1, size - 2, size - 2);
+        }
+        else {
+            g2.setStroke(HOLLOW_STROKE);
+            g.setColor(getEntityColor());
+            g.drawOval(x + 1, y + 1, size - 2, size - 2);
+        }
+
+
 
         if (type.equals(Type.DEFINED)) {
-            g2.setColor(Color.WHITE);
+            if (getFillType() == FillType.FILLED) {
+                g2.setColor(Color.WHITE);
+            }
+            else {
+                g2.setColor(getEntityColor());
+            }
             int centreSize = (int) Math.sqrt(size / 2 * size / 2);
             int boxWidth = (centreSize / 2) * 2;
             int boxHeight = (centreSize / 5) * 5;
@@ -58,7 +88,7 @@ public class OWLClassIcon extends OWLEntityIcon {
         }
 
         g.setColor(oldColor);
-
+        g2.setStroke(oldStroke);
         g.translate(-getPadding(), -getPadding());
 
     }

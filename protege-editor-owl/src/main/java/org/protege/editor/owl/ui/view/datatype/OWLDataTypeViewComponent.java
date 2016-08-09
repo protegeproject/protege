@@ -11,6 +11,7 @@ import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.protege.editor.owl.model.util.OWLEntityDeleter;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.list.OWLObjectList;
+import org.protege.editor.owl.ui.renderer.*;
 import org.protege.editor.owl.ui.view.ChangeListenerMediator;
 import org.protege.editor.owl.ui.view.Findable;
 import org.protege.editor.owl.ui.view.OWLSelectionViewAction;
@@ -87,7 +88,7 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
 
 
     private void setupActions() {
-        final DisposableAction addDatatypeAction = new DisposableAction("Add datatype", OWLIcons.getIcon("datarange.add.png")) {
+        final DisposableAction addDatatypeAction = new DisposableAction("Add datatype", new AddEntityIcon(new OWLDatatypeIcon(), OWLSystemColors.getOWLDatatypeColor())) {
 
             public void actionPerformed(ActionEvent event) {
                 createNewDatatype();
@@ -98,7 +99,7 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
             }
         };
 
-        final OWLSelectionViewAction deleteDatatypeAction = new OWLSelectionViewAction("Delete datatype", OWLIcons.getIcon("datarange.remove.png")) {
+        final OWLSelectionViewAction deleteDatatypeAction = new OWLSelectionViewAction("Delete datatype", new DeleteEntityIcon(new OWLDatatypeIcon(OWLEntityIcon.FillType.HOLLOW))) {
 
 
 

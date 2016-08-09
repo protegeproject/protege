@@ -11,6 +11,10 @@ import org.protege.editor.owl.model.util.OWLEntityDeleter;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.action.DeleteIndividualAction;
 import org.protege.editor.owl.ui.list.OWLObjectList;
+import org.protege.editor.owl.ui.renderer.AddEntityIcon;
+import org.protege.editor.owl.ui.renderer.OWLEntityIcon;
+import org.protege.editor.owl.ui.renderer.OWLIndividualIcon;
+import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.protege.editor.owl.ui.view.ChangeListenerMediator;
 import org.protege.editor.owl.ui.view.CreateNewTarget;
 import org.protege.editor.owl.ui.view.Deleteable;
@@ -241,7 +245,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
     private class AddIndividualAction extends DisposableAction {
 
         public AddIndividualAction() {
-            super("Add individual", OWLIcons.getIcon("individual.add.png"));
+            super("Add individual", new AddEntityIcon(new OWLIndividualIcon(OWLEntityIcon.FillType.FILLED), OWLSystemColors.getOWLIndividualColor()));
         }
 
         public void actionPerformed(ActionEvent e) {
