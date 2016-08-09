@@ -60,7 +60,7 @@ public class OWLObjectPropertyHierarchyViewComponent
 
 
     protected Icon getSibIcon() {
-        return OWLIcons.getIcon("property.object.addsib.png");
+        return new AddSiblingIcon(new OWLObjectPropertyIcon());
     }
 
 

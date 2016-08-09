@@ -7,10 +7,7 @@ import org.protege.editor.owl.model.selection.SelectionDriver;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.action.AbstractDeleteEntityAction;
 import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
-import org.protege.editor.owl.ui.renderer.AddChildIcon;
-import org.protege.editor.owl.ui.renderer.DeleteEntityIcon;
-import org.protege.editor.owl.ui.renderer.OWLAnnotationPropertyIcon;
-import org.protege.editor.owl.ui.renderer.OWLEntityIcon;
+import org.protege.editor.owl.ui.renderer.*;
 import org.protege.editor.owl.ui.view.AbstractOWLEntityHierarchyViewComponent;
 import org.protege.editor.owl.ui.view.CreateNewChildTarget;
 import org.protege.editor.owl.ui.view.CreateNewSiblingTarget;
@@ -50,7 +47,7 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
             }
         }, "A", "A");
 
-        addAction(new AbstractOWLTreeAction<OWLAnnotationProperty>("Add sibling property", OWLIcons.getIcon("property.annotation.addsib.png"),
+        addAction(new AbstractOWLTreeAction<OWLAnnotationProperty>("Add sibling property", new AddSiblingIcon(new OWLAnnotationPropertyIcon()),
                 getTree().getSelectionModel()) {
 
             public void actionPerformed(ActionEvent event) {
