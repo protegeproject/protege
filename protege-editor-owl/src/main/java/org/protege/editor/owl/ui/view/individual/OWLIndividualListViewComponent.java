@@ -245,7 +245,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
     private class AddIndividualAction extends DisposableAction {
 
         public AddIndividualAction() {
-            super("Add individual", new AddEntityIcon(new OWLIndividualIcon(OWLEntityIcon.FillType.FILLED), OWLSystemColors.getOWLIndividualColor()));
+            super("Add individual", new AddEntityIcon(new OWLIndividualIcon()));
         }
 
         public void actionPerformed(ActionEvent e) {

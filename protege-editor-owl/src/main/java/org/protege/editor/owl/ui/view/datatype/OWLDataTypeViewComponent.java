@@ -88,7 +88,7 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
 
 
     private void setupActions() {
-        final DisposableAction addDatatypeAction = new DisposableAction("Add datatype", new AddEntityIcon(new OWLDatatypeIcon(), OWLSystemColors.getOWLDatatypeColor())) {
+        final DisposableAction addDatatypeAction = new DisposableAction("Add datatype", new AddEntityIcon(new OWLDatatypeIcon())) {
 
             public void actionPerformed(ActionEvent event) {
                 createNewDatatype();
