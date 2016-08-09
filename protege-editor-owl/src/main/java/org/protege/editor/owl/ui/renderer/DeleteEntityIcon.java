@@ -11,15 +11,10 @@ import java.awt.*;
 public class DeleteEntityIcon implements Icon {
 
 
-    private static final BasicStroke DELETE_SYMBOL_STROKE = new BasicStroke(2);
-
-    private final Icon entityIcon;
-
-    private final Color entityColor;
+    private final OWLEntityIcon entityIcon;
 
     public DeleteEntityIcon(OWLEntityIcon entityIcon) {
         this.entityIcon = entityIcon;
-        this.entityColor = entityIcon.getEntityColor();
     }
 
     @Override
@@ -29,19 +24,15 @@ public class DeleteEntityIcon implements Icon {
         Color color = g2.getColor();
         Object antiAliasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
 
-        Composite composite = g2.getComposite();
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
-
         entityIcon.paintIcon(c, g, x + 2, y + 1);
-
-        g2.setComposite(composite);
-
+        
         int xC = getIconWidth() / 2 + x;
         int yC = getIconHeight() / 2 + y;
-        g2.setStroke(DELETE_SYMBOL_STROKE);
-        g.setColor(entityColor);
-        g.drawLine(xC - 5, yC - 5, xC + 5, yC + 5);
-        g.drawLine(xC - 5, yC + 5, xC + 5, yC - 5);
+        g2.setStroke(EntityActionIcon.ACTION_STROKE);
+        g.setColor(entityIcon.getEntityColor());
+        int crossLegLen = 7;
+        g.drawLine(xC - crossLegLen, yC - crossLegLen, xC + crossLegLen, yC + crossLegLen);
+        g.drawLine(xC - crossLegLen, yC + crossLegLen, xC + crossLegLen, yC - crossLegLen);
 
         g2.setStroke(stroke);
         g2.setColor(color);

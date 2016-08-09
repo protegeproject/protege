@@ -11,8 +11,6 @@ import java.awt.geom.AffineTransform;
  */
 public class AddChildIcon implements Icon {
 
-    public static final BasicStroke ADD_STROKE = new BasicStroke(2);
-
     private final OWLEntityIcon entityIcon;
 
     public AddChildIcon(OWLEntityIcon entityIcon) {
@@ -22,6 +20,7 @@ public class AddChildIcon implements Icon {
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g;
+        EntityActionIcon.setupAlpha(c, g2);
         Color oldColor = g.getColor();
         Stroke oldStroke = g2.getStroke();
 
@@ -39,7 +38,7 @@ public class AddChildIcon implements Icon {
         int addX = x + getIconWidth() - 4;
         int addY = y + 4;
         int addLegLen = 2;
-        g2.setStroke(ADD_STROKE);
+        g2.setStroke(EntityActionIcon.ACTION_STROKE);
         g.drawLine(addX - addLegLen, addY, addX + addLegLen, addY);
         g.drawLine(addX, addY - addLegLen, addX, addY + addLegLen);
 
