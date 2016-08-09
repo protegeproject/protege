@@ -9,6 +9,8 @@ import org.protege.editor.owl.model.selection.SelectionDriver;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
 import org.protege.editor.owl.ui.action.DeleteClassAction;
+import org.protege.editor.owl.ui.renderer.AddChildIcon;
+import org.protege.editor.owl.ui.renderer.OWLClassIcon;
 import org.protege.editor.owl.ui.tree.OWLObjectTreeNode;
 import org.protege.editor.owl.ui.tree.OWLTreeDragAndDropHandler;
 import org.protege.editor.owl.ui.tree.OWLTreePreferences;
@@ -41,7 +43,7 @@ import java.util.List;
 public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarchyViewComponent
         implements CreateNewTarget, CreateNewChildTarget, CreateNewSiblingTarget, SelectionDriver {
 
-    private static final Icon ADD_SUB_ICON = OWLIcons.getIcon("class.add.sub.png");
+    private static final Icon ADD_SUB_ICON = new AddChildIcon(new OWLClassIcon());
 
     private static final Icon ADD_SIBLING_ICON = OWLIcons.getIcon("class.add.sib.png");
 

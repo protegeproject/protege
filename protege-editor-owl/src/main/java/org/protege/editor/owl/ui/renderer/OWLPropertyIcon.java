@@ -36,7 +36,7 @@ public abstract class OWLPropertyIcon extends OWLEntityIcon {
         if(getFillType() == FillType.FILLED) {
             g2.setColor(Color.GRAY);
             int fillHeight = 2 * height / 3;
-            int y1 = yOffset + height / 6 + OWLRendererPreferences.getInstance().getFontSize() / 10;
+            int y1 = yOffset + height / 6;
             g2.fillRect(xOffset, y1, width, fillHeight);//, 4, 4);
             g2.setColor(iconColor);
             g2.fillRect(xOffset + 1, y1 + 1, width - 2, fillHeight - 2);//, 4, 4);
@@ -45,7 +45,7 @@ public abstract class OWLPropertyIcon extends OWLEntityIcon {
             g2.setStroke(HOLLOW_STROKE);
             g2.setColor(getEntityColor());
             int fillHeight = 2 * height / 3;
-            int y1 = yOffset + height / 6 + OWLRendererPreferences.getInstance().getFontSize() / 10;
+            int y1 = yOffset + height / 6;
             g2.drawRect(xOffset + 1, y1 + 1, width - 2, fillHeight - 2);//, 4, 4);
         }
         g2.setStroke(oldStroke);

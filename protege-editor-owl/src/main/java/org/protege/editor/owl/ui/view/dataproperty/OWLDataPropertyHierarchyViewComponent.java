@@ -4,6 +4,7 @@ import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.selection.SelectionDriver;
 import org.protege.editor.owl.ui.OWLIcons;
+import org.protege.editor.owl.ui.renderer.AddChildIcon;
 import org.protege.editor.owl.ui.renderer.DeleteEntityIcon;
 import org.protege.editor.owl.ui.renderer.OWLDataPropertyIcon;
 import org.protege.editor.owl.ui.renderer.OWLEntityIcon;
@@ -59,7 +60,7 @@ public class OWLDataPropertyHierarchyViewComponent
 
 
     protected Icon getSubIcon() {
-        return OWLIcons.getIcon("property.data.addsub.png");
+        return new AddChildIcon(new OWLDataPropertyIcon());
     }
 
 

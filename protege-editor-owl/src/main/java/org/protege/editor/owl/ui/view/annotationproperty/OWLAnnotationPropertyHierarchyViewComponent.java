@@ -7,6 +7,7 @@ import org.protege.editor.owl.model.selection.SelectionDriver;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.action.AbstractDeleteEntityAction;
 import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
+import org.protege.editor.owl.ui.renderer.AddChildIcon;
 import org.protege.editor.owl.ui.renderer.DeleteEntityIcon;
 import org.protege.editor.owl.ui.renderer.OWLAnnotationPropertyIcon;
 import org.protege.editor.owl.ui.renderer.OWLEntityIcon;
@@ -38,7 +39,7 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
         implements CreateNewChildTarget, CreateNewSiblingTarget, SelectionDriver {
 
     protected void performExtraInitialisation() throws Exception {
-        addAction(new AbstractOWLTreeAction<OWLAnnotationProperty>("Add sub property", OWLIcons.getIcon("property.annotation.addsub.png"),
+        addAction(new AbstractOWLTreeAction<OWLAnnotationProperty>("Add sub property", new AddChildIcon(new OWLAnnotationPropertyIcon()),
                 getTree().getSelectionModel()) {
             public void actionPerformed(ActionEvent event) {
                 createNewChild();
