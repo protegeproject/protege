@@ -2,43 +2,48 @@ package org.protege.editor.owl.ui.renderer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 
 /**
  * Matthew Horridge
  * Stanford Center for Biomedical Informatics Research
  * 9 Aug 16
  */
-public class AddChildIcon implements Icon {
+public class AddSiblingIcon implements Icon {
+
 
     public static final BasicStroke ADD_STROKE = new BasicStroke(2);
 
     private final OWLEntityIcon entityIcon;
 
-    public AddChildIcon(OWLEntityIcon entityIcon) {
+    public AddSiblingIcon(OWLEntityIcon entityIcon) {
         this.entityIcon = entityIcon;
     }
 
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
+
         Graphics2D g2 = (Graphics2D) g;
+
         Color oldColor = g.getColor();
         Stroke oldStroke = g2.getStroke();
 
-        int cX0 = x + getIconWidth() / 4;
-        int cY0 = y + getIconHeight() / 4;
+        int cx0 = x + getIconWidth() / 2 - 2;
+        int cy0 = y + getIconHeight() / 4;
 
-        int cX1 = x - 1 +  (getIconWidth() * 3) / 4;
-        int cY1 = y - 1 + (getIconHeight() * 3) / 4;
+        int cx1 = x + getIconWidth() / 2 - 2;
+        int cy1 = y + getIconHeight() * 3 / 4;
 
         g.setColor(entityIcon.getEntityColor());
 
-        g.drawLine(cX0, cY0, cX0, cY1);
-        g.drawLine(cX0, cY1, cX1, cY1);
+        int backLegX = x + getIconWidth() / 4 - 3;
+        g.drawLine(cx0, cy0, backLegX, cy0);
+        g.drawLine(cx1, cy1, backLegX, cy1);
+        g.drawLine(backLegX, cy0, backLegX, cy1);
 
-        int addX = x + getIconWidth() - 4;
-        int addY = y + 4;
+        int addX = x + getIconWidth() - 3;
+        int addY = cy1;
         int addLegLen = 2;
+
         g2.setStroke(ADD_STROKE);
         g.drawLine(addX - addLegLen, addY, addX + addLegLen, addY);
         g.drawLine(addX, addY - addLegLen, addX, addY + addLegLen);
@@ -47,22 +52,22 @@ public class AddChildIcon implements Icon {
         g.setColor(oldColor);
 
         double scaleFactor = 0.7;
-        g.translate(cX0, cY0);
-        int parX = -entityIcon.getIconWidth() / 2;
-        int parY = -entityIcon.getIconHeight() / 2;
+        g.translate(cx0, cy0);
+        int topSibX = -entityIcon.getIconWidth() / 2;
+        int topSibY = -entityIcon.getIconHeight() / 2;
 
         g2.scale(scaleFactor, scaleFactor);
-        entityIcon.paintIcon(c, g, parX, parY);
+        entityIcon.paintIcon(c, g, topSibX, topSibY);
         g2.scale(1 / scaleFactor, 1 / scaleFactor);
-        g.translate(-cX0, -cY0);
+        g.translate(-cx0, -cy0);
 
-        g.translate(cX1, cY1);
-        int childX = -entityIcon.getIconWidth() / 2;
-        int childY = -entityIcon.getIconHeight() / 2;
+        g.translate(cx1, cy1);
+        int botSibX = -entityIcon.getIconWidth() / 2;
+        int botSibY = -entityIcon.getIconHeight() / 2;
         g2.scale(scaleFactor, scaleFactor);
-        entityIcon.paintIcon(c, g, childX, childY);
+        entityIcon.paintIcon(c, g, botSibX, botSibY);
         g2.scale(1 / scaleFactor, 1 / scaleFactor);
-        g.translate(-cX1, -cY1);
+        g.translate(-cx1, -cy1);
 
     }
 

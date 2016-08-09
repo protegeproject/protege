@@ -10,6 +10,7 @@ import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
 import org.protege.editor.owl.ui.action.DeleteClassAction;
 import org.protege.editor.owl.ui.renderer.AddChildIcon;
+import org.protege.editor.owl.ui.renderer.AddSiblingIcon;
 import org.protege.editor.owl.ui.renderer.OWLClassIcon;
 import org.protege.editor.owl.ui.tree.OWLObjectTreeNode;
 import org.protege.editor.owl.ui.tree.OWLTreeDragAndDropHandler;
@@ -43,9 +44,11 @@ import java.util.List;
 public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarchyViewComponent
         implements CreateNewTarget, CreateNewChildTarget, CreateNewSiblingTarget, SelectionDriver {
 
-    private static final Icon ADD_SUB_ICON = new AddChildIcon(new OWLClassIcon());
+    private static final OWLClassIcon OWL_CLASS_ICON = new OWLClassIcon();
 
-    private static final Icon ADD_SIBLING_ICON = OWLIcons.getIcon("class.add.sib.png");
+    private static final Icon ADD_SUB_ICON = new AddChildIcon(OWL_CLASS_ICON);
+
+    private static final Icon ADD_SIBLING_ICON = new AddSiblingIcon(OWL_CLASS_ICON);
 
     public void performExtraInitialisation() throws Exception {
         // Add in the manipulation actions - we won't need to keep track

@@ -4,10 +4,7 @@ import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.selection.SelectionDriver;
 import org.protege.editor.owl.ui.OWLIcons;
-import org.protege.editor.owl.ui.renderer.AddChildIcon;
-import org.protege.editor.owl.ui.renderer.DeleteEntityIcon;
-import org.protege.editor.owl.ui.renderer.OWLDataPropertyIcon;
-import org.protege.editor.owl.ui.renderer.OWLEntityIcon;
+import org.protege.editor.owl.ui.renderer.*;
 import org.protege.editor.owl.ui.view.AbstractOWLPropertyHierarchyViewComponent;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLObject;
@@ -65,7 +62,7 @@ public class OWLDataPropertyHierarchyViewComponent
 
 
     protected Icon getSibIcon() {
-        return OWLIcons.getIcon("property.data.addsib.png");
+        return new AddSiblingIcon(new OWLDataPropertyIcon());
     }
 
 
