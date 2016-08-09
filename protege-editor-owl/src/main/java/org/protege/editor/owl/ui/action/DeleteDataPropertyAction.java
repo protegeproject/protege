@@ -2,6 +2,9 @@ package org.protege.editor.owl.ui.action;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.OWLIcons;
+import org.protege.editor.owl.ui.renderer.DeleteEntityIcon;
+import org.protege.editor.owl.ui.renderer.OWLDataPropertyIcon;
+import org.protege.editor.owl.ui.renderer.OWLEntityIcon;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.util.OWLEntitySetProvider;
 
@@ -17,7 +20,7 @@ public class DeleteDataPropertyAction extends AbstractDeleteEntityAction<OWLData
 
     public DeleteDataPropertyAction(OWLEditorKit owlEditorKit, OWLEntitySetProvider<OWLDataProperty> propSetProvider) {
         super("Delete selected properties",
-              OWLIcons.getIcon("property.data.delete.png"),
+              new DeleteEntityIcon(new OWLDataPropertyIcon(OWLEntityIcon.FillType.HOLLOW)),
               owlEditorKit,
               owlEditorKit.getModelManager().getOWLHierarchyManager().getOWLDataPropertyHierarchyProvider(),
               propSetProvider);

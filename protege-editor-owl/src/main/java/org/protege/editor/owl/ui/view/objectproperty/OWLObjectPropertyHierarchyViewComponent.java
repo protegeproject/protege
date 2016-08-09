@@ -4,6 +4,10 @@ import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.selection.SelectionDriver;
 import org.protege.editor.owl.ui.OWLIcons;
+import org.protege.editor.owl.ui.renderer.DeleteEntityIcon;
+import org.protege.editor.owl.ui.renderer.OWLEntityIcon;
+import org.protege.editor.owl.ui.renderer.OWLObjectPropertyIcon;
+import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.protege.editor.owl.ui.view.AbstractOWLPropertyHierarchyViewComponent;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
@@ -64,7 +68,7 @@ public class OWLObjectPropertyHierarchyViewComponent
 
 
     protected Icon getDeleteIcon() {
-        return OWLIcons.getIcon("property.object.delete.png");
+        return new DeleteEntityIcon(new OWLObjectPropertyIcon(OWLEntityIcon.FillType.HOLLOW));
     }
 
     @Override

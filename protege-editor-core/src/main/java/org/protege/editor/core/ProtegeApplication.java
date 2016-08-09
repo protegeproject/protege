@@ -268,11 +268,11 @@ public class ProtegeApplication implements BundleActivator {
         ProtegeProperties.getInstance().put(ProtegeProperties.CLASS_COLOR_KEY, "CCA33D");
         ProtegeProperties.getInstance().put(ProtegeProperties.PROPERTY_COLOR_KEY, "306FA2");
         ProtegeProperties.getInstance().put(ProtegeProperties.OBJECT_PROPERTY_COLOR_KEY, "507DA0");
-        ProtegeProperties.getInstance().put(ProtegeProperties.DATA_PROPERTY_COLOR_KEY, "578C4D");
+        ProtegeProperties.getInstance().put(ProtegeProperties.DATA_PROPERTY_COLOR_KEY, "598C49");
         ProtegeProperties.getInstance().put(ProtegeProperties.INDIVIDUAL_COLOR_KEY, "723F6E");
         ProtegeProperties.getInstance().put(ProtegeProperties.ONTOLOGY_COLOR_KEY, "6B47A2");
-        ProtegeProperties.getInstance().put(ProtegeProperties.ANNOTATION_PROPERTY_COLOR_KEY, "50493F");
-        ProtegeProperties.getInstance().put(ProtegeProperties.DATATYPE_COLOR_KEY, "995F54");
+        ProtegeProperties.getInstance().put(ProtegeProperties.ANNOTATION_PROPERTY_COLOR_KEY, "504D4A");
+        ProtegeProperties.getInstance().put(ProtegeProperties.DATATYPE_COLOR_KEY, "997168");
 
         ProtegeProperties.getInstance().put(ProtegeProperties.CLASS_VIEW_CATEGORY, "Class");
         ProtegeProperties.getInstance().put(ProtegeProperties.OBJECT_PROPERTY_VIEW_CATEGORY, "Object property");

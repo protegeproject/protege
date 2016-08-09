@@ -2,8 +2,13 @@ package org.protege.editor.owl.ui.action;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.OWLIcons;
+import org.protege.editor.owl.ui.renderer.DeleteEntityIcon;
+import org.protege.editor.owl.ui.renderer.OWLClassIcon;
+import org.protege.editor.owl.ui.renderer.OWLEntityIcon;
+import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.util.OWLEntitySetProvider;
+import sun.dc.pr.PRError;
 
 
 /**
@@ -23,7 +28,7 @@ public class DeleteClassAction extends AbstractDeleteEntityAction<OWLClass> {
 
 	public DeleteClassAction(OWLEditorKit owlEditorKit, OWLEntitySetProvider<OWLClass> clsSetProvider) {
 		super("Delete selected classes",
-				OWLIcons.getIcon("class.delete.png"),
+				new DeleteEntityIcon(new OWLClassIcon(OWLClassIcon.Type.PRIMITIVE, OWLEntityIcon.FillType.HOLLOW)),
 				owlEditorKit,
 				owlEditorKit.getModelManager().getOWLHierarchyManager().getOWLClassHierarchyProvider(), clsSetProvider);
 		this.clsSetProvider = clsSetProvider;

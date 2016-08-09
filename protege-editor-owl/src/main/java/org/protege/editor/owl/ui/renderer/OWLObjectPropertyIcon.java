@@ -11,9 +11,17 @@ import java.awt.*;
 public class OWLObjectPropertyIcon extends OWLPropertyIcon {
 
     public static final Color COLOR = OWLSystemColors.getOWLObjectPropertyColor();
-    
+
     public OWLObjectPropertyIcon() {
-        super(COLOR);
+        this(FillType.FILLED);
     }
 
+    public OWLObjectPropertyIcon(FillType fillType) {
+        super(COLOR, fillType);
+    }
+
+    @Override
+    public Color getEntityColor() {
+        return COLOR;
+    }
 }

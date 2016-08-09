@@ -7,6 +7,9 @@ import org.protege.editor.owl.model.selection.SelectionDriver;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.action.AbstractDeleteEntityAction;
 import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
+import org.protege.editor.owl.ui.renderer.DeleteEntityIcon;
+import org.protege.editor.owl.ui.renderer.OWLAnnotationPropertyIcon;
+import org.protege.editor.owl.ui.renderer.OWLEntityIcon;
 import org.protege.editor.owl.ui.view.AbstractOWLEntityHierarchyViewComponent;
 import org.protege.editor.owl.ui.view.CreateNewChildTarget;
 import org.protege.editor.owl.ui.view.CreateNewSiblingTarget;
@@ -162,7 +165,7 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
          */
         public DeleteAnnotationPropertyAction() {
             super("Delete selected properties",
-                    OWLIcons.getIcon("property.annotation.delete.png"),
+                    new DeleteEntityIcon(new OWLAnnotationPropertyIcon(OWLEntityIcon.FillType.HOLLOW)),
                     getOWLEditorKit(),
                     getHierarchyProvider(),
                     new InternalOWLEntitySetProvider());
