@@ -30,7 +30,7 @@ public abstract class OWLEntityIcon implements Icon {
 
     protected int getSize() {
         int size;
-        int fontSize = 12;//OWLRendererPreferences.getInstance().getFontSize();
+        int fontSize = OWLRendererPreferences.getInstance().getFontSize();
         int idealSize = fontSize + getPadding() * 2;
         if(sizeBias.equals(SizeBias.EVEN)) {
             size = (idealSize / 2) * 2;
