@@ -128,12 +128,12 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
 
 
     private void processSelection() {
-        OWLEntity entity = getOWLWorkspace().getOWLSelectionModel().getSelectedEntity();
-        if (entity == null) {
+        OWLObject selectedObject = getOWLWorkspace().getOWLSelectionModel().getSelectedObject();
+        if(!(selectedObject instanceof OWLEntity)) {
             selectPanel(BLANK_PANEL);
+            return;
         }
-        else {
-            entity.accept(new OWLEntityVisitor() {
+        ((OWLEntity) selectedObject).accept(new OWLEntityVisitor() {
                 public void visit(@Nonnull OWLClass cls) {
                     selectPanel(CLASSES_PANEL);
                 }
@@ -163,7 +163,7 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
                     selectPanel(DATATYPES_PANEL);
                 }
             });
-        }
+
     }
 
 
