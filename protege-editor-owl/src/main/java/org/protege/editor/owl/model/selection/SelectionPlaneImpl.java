@@ -59,7 +59,7 @@ public class SelectionPlaneImpl implements SelectionPlane {
     private void handleHierarchyChange() {
         List<SelectionDriver> showingDrivers = selectionDrivers.stream()
                 .filter(driver -> driver.asComponent().isShowing())
-                .filter(driver -> driver.getSelection().isPresent())
+//                .filter(driver -> driver.getSelection().isPresent())
                 .collect(toList());
         if(lastShowingDrivers.equals(showingDrivers)) {
             return;
@@ -71,7 +71,8 @@ public class SelectionPlaneImpl implements SelectionPlane {
         }
         if(showingDrivers.size() == 1) {
             // Transmit selection
-            showingDrivers.get(0).getSelection().ifPresent(selectionModel::setSelectedObject);
+            OWLObject sel = showingDrivers.get(0).getSelection().orElse(null);
+            selectionModel.setSelectedObject(sel);
         }
         else {
             // Multiple selection drivers are showing.
@@ -79,10 +80,12 @@ public class SelectionPlaneImpl implements SelectionPlane {
             // If one driver has transmitted the selection in the past then we use that.  If no drivers have
             // transmitted the selection in the past then we select the first one that was registered.
             if(lastSelectionDriver.isPresent() && showingDrivers.contains(lastSelectionDriver.get())) {
-                lastSelectionDriver.get().getSelection().ifPresent(selectionModel::setSelectedObject);
+                OWLObject sel = lastSelectionDriver.get().getSelection().orElse(null);
+                selectionModel.setSelectedObject(sel);
             }
             else {
-                showingDrivers.get(0).getSelection().ifPresent(selectionModel::setSelectedObject);
+                OWLObject sel = showingDrivers.get(0).getSelection().orElse(null);
+                selectionModel.setSelectedObject(sel);
             }
         }
 
