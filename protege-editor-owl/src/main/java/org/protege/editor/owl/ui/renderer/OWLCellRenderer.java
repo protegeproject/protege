@@ -1092,7 +1092,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             int leftOffset = rcInsets.left;
             int topOffset = rcInsets.top;
             iconLabel.setBounds(leftOffset, topOffset, iconWidth, iconHeight);
-            textPane.setBounds(leftOffset + iconWidth + 2, topOffset, textWidth, textHeight);
+            textPane.setBounds(leftOffset + iconWidth, topOffset, textWidth, textHeight);
         }
 
         /**
