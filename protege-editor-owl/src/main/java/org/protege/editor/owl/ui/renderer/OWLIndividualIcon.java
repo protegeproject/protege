@@ -19,7 +19,7 @@ public class OWLIndividualIcon extends OWLEntityIcon {
     }
 
     public OWLIndividualIcon(FillType fillType) {
-        super(SizeBias.EVEN, fillType);
+        super(fillType);
     }
 
     @Override
@@ -33,30 +33,32 @@ public class OWLIndividualIcon extends OWLEntityIcon {
      * painting, e.g. the foreground or background color.
      */
     public void paintIcon(Component c, Graphics g, int x, int y) {
-        int xOffset = x + getPadding() + 1;
-        int yOffset = y + getPadding() + 1;
-        int width = getSize() - getPadding() * 2 - 2;
-        int height = getSize() - getPadding() * 2 - 2;
-        
         Graphics2D g2 = (Graphics2D) g.create();
-        Stroke oldStroke = g2.getStroke();
+        try {
+            int width = 12;
+            int height = 12;
 
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.rotate(Math.PI / 4, x + getSize() / 2, y + getSize() / 2);
-        if(getFillType() == FillType.FILLED) {
-            g2.setColor(Color.GRAY);
-            g2.fillRoundRect(xOffset, yOffset, width, height, 4, 4);
-            g2.setColor(COLOR);
-            g2.fillRoundRect(xOffset + 1, yOffset + 1, width - 2, height - 2, 4, 4);
+            int xOffset = x + getIconWidth() / 2 - width / 2;
+            int yOffset = y + getIconHeight() / 2 - height / 2;
+
+
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.rotate(Math.PI / 4, x + getIconWidth() / 2, y + getIconHeight() / 2);
+            if(getFillType() == FillType.FILLED) {
+                g2.setColor(Color.GRAY);
+                g2.fillRoundRect(xOffset, yOffset, width, height, 4, 4);
+                g2.setColor(COLOR);
+                g2.fillRoundRect(xOffset + 1, yOffset + 1, width - 2, height - 2, 4, 4);
+            }
+            else {
+                g2.setStroke(HOLLOW_STROKE);
+                g2.setColor(COLOR);
+                g2.drawRoundRect(xOffset + 1, yOffset + 1, width - 2, height - 2, 4, 4);
+
+            }
+        } finally {
+            g2.dispose();
         }
-        else {
-            g2.setStroke(HOLLOW_STROKE);
-            g2.setColor(COLOR);
-            g2.drawRoundRect(xOffset + 1, yOffset + 1, width - 2, height - 2, 4, 4);
-
-        }
-
-        g2.setStroke(oldStroke);
 
     }
 }

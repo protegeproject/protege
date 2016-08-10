@@ -19,59 +19,67 @@ public class AddChildIcon implements Icon {
 
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D) g;
-        EntityActionIcon.setupAlpha(c, g2);
-        Color oldColor = g.getColor();
-        Stroke oldStroke = g2.getStroke();
+        Graphics2D g2 = (Graphics2D) g.create();
+        try {
+            EntityActionIcon.setupAlpha(c, g2);
+            Color oldColor = g2.getColor();
+            Stroke oldStroke = g2.getStroke();
 
-        int cX0 = x + getIconWidth() / 4;
-        int cY0 = y + getIconHeight() / 4;
+            int iconWidth = 18;
+            int iconHeight = 18;
 
-        int cX1 = x - 1 +  (getIconWidth() * 3) / 4;
-        int cY1 = y - 1 + (getIconHeight() * 3) / 4;
+            int parCX = x + iconWidth / 4;
+            int parCY = y + iconHeight / 4;
 
-        g.setColor(entityIcon.getEntityColor());
+            int childCX = x +  (iconWidth * 3) / 4;
+            int childCY = y + (iconHeight * 3) / 4;
 
-        g.drawLine(cX0, cY0, cX0, cY1);
-        g.drawLine(cX0, cY1, cX1, cY1);
+            g2.setColor(entityIcon.getEntityColor());
 
-        int addX = x + getIconWidth() - 4;
-        int addY = y + 4;
-        int addLegLen = 2;
-        g2.setStroke(EntityActionIcon.ACTION_STROKE);
-        g.drawLine(addX - addLegLen, addY, addX + addLegLen, addY);
-        g.drawLine(addX, addY - addLegLen, addX, addY + addLegLen);
+            g2.drawLine(parCX, parCY, parCX, childCY);
+            g2.drawLine(parCX, childCY, childCX, childCY);
 
-        g2.setStroke(oldStroke);
-        g.setColor(oldColor);
+            int addX = x + iconWidth - 4;
+            int addY = y + 4;
+            int addLegLen = 2;
 
-        double scaleFactor = 0.7;
-        g.translate(cX0, cY0);
-        int parX = -entityIcon.getIconWidth() / 2;
-        int parY = -entityIcon.getIconHeight() / 2;
+            g2.setStroke(EntityActionIcon.ACTION_STROKE);
+            g2.drawLine(addX - addLegLen, addY, addX + addLegLen, addY);
+            g2.drawLine(addX, addY - addLegLen, addX, addY + addLegLen);
 
-        g2.scale(scaleFactor, scaleFactor);
-        entityIcon.paintIcon(c, g, parX, parY);
-        g2.scale(1 / scaleFactor, 1 / scaleFactor);
-        g.translate(-cX0, -cY0);
+            g2.setStroke(oldStroke);
+            g2.setColor(oldColor);
 
-        g.translate(cX1, cY1);
-        int childX = -entityIcon.getIconWidth() / 2;
-        int childY = -entityIcon.getIconHeight() / 2;
-        g2.scale(scaleFactor, scaleFactor);
-        entityIcon.paintIcon(c, g, childX, childY);
-        g2.scale(1 / scaleFactor, 1 / scaleFactor);
-        g.translate(-cX1, -cY1);
+            g2.translate(parCX, parCY);
+
+            double parentChildScaleFactor = 0.6;
+            g2.scale(parentChildScaleFactor, parentChildScaleFactor);
+            int parX = -entityIcon.getBaseSize() / 2;
+            int parY = -entityIcon.getBaseSize() / 2;
+            entityIcon.paintIcon(c, g2, parX, parY);
+            g2.scale(1 / parentChildScaleFactor, 1 / parentChildScaleFactor);
+            g2.translate(-parCX, -parCY);
+
+            g2.translate(childCX, childCY);
+            int childX = -entityIcon.getBaseSize() / 2;
+            int childY = -entityIcon.getBaseSize() / 2;
+            g2.scale(parentChildScaleFactor, parentChildScaleFactor);
+            entityIcon.paintIcon(c, g2, childX, childY);
+            g2.scale(1 / parentChildScaleFactor, 1 / parentChildScaleFactor);
+            g2.translate(-childCX, -childCY);
+        } finally {
+            g2.dispose();
+        }
 
     }
 
     @Override
     public int getIconWidth() {
-        return entityIcon.getIconWidth() + 2;
+        return 18;
     }
 
     @Override
     public int getIconHeight() {
-        return entityIcon.getIconHeight() + 2;
+        return 18;
     }
 }

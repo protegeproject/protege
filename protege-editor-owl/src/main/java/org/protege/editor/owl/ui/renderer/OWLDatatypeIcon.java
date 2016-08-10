@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.renderer;
 
-import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -20,7 +19,7 @@ public class OWLDatatypeIcon extends OWLEntityIcon {
     }
 
     public OWLDatatypeIcon(FillType fillType) {
-        super(SizeBias.EVEN, fillType);
+        super(fillType);
     }
 
     @Override
@@ -34,30 +33,27 @@ public class OWLDatatypeIcon extends OWLEntityIcon {
      * painting, e.g. the foreground or background color.
      */
     public void paintIcon(Component c, Graphics g, int x, int y) {
-        g.translate(getPadding(), getPadding());
+        Graphics2D g2 = (Graphics2D) g.create();
 
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        Color oldColor = g.getColor();
-        Stroke oldStroke = g2.getStroke();
+        try {
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        int size = getSize() - 2 * getPadding();
+            int size = 14;
 
-        if (getFillType() == FillType.FILLED) {
-            g.setColor(Color.LIGHT_GRAY);
-            g.fillOval(x, y, size, size);
-            g.setColor(COLOR);
-            g.fillOval(x + 1, y + 1, size - 2, size - 2);
+            if (getFillType() == FillType.FILLED) {
+                g2.setColor(Color.LIGHT_GRAY);
+                g2.fillOval(x + 1, y + 1, size, size);
+                g2.setColor(COLOR);
+                g2.fillOval(x + 2, y + 2, size - 2, size - 2);
+            }
+            else {
+                g2.setColor(COLOR);
+                g2.setStroke(HOLLOW_STROKE);
+                g2.drawOval(x + 2, y + 2, size - 2, size - 2);
+            }
+        } finally {
+            g2.dispose();
         }
-        else {
-            g.setColor(COLOR);
-            g2.setStroke(HOLLOW_STROKE);
-            g.drawOval(x + 1, y + 1, size - 2, size - 2);
-        }
-
-        g2.setStroke(oldStroke);
-        g.setColor(oldColor);
-        g.translate(-getPadding(), -getPadding());
 
     }
 }
