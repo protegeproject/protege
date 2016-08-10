@@ -1073,8 +1073,9 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             int deprecatedHeight;
             Insets rcInsets = renderingComponent.getInsets();
 
-            iconWidth = iconLabel.getPreferredSize().width;
-            iconHeight = iconLabel.getPreferredSize().height;
+            Icon icon = iconLabel.getIcon();
+            iconWidth = icon == null ? 0 : icon.getIconWidth();
+            iconHeight = icon == null ? 0 : icon.getIconHeight();
             if (preferredWidth != -1) {
                 textWidth = preferredWidth - iconWidth - rcInsets.left - rcInsets.right;
                 View v = textPane.getUI().getRootView(textPane);
@@ -1091,7 +1092,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             int leftOffset = rcInsets.left;
             int topOffset = rcInsets.top;
             iconLabel.setBounds(leftOffset, topOffset, iconWidth, iconHeight);
-            textPane.setBounds(leftOffset + iconWidth, topOffset, textWidth, textHeight);
+            textPane.setBounds(leftOffset + iconWidth + 2, topOffset, textWidth, textHeight);
         }
 
         /**

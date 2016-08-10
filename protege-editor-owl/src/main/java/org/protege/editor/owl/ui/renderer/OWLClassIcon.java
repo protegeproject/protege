@@ -30,7 +30,7 @@ public class OWLClassIcon extends OWLEntityIcon {
     }
 
     public OWLClassIcon(Type type, FillType fillType) {
-        super(SizeBias.EVEN, fillType);
+        super(fillType);
         this.type = type;
     }
 
@@ -45,51 +45,46 @@ public class OWLClassIcon extends OWLEntityIcon {
      * painting, e.g. the foreground or background color.
      */
     public void paintIcon(Component c, Graphics g, int x, int y) {
-        g.translate(getPadding(), getPadding());
+        Graphics2D g2 = (Graphics2D) g.create();
+        try {
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        Color oldColor = g.getColor();
-        Stroke oldStroke = g2.getStroke();
+            final int clsSize = 14;
 
-        int size = getSize() - 2 * getPadding();
-
-        if(getFillType() == FillType.FILLED) {
-            g.setColor(Color.LIGHT_GRAY);
-            g.fillOval(x, y, size, size);
-            g.setColor(COLOR);
-            g.fillOval(x + 1, y + 1, size - 2, size - 2);
-        }
-        else {
-            g2.setStroke(HOLLOW_STROKE);
-            g.setColor(getEntityColor());
-            g.drawOval(x + 1, y + 1, size - 2, size - 2);
-        }
-
-
-
-        if (type.equals(Type.DEFINED)) {
-            if (getFillType() == FillType.FILLED) {
-                g2.setColor(Color.WHITE);
+            if(getFillType() == FillType.FILLED) {
+                g2.setColor(Color.LIGHT_GRAY);
+                g2.fillOval(x + 1, y + 1, clsSize, clsSize);
+                g2.setColor(COLOR);
+                g2.fillOval(x + 2, y + 2, clsSize - 2, clsSize - 2);
             }
             else {
+                g2.setStroke(HOLLOW_STROKE);
                 g2.setColor(getEntityColor());
+                g2.drawOval(x + 2, y + 2, clsSize - 2, clsSize - 2);
             }
-            int centreSize = (int) Math.sqrt(size / 2 * size / 2);
-            int boxWidth = (centreSize / 2) * 2;
-            int boxHeight = (centreSize / 5) * 5;
-            int boxX = (size - boxWidth) / 2;
-            int boxY = (size - boxHeight) / 2;
-            g2.fillRect(x + boxX, y + boxY, boxWidth, boxHeight);
-            int stripeHeight = boxHeight / 5;
-            g2.setColor(COLOR);
-            g2.fillRect(x + boxX, y + boxY + stripeHeight, boxWidth, stripeHeight);
-            g2.fillRect(x + boxX, y + boxY + stripeHeight * 3, boxWidth, stripeHeight);
+
+
+            if (type.equals(Type.DEFINED)) {
+                if (getFillType() == FillType.FILLED) {
+                    g2.setColor(Color.WHITE);
+                }
+                else {
+                    g2.setColor(getEntityColor());
+                }
+                int centreSize = (int) Math.sqrt(clsSize / 2 * clsSize / 2);
+                int boxWidth = (centreSize / 2) * 2;
+                int boxHeight = (centreSize / 5) * 5;
+                int boxX = 1 + (clsSize - boxWidth) / 2;
+                int boxY = 1 + (clsSize - boxHeight) / 2;
+                g2.fillRect(x + boxX, y + boxY, boxWidth, boxHeight);
+                int stripeHeight = boxHeight / 5;
+                g2.setColor(COLOR);
+                g2.fillRect(x + boxX, y + boxY + stripeHeight, boxWidth, stripeHeight);
+                g2.fillRect(x + boxX, y + boxY + stripeHeight * 3, boxWidth, stripeHeight);
+            }
+
+        } finally {
+            g2.dispose();
         }
-
-        g.setColor(oldColor);
-        g2.setStroke(oldStroke);
-        g.translate(-getPadding(), -getPadding());
-
     }
 }
