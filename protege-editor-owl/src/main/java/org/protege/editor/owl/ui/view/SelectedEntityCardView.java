@@ -129,8 +129,11 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
 
     private void processSelection() {
         OWLObject selectedObject = getOWLWorkspace().getOWLSelectionModel().getSelectedObject();
-        if(!(selectedObject instanceof OWLEntity)) {
+        if(selectedObject == null) {
             selectPanel(BLANK_PANEL);
+            return;
+        }
+        if(!(selectedObject instanceof OWLEntity)) {
             return;
         }
         ((OWLEntity) selectedObject).accept(new OWLEntityVisitor() {
