@@ -253,6 +253,9 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
                 setGlobalSelection(selEntity);
             }
         }
+        else {
+            setGlobalSelection(null);
+        }
 
         updateHeader(selEntity);
     }
