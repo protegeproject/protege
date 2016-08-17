@@ -4,6 +4,7 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.*;
 import org.semanticweb.owlapi.reasoner.impl.*;
 import org.semanticweb.owlapi.util.Version;
+import uk.ac.manchester.cs.owl.owlapi.OWLDataFactoryImpl;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
@@ -36,7 +37,7 @@ public class NoOpReasoner implements OWLReasoner {
 
     public NoOpReasoner(OWLOntology rootOntology) {
         this.rootOntology = rootOntology;
-        OWLDataFactory df = rootOntology.getOWLOntologyManager().getOWLDataFactory();
+        OWLDataFactory df = new OWLDataFactoryImpl();
         OWL_THING = df.getOWLThing();
         OWL_NOTHING = df.getOWLNothing();
         OWL_TOP_OBJECT_PROPERTY = df.getOWLTopObjectProperty();
