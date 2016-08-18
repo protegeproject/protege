@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  */
 public class PubMedLinkExtractor implements LinkExtractor {
 
-    public static final Pattern PUB_MED_ID_PATTERN = Pattern.compile("PMID:(\\d+)");
+    public static final Pattern PUB_MED_ID_PATTERN = Pattern.compile("PMID:(\\d+)", Pattern.CASE_INSENSITIVE);
 
     @Override
     public Optional<Link> extractLink(String s) {

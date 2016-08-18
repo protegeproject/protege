@@ -30,6 +30,20 @@ public class PubMedLinkExtractor_TestCase {
     }
 
     @Test
+    public void shouldIgnoreCase_AllLowerCase() {
+        String id = "pmid:123456";
+        Optional<Integer> extractedId = extractor.extractPubMedId(id);
+        assertThat(extractedId, is(Optional.of(123456)));
+    }
+
+    @Test
+    public void shouldIgnoreCase_MixedCase() {
+        String id = "PMId:123456";
+        Optional<Integer> extractedId = extractor.extractPubMedId(id);
+        assertThat(extractedId, is(Optional.of(123456)));
+    }
+
+    @Test
     public void shouldNotExtractIdInCaseOfMissingPrefix() {
         String id = "123456";
         Optional<Integer> extractedId = extractor.extractPubMedId(id);
