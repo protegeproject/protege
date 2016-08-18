@@ -15,45 +15,45 @@ import static org.hamcrest.core.Is.is;
  */
 public class PubMedLinkExtractor_TestCase {
 
-    private PubMedLinkExtractor extractor;
+    private RegExBasedLinkExtractor extractor;
 
     @Before
     public void setUp()  {
-        extractor = new PubMedLinkExtractor();
+        extractor = PubMedLinkExtractor.createExtractor();
     }
 
     @Test
     public void shouldExtractId() {
         String id = "PMID:123456";
-        Optional<Integer> extractedId = extractor.extractPubMedId(id);
-        assertThat(extractedId, is(Optional.of(123456)));
+        Optional<String> extractedId = extractor.extractLinkLiteral(id);
+        assertThat(extractedId, is(Optional.of(PubMedLinkExtractor.PUBMED_URL_BASE + "123456")));
     }
 
     @Test
     public void shouldIgnoreCase_AllLowerCase() {
         String id = "pmid:123456";
-        Optional<Integer> extractedId = extractor.extractPubMedId(id);
-        assertThat(extractedId, is(Optional.of(123456)));
+        Optional<String> extractedId = extractor.extractLinkLiteral(id);
+        assertThat(extractedId, is(Optional.of(PubMedLinkExtractor.PUBMED_URL_BASE + "123456")));
     }
 
     @Test
     public void shouldIgnoreCase_MixedCase() {
         String id = "PMId:123456";
-        Optional<Integer> extractedId = extractor.extractPubMedId(id);
-        assertThat(extractedId, is(Optional.of(123456)));
+        Optional<String> extractedId = extractor.extractLinkLiteral(id);
+        assertThat(extractedId, is(Optional.of(PubMedLinkExtractor.PUBMED_URL_BASE + "123456")));
     }
 
     @Test
     public void shouldNotExtractIdInCaseOfMissingPrefix() {
         String id = "123456";
-        Optional<Integer> extractedId = extractor.extractPubMedId(id);
+        Optional<String> extractedId = extractor.extractLinkLiteral(id);
         assertThat(extractedId.isPresent(), is(false));
     }
 
     @Test
     public void shouldNotExtractIdInCaseOfWhiteSpace() {
         String id = "PMID:123 456";
-        Optional<Integer> extractedId = extractor.extractPubMedId(id);
+        Optional<String> extractedId = extractor.extractLinkLiteral(id);
         assertThat(extractedId.isPresent(), is(false));
     }
 }

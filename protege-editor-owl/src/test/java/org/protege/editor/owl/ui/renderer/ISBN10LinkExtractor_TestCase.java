@@ -15,40 +15,40 @@ import static org.hamcrest.core.Is.is;
  */
 public class ISBN10LinkExtractor_TestCase {
 
-    private ISBN10LinkExtractor extractor;
+    private RegExBasedLinkExtractor extractor;
 
     @Before
     public void setUp() {
-        extractor = new ISBN10LinkExtractor();
+        extractor = ISBN10LinkExtractor.createExtractor();
     }
 
     @Test
     public void shouldExtractISBN10() {
-        Optional<String> extractedIsbn = extractor.extractISBN("ISBN:0123456789");
-        assertThat(extractedIsbn, is(Optional.of("0123456789")));
+        Optional<String> extractedIsbn = extractor.extractLinkLiteral("ISBN:0123456789");
+        assertThat(extractedIsbn, is(Optional.of(ISBN10LinkExtractor.URL_BASE + "0123456789")));
     }
 
     @Test
     public void shouldNotExtractInvalidISBN10_TooShort() {
-        Optional<String> extractedIsbn = extractor.extractISBN("ISBN:012345678");
+        Optional<String> extractedIsbn = extractor.extractLinkLiteral("ISBN:012345678");
         assertThat(extractedIsbn.isPresent(), is(false));
     }
 
     @Test
     public void shouldNotExtractInvalidISBN10_TooLong() {
-        Optional<String> extractedIsbn = extractor.extractISBN("ISBN:01234567890");
+        Optional<String> extractedIsbn = extractor.extractLinkLiteral("ISBN:01234567890");
         assertThat(extractedIsbn.isPresent(), is(false));
     }
 
     @Test
     public void shouldNotExtractInvalidISBN10_AlphaNumeric() {
-        Optional<String> extractedIsbn = extractor.extractISBN("ISBN:012345678A");
+        Optional<String> extractedIsbn = extractor.extractLinkLiteral("ISBN:012345678A");
         assertThat(extractedIsbn.isPresent(), is(false));
     }
 
     @Test
     public void shouldNotExtractInvalidISBN10_WhiteSpace() {
-        Optional<String> extractedIsbn = extractor.extractISBN("ISBN:0123 45678");
+        Optional<String> extractedIsbn = extractor.extractLinkLiteral("ISBN:0123 45678");
         assertThat(extractedIsbn.isPresent(), is(false));
     }
 
