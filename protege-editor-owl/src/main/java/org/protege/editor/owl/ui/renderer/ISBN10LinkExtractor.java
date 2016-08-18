@@ -1,10 +1,5 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.protege.editor.owl.ui.renderer.layout.ISBN10Link;
-import org.protege.editor.owl.ui.renderer.layout.Link;
-
-import java.util.Optional;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -12,22 +7,15 @@ import java.util.regex.Pattern;
  * Stanford Center for Biomedical Informatics Research
  * 18 Aug 16
  */
-public class ISBN10LinkExtractor implements LinkExtractor {
+public class ISBN10LinkExtractor {
 
-    private static final Pattern pattern = Pattern.compile("ISBN:(\\d{10})");
+    private static final Pattern PATTERN = Pattern.compile("ISBN:(\\d{10})", Pattern.CASE_INSENSITIVE);
 
-    @Override
-    public Optional<Link> extractLink(String s) {
-        return extractISBN(s).map(ISBN10Link::new);
-    }
+    public static final String URL_BASE = "http://www.isbnsearch.org/isbn/";
 
-    public Optional<String> extractISBN(String s) {
-        Matcher matcher = pattern.matcher(s);
-        if(matcher.matches()) {
-            return Optional.of(matcher.group(1));
-        }
-        else {
-            return Optional.empty();
-        }
+    public static final String REPLACEMENT = URL_BASE + "$1";
+
+    public static RegExBasedLinkExtractor createExtractor() {
+        return new RegExBasedLinkExtractor("ISBN-10", PATTERN, REPLACEMENT);
     }
 }

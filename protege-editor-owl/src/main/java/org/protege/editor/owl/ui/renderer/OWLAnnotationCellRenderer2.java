@@ -51,8 +51,9 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
     private InlineThumbnailRendering thumbnailRendering = InlineThumbnailRendering.DISPLAY_THUMBNAILS_INLINE;
 
     private final List<LinkExtractor> linkExtractors = Arrays.asList(
-            new PubMedLinkExtractor(),
-            new ISBN10LinkExtractor());
+            PubMedLinkExtractor.createExtractor(),
+            ISBN10LinkExtractor.createExtractor(),
+            new RegExBasedLinkExtractor("Wikipedia", Pattern.compile("wikipedia:(.+)", Pattern.CASE_INSENSITIVE), "https://wikipedia.org/wiki/$1"));
 
     public OWLAnnotationCellRenderer2(OWLEditorKit editorKit) {
         super();
