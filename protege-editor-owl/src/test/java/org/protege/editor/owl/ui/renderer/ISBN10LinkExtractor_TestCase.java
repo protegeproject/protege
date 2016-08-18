@@ -1,0 +1,56 @@
+package org.protege.editor.owl.ui.renderer;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.Optional;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+
+/**
+ * Matthew Horridge
+ * Stanford Center for Biomedical Informatics Research
+ * 18 Aug 16
+ */
+public class ISBN10LinkExtractor_TestCase {
+
+    private ISBN10LinkExtractor extractor;
+
+    @Before
+    public void setUp() {
+        extractor = new ISBN10LinkExtractor();
+    }
+
+    @Test
+    public void shouldExtractISBN10() {
+        Optional<String> extractedIsbn = extractor.extractISBN("ISBN:0123456789");
+        assertThat(extractedIsbn, is(Optional.of("0123456789")));
+    }
+
+    @Test
+    public void shouldNotExtractInvalidISBN10_TooShort() {
+        Optional<String> extractedIsbn = extractor.extractISBN("ISBN:012345678");
+        assertThat(extractedIsbn.isPresent(), is(false));
+    }
+
+    @Test
+    public void shouldNotExtractInvalidISBN10_TooLong() {
+        Optional<String> extractedIsbn = extractor.extractISBN("ISBN:01234567890");
+        assertThat(extractedIsbn.isPresent(), is(false));
+    }
+
+    @Test
+    public void shouldNotExtractInvalidISBN10_AlphaNumeric() {
+        Optional<String> extractedIsbn = extractor.extractISBN("ISBN:012345678A");
+        assertThat(extractedIsbn.isPresent(), is(false));
+    }
+
+    @Test
+    public void shouldNotExtractInvalidISBN10_WhiteSpace() {
+        Optional<String> extractedIsbn = extractor.extractISBN("ISBN:0123 45678");
+        assertThat(extractedIsbn.isPresent(), is(false));
+    }
+
+
+}

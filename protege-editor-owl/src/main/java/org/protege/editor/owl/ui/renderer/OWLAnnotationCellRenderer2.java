@@ -50,7 +50,9 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
 
     private InlineThumbnailRendering thumbnailRendering = InlineThumbnailRendering.DISPLAY_THUMBNAILS_INLINE;
 
-    private final List<LinkExtractor> linkExtractors = Collections.singletonList(new PubMedLinkExtractor());
+    private final List<LinkExtractor> linkExtractors = Arrays.asList(
+            new PubMedLinkExtractor(),
+            new ISBN10LinkExtractor());
 
     public OWLAnnotationCellRenderer2(OWLEditorKit editorKit) {
         super();
