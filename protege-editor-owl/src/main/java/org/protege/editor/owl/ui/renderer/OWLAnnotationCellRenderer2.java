@@ -53,7 +53,7 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
     private final List<LinkExtractor> linkExtractors = Arrays.asList(
             PubMedLinkExtractor.createExtractor(),
             ISBN10LinkExtractor.createExtractor(),
-            new RegExBasedLinkExtractor("Wikipedia", Pattern.compile("wikipedia:(.+)", Pattern.CASE_INSENSITIVE), "https://wikipedia.org/wiki/$1"));
+            WikipediaLinkExtractor.createExtractor());
 
     public OWLAnnotationCellRenderer2(OWLEditorKit editorKit) {
         super();
