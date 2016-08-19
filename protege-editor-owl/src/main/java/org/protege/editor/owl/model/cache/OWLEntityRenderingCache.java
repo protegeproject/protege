@@ -18,61 +18,61 @@ import java.util.Set;
  */
 public interface OWLEntityRenderingCache extends Disposable {
 
-    public void setOWLModelManager(OWLModelManager owlModelManager);
+    void setOWLModelManager(OWLModelManager owlModelManager);
 
 
-    public void rebuild();
+    void rebuild();
 
 
-    public void addRendering(OWLEntity owlEntity);
+    void addRendering(OWLEntity owlEntity);
 
 
-    public void removeRendering(OWLEntity owlEntity);
+    void removeRendering(OWLEntity owlEntity);
 
 
-    public void updateRendering(OWLEntity owlEntity);
+    void updateRendering(OWLEntity owlEntity);
 
 
-    public OWLEntity getOWLEntity(String rendering);
+    OWLEntity getOWLEntity(String rendering);
 
 
-    public OWLClass getOWLClass(String rendering);
+    OWLClass getOWLClass(String rendering);
 
 
-    public OWLObjectProperty getOWLObjectProperty(String rendering);
+    OWLObjectProperty getOWLObjectProperty(String rendering);
 
 
-    public OWLDataProperty getOWLDataProperty(String rendering);
+    OWLDataProperty getOWLDataProperty(String rendering);
 
 
-    public OWLAnnotationProperty getOWLAnnotationProperty(String rendering);
+    OWLAnnotationProperty getOWLAnnotationProperty(String rendering);
 
 
-    public OWLNamedIndividual getOWLIndividual(String rendering);
+    OWLNamedIndividual getOWLIndividual(String rendering);
 
 
-    public OWLDatatype getOWLDatatype(String rendering);
+    OWLDatatype getOWLDatatype(String rendering);
 
 
-    public Set<String> getOWLClassRenderings();
+    Set<String> getOWLClassRenderings();
 
 
-    public Set<String> getOWLObjectPropertyRenderings();
+    Set<String> getOWLObjectPropertyRenderings();
 
 
-    public Set<String> getOWLDataPropertyRenderings();
+    Set<String> getOWLDataPropertyRenderings();
 
 
-    public Set<String> getOWLAnnotationPropertyRenderings();
+    Set<String> getOWLAnnotationPropertyRenderings();
 
 
-    public Set<String> getOWLIndividualRenderings();
+    Set<String> getOWLIndividualRenderings();
 
 
-    public Set<String> getOWLDatatypeRenderings();
+    Set<String> getOWLDatatypeRenderings();
 
 
-    public Set<String> getOWLEntityRenderings();
+    Set<String> getOWLEntityRenderings();
 
 
     String getRendering(OWLEntity owlEntity);
