@@ -21,7 +21,9 @@ public class LogViewImpl implements LogView {
         view = new JPanel(new BorderLayout(7, 7));
         view.setPreferredSize(new Dimension(800, 600));
         JList<LogRecordElement> list = new JList<>(logRecordModel = new LogRecordModel());
-        view.add(new JScrollPane(list));
+        JScrollPane sp = new JScrollPane(list);
+        sp.getVerticalScrollBar().setUnitIncrement(15);
+        view.add(sp);
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton clearLogButton = new JButton("Clear log");
         clearLogButton.addActionListener(e -> clearView());

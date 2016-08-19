@@ -24,7 +24,8 @@ public class OWLClassAnnotationsViewComponent extends AbstractOWLClassViewCompon
         list = new OWLFrameList<>(getOWLEditorKit(), new OWLAnnotationsFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
         JScrollPane comp = new JScrollPane(list);
-        comp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        comp.getVerticalScrollBar().setUnitIncrement(20);
+        comp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         add(comp);
     }
 
