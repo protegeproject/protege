@@ -53,17 +53,15 @@ public class MacUIUtil {
             fileDialog = new FileDialog((Dialog) parent, title, FileDialog.SAVE);
         }
         fileDialog.setFilenameFilter((dir, name) -> {
-            if (extensions.isEmpty()) {
+            if (extensions == null || extensions.isEmpty()) {
                 return true;
             }
-            else {
-                for (String ext : extensions) {
-                    if (name.toLowerCase().endsWith(ext.toLowerCase())) {
-                        return true;
-                    }
+            for (String ext : extensions) {
+                if (name.toLowerCase().endsWith(ext.toLowerCase())) {
+                    return true;
                 }
-                return false;
             }
+            return false;
         });
         fileDialog.setDirectory(UIUtil.getCurrentFileDirectory());
         if (initialName != null) {
