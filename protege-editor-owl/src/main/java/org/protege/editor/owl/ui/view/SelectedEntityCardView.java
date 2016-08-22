@@ -3,9 +3,15 @@ package org.protege.editor.owl.ui.view;
 import org.protege.editor.core.ui.util.Resettable;
 import org.protege.editor.core.ui.view.ViewsPane;
 import org.protege.editor.core.ui.view.ViewsPaneMemento;
-import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
+import org.protege.editor.core.util.HandlerRegistration;
+import org.protege.editor.owl.model.selection.SelectionDriver;
+import org.protege.editor.owl.model.selection.SelectionPlane;
+import org.protege.editor.owl.ui.util.NothingSelectedPanel;
 import org.semanticweb.owlapi.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
@@ -19,20 +25,15 @@ import java.util.List;
  * Bio-Health Informatics Group<br>
  * Date: 02-Mar-2007<br><br>
  */
-public class SelectedEntityCardView extends AbstractOWLViewComponent implements Resettable {
-
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -287697571704681093L;
+public class SelectedEntityCardView extends AbstractOWLViewComponent implements Resettable, SelectionPlane {
 
     public static final String ID = "org.protege.editor.owl.SelectedEntityView";
 
-    private CardLayout cardLayout = new CardLayout();
+    private final CardLayout cardLayout = new CardLayout();
 
-    private JPanel cardPanel;
+    private final JPanel cardPanel = new JPanel();
 
-    private List<ViewsPane> viewsPanes = new ArrayList<>();
+    private final List<ViewsPane> viewsPanes = new ArrayList<>();
 
     private static final String CLASSES_PANEL = "Classes";
 
@@ -49,17 +50,16 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
     private static final String BLANK_PANEL = "Blank";
 
 
+    private static final Logger logger = LoggerFactory.getLogger(SelectedEntityCardView.class);
+
 
     protected void initialiseOWLView() throws Exception {
         setLayout(new BorderLayout());
-        cardPanel = new JPanel();
         add(cardPanel);
         cardPanel.setLayout(cardLayout);
-        cardPanel.add(new JPanel(), BLANK_PANEL);
+        cardPanel.add(new NothingSelectedPanel(), BLANK_PANEL);
         createViewPanes(false);
-        getOWLWorkspace().getOWLSelectionModel().addListener(() -> {
-            processSelection();
-        });
+        getOWLWorkspace().getOWLSelectionModel().addListener(this::processSelection);
         getView().setShowViewBar(false);
         processSelection();
     }
@@ -128,42 +128,45 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
 
 
     private void processSelection() {
-        OWLEntity entity = getOWLWorkspace().getOWLSelectionModel().getSelectedEntity();
-        if (entity == null) {
+        OWLObject selectedObject = getOWLWorkspace().getOWLSelectionModel().getSelectedObject();
+        if(selectedObject == null) {
             selectPanel(BLANK_PANEL);
+            return;
         }
-        else {
-            entity.accept(new OWLEntityVisitor() {
-                public void visit(OWLClass cls) {
+        if(!(selectedObject instanceof OWLEntity)) {
+            return;
+        }
+        ((OWLEntity) selectedObject).accept(new OWLEntityVisitor() {
+                public void visit(@Nonnull OWLClass cls) {
                     selectPanel(CLASSES_PANEL);
                 }
 
 
-                public void visit(OWLObjectProperty property) {
+                public void visit(@Nonnull OWLObjectProperty property) {
                     selectPanel(OBJECT_PROPERTIES_PANEL);
                 }
 
 
-                public void visit(OWLDataProperty property) {
+                public void visit(@Nonnull OWLDataProperty property) {
                     selectPanel(DATA_PROPERTIES_PANEL);
                 }
 
 
-                public void visit(OWLAnnotationProperty property) {
+                public void visit(@Nonnull OWLAnnotationProperty property) {
                     selectPanel(ANNOTATION_PROPERTIES_PANEL);
                 }
 
 
-                public void visit(OWLNamedIndividual individual) {
+                public void visit(@Nonnull OWLNamedIndividual individual) {
                     selectPanel(INDIVIDUALS_PANEL);
                 }
 
 
-                public void visit(OWLDatatype dataType) {
+                public void visit(@Nonnull OWLDatatype dataType) {
                     selectPanel(DATATYPES_PANEL);
                 }
             });
-        }
+
     }
 
 
@@ -177,5 +180,17 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
             pane.saveViews();
             pane.dispose();
         }
+    }
+
+    @Override
+    public HandlerRegistration registerSelectionDriver(SelectionDriver driver) {
+        return () -> {};
+    }
+
+    @Override
+    public void transmitSelection(SelectionDriver driver, OWLObject selection) {
+        // Since we display the current selection we don't initiate selection changes.  If a user drops a navigation
+        // driving view on to this card view then it's probably an error.
+        logger.debug("[SelectedEntityCardView] Ignoring request to transmit selection");
     }
 }

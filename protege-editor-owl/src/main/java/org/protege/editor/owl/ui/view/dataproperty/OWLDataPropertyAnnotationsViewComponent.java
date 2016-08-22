@@ -23,7 +23,9 @@ public class OWLDataPropertyAnnotationsViewComponent extends AbstractOWLDataProp
     public void initialiseView() throws Exception {
         list = new OWLFrameList<>(getOWLEditorKit(), new OWLAnnotationsFrame(getOWLEditorKit()));
         setLayout(new BorderLayout());
-        add(new JScrollPane(list));
+        JScrollPane sp = new JScrollPane(list);
+        sp.getVerticalScrollBar().setUnitIncrement(20);
+        add(sp);
     }
 
 

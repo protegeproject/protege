@@ -10,23 +10,25 @@ import java.util.Optional;
  * Stanford Center for Biomedical Informatics Research
  * 29/01/16
  */
-public class AnnotationProvider {
+public final class AnnotationProvider {
 
     private final Provider<IRI> annotationPropertyIriProvider;
 
     private final AnnotationValueProvider annotationValueProvider;
 
-    public AnnotationProvider(Provider<IRI> annotationPropertyIriProvider, AnnotationValueProvider annotationValueProvider) {
+    public AnnotationProvider(Provider<IRI> annotationPropertyIriProvider,
+                              AnnotationValueProvider annotationValueProvider) {
         this.annotationPropertyIriProvider = annotationPropertyIriProvider;
         this.annotationValueProvider = annotationValueProvider;
     }
 
-    Optional<OWLAnnotation> getAnnotation(OWLDataFactory dataFactory) {
+    public Optional<OWLAnnotation> getAnnotation(OWLDataFactory dataFactory) {
         Optional<OWLAnnotationValue> annotationValue = annotationValueProvider.getAnnotationValue(dataFactory);
-        if(!annotationValue.isPresent()) {
-            return Optional.empty();
-        }
-        OWLAnnotationProperty property = dataFactory.getOWLAnnotationProperty(annotationPropertyIriProvider.get());
-        return Optional.of(dataFactory.getOWLAnnotation(property, annotationValue.get()));
+        return annotationValue.map(v -> {
+                    IRI iri = annotationPropertyIriProvider.get();
+                    OWLAnnotationProperty property = dataFactory.getOWLAnnotationProperty(iri);
+                    return dataFactory.getOWLAnnotation(property, annotationValue.get());
+                }
+        );
     }
 }

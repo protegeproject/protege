@@ -6,30 +6,36 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 
+import javax.annotation.Nonnull;
+
 public class NoOpReasonerFactory implements OWLReasonerFactory {
 
+	@Nonnull
 	public String getReasonerName() {
 		return "Null Reasoner";
 	}
 
-	public OWLReasoner createNonBufferingReasoner(OWLOntology ontology) {
+	@Nonnull
+	public OWLReasoner createNonBufferingReasoner(@Nonnull OWLOntology ontology) {
 		return new NoOpReasoner(ontology);
 	}
 
-	public OWLReasoner createReasoner(OWLOntology ontology) {
+	@Nonnull
+	public OWLReasoner createReasoner(@Nonnull OWLOntology ontology) {
 		return new NoOpReasoner(ontology);
 
 	}
 
-	public OWLReasoner createNonBufferingReasoner(OWLOntology ontology,
-			OWLReasonerConfiguration config)
+	@Nonnull
+	public OWLReasoner createNonBufferingReasoner(@Nonnull OWLOntology ontology,
+												  @Nonnull OWLReasonerConfiguration config)
 			throws IllegalConfigurationException {
-		// TODO Auto-generated method stub
 		return new NoOpReasoner(ontology);
 	}
 
-	public OWLReasoner createReasoner(OWLOntology ontology,
-			OWLReasonerConfiguration config)
+	@Nonnull
+	public OWLReasoner createReasoner(@Nonnull OWLOntology ontology,
+									  @Nonnull OWLReasonerConfiguration config)
 			throws IllegalConfigurationException {
 		return new NoOpReasoner(ontology);
 	}

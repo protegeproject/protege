@@ -3,6 +3,7 @@ package org.protege.editor.owl.ui.axiom;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.util.OWLAxiomInstance;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
+import org.semanticweb.owlapi.model.OWLAxiom;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +25,7 @@ public class AxiomAnnotationPanel extends JComponent {
 
     private AxiomAnnotationsList annotationsComponent;
 
-    private DefaultListModel model;
+    private DefaultListModel<OWLAxiom> model;
 
 
     public AxiomAnnotationPanel(OWLEditorKit eKit) {
@@ -35,8 +36,8 @@ public class AxiomAnnotationPanel extends JComponent {
         final OWLCellRenderer ren = new OWLCellRenderer(eKit);
         ren.setHighlightKeywords(true);
 
-        model = new DefaultListModel();
-        JList label = new JList(model);
+        model = new DefaultListModel<>();
+        JList<OWLAxiom> label = new JList<>(model);
         label.setBackground(getBackground());
         label.setEnabled(false);
         label.setOpaque(true);

@@ -122,6 +122,10 @@ public class BundleSearchPath {
     private Optional<BundleInfo> toBundleInfo(File file) {
         try (JarInputStream is = new JarInputStream(new FileInputStream(file))) {
             Manifest mf = is.getManifest();
+            if(mf == null) {
+                logger.warn("Could not parse {} as plugin/bundle because the manifest.mf file is not present.", file);
+                return Optional.empty();
+            }
             Attributes attributes = mf.getMainAttributes();
             String symbolicName = attributes.getValue(Constants.BUNDLE_SYMBOLICNAME);
             if (symbolicName == null) {

@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.renderer.conf;
 
+import org.protege.editor.core.Fonts;
 import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
 import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
@@ -50,19 +51,21 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
         prefs.setHighlightActiveOntologyStatements(highlightAOStatementsCheckBox.isSelected());
         prefs.setRenderHyperlinks(showHyperlinksCheckBox.isSelected());
         prefs.setHighlightKeyWords(highlightKeyWordsCheckBox.isSelected());
-        prefs.setFontSize((Integer) fontSizeSpinner.getValue());
+        Integer fontSize = (Integer) fontSizeSpinner.getValue();
+        prefs.setFontSize(fontSize);
         if (isDirty()){
             RendererPlugin plugin = getSelectedRendererPlugin();
             try {
                 prefs.setRendererPlugin(plugin);
                 OWLModelManagerEntityRenderer ren = plugin.newInstance();
                 getOWLModelManager().refreshRenderer();
+                Fonts.updateUIDefaultsFontSize(fontSize);
             }
             catch (Exception e) {
                 throw new OWLRuntimeException(e);
             }
         }
-        getOWLEditorKit().getWorkspace().refreshComponents();
+        SwingUtilities.updateComponentTreeUI(getOWLEditorKit().getWorkspace());
     }
 
 

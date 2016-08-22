@@ -1,9 +1,11 @@
 package org.protege.editor.owl.ui.action;
 
+import com.google.common.base.Optional;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
+import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.ui.OWLEntityCreationPanel;
@@ -12,6 +14,7 @@ import org.protege.editor.owl.ui.renderer.OWLEntityAnnotationValueRenderer;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLObjectDuplicator;
 
@@ -35,8 +38,6 @@ import java.util.Map;
  */
 public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
 
-    private Preferences prefs;
-
     private static final String DUPLICATE_ANNOTATIONS_KEY = "DUPLICATE_ANNOTATIONS_KEY";
 
     private static final String DUPLICATE_INTO_ACTIVE_ONTOLOGY_KEY = "DUPLICATE_INTO_ACTIVE_ONTOLOGY_KEY";
@@ -48,48 +49,48 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
 
     public void actionPerformed(ActionEvent e) {
         OWLClass selectedClass = getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass();
-
-        if (selectedClass != null){
-
-            prefs = PreferencesManager.getInstance().getApplicationPreferences(DuplicateSelectedClassAction.class);
-
-            DuplicateClassPreferencesPanel panel = new DuplicateClassPreferencesPanel(selectedClass);
-            UIHelper uiHelper = new UIHelper(getOWLEditorKit());
-
-            if (uiHelper.showValidatingDialog("Duplicate Class",
-                                              panel,
-                                              panel.getFocusComponent()) == JOptionPane.OK_OPTION){
-
-                panel.saveSettings();
-
-                OWLEntityCreationSet<OWLClass> set = panel.createOWLClass();
-                if (set != null){
-                    Map<IRI, IRI> replacementIRIMap = new HashMap<>();
-                    replacementIRIMap.put(selectedClass.getIRI(), set.getOWLEntity().getIRI());
-                    OWLModelManager mngr = getOWLModelManager();
-                    OWLObjectDuplicator dup = new OWLObjectDuplicator(mngr.getOWLDataFactory(), replacementIRIMap);
-                    List<OWLOntologyChange> changes = new ArrayList<>(set.getOntologyChanges());
-
-                    changes.addAll(duplicateClassAxioms(selectedClass, dup));
-
-                    if (prefs.getBoolean(DUPLICATE_ANNOTATIONS_KEY, false)){
-                        changes.addAll(duplicateAnnotations(selectedClass, dup));
-                    }
-
-                    mngr.applyChanges(changes);
-                    getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(set.getOWLEntity());
-                }
-            }
+        if (selectedClass == null) {
+            return;
         }
+        final Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(DuplicateSelectedClassAction.class);
+        DuplicateClassPreferencesPanel panel = new DuplicateClassPreferencesPanel(selectedClass, getOWLEditorKit(), prefs);
+        UIHelper uiHelper = new UIHelper(getOWLEditorKit());
+
+        int ret = uiHelper.showValidatingDialog("Duplicate Class",
+                panel,
+                panel.getFocusComponent());
+        if (ret != JOptionPane.OK_OPTION) {
+            return;
+        }
+
+        panel.saveSettings();
+        OWLEntityCreationSet<OWLClass> set = panel.createOWLClass();
+        if (set == null) {
+            return;
+        }
+        Map<IRI, IRI> replacementIRIMap = new HashMap<>();
+        replacementIRIMap.put(selectedClass.getIRI(), set.getOWLEntity().getIRI());
+        OWLModelManager mngr = getOWLModelManager();
+        OWLObjectDuplicator dup = new OWLObjectDuplicator(mngr.getOWLDataFactory(), replacementIRIMap);
+        List<OWLOntologyChange> changes = new ArrayList<>(set.getOntologyChanges());
+
+        changes.addAll(duplicateClassAxioms(selectedClass, dup, prefs));
+
+        if (prefs.getBoolean(DUPLICATE_ANNOTATIONS_KEY, false)){
+            changes.addAll(duplicateAnnotations(selectedClass, dup));
+        }
+
+        mngr.applyChanges(changes);
+        getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(set.getOWLEntity());
     }
 
-    private List<OWLOntologyChange> duplicateClassAxioms(OWLClass selectedClass, OWLObjectDuplicator dup) {
+    private List<OWLOntologyChange> duplicateClassAxioms(OWLClass selectedClass, OWLObjectDuplicator dup, Preferences prefs) {
         List<OWLOntologyChange> changes = new ArrayList<>();
 
         boolean useActiveOnt = prefs.getBoolean(DUPLICATE_INTO_ACTIVE_ONTOLOGY_KEY, false);
 
         for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
-            for (OWLAxiom ax : ont.getAxioms(selectedClass)) {
+            for (OWLAxiom ax : ont.getAxioms(selectedClass, Imports.EXCLUDED)) {
                 if (ax.isLogicalAxiom() && !(ax instanceof OWLDisjointClassesAxiom)) {
                     OWLAxiom duplicatedAxiom = dup.duplicateObject(ax);
                     changes.add(new AddAxiom(useActiveOnt ? getOWLModelManager().getActiveOntology() : ont, duplicatedAxiom));
@@ -118,17 +119,17 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
             annotIRIs = OWLRendererPreferences.getInstance().getAnnotationIRIs();
         }
 
-        LiteralExtractor literalExtractor = new LiteralExtractor();
-
         for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
             for (OWLAnnotationAssertionAxiom ax : EntitySearcher.getAnnotationAssertionAxioms(selectedClass, ont)){
                 final OWLAnnotation annot = ax.getAnnotation();
                 if (annotIRIs == null || !annotIRIs.contains(annot.getProperty().getIRI())){
-
-                    String label = literalExtractor.getLiteral(annot.getValue());
-                    if (label == null || !label.equals(selectedClassName)){
-                        OWLAxiom duplicatedAxiom = dup.duplicateObject(ax);
-                        changes.add(new AddAxiom(ont, duplicatedAxiom));
+                    Optional<OWLLiteral> literal = annot.getValue().asLiteral();
+                    if(literal.isPresent()) {
+                        String label = literal.get().getLiteral();
+                        if (!label.equals(selectedClassName)){
+                            OWLAxiom duplicatedAxiom = dup.duplicateObject(ax);
+                            changes.add(new AddAxiom(ont, duplicatedAxiom));
+                        }
                     }
                 }
             }
@@ -137,48 +138,26 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
     }
 
 
-    class LiteralExtractor implements OWLAnnotationValueVisitor {
+    private static class DuplicateClassPreferencesPanel extends JComponent implements VerifiedInputEditor {
 
-        private String label;
+        private final JCheckBox duplicateAnnotationsCheckbox;
 
-        public String getLiteral(OWLAnnotationValue value){
-            label = null;
-            value.accept(this);
-            return label;
-        }
+        private final JRadioButton activeOntologyButton;
 
-        public void visit(IRI iri) {
-            // do nothing
-        }
+        private final JRadioButton originalOntologyButton;
+
+        private final OWLEntityCreationPanel<OWLClass> entityNamePanel;
+
+        private final Preferences prefs;
 
 
-        public void visit(OWLAnonymousIndividual owlAnonymousIndividual) {
-            // do nothing
-        }
-
-
-        public void visit(OWLLiteral literal) {
-            label = literal.getLiteral();
-        }
-    }
-
-
-    class DuplicateClassPreferencesPanel extends JComponent implements VerifiedInputEditor {
-
-        private JCheckBox duplicateAnnotationsCheckbox;
-
-        private JRadioButton activeOntologyButton;
-
-        private JRadioButton originalOntologyButton;
-
-        private OWLEntityCreationPanel<OWLClass> entityNamePanel;
-
-
-        DuplicateClassPreferencesPanel(OWLClass selectedClass) {
+        public DuplicateClassPreferencesPanel(OWLClass selectedClass, OWLEditorKit editorKit, Preferences prefs) {
+            this.prefs = prefs;
             setLayout(new BorderLayout(6, 6));
 
-            entityNamePanel = new OWLEntityCreationPanel<>(getOWLEditorKit(), "Class name", OWLClass.class);
-            entityNamePanel.setName(getOWLModelManager().getRendering(selectedClass));
+
+            entityNamePanel = new OWLEntityCreationPanel<>(editorKit, OWLClass.class);
+            entityNamePanel.setName(editorKit.getOWLModelManager().getRendering(selectedClass));
 
             final boolean duplicateIntoActiveOnt = prefs.getBoolean(DUPLICATE_INTO_ACTIVE_ONTOLOGY_KEY, false);
 

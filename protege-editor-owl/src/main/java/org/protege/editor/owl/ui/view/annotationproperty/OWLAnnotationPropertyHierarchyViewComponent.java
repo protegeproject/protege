@@ -3,17 +3,21 @@ package org.protege.editor.owl.ui.view.annotationproperty;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
+import org.protege.editor.owl.model.selection.SelectionDriver;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.action.AbstractDeleteEntityAction;
 import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
+import org.protege.editor.owl.ui.renderer.*;
 import org.protege.editor.owl.ui.view.AbstractOWLEntityHierarchyViewComponent;
 import org.protege.editor.owl.ui.view.CreateNewChildTarget;
 import org.protege.editor.owl.ui.view.CreateNewSiblingTarget;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.OWLEntitySetProvider;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.*;
+import java.util.List;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -29,10 +33,10 @@ import java.util.*;
  * Date: Apr 23, 2009<br><br>
  */
 public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEntityHierarchyViewComponent<OWLAnnotationProperty>
-        implements CreateNewChildTarget, CreateNewSiblingTarget {
+        implements CreateNewChildTarget, CreateNewSiblingTarget, SelectionDriver {
 
     protected void performExtraInitialisation() throws Exception {
-        addAction(new AbstractOWLTreeAction<OWLAnnotationProperty>("Add sub property", OWLIcons.getIcon("property.annotation.addsub.png"),
+        addAction(new AbstractOWLTreeAction<OWLAnnotationProperty>("Add sub property", new AddChildIcon(new OWLAnnotationPropertyIcon()),
                 getTree().getSelectionModel()) {
             public void actionPerformed(ActionEvent event) {
                 createNewChild();
@@ -43,7 +47,7 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
             }
         }, "A", "A");
 
-        addAction(new AbstractOWLTreeAction<OWLAnnotationProperty>("Add sibling property", OWLIcons.getIcon("property.annotation.addsib.png"),
+        addAction(new AbstractOWLTreeAction<OWLAnnotationProperty>("Add sibling property", new AddSiblingIcon(new OWLAnnotationPropertyIcon()),
                 getTree().getSelectionModel()) {
 
             public void actionPerformed(ActionEvent event) {
@@ -136,14 +140,17 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
         }
     }
 
+    @Override
+    public Component asComponent() {
+        return this;
+    }
+
+    @Override
+    public Optional<OWLObject> getSelection() {
+        return Optional.ofNullable(getSelectedEntity());
+    }
+
     public class DeleteAnnotationPropertyAction extends AbstractDeleteEntityAction<OWLAnnotationProperty> {
-
-
-        /**
-         *
-         */
-        private static final long serialVersionUID = -4871539633257400493L;
-
 
         /*
          * WARNING... Using an anonymous class instead of the InternalOWLEntitySetProvider class
@@ -156,7 +163,7 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
          */
         public DeleteAnnotationPropertyAction() {
             super("Delete selected properties",
-                    OWLIcons.getIcon("property.annotation.delete.png"),
+                    new DeleteEntityIcon(new OWLAnnotationPropertyIcon(OWLEntityIcon.FillType.HOLLOW)),
                     getOWLEditorKit(),
                     getHierarchyProvider(),
                     new InternalOWLEntitySetProvider());

@@ -46,6 +46,8 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
 
     private JCheckBox autoExpandEnabledCheckBox;
 
+    private JCheckBox paintLinesCheckBox;
+
     private JSpinner autoExpandMaxDepthSpinner;
 
     private JSpinner autoExpandMaxChildSizeSpinner;
@@ -73,6 +75,7 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
 
         OWLTreePreferences prefs = OWLTreePreferences.getInstance();
         prefs.setAutoExpansionEnabled(autoExpandEnabledCheckBox.isSelected());
+        prefs.setPaintLines(paintLinesCheckBox.isSelected());
         prefs.setAutoExpansionDepthLimit((Integer)autoExpandMaxDepthSpinner.getValue());
         prefs.setAutoExpansionChildLimit((Integer) autoExpandMaxChildSizeSpinner.getValue());
         prefs.setTreeDragAndDropEnabled(dragAndDropEnabled.isSelected());
@@ -123,6 +126,7 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
 
         OWLTreePreferences prefs = OWLTreePreferences.getInstance();
         autoExpandEnabledCheckBox = new JCheckBox("Expand trees by default", prefs.isAutoExpandEnabled());
+        paintLinesCheckBox = new JCheckBox("Show parent-child lines in trees", prefs.isPaintLines());
         autoExpandMaxDepthSpinner = new JSpinner(new SpinnerNumberModel(prefs.getAutoExpansionDepthLimit(), 1, Integer.MAX_VALUE, 1));
         autoExpandMaxChildSizeSpinner = new JSpinner(new SpinnerNumberModel(prefs.getAutoExpansionChildLimit(), 1, Integer.MAX_VALUE, 1));
 
@@ -137,6 +141,7 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
         panel.addGroupComponent(autoExpandMaxChildSizeSpinner);
         panel.addVerticalPadding();
         panel.addGroupComponent(dragAndDropEnabled);
+        panel.addGroupComponent(paintLinesCheckBox);
 
         // Search
 

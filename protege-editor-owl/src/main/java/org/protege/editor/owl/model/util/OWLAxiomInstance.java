@@ -6,6 +6,8 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 import java.util.Set;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -25,14 +27,14 @@ import java.util.Set;
  */
 public class OWLAxiomInstance implements AnnotationContainer {
 
-    private OWLAxiom ax;
+    private final OWLAxiom ax;
 
-    private OWLOntology ont;
+    private final OWLOntology ont;
 
 
     public OWLAxiomInstance(OWLAxiom ax, OWLOntology ont) {
-        this.ax = ax;
-        this.ont = ont;
+        this.ax = checkNotNull(ax);
+        this.ont = checkNotNull(ont);
     }
 
 

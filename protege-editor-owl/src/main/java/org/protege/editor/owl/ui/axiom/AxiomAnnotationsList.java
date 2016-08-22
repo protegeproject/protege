@@ -87,8 +87,8 @@ public class AxiomAnnotationsList extends AbstractAnnotationsList<OWLAxiomInstan
         // this is complicated by the fact that annotating an axiom produces a new axiom
         if (newAxiom != null){
             for (OWLOntologyChange change : changes){
-                if (change instanceof RemoveAxiom){
-                    if (change.getAxiom().equals(getRoot().getAxiom())){
+                if (change instanceof OWLAxiomChange){
+                    if (change.getAxiom().equalsIgnoreAnnotations(getRoot().getAxiom())){
                         // @@TODO should check that ontology contains the new axiom
                         setRootObject(new OWLAxiomInstance(newAxiom, getRoot().getOntology()));
                         newAxiom = null;

@@ -8,12 +8,14 @@ import java.awt.*;
  * Bio-Medical Informatics Research Group<br>
  * Date: 03/02/2012
  */
-public class OWLPropertyIcon extends OWLEntityIcon {
+public abstract class OWLPropertyIcon extends OWLEntityIcon {
+
+    public static final BasicStroke HOLLOW_STROKE = new BasicStroke(2);
 
     private Color iconColor;
 
-    public OWLPropertyIcon(Color iconColor) {
-        super(SizeBias.EVEN);
+    public OWLPropertyIcon(Color iconColor, FillType fillType) {
+        super(fillType);
         this.iconColor = iconColor;
     }
 
@@ -23,19 +25,39 @@ public class OWLPropertyIcon extends OWLEntityIcon {
      * painting, e.g. the foreground or background color.
      */
     public void paintIcon(Component c, Graphics g, int x, int y) {
-        int xOffset = x + getPadding();
-        int yOffset = y + getPadding();
-        int width = getIconWidth() - 2 * getPadding();
-        int height = getIconHeight() - 2 * getPadding();
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        Color oldColor = g2.getColor();
-        g2.setColor(Color.GRAY);
-        int fillHeight = 2 * height / 3;
-        int y1 = yOffset + height / 6 + OWLRendererPreferences.getInstance().getFontSize() / 10;
-        g2.fillRoundRect(xOffset, y1, width, fillHeight, 4, 4);
-        g2.setColor(iconColor);
-        g2.fillRoundRect(xOffset + 1, y1 + 1, width - 2, fillHeight - 2, 4, 4);
-        g2.setColor(oldColor);
+
+        Graphics2D g2 = (Graphics2D) g.create();
+
+        try {
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+//            double scaleFactor = getScaleFactor();
+//            g2.scale(scaleFactor, scaleFactor);
+
+            // Icon is 16x16 with 2px padding round all sides
+
+            int iconHeight = getBaseSize();
+
+            int propWidth = 14;
+            int propHeight = 8;
+            int padding = 1;
+
+            int rX = x + padding;
+            int rY = y + (iconHeight - propHeight) / 2;
+
+            if(getFillType() == FillType.FILLED) {
+                g2.setColor(Color.GRAY);
+                g2.fillRect(rX, rY, propWidth, propHeight);
+                g2.setColor(getEntityColor());
+                g2.fillRect(rX + 1, rY + 1, propWidth - 2, propHeight - 2);
+            }
+            else {
+                g2.setStroke(HOLLOW_STROKE);
+                g2.setColor(getEntityColor());
+                g2.drawRect(rX + 1, rY + 1, propWidth - 2, propHeight - 2);
+            }
+        } finally {
+            g2.dispose();
+        }
     }
 }

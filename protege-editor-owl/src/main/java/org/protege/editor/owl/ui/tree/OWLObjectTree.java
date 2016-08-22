@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.tree;
 
+import com.google.common.eventbus.Subscribe;
+import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.core.ui.menu.MenuBuilder;
 import org.protege.editor.core.ui.menu.PopupMenuId;
 import org.protege.editor.owl.OWLEditorKit;
@@ -19,7 +21,7 @@ import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.swing.*;
 import javax.swing.Timer;
-import javax.swing.event.*;
+import javax.swing.event.ChangeListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -45,13 +47,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: 01-Jun-2006<br><br>
-
+ * <p/>
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObjectDropTarget, OWLObjectDragSource, HasExpandAll, HasCopySubHierarchyToClipboard, Copyable {
-
-//    private static final Logger logger = LoggerFactory.getLogger(OWLObjectTree.class);
+public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObjectDropTarget, OWLObjectDragSource, HasExpandAll, HasCopySubHierarchyToClipboard, Copyable, RefreshableComponent {
 
     private Map<OWLObject, Set<OWLObjectTreeNode<N>>> nodeMap;
 
@@ -66,8 +66,6 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
     private OWLTreeDragAndDropHandler<N> dragAndDropHandler;
 
     private boolean dragOriginator;
-
-    private boolean altDown;
 
     private Point mouseDownPos;
 
@@ -88,6 +86,8 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
     public OWLObjectTree(OWLEditorKit eKit, OWLObjectHierarchyProvider<N> provider, Set<N> rootObjects,
                          Comparator<OWLObject> owlObjectComparator) {
         this.eKit = eKit;
+        setupLineStyle();
+
 
         ToolTipManager.sharedInstance().registerComponent(this);
 
@@ -117,42 +117,27 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         DropTarget dt = new DropTarget(this, new OWLObjectTreeDropTargetListener(this, treePreferences));
         DragSource dragSource = DragSource.getDefaultDragSource();
         dragSource.createDefaultDragGestureRecognizer(this,
-                                                      DnDConstants.ACTION_COPY_OR_MOVE,
-                                                      new OWLObjectTreeDragGestureListener(eKit, this));
+                DnDConstants.ACTION_COPY_OR_MOVE,
+                new OWLObjectTreeDragGestureListener(eKit, this));
 
-        // A temp fix incase the tree somehow becomes unsynchronised
         addMouseListener(new MouseAdapter() {
+
             public void mouseReleased(MouseEvent e) {
                 if (e.getClickCount() == 3 && e.isControlDown() && e.isShiftDown()) {
                     reload();
                 }
-                if(e.isPopupTrigger()) {
-                    showPopupMenu(e);
-                }
-            }
-        });
-
-        addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                // Check to see if the recursively expand key is held down.  This is
-                // the key that corresponds to the menu accelerator key (CTRL on Windows, and
-                // CMD on the Mac).
-                altDown = e.isAltDown();
                 if (e.isPopupTrigger()) {
                     showPopupMenu(e);
                 }
             }
-        });
 
-
-        addTreeExpansionListener(new TreeExpansionListener() {
-            public void treeExpanded(TreeExpansionEvent event) {
-                handleExpansionEvent(event);
-            }
-
-
-            public void treeCollapsed(TreeExpansionEvent event) {
-                // Do nothing
+            public void mousePressed(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    showPopupMenu(e);
+                }
+                if (e.isAltDown()) {
+                    expandDescendantsOfRowAt(e.getX(), e.getY());
+                }
             }
         });
 
@@ -161,8 +146,41 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         });
     }
 
+    private void setupLineStyle() {
+        if(OWLTreePreferences.getInstance().isPaintLines()) {
+            putClientProperty("JTree.lineStyle", "Angled");
+        }
+        else {
+            putClientProperty("JTree.lineStyle", "None");
+        }
+    }
+
+    private void expandDescendantsOfRowAt(final int x, int y) {
+        // It's necessary to traverse all rows to find the path where the user clicked.  This is because
+        // the getRowAt(X,Y) call only returns a row index if the actual node rendering is clicked.  We
+        // Want to detect if the node handle is clicked (or anywhere in the white space of a row).
+        for(int i = 0; i < getRowCount(); i++) {
+            Rectangle rowBounds = getRowBounds(i);
+            if(rowBounds != null && rowBounds.y <= y && y <= rowBounds.y + rowBounds.height) {
+                expandDescendantsOfRow(i);
+                break;
+            }
+        }
+    }
+
+    /**
+     * Clears the data displayed by the component and
+     * reloads data.
+     */
+    @Override
+    final public void refreshComponent() {
+        setupLineStyle();
+        reload();
+    }
+
     /**
      * Sets the popupMenuId for this tree.
+     *
      * @param popupMenuId The id.  Not {@code null}.
      */
     public void setPopupMenuId(PopupMenuId popupMenuId) {
@@ -181,7 +199,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
     }
 
     private void showPopupMenu(MouseEvent e) {
-        if(!getPopupMenuId().isPresent()) {
+        if (!getPopupMenuId().isPresent()) {
             return;
         }
         MenuBuilder menuBuilder = new MenuBuilder(eKit);
@@ -230,8 +248,8 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
                 // update the nodeMap to remove this parent from the child
                 final Set<OWLObjectTreeNode<N>> childNodes = getNodes(nodeToRemove.getOWLObject());
                 final Set<OWLObjectTreeNode<N>> updatedChildNodes = new HashSet<>();
-                for (OWLObjectTreeNode<N> childNode : childNodes){
-                    if (!treeNodes.contains(childNode.getParent())){
+                for (OWLObjectTreeNode<N> childNode : childNodes) {
+                    if (!treeNodes.contains(childNode.getParent())) {
                         updatedChildNodes.add(childNode);
                     }
                 }
@@ -306,7 +324,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
      * all expanded paths except for the current selection.
      */
     public void reload() {
-    	N currentSelection = getSelectedOWLObject();    	
+        N currentSelection = getSelectedOWLObject();
         // Reload the tree
         nodeMap.clear();
         // TODO: getRoots needs to be changed - the user might have specified specific roots
@@ -317,13 +335,24 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
     }
 
 
-    private void handleExpansionEvent(TreeExpansionEvent event) {
-        if (altDown) {
-            // Recursively expand
-            for (int i = 0; i < getModel().getChildCount(event.getPath().getLastPathComponent()); i++) {
-                Object curChild = getModel().getChild(event.getPath().getLastPathComponent(), i);
-                TreePath path = event.getPath().pathByAddingChild(curChild);
-                expandPath(path);
+    private void expandDescendantsOfRow(int row) {
+        if(row == -1) {
+            return;
+        }
+        TreePath pathToExpand = getPathForRow(row);
+        if (pathToExpand == null) {
+            return;
+        }
+        Stack<TreePath> stack = new Stack<>();
+        stack.push(pathToExpand);
+
+        while (!stack.isEmpty()) {
+            TreePath path = stack.pop();
+            for (int i = 0; i < getModel().getChildCount(path.getLastPathComponent()); i++) {
+                Object curChild = getModel().getChild(path.getLastPathComponent(), i);
+                TreePath childPath = path.pathByAddingChild(curChild);
+                expandPath(childPath);
+                stack.push(childPath);
             }
         }
     }
@@ -352,6 +381,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
     /**
      * Sets the tree ordering and reloads the tree contents.
+     *
      * @param owlObjectComparator the comparator that is used to order sibling tree nodes
      */
     public void setOWLObjectComparator(Comparator<OWLObject> owlObjectComparator) {
@@ -410,6 +440,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
     /**
      * Gets the set of nodes that represent the specified
      * object
+     *
      * @param n The object whose nodes are to be retrieved.
      * @return The nodes that represent the specified object.
      */
@@ -435,6 +466,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
     /**
      * If the object is contained in a collapsed branch then the branch is expanded.
+     *
      * @param selObject the object to select if it exists in the tree
      */
     public void setSelectedOWLObject(N selObject) {
@@ -443,7 +475,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
 
     public void setSelectedOWLObject(N selObject, boolean selectAll) {
-        if (selObject == null){
+        if (selObject == null) {
             return;
         }
         setSelectedOWLObjects(Collections.singleton(selObject), selectAll);
@@ -461,16 +493,16 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
             return;
         }
         clearSelection();
-        if (!owlObjects.isEmpty()){
+        if (!owlObjects.isEmpty()) {
             final List<TreePath> paths = new ArrayList<>();
-            for (N obj : owlObjects){
+            for (N obj : owlObjects) {
                 Set<OWLObjectTreeNode<N>> nodes = getNodes(obj);
                 if (nodes.isEmpty()) {
                     expandAndSelectPaths(obj, selectAll);
                 }
                 paths.addAll(getPaths(obj, selectAll));
             }
-            if (!paths.isEmpty()){
+            if (!paths.isEmpty()) {
                 setSelectionPaths(paths.toArray(new TreePath[paths.size()]));
                 // without this the selection never quite makes it onto the screen
                 // probably because the component has not been sized yet
@@ -482,7 +514,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
     }
 
 
-    private List<TreePath> getPaths(N selObject, boolean selectAll){
+    private List<TreePath> getPaths(N selObject, boolean selectAll) {
         List<TreePath> paths = new ArrayList<>();
         Set<OWLObjectTreeNode<N>> nodes = getNodes(selObject);
         for (OWLObjectTreeNode<N> node : nodes) {
@@ -547,7 +579,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
     public List<N> getSelectedOWLObjects() {
         List<N> selObjects = new ArrayList<>();
-        TreePath [] selPaths = getSelectionPaths();
+        TreePath[] selPaths = getSelectionPaths();
         if (selPaths != null) {
             for (TreePath path : selPaths) {
                 selObjects.add((((OWLObjectTreeNode<N>) path.getLastPathComponent()).getOWLObject()));
@@ -572,7 +604,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
             return false;
         }
 
-        if(!OWLTreePreferences.getInstance().isTreeDragAndDropEnabled()) {
+        if (!OWLTreePreferences.getInstance().isTreeDragAndDropEnabled()) {
             return false;
         }
 
@@ -588,7 +620,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
         for (final OWLObject owlObject : owlObjects) {
             if (!dropTargetObj.equals(owlObject) && // don't drop on self
-                dragAndDropHandler.canDrop(owlObject, dropTargetObj)){
+                    dragAndDropHandler.canDrop(owlObject, dropTargetObj)) {
 
                 // the object must be in the acceptable bounds for the handler by now
                 N dropObject = (N) owlObject;
@@ -628,14 +660,14 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
             }
         }
 
-        if (droppedObjects.isEmpty()){
+        if (droppedObjects.isEmpty()) {
             return false;
         }
-        else{
+        else {
             SwingUtilities.invokeLater(() -> {
                 Set<N> nodes = new HashSet<>();
-                for (N droppedObject : droppedObjects){
-                    if (getNodes(droppedObject) != null){ // if this node exists in the tree
+                for (N droppedObject : droppedObjects) {
+                    if (getNodes(droppedObject) != null) { // if this node exists in the tree
                         nodes.add(droppedObject);
                     }
                 }
@@ -745,7 +777,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
     }
 
-    protected N getOWLObjectAtMousePosition(MouseEvent event){
+    protected N getOWLObjectAtMousePosition(MouseEvent event) {
         Point pt = event.getPoint();
         TreePath path = getPathForLocation(pt.x, pt.y);
         if (path == null) {
@@ -766,7 +798,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
     }
 
     private void copySubHierarchyToClipboard(N object, PrintWriter printWriter, int depth) {
-        for(int i = 0; i < depth; i++) {
+        for (int i = 0; i < depth; i++) {
             printWriter.print("\t");
         }
         String rendering = getOWLModelManager().getRendering(object);
@@ -774,7 +806,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         Set<N> children = provider.getChildren(object);
         List<N> sortedChildren = new ArrayList<>(children);
         sortedChildren.sort(new OWLObjectComparator<>(getOWLModelManager()));
-        for(N child : sortedChildren) {
+        for (N child : sortedChildren) {
             copySubHierarchyToClipboard(child, printWriter, depth + 1);
         }
     }

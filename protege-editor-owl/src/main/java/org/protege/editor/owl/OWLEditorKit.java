@@ -41,6 +41,7 @@ import java.net.URI;
 import java.util.*;
 
 
+
 /**
  * Author: Matthew Horridge<br>
  * The University Of Manchester<br>
@@ -435,9 +436,11 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         logger.info(LogBanner.start("Disposing of Workspace"));
         getModelManager().removeOntologyChangeListener(ontologyChangeListener);
         super.dispose();
+        
         searchManagerSelector.getCurrentSearchManager().dispose();
         workspace.dispose();
         try {
+        	modelManager.getExplanationManager().dispose();
             modelManager.dispose();
         }
         catch (Exception e) {

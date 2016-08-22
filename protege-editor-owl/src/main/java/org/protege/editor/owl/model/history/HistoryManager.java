@@ -2,6 +2,7 @@ package org.protege.editor.owl.model.history;
 
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 
@@ -16,27 +17,61 @@ import java.util.List;
  */
 public interface HistoryManager {
 
-    public void logChanges(List<? extends OWLOntologyChange> changes);
+    /**
+     * Logs the specified list of changes so that they can be undone at a later point in time.
+     * @param changes The changes to be logged.
+     */
+    void logChanges(@Nonnull List<? extends OWLOntologyChange> changes);
+
+    /**
+     * Determines whether or not it is possible to perform an undo operation.
+     * @return {@code true} if it is possible to perform an undo operation, otherwise {@code false}.
+     */
+    boolean canUndo();
 
 
-    public boolean canUndo();
+    /**
+     * Performs an undo operation, undoing the last set of changes.  If it is not possible to perform an undo
+     * then nothing will happen.
+     */
+    void undo();
 
 
-    public void undo();
+    /**
+     * Determines whether or not it is possible to perform a redo operation.
+     * @return {@code true} if it is possible to perform a redo operation, otherwise {@code false}.
+     */
+    boolean canRedo();
 
+    /**
+     * Performs a redo operation, redoing the last set of undone changes.  If it is not possible to perfom a redo
+     * then nothing will happen.
+     */
+    void redo();
 
-    public boolean canRedo();
+    /**
+     * Clears the history.  Warning: Clearing the history will prevent the user from undoing any of their previous
+     * changes.
+     */
+    void clear();
 
+    /**
+     * Gets a list of the lists of changes that are currently in the undo stack.
+     * @return The changes logged in the undo stack.
+     */
+    @Nonnull
+    List<List<OWLOntologyChange>> getLoggedChanges();
 
-    public void redo();
+    /**
+     * Adds a listener to this manager.
+     * @param listener The listener.
+     */
+    void addUndoManagerListener(@Nonnull UndoManagerListener listener);
 
-
-    public void addUndoManagerListener(UndoManagerListener listener);
-
-
-    public void removeUndoManagerListener(UndoManagerListener listener);
-
-
-    public List<List<OWLOntologyChange>> getLoggedChanges();
+    /**
+     * Removes a previously added listener
+     * @param listener The listener.
+     */
+    void removeUndoManagerListener(@Nonnull UndoManagerListener listener);
 
 }

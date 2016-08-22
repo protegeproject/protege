@@ -6,10 +6,12 @@ import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.model.selection.SelectionDriver;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.protege.editor.owl.model.util.OWLEntityDeleter;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.list.OWLObjectList;
+import org.protege.editor.owl.ui.renderer.*;
 import org.protege.editor.owl.ui.view.ChangeListenerMediator;
 import org.protege.editor.owl.ui.view.Findable;
 import org.protege.editor.owl.ui.view.OWLSelectionViewAction;
@@ -22,6 +24,7 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -37,7 +40,7 @@ import java.util.List;
  * Date: Jun 5, 2009<br><br>
  */
 public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
-        implements Findable<OWLDatatype> {
+        implements Findable<OWLDatatype>, SelectionDriver {
 
 
     private OWLObjectList<OWLDatatype> list;
@@ -55,7 +58,7 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
             }
         }
     };
-
+    
     private OWLOntologyChangeListener ontChangeListener = changes -> handleChanges(changes);
     
     private OWLModelManagerListener modelManagerListener = event -> {
@@ -85,7 +88,7 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
 
 
     private void setupActions() {
-        final DisposableAction addDatatypeAction = new DisposableAction("Add datatype", OWLIcons.getIcon("datarange.add.png")) {
+        final DisposableAction addDatatypeAction = new DisposableAction("Add datatype", new AddEntityIcon(new OWLDatatypeIcon())) {
 
             public void actionPerformed(ActionEvent event) {
                 createNewDatatype();
@@ -96,7 +99,7 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
             }
         };
 
-        final OWLSelectionViewAction deleteDatatypeAction = new OWLSelectionViewAction("Delete datatype", OWLIcons.getIcon("datarange.remove.png")) {
+        final OWLSelectionViewAction deleteDatatypeAction = new OWLSelectionViewAction("Delete datatype", new DeleteEntityIcon(new OWLDatatypeIcon(OWLEntityIcon.FillType.HOLLOW))) {
 
 
 
@@ -191,5 +194,15 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
 
     public void show(OWLDatatype dt) {
         updateView(dt);
+    }
+
+    @Override
+    public Component asComponent() {
+        return this;
+    }
+
+    @Override
+    public Optional<OWLObject> getSelection() {
+        return Optional.ofNullable(list.getSelectedValue());
     }
 }

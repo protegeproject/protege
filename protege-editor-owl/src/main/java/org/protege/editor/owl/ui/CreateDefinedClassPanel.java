@@ -11,7 +11,6 @@ import org.semanticweb.owlapi.model.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,43 +23,20 @@ import java.util.List;
 /**
  * Author: drummond<br>
  * http://www.cs.man.ac.uk/~drummond/<br><br>
-
+ * <p/>
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
  * Date: Nov 24, 2008<br><br>
  */
 public class CreateDefinedClassPanel extends JPanel implements VerifiedInputEditor {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -6715907571161404126L;
+    private final OWLEntityCreationPanel<OWLClass> entityCreatePanel;
 
-    private OWLEntityCreationPanel<OWLClass> entityCreatePanel;
+    private final JRadioButton anonymousButton;
 
-    private JRadioButton anonymousButton;
-
-    private JRadioButton namedButton;
+    private final JRadioButton namedButton;
 
     private List<InputVerificationStatusChangedListener> listeners = new ArrayList<>();
-
-    private ActionListener buttonListener = new ActionListener(){
-        public void actionPerformed(ActionEvent event) {
-            if (namedButton.isSelected()){
-                entityCreatePanel.setEnabled(true);
-                for (InputVerificationStatusChangedListener l : listeners){
-                    entityCreatePanel.addStatusChangedListener(l);
-                }
-            }
-            else{
-                entityCreatePanel.setEnabled(false);
-                for (InputVerificationStatusChangedListener l : listeners){
-                    entityCreatePanel.removeStatusChangedListener(l);
-                    l.verifiedStatusChanged(true);
-                }
-            }
-        }
-    };
 
 
     public CreateDefinedClassPanel(OWLEditorKit eKit) {
@@ -71,13 +47,31 @@ public class CreateDefinedClassPanel extends JPanel implements VerifiedInputEdit
         namedButton = new JRadioButton("Named class", !anonymousButton.isSelected());
         namedButton.setAlignmentY(0.0f);
 
-        anonymousButton.addActionListener(buttonListener);
-        namedButton.addActionListener(buttonListener);
 
-        entityCreatePanel = new OWLEntityCreationPanel<>(eKit, null, OWLClass.class);
+        entityCreatePanel = new OWLEntityCreationPanel<>(eKit, OWLClass.class);
         entityCreatePanel.setEnabled(namedButton.isSelected());
         entityCreatePanel.setAlignmentY(0.0f);
         entityCreatePanel.setBorder(new EmptyBorder(0, 20, 0, 0));
+
+
+        ActionListener buttonListener = (event) -> {
+            if (namedButton.isSelected()) {
+                entityCreatePanel.setEnabled(true);
+                for (InputVerificationStatusChangedListener l : listeners) {
+                    entityCreatePanel.addStatusChangedListener(l);
+                }
+            }
+            else {
+                entityCreatePanel.setEnabled(false);
+                for (InputVerificationStatusChangedListener l : listeners) {
+                    entityCreatePanel.removeStatusChangedListener(l);
+                    l.verifiedStatusChanged(true);
+                }
+            }
+        };
+        anonymousButton.addActionListener(buttonListener);
+        namedButton.addActionListener(buttonListener);
+
 
         Box namedPanel = new Box(BoxLayout.LINE_AXIS);
         namedPanel.setAlignmentX(0.0f);
@@ -101,11 +95,11 @@ public class CreateDefinedClassPanel extends JPanel implements VerifiedInputEdit
     }
 
 
-    public OWLEntityCreationSet<OWLClass> getEntityCreationSet(){
-        if (anonymousButton.isSelected()){
+    public OWLEntityCreationSet<OWLClass> getEntityCreationSet() {
+        if (anonymousButton.isSelected()) {
             return null;
         }
-        else{
+        else {
             return entityCreatePanel.getOWLEntityCreationSet();
         }
     }
@@ -125,25 +119,25 @@ public class CreateDefinedClassPanel extends JPanel implements VerifiedInputEdit
         OWLEntityCreationSet<OWLClass> creationSet = null;
 
         AnonymousDefinedClassManager adcManager = eKit.getOWLModelManager().get(AnonymousDefinedClassManager.ID);
-        if (adcManager != null){
+        if (adcManager != null) {
             CreateDefinedClassPanel panel = new CreateDefinedClassPanel(eKit);
             int ret = JOptionPaneEx.showValidatingConfirmDialog(eKit.getOWLWorkspace().getRootPane(), "Create defined class", panel,
-                                                                JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION,
-                                                                panel.getDefaultFocusedComponent());
+                    JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION,
+                    panel.getDefaultFocusedComponent());
 
-            if (ret == JOptionPane.OK_OPTION){
+            if (ret == JOptionPane.OK_OPTION) {
                 creationSet = panel.getEntityCreationSet();
-                if (creationSet == null){
+                if (creationSet == null) {
                     creationSet = adcManager.createAnonymousClass(eKit.getOWLModelManager().getActiveOntology(), desc);
                 }
-                else{
+                else {
                     creationSet = appendDefinitionToCreationSet(creationSet, desc, eKit);
                 }
             }
         }
-        else{
-            creationSet = OWLEntityCreationPanel.showDialog(eKit, "Create defined class", OWLClass.class);
-            if (creationSet != null){
+        else {
+            creationSet = OWLEntityCreationPanel.showDialog(eKit, OWLClass.class);
+            if (creationSet != null) {
                 appendDefinitionToCreationSet(creationSet, desc, eKit);
             }
         }

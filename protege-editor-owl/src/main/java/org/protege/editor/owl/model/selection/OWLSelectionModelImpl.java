@@ -6,8 +6,12 @@ import org.semanticweb.owlapi.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 
 /**
@@ -24,7 +28,7 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
     private final Logger logger = LoggerFactory.getLogger(OWLSelectionModelImpl.class);
 
 
-    private List<OWLSelectionModelListener> listeners;
+    private final List<OWLSelectionModelListener> listeners = new ArrayList<>();
 
     private OWLObject selectedObject;
 
@@ -46,38 +50,38 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
 
 
     private final OWLEntityVisitor updateVisitor = new OWLEntityVisitor() {
-        public void visit(OWLClass cls) {
+        public void visit(@Nonnull OWLClass cls) {
             lastSelectedClass = cls;
         }
 
 
-        public void visit(OWLObjectProperty property) {
+        public void visit(@Nonnull OWLObjectProperty property) {
             lastSelectedObjectProperty = property;
         }
 
 
-        public void visit(OWLDataProperty property) {
+        public void visit(@Nonnull OWLDataProperty property) {
             lastSelectedDataProperty = property;
         }
 
 
-        public void visit(OWLAnnotationProperty owlAnnotationProperty) {
+        public void visit(@Nonnull OWLAnnotationProperty owlAnnotationProperty) {
             lastSelectedAnnotationProperty = owlAnnotationProperty;
         }
 
 
-        public void visit(OWLNamedIndividual individual) {
+        public void visit(@Nonnull OWLNamedIndividual individual) {
             lastSelectedIndividual = individual;
         }
 
 
-        public void visit(OWLDatatype dataType) {
+        public void visit(@Nonnull OWLDatatype dataType) {
             lastSelectedDatatype = dataType;
         }
     };
 
     private final OWLEntityVisitor clearVisitor = new OWLEntityVisitor() {
-        public void visit(OWLClass cls) {
+        public void visit(@Nonnull OWLClass cls) {
             if (lastSelectedClass != null) {
                 if (lastSelectedClass.equals(cls)) {
                     lastSelectedClass = null;
@@ -86,7 +90,7 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
             }
         }
 
-        public void visit(OWLObjectProperty property) {
+        public void visit(@Nonnull OWLObjectProperty property) {
             if (lastSelectedObjectProperty != null) {
                 if (lastSelectedObjectProperty.equals(property)) {
                     lastSelectedObjectProperty = null;
@@ -95,7 +99,7 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
             }
         }
 
-        public void visit(OWLDataProperty property) {
+        public void visit(@Nonnull OWLDataProperty property) {
             if (lastSelectedDataProperty != null) {
                 if (lastSelectedDataProperty.equals(property)) {
                     lastSelectedDataProperty = null;
@@ -104,7 +108,7 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
             }
         }
 
-        public void visit(OWLAnnotationProperty property) {
+        public void visit(@Nonnull OWLAnnotationProperty property) {
             if (lastSelectedAnnotationProperty != null) {
                 if (lastSelectedAnnotationProperty.equals(property)) {
                     lastSelectedAnnotationProperty = null;
@@ -113,7 +117,7 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
             }
         }
 
-        public void visit(OWLNamedIndividual individual) {
+        public void visit(@Nonnull OWLNamedIndividual individual) {
             if (lastSelectedIndividual != null) {
                 if (lastSelectedIndividual.equals(individual)) {
                     lastSelectedIndividual = null;
@@ -122,7 +126,7 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
             }
         }
 
-        public void visit(OWLDatatype dataType) {
+        public void visit(@Nonnull OWLDatatype dataType) {
             if (lastSelectedDatatype != null) {
                 if (lastSelectedDatatype.equals(dataType)) {
                     lastSelectedDatatype = null;
@@ -133,29 +137,28 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
     };
 
     public OWLSelectionModelImpl() {
-        listeners = new ArrayList<>();
     }
 
 
-    public void addListener(OWLSelectionModelListener listener) {
-        if (listener == null) {
-            throw new IllegalArgumentException("Listener must not be null!");
-        }
-        listeners.add(listener);
+    @Override
+    public void addListener(@Nonnull OWLSelectionModelListener listener) {
+        listeners.add(checkNotNull(listener));
+    }
+
+    @Override
+    public void removeListener(@Nonnull OWLSelectionModelListener listener) {
+        listeners.remove(checkNotNull(listener));
     }
 
 
-    public void removeListener(OWLSelectionModelListener listener) {
-        listeners.remove(listener);
-    }
-
-
+    @Nullable
     public OWLObject getSelectedObject() {
         return selectedObject;
     }
 
 
-    public void setSelectedObject(OWLObject object) {
+    @Override
+    public void setSelectedObject(@Nullable OWLObject object) {
         if (object == null) {
             if (selectedObject != null) {
                 updateSelectedObject(null);
@@ -175,10 +178,12 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
     private void updateSelectedObject(OWLObject selObj) {
         selectedObject = selObj;
         updateLastSelection();
+        logger.debug("Set the selected object to: {}", selObj);
         fireSelectionChanged();
     }
 
 
+    @Override
     public OWLEntity getSelectedEntity() {
         return lastSelectedEntity;
     }
@@ -195,22 +200,20 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
         }
     }
 
-
-    public void setSelectedEntity(OWLEntity entity) {
+    @Override
+    public void setSelectedEntity(@Nullable OWLEntity entity) {
         setSelectedObject(entity);
     }
 
-
-    public void setSelectedAxiom(OWLAxiomInstance axiomInstance) {
+    @Override
+    public void setSelectedAxiom(@Nonnull OWLAxiomInstance axiomInstance) {
         lastSelectedAxiomInstance = axiomInstance;
         setSelectedObject(axiomInstance.getAxiom());
     }
 
 
-    public void clearLastSelectedEntity(OWLEntity entity) {
-        if (entity == null) {
-            return;
-        }
+    @Override
+    public void clearLastSelectedEntity(@Nonnull OWLEntity entity) {
         entity.accept(clearVisitor);
         if (lastSelectedEntity != null && entity.equals(lastSelectedEntity)) {
             lastSelectedEntity = null;
@@ -233,36 +236,38 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
     }
 
 
+    @Override
     public OWLClass getLastSelectedClass() {
         return lastSelectedClass;
     }
 
-
+    @Override
     public OWLObjectProperty getLastSelectedObjectProperty() {
         return lastSelectedObjectProperty;
     }
 
 
+    @Override
     public OWLDataProperty getLastSelectedDataProperty() {
         return lastSelectedDataProperty;
     }
 
-
+    @Override
     public OWLAnnotationProperty getLastSelectedAnnotationProperty() {
         return lastSelectedAnnotationProperty;
     }
 
-
+    @Override
     public OWLNamedIndividual getLastSelectedIndividual() {
         return lastSelectedIndividual;
     }
 
-
+    @Override
     public OWLDatatype getLastSelectedDatatype() {
         return lastSelectedDatatype;
     }
 
-
+    @Override
     public OWLAxiomInstance getLastSelectedAxiomInstance() {
         return lastSelectedAxiomInstance;
     }

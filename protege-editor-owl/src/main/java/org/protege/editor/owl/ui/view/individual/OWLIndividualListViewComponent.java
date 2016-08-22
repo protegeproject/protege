@@ -6,10 +6,15 @@ import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.model.selection.SelectionDriver;
 import org.protege.editor.owl.model.util.OWLEntityDeleter;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.action.DeleteIndividualAction;
 import org.protege.editor.owl.ui.list.OWLObjectList;
+import org.protege.editor.owl.ui.renderer.AddEntityIcon;
+import org.protege.editor.owl.ui.renderer.OWLEntityIcon;
+import org.protege.editor.owl.ui.renderer.OWLIndividualIcon;
+import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.protege.editor.owl.ui.view.ChangeListenerMediator;
 import org.protege.editor.owl.ui.view.CreateNewTarget;
 import org.protege.editor.owl.ui.view.Deleteable;
@@ -39,7 +44,7 @@ import java.util.List;
  */
 
 public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewComponent
-        implements Findable<OWLNamedIndividual>, Deleteable, CreateNewTarget, RefreshableComponent {
+        implements Findable<OWLNamedIndividual>, Deleteable, CreateNewTarget, RefreshableComponent, SelectionDriver {
 
     private OWLObjectList<OWLNamedIndividual> list;
 
@@ -240,7 +245,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
     private class AddIndividualAction extends DisposableAction {
 
         public AddIndividualAction() {
-            super("Add individual", OWLIcons.getIcon("individual.add.png"));
+            super("Add individual", new AddEntityIcon(new OWLIndividualIcon()));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -283,5 +288,15 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
     
     public void setIndividualListColor(Color c) {
         list.setBackground(c);
+    }
+
+    @Override
+    public Component asComponent() {
+        return this;
+    }
+
+    @Override
+    public Optional<OWLObject> getSelection() {
+        return Optional.ofNullable(getSelectedIndividual());
     }
 }

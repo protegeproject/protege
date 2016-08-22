@@ -95,15 +95,19 @@ public class OntologySaver {
                 IRI documentIRI = descriptor.getDocumentIRI();
                 dlg.setSubMessage(String.format("Location: %s", formatIRI(documentIRI)));
                 if ("file".equals(documentIRI.getScheme())) {
+                    File tempFile;
                     // Save temp file first and then copy over.
-                    File tempFile = File.createTempFile("temp-ontology", "");
-                    logger.info("Saving ontology to temp file: {}", tempFile);
-                    ontology.saveOntology(descriptor.getDocumentFormat(), IRI.create(tempFile));
-                    File destFile = new File(documentIRI.toURI());
-                    logger.info("Copying ontology from temp file ({}) to actual destination ({})", tempFile, destFile);
-                    FileUtils.copyFile(tempFile, destFile);
-                    logger.info("Removing temp file: {}", tempFile);
-                    FileUtils.deleteQuietly(tempFile);
+                    tempFile = File.createTempFile("temp-ontology", "");
+                    try {
+                        logger.info("Saving ontology to temp file: {}", tempFile);
+                        ontology.saveOntology(descriptor.getDocumentFormat(), IRI.create(tempFile));
+                        File destFile = new File(documentIRI.toURI());
+                        logger.info("Copying ontology from temp file ({}) to actual destination ({})", tempFile, destFile);
+                        FileUtils.copyFile(tempFile, destFile);
+                    } finally {
+                        logger.info("Removing temp file: {}", tempFile);
+                        FileUtils.deleteQuietly(tempFile);
+                    }
                 }
                 else {
                     logger.info("Saving ontology to: {}", documentIRI);

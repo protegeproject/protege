@@ -1,9 +1,16 @@
 package org.protege.editor.core.ui.util;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.util.Optional;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Author: Matthew Horridge<br>
@@ -15,11 +22,22 @@ public class AugmentedJTextField extends JTextField {
 
     public static final Color DEFAULT_GHOST_TEXT_COLOR = Color.LIGHT_GRAY;
 
+    private static final Color SEARCH_ICON_COLOR = new Color(200, 200, 200);
+
+    private static final int SEARCH_RECT_WIDTH = 20;
+
     private String errorMessage = "";
 
     private int errorLocation = -1;
 
     private String ghostText = "";
+
+    private final Border defaultBorder;
+
+    private Optional<TextFieldSearchHandler> searchHandler = Optional.empty();
+
+    private static final SearchIcon searchIcon = new SearchIcon();
+
 
     /**
      * Constructs a new <code>TextField</code>.  A default model is created,
@@ -27,7 +45,7 @@ public class AugmentedJTextField extends JTextField {
      * and the number of columns is set to 0.
      */
     public AugmentedJTextField(String ghostText) {
-        this.ghostText = ghostText;
+        this("", 40, ghostText);
     }
 
     /**
@@ -37,8 +55,7 @@ public class AugmentedJTextField extends JTextField {
      * @param text the text to be displayed, or <code>null</code>
      */
     public AugmentedJTextField(String text, String ghostText) {
-        super(text);
-        this.ghostText = ghostText;
+        this(text, 40, ghostText);
     }
 
     /**
@@ -52,8 +69,7 @@ public class AugmentedJTextField extends JTextField {
      * the component implementation
      */
     public AugmentedJTextField(int columns, String ghostText) {
-        super(columns);
-        this.ghostText = ghostText;
+        this("", columns, ghostText);
     }
 
     /**
@@ -68,26 +84,55 @@ public class AugmentedJTextField extends JTextField {
     public AugmentedJTextField(String text, int columns, String ghostText) {
         super(text, columns);
         this.ghostText = ghostText;
+        defaultBorder = getBorder();
+        installMouseListeners();
     }
 
-    /**
-     * Constructs a new <code>JTextField</code> that uses the given text
-     * storage model and the given number of columns.
-     * This is the constructor through which the other constructors feed.
-     * If the document is <code>null</code>, a default model is created.
-     * @param doc the text storage to use; if this is <code>null</code>,
-     * a default will be provided by calling the
-     * <code>createDefaultModel</code> method
-     * @param text the initial string to display, or <code>null</code>
-     * @param columns the number of columns to use to calculate
-     * the preferred width >= 0; if <code>columns</code>
-     * is set to zero, the preferred width will be whatever
-     * naturally results from the component implementation
-     * @throws IllegalArgumentException if <code>columns</code> < 0
-     */
-    public AugmentedJTextField(Document doc, String text, int columns, String ghostText) {
-        super(doc, text, columns);
-        this.ghostText = ghostText;
+    private void installMouseListeners() {
+        addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                if(isInSearchRect(e.getPoint())) {
+                    setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                }
+                else {
+                    setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
+                }
+            }
+        });
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if(isInSearchRect(e.getPoint())) {
+                    searchHandler.ifPresent(h -> {
+                        Optional<String> result = h.handleSearch(AugmentedJTextField.this);
+                        result.ifPresent(AugmentedJTextField.this::setText);
+                    });
+                }
+            }
+        });
+    }
+
+
+    public void setSearchHandler(TextFieldSearchHandler handler) {
+        checkNotNull(handler);
+        this.searchHandler = Optional.of(handler);
+        setSearchIconVisible();
+
+
+    }
+
+    private boolean isInSearchRect(Point pt) {
+        return pt.getX() > getWidth() - SEARCH_RECT_WIDTH && pt.getX() < getWidth();
+    }
+
+    private void setSearchIconVisible() {
+        Border searchBorder = BorderFactory.createCompoundBorder(
+                defaultBorder,
+                BorderFactory.createEmptyBorder(0, 0, 0, SEARCH_RECT_WIDTH)
+        );
+        setBorder(searchBorder);
     }
 
     public int getErrorLocation() {
@@ -188,14 +233,20 @@ public class AugmentedJTextField extends JTextField {
                 int baseLine = getBaseline(getWidth(), getHeight());
                 Rectangle rect = modelToView(getText().length());
                 g.setColor(Color.PINK);
-                g.drawString(errorMessage, rect.x + 20, baseLine);
+                g.drawString(errorMessage, rect.x + SEARCH_RECT_WIDTH, baseLine);
             }
-
-
         }
         catch (BadLocationException e) {
             System.err.println(e.getMessage());
         }
+
+        if(searchHandler.isPresent()) {
+            g.setColor(SEARCH_ICON_COLOR);
+            searchIcon.paintIcon(this, g, getWidth() - SEARCH_RECT_WIDTH, (getHeight() - searchIcon.getIconHeight()) / 2);
+        }
+
         g.setColor(oldColor);
     }
+
+
 }

@@ -23,20 +23,20 @@ public interface ViewComponentPlugin extends ProtegePlugin<ViewComponent> {
     public static final String HIDDEN = "hidden";
 
 
-    public String getLabel();
+    String getLabel();
 
 
-    public Color getBackgroundColor();
+    Color getBackgroundColor();
 
 
-    public boolean isUserCreatable();
+    boolean isUserCreatable();
 
 
-    public Workspace getWorkspace();
+    Workspace getWorkspace();
 
 
-    public Set<String> getCategorisations();
+    Set<String> getCategorisations();
 
 
-    public Set<String> getNavigates();
+    Set<String> getNavigates();
 }

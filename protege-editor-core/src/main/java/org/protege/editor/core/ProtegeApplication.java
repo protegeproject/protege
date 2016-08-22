@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
+import javax.swing.plaf.basic.BasicTreeUI;
 import java.awt.*;
 import java.io.File;
 import java.net.URI;
@@ -137,6 +138,7 @@ public class ProtegeApplication implements BundleActivator {
     private void displayPlatform() {
         Bundle thisBundle = context.getBundle();
         Version v = PluginUtilities.getBundleVersion(thisBundle);
+
         logger.info(LogBanner.start("Protege"));
         logger.info("Protege Desktop");
         logger.info("Version {}.{}.{}, Build {}", v.getMajor(), v.getMinor(), v.getMicro(), v.getQualifier());
@@ -263,14 +265,15 @@ public class ProtegeApplication implements BundleActivator {
 
 
     private static void loadDefaults() {
-        ProtegeProperties.getInstance().put(ProtegeProperties.CLASS_COLOR_KEY, "CC9F2A");
+        ProtegeProperties.getInstance().put(ProtegeProperties.CLASS_COLOR_KEY, "CCA33D");
         ProtegeProperties.getInstance().put(ProtegeProperties.PROPERTY_COLOR_KEY, "306FA2");
-        ProtegeProperties.getInstance().put(ProtegeProperties.OBJECT_PROPERTY_COLOR_KEY, "306FA2");
-        ProtegeProperties.getInstance().put(ProtegeProperties.DATA_PROPERTY_COLOR_KEY, "6B8E23");//"6B8E23");// "408000");//"29A779");
-        ProtegeProperties.getInstance().put(ProtegeProperties.INDIVIDUAL_COLOR_KEY, "541852");//"531852");
-        ProtegeProperties.getInstance().put(ProtegeProperties.ONTOLOGY_COLOR_KEY, "6B47A2");//"5D30A2"); //"E55D1A");
-        ProtegeProperties.getInstance().put(ProtegeProperties.ANNOTATION_PROPERTY_COLOR_KEY, "719FA0");//"719FA0");//"7DA230");//"98BDD8");
-        ProtegeProperties.getInstance().put(ProtegeProperties.DATATYPE_COLOR_KEY, "6B8E23  ");//"719FA0");//"7DA230");//"98BDD8");
+        ProtegeProperties.getInstance().put(ProtegeProperties.OBJECT_PROPERTY_COLOR_KEY, "507DA0");
+        ProtegeProperties.getInstance().put(ProtegeProperties.DATA_PROPERTY_COLOR_KEY, "598C49");
+        ProtegeProperties.getInstance().put(ProtegeProperties.INDIVIDUAL_COLOR_KEY, "723F6E");
+        ProtegeProperties.getInstance().put(ProtegeProperties.ONTOLOGY_COLOR_KEY, "6B47A2");
+        ProtegeProperties.getInstance().put(ProtegeProperties.ANNOTATION_PROPERTY_COLOR_KEY, "504D4A");
+        ProtegeProperties.getInstance().put(ProtegeProperties.DATATYPE_COLOR_KEY, "997168");
+
         ProtegeProperties.getInstance().put(ProtegeProperties.CLASS_VIEW_CATEGORY, "Class");
         ProtegeProperties.getInstance().put(ProtegeProperties.OBJECT_PROPERTY_VIEW_CATEGORY, "Object property");
         ProtegeProperties.getInstance().put(ProtegeProperties.DATA_PROPERTY_VIEW_CATEGORY, "Data property");
@@ -331,7 +334,7 @@ public class ProtegeApplication implements BundleActivator {
                     UIManager.put("ClassLoader", this.getClass().getClassLoader());
                     UIManager.setLookAndFeel(lafClsName);
                 }
-                setupDefaults(defaults);
+                setupDefaults(defaults, lafClsName);
 
             } catch (Exception e) {
                 logger.error("An error occurred during Look&Feel initialization", e);
@@ -339,7 +342,7 @@ public class ProtegeApplication implements BundleActivator {
         }
     }
 
-    private void setupDefaults(UIDefaults defaults) {
+    private void setupDefaults(UIDefaults defaults, String lafClassName) {
         // TODO: Move this to somewhere more sensible
 
         defaults.put("TabbedPaneUI", CloseableTabbedPaneUI.class.getName());
@@ -361,6 +364,21 @@ public class ProtegeApplication implements BundleActivator {
 
         defaults.put("TitledBorder.border", commonBorder);
 
+        Preferences rendererPrefs = PreferencesManager.getInstance().getApplicationPreferences(
+                "org.protege.editor.owl.ui.renderer.OWLRendererPreferences"
+        );
+
+        defaults.put("Tree.paintLines", true);
+        defaults.put("Tree.drawVerticalLines", true);
+        defaults.put("Tree.drawHorizontalLines", true);
+        // Set the color for non-Protege LAFS - the line color is too light for the dotted LAF.
+        if (!ProtegeProperties.PLASTIC_LAF_NAME.equals(lafClassName)) {
+            defaults.put("Tree.hash", new Color(230, 230, 230));
+        }
+
+
+        int fontSize = rendererPrefs.getInt("FONT_SIZE", 12);
+        Fonts.updateUIDefaultsFontSize(fontSize);
     }
 
     private void setupExceptionHandler() {

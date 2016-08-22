@@ -6,9 +6,12 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 
 /**
@@ -28,9 +31,9 @@ public class HistoryManagerImpl implements HistoryManager {
 
     private ChangeType typeOfChangeInProgress = ChangeType.NORMAL;
 
-    private Logger logger = LoggerFactory.getLogger(HistoryManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(HistoryManager.class);
 
-    private OWLOntologyManager manager;
+    private final OWLOntologyManager manager;
 
 
     /**
@@ -39,7 +42,7 @@ public class HistoryManagerImpl implements HistoryManager {
      * if the list contain an "add superclass" history, then the
      * required undo history is a "remove superclass" history.
      */
-    private Stack<List<OWLOntologyChange>> undoStack;
+    private final Stack<List<OWLOntologyChange>> undoStack = new Stack<>();
 
     /**
      * Holds a list of sets of changes that can be redone. These
@@ -47,9 +50,9 @@ public class HistoryManagerImpl implements HistoryManager {
      * These are a list of "forward" changes rather that the
      * "undo changes".
      */
-    private Stack<List<OWLOntologyChange>> redoStack;
+    private final Stack<List<OWLOntologyChange>> redoStack = new Stack<>();
 
-    private List<UndoManagerListener> listeners;
+    private final List<UndoManagerListener> listeners = new ArrayList<>();
 
 
     public HistoryManagerImpl(OWLModelManager owlModelManager) {
@@ -59,9 +62,6 @@ public class HistoryManagerImpl implements HistoryManager {
     
     public HistoryManagerImpl(OWLOntologyManager manager) {
         this.manager = manager;
-        undoStack = new Stack<>();
-        redoStack = new Stack<>();
-        listeners = new ArrayList<>();
         typeOfChangeInProgress = ChangeType.NORMAL;
     }
 
@@ -76,7 +76,7 @@ public class HistoryManagerImpl implements HistoryManager {
     }
 
 
-    public void logChanges(List<? extends OWLOntologyChange> changes) {
+    public void logChanges(@Nonnull List<? extends OWLOntologyChange> changes) {
         switch (typeOfChangeInProgress) {
         case NORMAL:
             // Clear the redo stack, because we can
@@ -140,17 +140,23 @@ public class HistoryManagerImpl implements HistoryManager {
         }
     }
 
+    @Override
+    public void clear() {
+        redoStack.clear();
+        undoStack.clear();
+        fireStateChanged();
+    }
 
-    public void addUndoManagerListener(UndoManagerListener listener) {
-        listeners.add(listener);
+    public void addUndoManagerListener(@Nonnull UndoManagerListener listener) {
+        listeners.add(checkNotNull(listener));
     }
 
 
-    public void removeUndoManagerListener(UndoManagerListener listener) {
+    public void removeUndoManagerListener(@Nonnull UndoManagerListener listener) {
         listeners.remove(listener);
     }
 
-
+    @Nonnull
     public List<List<OWLOntologyChange>> getLoggedChanges() {
         List<List<OWLOntologyChange>> copyOfLog = new ArrayList<>();
         for (List<OWLOntologyChange> changes : undoStack){

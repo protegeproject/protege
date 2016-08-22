@@ -273,7 +273,7 @@ public abstract class Workspace extends JComponent implements Disposable {
         return viewManager;
     }
 
-    public abstract JComponent getStatusArea();
+    public abstract java.util.Optional<JComponent> getStatusArea();
 
 
     public void showResultsView(String id, String headerLabel, Color headerColor, ViewComponent viewComponent, boolean replace, int location) {
@@ -337,8 +337,8 @@ public abstract class Workspace extends JComponent implements Disposable {
         return "";
     }
 
-//////////////////////////////////////////////////////////////////////////////////
-//
+
+    ////////////////////////////////////////////////////////////////////////////////////
 
 
     private class ResultsViewComponentPlugin implements ViewComponentPlugin {

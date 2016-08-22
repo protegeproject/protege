@@ -60,12 +60,6 @@ public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> i
         autoExpandTree();
     }
 
-
-    public void refreshComponent() {
-        reload();
-    }
-
-
     public void reload() {
         super.reload();
         autoExpandTree();

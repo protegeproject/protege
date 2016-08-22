@@ -11,27 +11,22 @@ import java.awt.*;
  */
 public abstract class OWLEntityIcon implements Icon {
 
-    private static int DEFAULT_PADDING_PX = 2;
+    private final FillType fillType;
 
-    private SizeBias sizeBias;
-
-    protected OWLEntityIcon(SizeBias sizeBias) {
-        this.sizeBias = sizeBias;
+    protected OWLEntityIcon(FillType fillType) {
+        this.fillType = fillType;
     }
 
-    protected int getSize() {
-        int size;
-        int fontSize = OWLRendererPreferences.getInstance().getFontSize();
-        int idealSize = fontSize + getPadding() * 2;
-        if(sizeBias.equals(SizeBias.EVEN)) {
-            size = (idealSize / 2) * 2;
-        }
-        else {
-            size = (idealSize / 2) * 2 + 1;
-        }
-        return size;
+    public abstract Color getEntityColor();
+
+    public FillType getFillType() {
+        return fillType;
     }
-    
+
+    public int getBaseSize() {
+        return 16;
+    }
+
     protected int getBaseline(Component c, int defaultBaseline) {
         if(c == null) {
             return defaultBaseline;
@@ -43,17 +38,13 @@ public abstract class OWLEntityIcon implements Icon {
         FontMetrics fm = c.getFontMetrics(f);
         return fm.getAscent() + fm.getLeading();
     }
-    
-    protected int getPadding() {
-        return DEFAULT_PADDING_PX;
-    }
-    
+
     /**
      * Returns the icon's width.
      * @return an int specifying the fixed width of the icon.
      */
     public int getIconWidth() {
-        return getSize();
+        return getBaseSize();
     }
 
     /**
@@ -61,11 +52,11 @@ public abstract class OWLEntityIcon implements Icon {
      * @return an int specifying the fixed height of the icon.
      */
     public int getIconHeight() {
-        return getSize();
+        return getBaseSize();
     }
-    
-    public static enum SizeBias {
-        ODD,
-        EVEN
+
+    public enum FillType {
+        FILLED,
+        HOLLOW
     }
 }

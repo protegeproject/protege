@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.renderer;
 
+import java.awt.*;
+
 /**
  * Author: Matthew Horridge<br>
  * Stanford University<br>
@@ -8,7 +10,18 @@ package org.protege.editor.owl.ui.renderer;
  */
 public class OWLDataPropertyIcon extends OWLPropertyIcon {
 
+    public static final Color COLOR = OWLSystemColors.getOWLDataPropertyColor();
+
     public OWLDataPropertyIcon() {
-        super(OWLSystemColors.getOWLDataPropertyColor());
+        this(FillType.FILLED);
+    }
+
+    public OWLDataPropertyIcon(FillType fillType) {
+        super(COLOR, fillType);
+    }
+
+    @Override
+    public Color getEntityColor() {
+        return COLOR;
     }
 }

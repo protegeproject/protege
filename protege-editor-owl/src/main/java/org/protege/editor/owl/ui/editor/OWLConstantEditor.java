@@ -69,9 +69,9 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         datatypeComboBox = uiHelper.getDatatypeSelector();
         datatypeComboBox.addActionListener(e -> {
             OWLDatatype owlDatatype = getSelectedDatatype();
-            boolean b = owlDatatype == null;
+            boolean langEnabled = owlDatatype == null || owlDatatype.isRDFPlainLiteral();
             validateContent();
-            toggleLanguage(b);
+            setLangEnabled(langEnabled);
         });
 
         annotationContent.getDocument().addDocumentListener(new DocumentListener() {
@@ -146,7 +146,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         }
     }
 
-    private void toggleLanguage(boolean b) {
+    private void setLangEnabled(boolean b) {
         langLabel.setEnabled(b);
         langComboBox.setEnabled(b);
     }
@@ -167,14 +167,15 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         lastDatatype = null;
         lastLanguage = null;
         String value = getLexicalValue();
-        if (isDatatypeSelected()) {
-            lastDatatype = getSelectedDatatype();
-            return dataFactory.getOWLLiteral(value, getSelectedDatatype());
-        }
         if (isLangSelected()) {
             lastLanguage = getSelectedLang();
             return dataFactory.getOWLLiteral(value, getSelectedLang());
         }
+        if (isDatatypeSelected()) {
+            lastDatatype = getSelectedDatatype();
+            return dataFactory.getOWLLiteral(value, getSelectedDatatype());
+        }
+
         OWLLiteralParser parser = new OWLLiteralParser(dataFactory);
 
         return parser.parseLiteral(value);

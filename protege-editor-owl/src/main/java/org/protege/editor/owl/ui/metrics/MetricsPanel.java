@@ -4,6 +4,7 @@ import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.OWLAxiomTypeFramePanel;
+import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.semanticweb.owlapi.metrics.*;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -16,7 +17,6 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
-import java.awt.font.NumericShaper;
 import java.util.*;
 import java.util.List;
 
@@ -108,7 +108,11 @@ public class MetricsPanel extends JPanel {
             tableModelMap.put(metricManagerMap.get(metricsSet), tableModel);
             final JTable table = new JTable(tableModel);
             table.setGridColor(new Color(240, 240, 240));
-            table.setRowHeight(table.getRowHeight() + 4);
+            FontMetrics fontMetrics = table.getFontMetrics(table.getFont());
+            table.setRowHeight((fontMetrics.getLeading() * 2)
+                    + fontMetrics.getMaxAscent()
+                    + fontMetrics.getMaxDescent()
+                    + 4);
             table.setShowGrid(true);
             table.getColumnModel().getColumn(1).setMaxWidth(150);
             table.addMouseListener(new MouseAdapter() {
@@ -211,7 +215,6 @@ public class MetricsPanel extends JPanel {
             });
             JLabel titleLabel = new JLabel(metricsSet);
             titleLabel.setOpaque(false);
-            titleLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
             tablePanel.add(titleLabel, BorderLayout.NORTH);
             tablePanel.setOpaque(false);
             JPanel tableHolder = new JPanel(new BorderLayout());

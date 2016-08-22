@@ -50,6 +50,11 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
 
     private InlineThumbnailRendering thumbnailRendering = InlineThumbnailRendering.DISPLAY_THUMBNAILS_INLINE;
 
+    private final List<LinkExtractor> linkExtractors = Arrays.asList(
+            PubMedLinkExtractor.createExtractor(),
+            ISBN10LinkExtractor.createExtractor(),
+            WikipediaLinkExtractor.createExtractor());
+
     public OWLAnnotationCellRenderer2(OWLEditorKit editorKit) {
         super();
         this.editorKit = editorKit;
@@ -399,9 +404,25 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
 
         }
         else {
-            paragraphs.add(page.addParagraph(iriString));
+            Optional<Link> link = extractLink(iriString);
+            if(link.isPresent()) {
+                paragraphs.add(page.addParagraph(iriString, link.get()));
+            }
+            else {
+                paragraphs.add(page.addParagraph(iriString));
+            }
         }
         return paragraphs;
+    }
+
+    private Optional<Link> extractLink(String iriString) {
+        for(LinkExtractor extractor : linkExtractors) {
+            Optional<Link> link = extractor.extractLink(iriString);
+            if(link.isPresent()) {
+                return link;
+            }
+        }
+        return Optional.empty();
     }
 
     private boolean isDisplayThumbnails() {
@@ -511,11 +532,21 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
 
     private boolean isLiteralRenderableAsIRI(OWLLiteral literal) {
         String candidateIri = literal.getLiteral();
+        if(candidateIri.contains(" ")) {
+            return false;
+        }
         if (candidateIri.startsWith("http://")) {
             return true;
         }
         else if (candidateIri.startsWith("https://")) {
             return true;
+        }
+        else {
+            for(LinkExtractor extractor : linkExtractors) {
+                if(extractor.extractLink(candidateIri).isPresent()) {
+                    return true;
+                }
+            }
         }
         return false;
     }

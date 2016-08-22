@@ -5,6 +5,10 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.*;
 
+import javax.annotation.Nonnull;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+
 
 /**
  * Author: Matthew Horridge<br>
@@ -13,27 +17,32 @@ import org.semanticweb.owlapi.reasoner.*;
  * Date: 16-Apr-2007<br><br>
  */
 public class NoOpReasonerInfo implements ProtegeOWLReasonerInfo {
+
     private String id = NULL_REASONER_ID;
+
     private String name;
+
     public static final String NULL_REASONER_ID = "org.protege.editor.owl.NoOpReasoner";
-    
+
     private OWLModelManager manager;
 
-    public void setup(OWLOntologyManager manager, String id, String name) {
-        this.id = id;
-        this.name = name;
+
+    public void setup(@Nonnull OWLOntologyManager manager, @Nonnull String id, @Nonnull String name) {
+        this.id = checkNotNull(id);
+        this.name = checkNotNull(name);
     }
 
+    @Nonnull
     public String getReasonerId() {
         return id;
     }
 
+    @Nonnull
     public String getReasonerName() {
         return name;
     }
 
-
-    
+    @Nonnull
     public OWLReasoner createReasoner(OWLOntology ontology, ReasonerProgressMonitor monitor) {
         return new NoOpReasoner(ontology);
     }
@@ -46,24 +55,28 @@ public class NoOpReasonerInfo implements ProtegeOWLReasonerInfo {
 
     }
 
-	public void setOWLModelManager(OWLModelManager owlModelManager) {
-		manager = owlModelManager;
-	}
-	
-	public OWLModelManager getOWLModelManager() {
-		return manager;
-	}
-	
-	public BufferingMode getRecommendedBuffering() {
-		return BufferingMode.NON_BUFFERING;
-	}
+    public void setOWLModelManager(@Nonnull OWLModelManager owlModelManager) {
+        manager = owlModelManager;
+    }
 
-	public OWLReasonerConfiguration getConfiguration(ReasonerProgressMonitor monitor) {
-		return new SimpleConfiguration(monitor);
-	}
+    @Nonnull
+    public OWLModelManager getOWLModelManager() {
+        return manager;
+    }
 
-	public OWLReasonerFactory getReasonerFactory() {
-		return new NoOpReasonerFactory();
-	}
+    @Nonnull
+    public BufferingMode getRecommendedBuffering() {
+        return BufferingMode.NON_BUFFERING;
+    }
+
+    @Nonnull
+    public OWLReasonerConfiguration getConfiguration(ReasonerProgressMonitor monitor) {
+        return new SimpleConfiguration(monitor);
+    }
+
+    @Nonnull
+    public OWLReasonerFactory getReasonerFactory() {
+        return new NoOpReasonerFactory();
+    }
 
 }

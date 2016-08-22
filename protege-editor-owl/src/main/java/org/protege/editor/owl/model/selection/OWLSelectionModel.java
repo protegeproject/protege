@@ -3,6 +3,10 @@ package org.protege.editor.owl.model.selection;
 import org.protege.editor.owl.model.util.OWLAxiomInstance;
 import org.semanticweb.owlapi.model.*;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Optional;
+
 
 /**
  * Author: Matthew Horridge<br>
@@ -26,15 +30,16 @@ public interface OWLSelectionModel {
      * @return The selected <code>OWLClass</code>, or <code>null</code>
      *         if a class is not selected.
      */
-    public OWLClass getLastSelectedClass();
-
+    @Nullable
+    OWLClass getLastSelectedClass();
 
     /**
      * Gets the most recently selected property
      * @return The selected <code>OWLObjectProperty</code>, or <code>null</code>
      *         if there is no selected property.
      */
-    public OWLObjectProperty getLastSelectedObjectProperty();
+    @Nullable
+    OWLObjectProperty getLastSelectedObjectProperty();
 
 
     /**
@@ -42,14 +47,16 @@ public interface OWLSelectionModel {
      * @return The selected <code>OWLDataProperty</code>, or <code>null</code>
      *         if there is no selected property.
      */
-    public OWLDataProperty getLastSelectedDataProperty();
+    @Nullable
+    OWLDataProperty getLastSelectedDataProperty();
 
     /**
      * Gets the most recently selected annotation property
      * @return The selected <code>OWLAnnotationProperty</code>, or <code>null</code>
      *         if there is no selected property.
      */
-    public OWLAnnotationProperty getLastSelectedAnnotationProperty();
+    @Nullable
+    OWLAnnotationProperty getLastSelectedAnnotationProperty();
 
 
     /**
@@ -57,7 +64,8 @@ public interface OWLSelectionModel {
      * @return The selected individual, or <code>null</code> if
      *         there is no selected individual.
      */
-    public OWLNamedIndividual getLastSelectedIndividual();
+    @Nullable
+    OWLNamedIndividual getLastSelectedIndividual();
 
 
     /**
@@ -65,46 +73,50 @@ public interface OWLSelectionModel {
      * @return The selected datatype, or <code>null</code> if
      *         there is no selected datatype.
      */
-    public OWLDatatype getLastSelectedDatatype();
+    @Nullable
+    OWLDatatype getLastSelectedDatatype();
 
 
     /**
      * Gets the last selected entity.
      * @return The <code>OWLEntity</code> that was last selected.
      */
-    public OWLEntity getSelectedEntity();
+    @Nullable
+    OWLEntity getSelectedEntity();
 
     /**
      * If any of the last selected entities are equal to
      * the specified entity then the selection is cleared.
      */
-    public void clearLastSelectedEntity(OWLEntity entity);
+    void clearLastSelectedEntity(@Nonnull OWLEntity entity);
 
 
     /**
      * A convenience method that will delegate to the appropriate
      * selection method depending on the type of entity.
-     * @param entity The entity to be selected.  Must not be <code>null</code>.
+     * @param entity The entity to be selected.
      */
-    public void setSelectedEntity(OWLEntity entity);
+    void setSelectedEntity(@Nullable OWLEntity entity);
 
 
     /**
      * Instances of an axiom wrt the containing ontology
      */
-    public void setSelectedAxiom(OWLAxiomInstance axiomInstance);
+    void setSelectedAxiom(@Nonnull OWLAxiomInstance axiomInstance);
 
     /**
      * Instances of an axiom wrt the containing ontology
      * @return and OWLAxiomInstance (an axiom, ontology pair)
      */
-    public OWLAxiomInstance getLastSelectedAxiomInstance();
+    @Nullable
+    OWLAxiomInstance getLastSelectedAxiomInstance();
 
 
-    public void setSelectedObject(OWLObject object);
+    void setSelectedObject(@Nullable OWLObject object);
 
 
-    public OWLObject getSelectedObject();
+    @Nullable
+    OWLObject getSelectedObject();
 
 
     /**
@@ -112,7 +124,7 @@ public interface OWLSelectionModel {
      * @param listener The listener to to be added.  This listener will be notified
      *                 of any changes to the set of selected objects.
      */
-    public void addListener(OWLSelectionModelListener listener);
+    void addListener(@Nonnull OWLSelectionModelListener listener);
 
 
     /**
@@ -120,5 +132,5 @@ public interface OWLSelectionModel {
      * listener was not added then this method will have no effect.
      * @param listener The listener to remove.
      */
-    public void removeListener(OWLSelectionModelListener listener);
+    void removeListener(@Nonnull OWLSelectionModelListener listener);
 }

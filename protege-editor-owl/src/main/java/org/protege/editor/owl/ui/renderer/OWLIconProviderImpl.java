@@ -33,9 +33,9 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
 
     private final Icon annotationPropertyIcon = new OWLAnnotationPropertyIcon();
 
-    private final Icon individualIcon = new OWLIndividualIcon();
+    private final Icon individualIcon = new OWLIndividualIcon(OWLEntityIcon.FillType.FILLED);
 
-    private final Icon dataTypeIcon = OWLIcons.getIcon("datarange.png");
+    private final Icon dataTypeIcon = new OWLDatatypeIcon();
 
     private final Icon ontologyIcon = OWLIcons.getIcon("ontology.png");
 

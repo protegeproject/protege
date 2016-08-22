@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.find;
 
+import org.protege.editor.core.ui.util.AugmentedJTextField;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
@@ -30,16 +31,16 @@ public class OWLEntityFindPanel extends JPanel {
 
     private OWLEditorKit owlEditorKit;
 
-    private Findable findable;
+    private Findable<?> findable;
 
-    private JTextField textField;
+    private final JTextField textField = new AugmentedJTextField("Enter search text");
 
-    private JList resultsList;
+    private JList<OWLEntity> resultsList;
 
     Timer findTimer;
 
 
-    public OWLEntityFindPanel(OWLEditorKit owlEditorKit, Findable findable) {
+    public OWLEntityFindPanel(OWLEditorKit owlEditorKit, Findable<?> findable) {
         this.owlEditorKit = owlEditorKit;
         this.findable = findable;
         createUI();
@@ -53,21 +54,18 @@ public class OWLEntityFindPanel extends JPanel {
 
 
     public OWLEntity getSelectedEntity() {
-        return (OWLEntity) resultsList.getSelectedValue();
+        return resultsList.getSelectedValue();
     }
 
 
     private void createUI() {
         setLayout(new BorderLayout(7, 7));
-        textField = new JTextField();
         JPanel textFieldPanel = new JPanel(new BorderLayout());
         textFieldPanel.add(textField);
-        textFieldPanel.setBorder(ComponentFactory.createTitledBorder("Find"));
         add(textFieldPanel, BorderLayout.NORTH);
-        resultsList = new OWLObjectList(owlEditorKit);
+        resultsList = new OWLObjectList<>(owlEditorKit);
         JPanel resultsListPanel = new JPanel(new BorderLayout());
         resultsListPanel.add(ComponentFactory.createScrollPane(resultsList));
-        resultsListPanel.setBorder(ComponentFactory.createTitledBorder("Results"));
         add(resultsListPanel, BorderLayout.CENTER);
         textField.getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e) {
@@ -135,11 +133,11 @@ public class OWLEntityFindPanel extends JPanel {
     private void doUpdate() {
         String text = textField.getText().trim();
         if (text.length() == 0) {
-            resultsList.setListData(new Object [0]);
+            resultsList.setListData(new OWLEntity[0]);
             return;
         }
         List<? extends OWLEntity> result = findable.find(text);
-        resultsList.setListData(result.toArray());
+        resultsList.setListData(result.toArray(new OWLEntity[result.size()]));
         if (!result.isEmpty()) {
             resultsList.setSelectedIndex(0);
         }
@@ -151,7 +149,7 @@ public class OWLEntityFindPanel extends JPanel {
     }
 
 
-    public static OWLEntity showDialog(Component parent, OWLEditorKit owlEditorKit, Findable findable) {
+    public static OWLEntity showDialog(Component parent, OWLEditorKit owlEditorKit, Findable<? extends OWLEntity> findable) {
         final OWLEntityFindPanel panel = new OWLEntityFindPanel(owlEditorKit, findable);
         int ret = JOptionPaneEx.showConfirmDialog(parent,
                                                   "Find",

@@ -121,10 +121,18 @@ public class UIUtil {
     }
 
     public static File saveFile(Component parent, String title, final String description, final Set<String> extensions, String initialName) {
-        if (OSUtils.isOSX() && parent instanceof Window) {
-            return MacUIUtil.saveFile((Window) parent, title, extensions, initialName);
+        Window parentWindow;
+        if(parent instanceof Window) {
+            parentWindow = (Window) parent;
+        }
+        else {
+            parentWindow = SwingUtilities.getWindowAncestor(parent);
+        }
+        if (OSUtils.isOSX() && parentWindow != null) {
+            return MacUIUtil.saveFile(parentWindow, title, extensions, initialName);
         }
         JFileChooser fileDialog = new JFileChooser(getCurrentFileDirectory());
+        fileDialog.setDialogTitle(title);
         if (extensions != null && !extensions.isEmpty()) {
             fileDialog.setFileFilter(new FileFilter() {
 

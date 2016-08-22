@@ -18,7 +18,7 @@ import java.util.*;
 public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTreeModel {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -2530774548488512609L;
 
@@ -57,14 +57,14 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
         setOWLEntity(entity);
     }
 
-    private String getRootContent(OWLModelManager mngr, OWLEntity entity){
+    private String getRootContent(OWLModelManager mngr, OWLEntity entity) {
         return entity != null ? "Found " + usageCount + " uses of " + mngr.getRendering(entity) : "";
     }
 
     public void setOWLEntity(OWLEntity owlEntity) {
-    	if (owlEntity == null) {
-    		return;
-    	}
+        if (owlEntity == null) {
+            return;
+        }
         this.entity = owlEntity;
         axiomsByEntityMap.clear();
         usageCount = 0;
@@ -73,8 +73,19 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
             currentOntology = ont;
             Set<OWLAxiom> axioms = ont.getReferencingAxioms(owlEntity);
             for (OWLAxiom ax : axioms) {
-                axiomSorter.setAxiom(ax);
-                ax.accept(axiomSorter);
+                addUsage(ax);
+            }
+            for (OWLAxiom ax : ont.getReferencingAxioms(owlEntity.getIRI())) {
+                addUsage(ax);
+            }
+            // This is terribly inefficient but there are no indexes in the OWL API to do this.
+            for (OWLAnnotationAssertionAxiom ax : ont.getAxioms(AxiomType.ANNOTATION_ASSERTION)) {
+                com.google.common.base.Optional<IRI> valueIRI = ax.getValue().asIRI();
+                if (valueIRI.isPresent()) {
+                    if (valueIRI.get().equals(owlEntity.getIRI())) {
+                        addUsage(ax);
+                    }
+                }
             }
         }
 
@@ -86,13 +97,18 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
                 getNode(ent).add(new UsageTreeNode(null, ax));
             }
         }
-        if (!additionalAxioms.isEmpty()){
+        if (!additionalAxioms.isEmpty()) {
             DefaultMutableTreeNode otherNode = new DefaultMutableTreeNode("Other");
             rootNode.add(otherNode);
-            for (OWLAxiom ax : additionalAxioms){
+            for (OWLAxiom ax : additionalAxioms) {
                 otherNode.add(new DefaultMutableTreeNode(ax));
             }
         }
+    }
+
+    private void addUsage(OWLAxiom ax) {
+        axiomSorter.setAxiom(ax);
+        ax.accept(axiomSorter);
     }
 
 
@@ -111,7 +127,7 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
     }
 
 
-    private boolean isFilterSet(UsageFilter filter){
+    private boolean isFilterSet(UsageFilter filter) {
         return filters.contains(filter);
     }
 
@@ -127,7 +143,7 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
     }
 
 
-    public void refresh(){
+    public void refresh() {
         setOWLEntity(entity);
     }
 
@@ -198,25 +214,25 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
 
 
         public void visit(OWLAnnotationAssertionAxiom axiom) {
-            if (axiom.getSubject() instanceof IRI){
-                IRI subjectIRI = (IRI)axiom.getSubject();
-                for (OWLOntology ont : owlModelManager.getActiveOntologies()){
-                    if (ont.containsClassInSignature(subjectIRI)){
+            if (axiom.getSubject() instanceof IRI) {
+                IRI subjectIRI = (IRI) axiom.getSubject();
+                for (OWLOntology ont : owlModelManager.getActiveOntologies()) {
+                    if (ont.containsClassInSignature(subjectIRI)) {
                         add(owlModelManager.getOWLDataFactory().getOWLClass(subjectIRI));
                     }
-                    if (ont.containsObjectPropertyInSignature(subjectIRI)){
+                    if (ont.containsObjectPropertyInSignature(subjectIRI)) {
                         add(owlModelManager.getOWLDataFactory().getOWLObjectProperty(subjectIRI));
                     }
-                    if (ont.containsDataPropertyInSignature(subjectIRI)){
+                    if (ont.containsDataPropertyInSignature(subjectIRI)) {
                         add(owlModelManager.getOWLDataFactory().getOWLDataProperty(subjectIRI));
                     }
-                    if (ont.containsIndividualInSignature(subjectIRI)){
+                    if (ont.containsIndividualInSignature(subjectIRI)) {
                         add(owlModelManager.getOWLDataFactory().getOWLNamedIndividual(subjectIRI));
                     }
-                    if (ont.containsAnnotationPropertyInSignature(subjectIRI)){
+                    if (ont.containsAnnotationPropertyInSignature(subjectIRI)) {
                         add(owlModelManager.getOWLDataFactory().getOWLAnnotationProperty(subjectIRI));
                     }
-                    if (ont.containsDatatypeInSignature(subjectIRI)){
+                    if (ont.containsDatatypeInSignature(subjectIRI)) {
                         add(owlModelManager.getOWLDataFactory().getOWLDatatype(subjectIRI));
                     }
                 }
@@ -240,14 +256,14 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
 
 
         public void visit(OWLClassAssertionAxiom axiom) {
-            if (!axiom.getIndividual().isAnonymous()){
+            if (!axiom.getIndividual().isAnonymous()) {
                 axiom.getIndividual().asOWLNamedIndividual().accept(this);
             }
         }
 
 
         public void visit(OWLDataPropertyAssertionAxiom axiom) {
-            if (!axiom.getSubject().isAnonymous()){
+            if (!axiom.getSubject().isAnonymous()) {
                 axiom.getSubject().asOWLNamedIndividual().accept(this);
             }
         }
@@ -275,7 +291,7 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
 
         public void visit(OWLDifferentIndividualsAxiom axiom) {
             for (OWLIndividual ind : axiom.getIndividuals()) {
-                if (!ind.isAnonymous()){
+                if (!ind.isAnonymous()) {
                     ind.asOWLNamedIndividual().accept(this);
                 }
             }
@@ -284,7 +300,7 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
 
         public void visit(OWLDisjointClassesAxiom axiom) {
             boolean hasBeenIndexed = false;
-            if (!isFilterSet(UsageFilter.filterDisjoints)){
+            if (!isFilterSet(UsageFilter.filterDisjoints)) {
                 for (OWLClassExpression desc : axiom.getClassExpressions()) {
                     if (!desc.isAnonymous()) {
                         desc.asOWLClass().accept(this);
@@ -292,15 +308,15 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
                     }
                 }
             }
-            if (!hasBeenIndexed){
+            if (!hasBeenIndexed) {
                 additionalAxioms.add(axiom);
                 usageCount++;
-            }            
+            }
         }
 
 
         public void visit(OWLDisjointDataPropertiesAxiom axiom) {
-            if (!isFilterSet(UsageFilter.filterDisjoints)){
+            if (!isFilterSet(UsageFilter.filterDisjoints)) {
                 for (OWLDataPropertyExpression prop : axiom.getProperties()) {
                     prop.accept(this);
                 }
@@ -309,7 +325,7 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
 
 
         public void visit(OWLDisjointObjectPropertiesAxiom axiom) {
-            if (!isFilterSet(UsageFilter.filterDisjoints)){
+            if (!isFilterSet(UsageFilter.filterDisjoints)) {
                 for (OWLObjectPropertyExpression prop : axiom.getProperties()) {
                     prop.accept(this);
                 }
@@ -318,7 +334,7 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
 
 
         public void visit(OWLDisjointUnionAxiom axiom) {
-            if (!isFilterSet(UsageFilter.filterDisjoints)){
+            if (!isFilterSet(UsageFilter.filterDisjoints)) {
                 axiom.getOWLClass().accept(this);
             }
         }
@@ -332,7 +348,7 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
                     hasBeenIndexed = true;
                 }
             }
-            if (!hasBeenIndexed){
+            if (!hasBeenIndexed) {
                 additionalAxioms.add(axiom);
                 usageCount++;
             }
@@ -391,21 +407,21 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
 
 
         public void visit(OWLNegativeDataPropertyAssertionAxiom axiom) {
-            if (!axiom.getSubject().isAnonymous()){
+            if (!axiom.getSubject().isAnonymous()) {
                 axiom.getSubject().asOWLNamedIndividual().accept(this);
             }
         }
 
 
         public void visit(OWLNegativeObjectPropertyAssertionAxiom axiom) {
-            if (!axiom.getSubject().isAnonymous()){
+            if (!axiom.getSubject().isAnonymous()) {
                 axiom.getSubject().asOWLNamedIndividual().accept(this);
             }
         }
 
 
         public void visit(OWLObjectPropertyAssertionAxiom axiom) {
-            if (!axiom.getSubject().isAnonymous()){
+            if (!axiom.getSubject().isAnonymous()) {
                 axiom.getSubject().asOWLNamedIndividual().accept(this);
             }
         }
@@ -438,7 +454,7 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
 
         public void visit(OWLSameIndividualAxiom axiom) {
             for (OWLIndividual ind : axiom.getIndividuals()) {
-                if (!ind.isAnonymous()){
+                if (!ind.isAnonymous()) {
                     ind.asOWLNamedIndividual().accept(this);
                 }
             }
@@ -448,11 +464,11 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
         public void visit(OWLSubClassOfAxiom axiom) {
             if (!axiom.getSubClass().isAnonymous()) {
                 if (!isFilterSet(UsageFilter.filterNamedSubsSupers) ||
-                    (!axiom.getSubClass().equals(entity) && !axiom.getSuperClass().equals(entity))){
+                        (!axiom.getSubClass().equals(entity) && !axiom.getSuperClass().equals(entity))) {
                     axiom.getSubClass().asOWLClass().accept(this);
                 }
             }
-            else{
+            else {
                 additionalAxioms.add(axiom);
                 usageCount++;
             }
@@ -475,11 +491,6 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
 
 
     protected class UsageTreeNode extends DefaultMutableTreeNode {
-
-        /**
-         * 
-         */
-        private static final long serialVersionUID = -53617232488795863L;
 
         private OWLOntology ont;
 

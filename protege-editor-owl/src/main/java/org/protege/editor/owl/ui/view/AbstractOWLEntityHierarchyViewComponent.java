@@ -13,6 +13,8 @@ import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.protege.editor.owl.ui.tree.OWLObjectTree;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
@@ -46,6 +48,8 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
     private TreeSelectionListener listener;
 
     private OWLObjectHierarchyDeleter<E> hierarchyDeleter;
+
+    private final Logger logger = LoggerFactory.getLogger(AbstractOWLEntityHierarchyViewComponent.class);
 
     private final ViewModeComponent<OWLObjectTree<E>> viewModeComponent = new ViewModeComponent<>();
 
@@ -97,25 +101,29 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
         });
 
 
-        Optional<OWLObjectHierarchyProvider<E>> inferredHierarchyProvider = getInferredHierarchyProvider();
-        if (inferredHierarchyProvider.isPresent()) {
-            inferredTree = Optional.of(new OWLModelManagerTree<>(getOWLEditorKit(), inferredHierarchyProvider.get()));
-            inferredTree.get().setBackground(OWLFrameList.INFERRED_BG_COLOR);
-            inferredTree.get().setOWLObjectComparator(treeNodeComp);
-            inferredTree.get().getModel().addTreeModelListener(treeModelListener);
-            inferredTree.get().addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseReleased(MouseEvent e) {
-                    transmitSelection();
-                }
-            });
-            viewModeComponent.add(inferredTree.get(), ViewMode.INFERRED, true);
-            getView().addViewMode(ViewMode.ASSERTED);
-            getView().addViewMode(ViewMode.INFERRED);
-            getView().addViewModeChangedHandler(this::switchViewMode);
-        }
-        else {
-            inferredTree = Optional.empty();
+        try {
+            Optional<OWLObjectHierarchyProvider<E>> inferredHierarchyProvider = getInferredHierarchyProvider();
+            if (inferredHierarchyProvider.isPresent()) {
+                inferredTree = Optional.of(new OWLModelManagerTree<>(getOWLEditorKit(), inferredHierarchyProvider.get()));
+                inferredTree.get().setBackground(OWLFrameList.INFERRED_BG_COLOR);
+                inferredTree.get().setOWLObjectComparator(treeNodeComp);
+                inferredTree.get().getModel().addTreeModelListener(treeModelListener);
+                inferredTree.get().addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+                        transmitSelection();
+                    }
+                });
+                viewModeComponent.add(inferredTree.get(), ViewMode.INFERRED, true);
+                getView().addViewMode(ViewMode.ASSERTED);
+                getView().addViewMode(ViewMode.INFERRED);
+                getView().addViewModeChangedHandler(this::switchViewMode);
+            }
+            else {
+                inferredTree = Optional.empty();
+            }
+        } catch (Exception e) {
+            logger.error("An error occurred whilst getting the inferred hierarchy provider", e);
         }
 
         hierarchyDeleter = new OWLObjectHierarchyDeleter<>(getOWLEditorKit(),
@@ -244,6 +252,9 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
             else{
                 setGlobalSelection(selEntity);
             }
+        }
+        else {
+            setGlobalSelection(null);
         }
 
         updateHeader(selEntity);
