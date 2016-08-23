@@ -36,8 +36,11 @@ public class NoOpReasoner implements OWLReasoner {
 
 
     public NoOpReasoner(OWLOntology rootOntology) {
+        this(rootOntology, new OWLDataFactoryImpl());
+    }
+
+    protected NoOpReasoner(OWLOntology rootOntology, OWLDataFactory df) {
         this.rootOntology = rootOntology;
-        OWLDataFactory df = new OWLDataFactoryImpl();
         OWL_THING = df.getOWLThing();
         OWL_NOTHING = df.getOWLNothing();
         OWL_TOP_OBJECT_PROPERTY = df.getOWLTopObjectProperty();
@@ -45,6 +48,7 @@ public class NoOpReasoner implements OWLReasoner {
         OWL_TOP_DATA_PROPERTY = df.getOWLTopDataProperty();
         OWL_BOTTOM_DATA_PROPERTY = df.getOWLBottomDataProperty();
     }
+
 
     @Nonnull
     public OWLOntology getRootOntology() {
