@@ -6,7 +6,7 @@ jdk:
 notifications:
   email:
     recipients:
-      - vendetti@stanford.edu
+      - horridge@stanford.edu
     on_success: never
     on_failure: always
 
