@@ -5,9 +5,11 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Version;
 import org.protege.editor.core.plugin.PluginUtilities;
+import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
 import org.protege.editor.core.ui.util.Icons;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 
@@ -26,42 +28,61 @@ public class AboutPanel extends JPanel {
 
     public AboutPanel() {
         setLayout(new BorderLayout());
-        JPanel pluginPanel = new JPanel(new BorderLayout());
-        pluginPanel.add(new JScrollPane(new PluginInfoTable()));
-        pluginPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Plugin information"),
-                                                                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-        add(pluginPanel);
-        JPanel logoPanel = new JPanel(new BorderLayout(3, 3));
-        JLabel logoLabel = new JLabel(Icons.getIcon("logo.banner.gif"));
-        logoPanel.add(logoLabel, BorderLayout.NORTH);
+
         BundleContext applicationContext = PluginUtilities.getInstance().getApplicationContext();
         Bundle application = applicationContext.getBundle();
         Version v = PluginUtilities.getBundleVersion(application);
-
-        String versionString = String.format("Version %d.%d.%d", v.getMajor(), v.getMinor(), v.getMicro());
+        String versionString = String.format("%d.%d.%d", v.getMajor(), v.getMinor(), v.getMicro());
         if(!v.getQualifier().isEmpty()) {
             versionString += " Build " + v.getQualifier();
         }
-        JLabel label = new JLabel(versionString, JLabel.CENTER);
-        logoPanel.add(label, BorderLayout.SOUTH);
-        logoPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 20, 5));
-        add(logoPanel, BorderLayout.NORTH);
-		JLabel copy = new JLabel(
-				"<html><body>Prot\u00E9g\u00E9 is developed by the Stanford Center for Biomedical Informatics Research. Prot\u00E9g\u00E9 is a national "
-						+ "resource for biomedical ontologies and knowledge bases supported by the National Institute of General Medical Sciences.<br><br>"
-						+ "Previous versions of the Prot\u00E9g\u00E9 4 series were developed in collaboration with The University of Manchester.");
-        copy.setFont(copy.getFont().deriveFont(10.0f));
-        copy.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
-        add(copy, BorderLayout.SOUTH);
+
+        Runtime runtime = Runtime.getRuntime();
+        long maxMemMB = runtime.maxMemory() / (1024 * 1024);
+        long usedMemMB = (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024);
+
+        PreferencesLayoutPanel panel = new PreferencesLayoutPanel();
+
+        panel.addGroup("Version");
+        panel.addGroupComponent(new JLabel(versionString, SwingConstants.CENTER));
+        panel.addVerticalPadding();
+        panel.addGroup("Memory settings");
+        panel.addGroupComponent(new JLabel(String.format("<html><body>Max memory set to %d MB    <span style='color: #707070;'>(via Java -Xmx setting)</span></body></html>", maxMemMB)));
+        panel.addGroupComponent(new JLabel(String.format("Currently using %d MB", usedMemMB)));
+
+        panel.addVerticalPadding();
+        panel.addGroup("Installed Plugins");
+
+        JScrollPane sp = new JScrollPane(new PluginInfoTable());
+        sp.setPreferredSize(new Dimension(500, 200));
+        sp.setMinimumSize(new Dimension(500, 200));
+        panel.addGroupComponent(sp);
+
+        panel.addVerticalPadding();
+        panel.addGroup("About");
+
+        JLabel copy = new JLabel(
+                "<html><body>Prot\u00E9g\u00E9 is developed by the Stanford Center for Biomedical Informatics Research.<br>" +
+                        "Prot\u00E9g\u00E9 is a national resource for biomedical ontologies and knowledge bases<br>" +
+                        "supported by the National Institute of General Medical Sciences.<br><br>" +
+                        "Previous versions of the Prot\u00E9g\u00E9 series were developed in collaboration with the<br>" +
+                        "Bio-Health Informatics Group in the School of Computer Science at<br>" +
+                        "The University of Manchester.");
+        copy.setMinimumSize(copy.getPreferredSize());
+        panel.addGroupComponent(copy);
+        add(panel, BorderLayout.NORTH);
     }
 
 
-    public Dimension getPreferredSize() {
-        return new Dimension(400, 400);
-    }
+
 
 
     public static void showDialog() {
-        JOptionPane.showMessageDialog(null, new AboutPanel(), "About", JOptionPane.PLAIN_MESSAGE);
+        AboutPanel about = new AboutPanel();
+        JOptionPane op = new JOptionPane(about, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION);
+        JDialog dlg = op.createDialog(null, "About");
+        dlg.pack();
+        dlg.setVisible(true);
+
     }
 }

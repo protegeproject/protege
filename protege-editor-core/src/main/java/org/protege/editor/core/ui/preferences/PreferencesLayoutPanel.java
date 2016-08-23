@@ -23,9 +23,13 @@ public class PreferencesLayoutPanel extends JComponent {
     public PreferencesLayoutPanel() {
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
-        backingPanel = new JPanel();
-        add(backingPanel);
-        backingPanel.setLayout(new GridBagLayout());
+        backingPanel = new JPanel(new GridBagLayout());
+        add(backingPanel, BorderLayout.NORTH);
+    }
+
+    @Override
+    public Dimension getMinimumSize() {
+        return backingPanel.getPreferredSize();
     }
 
     public void addSeparator() {
