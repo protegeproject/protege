@@ -55,7 +55,7 @@ public class NoOpReasoner_TestCase {
         when(dataFactory.getOWLTopDataProperty()).thenReturn(owlTopDataProperty);
         when(dataFactory.getOWLBottomDataProperty()).thenReturn(owlBottomDataProperty);
 
-        reasoner = new NoOpReasoner(ontology);
+        reasoner = new NoOpReasoner(ontology, dataFactory);
     }
 
     @Test
