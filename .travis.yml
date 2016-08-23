@@ -6,8 +6,11 @@ jdk:
 notifications:
   email:
     recipients:
-      - vendetti@stanford.edu
+      - horridge@stanford.edu
     on_success: never
     on_failure: always
 
+before_install:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
 
