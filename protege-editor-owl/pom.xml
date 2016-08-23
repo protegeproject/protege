@@ -111,6 +111,7 @@
                         <Embed-Dependency>org.protege.xmlcatalog</Embed-Dependency>
                         <Export-Package>
                             org.protege.editor.owl.*;version=${project.version},
+                            org.protege.owlapi.inference.*;version=${project.version}
                         </Export-Package>
 						<_exportcontents>
 							org.protege.xmlcatalog.*,							
