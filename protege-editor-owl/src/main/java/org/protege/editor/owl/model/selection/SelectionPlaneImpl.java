@@ -40,6 +40,7 @@ public class SelectionPlaneImpl implements SelectionPlane {
         }
         selectionDrivers.add(driver);
         driver.asComponent().addHierarchyListener(hierarchyListener);
+        handleHierarchyChange();
         return () -> {
             selectionDrivers.remove(driver);
             if(lastShowingDrivers.remove(driver)) {
