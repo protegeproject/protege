@@ -16,8 +16,7 @@ import javax.swing.*;
  */
 public interface OWLEntityDisplayProvider {
 
-    public boolean canDisplay(OWLEntity owlEntity);
+    boolean canDisplay(OWLEntity owlEntity);
 
-
-    public JComponent getDisplayComponent();
+    JComponent getDisplayComponent();
 }
