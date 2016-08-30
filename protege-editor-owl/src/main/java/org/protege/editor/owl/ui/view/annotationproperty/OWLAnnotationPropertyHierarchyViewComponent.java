@@ -64,7 +64,7 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
 
 
     protected OWLObjectHierarchyProvider<OWLAnnotationProperty> getHierarchyProvider() {
-        return getOWLModelManager().getOWLHierarchyManager().getOWLAnnotationPropertyHierarchyProvider();
+        return getOWLModelManager().getOWLHierarchyManager().getOWLAnnotationPropertyHierarchyProvider(null);
     }
 
     @Override
