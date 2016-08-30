@@ -33,7 +33,7 @@ public class OWLPropertyHierarchyViewComponent extends AbstractOWLEntityHierarch
                     modelManager.getOWLOntologyManager(),
                     hierarchyManager.getOWLObjectPropertyHierarchyProvider(),
                     hierarchyManager.getOWLDataPropertyHierarchyProvider(),
-                    hierarchyManager.getOWLAnnotationPropertyHierarchyProvider());
+                    hierarchyManager.getOWLAnnotationPropertyHierarchyProvider(null));
         }
         return hierarchyProvider;
     }

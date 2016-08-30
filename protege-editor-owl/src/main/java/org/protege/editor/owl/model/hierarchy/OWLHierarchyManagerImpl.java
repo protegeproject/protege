@@ -6,6 +6,7 @@ import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.hierarchy.cls.InferredOWLClassHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.property.InferredObjectPropertyHierarchyProvider;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
@@ -37,6 +38,8 @@ public class OWLHierarchyManagerImpl implements OWLHierarchyManager {
     private OWLAnnotationPropertyHierarchyProvider assertedAnnotationPropertyHierarchyProvider;
 
     private IndividualsByTypeHierarchyProvider individualsByTypeHierarchyProvider;
+    
+    private Set<OWLAnnotationProperty> filterProps = null;
 
 
     private OWLModelManager mngr;
@@ -89,9 +92,12 @@ public class OWLHierarchyManagerImpl implements OWLHierarchyManager {
     }
 
 
-    public OWLAnnotationPropertyHierarchyProvider getOWLAnnotationPropertyHierarchyProvider() {
-        if (assertedAnnotationPropertyHierarchyProvider == null){
-            assertedAnnotationPropertyHierarchyProvider = new OWLAnnotationPropertyHierarchyProvider(mngr.getOWLOntologyManager());
+    public OWLAnnotationPropertyHierarchyProvider getOWLAnnotationPropertyHierarchyProvider(Set<OWLAnnotationProperty> filterProps) {
+    	
+        if ((assertedAnnotationPropertyHierarchyProvider == null) ||
+        		(this.filterProps != filterProps)) {
+        	this.filterProps = filterProps;
+            assertedAnnotationPropertyHierarchyProvider = new OWLAnnotationPropertyHierarchyProvider(mngr.getOWLOntologyManager(), filterProps);
             assertedAnnotationPropertyHierarchyProvider.setOntologies(mngr.getOntologies());
         }
         return assertedAnnotationPropertyHierarchyProvider;
@@ -157,7 +163,7 @@ public class OWLHierarchyManagerImpl implements OWLHierarchyManager {
             getOWLIndividualsByTypeHierarchyProvider().setOntologies(ontologies);
         }
         if (assertedAnnotationPropertyHierarchyProvider != null) {
-        	getOWLAnnotationPropertyHierarchyProvider().setOntologies(ontologies);
+        	getOWLAnnotationPropertyHierarchyProvider(filterProps).setOntologies(ontologies);
         }
     }
 }
