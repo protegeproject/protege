@@ -18,6 +18,7 @@ import org.semanticweb.owlapi.model.*;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -31,19 +32,20 @@ import java.util.List;
  */
 public class OWLWorkspaceViewsTab extends WorkspaceViewsTab implements SelectionPlane {
 
+    private Optional<JComponent> lastEntityDisplayCandidate = Optional.empty();
 
     private OWLEntityDisplayProvider provider = new OWLEntityDisplayProvider() {
+
         public boolean canDisplay(OWLEntity owlEntity) {
             return OWLWorkspaceViewsTab.this.canDisplay(owlEntity);
         }
 
         public JComponent getDisplayComponent() {
-            return OWLWorkspaceViewsTab.this;
+            return lastEntityDisplayCandidate.orElse(OWLWorkspaceViewsTab.this);
         }
     };
 
     private SelectionPlane selectionPlaneDelegate;
-
 
     private boolean canDisplay(OWLEntity owlEntity) {
 
@@ -53,9 +55,10 @@ public class OWLWorkspaceViewsTab extends WorkspaceViewsTab implements Selection
         for (View view : getViewsPane().getViews()){
             ViewComponent vc = view.getViewComponent();
             if (vc != null){ // if the view is on a tab that has been initialised ask it directly
-                if (vc instanceof AbstractOWLSelectionViewComponent){
+                if (vc instanceof AbstractOWLSelectionViewComponent && vc instanceof SelectionDriver){
                     final AbstractOWLSelectionViewComponent owlEntityViewComponent = (AbstractOWLSelectionViewComponent)vc;
                     if (owlEntityViewComponent.canShowEntity(owlEntity)){
+                        lastEntityDisplayCandidate = Optional.of(view);
                         return true;
                     }
                 }
@@ -65,6 +68,7 @@ public class OWLWorkspaceViewsTab extends WorkspaceViewsTab implements Selection
                 if (plugin != null) {
                     for (String nav : plugin.getNavigates()){
                         if (entityCat.equals(nav)){
+                            lastEntityDisplayCandidate = Optional.of(view);
                             return true;
                         }
                     }
