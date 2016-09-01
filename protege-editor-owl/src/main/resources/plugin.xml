@@ -1091,9 +1091,9 @@
 
     <extension id="menu.MakeAllIndividualsDistinct"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Make all individuals distinct..."/>
+        <name value="Make all individuals different"/>
         <class value="org.protege.editor.owl.ui.action.MakeAllIndividualsDifferent"/>
-        <toolTip value="Removes all owl:DifferentIndividuals statements and creates one owl:DifferentIndividuals statement containing all individuals.  This only changes the active ontology."/>
+        <toolTip value="Removes all DifferentIndividuals axioms and adds one DifferentIndividuals axiom containing all individuals in the signature of the active ontologies.  This only changes the active ontology."/>
         <path value="org.protege.editor.core.application.menu.EditMenu/SlotN-A"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
@@ -1123,6 +1123,15 @@
         <class value="org.protege.editor.owl.ui.action.RemoveAllDisjointAxiomsAction"/>
         <toolTip value="Removes all of the disjoint classes axioms in the active ontologies"/>
         <path value="org.protege.editor.core.application.menu.EditMenu/SlotN-B"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="menu.MakeInstancesOfClassDifferentIndividuals"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Make instances different individuals"/>
+        <class value="org.protege.editor.owl.ui.action.MakeInstancesOfClassDifferentIndividualsAction"/>
+        <toolTip value="Makes the individuals that are instances the selected class different individuals.  This only changes the active ontology."/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotM-H"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
