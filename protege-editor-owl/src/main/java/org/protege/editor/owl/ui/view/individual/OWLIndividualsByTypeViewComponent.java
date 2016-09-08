@@ -7,10 +7,7 @@ import org.protege.editor.owl.model.hierarchy.IndividualsByTypeHierarchyProvider
 import org.protege.editor.owl.model.selection.SelectionDriver;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.action.DeleteIndividualAction;
-import org.protege.editor.owl.ui.tree.CountingOWLObjectTreeCellRenderer;
-import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
-import org.protege.editor.owl.ui.tree.OWLObjectTree;
-import org.protege.editor.owl.ui.tree.OWLTreeDragAndDropHandler;
+import org.protege.editor.owl.ui.tree.*;
 import org.protege.editor.owl.ui.view.AbstractOWLSelectionViewComponent;
 import org.protege.editor.owl.ui.view.ChangeListenerMediator;
 import org.protege.editor.owl.ui.view.CreateNewTarget;
@@ -22,6 +19,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.*;
@@ -128,12 +126,6 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
 
     protected void setupActions() {
         addAction(new DisposableAction("Add individual", OWLIcons.getIcon("individual.add.png")) {
-
-            /**
-             * 
-             */
-            private static final long serialVersionUID = -875266874305923355L;
-
             public void actionPerformed(ActionEvent e) {
                 createNewObject();
             }
@@ -204,7 +196,10 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
         if (isSynchronizing()){
             OWLObject obj = tree.getSelectedOWLObject();
             if (obj instanceof OWLEntity) {
-                getOWLWorkspace().getOWLSelectionModel().setSelectedEntity((OWLEntity) obj);
+                setGlobalSelection((OWLEntity) obj);
+            }
+            else {
+                setGlobalSelection(null);
             }
         }
         changeListenerMediator.fireStateChanged(this);
@@ -246,6 +241,22 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
         }
         java.util.List<OWLOntologyChange> changes = new ArrayList<>();
         changes.addAll(set.getOntologyChanges());
+        TreePath selectionPath = tree.getSelectionPath();
+        OWLClass targetType = null;
+        while(selectionPath != null) {
+            if(selectionPath.getLastPathComponent() instanceof OWLObjectTreeNode) {
+                OWLObjectTreeNode node = (OWLObjectTreeNode) selectionPath.getLastPathComponent();
+                if(node.getOWLObject() instanceof OWLClass) {
+                    targetType = (OWLClass) node.getOWLObject();
+                    break;
+                }
+            }
+            selectionPath = selectionPath.getParentPath();
+        }
+        if(targetType != null) {
+            OWLOntology ont = getOWLModelManager().getActiveOntology();
+            changes.add(new AddAxiom(ont, getOWLDataFactory().getOWLClassAssertionAxiom(targetType, set.getOWLEntity())));
+        }
         getOWLModelManager().applyChanges(changes);
         OWLNamedIndividual ind = set.getOWLEntity();
         if (ind != null) {
