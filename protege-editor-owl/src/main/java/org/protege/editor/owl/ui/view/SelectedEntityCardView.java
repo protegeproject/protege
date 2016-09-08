@@ -6,6 +6,7 @@ import org.protege.editor.core.ui.view.ViewsPaneMemento;
 import org.protege.editor.core.util.HandlerRegistration;
 import org.protege.editor.owl.model.selection.SelectionDriver;
 import org.protege.editor.owl.model.selection.SelectionPlane;
+import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.protege.editor.owl.ui.util.NothingSelectedPanel;
 import org.semanticweb.owlapi.model.*;
 import org.slf4j.Logger;
@@ -17,6 +18,8 @@ import java.awt.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -52,9 +55,16 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
 
     private static final Logger logger = LoggerFactory.getLogger(SelectedEntityCardView.class);
 
+    private JLabel entityIRILabel;
+
+    private EntityBannerFormatter entityBannerFormatter;
 
     protected void initialiseOWLView() throws Exception {
         setLayout(new BorderLayout());
+        entityBannerFormatter = new EntityBannerFormatterImpl();
+        entityIRILabel = new JLabel();
+        entityIRILabel.setBorder(BorderFactory.createEmptyBorder(1, 4, 3, 0));
+        add(entityIRILabel, BorderLayout.NORTH);
         add(cardPanel);
         cardPanel.setLayout(cardLayout);
         cardPanel.add(new NothingSelectedPanel(), BLANK_PANEL);
@@ -118,6 +128,7 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
         }
 
         viewsPanes.clear();
+        entityIRILabel.setText("");
         createViewPanes(true);
         validate();
 
@@ -130,42 +141,49 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
     private void processSelection() {
         OWLObject selectedObject = getOWLWorkspace().getOWLSelectionModel().getSelectedObject();
         if(selectedObject == null) {
+            entityIRILabel.setIcon(null);
+            entityIRILabel.setText("");
+            entityIRILabel.setBackground(null);
             selectPanel(BLANK_PANEL);
             return;
         }
         if(!(selectedObject instanceof OWLEntity)) {
             return;
         }
-        ((OWLEntity) selectedObject).accept(new OWLEntityVisitor() {
-                public void visit(@Nonnull OWLClass cls) {
-                    selectPanel(CLASSES_PANEL);
-                }
+        OWLEntity selEntity = (OWLEntity) selectedObject;
+        String banner = entityBannerFormatter.formatBanner(selEntity, getOWLEditorKit());
+        entityIRILabel.setIcon(getOWLWorkspace().getOWLIconProvider().getIcon(selEntity));
+        entityIRILabel.setText(banner);
+        selEntity.accept(new OWLEntityVisitor() {
+            public void visit(@Nonnull OWLClass cls) {
+                selectPanel(CLASSES_PANEL);
+            }
 
 
-                public void visit(@Nonnull OWLObjectProperty property) {
-                    selectPanel(OBJECT_PROPERTIES_PANEL);
-                }
+            public void visit(@Nonnull OWLObjectProperty property) {
+                selectPanel(OBJECT_PROPERTIES_PANEL);
+            }
 
 
-                public void visit(@Nonnull OWLDataProperty property) {
-                    selectPanel(DATA_PROPERTIES_PANEL);
-                }
+            public void visit(@Nonnull OWLDataProperty property) {
+                selectPanel(DATA_PROPERTIES_PANEL);
+            }
 
 
-                public void visit(@Nonnull OWLAnnotationProperty property) {
-                    selectPanel(ANNOTATION_PROPERTIES_PANEL);
-                }
+            public void visit(@Nonnull OWLAnnotationProperty property) {
+                selectPanel(ANNOTATION_PROPERTIES_PANEL);
+            }
 
 
-                public void visit(@Nonnull OWLNamedIndividual individual) {
-                    selectPanel(INDIVIDUALS_PANEL);
-                }
+            public void visit(@Nonnull OWLNamedIndividual individual) {
+                selectPanel(INDIVIDUALS_PANEL);
+            }
 
 
-                public void visit(@Nonnull OWLDatatype dataType) {
-                    selectPanel(DATATYPES_PANEL);
-                }
-            });
+            public void visit(@Nonnull OWLDatatype dataType) {
+                selectPanel(DATATYPES_PANEL);
+            }
+        });
 
     }
 
