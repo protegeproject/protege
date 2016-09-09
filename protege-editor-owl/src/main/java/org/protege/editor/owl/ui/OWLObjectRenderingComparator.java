@@ -17,11 +17,11 @@ public class OWLObjectRenderingComparator<E extends OWLObject> extends OWLObject
     public int compare(E o1, E o2) {
         String r1 = getOWLModelManager().getRendering(o1);
         if (r1.startsWith("'")){
-            r1 = r1.substring(1, r1.length()-2);
+            r1 = r1.substring(1, r1.length()-1);
         }
         String r2 = getOWLModelManager().getRendering(o2);
         if (r2.startsWith("'")){
-            r2 = r2.substring(1, r2.length()-2);
+            r2 = r2.substring(1, r2.length()-1);
         }
         int result = r1.compareToIgnoreCase(r2);
         if (result == 0) {
