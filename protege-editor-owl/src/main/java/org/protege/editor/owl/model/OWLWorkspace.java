@@ -129,6 +129,9 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private final JCheckBox displayReasonerResults = new JCheckBox("Show Inferences");
 
+    private final JPanel statusArea = new JPanel();
+
+
 
 
     private final OWLIconProvider iconProvider = new OWLIconProviderImpl(
@@ -147,14 +150,9 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private OWLComponentFactory owlComponentFactory;
 
-    private JPanel statusArea;
-
     private String altTitle;
 
     private boolean reasonerManagerStarted = false;
-
-
-
 
 
     private final ErrorLogListener errorLogListener = new ErrorLogListener() {
@@ -168,6 +166,27 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             errorNotificationLabel.setVisible(false);
         }
     };
+
+    public OWLWorkspace() {
+        super();
+        statusArea.setBorder(BorderFactory.createEmptyBorder(0, 0, 1, 1));
+        statusArea.setLayout(new BoxLayout(statusArea, BoxLayout.X_AXIS));
+        statusArea.add(Box.createHorizontalGlue());
+        statusArea.add(reasonerStatus);
+        statusArea.add(Box.createHorizontalStrut(10));
+        statusArea.add(displayReasonerResults);
+        statusArea.add(Box.createHorizontalStrut(10));
+
+        reselectionEventTypes.add(EventType.ACTIVE_ONTOLOGY_CHANGED);
+        reselectionEventTypes.add(EventType.ONTOLOGY_RELOADED);
+        reselectionEventTypes.add(EventType.ENTITY_RENDERER_CHANGED);
+        reselectionEventTypes.add(EventType.ONTOLOGY_VISIBILITY_CHANGED);
+        reselectionEventTypes.add(EventType.REASONER_CHANGED);
+        reselectionEventTypes.add(EventType.ONTOLOGY_CLASSIFIED);
+
+
+        hiddenAnnotationURIs.addAll(AnnotationPreferences.getHiddenAnnotationURIs());
+    }
 
     public OWLEditorKit getOWLEditorKit() {
         return (OWLEditorKit) getEditorKit();
@@ -186,32 +205,24 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         ProtegeApplication.getLogManager().addErrorLogListener(errorLogListener);
 
-
         createActiveOntologyPanel();
-        reselectionEventTypes.add(EventType.ACTIVE_ONTOLOGY_CHANGED);
-        reselectionEventTypes.add(EventType.ONTOLOGY_RELOADED);
-        reselectionEventTypes.add(EventType.ENTITY_RENDERER_CHANGED);
-        reselectionEventTypes.add(EventType.ONTOLOGY_VISIBILITY_CHANGED);
-        reselectionEventTypes.add(EventType.REASONER_CHANGED);
-        reselectionEventTypes.add(EventType.ONTOLOGY_CLASSIFIED);
 
-        hiddenAnnotationURIs.addAll(AnnotationPreferences.getHiddenAnnotationURIs());
+
 
         owlComponentFactory = new OWLComponentFactoryImpl(getOWLEditorKit());
 
         final OWLModelManager mngr = getOWLModelManager();
-
         mngr.addListener(owlModelManagerListener);
-
         mngr.addOntologyChangeListener(listener);
 
-        mngr.getOWLReasonerManager().setReasonerProgressMonitor(new ReasonerProgressUI(getOWLEditorKit()));
-        mngr.getOWLReasonerManager().setReasonerExceptionHandler(new UIReasonerExceptionHandler(this));
+        OWLReasonerManager reasonerManager = mngr.getOWLReasonerManager();
+        reasonerManager.setReasonerProgressMonitor(new ReasonerProgressUI(getOWLEditorKit()));
+        reasonerManager.setReasonerExceptionHandler(new UIReasonerExceptionHandler(this));
         reasonerManagerStarted = true;
         updateReasonerStatus(false);
-        displayReasonerResults.setSelected(mngr.getOWLReasonerManager().getReasonerPreferences().isShowInferences());
+        displayReasonerResults.setSelected(reasonerManager.getReasonerPreferences().isShowInferences());
         displayReasonerResults.addActionListener(e -> {
-            ReasonerPreferences prefs = mngr.getOWLReasonerManager().getReasonerPreferences();
+            ReasonerPreferences prefs = reasonerManager.getReasonerPreferences();
             prefs.setShowInferences(displayReasonerResults.isSelected());
         });
 
@@ -953,16 +964,6 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     }
 
     public java.util.Optional<JComponent> getStatusArea() {
-        if (statusArea == null) {
-            statusArea = new JPanel();
-            statusArea.setBorder(BorderFactory.createEmptyBorder(0, 0, 1, 1));
-            statusArea.setLayout(new BoxLayout(statusArea, BoxLayout.X_AXIS));
-            statusArea.add(Box.createHorizontalGlue());
-            statusArea.add(reasonerStatus);
-            statusArea.add(Box.createHorizontalStrut(10));
-            statusArea.add(displayReasonerResults);
-            statusArea.add(Box.createHorizontalStrut(10));
-        }
         return java.util.Optional.of(statusArea);
     }
 
