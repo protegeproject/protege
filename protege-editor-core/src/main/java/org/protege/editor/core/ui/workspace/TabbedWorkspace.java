@@ -24,24 +24,16 @@ import java.util.List;
  */
 public abstract class TabbedWorkspace extends Workspace {
 
-    private static final long serialVersionUID = 9179999766960877420L;
-
-    private JTabbedPane tabbedPane;
-
-    private Set<WorkspaceTab> workspaceTabs;
-
     private final Logger logger = LoggerFactory.getLogger(TabbedWorkspace.class);
 
-    /**
-     * Override of the <code>Workspace</code> initialise method.
-     */
+    private final JTabbedPane tabbedPane = new JTabbedPane();
+
+    private final Set<WorkspaceTab> workspaceTabs = new HashSet<>();
+
     public void initialise() {
         JPanel tabHolder = new JPanel(new BorderLayout());
 
-        workspaceTabs = new HashSet<>();
-
         // Create the tabs.
-        tabbedPane = new JTabbedPane();
         tabbedPane.setUI(new CloseableTabbedPaneUI(CloseableTabbedPaneUI.TabClosability.CLOSABLE, new WorkspaceTabCloseHandler()));
 
         tabHolder.add(tabbedPane);
