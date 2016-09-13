@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.explanation.io;
 
-import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLEditorKitHook;
 import org.protege.editor.owl.model.OWLModelManager;
@@ -13,24 +12,25 @@ import java.util.List;
 public class InconsistentOntologyManager extends OWLEditorKitHook  {
 
 	public static final String EXPLAIN = "Explain";
-	
-	private OWLEditorKit owlEditorKit;
+
 	private InconsistentOntologyPlugin lastSelectedPlugin;
-	private List<InconsistentOntologyPluginInstance> explanations = new ArrayList<>();
+
+	private final List<InconsistentOntologyPluginInstance> explanations = new ArrayList<>();
 
 	public static InconsistentOntologyManager get(OWLModelManager modelManager) {
 		return (InconsistentOntologyManager) modelManager.get(InconsistentOntologyManager.class);
 	}
-	
-	public void setup(EditorKit editorKit) {
-		this.owlEditorKit = (OWLEditorKit) editorKit;
-		OWLModelManager p4Manager = owlEditorKit.getModelManager();
+
+	public void initialise() throws Exception {
+		OWLEditorKit editorKit = getEditorKit();
+		OWLModelManager p4Manager = editorKit.getModelManager();
 		p4Manager.put(InconsistentOntologyManager.class, this);
 	}
-	
+
 	public void explain()  {
 		try {
 			Object[] options = new Object[] {EXPLAIN, "Cancel" };
+			final OWLEditorKit owlEditorKit = getEditorKit();
 			IntroductoryPanel intro = new IntroductoryPanel(owlEditorKit, lastSelectedPlugin);
 			int ret = JOptionPane.showOptionDialog(owlEditorKit.getOWLWorkspace(), 
 							 				  	   intro, "Help for inconsistent ontologies", 
@@ -51,10 +51,6 @@ public class InconsistentOntologyManager extends OWLEditorKitHook  {
 			LoggerFactory.getLogger(InconsistentOntologyManager.class)
 					.warn("An error occurred whilst generating an explanation for the inconsistent ontology: {}", ioe);
 		}
-	}
-	
-
-	public void initialise() throws Exception {
 	}
 
 	public void dispose() throws Exception {
