@@ -18,7 +18,7 @@ package org.protege.editor.core;
 public interface ModelManager extends Disposable {
 
     boolean isDirty();
-    
+
     <T extends Disposable> void put(Object key, T object);
 
     <T extends Disposable> T get(Object key);
