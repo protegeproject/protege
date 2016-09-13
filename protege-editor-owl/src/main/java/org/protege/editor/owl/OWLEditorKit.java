@@ -8,10 +8,7 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.packageadmin.PackageAdmin;
 import org.protege.editor.core.BookMarkedURIManager;
 import org.protege.editor.core.Disposable;
-import org.protege.editor.core.editorkit.AbstractEditorKit;
-import org.protege.editor.core.editorkit.EditorKit;
-import org.protege.editor.core.editorkit.EditorKitDescriptor;
-import org.protege.editor.core.editorkit.RecentEditorKitManager;
+import org.protege.editor.core.editorkit.*;
 import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.util.StringAbbreviator;
@@ -21,7 +18,8 @@ import org.protege.editor.owl.model.OWLWorkspace;
 import org.protege.editor.owl.model.io.IOListenerPlugin;
 import org.protege.editor.owl.model.io.IOListenerPluginInstance;
 import org.protege.editor.owl.model.io.IOListenerPluginLoader;
-import org.protege.editor.owl.model.search.*;
+import org.protege.editor.owl.model.search.SearchManager;
+import org.protege.editor.owl.model.search.SearchManagerSelector;
 import org.protege.editor.owl.ui.OntologyFormatPanel;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandlerUI;
@@ -41,19 +39,16 @@ import java.net.URI;
 import java.util.*;
 
 
-
 /**
  * Author: Matthew Horridge<br>
  * The University Of Manchester<br>
  * Medical Informatics Group<br>
  * Date: Mar 17, 2006<br><br>
-
+ * <p/>
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
-
-    private static final Logger logger = LoggerFactory.getLogger(OWLEditorKit.class);
 
     public static final String ID = "OWLEditorKit";
 
@@ -61,31 +56,42 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     public static final String FILE_URI_SCHEME = "file";
 
-    private OWLWorkspace workspace;
+
+
+    private static final Logger logger = LoggerFactory.getLogger(OWLEditorKit.class);
+
 
     private OWLModelManager modelManager;
 
+    private final OWLWorkspace workspace;
+
     private final Set<URI> newPhysicalURIs = new HashSet<>();
 
-    private OntologyLoadErrorHandlerUI loadErrorHandler;
+    private final OntologyLoadErrorHandlerUI loadErrorHandler;
 
-    private ServiceRegistration registration;
+    private final ServiceRegistration<?> registration;
+
+
+    private final OWLOntologyChangeListener ontologyChangeListener;
+
+    private final SearchManagerSelector searchManagerSelector;
+
 
     private boolean modifiedDocument = false;
 
-    private OWLOntologyChangeListener ontologyChangeListener;
 
-    private SearchManagerSelector searchManagerSelector;
 
     public OWLEditorKit(OWLEditorKitFactory editorKitFactory) {
         super(editorKitFactory);
-    }
-
-
-    protected void initialise() {
 
         logger.info("OWL API Version: {}", VersionInfo.getVersionInfo().getVersion());
         modelManager = new OWLModelManagerImpl();
+
+        // Make sure that the workspace is null, but don't initialise it until our EditorKitHooks have been initialised.
+        workspace = new OWLWorkspace();
+        workspace.setup(this);
+
+        Initializers.loadEditorKitHooks(this);
 
         modelManager.setExplanationManager(new ExplanationManager(this));
         modelManager.setMissingImportHandler(new MissingImportHandlerUI(this));
@@ -100,15 +106,17 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         loadIOListenerPlugins();
         registration = ProtegeOWL.getBundleContext().registerService(EditorKit.class.getCanonicalName(), this, new Hashtable<>());
 
+        workspace.initialise();
+
         getWorkspace().refreshComponents();
+
     }
-
-
 
     /**
      * Determines if this editor kit has modified the contents if its documents in any way.
+     *
      * @return <code>true</code> if this editor kit has modified the contents of its document, otherwise
-     *         <code>false</code>.
+     * <code>false</code>.
      */
     public boolean hasModifiedDocument() {
         return modifiedDocument;
@@ -116,11 +124,11 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     /**
      * @deprecated This call isn't really deprecated - it is just not recommended.  If you are thinking of using this
-     *             call
-     *             then probably there is a missing feature in Prot&#x00E9g&#x00E9 or there is a plugin capability that
-     *             you should consider using instead.  Contact the Prot&#x00E9g&#x00E9 developers on the p4 mailing
-     *             list:
-     *             http://mailman.stanford.edu/mailman/listinfo/p4-feedback.
+     * call
+     * then probably there is a missing feature in Prot&#x00E9g&#x00E9 or there is a plugin capability that
+     * you should consider using instead.  Contact the Prot&#x00E9g&#x00E9 developers on the p4 mailing
+     * list:
+     * http://mailman.stanford.edu/mailman/listinfo/p4-feedback.
      */
     @Deprecated
     public void setOWLModelManager(OWLModelManager modelManager) {
@@ -138,8 +146,9 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     /**
      * Gets the <code>EditorKit</code> Id.  This can be used to identify
      * the type of <code>EditorKit</code>.
+     *
      * @return A <code>String</code> that represents the <code>EditorKit</code>
-     *         Id.
+     * Id.
      */
     public String getId() {
         return ID;
@@ -152,9 +161,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
      */
     public OWLWorkspace getWorkspace() {
         if (workspace == null) {
-            workspace = new OWLWorkspace();
-            workspace.setup(this);
-            workspace.initialise();
+            throw new RuntimeException("Workspace has not been initialised");
         }
         return workspace;
     }
@@ -211,6 +218,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     /**
      * Creates an ontology Id which should be used by default.  The current implementation returns the next anonymous
      * ontology identifier.
+     *
      * @return The id.
      */
     private OWLOntologyID createDefaultOntologyId() {
@@ -219,6 +227,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     /**
      * Creates a fresh ontology IRI.
+     *
      * @return The ontology IRI.
      */
     private IRI createFreshOntologyIRI() {
@@ -243,13 +252,13 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
             Set<OWLOntology> ontologiesToSaveAs = new HashSet<>();
             OWLOntology activeOntology = modelManager.getActiveOntology();
             IRI activeOntologyDocumentIRI = ontologyManager.getOntologyDocumentIRI(activeOntology);
-            if(!"file".equalsIgnoreCase(activeOntologyDocumentIRI.getScheme())) {
+            if (!"file".equalsIgnoreCase(activeOntologyDocumentIRI.getScheme())) {
                 logger.info("Will prompt 'Save As' for the active ontology because it was not loaded from a local file");
                 ontologiesToSaveAs.add(activeOntology);
             }
-            for(OWLOntology dirtyOntology : getOWLModelManager().getDirtyOntologies()) {
+            for (OWLOntology dirtyOntology : getOWLModelManager().getDirtyOntologies()) {
                 String ontologyRendering = getModelManager().getRendering(dirtyOntology);
-                if(!"file".equals(ontologyManager.getOntologyDocumentIRI(dirtyOntology).getScheme())) {
+                if (!"file".equals(ontologyManager.getOntologyDocumentIRI(dirtyOntology).getScheme())) {
                     logger.info("Will prompt 'Save As' for the {} ontology because it was not loaded from a local file " +
                             "but has been modified", ontologyRendering);
                     ontologiesToSaveAs.add(dirtyOntology);
@@ -260,9 +269,9 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
                 }
             }
             Map<OWLOntology, OWLOntologyStorageException> saveErrors = new LinkedHashMap<>();
-            for(OWLOntology ontology : ontologiesToSaveAs) {
+            for (OWLOntology ontology : ontologiesToSaveAs) {
                 try {
-                    if(!handleSaveAs(ontology)) {
+                    if (!handleSaveAs(ontology)) {
                         // SaveAs aborted.  Abort all?
                         return;
                     }
@@ -270,7 +279,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
                     saveErrors.put(ontology, e);
                 }
             }
-            for(OWLOntology ontology : ontologiesToSave) {
+            for (OWLOntology ontology : ontologiesToSave) {
                 try {
                     getOWLModelManager().save(ontology);
                 } catch (OWLOntologyStorageException e) {
@@ -289,13 +298,13 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     }
 
     private void handleSaveErrors(Map<OWLOntology, OWLOntologyStorageException> saveErrors) {
-        if(saveErrors.isEmpty()) {
+        if (saveErrors.isEmpty()) {
             return;
         }
         StringBuilder errorMessage = new StringBuilder();
         errorMessage.append("<html><body><b>Some errors where encountered during the save operation.</b><br><br>" +
                 "The following ontologies were not saved:<br><br>");
-        for(OWLOntology erroredOntology : saveErrors.keySet()) {
+        for (OWLOntology erroredOntology : saveErrors.keySet()) {
             OWLOntologyStorageException error = saveErrors.get(erroredOntology);
             logger.error("An error occurred whilst saving the {} ontology: {}", error.getMessage(), error);
             String rendering = getModelManager().getRendering(erroredOntology);
@@ -310,9 +319,9 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     }
 
 
-
     /**
      * Saves the active ontology
+     *
      * @throws Exception
      */
     public void handleSaveAs() {
@@ -329,6 +338,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     /**
      * Saves the specified ontology to a location that is specified by the user before the save operation.
+     *
      * @param ont the ontology to save.
      * @throws OWLOntologyStorageException if there was a problem saving the ontology.
      */
@@ -406,8 +416,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
             try {
                 IOListenerPluginInstance instance = pl.newInstance();
                 getModelManager().addIOListener(instance);
-            }
-            catch (Throwable e) {
+            } catch (Throwable e) {
                 logger.warn("An IOListenerPlugin threw an error: {}", e);
             }
         }
@@ -436,21 +445,16 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         logger.info(LogBanner.start("Disposing of Workspace"));
         getModelManager().removeOntologyChangeListener(ontologyChangeListener);
         super.dispose();
-        
+
         searchManagerSelector.getCurrentSearchManager().dispose();
         workspace.dispose();
         try {
-        	modelManager.getExplanationManager().dispose();
+            modelManager.getExplanationManager().dispose();
             modelManager.dispose();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             ErrorLogPanel.showErrorDialog(e);
         }
-
-        if (registration != null) {
-            registration.unregister();
-            registration = null;
-        }
+        registration.unregister();
         logger.info(LogBanner.end());
     }
 
