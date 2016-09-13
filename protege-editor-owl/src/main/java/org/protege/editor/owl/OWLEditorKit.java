@@ -396,7 +396,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
                 IOListenerPluginInstance instance = pl.newInstance();
                 getModelManager().addIOListener(instance);
             } catch (Throwable e) {
-                logger.warn("An IOListenerPlugin threw an error: {}", e);
+                logger.warn("An IOListenerPlugin threw an error: {}", e.getMessage(), e);
             }
         }
     }
