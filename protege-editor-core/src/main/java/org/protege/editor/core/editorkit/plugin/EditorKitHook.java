@@ -17,8 +17,9 @@ import org.protege.editor.core.plugin.ProtegePluginInstance;
  * Date: Oct 15, 2008<br><br>
  *
  * A plugin that gets initialised when the editor kit has been created.
- * Can be used to customise the editor kit, workspace or model manager
- * without having to add a UI component.
+ * Can be used to customise the editor kit or model manager
+ * without having to add a UI component.  Not that the workspace will be available but will not have been initialised
+ * when an EditorKitHook plugin is initialised.
  *
  */
 public abstract class EditorKitHook implements ProtegePluginInstance {
