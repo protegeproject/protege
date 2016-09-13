@@ -1,11 +1,7 @@
 package org.protege.editor.owl;
 
 import com.google.common.base.Optional;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.Constants;
-import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
-import org.osgi.service.packageadmin.PackageAdmin;
 import org.protege.editor.core.BookMarkedURIManager;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.editorkit.*;
@@ -72,7 +68,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     private final ServiceRegistration<?> registration;
 
 
-    private final OWLOntologyChangeListener ontologyChangeListener;
+    private final OWLOntologyChangeListener ontologyChangeListener = changes -> modifiedDocument = true;
 
     private final SearchManagerSelector searchManagerSelector;
 
@@ -87,29 +83,27 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         logger.info("OWL API Version: {}", VersionInfo.getVersionInfo().getVersion());
         modelManager = new OWLModelManagerImpl();
 
-        // Make sure that the workspace is null, but don't initialise it until our EditorKitHooks have been initialised.
+        // Make sure that the workspace is not null,
+        // but don't initialise it until our EditorKitHooks have been initialised.
         workspace = new OWLWorkspace();
         workspace.setup(this);
 
         Initializers.loadEditorKitHooks(this);
 
+        searchManagerSelector = new SearchManagerSelector(this);
+        modelManager.addOntologyChangeListener(ontologyChangeListener);
         modelManager.setExplanationManager(new ExplanationManager(this));
         modelManager.setMissingImportHandler(new MissingImportHandlerUI(this));
-
-        ontologyChangeListener = owlOntologyChanges -> modifiedDocument = true;
-        modelManager.addOntologyChangeListener(ontologyChangeListener);
-
-        searchManagerSelector = new SearchManagerSelector(this);
-
         loadErrorHandler = new OntologyLoadErrorHandlerUI(this);
         modelManager.setLoadErrorHandler(loadErrorHandler);
+
+
         loadIOListenerPlugins();
+
         registration = ProtegeOWL.getBundleContext().registerService(EditorKit.class.getCanonicalName(), this, new Hashtable<>());
 
+        // Finally load the UI
         workspace.initialise();
-
-        getWorkspace().refreshComponents();
-
     }
 
     /**
@@ -300,8 +294,6 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
     /**
      * Saves the active ontology
-     *
-     * @throws Exception
      */
     public void handleSaveAs() {
         final OWLOntology ont = getModelManager().getActiveOntology();
