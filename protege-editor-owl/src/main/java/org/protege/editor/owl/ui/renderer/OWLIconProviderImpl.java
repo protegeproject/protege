@@ -2,12 +2,16 @@ package org.protege.editor.owl.ui.renderer;
 
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.OWLIcons;
+import org.protege.editor.owl.ui.renderer.context.DefinedClassChecker;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.util.Set;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 
 /**
@@ -42,12 +46,37 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
     private final Icon ontologyMissing = OWLIcons.getIcon("ontology.missing.png");
 
 
-    private OWLModelManager owlModelManager;
+    private final DefinedClassChecker definedClassChecker;
 
 
-    public OWLIconProviderImpl(OWLModelManager owlModelManager) {
-        this.owlModelManager = owlModelManager;
+    @Deprecated
+    public OWLIconProviderImpl(@Nonnull final OWLModelManager owlModelManager) {
+        definedClassChecker = cls -> {
+            for (OWLOntology ont : owlModelManager.getActiveOntologies()) {
+                if (isDefined(cls, ont)) {
+                    return true;
+                }
+            }
+            return false;
+        };
     }
+
+    /**
+     * Creates an icon provider implementation.
+     * @param definedClassChecker A checker that can be used to determine whether or not a class is a defined class.
+     */
+    public OWLIconProviderImpl(@Nonnull DefinedClassChecker definedClassChecker) {
+        this.definedClassChecker = checkNotNull(definedClassChecker);
+    }
+
+    private static boolean isDefined(OWLClass owlClass, OWLOntology ontology) {
+        if (EntitySearcher.isDefined(owlClass, ontology)) {
+            return true;
+        }
+        Set<OWLDisjointUnionAxiom> axioms = ontology.getDisjointUnionAxioms(owlClass);
+        return !axioms.isEmpty();
+    }
+
 
 
     public Icon getIcon() {
@@ -353,23 +382,13 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
 
 
     public void visit(OWLClass owlClass) {
-        for (OWLOntology ont : owlModelManager.getActiveOntologies()) {
-            if (isDefined(owlClass, ont)) {
-                icon = definedClassIcon;
-                return;
-            }
+        if(definedClassChecker.isDefinedClass(owlClass)) {
+            icon = definedClassIcon;
         }
-        icon = primitiveClassIcon;
+        else {
+            icon = primitiveClassIcon;
+        }
     }
-    
-    private boolean isDefined(OWLClass owlClass, OWLOntology ontology) {
-    	if (EntitySearcher.isDefined(owlClass, ontology)) {
-    		return true;
-    	}
-    	Set<OWLDisjointUnionAxiom> axioms = ontology.getDisjointUnionAxioms(owlClass);
-    	return !axioms.isEmpty();
-    }
-
 
     public void visit(OWLObjectOneOf owlEnumeration) {
         icon = primitiveClassIcon;

@@ -9,7 +9,6 @@ import org.protege.editor.core.Fonts;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.editorkit.EditorKit;
-import org.protege.editor.core.platform.OSUtils;
 import org.protege.editor.core.plugin.AbstractPluginLoader;
 import org.protege.editor.core.plugin.PluginUtilities;
 import org.protege.editor.core.ui.RefreshableComponent;
@@ -44,13 +43,14 @@ import org.protege.editor.owl.ui.util.OWLComponentFactory;
 import org.protege.editor.owl.ui.util.OWLComponentFactoryImpl;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
+import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.CollectionFactory;
 import org.semanticweb.owlapi.util.OWLEntityCollectingOntologyChangeListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
-import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -73,59 +73,6 @@ import java.util.List;
  */
 public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHandler {
 
-    private static final long serialVersionUID = 2340234247624617932L;
-
-    private final Logger logger = LoggerFactory.getLogger(OWLWorkspace.class);
-
-    private static final String WINDOW_MODIFIED = "Window.documentModified";
-
-    private JComboBox<OWLOntology> ontologiesList;
-
-    private ArrayList<OWLEntityDisplayProvider> entityDisplayProviders;
-
-    private OWLIconProvider iconProvider;
-
-    private Map<String, Color> keyWordColorMap;
-
-    private OWLSelectionModel owlSelectionModel;
-
-    private OWLSelectionHistoryManager owlSelectionHistoryManager;
-
-    private OWLModelManagerListener owlModelManagerListener;
-
-    private Set<EventType> reselectionEventTypes = new HashSet<>();
-
-    private ErrorNotificationLabel errorNotificationLabel;
-
-    private BackgroundTaskLabel backgroundTaskLabel;
-
-    private OWLEntityCollectingOntologyChangeListener listener;
-
-    private Set<URI> hiddenAnnotationURIs;
-
-    private OWLComponentFactory owlComponentFactory;
-
-    private JPanel statusArea;
-
-    private JLabel customizedProtege = new JLabel();
-
-    private String altTitle;
-
-    private boolean reasonerManagerStarted = false;
-
-    private PrecomputeAction startReasonerAction = new PrecomputeAction();
-
-    private PrecomputeAction synchronizeReasonerAction = new PrecomputeAction();
-
-    private ProtegeOWLAction stopReasonerAction = new StopReasonerAction();
-
-    private ExplainInconsistentOntologyAction explainInconsistentOntologyAction = new ExplainInconsistentOntologyAction();
-
-    private final JLabel reasonerStatus = new JLabel();
-
-    private final JCheckBox displayReasonerResults = new JCheckBox("Show Inferences");
-
-
     public static final String REASONER_INITIALIZE = "Start reasoner";
 
     public static final String REASONER_RESYNC = "Synchronize reasoner";
@@ -134,7 +81,93 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     public static final String REASONER_EXPLAIN = "Explain inconsistent ontology";
 
-    private ErrorLogListener errorLogListener;
+    private static final String WINDOW_MODIFIED = "Window.documentModified";
+
+
+    private final Logger logger = LoggerFactory.getLogger(OWLWorkspace.class);
+
+    private final JComboBox<OWLOntology> ontologiesList = new JComboBox<>();
+
+    private final ArrayList<OWLEntityDisplayProvider> entityDisplayProviders = new ArrayList<>();
+
+    private final Map<String, Color> keyWordColorMap = new KeywordColourMap();
+
+    private final OWLSelectionModel owlSelectionModel = new OWLSelectionModelImpl();
+
+    private final OWLSelectionHistoryManager owlSelectionHistoryManager = new OWLSelectionHistoryManagerImpl(owlSelectionModel);
+
+    private final OWLModelManagerListener owlModelManagerListener = event -> handleModelManagerEvent(event.getType());
+
+    private final Set<EventType> reselectionEventTypes = new HashSet<>();
+
+    private final ErrorNotificationLabel errorNotificationLabel = new ErrorNotificationLabel();
+
+    private final BackgroundTaskLabel backgroundTaskLabel = new BackgroundTaskLabel(ProtegeApplication.getBackgroundTaskManager());
+
+    private final OWLEntityCollectingOntologyChangeListener listener = new OWLEntityCollectingOntologyChangeListener() {
+        public void ontologiesChanged() {
+            verifySelection(getEntities());
+        }
+
+        public void ontologiesChanged(@Nonnull List<? extends OWLOntologyChange> changes) throws OWLException {
+            super.ontologiesChanged(changes);
+            handleOntologiesChanged(changes);
+        }
+    };
+
+    private final Set<URI> hiddenAnnotationURIs = new HashSet<>();
+
+    private final PrecomputeAction startReasonerAction = new PrecomputeAction();
+
+    private final PrecomputeAction synchronizeReasonerAction = new PrecomputeAction();
+
+    private final ProtegeOWLAction stopReasonerAction = new StopReasonerAction();
+
+    private final ExplainInconsistentOntologyAction explainInconsistentOntologyAction = new ExplainInconsistentOntologyAction();
+
+    private final JLabel reasonerStatus = new JLabel();
+
+    private final JCheckBox displayReasonerResults = new JCheckBox("Show Inferences");
+
+
+
+    private final OWLIconProvider iconProvider = new OWLIconProviderImpl(
+            c -> {
+                for(OWLOntology ontology : getOWLModelManager().getActiveOntologies()) {
+                    if(EntitySearcher.isDefined(c, ontology)) {
+                        return true;
+                    }
+                    if(!ontology.getDisjointUnionAxioms(c).isEmpty()) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+    );
+
+    private OWLComponentFactory owlComponentFactory;
+
+    private JPanel statusArea;
+
+    private String altTitle;
+
+    private boolean reasonerManagerStarted = false;
+
+
+
+
+
+    private final ErrorLogListener errorLogListener = new ErrorLogListener() {
+        @Override
+        public void errorLogged() {
+            errorNotificationLabel.setVisible(true);
+        }
+
+        @Override
+        public void errorLogCleared() {
+            errorNotificationLabel.setVisible(false);
+        }
+    };
 
     public OWLEditorKit getOWLEditorKit() {
         return (OWLEditorKit) getEditorKit();
@@ -146,32 +179,12 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private JDialog searchDialog;
 
+
+
     public void initialise() {
-        entityDisplayProviders = new ArrayList<>();
-        iconProvider = new OWLIconProviderImpl(getOWLEditorKit().getModelManager());
-        owlSelectionModel = new OWLSelectionModelImpl();
-
-        keyWordColorMap = new KeywordColourMap();
-
         super.initialise();
 
-        errorNotificationLabel = new ErrorNotificationLabel();
-
-        errorLogListener = new ErrorLogListener() {
-            @Override
-            public void errorLogged() {
-                errorNotificationLabel.setVisible(true);
-            }
-
-            @Override
-            public void errorLogCleared() {
-                errorNotificationLabel.setVisible(false);
-            }
-        };
         ProtegeApplication.getLogManager().addErrorLogListener(errorLogListener);
-
-
-        backgroundTaskLabel = new BackgroundTaskLabel(ProtegeApplication.getBackgroundTaskManager());
 
 
         createActiveOntologyPanel();
@@ -182,32 +195,14 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         reselectionEventTypes.add(EventType.REASONER_CHANGED);
         reselectionEventTypes.add(EventType.ONTOLOGY_CLASSIFIED);
 
-        hiddenAnnotationURIs = new HashSet<>();
         hiddenAnnotationURIs.addAll(AnnotationPreferences.getHiddenAnnotationURIs());
 
         owlComponentFactory = new OWLComponentFactoryImpl(getOWLEditorKit());
 
         final OWLModelManager mngr = getOWLModelManager();
 
-        owlModelManagerListener = event -> {
-            try {
-                handleModelManagerEvent(event.getType());
-            } catch (Exception t) {
-                logger.warn("An error occurred whilst handling a Model Manager Event: {}", t);
-            }
-        };
         mngr.addListener(owlModelManagerListener);
 
-        listener = new OWLEntityCollectingOntologyChangeListener() {
-            public void ontologiesChanged() {
-                verifySelection(getEntities());
-            }
-
-            public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
-                super.ontologiesChanged(changes);
-                handleOntologiesChanged(changes);
-            }
-        };
         mngr.addOntologyChangeListener(listener);
 
         mngr.getOWLReasonerManager().setReasonerProgressMonitor(new ReasonerProgressUI(getOWLEditorKit()));
@@ -271,42 +266,46 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
 
     private void handleModelManagerEvent(EventType type) {
-        if (reselectionEventTypes.contains(type)) {
-            verifySelection();
-        }
+        try {
+            if (reselectionEventTypes.contains(type)) {
+                verifySelection();
+            }
 
-        switch (type) {
-            case ACTIVE_ONTOLOGY_CHANGED:
-                updateTitleBar();
-                updateReasonerStatus(false);
-                rebuildOntologyDropDown();
-                ontologiesList.repaint();
-                break;
-            case ONTOLOGY_CLASSIFIED:
-                updateReasonerStatus(false);
-                break;
-            case ABOUT_TO_CLASSIFY:
-            case REASONER_CHANGED:
-                updateReasonerStatus(false);
-                break;
-            case ONTOLOGY_LOADED:
-            case ONTOLOGY_CREATED:
-                if (getTabCount() > 0) {
-                    setSelectedTab(0);
-                }
-                break;
-            case ENTITY_RENDERER_CHANGED:
-            case ONTOLOGY_RELOADED:
-                rebuildOntologyDropDown();
-                refreshComponents();
-                break;
-            case ONTOLOGY_SAVED:
-                updateDirtyFlag();
-                updateTitleBar();
-                break;
-            case ENTITY_RENDERING_CHANGED:
-            case ONTOLOGY_VISIBILITY_CHANGED:
-                break;
+            switch (type) {
+                case ACTIVE_ONTOLOGY_CHANGED:
+                    updateTitleBar();
+                    updateReasonerStatus(false);
+                    rebuildOntologyDropDown();
+                    ontologiesList.repaint();
+                    break;
+                case ONTOLOGY_CLASSIFIED:
+                    updateReasonerStatus(false);
+                    break;
+                case ABOUT_TO_CLASSIFY:
+                case REASONER_CHANGED:
+                    updateReasonerStatus(false);
+                    break;
+                case ONTOLOGY_LOADED:
+                case ONTOLOGY_CREATED:
+                    if (getTabCount() > 0) {
+                        setSelectedTab(0);
+                    }
+                    break;
+                case ENTITY_RENDERER_CHANGED:
+                case ONTOLOGY_RELOADED:
+                    rebuildOntologyDropDown();
+                    refreshComponents();
+                    break;
+                case ONTOLOGY_SAVED:
+                    updateDirtyFlag();
+                    updateTitleBar();
+                    break;
+                case ENTITY_RENDERING_CHANGED:
+                case ONTOLOGY_VISIBILITY_CHANGED:
+                    break;
+            }
+        } catch (Exception e) {
+            logger.warn("An error occurred whilst handling a Model Manager Event: {}", e.getMessage(), e);
         }
     }
 
@@ -389,11 +388,6 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     public Set<URI> getHiddenAnnotationURIs() {
         return Collections.unmodifiableSet(hiddenAnnotationURIs);
-    }
-
-    public void setCustomizedBy(String customizedText) {
-        customizedProtege.setText(customizedText);
-        statusArea.repaint();
     }
 
     public void setHiddenAnnotationURI(URI annotationURI, boolean hidden) {
@@ -493,7 +487,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
                 action.setEditorKit(getOWLEditorKit());
                 String name = extraReasonerMenuActionPlugin.getName();
                 if (name == null) {
-                    logger.warn("Extra reasoner menu action plugin has no name: " + extraReasonerMenuActionPlugin);
+                    logger.warn("Extra reasoner menu action plugin has no name: {}", extraReasonerMenuActionPlugin);
                 }
                 action.putValue(Action.NAME, name);
                 String toolTipText = extraReasonerMenuActionPlugin.getToolTipText();
@@ -505,7 +499,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
                     action.putValue(Action.ACCELERATOR_KEY, accelerator);
                 }
                 result.add(action);
-                logger.debug("action = " + action);
+                logger.debug("action = {}", action);
             } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
                 logger.error("Error whilst loading menu plugin", e); //To change body of catch statement use File | Settings | File Templates.
             }
@@ -649,7 +643,6 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         final OWLModelManager mngr = getOWLModelManager();
 
         // Install the active ontology combo box
-        ontologiesList = new JComboBox<>();
         ontologiesList.setToolTipText("Active ontology");
         ontologiesList.setRenderer(new OWLOntologyCellRenderer(getOWLEditorKit()));
         rebuildOntologyDropDown();
@@ -671,12 +664,9 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             }
         });
 
-        JButton searchButton = new JButton(new AbstractAction("Search...") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showSearchDialog();
-            }
-        });
+        JButton searchButton = new JButton("Search...");
+        searchButton.addActionListener(e -> showSearchDialog());
+
         topBarPanel.add(searchButton, new GridBagConstraints(
                 2, 0,
                 1, 1,
@@ -711,20 +701,6 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         add(topBarPanel, BorderLayout.NORTH);
 
-//        KeyStroke findKeyStroke = KeyStroke.getKeyStroke(
-//                KeyEvent.VK_F,
-//                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
-//        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(findKeyStroke, "SHOW_SEARCH_DIALOG");
-//        getActionMap().put("SHOW_SEARCH_DIALOG", new AbstractAction() {
-//            /**
-//             *
-//             */
-//            private static final long serialVersionUID = -2205711779338124168L;
-//
-//            public void actionPerformed(ActionEvent e) {
-//                showSearchDialog();
-//            }
-//        });
         updateTitleBar();
     }
 
@@ -815,8 +791,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         explainInconsistentOntologyAction.setEnabled(status == ReasonerStatus.INCONSISTENT);
 
         KeyStroke shortcut = KeyStroke.getKeyStroke(KeyEvent.VK_R, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
-        startReasonerAction.putValue(AbstractAction.ACCELERATOR_KEY, status.isEnableInitialization() ? shortcut : null);
-        synchronizeReasonerAction.putValue(AbstractAction.ACCELERATOR_KEY, status.isEnableSynchronization() ? shortcut : null);
+        startReasonerAction.putValue(Action.ACCELERATOR_KEY, status.isEnableInitialization() ? shortcut : null);
+        synchronizeReasonerAction.putValue(Action.ACCELERATOR_KEY, status.isEnableSynchronization() ? shortcut : null);
     }
 
 
@@ -902,11 +878,6 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     }
 
 
-    public void setOWLIconProvider(OWLIconProvider provider) {
-        this.iconProvider = provider;
-    }
-
-
     public OWLCellRenderer createOWLCellRenderer() {
         return createOWLCellRenderer(true, true);
     }
@@ -928,9 +899,6 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
 
     public OWLSelectionHistoryManager getOWLSelectionHistoryManager() {
-        if (owlSelectionHistoryManager == null) {
-            owlSelectionHistoryManager = new OWLSelectionHistoryManagerImpl(getOWLSelectionModel());
-        }
         return owlSelectionHistoryManager;
     }
 
@@ -989,8 +957,6 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             statusArea = new JPanel();
             statusArea.setBorder(BorderFactory.createEmptyBorder(0, 0, 1, 1));
             statusArea.setLayout(new BoxLayout(statusArea, BoxLayout.X_AXIS));
-            statusArea.add(Box.createHorizontalGlue());
-            statusArea.add(customizedProtege);
             statusArea.add(Box.createHorizontalGlue());
             statusArea.add(reasonerStatus);
             statusArea.add(Box.createHorizontalStrut(10));
