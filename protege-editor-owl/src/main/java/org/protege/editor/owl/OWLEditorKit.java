@@ -61,7 +61,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     private static final Logger logger = LoggerFactory.getLogger(OWLEditorKit.class);
 
 
-    private OWLModelManager modelManager;
+    private final OWLModelManager modelManager;
 
     private final OWLWorkspace workspace;
 
@@ -120,27 +120,6 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
      */
     public boolean hasModifiedDocument() {
         return modifiedDocument;
-    }
-
-    /**
-     * @deprecated This call isn't really deprecated - it is just not recommended.  If you are thinking of using this
-     * call
-     * then probably there is a missing feature in Prot&#x00E9g&#x00E9 or there is a plugin capability that
-     * you should consider using instead.  Contact the Prot&#x00E9g&#x00E9 developers on the p4 mailing
-     * list:
-     * http://mailman.stanford.edu/mailman/listinfo/p4-feedback.
-     */
-    @Deprecated
-    public void setOWLModelManager(OWLModelManager modelManager) {
-        this.modelManager = modelManager;
-        ServiceReference sr = ProtegeOWL.getBundleContext().getServiceReference(PackageAdmin.class.getCanonicalName());
-        PackageAdmin admin = (PackageAdmin) ProtegeOWL.getBundleContext().getService(sr);
-        Bundle customizer = admin.getBundle(modelManager.getClass());
-        String name = customizer.getHeaders().get(Constants.BUNDLE_NAME);
-        if (name == null) {
-            name = customizer.getSymbolicName();
-        }
-        getOWLWorkspace().setCustomizedBy("Prot\u00E9g\u00E9 Customized by " + name);
     }
 
     /**
