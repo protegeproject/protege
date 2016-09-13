@@ -30,26 +30,8 @@ public abstract class AbstractEditorKit<T extends EditorKitFactory> implements E
 
     public AbstractEditorKit(T editorKitFactory) {
         this.editorKitFactory = editorKitFactory;
-        initialise();
-        initialiseCompleted();
     }
 
-
-    protected abstract void initialise();
-
-    protected void initialiseCompleted(){
-        for (EditorKitHookPlugin editorKitHookPlugin : new EditorKitHookPluginLoader(this).getPlugins()){
-            try {
-                EditorKitHook instance = editorKitHookPlugin.newInstance();
-                instance.initialise();
-                put(editorKitHookPlugin.getId(), instance);
-            }
-            catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-    
     public void put(Object key, Disposable value) {
     	objects.put(key, value);
     }
@@ -62,8 +44,6 @@ public abstract class AbstractEditorKit<T extends EditorKitFactory> implements E
     public T getEditorKitFactory() {
         return editorKitFactory;
     }
-    
-    
 
     public void dispose(){
         for (Disposable object : objects.values()){
