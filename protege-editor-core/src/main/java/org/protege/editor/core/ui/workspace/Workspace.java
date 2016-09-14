@@ -147,11 +147,8 @@ public abstract class Workspace extends JComponent implements Disposable {
                 else if (HELP_MENU_NAME.equals(menuText)) {
                     if (!OSUtils.isOSX()) {
                         menu.addSeparator();
-                        menu.add(new AbstractAction("About") {
-                            public void actionPerformed(ActionEvent event) {
-                                AboutPanel.showDialog();
-                            }
-                        });
+                        JMenuItem aboutMenuItem = menu.add("About");
+                        aboutMenuItem.addActionListener(e -> AboutPanel.showDialog());
                     }
                 }
             }
