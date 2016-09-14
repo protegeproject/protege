@@ -46,7 +46,7 @@ public abstract class TabbedWorkspace extends Workspace {
         // If no tabs are set as visible (ie we have yet to customise, show all by default
         for (WorkspaceTabPlugin plugin : getOrderedPlugins()) {
             if(visibleTabs.isEmpty()) {
-                if(isShownByDefault(plugin)) {
+                if(plugin.isProtegeDefaultTab()) {
                     addTabForPlugin(plugin);
                 }
             }
@@ -55,25 +55,6 @@ public abstract class TabbedWorkspace extends Workspace {
             }
         }
     }
-
-    private boolean isShownByDefault(WorkspaceTabPlugin plugin) {
-        // Can be replaced if we move to Java 8 (which has default methods).
-        try {
-            for(Method method : plugin.getClass().getMethods()) {
-                if(method.getName().equals("isProtegeDefaultTab")) {
-                    if(Boolean.TRUE.equals(method.invoke(plugin))) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            logger.warn("An error occurred when attempting to detect whether a tab plugin should be shown by " +
-                    "default.  Details: {}", e);
-            return false;
-        }
-    }
-
 
     public WorkspaceTab addTabForPlugin(WorkspaceTabPlugin plugin) {
         WorkspaceTab tab = null;

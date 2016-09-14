@@ -27,7 +27,7 @@ public interface WorkspaceTabPlugin extends ProtegePlugin<WorkspaceTab> {
      * @return A <code>TabbedWorkspace</code> that the tabs instantiated
      *         by this plugin belong to.
      */
-    public TabbedWorkspace getWorkspace();
+    TabbedWorkspace getWorkspace();
 
 
     /**
@@ -36,7 +36,7 @@ public interface WorkspaceTabPlugin extends ProtegePlugin<WorkspaceTab> {
      * @return A <code>String</code> that represents the label.  The
      *         return value must not be <code>null</code>.
      */
-    public String getLabel();
+    String getLabel();
 
 
     /**
@@ -45,7 +45,7 @@ public interface WorkspaceTabPlugin extends ProtegePlugin<WorkspaceTab> {
      * @return An <code>Icon</code> to be shown on the tab.
      *         The return value may be <code>null</code>.
      */
-    public Icon getIcon();
+    Icon getIcon();
 
     /**
      * Gets the default tab index.  This can be used to
@@ -53,7 +53,11 @@ public interface WorkspaceTabPlugin extends ProtegePlugin<WorkspaceTab> {
      *
      * @return A <code>String</code> that represents the index.
      */
-    public String getIndex();
+    String getIndex();
 
-    public URL getDefaultViewConfigFile();
+    URL getDefaultViewConfigFile();
+
+    default boolean isProtegeDefaultTab() {
+        return false;
+    }
 }
