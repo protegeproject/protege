@@ -30,20 +30,20 @@ public abstract class TabbedWorkspace extends Workspace {
 
     private final Set<WorkspaceTab> workspaceTabs = new HashSet<>();
 
-    public void initialise() {
-        JPanel tabHolder = new JPanel(new BorderLayout());
-
-        // Create the tabs.
+    public TabbedWorkspace() {
         tabbedPane.setUI(new CloseableTabbedPaneUI(CloseableTabbedPaneUI.TabClosability.CLOSABLE, new WorkspaceTabCloseHandler()));
-
+        JPanel tabHolder = new JPanel(new BorderLayout());
         tabHolder.add(tabbedPane);
         setContent(tabbedPane);
+    }
+
+    public void initialise() {
 
         // Here we either need to load the default tabs, or
         // restore a set of tabs
         final List<String> visibleTabs = new TabbedWorkspaceStateManager().getTabs();
 
-        // If no tabs are set as visible (ie we have yet to customise, show all by default
+        // If no tabs are set as visible (i.e. we have yet to customise) show all by default
         for (WorkspaceTabPlugin plugin : getOrderedPlugins()) {
             if(visibleTabs.isEmpty()) {
                 if(plugin.isProtegeDefaultTab()) {
