@@ -711,6 +711,10 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     }
 
     public void showSearchDialog() {
+        if(getOWLEditorKit() == null) {
+            logger.info("The OWLWorkspace has not been initialised.  Not displaying the search dialog.");
+            return;
+        }
         if (searchDialog == null) {
             searchDialog = SearchDialogPanel.createDialog(this, getOWLEditorKit());
             Point workspaceLocation = getLocation();
@@ -940,6 +944,10 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
 
     public OWLComponentFactory getOWLComponentFactory() {
+        if(owlComponentFactory == null) {
+            throw new RuntimeException("The OWL Workspace has not been initialised.  " +
+                    "OWLWorkspace.getOWLComponentFactory must not be called until the workspace has been initialised.");
+        }
         return owlComponentFactory;
     }
 
