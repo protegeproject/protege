@@ -133,18 +133,15 @@ public abstract class Workspace extends JComponent implements Disposable {
                 }
                 else if (FILE_MENU_NAME.equals(menuText)) {
                     if (!OSUtils.isOSX()) {
-                        final JMenuItem menuItem = new JMenuItem("Preferences...");
-                        menuItem.addActionListener(e -> PreferencesDialogPanel.showPreferencesDialog(null, getEditorKit()));
+                        final JMenuItem prefsMenuItem = new JMenuItem("Preferences...");
+                        prefsMenuItem.addActionListener(e -> PreferencesDialogPanel.showPreferencesDialog(null, getEditorKit()));
                         KeyStroke ks = KeyStroke.getKeyStroke(",");
-                        menuItem.setAccelerator(ks);
+                        prefsMenuItem.setAccelerator(ks);
                         menu.addSeparator();
-                        menu.add(menuItem);
+                        menu.add(prefsMenuItem);
                         menu.addSeparator();
-                        menu.add(new AbstractAction("Exit") {
-                            public void actionPerformed(ActionEvent event) {
-                                ProtegeApplication.handleQuit();
-                            }
-                        });
+                        JMenuItem exitMenuItem = menu.add("Exit");
+                        exitMenuItem.addActionListener(e -> ProtegeApplication.handleQuit());
                     }
                 }
                 else if (HELP_MENU_NAME.equals(menuText)) {
