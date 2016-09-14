@@ -134,11 +134,6 @@ public abstract class Workspace extends JComponent implements Disposable {
                 else if (FILE_MENU_NAME.equals(menuText)) {
                     if (!OSUtils.isOSX()) {
                         final JMenuItem menuItem = new JMenuItem(new AbstractAction("Preferences...") {
-                            /**
-                             *
-                             */
-                            private static final long serialVersionUID = -4897769796985728041L;
-
                             public void actionPerformed(ActionEvent event) {
                                 PreferencesDialogPanel.showPreferencesDialog(null, getEditorKit());
                             }
@@ -149,11 +144,6 @@ public abstract class Workspace extends JComponent implements Disposable {
                         menu.add(menuItem);
                         menu.addSeparator();
                         menu.add(new AbstractAction("Exit") {
-                            /**
-                             *
-                             */
-                            private static final long serialVersionUID = -3497054762240815779L;
-
                             public void actionPerformed(ActionEvent event) {
                                 ProtegeApplication.handleQuit();
                             }
@@ -164,7 +154,6 @@ public abstract class Workspace extends JComponent implements Disposable {
                     if (!OSUtils.isOSX()) {
                         menu.addSeparator();
                         menu.add(new AbstractAction("About") {
-
                             public void actionPerformed(ActionEvent event) {
                                 AboutPanel.showDialog();
                             }
