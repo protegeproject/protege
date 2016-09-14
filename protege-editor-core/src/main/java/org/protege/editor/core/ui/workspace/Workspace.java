@@ -58,20 +58,24 @@ public abstract class Workspace extends JComponent implements Disposable {
 
     public static final String RESULT_PANE_ID = "org.protege.editor.core.resultspane";
 
-    private EditorKit editorKit;
-
-    private WorkspaceViewManager viewManager;
 
     /**
      * A split pane that holds the tabs and results view
      */
-    private ViewSplitPane bottomResultsSplitPane;
+    private final ViewSplitPane bottomResultsSplitPane = new ViewSplitPane(JSplitPane.VERTICAL_SPLIT);
 
-    private ViewSplitPane leftResultsSplitPane;
+    private final ViewSplitPane leftResultsSplitPane = new ViewSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
-    private ViewHolder bottomResultsViewHolder;
+    private final ViewHolder bottomResultsViewHolder = new ViewHolder("Results", JSplitPane.BOTTOM, bottomResultsSplitPane);
 
-    private ViewHolder leftResultsViewHolder;
+    private final ViewHolder leftResultsViewHolder = new ViewHolder("R", JSplitPane.LEFT, leftResultsSplitPane);
+
+
+
+    private EditorKit editorKit;
+
+    private WorkspaceViewManager viewManager;
+
 
     private int fontSize = 12;
 
@@ -89,17 +93,13 @@ public abstract class Workspace extends JComponent implements Disposable {
         // Create the layout.
         setLayout(new BorderLayout());
 
-        leftResultsSplitPane = new ViewSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         leftResultsSplitPane.setResizeWeight(0.2);
         add(leftResultsSplitPane);
 
-        bottomResultsSplitPane = new ViewSplitPane(JSplitPane.VERTICAL_SPLIT);
         bottomResultsSplitPane.setResizeWeight(0.65);
         leftResultsSplitPane.add(bottomResultsSplitPane, JSplitPane.RIGHT);
 
-        bottomResultsViewHolder = new ViewHolder("Results", JSplitPane.BOTTOM, bottomResultsSplitPane);
         adjustBorder(bottomResultsViewHolder);
-        leftResultsViewHolder = new ViewHolder("R", JSplitPane.LEFT, leftResultsSplitPane);
         adjustBorder(leftResultsViewHolder);
     }
 
