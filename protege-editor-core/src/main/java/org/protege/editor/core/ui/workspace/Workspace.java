@@ -133,11 +133,8 @@ public abstract class Workspace extends JComponent implements Disposable {
                 }
                 else if (FILE_MENU_NAME.equals(menuText)) {
                     if (!OSUtils.isOSX()) {
-                        final JMenuItem menuItem = new JMenuItem(new AbstractAction("Preferences...") {
-                            public void actionPerformed(ActionEvent event) {
-                                PreferencesDialogPanel.showPreferencesDialog(null, getEditorKit());
-                            }
-                        });
+                        final JMenuItem menuItem = new JMenuItem("Preferences...");
+                        menuItem.addActionListener(e -> PreferencesDialogPanel.showPreferencesDialog(null, getEditorKit()));
                         KeyStroke ks = KeyStroke.getKeyStroke(",");
                         menuItem.setAccelerator(ks);
                         menu.addSeparator();
