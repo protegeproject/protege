@@ -20,7 +20,7 @@ import java.util.List;
  * matthew.horridge@cs.man.ac.uk<br> www.cs.man.ac.uk/~horridgm<br><br>
 
  * A <code>TabbedWorkspace</code> represents a <code>Workspace</code> that contains tabs.  The tabs are loaded
- * automatically depending on the <code>Workspace</code> clsdescriptioneditor kit.
+ * automatically depending on the <code>Workspace</code> editor kit.
  */
 public abstract class TabbedWorkspace extends Workspace {
 
