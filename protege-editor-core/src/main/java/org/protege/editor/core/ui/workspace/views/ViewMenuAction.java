@@ -4,6 +4,7 @@ import org.protege.editor.core.ui.action.ProtegeDynamicAction;
 import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.core.ui.view.ViewComponentPluginLoader;
 import org.protege.editor.core.ui.workspace.TabbedWorkspace;
+import org.protege.editor.core.ui.workspace.WorkspaceTabPlugin;
 import org.protege.editor.core.ui.workspace.WorkspaceViewManager;
 
 import javax.swing.*;
@@ -89,8 +90,15 @@ public class ViewMenuAction extends ProtegeDynamicAction {
                     }
                 };
                 action.putValue(Action.SHORT_DESCRIPTION, plugin.getDocumentation());
-                subMenu.add(action);
+                subMenu.add(action);                	
+                action.setEnabled(canShowTab(plugin));
             }
         }
+	}
+	
+	private boolean canShowTab(ViewComponentPlugin plugin) {
+
+		return ((TabbedWorkspace) getWorkspace()).canShow(plugin);
+
 	}
 }

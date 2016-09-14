@@ -55,9 +55,12 @@ public interface WorkspaceTabPlugin extends ProtegePlugin<WorkspaceTab> {
      */
     String getIndex();
 
-    URL getDefaultViewConfigFile();
-
     default boolean isProtegeDefaultTab() {
         return false;
     }
+    
+    public URL getDefaultViewConfigFile();
+    
+    public String getPermissionLevel();
+
 }
