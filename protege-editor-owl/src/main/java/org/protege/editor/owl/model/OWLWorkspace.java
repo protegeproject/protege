@@ -1016,6 +1016,13 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             public WorkspaceTab newInstance() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
                 return tab;
             }
+
+
+			@Override
+			public String getPermissionLevel() {
+				// TODO Auto-generated method stub
+				return "allow";
+			}
         });
 
         return tab;

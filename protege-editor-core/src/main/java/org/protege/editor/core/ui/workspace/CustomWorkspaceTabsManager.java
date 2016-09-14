@@ -196,6 +196,13 @@ public class CustomWorkspaceTabsManager {
                 return label;
             }
         }
+
+
+		@Override
+		public String getPermissionLevel() {
+			// TODO Auto-generated method stub
+			return "allow";
+		}
     }
 
 }
