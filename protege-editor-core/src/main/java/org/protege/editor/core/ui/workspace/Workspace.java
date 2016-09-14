@@ -132,27 +132,36 @@ public abstract class Workspace extends JComponent implements Disposable {
                     installLookAndFeelMenu(menu);
                 }
                 else if (FILE_MENU_NAME.equals(menuText)) {
-                    if (!OSUtils.isOSX()) {
-                        final JMenuItem prefsMenuItem = new JMenuItem("Preferences...");
-                        prefsMenuItem.addActionListener(e -> PreferencesDialogPanel.showPreferencesDialog(null, getEditorKit()));
-                        KeyStroke ks = KeyStroke.getKeyStroke(",");
-                        prefsMenuItem.setAccelerator(ks);
-                        menu.addSeparator();
-                        menu.add(prefsMenuItem);
-                        menu.addSeparator();
-                        JMenuItem exitMenuItem = menu.add("Exit");
-                        exitMenuItem.addActionListener(e -> ProtegeApplication.handleQuit());
-                    }
+                    installFileMenu(menu);
                 }
                 else if (HELP_MENU_NAME.equals(menuText)) {
-                    if (!OSUtils.isOSX()) {
-                        menu.addSeparator();
-                        JMenuItem aboutMenuItem = menu.add("About");
-                        aboutMenuItem.addActionListener(e -> AboutPanel.showDialog());
-                    }
+                    installHelpMenu(menu);
                 }
             }
         }
+    }
+
+    private void installHelpMenu(JMenu helpMenu) {
+        if (OSUtils.isOSX()) {
+            return;
+        }
+        helpMenu.addSeparator();
+        JMenuItem aboutMenuItem = helpMenu.add("About");
+        aboutMenuItem.addActionListener(e -> AboutPanel.showDialog());
+    }
+
+    private void installFileMenu(JMenu fileMenu) {
+        if (OSUtils.isOSX()) {
+            return;
+        }
+        fileMenu.addSeparator();
+        JMenuItem prefsMenuItem = fileMenu.add("Preferences...");
+        prefsMenuItem.addActionListener(e -> PreferencesDialogPanel.showPreferencesDialog(null, getEditorKit()));
+        prefsMenuItem.setAccelerator(KeyStroke.getKeyStroke(","));
+
+        fileMenu.addSeparator();
+        JMenuItem exitMenuItem = fileMenu.add("Exit");
+        exitMenuItem.addActionListener(e -> ProtegeApplication.handleQuit());
     }
 
 
