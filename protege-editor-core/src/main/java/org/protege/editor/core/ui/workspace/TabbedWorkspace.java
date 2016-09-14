@@ -103,13 +103,7 @@ public abstract class TabbedWorkspace extends Workspace {
         List<WorkspaceTabPlugin> plugins = new ArrayList<>(loader.getPlugins());
         CustomWorkspaceTabsManager customTabsManager = getCustomTabsManager();
         plugins.addAll(customTabsManager.getCustomTabPlugins(this));
-
-        Collections.sort(plugins, new Comparator<WorkspaceTabPlugin>() {
-            public int compare(WorkspaceTabPlugin o1, WorkspaceTabPlugin o2) {
-                return o1.getIndex().compareTo(o2.getIndex());
-            }
-        });
-
+        Collections.sort(plugins, (o1, o2) -> o1.getIndex().compareTo(o2.getIndex()));
         return plugins;
     }
 
