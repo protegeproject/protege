@@ -255,6 +255,10 @@ public abstract class Workspace extends JComponent implements Disposable {
     }
 
 
+    /**
+     * Sets the main content component of this workspace.
+     * @param component The component.
+     */
     protected void setContent(JComponent component) {
         bottomResultsSplitPane.setTopComponent(component);
     }
