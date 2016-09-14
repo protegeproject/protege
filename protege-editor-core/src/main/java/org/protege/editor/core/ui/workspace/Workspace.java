@@ -137,6 +137,10 @@ public abstract class Workspace extends JComponent implements Disposable {
         }
     }
 
+    /**
+     * Installs the help menu for non-OS-X systems
+     * @param helpMenu The help menu. Not {@code null}.
+     */
     private void installHelpMenu(JMenu helpMenu) {
         if (OSUtils.isOSX()) {
             return;
@@ -146,6 +150,10 @@ public abstract class Workspace extends JComponent implements Disposable {
         aboutMenuItem.addActionListener(e -> AboutPanel.showDialog());
     }
 
+    /**
+     * Installs the file menu for non-OS-X systems.
+     * @param fileMenu The file menu.  Not {@code null}.
+     */
     private void installFileMenu(JMenu fileMenu) {
         if (OSUtils.isOSX()) {
             return;
@@ -161,6 +169,10 @@ public abstract class Workspace extends JComponent implements Disposable {
     }
 
 
+    /**
+     * Installs the look and feel menu.
+     * @param windowMenu The window menu.  Not {@code null}.
+     */
     private void installLookAndFeelMenu(JMenu windowMenu) {
         windowMenu.addSeparator();
         JMenu menu = new JMenu("Look & Feel");
