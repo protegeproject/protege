@@ -102,6 +102,13 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
     private ListSelectionListener selListener = event -> handleSelectionEvent(event);
 
     private boolean axiomSelectionGlobal = true;
+    
+    private boolean read_only = false;
+    
+    public OWLFrameList(OWLEditorKit editorKit, OWLFrame<R> frame, boolean read_only) {
+    	this(editorKit, frame);
+    	this.read_only = read_only;
+    }
 
 
     public OWLFrameList(OWLEditorKit editorKit, OWLFrame<R> frame) {
@@ -192,26 +199,32 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
     }
 
     protected List<MListButton> getButtons(Object value) {
-        List<MListButton> buttons = new ArrayList<>(super.getButtons(value));
-        if (value instanceof OWLFrameSectionRow) {
-            OWLFrameSectionRow<?,?,?> frameRow = (OWLFrameSectionRow<?,?,?>) value;
-            buttons.add(axiomAnnotationButton);
-            axiomAnnotationButton.setAnnotationPresent(isAnnotationPresent(frameRow));
+    	List<MListButton> buttons = new ArrayList<MListButton>();
+    	if (read_only) {
 
-            if (getExplanationManager().hasExplanation(frameRow.getAxiom())) {
-                buttons.addAll(inferredRowButtons);
-            }
-        }
-        if (value instanceof AbstractOWLFrameSectionRow) {
-            List<MListButton> additional = ((AbstractOWLFrameSectionRow) value).getAdditionalButtons();
-            if (!additional.isEmpty()) {
-                buttons.addAll(additional);
-            }
-        }
-        if (value instanceof AbstractOWLFrameSection) {
-            buttons.addAll(((AbstractOWLFrameSection) value).getAdditionalButtons());
-        }
-        return buttons;
+    	} else {
+    		buttons = new ArrayList<>(super.getButtons(value));
+    		if (value instanceof OWLFrameSectionRow) {
+    			OWLFrameSectionRow<?,?,?> frameRow = (OWLFrameSectionRow<?,?,?>) value;
+    			buttons.add(axiomAnnotationButton);
+    			axiomAnnotationButton.setAnnotationPresent(isAnnotationPresent(frameRow));
+
+    			if (getExplanationManager().hasExplanation(frameRow.getAxiom())) {
+    				buttons.addAll(inferredRowButtons);
+    			}
+    		}
+    		if (value instanceof AbstractOWLFrameSectionRow) {
+    			List<MListButton> additional = ((AbstractOWLFrameSectionRow) value).getAdditionalButtons();
+    			if (!additional.isEmpty()) {
+    				buttons.addAll(additional);
+    			}
+    		}
+    		if (value instanceof AbstractOWLFrameSection) {
+    			buttons.addAll(((AbstractOWLFrameSection) value).getAdditionalButtons());
+    		}
+
+    	}
+    	return buttons;
     }
 
 
