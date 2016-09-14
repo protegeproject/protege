@@ -70,15 +70,23 @@ public abstract class Workspace extends JComponent implements Disposable {
 
     private final ViewHolder leftResultsViewHolder = new ViewHolder("R", JSplitPane.LEFT, leftResultsSplitPane);
 
+    private final WorkspaceViewManager viewManager = new WorkspaceViewManager();
 
 
     private EditorKit editorKit;
 
-    private WorkspaceViewManager viewManager;
-
-
     private int fontSize = 12;
 
+
+    public Workspace() {
+        setLayout(new BorderLayout());
+        leftResultsSplitPane.setResizeWeight(0.2);
+        add(leftResultsSplitPane);
+        bottomResultsSplitPane.setResizeWeight(0.65);
+        leftResultsSplitPane.add(bottomResultsSplitPane, JSplitPane.RIGHT);
+        adjustBorder(bottomResultsViewHolder);
+        adjustBorder(leftResultsViewHolder);
+    }
 
     /**
      * This method is called by the system to
@@ -89,18 +97,6 @@ public abstract class Workspace extends JComponent implements Disposable {
      */
     public void setup(EditorKit editorKit) {
         this.editorKit = editorKit;
-        this.viewManager = new WorkspaceViewManager();
-        // Create the layout.
-        setLayout(new BorderLayout());
-
-        leftResultsSplitPane.setResizeWeight(0.2);
-        add(leftResultsSplitPane);
-
-        bottomResultsSplitPane.setResizeWeight(0.65);
-        leftResultsSplitPane.add(bottomResultsSplitPane, JSplitPane.RIGHT);
-
-        adjustBorder(bottomResultsViewHolder);
-        adjustBorder(leftResultsViewHolder);
     }
 
 
