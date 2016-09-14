@@ -131,9 +131,6 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private final JPanel statusArea = new JPanel();
 
-
-
-
     private final OWLIconProvider iconProvider = new OWLIconProviderImpl(
             c -> {
                 for(OWLOntology ontology : getOWLModelManager().getActiveOntologies()) {
@@ -148,13 +145,6 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             }
     );
 
-    private OWLComponentFactory owlComponentFactory;
-
-    private String altTitle;
-
-    private boolean reasonerManagerStarted = false;
-
-
     private final ErrorLogListener errorLogListener = new ErrorLogListener() {
         @Override
         public void errorLogged() {
@@ -166,6 +156,17 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             errorNotificationLabel.setVisible(false);
         }
     };
+
+
+    private String altTitle;
+
+    private boolean reasonerManagerStarted = false;
+
+    private OWLComponentFactory owlComponentFactory;
+
+    private JDialog searchDialog;
+
+
 
     public OWLWorkspace() {
         super();
@@ -196,18 +197,12 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         return getOWLEditorKit().getModelManager();
     }
 
-    private JDialog searchDialog;
-
-
-
     public void initialise() {
         super.initialise();
 
         ProtegeApplication.getLogManager().addErrorLogListener(errorLogListener);
 
         createActiveOntologyPanel();
-
-
 
         owlComponentFactory = new OWLComponentFactoryImpl(getOWLEditorKit());
 
