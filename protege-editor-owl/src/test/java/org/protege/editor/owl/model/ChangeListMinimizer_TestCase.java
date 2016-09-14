@@ -39,11 +39,16 @@ public class ChangeListMinimizer_TestCase {
     @Mock
     private RemoveAxiom removeAxiom;
 
+    @Mock
+    private OWLOntology ontA, ontB;
+
     @Before
     public void setUp() throws Exception {
         minimizer = new ChangeListMinimizer();
         changes = new ArrayList<>();
         when(addAxiom.isAddAxiom()).thenReturn(true);
+        when(addAxiom.getOntology()).thenReturn(ontA);
+        when(removeAxiom.getOntology()).thenReturn(ontA);
         when(removeAxiom.isRemoveAxiom()).thenReturn(true);
     }
 
@@ -130,6 +135,16 @@ public class ChangeListMinimizer_TestCase {
         changes.add(removeAxiom);
         List<OWLOntologyChange> minimizedChanges = minimizer.getMinimisedChanges(changes);
         assertThat(minimizedChanges, contains(removeAxiom));
+    }
+
+    @Test
+    public void shouldNotCollapseAxiomsInMove() {
+        // Move from ontA to ontB
+        when(removeAxiom.getOntology()).thenReturn(ontB);
+        changes.add(removeAxiom);
+        changes.add(addAxiom);
+        List<OWLOntologyChange> minimizedChanges = minimizer.getMinimisedChanges(changes);
+        assertThat(minimizedChanges, contains(removeAxiom, addAxiom));
     }
 
 }
