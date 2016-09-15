@@ -88,12 +88,12 @@ public class OWLObjectRestrictionCreatorPanel extends AbstractRestrictionCreator
 
 
     protected AbstractSelectorPanel<OWLClass> createFillerSelectorPanel() {
-        return new OWLClassSelectorPanel(getOWLEditorKit());
+        return new OWLClassSelectorPanel(getOWLEditorKit(), false);
     }
 
 
     protected AbstractHierarchySelectorPanel<OWLObjectProperty> createPropertySelectorPanel() {
-        return new OWLObjectPropertySelectorPanel(getOWLEditorKit());
+        return new OWLObjectPropertySelectorPanel(getOWLEditorKit(), false);
     }
 
 
