@@ -1,5 +1,16 @@
 package org.protege.editor.owl.ui.selector;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.util.Set;
+
+import javax.swing.FocusManager;
+import javax.swing.JButton;
+import javax.swing.event.ChangeListener;
+
+import org.protege.editor.core.ui.menu.PopupMenuId;
+import org.protege.editor.core.ui.view.DisposableAction;
 import org.protege.editor.core.ui.view.ViewComponent;
 import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.core.ui.view.ViewComponentPluginAdapter;
@@ -7,13 +18,10 @@ import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.renderer.OWLSystemColors;
+import org.protege.editor.owl.ui.tree.OWLTreeDragAndDropHandler;
 import org.protege.editor.owl.ui.view.AbstractOWLEntityHierarchyViewComponent;
 import org.protege.editor.owl.ui.view.cls.ToldOWLClassHierarchyViewComponent;
 import org.semanticweb.owlapi.model.OWLClass;
-
-import javax.swing.event.ChangeListener;
-import java.awt.*;
-import java.util.Set;
 
 
 /**
@@ -58,13 +66,56 @@ public class OWLClassSelectorPanel extends AbstractHierarchySelectorPanel<OWLCla
 
             public ViewComponent newInstance() throws ClassNotFoundException, IllegalAccessException,
                     InstantiationException {
-                vc = new ToldOWLClassHierarchyViewComponent(){
-                    public void performExtraInitialisation() throws Exception {
-                        if (isEditable()){
+                vc = new ToldOWLClassHierarchyViewComponent() {
+                	/**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
+
+					public void performExtraInitialisation() throws Exception {
+                		if (isEditable()){
                             super.performExtraInitialisation();
                         }
-                    }
 
+                		JButton searchbutton = new JButton("Search");
+                		
+                		addAction(new DisposableAction("Search", searchbutton.getIcon()) {
+                			
+                			private static final long serialVersionUID = 1L;
+
+                			public void actionPerformed(ActionEvent event) {
+
+                				Component focusOwner = FocusManager.getCurrentManager().getFocusOwner();
+                				if(focusOwner == null) {
+                					return;
+                				}                		        
+                				OWLClass cls = getOWLWorkspace().searchForClass(focusOwner);
+                				if (cls != null) {
+                					setSelectedEntity(cls);
+                				}
+                			}
+
+                			public void dispose() {
+                				
+                			}
+                		}, "A", "A");
+                		
+                		getTree().setDragAndDropHandler(new OWLTreeDragAndDropHandler<OWLClass>() {
+                            public boolean canDrop(Object child, Object parent) {
+                                return false;
+                            }
+                            public void move(OWLClass child, OWLClass fromParent, OWLClass toParent) {}
+                            public void add(OWLClass child, OWLClass parent) {}
+                        });
+                        getAssertedTree().setPopupMenuId(new PopupMenuId("[NCIAssertedClassHierarchy]")); 
+                        
+                        
+                        
+                        	
+                		
+
+                    }
+                   
                     protected OWLObjectHierarchyProvider<OWLClass> getOWLClassHierarchyProvider() {
                         return getHierarchyProvider();
                     }

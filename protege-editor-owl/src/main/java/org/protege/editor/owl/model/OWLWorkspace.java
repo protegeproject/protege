@@ -26,6 +26,7 @@ import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.inference.*;
+import org.protege.editor.owl.model.search.ClassSearcher;
 import org.protege.editor.owl.model.selection.OWLSelectionHistoryManager;
 import org.protege.editor.owl.model.selection.OWLSelectionHistoryManagerImpl;
 import org.protege.editor.owl.model.selection.OWLSelectionModel;
@@ -165,8 +166,10 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     private OWLComponentFactory owlComponentFactory;
 
     private JDialog searchDialog;
-
-
+    
+    private ClassSearcher searcher = null;
+    
+    public void setClassSearcher(ClassSearcher s) { searcher = s; }
 
     public OWLWorkspace() {
         super();
@@ -724,6 +727,13 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             searchDialog.setLocation(workspaceLocation);
         }
         searchDialog.setVisible(true);
+    }
+    
+    public OWLClass searchForClass(Component parent) {
+    	if (searcher != null) {
+    		return searcher.searchFor(parent);
+    	}
+    	return null;
     }
 
     public void setTitle(String title) {
