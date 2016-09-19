@@ -11,6 +11,7 @@ import org.protege.editor.owl.ui.OWLObjectComparatorAdapter;
 import org.protege.editor.owl.ui.action.OWLObjectHierarchyDeleter;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
+import org.protege.editor.owl.ui.tree.UserRendering;
 import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.protege.editor.owl.ui.tree.OWLObjectTree;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -59,7 +60,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
     final public void initialiseView() throws Exception {
         setLayout(new BorderLayout(0, 0));
         add(viewModeComponent, BorderLayout.CENTER);
-        assertedTree = new OWLModelManagerTree<>(getOWLEditorKit(), getHierarchyProvider());
+        assertedTree = new OWLModelManagerTree<>(getOWLEditorKit(), getHierarchyProvider(), getUserRenderer());
 
         // ordering based on default, but putting Nothing at the top
         OWLObjectComparatorAdapter<OWLObject> treeNodeComp = createComparator(getOWLModelManager());
@@ -185,6 +186,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
     protected abstract void performExtraInitialisation() throws Exception;
 
+    protected abstract UserRendering getUserRenderer();
 
     protected abstract OWLObjectHierarchyProvider<E> getHierarchyProvider();
 

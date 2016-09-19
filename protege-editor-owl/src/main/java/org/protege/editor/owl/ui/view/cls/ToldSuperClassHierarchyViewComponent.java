@@ -4,6 +4,7 @@ import org.protege.editor.owl.model.hierarchy.AbstractSuperClassHierarchyProvide
 import org.protege.editor.owl.model.hierarchy.AssertedSuperClassHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.cls.InferredSuperClassHierarchyProvider;
+import org.protege.editor.owl.ui.tree.UserRendering;
 import org.semanticweb.owlapi.model.OWLClass;
 
 import java.util.Optional;
@@ -44,4 +45,11 @@ public class ToldSuperClassHierarchyViewComponent extends AbstractSuperClassHier
         }
         return Optional.of(inferredProvider);
     }
+
+
+	@Override
+	protected UserRendering getUserRenderer() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

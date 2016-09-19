@@ -8,6 +8,7 @@ import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.action.AbstractDeleteEntityAction;
 import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
 import org.protege.editor.owl.ui.renderer.*;
+import org.protege.editor.owl.ui.tree.UserRendering;
 import org.protege.editor.owl.ui.view.AbstractOWLEntityHierarchyViewComponent;
 import org.protege.editor.owl.ui.view.CreateNewChildTarget;
 import org.protege.editor.owl.ui.view.CreateNewSiblingTarget;
@@ -174,4 +175,10 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
             return "properties";
         }
     }
+
+	@Override
+	protected UserRendering getUserRenderer() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -4,6 +4,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
 import org.protege.editor.owl.model.util.OWLUtilities;
+import org.protege.editor.owl.ui.tree.UserRendering;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.slf4j.Logger;
@@ -103,6 +104,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 //    private int plainFontHeight;
 
     private boolean opaque = false;
+    
+    private UserRendering user_render = null;
 
 
     private class OWLCellRendererPanel extends JPanel {
@@ -111,6 +114,11 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         }
     }
 
+    public OWLCellRenderer(OWLEditorKit owlEditorKit, UserRendering mr) {
+        this(owlEditorKit, true, true);
+        this.user_render = mr;
+    }
+    
     public OWLCellRenderer(OWLEditorKit owlEditorKit) {
         this(owlEditorKit, true, true);
     }
@@ -476,22 +484,26 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
 
     protected String getRendering(Object object) {
-        if (object instanceof OWLObject) {
-            String rendering = getOWLModelManager().getRendering(((OWLObject) object));
-            for (OWLObject eqObj : equivalentObjects) {
-                // Add in the equivalent class symbol
-                rendering += " \u2261 " + getOWLModelManager().getRendering(eqObj);
-            }
-            return rendering;
-        }
-        else {
-            if (object != null) {
-                return object.toString();
-            }
-            else {
-                return "";
-            }
-        }
+    	if (object instanceof OWLObject) {
+    		String rendering = getOWLModelManager().getRendering(((OWLObject) object));
+    		for (OWLObject eqObj : equivalentObjects) {
+    			// Add in the equivalent class symbol
+    			rendering += " \u2261 " + getOWLModelManager().getRendering(eqObj);
+    		}
+    		if (user_render != null) {
+    			return user_render.render(rendering);
+    		} else {
+    			return rendering;
+    		}
+    	}
+    	else {
+    		if (object != null) {
+    			return object.toString();
+    		}
+    		else {
+    			return "";
+    		}
+    	}
     }
 
 

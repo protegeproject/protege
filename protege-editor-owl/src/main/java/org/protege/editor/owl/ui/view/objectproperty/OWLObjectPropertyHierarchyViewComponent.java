@@ -6,6 +6,7 @@ import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.selection.SelectionDriver;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.renderer.*;
+import org.protege.editor.owl.ui.tree.UserRendering;
 import org.protege.editor.owl.ui.view.AbstractOWLPropertyHierarchyViewComponent;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
@@ -84,4 +85,11 @@ public class OWLObjectPropertyHierarchyViewComponent
     public Optional<OWLObject> getSelection() {
         return Optional.ofNullable(getSelectedEntity());
     }
+
+
+	@Override
+	protected UserRendering getUserRenderer() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
