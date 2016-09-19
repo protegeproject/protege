@@ -12,6 +12,7 @@ import org.protege.editor.owl.ui.action.DeleteClassAction;
 import org.protege.editor.owl.ui.renderer.AddChildIcon;
 import org.protege.editor.owl.ui.renderer.AddSiblingIcon;
 import org.protege.editor.owl.ui.renderer.OWLClassIcon;
+import org.protege.editor.owl.ui.tree.UserRendering;
 import org.protege.editor.owl.ui.tree.OWLObjectTreeNode;
 import org.protege.editor.owl.ui.tree.OWLTreeDragAndDropHandler;
 import org.protege.editor.owl.ui.tree.OWLTreePreferences;
@@ -263,4 +264,11 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
     public void disposeView() {
         super.disposeView();
     }
+
+
+	@Override
+	protected UserRendering getUserRenderer() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
