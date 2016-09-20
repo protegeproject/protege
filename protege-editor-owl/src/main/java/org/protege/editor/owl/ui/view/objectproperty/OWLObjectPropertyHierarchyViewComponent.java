@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.view.objectproperty;
 
+import org.protege.editor.core.ui.menu.PopupMenuId;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.selection.SelectionDriver;
@@ -24,6 +25,12 @@ import java.util.Optional;
 public class OWLObjectPropertyHierarchyViewComponent
         extends AbstractOWLPropertyHierarchyViewComponent<OWLObjectProperty>
         implements SelectionDriver {
+
+    @Override
+    protected void performExtraInitialisation() throws Exception {
+        super.performExtraInitialisation();
+        getAssertedTree().setPopupMenuId(new PopupMenuId("[AssertedObjectPropertyHierarchy]"));
+    }
 
     protected boolean isOWLObjectPropertyView() {
         return true;

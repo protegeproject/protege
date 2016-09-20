@@ -2,7 +2,11 @@ package org.protege.editor.owl.model.find;
 
 import org.semanticweb.owlapi.model.*;
 
+import javax.annotation.Nonnull;
+import java.util.Optional;
 import java.util.Set;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 
 /**
@@ -38,6 +42,41 @@ public interface OWLEntityFinder {
 
     OWLEntity getOWLEntity(String rendering);
 
+    /**
+     * Searches for an entity of the specified type with the specified rendering.
+     * @param entityType The type of entity to search for.
+     * @param rendering The rendering of the entity to search for.
+     * @param <E>
+     * @return The entity that has the specified rendering and the specified type.  An empty value will be returned
+     * if no such entity was found.
+     */
+    @Nonnull
+    @SuppressWarnings("unchecked")
+    default <E extends OWLEntity> Optional<E> getOWLEntity(@Nonnull EntityType<E> entityType, @Nonnull String rendering) {
+        checkNotNull(entityType);
+        checkNotNull(rendering);
+        if(entityType == EntityType.CLASS) {
+            return Optional.ofNullable((E) getOWLClass(rendering));
+        }
+        else if(entityType == EntityType.OBJECT_PROPERTY) {
+            return Optional.ofNullable((E) getOWLObjectProperty(rendering));
+        }
+        else if(entityType == EntityType.DATA_PROPERTY) {
+            return Optional.ofNullable((E) getOWLDataProperty(rendering));
+        }
+        else if(entityType == EntityType.ANNOTATION_PROPERTY) {
+            return Optional.ofNullable((E) getOWLAnnotationProperty(rendering));
+        }
+        else if(entityType == EntityType.NAMED_INDIVIDUAL) {
+            return Optional.ofNullable((E) getOWLIndividual(rendering));
+        }
+        else if(entityType == EntityType.DATATYPE) {
+            return Optional.ofNullable((E) getOWLDatatype(rendering));
+        }
+        else {
+            throw new RuntimeException("Unknown EntityType: " + entityType);
+        }
+    }
 
     Set<String> getOWLEntityRenderings();
 

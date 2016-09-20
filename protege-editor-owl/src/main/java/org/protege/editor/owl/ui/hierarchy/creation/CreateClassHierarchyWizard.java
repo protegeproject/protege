@@ -2,7 +2,9 @@ package org.protege.editor.owl.ui.hierarchy.creation;
 
 import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.ui.wizard.Wizard;
+import org.protege.editor.core.util.Recommendation;
 import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owlapi.model.EntityType;
 import org.semanticweb.owlapi.model.OWLClass;
 
 
@@ -21,7 +23,7 @@ public class CreateClassHierarchyWizard extends Wizard {
 
     private TabIndentedHierarchyPanel tabIndentedHierarchyPanel;
 
-    private MakeSiblingClassesDisjointPanel makeSiblingClassesDisjointPanel;
+    private MakeSiblingsDisjointPanel makeSiblingClassesDisjointPanel;
 
 
     public CreateClassHierarchyWizard(OWLEditorKit owlEditorKit) {
@@ -31,8 +33,8 @@ public class CreateClassHierarchyWizard extends Wizard {
         registerWizardPanel(PickRootClassPanel.ID, pickRootClassPanel);
         tabIndentedHierarchyPanel = new TabIndentedHierarchyPanel(owlEditorKit);
         registerWizardPanel(TabIndentedHierarchyPanel.ID, tabIndentedHierarchyPanel);
-        makeSiblingClassesDisjointPanel = new MakeSiblingClassesDisjointPanel(owlEditorKit);
-        registerWizardPanel(MakeSiblingClassesDisjointPanel.ID, makeSiblingClassesDisjointPanel);
+        makeSiblingClassesDisjointPanel = new MakeSiblingsDisjointPanel(owlEditorKit, EntityType.CLASS, Recommendation.RECOMMENDED);
+        registerWizardPanel(MakeSiblingsDisjointPanel.ID, makeSiblingClassesDisjointPanel);
         setCurrentPanel(PickRootClassPanel.ID);
     }
 
@@ -58,7 +60,7 @@ public class CreateClassHierarchyWizard extends Wizard {
 
 
     public boolean isMakeSiblingClassesDisjoint() {
-        return makeSiblingClassesDisjointPanel.isMakeSiblingClassesDisjoint();
+        return makeSiblingClassesDisjointPanel.isMakeSiblingsDisjoint();
     }
 
 

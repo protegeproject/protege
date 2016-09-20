@@ -39,6 +39,8 @@ public abstract class AbstractWizardPanel extends WizardPanel {
 
     private EditorKit editorKit;
 
+    private JPanel contentHolder;
+
     public AbstractWizardPanel(Object id, String title, EditorKit editorKit) {
         super(id);
         this.editorKit = editorKit;
@@ -111,14 +113,18 @@ public abstract class AbstractWizardPanel extends WizardPanel {
         contentAndInstructionHolder.add(instructionArea, BorderLayout.NORTH);
         JPanel contentBorderPanel = new JPanel(new BorderLayout());
         contentBorderPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 0, 0));
-        JPanel content = new JPanel();
-        contentBorderPanel.add(content);
+        contentHolder = new JPanel();
+        contentBorderPanel.add(contentHolder);
         contentBorderPanel.setOpaque(false);
-        content.setOpaque(false);
+        contentHolder.setOpaque(false);
         contentAndInstructionHolder.add(contentBorderPanel, BorderLayout.CENTER);
         containerPanel.add(contentAndInstructionHolder);
-        createUI(content);
-        setComponentTransparency(content);
+        createUI(contentHolder);
+        setComponentTransparency(contentHolder);
+    }
+
+    protected void setContent(JComponent content) {
+        contentHolder.add(content);
     }
 
 
@@ -170,7 +176,14 @@ public abstract class AbstractWizardPanel extends WizardPanel {
     }
 
 
-    protected abstract void createUI(JComponent parent);
+    /**
+     * This is deprecated.  The UI should be initialized by calling {@code #setContent}.
+     * @param parent The content holder.
+     */
+    @Deprecated
+    protected void createUI(JComponent parent) {
+
+    }
 
 
     private class HolderPanel extends JPanel {
