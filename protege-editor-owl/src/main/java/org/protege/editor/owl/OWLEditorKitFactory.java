@@ -5,9 +5,11 @@ import org.protege.editor.core.editorkit.EditorKitDescriptor;
 import org.protege.editor.core.editorkit.EditorKitFactory;
 import org.protege.editor.core.ui.util.UIUtil;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.net.URI;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -21,9 +23,10 @@ import java.util.List;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OWLEditorKitFactory implements EditorKitFactory {
+
     public static final String ID = "org.protege.editor.owl.OWLEditorKitFactory";
 
-    public static final List<String> OWL_EXTENSIONS = Arrays.asList(".owl", ".rdf", ".xml");
+    public static final List<String> OWL_EXTENSIONS = Collections.unmodifiableList(Arrays.asList(".owl", ".rdf", ".xml"));
 
 
     /**
@@ -31,17 +34,19 @@ public class OWLEditorKitFactory implements EditorKitFactory {
      * @return A <code>String</code> representation of the
      *         clsdescriptioneditor kit factory.
      */
+    @Nonnull
     public String getId() {
         return ID;
     }
 
 
+    @Nonnull
     public EditorKit createEditorKit() {
         return new OWLEditorKit(this);
     }
 
 
-    public boolean canLoad(URI uri) {
+    public boolean canLoad(@Nonnull URI uri) {
         String s = uri.toString();
         for (String ext : OWL_EXTENSIONS) {
             if (s.endsWith(ext)) {
@@ -52,7 +57,7 @@ public class OWLEditorKitFactory implements EditorKitFactory {
     }
 
 
-    public boolean isValidDescriptor(EditorKitDescriptor descriptor) {
+    public boolean isValidDescriptor(@Nonnull EditorKitDescriptor descriptor) {
         URI uri = descriptor.getURI(OWLEditorKit.URI_KEY);
         if(uri == null || uri.getScheme() == null) {
             return false;

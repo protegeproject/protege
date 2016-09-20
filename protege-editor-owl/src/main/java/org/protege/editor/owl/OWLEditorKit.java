@@ -29,6 +29,8 @@ import org.semanticweb.owlapi.util.VersionInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.io.File;
 import java.net.URI;
@@ -77,7 +79,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
 
 
 
-    public OWLEditorKit(OWLEditorKitFactory editorKitFactory) {
+    public OWLEditorKit(@Nonnull OWLEditorKitFactory editorKitFactory) {
         super(editorKitFactory);
 
         logger.info("OWL API Version: {}", VersionInfo.getVersionInfo().getVersion());
@@ -112,6 +114,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
      * @return <code>true</code> if this editor kit has modified the contents of its document, otherwise
      * <code>false</code>.
      */
+    @Override
     public boolean hasModifiedDocument() {
         return modifiedDocument;
     }
@@ -123,6 +126,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
      * @return A <code>String</code> that represents the <code>EditorKit</code>
      * Id.
      */
+    @Nonnull
     public String getId() {
         return ID;
     }
@@ -132,6 +136,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
      * Gets the <code>Workspace</code> that is used in the UI to
      * display the contents of the clsdescriptioneditor kit "model".
      */
+    @Nonnull
     public OWLWorkspace getWorkspace() {
         if (workspace == null) {
             throw new RuntimeException("Workspace has not been initialised");
@@ -139,7 +144,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         return workspace;
     }
 
-
+    @Nonnull
     public OWLWorkspace getOWLWorkspace() {
         return getWorkspace();
     }
@@ -149,32 +154,37 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
      * Gets the "model" that the clsdescriptioneditor kit edits.  This will
      * probably contain one or more ontologies.
      */
+    @Nonnull
     public OWLModelManager getModelManager() {
         return modelManager;
     }
 
-
+    @Nonnull
     public OWLModelManager getOWLModelManager() {
         return getModelManager();
     }
 
+    @Nonnull
     public SearchManager getSearchManager() {
         return searchManagerSelector.getCurrentSearchManager();
     }
 
-    public boolean handleLoadRecentRequest(EditorKitDescriptor descriptor) throws Exception {
+    @Override
+    public boolean handleLoadRecentRequest(@Nonnull EditorKitDescriptor descriptor) throws Exception {
         URI uri = descriptor.getURI(URI_KEY);
         return uri != null && handleLoadFrom(uri);
     }
 
 
+    @Override
     public boolean handleLoadRequest() throws Exception {
         File f = new UIHelper(this).chooseOWLFile("Select an OWL file");
         return f != null && handleLoadFrom(f.toURI());
     }
 
 
-    public boolean handleLoadFrom(URI uri) throws Exception {
+    @Override
+    public boolean handleLoadFrom(@Nonnull URI uri) throws Exception {
         loadErrorHandler.setReloadFlag(false);
         boolean success = ((OWLModelManagerImpl) getModelManager()).loadOntologyFromPhysicalURI(uri);
 
@@ -194,6 +204,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
      *
      * @return The id.
      */
+    @Nonnull
     private OWLOntologyID createDefaultOntologyId() {
         return new OWLOntologyID(Optional.of(createFreshOntologyIRI()), Optional.<IRI>absent());
     }
@@ -203,11 +214,13 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
      *
      * @return The ontology IRI.
      */
+    @Nonnull
     private IRI createFreshOntologyIRI() {
         OntologyPreferences ontologyPreferences = OntologyPreferences.getInstance();
         return IRI.create(ontologyPreferences.generateNextURI());
     }
 
+    @Override
     public boolean handleNewRequest() throws Exception {
         OWLOntologyID id = createDefaultOntologyId();
         OWLOntology ont = getModelManager().createNewOntology(id, URI.create(id.getDefaultDocumentIRI().get().toString()));
@@ -216,7 +229,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         return true;
     }
 
-
+    @Override
     public void handleSave() {
         logger.info(LogBanner.start("Saving Workspace and Ontologies"));
         try {
@@ -249,6 +262,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
                         return;
                     }
                 } catch (OWLOntologyStorageException e) {
+                    //noinspection ThrowableResultOfMethodCallIgnored
                     saveErrors.put(ontology, e);
                 }
             }
@@ -256,6 +270,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
                 try {
                     getOWLModelManager().save(ontology);
                 } catch (OWLOntologyStorageException e) {
+                    //noinspection ThrowableResultOfMethodCallIgnored
                     saveErrors.put(ontology, e);
                 }
             }
@@ -301,6 +316,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
             handleSaveAs(ont);
         } catch (OWLOntologyStorageException e) {
             Map<OWLOntology, OWLOntologyStorageException> saveErrorMap = new HashMap<>();
+            //noinspection ThrowableResultOfMethodCallIgnored
             saveErrorMap.put(ont, e);
             handleSaveErrors(saveErrorMap);
         }
@@ -313,7 +329,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
      * @param ont the ontology to save.
      * @throws OWLOntologyStorageException if there was a problem saving the ontology.
      */
-    private boolean handleSaveAs(OWLOntology ont) throws OWLOntologyStorageException {
+    private boolean handleSaveAs(@Nonnull OWLOntology ont) throws OWLOntologyStorageException {
         OWLOntologyManager man = getModelManager().getOWLOntologyManager();
         OWLDocumentFormat oldFormat = man.getOntologyFormat(ont);
         java.util.Optional<OWLDocumentFormat> format = OntologyFormatPanel.showDialog(this, oldFormat,
@@ -351,7 +367,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     }
 
 
-    private File getSaveAsOWLFile(OWLOntology ont) {
+    private File getSaveAsOWLFile(@Nonnull OWLOntology ont) {
         UIHelper helper = new UIHelper(this);
         File file = helper.saveOWLFile(String.format("Please select a location in which to save: %s", getModelManager().getRendering(ont)));
         if (file != null) {
@@ -367,7 +383,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     }
 
 
-    public void addRecent(URI physicalURI) {
+    public void addRecent(@Nonnull URI physicalURI) {
         String label = physicalURI.toString();
         if (FILE_URI_SCHEME.equals(physicalURI.getScheme())) {
             label = new File(physicalURI).getPath();
@@ -401,12 +417,12 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     * Feels risky.
     */
     @Override
-    public Disposable get(Object key) {
+    public Disposable get(@Nullable Object key) {
         return getOWLModelManager().get(key);
     }
 
     @Override
-    public void put(Object key, Disposable value) {
+    public void put(@Nullable Object key, @Nullable Disposable value) {
         getOWLModelManager().put(key, value);
     }
 
@@ -429,6 +445,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         logger.info(LogBanner.end());
     }
 
+    @Nonnull
     public SearchManagerSelector getSearchManagerSelector() {
         return searchManagerSelector;
     }

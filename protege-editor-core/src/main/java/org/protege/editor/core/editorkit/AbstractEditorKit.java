@@ -7,8 +7,12 @@ import org.protege.editor.core.editorkit.plugin.EditorKitHookPluginLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 
 /**
@@ -23,24 +27,25 @@ public abstract class AbstractEditorKit<T extends EditorKitFactory> implements E
 
     private final Logger logger = LoggerFactory.getLogger(AbstractEditorKit.class);
 
-    private Map<Object, Disposable> objects = new HashMap<>();
+    private final Map<Object, Disposable> objects = new HashMap<>();
 
-    private T editorKitFactory;
+    private final T editorKitFactory;
 
 
-    public AbstractEditorKit(T editorKitFactory) {
-        this.editorKitFactory = editorKitFactory;
+    public AbstractEditorKit(@Nonnull T editorKitFactory) {
+        this.editorKitFactory = checkNotNull(editorKitFactory);
     }
 
-    public void put(Object key, Disposable value) {
+    public void put(@Nullable Object key, @Nullable Disposable value) {
     	objects.put(key, value);
     }
-    
-    public Disposable get(Object key) {
+
+    @Nullable
+    public Disposable get(@Nullable Object key) {
     	return objects.get(key);
     }
 
-    
+    @Nonnull
     public T getEditorKitFactory() {
         return editorKitFactory;
     }
