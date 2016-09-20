@@ -6,6 +6,8 @@ package org.protege.editor.core;
  */
 
 
+import javax.annotation.Nullable;
+
 /**
  * Author: Matthew Horridge<br>
  * The University Of Manchester<br>
@@ -21,5 +23,6 @@ public interface ModelManager extends Disposable {
 
     <T extends Disposable> void put(Object key, T object);
 
+    @Nullable
     <T extends Disposable> T get(Object key);
 }

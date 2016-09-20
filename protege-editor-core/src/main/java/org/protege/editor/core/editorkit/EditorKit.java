@@ -4,6 +4,8 @@ import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ModelManager;
 import org.protege.editor.core.ui.workspace.Workspace;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.net.URI;
 
 
@@ -42,16 +44,19 @@ public interface EditorKit extends Disposable {
      * @return A <code>String</code> that represents the <code>EditorKit</code>
      *         Id.
      */
+    @Nonnull
     String getId();
 
-    void put(Object key, Disposable value);
-    
+    void put(@Nullable Object key, @Nullable Disposable value);
+
+    @Nullable
     Disposable get(Object key);
     
 
     /**
      * Gets the factory that created the editor kit.
      */
+    @Nonnull
     EditorKitFactory getEditorKitFactory();
 
 
@@ -59,6 +64,7 @@ public interface EditorKit extends Disposable {
      * Gets the <code>Workspace</code> that is used in the UI to
      * display the contents of the editor kit "model".
      */
+    @Nonnull
     Workspace getWorkspace();
 
 
@@ -66,6 +72,7 @@ public interface EditorKit extends Disposable {
      * Gets the "model" that the editor kit edits.  This will
      * probably contain one or more ontologies.
      */
+    @Nonnull
     ModelManager getModelManager();
 
 
@@ -85,10 +92,10 @@ public interface EditorKit extends Disposable {
     boolean handleLoadRequest() throws Exception;
 
 
-    boolean handleLoadFrom(URI uri) throws Exception;
+    boolean handleLoadFrom(@Nonnull URI uri) throws Exception;
 
 
-    boolean handleLoadRecentRequest(EditorKitDescriptor descriptor) throws Exception;
+    boolean handleLoadRecentRequest(@Nonnull EditorKitDescriptor descriptor) throws Exception;
 
 
     void handleSave() throws Exception;

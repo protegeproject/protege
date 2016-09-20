@@ -1,8 +1,12 @@
 package org.protege.editor.core.editorkit;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.Properties;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 
 /**
@@ -16,17 +20,16 @@ import java.util.Properties;
  */
 public final class EditorKitDescriptor implements Serializable {
 
-    private Properties properties;
-
     public static final String LABEL_KEY = "EDITOR_KIT_LABEL";
 
     public static final String EDITOR_KIT_FACTORY_ID = "EDITOR_KIT_FACTORY_ID";
 
 
-    public EditorKitDescriptor(String label, EditorKitFactory editorKitFactory) {
-        this.properties = new Properties();
-        setEditorKitFactoryID(editorKitFactory.getId());
-        properties.setProperty(LABEL_KEY, label);
+    private final Properties properties = new Properties();
+
+    public EditorKitDescriptor(@Nonnull String label, @Nonnull EditorKitFactory editorKitFactory) {
+        setEditorKitFactoryID(checkNotNull(editorKitFactory.getId()));
+        properties.setProperty(LABEL_KEY, checkNotNull(label));
     }
 
 
@@ -34,51 +37,51 @@ public final class EditorKitDescriptor implements Serializable {
      * Gets a human readable label that can be used
      * in user interfaces etc. to describe the clsdescriptioneditor kit.
      */
+    @Nonnull
     public String getLabel() {
         return properties.getProperty(LABEL_KEY);
     }
 
 
+    @Nonnull
     public String getEditorKitFactoryID() {
-        return (String) properties.getProperty(EDITOR_KIT_FACTORY_ID);
+        return properties.getProperty(EDITOR_KIT_FACTORY_ID);
     }
 
 
-    public void setEditorKitFactoryID(String id) {
-        properties.setProperty(EDITOR_KIT_FACTORY_ID, id);
+    public void setEditorKitFactoryID(@Nonnull String id) {
+        properties.setProperty(EDITOR_KIT_FACTORY_ID, checkNotNull(id));
     }
 
 
-    public String getString(String key) {
-        return (String) properties.get(key);
+    @Nullable
+    public String getString(@Nonnull String key) {
+        return (String) properties.get(checkNotNull(key));
     }
 
 
-    public void setString(String key, String value) {
+    public void setString(@Nonnull String key, @Nonnull String value) {
         properties.put(key, value);
     }
 
 
-    public void setURI(String key, URI uri) {
-        properties.put(key, uri);
+    public void setURI(@Nonnull String key, @Nonnull URI uri) {
+        properties.put(checkNotNull(key), checkNotNull(uri));
     }
 
 
-    public URI getURI(String key) {
+    @Nullable
+    public URI getURI(@Nonnull String key) {
         return (URI) properties.get(key);
     }
 
 
     public boolean equals(Object obj) {
-        if (obj instanceof EditorKitDescriptor) {
-            return this.getLabel().equals(((EditorKitDescriptor) obj).getLabel());
-        }
-        else {
-            return false;
-        }
+        return obj instanceof EditorKitDescriptor && this.getLabel().equals(((EditorKitDescriptor) obj).getLabel());
     }
 
 
+    @Nonnull
     public String toString() {
         return getLabel();
     }
