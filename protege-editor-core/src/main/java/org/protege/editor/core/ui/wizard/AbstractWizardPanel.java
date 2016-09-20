@@ -27,9 +27,9 @@ public abstract class AbstractWizardPanel extends WizardPanel {
 
     private final JTextArea  instructionArea = new JTextArea();
 
-    private JPanel marginPanel;
+    private JPanel marginPanel = new JPanel(new BorderLayout());
 
-    private JLabel marginLabel;
+    private JLabel marginLabel = new JLabel();
 
     private Icon backgroundImage;
 
@@ -39,7 +39,7 @@ public abstract class AbstractWizardPanel extends WizardPanel {
 
     private EditorKit editorKit;
 
-    private JPanel contentHolder;
+    private JPanel contentHolder = new JPanel(new BorderLayout());
 
     public AbstractWizardPanel(Object id, String title, EditorKit editorKit) {
         super(id);
@@ -85,12 +85,10 @@ public abstract class AbstractWizardPanel extends WizardPanel {
     final protected void createUI() {
         backgroundImage = Icons.getIcon("logo.wizard.png");
         setLayout(new BorderLayout(7, 7));
-        marginPanel = new JPanel(new BorderLayout());
         marginPanel.setPreferredSize(new Dimension(150, 400));
         add(marginPanel, BorderLayout.WEST);
         marginPanel.setOpaque(false);
         marginPanel.setEnabled(false);
-        marginLabel = new JLabel();
         marginPanel.add(marginLabel, BorderLayout.NORTH);
         marginLabel.setBorder(BorderFactory.createEmptyBorder(30, 8, 0, 0));
         instructionArea.setBorder(null);
@@ -113,7 +111,6 @@ public abstract class AbstractWizardPanel extends WizardPanel {
         contentAndInstructionHolder.add(instructionArea, BorderLayout.NORTH);
         JPanel contentBorderPanel = new JPanel(new BorderLayout());
         contentBorderPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 0, 0));
-        contentHolder = new JPanel();
         contentBorderPanel.add(contentHolder);
         contentBorderPanel.setOpaque(false);
         contentHolder.setOpaque(false);
@@ -124,6 +121,7 @@ public abstract class AbstractWizardPanel extends WizardPanel {
     }
 
     protected void setContent(JComponent content) {
+        setComponentTransparency(content);
         contentHolder.add(content);
     }
 
