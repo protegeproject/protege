@@ -34,7 +34,7 @@ public class CreateSubDataPropertyHierarchyAction extends SelectedOWLDataPropert
                         DATA_PROPERTY,
                         getOWLModelManager().getOWLEntityFinder(),
                         getOWLModelManager().getOWLEntityFactory()),
-                (parent, child) -> Optional.of(df.getOWLSubDataPropertyOfAxiom(child, parent)),
+                (child, parent) -> Optional.of(df.getOWLSubDataPropertyOfAxiom(child, parent)),
                 getOWLModelManager().getActiveOntology()
         );
 

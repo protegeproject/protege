@@ -53,7 +53,7 @@ public class CreateSubClassHierarchyAction extends SelectedOWLClassAction {
                         CLASS,
                         getOWLModelManager().getOWLEntityFinder(),
                         getOWLModelManager().getOWLEntityFactory()),
-                (parent, child) -> parent.isOWLThing() ? Optional.empty() : Optional.of(df.getOWLSubClassOfAxiom(child, parent)),
+                (child, parent) -> parent.isOWLThing() ? Optional.empty() : Optional.of(df.getOWLSubClassOfAxiom(child, parent)),
                 getOWLModelManager().getActiveOntology()
         );
 
