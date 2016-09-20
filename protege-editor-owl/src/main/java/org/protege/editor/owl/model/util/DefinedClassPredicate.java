@@ -50,7 +50,16 @@ public class DefinedClassPredicate implements Predicate<OWLClass> {
      * @return The DefinedClassPredicate.
      */
     @Nonnull
-    public static DefinedClassPredicate isDefinedIn(@Nonnull Set<OWLOntology> ontologies) {
+    public static Predicate<OWLClass> isDefinedIn(@Nonnull Set<OWLOntology> ontologies) {
         return new DefinedClassPredicate(ontologies);
+    }
+
+    /**
+     * A convenience factory method that creates the negation of a new DefinedClassPredicate for the specified set of ontologies.
+     * @param ontologies The ontologies.
+     * @return The negation of a DefinedClassPredicate.
+     */
+    public static Predicate<OWLClass> isNotDefinedIn(@Nonnull Set<OWLOntology> ontologies) {
+        return isDefinedIn(ontologies).negate();
     }
 }
