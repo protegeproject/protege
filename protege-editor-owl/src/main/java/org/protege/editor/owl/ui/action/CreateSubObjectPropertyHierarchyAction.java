@@ -38,7 +38,7 @@ public class CreateSubObjectPropertyHierarchyAction extends SelectedOWLObjectPro
                         getOWLModelManager().getOWLEntityFinder(),
                         getOWLModelManager().getOWLEntityFactory()
                 ),
-                (parent, child) -> Optional.of(df.getOWLSubObjectPropertyOfAxiom(child, parent)),
+                (child, parent) -> Optional.of(df.getOWLSubObjectPropertyOfAxiom(child, parent)),
                 getOWLModelManager().getActiveOntology()
         );
         MakeSiblingsDisjointChangeGenerator<OWLObjectProperty> disjointsChangeGenerator = new MakeSiblingsDisjointChangeGenerator<>(
