@@ -79,12 +79,10 @@ public class CreateHierarchyExecutor<E extends OWLEntity> {
         TabIndentedHierarchyParser parser = new TabIndentedHierarchyParser(4, termPrefix, termSuffix);
         List<Edge> edges = parser.parse(new StringReader(tabIndentedHierarchy));
 
-        CreateHierarchyChanges<E> hierarchyChanges = hierarchyChangeGenerator.generateAxioms(edges);
-        changes.addAll(hierarchyChanges.getChanges());
+        ImmutableSetMultimap<E, E> parent2ChildMap = hierarchyChangeGenerator.generateHierarchy(edges, changes);
 
         if(wizard.isMakeSiblingsDisjoint().orElse(false)) {
-            ImmutableSetMultimap<E, E> hierarchy = hierarchyChanges.getParentChildMap();
-            List<OWLOntologyChange> disjointSibsChanges = makeSiblingsDisjointChangeGenerator.generateChanges(hierarchy);
+            List<OWLOntologyChange> disjointSibsChanges = makeSiblingsDisjointChangeGenerator.generateChanges(parent2ChildMap);
             changes.addAll(disjointSibsChanges);
         }
 

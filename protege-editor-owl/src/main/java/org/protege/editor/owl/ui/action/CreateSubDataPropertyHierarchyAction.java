@@ -2,14 +2,18 @@ package org.protege.editor.owl.ui.action;
 
 import org.protege.editor.core.util.Recommendation;
 import org.protege.editor.owl.model.hierarchy.tabbed.CreateHierarchyChangeGenerator;
+import org.protege.editor.owl.model.hierarchy.tabbed.HierarchyNodeCreator;
 import org.protege.editor.owl.model.hierarchy.tabbed.MakeSiblingsDisjointChangeGenerator;
 import org.protege.editor.owl.ui.hierarchy.creation.CreateHierarchyExecutor;
 import org.semanticweb.owlapi.model.EntityType;
+import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 
 import java.awt.event.ActionEvent;
 import java.util.Optional;
+
+import static org.semanticweb.owlapi.model.EntityType.DATA_PROPERTY;
 
 /**
  * Matthew Horridge
@@ -26,10 +30,11 @@ public class CreateSubDataPropertyHierarchyAction extends SelectedOWLDataPropert
         }
         OWLDataFactory df = getOWLDataFactory();
         CreateHierarchyChangeGenerator<OWLDataProperty> hierarchyChangeGenerator = new CreateHierarchyChangeGenerator<>(
-                rootProperty,
-                getOWLModelManager().getOWLEntityFinder(),
-                getOWLModelManager().getOWLEntityFactory(),
-                (parent, child) -> df.getOWLSubDataPropertyOfAxiom(child, parent),
+                new HierarchyNodeCreator<>(rootProperty,
+                        DATA_PROPERTY,
+                        getOWLModelManager().getOWLEntityFinder(),
+                        getOWLModelManager().getOWLEntityFactory()),
+                (parent, child) -> Optional.of(df.getOWLSubDataPropertyOfAxiom(child, parent)),
                 getOWLModelManager().getActiveOntology()
         );
 
@@ -42,7 +47,7 @@ public class CreateSubDataPropertyHierarchyAction extends SelectedOWLDataPropert
 
         CreateHierarchyExecutor<OWLDataProperty> executor = new CreateHierarchyExecutor<>(
                 getOWLEditorKit(),
-                EntityType.DATA_PROPERTY,
+                DATA_PROPERTY,
                 Optional.of(Recommendation.NOT_RECOMMENDED),
                 hierarchyChangeGenerator,
                 disjointsChangeGenerator
