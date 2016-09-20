@@ -52,6 +52,7 @@ public class TabIndentedHierarchyPanel extends AbstractOWLWizardPanel {
         holder.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         parent.add(holder, BorderLayout.NORTH);
         textPane = new TabIndentedHierachyTextPane();
+        textPane.setBorder(null);
         parent.add(new JScrollPane(textPane));
     }
 
@@ -77,7 +78,7 @@ public class TabIndentedHierarchyPanel extends AbstractOWLWizardPanel {
 
 
     public Object getNextPanelDescriptor() {
-        return MakeSiblingClassesDisjointPanel.ID;
+        return MakeSiblingsDisjointPanel.ID;
     }
 
 

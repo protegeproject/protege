@@ -3,6 +3,8 @@ package org.protege.editor.owl.ui.action;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.semanticweb.owlapi.model.OWLClass;
 
+import javax.annotation.Nullable;
+
 
 /**
  * Author: Matthew Horridge<br>
@@ -38,6 +40,7 @@ public abstract class SelectedOWLClassAction extends ProtegeOWLAction {
     }
 
 
+    @Nullable
     protected OWLClass getOWLClass() {
         return getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass();
     }

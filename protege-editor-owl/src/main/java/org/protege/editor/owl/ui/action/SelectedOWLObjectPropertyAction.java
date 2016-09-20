@@ -7,6 +7,9 @@ package org.protege.editor.owl.ui.action;
  */
 
 
+import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+
 /**
  * Author: Matthew Horridge<br>
  * The University Of Manchester<br>
@@ -14,6 +17,8 @@ package org.protege.editor.owl.ui.action;
  * Date: 03-Feb-2007<br><br>
  */
 public abstract class SelectedOWLObjectPropertyAction extends ProtegeOWLAction {
+
+    private OWLSelectionModelListener listener = this::updateState;
 
     /**
      * The initialise method is called at the start of a
@@ -26,8 +31,14 @@ public abstract class SelectedOWLObjectPropertyAction extends ProtegeOWLAction {
      * a each plugin must have a zero argument constructor.
      */
     final public void initialise() throws Exception {
+        getOWLWorkspace().getOWLSelectionModel().addListener(listener);
+        updateState();
+        initialiseAction();
     }
 
+    private void updateState() {
+        setEnabled(getOWLWorkspace().getOWLSelectionModel().getSelectedEntity() instanceof OWLObjectProperty);
+    }
 
     protected abstract void initialiseAction() throws Exception;
 
@@ -40,5 +51,6 @@ public abstract class SelectedOWLObjectPropertyAction extends ProtegeOWLAction {
      * the plugin can be garbage collected.
      */
     public void dispose() {
+        getOWLWorkspace().getOWLSelectionModel().removeListener(listener);
     }
 }
