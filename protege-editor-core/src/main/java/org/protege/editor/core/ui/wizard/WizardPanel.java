@@ -1,6 +1,10 @@
 package org.protege.editor.core.ui.wizard;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
+
+import static com.google.common.base.MoreObjects.toStringHelper;
 
 
 /**
@@ -8,7 +12,6 @@ import javax.swing.*;
  * well as provide general rules as to how the panel should behave.
  */
 public class WizardPanel extends JPanel {
-    private static final long serialVersionUID = 3018237002289836978L;
 
     /**
      * Identifier returned by getNextPanelDescriptor() to indicate that this is the
@@ -45,6 +48,7 @@ public class WizardPanel extends JPanel {
      * Returns a reference to the Wizard component.
      * @return The Wizard class hosting this descriptor.
      */
+    @Nonnull
     public Wizard getWizard() {
         return wizard;
     }
@@ -54,13 +58,10 @@ public class WizardPanel extends JPanel {
      * Returns a reference to the current WizardModel for this Wizard component.
      * @return The current WizardModel for this Wizard component.
      */
+    @Nonnull
     public WizardModel getWizardModel() {
         return wizard.getModel();
     }
-
-    //  Override this method to provide an Object-based identifier
-    //  for the next panel.
-
 
     /**
      * Override this class to provide the Object-based identifier of the panel that the
@@ -71,12 +72,10 @@ public class WizardPanel extends JPanel {
      * should change to 'Finish' and the dialog should end.
      * @return Object-based identifier.
      */
+    @Nullable
     public Object getNextPanelDescriptor() {
         return null;
     }
-
-    //  Override this method to provide an Object-based identifier
-    //  for the previous panel.
 
 
     /**
@@ -87,13 +86,10 @@ public class WizardPanel extends JPanel {
      * the button should be disabled.
      * @return Object-based identifier
      */
+    @Nullable
     public Object getBackPanelDescriptor() {
         return null;
     }
-
-    //  Override this method in the subclass if you wish it to be called
-    //  just before the panel is displayed.
-
 
     /**
      * Override this method to provide functionality that will be performed just before
@@ -103,20 +99,12 @@ public class WizardPanel extends JPanel {
 
     }
 
-    //  Override this method in the subclass if you wish to do something
-    //  while the panel is displaying.
-
-
     /**
      * Override this method to perform functionality when the panel itself is displayed.
      */
     public void displayingPanel() {
 
     }
-
-    //  Override this method in the subclass if you wish it to be called
-    //  just before the panel is switched to another or finished.
-
 
     /**
      * Override this method to perform functionality just before the panel is to be
@@ -130,5 +118,22 @@ public class WizardPanel extends JPanel {
     static class FinishIdentifier {
 
         public static final String ID = "FINISH";
+
+        @Override
+        public boolean equals(Object obj) {
+            return obj == this || obj instanceof FinishIdentifier;
+        }
+
+        @Override
+        public int hashCode() {
+            return ID.hashCode();
+        }
+
+
+        @Override
+        public String toString() {
+            return toStringHelper("FinishIdentifier")
+                    .toString();
+        }
     }
 }

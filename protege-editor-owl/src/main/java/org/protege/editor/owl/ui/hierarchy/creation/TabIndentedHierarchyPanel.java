@@ -3,6 +3,7 @@ package org.protege.editor.owl.ui.hierarchy.creation;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
@@ -90,6 +91,7 @@ public class TabIndentedHierarchyPanel extends AbstractOWLWizardPanel {
      * the button should be disabled.
      * @return Object-based identifier
      */
+    @Nullable
     public Object getBackPanelDescriptor() {
         return PickRootClassPanel.ID;
     }
