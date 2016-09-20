@@ -1600,27 +1600,27 @@
 
     <extension id="context.class.CreateSubHierarchy"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Add Sub-hierarchy..."/>
+        <name value="Add Subclasses..."/>
         <class value="org.protege.editor.owl.ui.action.CreateSubClassHierarchyAction"/>
-        <toolTip value="Adds a sub-hierarchy below the selected class created from tab indented text."/>
+        <toolTip value="Adds a sub-hierarchy below the selected class created from tab indented text"/>
         <path value="[AssertedClassHierarchy]/SlotAA-C"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
     <extension id="context.objectproperty.CreateSubHierarchy"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Add Sub-hierarchy..."/>
+        <name value="Add Sub-properties..."/>
         <class value="org.protege.editor.owl.ui.action.CreateSubObjectPropertyHierarchyAction"/>
-        <toolTip value="Adds a sub-hierarchy below the selected object property created from tab indented text."/>
+        <toolTip value="Adds a sub-hierarchy below the selected object property created from tab indented text"/>
         <path value="[AssertedObjectPropertyHierarchy]/SlotD-B"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
     <extension id="context.dataproperty.CreateSubHierarchy"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Add Sub-hierarchy..."/>
+        <name value="Add Sub-properties..."/>
         <class value="org.protege.editor.owl.ui.action.CreateSubDataPropertyHierarchyAction"/>
-        <toolTip value="Adds a sub-hierarchy below the selected data property created from tab indented text."/>
+        <toolTip value="Adds a sub-hierarchy below the selected data property created from tab indented text"/>
         <path value="[AssertedDataPropertyHierarchy]/SlotD-C"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
