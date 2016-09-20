@@ -1386,11 +1386,30 @@
     <extension id="menu.CreateClassHierarchy"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Create class hierarchy..."/>
-        <class value="org.protege.editor.owl.ui.action.CreateClassHierarchyAction"/>
-        <toolTip value="Creates a class hierarchy from tab indented text, and inserts the new hierarchy into the existing class hierarchy at a specified position."/>
+        <class value="org.protege.editor.owl.ui.action.CreateSubClassHierarchyAction"/>
+        <toolTip value="Creates a class hierarchy from tab indented text, and inserts the new hierarchy into the existing class hierarchy below the current selection."/>
         <path value="org.protege.editor.owl.menu.tools/SlotF-A"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
+
+    <extension id="menu.CreateObjectPropertyHierarchy"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Create object property hierarchy..."/>
+        <class value="org.protege.editor.owl.ui.action.CreateSubObjectPropertyHierarchyAction"/>
+        <toolTip value="Creates an object property hierarchy from tab indented text, and inserts the new hierarchy into the existing object property hierarchy below the current selection."/>
+        <path value="org.protege.editor.owl.menu.tools/SlotF-B"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="menu.CreateDataPropertyHierarchy"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Create data property hierarchy..."/>
+        <class value="org.protege.editor.owl.ui.action.CreateSubDataPropertyHierarchyAction"/>
+        <toolTip value="Creates a data property hierarchy from tab indented text, and inserts the new hierarchy into the existing data property hierarchy below the current selection."/>
+        <path value="org.protege.editor.owl.menu.tools/SlotF-C"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
 
     <!-- Help menu -->
 

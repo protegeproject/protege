@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.action;
 
 import org.protege.editor.owl.model.selection.OWLSelectionModelAdapter;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
+import org.semanticweb.owlapi.model.OWLDataProperty;
 
 
 /**
@@ -12,7 +13,7 @@ import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
  */
 public abstract class SelectedOWLDataPropertyAction extends ProtegeOWLAction {
 
-    private OWLSelectionModelListener listener;
+    private OWLSelectionModelListener listener = this::updateState;
 
 
     /**
@@ -25,18 +26,14 @@ public abstract class SelectedOWLDataPropertyAction extends ProtegeOWLAction {
      * occur at a point after plugin instance creation, and
      * a each plugin must have a zero argument constructor.
      */
-    final public void initialise() throws Exception {
-        listener = new OWLSelectionModelAdapter() {
-            public void selectedDataPropertyChanged() {
-                updateState();
-            }
-        };
+    public final void initialise() {
+        getOWLWorkspace().getOWLSelectionModel().addListener(listener);
         updateState();
     }
 
 
     private void updateState() {
-        setEnabled(getOWLWorkspace().getOWLSelectionModel().getLastSelectedDataProperty() != null);
+        setEnabled(getOWLWorkspace().getOWLSelectionModel().getSelectedEntity() instanceof OWLDataProperty);
     }
 
 
@@ -48,5 +45,6 @@ public abstract class SelectedOWLDataPropertyAction extends ProtegeOWLAction {
      * the plugin can be garbage collected.
      */
     final public void dispose() {
+        getOWLWorkspace().getOWLSelectionModel().removeListener(listener);
     }
 }
