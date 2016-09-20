@@ -3,6 +3,8 @@ package org.protege.editor.owl.ui.ontology.wizard.move;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
 
+import javax.annotation.Nonnull;
+
 
 /**
  * Author: Matthew Horridge<br> The University Of Manchester<br> Information Management Group<br> Date:
@@ -19,6 +21,8 @@ public abstract class AbstractMoveAxiomsWizardPanel extends AbstractOWLWizardPan
     /**
      * Gets the MoveAxiomsWizard
      */
+    @Nonnull
+    @Override
     public MoveAxiomsWizard getWizard() {
         return (MoveAxiomsWizard) super.getWizard();
     }

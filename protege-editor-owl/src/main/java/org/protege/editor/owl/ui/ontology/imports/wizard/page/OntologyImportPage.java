@@ -4,6 +4,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
 import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,7 +16,8 @@ public abstract class OntologyImportPage extends AbstractOWLWizardPanel {
     public OntologyImportPage(Object id, String title, OWLEditorKit owlEditorKit) {
         super(id, title, owlEditorKit);
     }
-    
+
+    @Nonnull
     public OntologyImportWizard getWizard() {
         return (OntologyImportWizard) super.getWizard();
     }
