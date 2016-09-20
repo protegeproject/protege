@@ -20,45 +20,45 @@ public class TabIndentedHierarchyPanel extends AbstractOWLWizardPanel {
 
     public static final String ID = "TabIndentedHierarchyPanel";
 
-    private TabIndentedHierachyTextPane textPane;
+    private final TabIndentedHierachyTextPane textPane = new TabIndentedHierachyTextPane();
 
-    private JTextField prefixField;
+    private final JTextField prefixField = new JTextField(30);
 
-    private JTextField suffixField;
+    private final JTextField suffixField = new JTextField(30);
 
 
     public TabIndentedHierarchyPanel(OWLEditorKit owlEditorKit) {
         super(ID, "Enter hierarchy", owlEditorKit);
-    }
-
-
-    protected void createUI(JComponent parent) {
         setInstructions("Please enter the hierarchy that you want to create.  You should use tabs to indent names.");
-        parent.setLayout(new BorderLayout());
-        prefixField = new JTextField(30);
-        suffixField = new JTextField(30);
-        JPanel holder = new JPanel(new BorderLayout(7, 7));
-//        LayoutManager lm = new PreferencesPanelLayoutManager(holder);
-//        holder.setLayout(lm);
+
+        JPanel parent = new JPanel(new BorderLayout());
+
+        textPane.setBorder(null);
+        parent.add(new JScrollPane(textPane));
+
+
+        JPanel prefixSuffixHolder = new JPanel(new BorderLayout(7, 7));
+
         JPanel prefixPanel = new JPanel(new BorderLayout(7, 7));
         prefixPanel.add(new JLabel("Prefix"), BorderLayout.WEST);
         prefixPanel.add(prefixField);
-        holder.add(prefixPanel, BorderLayout.NORTH);
+        prefixSuffixHolder.add(prefixPanel, BorderLayout.NORTH);
 
         JPanel suffixPanel = new JPanel(new BorderLayout(7, 7));
         suffixPanel.add(new JLabel("Suffix"), BorderLayout.WEST);
         suffixPanel.add(suffixField);
-        holder.add(suffixPanel, BorderLayout.SOUTH);
-        holder.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
-        parent.add(holder, BorderLayout.NORTH);
-        textPane = new TabIndentedHierachyTextPane();
-        textPane.setBorder(null);
-        parent.add(new JScrollPane(textPane));
+        prefixSuffixHolder.add(suffixPanel, BorderLayout.SOUTH);
+        prefixSuffixHolder.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+
+        parent.add(prefixSuffixHolder, BorderLayout.SOUTH);
+
+        setContent(parent);
+
     }
 
 
     public void displayingPanel() {
-        prefixField.requestFocus();
+        textPane.requestFocus();
     }
 
 
