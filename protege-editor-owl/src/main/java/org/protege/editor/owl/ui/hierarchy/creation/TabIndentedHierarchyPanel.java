@@ -29,7 +29,7 @@ public class TabIndentedHierarchyPanel extends AbstractOWLWizardPanel {
 
     public TabIndentedHierarchyPanel(OWLEditorKit owlEditorKit) {
         super(ID, "Enter hierarchy", owlEditorKit);
-        setInstructions("Please enter the hierarchy that you want to create.  You should use tabs to indent names.");
+        setInstructions("Please enter one name per line.  You can use tabs to indent names to create a hierarchy.");
 
         JPanel parent = new JPanel(new BorderLayout());
 
