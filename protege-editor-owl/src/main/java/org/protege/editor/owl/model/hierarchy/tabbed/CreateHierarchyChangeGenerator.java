@@ -1,18 +1,12 @@
 package org.protege.editor.owl.model.hierarchy.tabbed;
 
 import com.google.common.collect.*;
-import org.protege.editor.owl.model.entity.OWLEntityCreationException;
-import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
-import org.protege.editor.owl.model.entity.OWLEntityFactory;
-import org.protege.editor.owl.model.find.OWLEntityFinder;
 import org.semanticweb.owlapi.model.*;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiFunction;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -23,40 +17,29 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class CreateHierarchyChangeGenerator<E extends OWLEntity> {
 
-    private final BiFunction<E, E, OWLAxiom> relationshipProvider;
+    private final HierarchyNodeCreator<E> hierarchyNodeCreator;
 
-    private final EntityType<E> entityType;
-
-    private final OWLEntityFactory entityFactory;
-
-    private final E rootEntity;
+    private final HierarchyAxiomProvider<E> hierarchyAxiomProvider;
 
     private final OWLOntology targetOntology;
 
-    private final OWLEntityFinder entityFinder;
 
-    @SuppressWarnings("unchecked")
-    public CreateHierarchyChangeGenerator(@Nonnull E rootEntity,
-                                          @Nonnull OWLEntityFinder entityFinder,
-                                          @Nonnull OWLEntityFactory entityFactory,
-                                          @Nonnull BiFunction<E, E, OWLAxiom> relationshipProvider,
+
+    public CreateHierarchyChangeGenerator(@Nonnull HierarchyNodeCreator<E> hierarchyNodeCreator,
+                                          @Nonnull HierarchyAxiomProvider<E> hierarchyAxiomProvider,
                                           @Nonnull OWLOntology targetOntology) {
-        this.rootEntity = checkNotNull(rootEntity);
-        this.entityType = (EntityType<E>) checkNotNull(rootEntity.getEntityType());
-        this.entityFactory = checkNotNull(entityFactory);
-        this.relationshipProvider = checkNotNull(relationshipProvider);
+        this.hierarchyNodeCreator= checkNotNull(hierarchyNodeCreator);
+        this.hierarchyAxiomProvider = checkNotNull(hierarchyAxiomProvider);
         this.targetOntology = checkNotNull(targetOntology);
-        this.entityFinder = checkNotNull(entityFinder);
     }
 
     @Nonnull
-    public CreateHierarchyChanges<E> generateAxioms(@Nonnull Collection<Edge> edges) {
-        List<OWLOntologyChange> changeList = new ArrayList<>();
+    public ImmutableSetMultimap<E, E> generateHierarchy(@Nonnull Collection<Edge> edges, List<OWLOntologyChange> changeList) {
         Multimap<E, E> parentChildMap = HashMultimap.create();
         for (Edge edge : edges) {
             generateChangesForEdge(edge, changeList, parentChildMap);
         }
-        return new CreateHierarchyChanges<>(ImmutableList.copyOf(changeList), ImmutableSetMultimap.copyOf(parentChildMap));
+        return ImmutableSetMultimap.copyOf(parentChildMap);
     }
 
     private void generateChangesForEdge(@Nonnull Edge edge,
@@ -65,42 +48,19 @@ public class CreateHierarchyChangeGenerator<E extends OWLEntity> {
         final E parent = generateParent(edge, changeList);
         final E child = generateChild(edge, changeList);
         parentChildMap.put(parent, child);
-        OWLAxiom parentChildRelationship = relationshipProvider.apply(parent, child);
-        changeList.add(new AddAxiom(targetOntology, parentChildRelationship));
+        Optional<OWLAxiom> parentChildRelationship = hierarchyAxiomProvider.getAxiom(child, parent);
+        parentChildRelationship.ifPresent(ax -> changeList.add(new AddAxiom(targetOntology, ax)));
     }
 
     @Nonnull
     private E generateParent(@Nonnull Edge edge,
                              @Nonnull List<OWLOntologyChange> changeList) {
-        return edge.getParentName()
-                .map(parentName -> createEntity(changeList, parentName))
-                .orElse(rootEntity);
+        return hierarchyNodeCreator.createEntity(edge.getParentName(), changeList);
     }
 
     @Nonnull
     private E generateChild(@Nonnull Edge edge,
                             @Nonnull List<OWLOntologyChange> changeList) {
-        String childName = edge.getChild();
-        return createEntity(changeList, childName);
+        return hierarchyNodeCreator.createEntity(Optional.ofNullable(edge.getChildName()), changeList);
     }
-
-    @Nonnull
-    private E createEntity(@Nonnull List<OWLOntologyChange> changeList,
-                           @Nonnull String entityName) {
-        Optional<E> existingEntity = entityFinder.getOWLEntity(entityType, entityName);
-        return existingEntity.orElseGet(() -> generateChangesForFreshEntity(entityName, changeList));
-    }
-
-    @Nonnull
-    private E generateChangesForFreshEntity(@Nonnull String entityName,
-                                            @Nonnull List<OWLOntologyChange> changeList) {
-        try {
-            OWLEntityCreationSet<E> creationSet = entityFactory.createOWLEntity(entityType, entityName, Optional.<IRI>empty());
-            changeList.addAll(creationSet.getOntologyChanges());
-            return creationSet.getOWLEntity();
-        } catch (OWLEntityCreationException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 }

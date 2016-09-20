@@ -36,24 +36,34 @@ public class Edge {
         this.parent = parent;
     }
 
+    /**
+     * Use {@link #getChildName()}
+     * @return The name of the child.
+     */
+    @Deprecated
     @Nonnull
     public String getChild() {
         return child;
     }
 
+    @Nonnull
     public String getChildName() {
         return child;
     }
 
     /**
-     * Gets the parent.
-     * @return The parent, or null if there is no parent.
+     * Use {@link #getParentName()}
      */
+    @Deprecated
     @Nullable
     public String getParent() {
         return parent;
     }
 
+    /**
+     * An optional containing the name of the parent.
+     * @return The name of the parent if present, otherwise empty.
+     */
     public Optional<String> getParentName() {
         return Optional.ofNullable(parent);
     }

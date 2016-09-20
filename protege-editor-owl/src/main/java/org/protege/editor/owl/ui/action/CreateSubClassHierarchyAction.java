@@ -5,10 +5,7 @@ import org.protege.editor.core.util.Recommendation;
 import org.protege.editor.owl.model.entity.OWLEntityFactory;
 import org.protege.editor.owl.model.find.OWLEntityFinder;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
-import org.protege.editor.owl.model.hierarchy.tabbed.Edge;
-import org.protege.editor.owl.model.hierarchy.tabbed.CreateHierarchyChangeGenerator;
-import org.protege.editor.owl.model.hierarchy.tabbed.MakeSiblingsDisjointChangeGenerator;
-import org.protege.editor.owl.model.hierarchy.tabbed.TabIndentedHierarchyParser;
+import org.protege.editor.owl.model.hierarchy.tabbed.*;
 import org.protege.editor.owl.ui.hierarchy.creation.CreateHierarchyExecutor;
 import org.protege.editor.owl.ui.hierarchy.creation.CreateSubHierarchyWizard;
 import org.semanticweb.owlapi.model.*;
@@ -28,6 +25,7 @@ import java.util.function.BiFunction;
 import static java.util.stream.Collectors.toSet;
 import static org.protege.editor.owl.model.util.DefinedClassPredicate.isDefinedIn;
 import static org.protege.editor.owl.model.util.DefinedClassPredicate.isNotDefinedIn;
+import static org.semanticweb.owlapi.model.EntityType.CLASS;
 
 /**
  * Matthew Horridge
@@ -51,10 +49,11 @@ public class CreateSubClassHierarchyAction extends SelectedOWLClassAction {
         OWLDataFactory df = getOWLDataFactory();
 
         CreateHierarchyChangeGenerator<OWLClass> hierarchyChangeGenerator = new CreateHierarchyChangeGenerator<>(
-                rootClass,
-                getOWLModelManager().getOWLEntityFinder(),
-                getOWLModelManager().getOWLEntityFactory(),
-                (parent, child) -> df.getOWLSubClassOfAxiom(child, parent),
+                new HierarchyNodeCreator<>(rootClass,
+                        CLASS,
+                        getOWLModelManager().getOWLEntityFinder(),
+                        getOWLModelManager().getOWLEntityFactory()),
+                (parent, child) -> parent.isOWLThing() ? Optional.empty() : Optional.of(df.getOWLSubClassOfAxiom(child, parent)),
                 getOWLModelManager().getActiveOntology()
         );
 
@@ -69,7 +68,7 @@ public class CreateSubClassHierarchyAction extends SelectedOWLClassAction {
 
         CreateHierarchyExecutor<OWLClass> createClassHierarchyExecutor = new CreateHierarchyExecutor<>(
                 getOWLEditorKit(),
-                EntityType.CLASS,
+                CLASS,
                 Optional.of(Recommendation.RECOMMENDED),
                 hierarchyChangeGenerator,
                 disjointsChangeGenerator
