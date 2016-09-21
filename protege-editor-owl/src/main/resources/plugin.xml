@@ -766,25 +766,6 @@
         <category value="@org.protege.ontologycategory"/>
     </extension>
 
-
-    <extension id="NavigationView"
-               point="org.protege.editor.core.application.ViewComponent">
-        <label value="Navigation view"/>
-        <class value="org.protege.editor.owl.ui.view.ObjectSelectorViewComponent"/>
-        <headerColor value="@org.protege.ontologycolor"/>
-        <category value="@org.protege.ontologycategory"/>
-    </extension>
-
-
-    <extension id="SelectedObjectView"
-               point="org.protege.editor.core.application.ViewComponent">
-        <label value="Navigation subject"/>
-        <class value="org.protege.editor.owl.ui.view.SelectedObjectViewComponent"/>
-        <headerColor value="@org.protege.ontologycolor"/>
-        <category value="@org.protege.ontologycategory"/>
-    </extension>
-
-
     <!-- Renderer views -->
 
     <extension id="RDFXML"
