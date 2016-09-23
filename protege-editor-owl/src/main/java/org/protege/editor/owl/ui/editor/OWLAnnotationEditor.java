@@ -6,10 +6,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.hierarchy.OWLAnnotationPropertyHierarchyProvider;
 import org.protege.editor.owl.ui.selector.OWLAnnotationPropertySelectorPanel;
-import org.semanticweb.owlapi.model.OWLAnnotation;
-import org.semanticweb.owlapi.model.OWLAnnotationProperty;
-import org.semanticweb.owlapi.model.OWLAnnotationValue;
-import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import javax.swing.*;
@@ -28,40 +25,39 @@ import java.util.List;
 public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> implements VerifiedInputEditor {
 
 
-    protected final OWLEditorKit owlEditorKit;
+    private static String lastEditorName = "";
 
-    private JTabbedPane tabbedPane;
 
-    private JPanel mainPanel;
 
-    private OWLAnnotationPropertySelectorPanel annotationPropertySelector;
+    private final OWLEditorKit owlEditorKit;
 
-    private List<OWLObjectEditor<? extends OWLAnnotationValue>> editors;
+    private final JTabbedPane tabbedPane = new JTabbedPane();
+
+    private final JPanel mainPanel = new VerifiedInputJPanel();
+
+    private final OWLAnnotationPropertySelectorPanel annotationPropertySelector;
+
+    private final List<OWLObjectEditor<? extends OWLAnnotationValue>> editors = new ArrayList<>();
+
+    private final List<InputVerificationStatusChangedListener> verificationListeners = new ArrayList<>();
+
+    private final ChangeListener changeListener = event -> verify();
+
+    private final InputVerificationStatusChangedListener mergedVerificationListener = newState -> {
+        for (InputVerificationStatusChangedListener listener : verificationListeners) {
+            listener.verifiedStatusChanged(newState);
+        }
+    };
+
 
     private OWLAnnotationProperty lastSelectedProperty;
 
-    private List<InputVerificationStatusChangedListener> verificationListeners = new ArrayList<>();
-
     private boolean status = false;
-    
-    private static String lastEditorName = "";
 
-    private ChangeListener changeListener = event -> verify();
-    
-    private InputVerificationStatusChangedListener mergedVerificationListener = new InputVerificationStatusChangedListener() {
-		
-		public void verifiedStatusChanged(final boolean newState) {
-			for (InputVerificationStatusChangedListener listener : verificationListeners) {
-				listener.verifiedStatusChanged(newState);
-			}
-		}
-	};
 
 
     public OWLAnnotationEditor(OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
-        tabbedPane = new JTabbedPane();
-        mainPanel = new VerifiedInputJPanel();
         mainPanel.setLayout(new BorderLayout());
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         mainPanel.add(splitPane);
@@ -77,9 +73,7 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
         loadEditors();
         initialiseLastSelectedProperty();
 
-        annotationPropertySelector.addSelectionListener(event -> {
-            verify();
-        });
+        annotationPropertySelector.addSelectionListener(event -> verify());
 
         tabbedPane.addChangeListener(changeListener);
     }
@@ -88,6 +82,7 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
     	assert lastSelectedProperty == null; 
         lastSelectedProperty = getDefaultAnnotationProperty(); 
     }
+
 	protected OWLAnnotationProperty getDefaultAnnotationProperty() {
         final OWLModelManager mngr = owlEditorKit.getOWLModelManager();
 		return mngr.getOWLDataFactory().getOWLAnnotationProperty(OWLRDFVocabulary.RDFS_COMMENT.getIRI());		
@@ -102,8 +97,7 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
 
 
 	private void loadEditors() {
-        editors = createEditors();
-        assert !editors.isEmpty();
+        editors.addAll(createEditors());
         int selIndex = 0;
         int tabCount = 0;
         for (OWLObjectEditor<? extends OWLAnnotationValue> editor : editors) {
@@ -123,11 +117,9 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
         iriEditor.addSelectionListener(changeListener);
 
         final OWLConstantEditor constantEditor = new OWLConstantEditor(owlEditorKit);
-        // @@TODO add change listener
 
         final OWLAnonymousIndividualAnnotationValueEditor anonIndividualEditor = new OWLAnonymousIndividualAnnotationValueEditor(owlEditorKit);
-        // @@TODO add change listener
-        
+
         final IRITextEditor textEditor = new IRITextEditor(owlEditorKit);
         textEditor.addStatusChangedListener(mergedVerificationListener);
     	
@@ -144,13 +136,12 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
         return editors.get(tabbedPane.getSelectedIndex());
     }
 
-
     public boolean setEditedObject(OWLAnnotation annotation) {
         int tabIndex = -1;
         if (annotation != null) {
             annotationPropertySelector.setSelection(annotation.getProperty());
             for (int i = 0; i < editors.size(); i++) {
-                OWLObjectEditor editor = editors.get(i);
+                OWLObjectEditor<OWLAnnotationValue> editor = getEditorAt(i);
                 // because we don't know the type of the editor we need to test
                 if (editor.canEdit(annotation.getValue())) {
                     editor.setEditedObject(annotation.getValue());
@@ -177,6 +168,11 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
         }
         tabbedPane.setSelectedIndex(tabIndex == -1 ? 0 : tabIndex);
         return true;
+    }
+
+    @SuppressWarnings("unchecked")
+    private OWLObjectEditor<OWLAnnotationValue> getEditorAt(int index) {
+        return (OWLObjectEditor<OWLAnnotationValue>)editors.get(index);
     }
 
 
