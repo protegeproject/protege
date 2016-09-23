@@ -6,6 +6,8 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.util.Collections;
 import java.util.HashSet;
@@ -32,6 +34,7 @@ public class OWLIndividualSetEditor extends AbstractOWLObjectEditor<Set<OWLNamed
     }
 
 
+    @Nullable
     public Set<OWLNamedIndividual> getEditedObject() {
         return panel.getSelectedObjects();
     }
@@ -43,6 +46,7 @@ public class OWLIndividualSetEditor extends AbstractOWLObjectEditor<Set<OWLNamed
     }
 
 
+    @Nonnull
     public String getEditorTypeName() {
         return "Set of named Individuals";
     }
@@ -53,6 +57,7 @@ public class OWLIndividualSetEditor extends AbstractOWLObjectEditor<Set<OWLNamed
     }
 
 
+    @Nonnull
     public JComponent getEditorComponent() {
         return panel;
     }

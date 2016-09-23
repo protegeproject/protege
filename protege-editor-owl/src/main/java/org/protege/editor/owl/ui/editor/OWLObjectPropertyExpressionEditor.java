@@ -7,6 +7,8 @@ import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -45,6 +47,7 @@ public class OWLObjectPropertyExpressionEditor extends AbstractOWLObjectEditor<O
     }
 
 
+    @Nullable
     public OWLObjectPropertyExpression getEditedObject() {
         OWLObjectProperty p = namedObjectPropertySelector.getSelectedObject();
         return inverseCheckBox.isSelected() ? p.getInverseProperty() : p;
@@ -57,6 +60,7 @@ public class OWLObjectPropertyExpressionEditor extends AbstractOWLObjectEditor<O
     }
 
 
+    @Nonnull
     public String getEditorTypeName() {
         return "Object property";
     }
@@ -67,6 +71,7 @@ public class OWLObjectPropertyExpressionEditor extends AbstractOWLObjectEditor<O
     }
 
 
+    @Nonnull
     public JComponent getEditorComponent() {
         return editor;
     }

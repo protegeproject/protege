@@ -7,6 +7,8 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import java.util.Collections;
@@ -63,11 +65,13 @@ public class IRIFromEntityEditor implements OWLObjectEditor<IRI> {
     }
 
 
+    @Nonnull
     public JComponent getEditorComponent() {
         return entitySelectorPanel;
     }
 
 
+    @Nullable
     public IRI getEditedObject() {
         final OWLEntity entity = entitySelectorPanel.getSelectedObject();
         return entity != null ? entity.getIRI() : null;
@@ -127,6 +131,7 @@ public class IRIFromEntityEditor implements OWLObjectEditor<IRI> {
     }
 
 
+    @Nonnull
     public String getEditorTypeName() {
         return "Entity IRI";
     }

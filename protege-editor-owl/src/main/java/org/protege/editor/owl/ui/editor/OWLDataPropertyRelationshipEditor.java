@@ -10,6 +10,8 @@ import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLPropertyAssertionAxiom;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
@@ -75,6 +77,7 @@ public class OWLDataPropertyRelationshipEditor extends AbstractOWLObjectEditor<O
     }
 
 
+    @Nonnull
     public String getEditorTypeName() {
         return "Data property assertion";
     }
@@ -85,11 +88,13 @@ public class OWLDataPropertyRelationshipEditor extends AbstractOWLObjectEditor<O
     }
 
 
+    @Nonnull
     public JComponent getEditorComponent() {
         return componentHolder;
     }
 
 
+    @Nullable
     public OWLDataPropertyConstantPair getEditedObject() {
         OWLDataProperty prop = dataPropertySelectorPanel.getSelectedObject();
         if (prop == null) {

@@ -12,6 +12,8 @@ import org.protege.editor.owl.ui.frame.OWLObjectPropertyIndividualPair;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -181,6 +183,7 @@ public class OWLObjectPropertyIndividualPairEditor2 extends AbstractOWLObjectEdi
 
     }
 
+    @Nonnull
     @Override
     public String getEditorTypeName() {
         return "Object property assertion";
@@ -191,11 +194,13 @@ public class OWLObjectPropertyIndividualPairEditor2 extends AbstractOWLObjectEdi
         return object instanceof OWLObjectPropertyIndividualPair;
     }
 
+    @Nonnull
     @Override
     public JComponent getEditorComponent() {
         return panelHolder;
     }
 
+    @Nullable
     @Override
     public OWLObjectPropertyIndividualPair getEditedObject() {
         OWLObjectProperty property = modelManager.getOWLEntityFinder().getOWLObjectProperty(objectPropertyField.getText());

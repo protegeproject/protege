@@ -10,6 +10,8 @@ import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Collections;
@@ -70,11 +72,13 @@ public class OWLAnonymousIndividualAnnotationValueEditor implements OWLObjectEdi
     }
 
 
+    @Nonnull
     public JComponent getEditorComponent() {
         return mainComponent;
     }
 
 
+    @Nullable
     public OWLAnonymousIndividual getEditedObject() {
         return frameList.getRootObject();
     }
@@ -112,6 +116,7 @@ public class OWLAnonymousIndividualAnnotationValueEditor implements OWLObjectEdi
     }
 
 
+    @Nonnull
     public String getEditorTypeName() {
         return "Property values";
     }

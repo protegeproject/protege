@@ -11,6 +11,8 @@ import org.semanticweb.owlapi.model.OWLSubPropertyChainOfAxiom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Iterator;
@@ -51,6 +53,7 @@ public class OWLObjectPropertyChainEditor extends AbstractOWLObjectEditor<List<O
     }
 
 
+    @Nullable
     public List<OWLObjectPropertyExpression> getEditedObject() {
         try {
             return editor.createObject();
@@ -87,6 +90,7 @@ public class OWLObjectPropertyChainEditor extends AbstractOWLObjectEditor<List<O
     }
 
 
+    @Nonnull
     public String getEditorTypeName() {
         return "List of Object Properties";
     }
@@ -97,6 +101,7 @@ public class OWLObjectPropertyChainEditor extends AbstractOWLObjectEditor<List<O
     }
 
 
+    @Nonnull
     public JComponent getEditorComponent() {
         return panel;
     }

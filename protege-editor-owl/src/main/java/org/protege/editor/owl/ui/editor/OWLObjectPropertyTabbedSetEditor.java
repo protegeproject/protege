@@ -7,6 +7,8 @@ import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.util.Collections;
 import java.util.HashSet;
@@ -47,6 +49,7 @@ public class OWLObjectPropertyTabbedSetEditor extends AbstractOWLObjectEditor<Se
     }
 
 
+    @Nullable
     public Set<OWLObjectPropertyExpression> getEditedObject() {
     	if (tabbedPane.getSelectedComponent() == propertySelectorPanel) {
     		return (Set) propertySelectorPanel.getSelectedObjects();
@@ -81,6 +84,7 @@ public class OWLObjectPropertyTabbedSetEditor extends AbstractOWLObjectEditor<Se
     	return (Set) properties;
     }
     
+    @Nonnull
     public String getEditorTypeName() {
         return "Set of Object Properties";
     }
@@ -91,6 +95,7 @@ public class OWLObjectPropertyTabbedSetEditor extends AbstractOWLObjectEditor<Se
     }
 
 
+    @Nonnull
     public JComponent getEditorComponent() {
         return tabbedPane;
     }

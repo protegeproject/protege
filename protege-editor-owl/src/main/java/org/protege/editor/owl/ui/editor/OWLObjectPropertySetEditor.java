@@ -10,6 +10,8 @@ import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLPropertyExpression;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Set;
@@ -34,6 +36,7 @@ public class OWLObjectPropertySetEditor extends AbstractOWLObjectEditor<Set<OWLO
     }
 
 
+    @Nonnull
     public String getEditorTypeName() {
         return "Set of properties";
     }
@@ -44,11 +47,13 @@ public class OWLObjectPropertySetEditor extends AbstractOWLObjectEditor<Set<OWLO
     }
 
 
+    @Nonnull
     public JComponent getEditorComponent() {
         return editor;
     }
 
 
+    @Nullable
     public Set<OWLObjectPropertyExpression> getEditedObject() {
         try {
             return editor.createObject();

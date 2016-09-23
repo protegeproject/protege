@@ -9,6 +9,8 @@ import org.protege.editor.owl.ui.selector.OWLAnnotationPropertySelectorPanel;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -113,17 +115,18 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
 
 
     protected List<OWLObjectEditor<? extends OWLAnnotationValue>> createEditors() {
-        final IRIFromEntityEditor iriEditor = new IRIFromEntityEditor(owlEditorKit);
-        iriEditor.addSelectionListener(changeListener);
 
         final OWLConstantEditor constantEditor = new OWLConstantEditor(owlEditorKit);
 
-        final OWLAnonymousIndividualAnnotationValueEditor anonIndividualEditor = new OWLAnonymousIndividualAnnotationValueEditor(owlEditorKit);
-
         final IRITextEditor textEditor = new IRITextEditor(owlEditorKit);
         textEditor.addStatusChangedListener(mergedVerificationListener);
-    	
-    	List<OWLObjectEditor<? extends OWLAnnotationValue>> result = new ArrayList<>();
+
+        final IRIFromEntityEditor iriEditor = new IRIFromEntityEditor(owlEditorKit);
+        iriEditor.addSelectionListener(changeListener);
+
+        final OWLAnonymousIndividualAnnotationValueEditor anonIndividualEditor = new OWLAnonymousIndividualAnnotationValueEditor(owlEditorKit);
+
+        List<OWLObjectEditor<? extends OWLAnnotationValue>> result = new ArrayList<>();
         result.add(constantEditor);
         result.add(iriEditor);
         result.add(textEditor);
@@ -194,6 +197,7 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
     }
 
 
+    @Nonnull
     public String getEditorTypeName() {
         return "OWL Annotation";
     }
@@ -204,20 +208,16 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
     }
 
 
+    @Nonnull
     public JComponent getEditorComponent() {
         return mainPanel;
     }
-
-
-    public JComponent getInlineEditorComponent() {
-        return getEditorComponent();
-    }
-
 
     /**
      * Gets the object that has been edited.
      * @return The edited object
      */
+    @Nullable
     public OWLAnnotation getEditedObject() {
         return getAnnotation();
     }

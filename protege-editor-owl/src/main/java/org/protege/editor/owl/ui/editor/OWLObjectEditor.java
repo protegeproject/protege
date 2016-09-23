@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.editor;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.util.Set;
 
@@ -12,38 +14,28 @@ import java.util.Set;
  */
 public interface OWLObjectEditor<O> {
 
+    @Nonnull
     String getEditorTypeName();
-
 
     boolean canEdit(Object object);
 
-
-//    boolean isPreferred(Object object);
-
-
+    @Nonnull
     JComponent getEditorComponent();
 
-
+    @Nullable
     O getEditedObject();
-
 
     Set<O> getEditedObjects();
 
-
-    boolean setEditedObject(O editedObject);
-
+    boolean setEditedObject(@Nullable O editedObject);
 
     boolean isMultiEditSupported();
 
-    
     void clear();
-
 
     void dispose();
 
-
     void setHandler(OWLObjectEditorHandler<O> handler);
-
 
     OWLObjectEditorHandler<O> getHandler();
 }

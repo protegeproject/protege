@@ -18,6 +18,8 @@ import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -37,15 +39,15 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
 
     private final OWLEditorKit editorKit;
 
-    private JTextArea annotationContent;
+    private final JTextArea annotationContent = new JTextArea(8, 40);
 
-    private JComboBox langComboBox;
+    private final JComboBox<String> langComboBox;
 
-    private JLabel langLabel = new JLabel("Lang");
+    private final JComboBox<OWLDatatype> datatypeComboBox;
 
-    private JComboBox datatypeComboBox;
+    private final JLabel langLabel = new JLabel("Lang");
 
-    private OWLDataFactory dataFactory;
+    private final OWLDataFactory dataFactory;
 
     private String lastLanguage;
 
@@ -59,9 +61,9 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
     public OWLConstantEditor(OWLEditorKit owlEditorKit) {
         this.editorKit = owlEditorKit;
         dataFactory = owlEditorKit.getModelManager().getOWLDataFactory();
-        annotationContent = new JTextArea(8, 40);
         annotationContent.setWrapStyleWord(true);
         annotationContent.setLineWrap(true);
+        annotationContent.setBorder(null);
 
         final UIHelper uiHelper = new UIHelper(owlEditorKit);
         langComboBox = uiHelper.getLanguageSelector();
@@ -88,6 +90,12 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
             @Override
             public void changedUpdate(DocumentEvent e) {
 
+            }
+        });
+
+        addHierarchyListener(e -> {
+            if(isShowing()) {
+                annotationContent.requestFocus();
             }
         });
 
@@ -132,9 +140,9 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
      * owl:real.
      * @param datatypeComboBox The combobox from which the datatypes should be removed.  Not {@code null}.
      */
-    private static void removeNonSelectableDatatypes(JComboBox datatypeComboBox) {
+    private static void removeNonSelectableDatatypes(JComboBox<OWLDatatype> datatypeComboBox) {
         for (int i = 0; i < datatypeComboBox.getItemCount(); i++) {
-            OWLDatatype datatype = (OWLDatatype) datatypeComboBox.getItemAt(i);
+            OWLDatatype datatype = datatypeComboBox.getItemAt(i);
             if (datatype != null) {
                 if (datatype.isRDFPlainLiteral()) {
                     datatypeComboBox.removeItemAt(i);
@@ -159,10 +167,12 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         return object instanceof OWLLiteral;
     }
 
+    @Nonnull
     public JComponent getEditorComponent() {
         return this;
     }
 
+    @Nullable
     public OWLLiteral getEditedObject() {
         lastDatatype = null;
         lastLanguage = null;
@@ -206,6 +216,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         return false;
     }
 
+    @Nonnull
     public String getEditorTypeName() {
         return "Literal";
     }

@@ -7,6 +7,8 @@ import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
 import org.semanticweb.owlapi.model.OWLClassAxiom;
 import org.semanticweb.owlapi.model.OWLException;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
@@ -54,6 +56,7 @@ public class OWLGeneralAxiomEditor extends AbstractOWLObjectEditor<OWLClassAxiom
     }
 
 
+    @Nonnull
     public String getEditorTypeName() {
         return "Class Axiom";
     }
@@ -69,6 +72,7 @@ public class OWLGeneralAxiomEditor extends AbstractOWLObjectEditor<OWLClassAxiom
      * object.
      * @return The component that will be used to edit the object
      */
+    @Nonnull
     public JComponent getEditorComponent() {
         return editingComponent;
     }
@@ -78,6 +82,7 @@ public class OWLGeneralAxiomEditor extends AbstractOWLObjectEditor<OWLClassAxiom
      * Gets the object that has been edited.
      * @return The edited object
      */
+    @Nullable
     public OWLClassAxiom getEditedObject() {
         try {
             if (editor.isWellFormed()) {

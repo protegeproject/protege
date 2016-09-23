@@ -7,6 +7,8 @@ import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -90,6 +92,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLObjectEditor<OWLClassE
     }
 
 
+    @Nonnull
     public String getEditorTypeName() {
         return "Class expression";
     }
@@ -105,6 +108,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLObjectEditor<OWLClassE
      * object.
      * @return The component that will be used to edit the object
      */
+    @Nonnull
     public JComponent getEditorComponent() {
         return editingComponent;
     }
@@ -134,6 +138,7 @@ public class OWLClassDescriptionEditor extends AbstractOWLObjectEditor<OWLClassE
     }
 
 
+    @Nullable
     public OWLClassExpression getEditedObject() {
         setSelectedEditorPreferred();
         Set<OWLClassExpression> sel = getSelectedEditor().getClassExpressions();

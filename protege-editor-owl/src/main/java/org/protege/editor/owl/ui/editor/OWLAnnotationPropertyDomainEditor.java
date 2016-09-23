@@ -3,6 +3,8 @@ package org.protege.editor.owl.ui.editor;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.model.*;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
@@ -36,6 +38,7 @@ public class OWLAnnotationPropertyDomainEditor extends AbstractOWLObjectEditor<I
         editingComponent.add(tabs);
     }
     
+    @Nonnull
     public String getEditorTypeName() {
         return "Annotation Property domain Editor";
     }
@@ -44,10 +47,12 @@ public class OWLAnnotationPropertyDomainEditor extends AbstractOWLObjectEditor<I
         return object instanceof OWLAnnotationProperty;
     }
 
+    @Nonnull
     public JComponent getEditorComponent() {
         return editingComponent;
     }
 
+    @Nullable
     public IRI getEditedObject() {
         Component component = tabs.getSelectedComponent();
         if (component == classSelectionEditor.getComponent()) {

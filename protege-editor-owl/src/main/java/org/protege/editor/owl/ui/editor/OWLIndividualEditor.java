@@ -4,6 +4,8 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.util.Set;
 
@@ -35,7 +37,8 @@ public class OWLIndividualEditor extends AbstractOWLObjectEditor<OWLNamedIndivid
 	}
 
 
-    public String getEditorTypeName() {
+    @Nonnull
+	public String getEditorTypeName() {
         return "Named Individual";
     }
 
@@ -50,11 +53,13 @@ public class OWLIndividualEditor extends AbstractOWLObjectEditor<OWLNamedIndivid
 	 * 
 	 * @return The component that will be used to edit the object
 	 */
+	@Nonnull
 	public JComponent getEditorComponent() {
 		return selectorPanel;
 	}
 
 
+	@Nullable
 	public OWLNamedIndividual getEditedObject() {
 		return selectorPanel.getSelectedObject();
 	}

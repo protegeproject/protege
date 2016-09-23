@@ -277,23 +277,23 @@ public class UIHelper {
     }
 
 
-    public JComboBox getLanguageSelector() {
-        JComboBox c = new JComboBox();
+    public JComboBox<String> getLanguageSelector() {
+        JComboBox<String> c = new JComboBox<>();
         c.setSelectedItem(null);
         c.setEditable(true);
-        c.setModel(new DefaultComboBoxModel(new String[]{null, "en", "de", "es", "fr", "pt"}));
+        c.setModel(new DefaultComboBoxModel<>(new String[]{null, "en", "de", "es", "fr", "pt"}));
         return c;
     }
 
 
-    public JComboBox getDatatypeSelector() {
+    public JComboBox<OWLDatatype> getDatatypeSelector() {
         final OWLModelManager mngr = getOWLModelManager();
         List<OWLDatatype> datatypeList = new ArrayList<>(new OWLDataTypeUtils(mngr.getOWLOntologyManager()).getKnownDatatypes(mngr.getActiveOntologies()));
 
         Collections.sort(datatypeList, mngr.getOWLObjectComparator());
         datatypeList.add(0, null);
 
-        JComboBox c = new JComboBox(new DefaultComboBoxModel(datatypeList.toArray()));
+        JComboBox<OWLDatatype> c = new JComboBox<>(new DefaultComboBoxModel<>(datatypeList.toArray(new OWLDatatype [datatypeList.size()])));
         c.setPreferredSize(new Dimension(120, c.getPreferredSize().height));
         c.setRenderer(new OWLCellRendererSimple(owlEditorKit));
         return c;
