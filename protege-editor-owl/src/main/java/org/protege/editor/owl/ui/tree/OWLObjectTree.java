@@ -229,7 +229,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         final Set<OWLObjectTreeNode<N>> treeNodes = nodeMap.get(node);
 
         // The parents/children might have changed
-        if (treeNodes != null) {
+        if (treeNodes != null && !treeNodes.isEmpty()) {
             // Remove children that aren't there any more
             Set<N> children = provider.getChildren(node);
 

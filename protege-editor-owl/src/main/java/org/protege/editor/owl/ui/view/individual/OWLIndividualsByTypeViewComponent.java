@@ -1,12 +1,20 @@
 package org.protege.editor.owl.ui.view.individual;
 
+import com.google.common.collect.Sets;
 import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.core.ui.view.DisposableAction;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.IndividualsByTypeHierarchyProvider;
+import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
+import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProviderListener;
 import org.protege.editor.owl.model.selection.SelectionDriver;
+import org.protege.editor.owl.model.util.OWLUtilities;
 import org.protege.editor.owl.ui.OWLIcons;
+import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.action.DeleteIndividualAction;
+import org.protege.editor.owl.ui.renderer.AddEntityIcon;
+import org.protege.editor.owl.ui.renderer.OWLClassIcon;
+import org.protege.editor.owl.ui.renderer.OWLIndividualIcon;
 import org.protege.editor.owl.ui.tree.*;
 import org.protege.editor.owl.ui.view.AbstractOWLSelectionViewComponent;
 import org.protege.editor.owl.ui.view.ChangeListenerMediator;
@@ -22,6 +30,8 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 
@@ -43,13 +53,16 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
 
     private TreeSelectionListener listener = e -> transmitSelection();
 
+    private HierarchyProviderWrapper hierarchyProvider;
+
 
     public void initialiseView() throws Exception {
         setLayout(new BorderLayout());
+        hierarchyProvider = new HierarchyProviderWrapper();
 
-        tree = new OWLModelManagerTree<>(getOWLEditorKit(), getProvider());
+        tree = new OWLModelManagerTree<>(getOWLEditorKit(), hierarchyProvider);
         tree.setCellRenderer(new CountingOWLObjectTreeCellRenderer<>(getOWLEditorKit(), tree));
-
+        tree.expandRow(0);
         add(new JScrollPane(tree));
 
         changeListenerMediator = new ChangeListenerMediator();
@@ -71,7 +84,6 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
                 handleAdd(child, parent);
             }
         });
-
         setupActions();
     }
 
@@ -125,7 +137,7 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
 
 
     protected void setupActions() {
-        addAction(new DisposableAction("Add individual", OWLIcons.getIcon("individual.add.png")) {
+        addAction(new DisposableAction("Add individual", new AddEntityIcon(new OWLIndividualIcon())) {
             public void actionPerformed(ActionEvent e) {
                 createNewObject();
             }
@@ -133,8 +145,26 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
             public void dispose() {
             }
         } , "A", "A");
-        addAction(new DeleteIndividualAction(getOWLEditorKit(),
-                () -> getSelectedIndividuals()), "B", "A");
+        addAction(new DeleteIndividualAction(getOWLEditorKit(), () -> getSelectedIndividuals()), "B", "A");
+        addAction(new DisposableAction("Add empty class to list", new AddEntityIcon(new OWLClassIcon())) {
+            @Override
+            public void dispose() {
+
+            }
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addEmptyClassToList();
+            }
+        }, "C", "A");
+    }
+
+    private void addEmptyClassToList() {
+        UIHelper helper = new UIHelper(getOWLEditorKit());
+        OWLClass cls = helper.pickOWLClass();
+        if(cls != null) {
+            hierarchyProvider.addTemporaryClass(cls);
+        }
     }
 
 
@@ -281,5 +311,91 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
     @Override
     public Optional<OWLObject> getSelection() {
         return Optional.ofNullable(tree.getSelectedOWLObject());
+    }
+
+
+
+    private class HierarchyProviderWrapper implements OWLObjectHierarchyProvider<OWLObject> {
+
+        private final Set<OWLObject> temporaryClasses = new HashSet<>();
+
+        private final List<OWLObjectHierarchyProviderListener<OWLObject>> listeners = new ArrayList<>();
+
+        public void addTemporaryClass(OWLClass cls) {
+            temporaryClasses.add(cls);
+            for(OWLObjectHierarchyProviderListener<OWLObject> listener : listeners) {
+                listener.nodeChanged(cls);
+            }
+        }
+
+        @Override
+        public void setOntologies(Set<OWLOntology> ontologies) {
+            getProvider().setOntologies(ontologies);
+        }
+
+        @Override
+        public Set<OWLObject> getRoots() {
+            Sets.SetView<OWLObject> roots = Sets.union(getProvider().getRoots(), temporaryClasses);
+            return roots;
+        }
+
+        @Override
+        public Set<OWLObject> getChildren(OWLObject object) {
+            return getProvider().getChildren(object);
+        }
+
+        @Override
+        public Set<OWLObject> getDescendants(OWLObject object) {
+            return getProvider().getDescendants(object);
+        }
+
+        @Override
+        public Set<OWLObject> getParents(OWLObject object) {
+            if(temporaryClasses.contains(object)) {
+                return Collections.emptySet();
+            }
+            return getProvider().getParents(object);
+        }
+
+        @Override
+        public Set<OWLObject> getAncestors(OWLObject object) {
+            return getProvider().getAncestors(object);
+        }
+
+        @Override
+        public Set<OWLObject> getEquivalents(OWLObject object) {
+            return getProvider().getEquivalents(object);
+        }
+
+        @Override
+        public Set<List<OWLObject>> getPathsToRoot(OWLObject object) {
+            if(temporaryClasses.contains(object)) {
+                return Collections.singleton(Collections.singletonList(object));
+            }
+            return getProvider().getPathsToRoot(object);
+        }
+
+        @Override
+        public boolean containsReference(OWLObject object) {
+            return temporaryClasses.contains(object) || getProvider().containsReference(object);
+        }
+
+        @Override
+        public void addListener(OWLObjectHierarchyProviderListener<OWLObject> listener) {
+            listeners.add(listener);
+            getProvider().addListener(listener);
+        }
+
+        @Override
+        public void removeListener(OWLObjectHierarchyProviderListener<OWLObject> listener) {
+            listeners.remove(listener);
+            getProvider().removeListener(listener);
+        }
+
+        @Override
+        public void dispose() {
+            listeners.clear();
+            getProvider().dispose();
+        }
     }
 }
