@@ -24,6 +24,7 @@
                 <include>edu.stanford.protege:protege-editor-owl:jar</include>
                 <include>ch.qos.logback:logback-core:jar</include>
                 <include>ch.qos.logback:logback-classic:jar</include>
+                <include>com.google.code.findbugs:jsr305:jar</include>
                 <include>com.google.guava:guava:jar</include>
                 <include>org.slf4j:slf4j-api:jar</include>
                 <include>org.slf4j:log4j-over-slf4j:jar</include>
