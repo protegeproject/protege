@@ -35,7 +35,7 @@ import java.util.Set;
  */
 public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLiteral> {
 
-    private static final long serialVersionUID = 3199534896795886986L;
+    private final OWLEditorKit editorKit;
 
     private JTextArea annotationContent;
 
@@ -51,7 +51,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
 
     private OWLDatatype lastDatatype;
 
-    private final OWLEditorKit editorKit;
+
 
     private final JLabel messageLabel = new JLabel();
 
