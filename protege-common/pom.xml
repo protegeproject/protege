@@ -44,8 +44,7 @@
 						<Bundle-ClassPath>.</Bundle-ClassPath>
 						<Bundle-SymbolicName>org.protege.common</Bundle-SymbolicName>
 						<Export-Package>
-							org.protege.common.*;version=${project.version},
-							javax.annotation.*;verions=${jsr305.version}
+							org.protege.common.*;version=${project.version}
 						</Export-Package>
 						<Import-Package>
 							!com.ibm.*, 
