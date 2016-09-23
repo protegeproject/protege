@@ -71,7 +71,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     private final Logger logger = LoggerFactory.getLogger(OWLModelManagerImpl.class);
 
-    private final HistoryManager historyManager;
+    private HistoryManager historyManager;
 
     private OWLModelManagerEntityRenderer entityRenderer;
 
@@ -963,4 +963,12 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     public void setLoadErrorHandler(OntologyLoadErrorHandler handler) {
         this.loadErrorHandler = handler;
     }
+
+
+	@Override
+	public void setHistoryManager(HistoryManager hm) {
+		historyManager = hm;
+		
+		
+	}
 }
