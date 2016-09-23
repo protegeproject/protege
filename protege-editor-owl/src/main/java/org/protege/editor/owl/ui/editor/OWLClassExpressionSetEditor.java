@@ -12,6 +12,8 @@ import org.semanticweb.owlapi.model.OWLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -125,6 +127,7 @@ public class OWLClassExpressionSetEditor extends AbstractOWLObjectEditor<Set<OWL
     }
 
 
+    @Nonnull
     public String getEditorTypeName() {
         return "Set of OWL Class Expressions";
     }
@@ -135,6 +138,7 @@ public class OWLClassExpressionSetEditor extends AbstractOWLObjectEditor<Set<OWL
     }
 
 
+    @Nonnull
     public JComponent getEditorComponent() {
         ensureEditorExists();
 //        classSelectorPanel.setSelection(owlEditorKit.getWorkspace().getOWLSelectionModel().getLastSelectedClass());
@@ -149,6 +153,7 @@ public class OWLClassExpressionSetEditor extends AbstractOWLObjectEditor<Set<OWL
     }
 
 
+    @Nullable
     public Set<OWLClassExpression> getEditedObject() {
         ensureEditorExists();
         if (tabbedPane != null && tabbedPane.getSelectedComponent().equals(classSelectorPanel)) {

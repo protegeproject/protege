@@ -10,6 +10,8 @@ import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.semanticweb.owlapi.model.SWRLRule;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
@@ -47,6 +49,7 @@ public class SWRLRuleEditor extends AbstractOWLObjectEditor<SWRLRule> implements
     }
 
 
+    @Nonnull
     public String getEditorTypeName() {
         return "SWRL Rule";
     }
@@ -57,11 +60,13 @@ public class SWRLRuleEditor extends AbstractOWLObjectEditor<SWRLRule> implements
     }
 
 
+    @Nonnull
     public JComponent getEditorComponent() {
         return scrollpane;
     }
 
 
+    @Nullable
     public SWRLRule getEditedObject() {
         try {
             return editor.createObject();

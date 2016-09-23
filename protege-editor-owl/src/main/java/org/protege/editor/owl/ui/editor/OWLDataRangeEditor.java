@@ -8,6 +8,8 @@ import org.semanticweb.owlapi.model.OWLDataRange;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLException;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
@@ -58,6 +60,7 @@ public class OWLDataRangeEditor extends AbstractOWLObjectEditor<OWLDataRange> {
     }
 
 
+    @Nonnull
     public String getEditorTypeName() {
         return "Data Range";
     }
@@ -68,11 +71,13 @@ public class OWLDataRangeEditor extends AbstractOWLObjectEditor<OWLDataRange> {
     }
 
 
+    @Nonnull
     public JComponent getEditorComponent() {
         return editorPanel;
     }
 
 
+    @Nullable
     public OWLDataRange getEditedObject() {
         if (tabbedPane.getSelectedComponent() == datatypeList) {
             return datatypeList.getSelectedObject();

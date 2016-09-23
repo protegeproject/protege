@@ -7,8 +7,12 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -63,6 +67,12 @@ public class IRITextEditor implements OWLObjectEditor<IRI>, VerifiedInputEditor 
 		});
 		
 		editor.add(iriTextField, c);
+
+		editor.addHierarchyListener(e -> {
+            if(editor.isShowing()) {
+                iriTextField.requestFocus();
+            }
+        });
 	}
 	
 	private void setInitialIri(OWLEditorKit editorKit) {
@@ -73,6 +83,7 @@ public class IRITextEditor implements OWLObjectEditor<IRI>, VerifiedInputEditor 
 		}
 	}
 
+	@Nonnull
 	public String getEditorTypeName() {
 		return "IRI Editor";
 	}
@@ -89,6 +100,7 @@ public class IRITextEditor implements OWLObjectEditor<IRI>, VerifiedInputEditor 
 		return false;
 	}
 
+	@Nonnull
 	public JComponent getEditorComponent() {
 		return editor;
 	}
@@ -100,6 +112,7 @@ public class IRITextEditor implements OWLObjectEditor<IRI>, VerifiedInputEditor 
 		return editedObject != null;
 	}
 
+	@Nullable
 	public IRI getEditedObject() {
 		IRI editedObject = null;
 		try {

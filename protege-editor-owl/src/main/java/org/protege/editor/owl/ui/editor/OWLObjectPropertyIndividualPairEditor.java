@@ -9,6 +9,8 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLPropertyAssertionAxiom;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashSet;
@@ -58,6 +60,7 @@ public class OWLObjectPropertyIndividualPairEditor extends AbstractOWLObjectEdit
     }
 
 
+    @Nullable
     public OWLObjectPropertyIndividualPair getEditedObject() {
         return new OWLObjectPropertyIndividualPair(objectPropertyPanel.getSelectedObject(),
                                                    individualSelectorPanel.getSelectedObject());
@@ -96,6 +99,7 @@ public class OWLObjectPropertyIndividualPairEditor extends AbstractOWLObjectEdit
     }
 
 
+    @Nonnull
     public String getEditorTypeName() {
         return "Object property assertion";
     }
@@ -106,6 +110,7 @@ public class OWLObjectPropertyIndividualPairEditor extends AbstractOWLObjectEdit
     }
 
 
+    @Nonnull
     public JComponent getEditorComponent() {
         return editorPanel;
     }

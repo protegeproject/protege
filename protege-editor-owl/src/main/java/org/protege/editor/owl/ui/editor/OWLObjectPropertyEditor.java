@@ -6,6 +6,8 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,6 +33,7 @@ public class OWLObjectPropertyEditor extends AbstractOWLObjectEditor<OWLObjectPr
     }
 
 
+    @Nullable
     public OWLObjectProperty getEditedObject() {
         return editor.getSelectedObject();
     }
@@ -41,6 +44,7 @@ public class OWLObjectPropertyEditor extends AbstractOWLObjectEditor<OWLObjectPr
     }
 
 
+    @Nonnull
     public String getEditorTypeName() {
         return "Object property";
     }
@@ -51,6 +55,7 @@ public class OWLObjectPropertyEditor extends AbstractOWLObjectEditor<OWLObjectPr
     }
 
 
+    @Nonnull
     public JComponent getEditorComponent() {
         return editor;
     }
