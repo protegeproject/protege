@@ -75,12 +75,11 @@ public class UIHelper {
 
 
     public OWLClass pickOWLClass() {
-        OWLClassSelectorPanel clsPanel = owlEditorKit.getOWLWorkspace().getOWLComponentFactory().getOWLClassSelectorPanel();
+        OWLClassSelectorPanel clsPanel = new OWLClassSelectorPanel(owlEditorKit);
         int ret = showDialog("Select a class", clsPanel);
+        clsPanel.dispose();
         if (ret == JOptionPane.OK_OPTION) {
-            OWLClass cls = clsPanel.getSelectedObject();
-            clsPanel.dispose();
-            return cls;
+            return clsPanel.getSelectedObject();
         }
         else {
             return null;
