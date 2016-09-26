@@ -7,7 +7,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.protege.editor.owl.ui.frame.OWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
+import org.protege.editor.owl.ui.frame.cls.OWLSubClassAxiomFrameSection;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -49,8 +51,14 @@ public class CreateDisjunctTermAction<R> extends OWLFrameListPopupMenuAction<R> 
 
 
     protected void updateState() {
-        
-        setEnabled(getSelectedRows().size() > 1);
+    	for (OWLFrameSectionRow<?, ?, ?> row : getSelectedRows()) {
+    		OWLFrameSection fs = row.getFrameSection();
+    		if (fs instanceof OWLSubClassAxiomFrameSection) {
+    			setEnabled(getSelectedRows().size() > 1);
+    			return;
+    		}
+    	}
+    	setEnabled(false);
     }
 
 
