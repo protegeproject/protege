@@ -48,5 +48,7 @@ public abstract class ViewComponentPluginAdapter implements ViewComponentPlugin 
     public Set<String> getNavigates() {
         return Collections.emptySet();
     }
+    
+    public boolean isEager() { return false; }
 
 }

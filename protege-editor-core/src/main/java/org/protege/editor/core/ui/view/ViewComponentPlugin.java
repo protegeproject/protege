@@ -36,6 +36,8 @@ public interface ViewComponentPlugin extends ProtegePlugin<ViewComponent> {
 
 
     Set<String> getCategorisations();
+    
+    boolean isEager();
 
 
     Set<String> getNavigates();

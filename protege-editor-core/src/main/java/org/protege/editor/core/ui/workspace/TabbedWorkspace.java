@@ -92,7 +92,7 @@ public abstract class TabbedWorkspace extends Workspace {
         // If no tabs are set as visible (ie we have yet to customise, show all by default
         for (WorkspaceTabPlugin plugin : getOrderedPlugins()) {
         	WorkspaceTab tab = getWorkspaceTab(plugin.getId());
-        	if (this.canShow(plugin)) {  
+        	if (canShow(plugin)) {  
         		if (tab == null) {
         			try {
 						tab = plugin.newInstance();

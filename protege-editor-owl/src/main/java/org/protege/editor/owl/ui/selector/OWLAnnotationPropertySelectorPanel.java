@@ -77,6 +77,13 @@ public class OWLAnnotationPropertySelectorPanel extends AbstractHierarchySelecto
             public Color getBackgroundColor() {
                 return OWLSystemColors.getOWLClassColor();
             }
+
+
+			@Override
+			public boolean isEager() {
+				// TODO Auto-generated method stub
+				return false;
+			}
         };
     }
 

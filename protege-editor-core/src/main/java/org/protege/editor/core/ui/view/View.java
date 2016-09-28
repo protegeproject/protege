@@ -117,15 +117,21 @@ public class View extends JComponent implements NodeComponent, Disposable {
         // Use a hierarchy listener so that we know when the view is
         // shown.  When the view is shown, initialised it and remove
         // the hierarchy listener
-        addHierarchyListener(new HierarchyListener() {
-            public void hierarchyChanged(HierarchyEvent e) {
-                if (initialisedContent == false && isShowing()) {
-                    createUI();
-                    initialisedContent = true;
-                    removeHierarchyListener(this);
-                }
-            }
-        });
+        
+        if (!plugin.isEager()) {
+
+        	addHierarchyListener(new HierarchyListener() {
+        		public void hierarchyChanged(HierarchyEvent e) {
+        			if (initialisedContent == false && isShowing()) {
+        				createUI();
+        				initialisedContent = true;
+        				removeHierarchyListener(this);
+        			}
+        		}
+        	});
+        }
+               
+        
         additionalViewActionPlugins = new HashSet<>();
         addedViewActions = new HashSet<>();
     }
