@@ -47,6 +47,8 @@ public class ViewComponentPluginJPFImpl implements ViewComponentPlugin {
     public static final String HEADER_COLOR_PARAM = "headerColor";
 
     public static final String USER_CREATABLE_PARAM = "userCreatable";
+    
+    public static final String INSTANTIATION_TYPE = "instantiationType";
 
     public static final String CATEGORY = "category";
 
@@ -137,4 +139,11 @@ public class ViewComponentPluginJPFImpl implements ViewComponentPlugin {
         viewComponent.setup(this);
         return viewComponent;
     }
+
+
+	@Override
+	public boolean isEager() {
+		return "eager".equalsIgnoreCase(PluginProperties.getParameterValue(extension, INSTANTIATION_TYPE, "lazy"));
+		
+	}
 }

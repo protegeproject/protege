@@ -86,7 +86,7 @@ public class ViewMenuAction extends ProtegeDynamicAction {
 
                     public void actionPerformed(ActionEvent e) {
             	        WorkspaceViewManager viewManager = workspace.getViewManager();
-            	        viewManager.showView(plugin.getId());;
+            	        viewManager.showView(plugin.getId());            	        
                     }
                 };
                 action.putValue(Action.SHORT_DESCRIPTION, plugin.getDocumentation());
