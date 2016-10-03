@@ -106,7 +106,7 @@ public class RecentEditorKitManager {
             pruneInvalidDescriptors();
         }
         catch (Exception e) {
-            logger.error("An error occurred whilst loading the list of recent items", e);
+            logger.info("An error occurred whilst loading the list of recent items: {}", e.getMessage(), e);
         }
     }
 
