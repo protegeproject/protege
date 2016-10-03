@@ -20,9 +20,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public final class EditorKitDescriptor implements Serializable {
 
-    public static final String LABEL_KEY = "EDITOR_KIT_LABEL";
+    private static final long serialVersionUID = 1L;
 
-    public static final String EDITOR_KIT_FACTORY_ID = "EDITOR_KIT_FACTORY_ID";
+    private static final String LABEL_KEY = "EDITOR_KIT_LABEL";
+
+    private static final String EDITOR_KIT_FACTORY_ID = "EDITOR_KIT_FACTORY_ID";
 
 
     private final Properties properties = new Properties();
