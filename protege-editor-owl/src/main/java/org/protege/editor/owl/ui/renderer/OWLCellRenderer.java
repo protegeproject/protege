@@ -74,7 +74,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private JPanel renderingComponent;
 
-    private JLabel iconLabel;
+    private final IconComponent iconComponent = new IconComponent();
 
     private JTextPane textPane;
     
@@ -100,7 +100,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private Set<String> boxedNames;
 
-    private int plainFontHeight;
+//    private int plainFontHeight;
 
     private boolean opaque = false;
 
@@ -122,15 +122,13 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         this.renderIcon = renderIcon;
         this.equivalentObjects = new HashSet<>();
 
-        iconLabel = new JLabel("");
-        iconLabel.setOpaque(false);
-        iconLabel.setVerticalAlignment(SwingConstants.CENTER);
+        iconComponent.setOpaque(false);
 
         textPane = new JTextPane();
         textPane.setOpaque(false);
         
         renderingComponent = new OWLCellRendererPanel(new OWLCellRendererLayoutManager());
-        renderingComponent.add(iconLabel);
+        renderingComponent.add(iconComponent);
         renderingComponent.add(textPane);
 
         entityColorProviders = new ArrayList<>();
@@ -278,7 +276,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private void setupFont() {
         plainFont = OWLRendererPreferences.getInstance().getFont();
-        plainFontHeight = iconLabel.getFontMetrics(plainFont).getHeight();
         boldFont = plainFont.deriveFont(Font.BOLD);
         textPane.setFont(plainFont);
     }
@@ -329,26 +326,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         // Set the size of the table cell
 //        setPreferredWidth(table.getColumnModel().getColumn(column).getWidth());
         return prepareRenderer(value, isSelected, hasFocus);
-
-//        // This is a bit messy - the row height doesn't get reset if it is larger than the
-//        // desired row height.
-//        // Reset the row height if the text has been wrapped
-//        int desiredRowHeight = getPrefSize(table, table.getGraphics(), c.getText()).height;
-//        if (desiredRowHeight < table.getRowHeight()) {
-//            desiredRowHeight = table.getRowHeight();
-//        }
-//        else if (desiredRowHeight > table.getRowHeight(row)) {
-//            // Add a bit of a margin, because wrapped lines
-//            // tend to merge with adjacent lines too much
-//            desiredRowHeight += 4;
-//        }
-//        if (table.getEditingRow() != row) {
-//            if (table.getRowHeight(row) < desiredRowHeight) {
-//                table.setRowHeight(row, desiredRowHeight);
-//            }
-//        }
-//        reset();
-//        return c;
     }
 
 
@@ -492,10 +469,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         }
 
         final Icon icon = getIcon(value);
-        iconLabel.setIcon(icon);
-        if (icon != null){
-            iconLabel.setPreferredSize(new Dimension(icon.getIconWidth(), plainFontHeight));
-        }
+        iconComponent.setIcon(icon);
         renderingComponent.revalidate();
         return renderingComponent;
     }
@@ -1028,9 +1002,9 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             int textHeight;
             int width;
             int height;
-            iconWidth = iconLabel.getPreferredSize().width;
-            iconHeight = iconLabel.getPreferredSize().height;
-            Insets insets = parent.getInsets();
+            Dimension preferredSize = iconComponent.getPreferredSize();
+            iconWidth = preferredSize.width + 2;
+            iconHeight = preferredSize.height;
             Insets rcInsets = renderingComponent.getInsets();
 
             if (preferredWidth != -1) {
@@ -1057,7 +1031,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             }
             int totalWidth = width + rcInsets.left + rcInsets.right;
             int totalHeight = height + rcInsets.top + rcInsets.bottom;
-            return new Dimension(totalWidth, totalHeight);
+            return new Dimension(totalWidth + 10, totalHeight);
         }
 
         /**
@@ -1073,11 +1047,9 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             int deprecatedHeight;
             Insets rcInsets = renderingComponent.getInsets();
 
-            Icon icon = iconLabel.getIcon();
-            iconWidth = icon == null ? 0 : icon.getIconWidth();
-            iconHeight = icon == null ? 0 : icon.getIconHeight();
+            Dimension iconPreferredSize = iconComponent.getPreferredSize();
             if (preferredWidth != -1) {
-                textWidth = preferredWidth - iconWidth - rcInsets.left - rcInsets.right;
+                textWidth = preferredWidth - iconPreferredSize.width - rcInsets.left - rcInsets.right;
                 View v = textPane.getUI().getRootView(textPane);
                 v.setSize(textWidth, Integer.MAX_VALUE);
                 textHeight = (int) v.getMinimumSpan(View.Y_AXIS);
@@ -1091,8 +1063,9 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             }
             int leftOffset = rcInsets.left;
             int topOffset = rcInsets.top;
-            iconLabel.setBounds(leftOffset, topOffset, iconWidth, iconHeight);
-            textPane.setBounds(leftOffset + iconWidth, topOffset, textWidth, textHeight);
+            int textPaneY = topOffset;
+            iconComponent.setBounds(leftOffset, topOffset, iconPreferredSize.width, iconPreferredSize.height);
+            textPane.setBounds(leftOffset + iconPreferredSize.width + 2, textPaneY, textWidth, textHeight);
         }
 
         /**
@@ -1104,8 +1077,38 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         public Dimension minimumLayoutSize(Container parent) {
             return new Dimension(0, 0);
         }
+    }
 
 
+    private static final class IconComponent extends JPanel {
 
+        private Icon icon;
+
+        private Dimension preferredSize = new Dimension();
+
+        public void setIcon(Icon icon) {
+            this.icon = icon;
+            if (icon != null) {
+                preferredSize.width = icon.getIconWidth();
+                preferredSize.height = icon.getIconHeight();
+            }
+            else {
+                preferredSize.width = 0;
+                preferredSize.height = 0;
+            }
+        }
+
+        @Override
+        public Dimension getPreferredSize() {
+            return preferredSize;
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (icon != null) {
+                icon.paintIcon(this, g, 0, 0);
+            }
+        }
     }
 }
