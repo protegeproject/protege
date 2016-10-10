@@ -21,9 +21,14 @@ public class DeleteEntityIcon implements Icon {
     public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
         try {
-            entityIcon.paintIcon(c, g2, x + 1, y + 1);
-            int xC = getIconWidth() / 2 + x;
-            int yC = getIconHeight() / 2 + y;
+            int halfWidth = getIconWidth() / 2;
+            int xC = halfWidth + x;
+            int halfHeight = getIconHeight() / 2;
+            int yC = halfHeight + y;
+            entityIcon.paintIcon(c,
+                                 g2,
+                                 xC - (entityIcon.getIconWidth() / 2),
+                                 yC - (entityIcon.getIconHeight() / 2));
             g2.setStroke(EntityActionIcon.ACTION_STROKE);
             g2.setColor(entityIcon.getEntityColor());
             int crossLegLen = 7;
@@ -37,12 +42,12 @@ public class DeleteEntityIcon implements Icon {
 
     @Override
     public int getIconWidth() {
-        return 18;
+        return entityIcon.getIconWidth() + 2;
     }
 
     @Override
     public int getIconHeight() {
-        return 18;
+        return entityIcon.getIconHeight() + 2;
     }
 
 

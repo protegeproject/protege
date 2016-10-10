@@ -39,11 +39,11 @@ public class AddEntityIcon implements Icon {
 
     @Override
     public int getIconWidth() {
-        return 18;
+        return entityIcon.getIconWidth() + 2;
     }
 
     @Override
     public int getIconHeight() {
-        return 18;
+        return entityIcon.getIconHeight() + 2;
     }
 }

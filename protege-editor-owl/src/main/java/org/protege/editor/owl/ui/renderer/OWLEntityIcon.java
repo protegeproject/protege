@@ -11,6 +11,8 @@ import java.awt.*;
  */
 public abstract class OWLEntityIcon implements Icon {
 
+    private static final int BASE_SIZE = 16;
+
     private final FillType fillType;
 
     protected OWLEntityIcon(FillType fillType) {
@@ -24,7 +26,7 @@ public abstract class OWLEntityIcon implements Icon {
     }
 
     public int getBaseSize() {
-        return 16;
+        return BASE_SIZE;
     }
 
     protected int getBaseline(Component c, int defaultBaseline) {

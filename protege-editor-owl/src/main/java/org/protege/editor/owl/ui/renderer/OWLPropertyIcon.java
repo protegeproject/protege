@@ -38,12 +38,12 @@ public abstract class OWLPropertyIcon extends OWLEntityIcon {
 
             int iconHeight = getBaseSize();
 
-            int propWidth = 14;
+            int propWidth = getIconWidth();
             int propHeight = 8;
-            int padding = 1;
-
-            int rX = x + padding;
-            int rY = y + (iconHeight - propHeight) / 2;
+            int xPadding = (getIconWidth() - propWidth) / 2;
+            int yPadding = (getIconHeight() - propHeight) / 2;
+            int rX = x + xPadding;
+            int rY = y + yPadding;
 
             if(getFillType() == FillType.FILLED) {
                 g2.setColor(Color.GRAY);

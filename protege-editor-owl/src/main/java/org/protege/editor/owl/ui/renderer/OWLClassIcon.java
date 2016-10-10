@@ -49,18 +49,31 @@ public class OWLClassIcon extends OWLEntityIcon {
         try {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            final int clsSize = 14;
+            final int clsSize = getBaseSize() - 2;
 
+            int dW = getIconWidth() / 2 - clsSize / 2;
+            int xC = x + dW;
+            int dH = getIconHeight() / 2 - clsSize / 2;
+            int yC = y + dH;
             if(getFillType() == FillType.FILLED) {
                 g2.setColor(Color.LIGHT_GRAY);
-                g2.fillOval(x + 1, y + 1, clsSize, clsSize);
+                g2.fillOval(xC,
+                            yC,
+                            clsSize,
+                            clsSize);
                 g2.setColor(COLOR);
-                g2.fillOval(x + 2, y + 2, clsSize - 2, clsSize - 2);
+                g2.fillOval(xC + 1,
+                            yC + 1,
+                            clsSize - 2,
+                            clsSize - 2);
             }
             else {
                 g2.setStroke(HOLLOW_STROKE);
                 g2.setColor(getEntityColor());
-                g2.drawOval(x + 2, y + 2, clsSize - 2, clsSize - 2);
+                g2.drawOval(xC + 1,
+                            yC + 1,
+                            clsSize - 2,
+                            clsSize - 2);
             }
 
 
@@ -74,8 +87,8 @@ public class OWLClassIcon extends OWLEntityIcon {
                 int centreSize = (int) Math.sqrt(clsSize / 2 * clsSize / 2);
                 int boxWidth = (centreSize / 2) * 2;
                 int boxHeight = (centreSize / 5) * 5;
-                int boxX = 1 + (clsSize - boxWidth) / 2;
-                int boxY = 1 + (clsSize - boxHeight) / 2;
+                int boxX = (getIconWidth() - boxWidth) / 2;
+                int boxY = (getIconHeight() - boxHeight) / 2;
                 g2.fillRect(x + boxX, y + boxY, boxWidth, boxHeight);
                 int stripeHeight = boxHeight / 5;
                 g2.setColor(COLOR);

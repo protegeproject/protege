@@ -265,14 +265,14 @@ public class ProtegeApplication implements BundleActivator {
 
 
     private static void loadDefaults() {
-        ProtegeProperties.getInstance().put(ProtegeProperties.CLASS_COLOR_KEY, "CCA33D");
-        ProtegeProperties.getInstance().put(ProtegeProperties.PROPERTY_COLOR_KEY, "306FA2");
-        ProtegeProperties.getInstance().put(ProtegeProperties.OBJECT_PROPERTY_COLOR_KEY, "507DA0");
-        ProtegeProperties.getInstance().put(ProtegeProperties.DATA_PROPERTY_COLOR_KEY, "598C49");
-        ProtegeProperties.getInstance().put(ProtegeProperties.INDIVIDUAL_COLOR_KEY, "723F6E");
+        ProtegeProperties.getInstance().put(ProtegeProperties.CLASS_COLOR_KEY, "CFA500"); //"CCA33D"
+        ProtegeProperties.getInstance().put(ProtegeProperties.PROPERTY_COLOR_KEY, "0079BA");
+        ProtegeProperties.getInstance().put(ProtegeProperties.OBJECT_PROPERTY_COLOR_KEY, "0079BA");
+        ProtegeProperties.getInstance().put(ProtegeProperties.DATA_PROPERTY_COLOR_KEY, "38A14A");
+        ProtegeProperties.getInstance().put(ProtegeProperties.INDIVIDUAL_COLOR_KEY, "874B82");
         ProtegeProperties.getInstance().put(ProtegeProperties.ONTOLOGY_COLOR_KEY, "6B47A2");
-        ProtegeProperties.getInstance().put(ProtegeProperties.ANNOTATION_PROPERTY_COLOR_KEY, "504D4A");
-        ProtegeProperties.getInstance().put(ProtegeProperties.DATATYPE_COLOR_KEY, "997168");
+        ProtegeProperties.getInstance().put(ProtegeProperties.ANNOTATION_PROPERTY_COLOR_KEY, "D17A00");
+        ProtegeProperties.getInstance().put(ProtegeProperties.DATATYPE_COLOR_KEY, "AD3B45");
 
         ProtegeProperties.getInstance().put(ProtegeProperties.CLASS_VIEW_CATEGORY, "Class");
         ProtegeProperties.getInstance().put(ProtegeProperties.OBJECT_PROPERTY_VIEW_CATEGORY, "Object property");
@@ -496,20 +496,30 @@ public class ProtegeApplication implements BundleActivator {
     }
 
 
-    private void createAndSetupDefaultEditorKit(URI uri) {
-        try {
-            logger.info("Creating and setting up (default) editor kit for {}", uri);
-            ProtegeManager pm = ProtegeManager.getInstance();
-            List<EditorKitFactoryPlugin> editorKitFactoryPlugins = pm.getEditorKitFactoryPlugins();
-            if (!editorKitFactoryPlugins.isEmpty()) {
-                EditorKitFactoryPlugin defaultPlugin = editorKitFactoryPlugins.get(0);
-                pm.createAndSetupNewEditorKit(defaultPlugin, uri);
+    private void createAndSetupDefaultEditorKit(final URI uri) {
+        Runnable runnable = () -> {
+            try {
+                logger.info("Creating and setting up (default) editor kit for {}", uri);
+                ProtegeManager pm = ProtegeManager.getInstance();
+                List<EditorKitFactoryPlugin> editorKitFactoryPlugins = pm.getEditorKitFactoryPlugins();
+                if (!editorKitFactoryPlugins.isEmpty()) {
+                    EditorKitFactoryPlugin defaultPlugin = editorKitFactoryPlugins.get(0);
+                    pm.createAndSetupNewEditorKit(defaultPlugin, uri);
+                }
+                else {
+                    ErrorMessage.showErrorMessage("Fatal Error", "An error occurred that prevented Protégé from starting");
+                }
+            } catch (Exception e) {
+                ErrorLogPanel.showErrorDialog(e);
             }
-            else {
-                ErrorMessage.showErrorMessage("Fatal Error", "An error occurred that prevented Protégé from starting");
-            }
-        } catch (Exception e) {
-            ErrorLogPanel.showErrorDialog(e);
+        };
+        if(SwingUtilities.isEventDispatchThread()) {
+            runnable.run();
+        }
+        else {
+            logger.debug("Current thread is not Event Dispatch Thread.  " +
+                                 "Invoking later in the EDT (Current Thread: {})", Thread.currentThread());
+            SwingUtilities.invokeLater(runnable);
         }
     }
 
