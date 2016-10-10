@@ -683,11 +683,11 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             if (adcManager != null) {
                 changes = adcManager.getChangeRewriter().rewriteChanges(changes);
             }
-            logger.info(LogBanner.start("Applying changes"));
-            logger.info("Number of requested changes: {}", changes.size());
+            logger.debug(LogBanner.start("Applying changes"));
+            logger.debug("Number of requested changes: {}", changes.size());
             List<OWLOntologyChange> minimizedChanges = new ChangeListMinimizer().getMinimisedChanges(changes);
-            logger.info("Number of minimized changes: {}", minimizedChanges.size());
-            logger.info(LogBanner.end());
+            logger.debug("Number of minimized changes: {}", minimizedChanges.size());
+            logger.debug(LogBanner.end());
             if (minimizedChanges.isEmpty()) {
                 return;
             }
