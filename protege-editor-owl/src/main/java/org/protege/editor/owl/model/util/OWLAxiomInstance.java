@@ -7,6 +7,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 
 import java.util.Set;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.Preconditions.checkNotNull;
 /*
 * Copyright (C) 2007, University of Manchester
@@ -50,5 +51,14 @@ public class OWLAxiomInstance implements AnnotationContainer {
 
     public Set<OWLAnnotation> getAnnotations() {
         return ax.getAnnotations();
+    }
+
+
+    @Override
+    public String toString() {
+        return toStringHelper("OWLAxiomInstance")
+                .addValue(ax)
+                .addValue(ont.getOntologyID())
+                .toString();
     }
 }

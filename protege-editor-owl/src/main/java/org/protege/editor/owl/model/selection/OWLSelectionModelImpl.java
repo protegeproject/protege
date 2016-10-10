@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 
@@ -270,5 +271,21 @@ public class OWLSelectionModelImpl implements OWLSelectionModel {
     @Override
     public OWLAxiomInstance getLastSelectedAxiomInstance() {
         return lastSelectedAxiomInstance;
+    }
+
+
+    @Override
+    public String toString() {
+        return toStringHelper("OWLSelectionModelImpl")
+                .add("selectedObject", selectedObject)
+                .add("lastSelectedEntity", lastSelectedEntity)
+                .add("lastSelectedClass", lastSelectedClass)
+                .add("lastSelectedObjectProperty", lastSelectedObjectProperty)
+                .add("lastSelectedDataProperty", lastSelectedDataProperty)
+                .add("lastSelectedAnnotationProperty", lastSelectedAnnotationProperty)
+                .add("lastSelectedNamedIndividual", lastSelectedIndividual)
+                .add("lastSelectedDatatype", lastSelectedDatatype)
+                .add("lastSelectedAxiom", lastSelectedAxiomInstance)
+                .toString();
     }
 }
