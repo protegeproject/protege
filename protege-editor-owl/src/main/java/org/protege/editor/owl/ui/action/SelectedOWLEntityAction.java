@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.action;
 
+import org.protege.editor.owl.model.selection.OWLSelectionModel;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.semanticweb.owlapi.model.OWLEntity;
 
@@ -39,7 +40,9 @@ public abstract class SelectedOWLEntityAction extends ProtegeOWLAction {
 
 
     private void updateState() {
-        setEnabled(getSelectedEntity() != null);
+        OWLSelectionModel selectionModel = getOWLWorkspace().getOWLSelectionModel();
+        setEnabled(selectionModel.getSelectedObject() instanceof OWLEntity
+                           || (selectionModel.getSelectedObject() != null && selectionModel.getSelectedEntity() != null));
     }
 
 
