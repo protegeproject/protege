@@ -63,7 +63,6 @@ public class BackgroundTaskLabel extends JLabel implements BackgroundTaskListene
     public String getToolTipText() {
         final List<BackgroundTask> tasks = mngr.getRunningTasks();
         String tt = tasks.get(tasks.size()-1).toString();
-        System.out.println(tt);
         return tt;
     }
 

@@ -212,43 +212,4 @@ public class RemovableObjectList<O> extends MList {
             return object;
         }
     }
-
-
-    public static void main(String[] args) {
-        List<String> strings = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            strings.add("Item " + i);
-        }
-        final RemovableObjectList<String> list = new RemovableObjectList<>();
-        list.setListData(strings.toArray());
-
-        list.addListSelectionListener(e -> {
-            String x1 = list.getSelectedValue();
-            if (x1 != null) {
-                System.out.println(x1);
-            }
-        });
-
-        list.setCellRenderer(new DefaultListCellRenderer() {
-
-            /**
-             * 
-             */
-            private static final long serialVersionUID = -1377455227330849109L;
-
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
-                                                          boolean cellHasFocus) {
-                JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                l.setText("MM: " + value.toString());
-                return l;
-            }
-        });
-
-        JFrame f = new JFrame();
-        f.getContentPane().setLayout(new BorderLayout());
-        f.getContentPane().add(new JScrollPane(list));
-        f.pack();
-        f.setVisible(true);
-
-    }
 }
