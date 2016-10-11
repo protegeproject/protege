@@ -1,9 +1,13 @@
 package org.protege.editor.owl.ui.action;
 
+import org.protege.editor.owl.model.selection.OWLEntitySelectionModel;
+import org.protege.editor.owl.model.selection.OWLSelectionModel;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLEntity;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 
 /**
@@ -35,8 +39,9 @@ public abstract class SelectedOWLClassAction extends ProtegeOWLAction {
 
 
     protected void updateState() {
-        OWLClass selectedClass = getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass();
-        setEnabled(selectedClass != null);
+        OWLSelectionModel selectionModel = getOWLWorkspace().getOWLSelectionModel();
+        Optional<OWLClass> selectedEntity = new OWLEntitySelectionModel(selectionModel).getSelectedClass();
+        setEnabled(selectedEntity.isPresent());
     }
 
 

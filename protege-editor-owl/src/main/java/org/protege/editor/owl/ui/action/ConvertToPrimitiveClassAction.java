@@ -47,13 +47,6 @@ public class ConvertToPrimitiveClassAction extends SelectedOWLClassAction {
         getOWLModelManager().applyChanges(changes);
     }
 
-
-    protected void updateState() {
-        OWLEntity selEnt = getOWLWorkspace().getOWLSelectionModel().getSelectedEntity();
-        setEnabled(selEnt instanceof OWLClass);
-    }
-
-
     protected void initialiseAction() throws Exception {
     }
 
