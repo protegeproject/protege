@@ -13,7 +13,7 @@ import org.protege.editor.owl.model.search.SearchResult;
 import org.protege.editor.owl.model.search.SearchResultHandler;
 import org.protege.editor.owl.model.search.SearchResultMatch;
 import org.protege.editor.owl.model.search.SearchStringParser;
-
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 import org.semanticweb.owlapi.util.ProgressMonitor;
 import org.slf4j.Logger;
@@ -298,4 +298,22 @@ public class DefaultSearchManager extends SearchManager {
             }
         });
     }
+
+	@Override
+	public void enableIncrementalIndexing() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void disableIncrementalIndexing() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateIndex(List<? extends OWLOntologyChange> changes) {
+		// TODO Auto-generated method stub
+		
+	}
 }
