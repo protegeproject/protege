@@ -70,7 +70,6 @@ public class ActiveOntologyView extends AbstractOWLViewComponent {
 
     private void handleOntologyChanges(List<? extends OWLOntologyChange> changes) {
         for(OWLOntologyChange change : changes) {
-            System.out.println("UPDATE");
             if(change instanceof SetOntologyID) {
 
                 updateList();
