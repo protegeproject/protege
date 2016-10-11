@@ -28,7 +28,8 @@ public class RemoveLocalDisjointAxiomsAction extends SelectedOWLClassAction {
         try {
             UIHelper uiHelper = new UIHelper(getOWLEditorKit());
             int result = uiHelper.showOptionPane("Include imported ontologies?",
-                                                 "Do you want to remove the disjoint axioms from \n" + "imported ontologies?",
+                                                 "Do you want to remove the disjoint classes axioms from " +
+                                                         "imported ontologies?",
                                                  JOptionPane.YES_NO_CANCEL_OPTION,
                                                  JOptionPane.QUESTION_MESSAGE);
 
