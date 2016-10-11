@@ -36,8 +36,9 @@ public class RemoveAllDisjointAxiomsAction extends ProtegeOWLAction {
     public void actionPerformed(ActionEvent e) {
         try {
             UIHelper uiHelper = new UIHelper(getOWLEditorKit());
-            int result = uiHelper.showOptionPane("Include imported ontologies?",
-                                                 "Do you want to remove the disjoint axioms from \n" + "imported ontologies?",
+            int result = uiHelper.showOptionPane("Remove axioms from imported ontologies?",
+                                                 "Do you want to remove the disjoint classes axioms from " +
+                                                         "imported ontologies?",
                                                  JOptionPane.YES_NO_CANCEL_OPTION,
                                                  JOptionPane.QUESTION_MESSAGE);
 
