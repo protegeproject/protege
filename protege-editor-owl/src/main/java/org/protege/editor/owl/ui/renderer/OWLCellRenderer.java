@@ -367,15 +367,17 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             cellBounds = list.getCellBounds(index, index);
             gettingCellBounds = false;
         }
-        preferredWidth = -1;
+        
         minTextHeight = 12;
-        /**
-         * This call always appears to return zero, which causes getPreferredSize to return the wrong height 
+        
         if (list.getParent() != null) {
             preferredWidth = list.getParent().getWidth();
+        }        
+
+        if (preferredWidth == 0) {
+        	preferredWidth = -1;
         }
-        **/
-        
+//        preferredWidth = -1;
 //        textPane.setBorder(BorderFactory.createEmptyBorder(1, 2, 1, 2 + rightMargin));
         setupLinkedObjectComponent(list, cellBounds);
         Component c = prepareRenderer(value, isSelected, cellHasFocus);
