@@ -8,7 +8,6 @@ import org.protege.editor.owl.ui.renderer.OWLEntityIcon;
 import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.util.OWLEntitySetProvider;
-import sun.dc.pr.PRError;
 
 
 /**
