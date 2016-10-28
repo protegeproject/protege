@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
+import org.protege.editor.owl.ui.frame.cls.OWLEquivalentClassesAxiomFrameSection;
 import org.protege.editor.owl.ui.frame.cls.OWLSubClassAxiomFrameSection;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -52,9 +53,11 @@ public class CreateConjunctTermAction<R> extends OWLFrameListPopupMenuAction<R> 
     protected void updateState() {
     	for (OWLFrameSectionRow<?, ?, ?> row : getSelectedRows()) {
     		OWLFrameSection fs = row.getFrameSection();
-    		if (fs instanceof OWLSubClassAxiomFrameSection) {
-    			setEnabled(getSelectedRows().size() > 1);
-    			return;
+    		if (getSelectedRows().size() > 1) {
+    			if (fs instanceof OWLSubClassAxiomFrameSection) {
+    				setEnabled(true);
+    				return;
+    			}
     		}
     	}
     	setEnabled(false);
