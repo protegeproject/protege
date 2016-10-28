@@ -4,9 +4,13 @@ import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.owl.ui.selector.AbstractHierarchySelectorPanel;
 import org.protege.editor.owl.ui.selector.AbstractSelectorPanel;
+import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyRangeAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLProperty;
 
 import javax.swing.*;
@@ -37,9 +41,9 @@ public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F e
 
     private JPanel panel;
 
-    private AbstractHierarchySelectorPanel<P> propertySelectorPanel;
+    protected AbstractHierarchySelectorPanel<P> propertySelectorPanel;
 
-    private AbstractSelectorPanel<F> fillerSelectorPanel;
+    protected AbstractSelectorPanel<F> fillerSelectorPanel;
 
     private JSpinner cardinalitySpinner;
 
@@ -51,6 +55,8 @@ public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F e
     private Set<InputVerificationStatusChangedListener> listeners = new HashSet<>();
 
     private ChangeListener selListener = event -> checkStatus();
+    
+    private ChangeListener propChosenListener = event -> propChosen();
 
 
     public void initialise() throws Exception {
@@ -58,6 +64,7 @@ public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F e
 
         propertySelectorPanel = createPropertySelectorPanel();
         propertySelectorPanel.addSelectionListener(selListener);
+        propertySelectorPanel.addSelectionListener(propChosenListener);
         propertySelectorPanel.setBorder(ComponentFactory.createTitledBorder("Restricted property"));
 
         fillerSelectorPanel = createFillerSelectorPanel();
@@ -147,6 +154,10 @@ public abstract class AbstractRestrictionCreatorPanel<P extends OWLProperty, F e
                 l.verifiedStatusChanged(newStatus);
             }
         }
+    }
+    
+    protected void propChosen() {
+    	
     }
 
     protected void setType(RestrictionCreator type){

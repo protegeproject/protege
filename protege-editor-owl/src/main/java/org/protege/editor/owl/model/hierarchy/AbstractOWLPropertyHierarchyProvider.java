@@ -113,7 +113,7 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
     }
 
 
-    private void rebuildRoots() {
+    protected void rebuildRoots() {
         subPropertiesOfRoot.clear();
         for (OWLOntology ontology : ontologies) {
             for (P prop : getReferencedProperties(ontology)) {

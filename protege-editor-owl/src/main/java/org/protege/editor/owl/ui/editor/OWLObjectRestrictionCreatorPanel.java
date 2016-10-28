@@ -1,5 +1,8 @@
 package org.protege.editor.owl.ui.editor;
 
+import org.protege.editor.owl.model.hierarchy.AssertedClassSubHierarchyProvider;
+import org.protege.editor.owl.model.hierarchy.FilteredOWLObjectPropertyHierarchyProvider;
+import org.protege.editor.owl.model.hierarchy.OWLObjectPropertyHierarchyProvider;
 import org.protege.editor.owl.ui.selector.AbstractHierarchySelectorPanel;
 import org.protege.editor.owl.ui.selector.AbstractSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
@@ -88,12 +91,33 @@ public class OWLObjectRestrictionCreatorPanel extends AbstractRestrictionCreator
 
 
     protected AbstractSelectorPanel<OWLClass> createFillerSelectorPanel() {
-        return new OWLClassSelectorPanel(getOWLEditorKit(), false);
+    	AssertedClassSubHierarchyProvider ac = 
+    			new AssertedClassSubHierarchyProvider(getOWLEditorKit().getOWLModelManager().getOWLOntologyManager());
+    	ac.setOntologies(getOWLEditorKit().getModelManager().getActiveOntologies());
+        return new OWLClassSelectorPanel(getOWLEditorKit(), false, ac);
     }
 
 
     protected AbstractHierarchySelectorPanel<OWLObjectProperty> createPropertySelectorPanel() {
-        return new OWLObjectPropertySelectorPanel(getOWLEditorKit(), false);
+    	
+    	OWLObjectPropertyHierarchyProvider op = new FilteredOWLObjectPropertyHierarchyProvider(getOWLEditorKit()
+        		.getModelManager().getOWLOntologyManager(), getOWLEditorKit());
+    	op.setOntologies(getOWLEditorKit().getModelManager().getActiveOntologies());
+    	//getOWLEditorKit().getModelManager().getOWLHierarchyManager().setOWLObjectPropertyHierarchyProvider(op);
+        return new OWLObjectPropertySelectorPanel(getOWLEditorKit(), false, op);
+    }
+    
+    protected void propChosen() {
+    	OWLOntology ont = getOWLEditorKit().getOWLModelManager().getActiveOntology();
+    	OWLObjectProperty p = (OWLObjectProperty) propertySelectorPanel.getSelectedObject();
+    	OWLClassSelectorPanel ocsp = (OWLClassSelectorPanel) fillerSelectorPanel;
+
+    	Set<OWLObjectPropertyRangeAxiom> raxs = ont.getObjectPropertyRangeAxioms(p);
+    	for (OWLObjectPropertyRangeAxiom ra : raxs) {
+    		if (!ra.getRange().isAnonymous()) {
+    			ocsp.setTreeRoot(ra.getRange().asOWLClass());   			
+    		}    		
+    	}
     }
 
 

@@ -16,6 +16,7 @@ import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.core.ui.view.ViewComponentPluginAdapter;
 import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.hierarchy.AssertedClassSubHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.protege.editor.owl.ui.tree.OWLTreeDragAndDropHandler;
@@ -35,7 +36,10 @@ import org.semanticweb.owlapi.model.OWLClass;
  */
 public class OWLClassSelectorPanel extends AbstractHierarchySelectorPanel<OWLClass> {
 
-    private AbstractOWLEntityHierarchyViewComponent<OWLClass> vc;
+    private static final long serialVersionUID = -7010322785054275542L;
+    
+    private MyToldOWLClassHierarchyViewComponent vc;
+
 
 
     public OWLClassSelectorPanel(OWLEditorKit editorKit) {
@@ -49,7 +53,59 @@ public class OWLClassSelectorPanel extends AbstractHierarchySelectorPanel<OWLCla
     public OWLClassSelectorPanel(OWLEditorKit editorKit, boolean editable, OWLObjectHierarchyProvider<OWLClass> hp) {
         super(editorKit, editable, hp);
     }
+    
+    private class MyToldOWLClassHierarchyViewComponent extends ToldOWLClassHierarchyViewComponent {
+    	/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
+		public void performExtraInitialisation() throws Exception {
+    		if (isEditable()){
+                super.performExtraInitialisation();
+            }
+
+    		JButton searchbutton = new JButton("Search");
+    		
+    		addAction(new DisposableAction("Search", searchbutton.getIcon()) {
+    			
+    			private static final long serialVersionUID = 1L;
+
+    			public void actionPerformed(ActionEvent event) {
+
+    				Component focusOwner = FocusManager.getCurrentManager().getFocusOwner();
+    				if(focusOwner == null) {
+    					return;
+    				}                		        
+    				OWLClass cls = getOWLWorkspace().searchForClass(focusOwner);
+    				if (cls != null) {
+    					setSelectedEntity(cls);
+    				}
+    			}
+
+    			public void dispose() {
+    				
+    			}
+    		}, "A", "A");
+    		
+    		getTree().setDragAndDropHandler(new OWLTreeDragAndDropHandler<OWLClass>() {
+                public boolean canDrop(Object child, Object parent) {
+                    return false;
+                }
+                public void move(OWLClass child, OWLClass fromParent, OWLClass toParent) {}
+                public void add(OWLClass child, OWLClass parent) {}
+            });
+            getAssertedTree().setPopupMenuId(new PopupMenuId("[NCIAssertedClassHierarchy]")); 
+        }
+       
+        protected OWLObjectHierarchyProvider<OWLClass> getHierarchyProvider() {
+            return OWLClassSelectorPanel.this.getHierarchyProvider();
+        }
+        
+        public void refreshTree() {
+        	this.getTree().reload();
+        }
+    };
 
     protected ViewComponentPlugin getViewComponentPlugin() {
 
@@ -66,60 +122,7 @@ public class OWLClassSelectorPanel extends AbstractHierarchySelectorPanel<OWLCla
 
             public ViewComponent newInstance() throws ClassNotFoundException, IllegalAccessException,
                     InstantiationException {
-                vc = new ToldOWLClassHierarchyViewComponent() {
-                	/**
-					 * 
-					 */
-					private static final long serialVersionUID = 1L;
-
-					public void performExtraInitialisation() throws Exception {
-                		if (isEditable()){
-                            super.performExtraInitialisation();
-                        }
-
-                		JButton searchbutton = new JButton("Search");
-                		
-                		addAction(new DisposableAction("Search", searchbutton.getIcon()) {
-                			
-                			private static final long serialVersionUID = 1L;
-
-                			public void actionPerformed(ActionEvent event) {
-
-                				Component focusOwner = FocusManager.getCurrentManager().getFocusOwner();
-                				if(focusOwner == null) {
-                					return;
-                				}                		        
-                				OWLClass cls = getOWLWorkspace().searchForClass(focusOwner);
-                				if (cls != null) {
-                					setSelectedEntity(cls);
-                				}
-                			}
-
-                			public void dispose() {
-                				
-                			}
-                		}, "A", "A");
-                		
-                		getTree().setDragAndDropHandler(new OWLTreeDragAndDropHandler<OWLClass>() {
-                            public boolean canDrop(Object child, Object parent) {
-                                return false;
-                            }
-                            public void move(OWLClass child, OWLClass fromParent, OWLClass toParent) {}
-                            public void add(OWLClass child, OWLClass parent) {}
-                        });
-                        getAssertedTree().setPopupMenuId(new PopupMenuId("[NCIAssertedClassHierarchy]")); 
-                        
-                        
-                        
-                        	
-                		
-
-                    }
-                   
-                    protected OWLObjectHierarchyProvider<OWLClass> getOWLClassHierarchyProvider() {
-                        return getHierarchyProvider();
-                    }
-                };
+                vc = new MyToldOWLClassHierarchyViewComponent(); 
                 vc.setup(this);
                 return vc;
             }
@@ -129,6 +132,15 @@ public class OWLClassSelectorPanel extends AbstractHierarchySelectorPanel<OWLCla
                 return OWLSystemColors.getOWLClassColor();
             }
         };
+    }
+    
+    public void setTreeRoot(OWLClass root) {
+    	AssertedClassSubHierarchyProvider sap =  (AssertedClassSubHierarchyProvider) getHierarchyProvider();
+    	sap.setRoot(root);
+    	vc.refreshTree();
+    	
+    	
+    	
     }
 
     public void setSelection(OWLClass cls) {
