@@ -113,10 +113,14 @@ public class OWLObjectRestrictionCreatorPanel extends AbstractRestrictionCreator
     	OWLClassSelectorPanel ocsp = (OWLClassSelectorPanel) fillerSelectorPanel;
 
     	Set<OWLObjectPropertyRangeAxiom> raxs = ont.getObjectPropertyRangeAxioms(p);
-    	for (OWLObjectPropertyRangeAxiom ra : raxs) {
-    		if (!ra.getRange().isAnonymous()) {
-    			ocsp.setTreeRoot(ra.getRange().asOWLClass());   			
-    		}    		
+    	if (raxs.isEmpty()) {
+    		ocsp.setTreeRoot(getOWLEditorKit().getOWLModelManager().getOWLDataFactory().getOWLThing());
+    	} else {
+    		for (OWLObjectPropertyRangeAxiom ra : raxs) {
+    			if (!ra.getRange().isAnonymous()) {
+    				ocsp.setTreeRoot(ra.getRange().asOWLClass());   			
+    			}    		
+    		}
     	}
     }
 

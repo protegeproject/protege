@@ -42,7 +42,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
      */
     private Collection<OWLOntology> ontologies;
 
-    private volatile OWLClass root;
+    protected volatile OWLClass root;
 
     private ParentClassExtractor parentClassExtractor;
 
