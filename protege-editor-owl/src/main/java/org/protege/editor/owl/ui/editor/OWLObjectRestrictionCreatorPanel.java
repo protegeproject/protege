@@ -111,17 +111,39 @@ public class OWLObjectRestrictionCreatorPanel extends AbstractRestrictionCreator
     	OWLOntology ont = getOWLEditorKit().getOWLModelManager().getActiveOntology();
     	OWLObjectProperty p = (OWLObjectProperty) propertySelectorPanel.getSelectedObject();
     	OWLClassSelectorPanel ocsp = (OWLClassSelectorPanel) fillerSelectorPanel;
+    	
+    	OWLClass root = findRange(ont, p);
+    	
+    	if (root != null) {
+    		ocsp.setTreeRoot(root);
+    	} else {
+    		ocsp.setTreeRoot(getOWLEditorKit().getOWLModelManager().getOWLDataFactory().getOWLThing());
+    		System.out.println("The object property has no range: " + p);
+    	}
 
+    	
+    }
+    
+    private OWLClass findRange(OWLOntology ont, OWLObjectProperty p) {
+    	
     	Set<OWLObjectPropertyRangeAxiom> raxs = ont.getObjectPropertyRangeAxioms(p);
     	if (raxs.isEmpty()) {
-    		ocsp.setTreeRoot(getOWLEditorKit().getOWLModelManager().getOWLDataFactory().getOWLThing());
+    		Set<OWLSubObjectPropertyOfAxiom> subs = ont.getObjectSubPropertyAxiomsForSubProperty(p);
+			for (OWLSubObjectPropertyOfAxiom ax : subs) {
+				OWLClass ocls = findRange(ont, ax.getSuperProperty().asOWLObjectProperty());
+				if (ocls != null) {
+					return ocls;
+				}
+			}
     	} else {
     		for (OWLObjectPropertyRangeAxiom ra : raxs) {
     			if (!ra.getRange().isAnonymous()) {
-    				ocsp.setTreeRoot(ra.getRange().asOWLClass());   			
+    				return ra.getRange().asOWLClass();   			
     			}    		
     		}
     	}
+    	return null;
+    	
     }
 
 

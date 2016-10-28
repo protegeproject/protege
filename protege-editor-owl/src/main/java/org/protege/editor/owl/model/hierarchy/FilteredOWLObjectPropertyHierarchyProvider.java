@@ -29,7 +29,7 @@ public class FilteredOWLObjectPropertyHierarchyProvider extends OWLObjectPropert
 		Set<OWLObjectProperty> result = new HashSet<OWLObjectProperty>();
 		for (OWLObjectProperty p : props) {
 			if (isSubClassOfPropDomain(ont, p, selectedClass)) {
-				System.out.println(p +" works for " + selectedClass);
+				//System.out.println(p +" works for " + selectedClass);
 				result.add(p);
 			}			
 		}
@@ -50,11 +50,12 @@ public class FilteredOWLObjectPropertyHierarchyProvider extends OWLObjectPropert
 		OWLClass dom = findDomain(ont, p);
 		
 		if (dom != null) {
-			return isSubClass(ont, cls, dom);
-			
-		}	
+			return isSubClass(ont, cls, dom);			
+		} else {
+			System.out.println("Property has no domain: " + p);
+		}
 		
-		return false;
+		return true;
 	}
 	
 	private boolean isSubClass(OWLOntology ont, OWLClass sub, OWLClass sup) {
