@@ -130,7 +130,7 @@
     </extension>
 
     <extension id="menu.window.captureView" point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Capture view..."/>
+        <name value="Capture view to clipboard..."/>
         <path value="org.protege.editor.core.application.menu.window/SlotC-A"/>
         <toolTip value="Capture the focused view as a png image on the clipboard"/>
         <class value="org.protege.editor.core.ui.view.CaptureScreenshotAction"/>
