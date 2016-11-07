@@ -98,7 +98,7 @@ public class View extends JComponent implements NodeComponent, Disposable {
 
     // A set to keep track of the view action plugins
     // that we have instantiated.
-    private Set<ViewAction> addedViewActions;
+    private final Set<ViewAction> addedViewActions = new LinkedHashSet<>();
 
 
 	/**
@@ -127,9 +127,11 @@ public class View extends JComponent implements NodeComponent, Disposable {
             }
         });
         additionalViewActionPlugins = new HashSet<>();
-        addedViewActions = new HashSet<>();
     }
 
+    public Collection<ViewAction> getViewActions() {
+        return new ArrayList<>(addedViewActions);
+    }
 
     public boolean requestFocusInWindow() {
         if (viewComponent == null) {

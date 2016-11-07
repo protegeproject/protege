@@ -20,6 +20,14 @@ import java.util.Set;
 public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLProperty> extends AbstractOWLEntityHierarchyViewComponent<O>
         implements Findable<O>, Deleteable, CreateNewChildTarget, CreateNewSiblingTarget {
 
+    private static final String ADD_GROUP = "A";
+
+    private static final String DELETE_GROUP = "B";
+
+    private static final String FIRST_SLOT = "A";
+
+    private static final String SECOND_SLOT = "B";
+
     protected abstract OWLSubPropertyAxiom getSubPropertyAxiom(O child, O parent);
 
 
@@ -49,7 +57,7 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
             protected boolean canPerform(O prop) {
                 return canCreateNewChild();
             }
-        }, "A", "A");
+        }, ADD_GROUP, FIRST_SLOT);
 
         addAction(new AbstractOWLTreeAction<O>("Add sibling property", 
         		                               getSibIcon(),
@@ -61,7 +69,7 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
             protected boolean canPerform(O cls) {
                 return canCreateNewSibling();
             }
-        }, "A", "B");
+        }, ADD_GROUP, SECOND_SLOT);
 
         addAction(new AbstractDeleteEntityAction<O>("Delete selected properties", 
 		         									getDeleteIcon(),
@@ -78,8 +86,16 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
         		if (!getTopProperty().equals(getSelectedEntity())) {
         			super.actionPerformed(e);
 				}
-        	}	
-        }, "B", "A");
+        	}
+
+            @Override
+            public void updateState() {
+                super.updateState();
+                if(isEnabled()) {
+                    setEnabled(isInAssertedMode());
+                }
+            }
+        }, DELETE_GROUP, FIRST_SLOT);
 
         getTree().setDragAndDropHandler(new OWLPropertyTreeDropHandler<O>(getOWLModelManager()){
             protected OWLAxiom getAxiom(OWLDataFactory df, O child, O parent) {
