@@ -5,6 +5,7 @@ import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.workspace.WorkspaceFrame;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.FocusManager;
 import java.awt.*;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.awt.GridBagConstraints.*;
+import static java.awt.RenderingHints.*;
 
 /**
  * Author: Matthew Horridge<br>
@@ -38,14 +40,9 @@ public class CaptureScreenshotAction extends ProtegeAction {
 
     public static final CaptureTypePanel captureTypePanel = new CaptureTypePanel();
 
-    /**
-     * Invoked when an action occurs.
-     */
     public void actionPerformed(ActionEvent e) {
         takeScreenCaptureOfCurrentView();
-
     }
-
 
     private void takeScreenCaptureOfCurrentView() {
         if (currentView == null) {
@@ -59,6 +56,14 @@ public class CaptureScreenshotAction extends ProtegeAction {
         }
         CaptureType captureType = captureTypePanel.getSelectedCaptureType();
         Component component = captureType.getComponentToCapture(currentFocusOwner);
+        if(component == null) {
+            Toolkit.getDefaultToolkit().beep();
+            JOptionPane.showMessageDialog(frame,
+                                          "Please focus the view that you want to capture",
+                                          "No view focused",
+                                          JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         Dimension size = component.getSize();
         double scaleFactor = captureTypePanel.getScaleFactor();
         final BufferedImage bufferedImage = new BufferedImage(
@@ -66,14 +71,14 @@ public class CaptureScreenshotAction extends ProtegeAction {
                 (int) (size.height * scaleFactor),
                 BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = (Graphics2D) bufferedImage.getGraphics();
-        g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-        g.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
-        g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+        g.setRenderingHint(KEY_ALPHA_INTERPOLATION, VALUE_ALPHA_INTERPOLATION_QUALITY);
+        g.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(KEY_COLOR_RENDERING, VALUE_COLOR_RENDER_QUALITY);
+        g.setRenderingHint(KEY_DITHERING, VALUE_DITHER_ENABLE);
+        g.setRenderingHint(KEY_FRACTIONALMETRICS, VALUE_FRACTIONALMETRICS_ON);
+        g.setRenderingHint(KEY_INTERPOLATION, VALUE_INTERPOLATION_BILINEAR);
+        g.setRenderingHint(KEY_RENDERING, VALUE_RENDER_QUALITY);
+        g.setRenderingHint(KEY_STROKE_CONTROL, VALUE_STROKE_PURE);
 
         g.scale(scaleFactor, scaleFactor);
 
@@ -154,7 +159,7 @@ public class CaptureScreenshotAction extends ProtegeAction {
             this.name = name;
         }
 
-
+        @Nullable
         public Component getComponentToCapture(Component component) {
             switch (this) {
                 case VIEW_HOLDER:
