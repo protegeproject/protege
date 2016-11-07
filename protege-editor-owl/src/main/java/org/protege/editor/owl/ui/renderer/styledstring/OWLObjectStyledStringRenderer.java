@@ -293,11 +293,14 @@ public class OWLObjectStyledStringRenderer {
         }
 
         public void visit(OWLAnnotationAssertionAxiom axiom) {
-            axiom.getSubject().accept(this);
+            if(axiom.getSubject() instanceof IRI) {
+                builder.append(renderingContext.getIriShortFormProvider().getShortForm((IRI) axiom.getSubject()));
+            }
+            else {
+                axiom.getSubject().accept(this);
+            }
             renderSpace();
-            axiom.getProperty().accept(this);
-            renderSpace();
-            axiom.getValue().accept(this);
+            axiom.getAnnotation().accept(this);
         }
 
         public void visit(OWLSymmetricObjectPropertyAxiom axiom) {
