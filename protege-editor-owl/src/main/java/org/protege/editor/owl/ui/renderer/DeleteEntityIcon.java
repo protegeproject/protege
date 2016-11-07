@@ -20,6 +20,7 @@ public class DeleteEntityIcon implements Icon {
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
+        EntityActionIcon.setupAlpha(c, g2);
         try {
             int halfWidth = getIconWidth() / 2;
             int xC = halfWidth + x;
