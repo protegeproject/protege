@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.view;
 
+import org.protege.editor.core.HasUpdateState;
 import org.protege.editor.core.ui.view.DisposableAction;
 
 import javax.swing.*;
@@ -14,13 +15,7 @@ import javax.swing.*;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public abstract class OWLSelectionViewAction extends DisposableAction {
-
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -8530394736100720111L;
-
+public abstract class OWLSelectionViewAction extends DisposableAction implements HasUpdateState {
 
     protected OWLSelectionViewAction(String name, Icon icon) {
         super(name, icon);

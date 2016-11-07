@@ -1,6 +1,8 @@
 package org.protege.editor.owl.ui.view;
 
+import org.protege.editor.core.HasUpdateState;
 import org.protege.editor.core.ui.view.View;
+import org.protege.editor.core.ui.view.ViewAction;
 import org.protege.editor.core.ui.view.ViewMode;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
@@ -169,9 +171,17 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
         if(sel != null) {
             setSelectedEntity(sel);
         }
+        updateViewActions();
         updateView();
     }
 
+    private void updateViewActions() {
+        for(ViewAction viewAction : getView().getViewActions()) {
+            if(viewAction instanceof HasUpdateState) {
+                ((HasUpdateState) viewAction).updateState();
+            }
+        }
+    }
 
     protected abstract void performExtraInitialisation() throws Exception;
 

@@ -1,11 +1,11 @@
 package org.protege.editor.owl.ui.action;
 
+import org.protege.editor.core.HasUpdateState;
 import org.protege.editor.core.ui.view.DisposableAction;
 import org.protege.editor.owl.ui.tree.OWLObjectTreeNode;
 import org.semanticweb.owlapi.model.OWLEntity;
 
 import javax.swing.*;
-import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
@@ -23,7 +23,7 @@ import javax.swing.tree.TreeSelectionModel;
  * Bio Health Informatics Group<br>
  * Date: May 27, 2009<br><br>
  */
-public abstract class AbstractOWLTreeAction<E extends OWLEntity> extends DisposableAction {
+public abstract class AbstractOWLTreeAction<E extends OWLEntity> extends DisposableAction implements HasUpdateState {
 
     private TreeSelectionModel selectionModel;
 
@@ -38,13 +38,17 @@ public abstract class AbstractOWLTreeAction<E extends OWLEntity> extends Disposa
         setEnabled(canPerform(getSelectedOWLEntity()));
     }
 
+    @Override
+    public void updateState() {
+        // Ask subclasses if we should be enabled for the current
+        // selection
+        setEnabled(canPerform(getSelectedOWLEntity()));
+    }
 
     // Called on a selection history to enable/disable
     // the action.
     private void reactToSelection() {
-        // Ask subclasses if we should be enabled for the current
-        // selection
-        setEnabled(canPerform(getSelectedOWLEntity()));
+        updateState();
     }
 
 

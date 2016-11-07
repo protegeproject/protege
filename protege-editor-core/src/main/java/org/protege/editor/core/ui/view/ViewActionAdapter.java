@@ -1,5 +1,7 @@
 package org.protege.editor.core.ui.view;
 
+import org.protege.editor.core.HasUpdateState;
+
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -14,7 +16,7 @@ import java.beans.PropertyChangeListener;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class ViewActionAdapter extends ViewAction {
+public class ViewActionAdapter extends ViewAction implements HasUpdateState {
 
         private DisposableAction action;
 
@@ -46,6 +48,12 @@ public class ViewActionAdapter extends ViewAction {
         action.actionPerformed(e);
     }
 
+    @Override
+    public void updateState() {
+        if(action instanceof HasUpdateState) {
+            ((HasUpdateState) action).updateState();
+        }
+    }
 
     /**
      * This method is called at the end of a plugin
