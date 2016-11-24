@@ -1,19 +1,22 @@
 package org.protege.editor.owl.ui.explanation;
 
+import java.awt.Frame;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
+
 import org.protege.editor.core.Disposable;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 public class ExplanationManager implements Disposable {
 
@@ -22,6 +25,8 @@ public class ExplanationManager implements Disposable {
 	private final OWLEditorKit editorKit;
 
 	private final Collection<ExplanationService> explanationServices = new HashSet<>();
+	
+	private final Collection<ExplanationDialog> openedExplanations = new HashSet<>();
 	
 	public ExplanationManager(OWLEditorKit editorKit) {
 		this.editorKit = editorKit;
@@ -77,13 +82,15 @@ public class ExplanationManager implements Disposable {
 	
 	public void handleExplain(Frame owner, OWLAxiom axiom) {
 		final ExplanationDialog explanation = new ExplanationDialog(this, axiom);
+		openedExplanations.add(explanation);
 		JOptionPane op = new JOptionPane(explanation, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION);
         JDialog dlg = op.createDialog(owner, getExplanationDialogTitle(axiom));
+		dlg.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         dlg.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentHidden(ComponentEvent e) {
+            	openedExplanations.remove(explanation);
                 explanation.dispose();
-                dlg.dispose();
             }
         });
         dlg.setModal(false);
@@ -99,6 +106,10 @@ public class ExplanationManager implements Disposable {
 
 	@Override
 	public void dispose() throws Exception {
+		for (ExplanationDialog explanation : openedExplanations) {
+			explanation.dispose();
+		}
+		openedExplanations.clear();
 		for (ExplanationService teacher : explanationServices) {
 			teacher.dispose();
 		}
