@@ -238,7 +238,7 @@
     <extension id="menu.ReleaseNotesMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Release notes"/>
         <toolTip value="View online release notes"/>
-        <url value="http://protegewiki.stanford.edu/wiki/Protege_5.0_Beta_Release_Notes"/>
+        <url value="https://github.com/protegeproject/protege-distribution/releases"/>
         <path value="org.protege.editor.core.application.menu.HelpMenu/SlotE-A"/>
         <editorKitId value="any"/>
     </extension>
