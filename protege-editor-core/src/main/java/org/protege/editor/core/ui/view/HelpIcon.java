@@ -19,10 +19,9 @@ public class HelpIcon extends ViewBarIcon {
 
     private static final HelpIcon ICON = new HelpIcon();
 
-    private final Font font;
+    private static final Font font = new Font("Verdana", Font.BOLD, 10);
 
-    public HelpIcon() {
-        this.font = new Font("Verdana", Font.BOLD, 9);
+    private HelpIcon() {
     }
 
     public static HelpIcon get() {
@@ -47,7 +46,7 @@ public class HelpIcon extends ViewBarIcon {
         float xPos = (float) ((width - bounds.getWidth()) / 2);
         int ascent = fm.getAscent();
         int descent = fm.getDescent();
-        float yPos = ((height + 1) / 2 - (ascent + descent) / 2 + ascent - 1);
+        float yPos = ((height + 1) / 2 - (ascent + descent) / 2 + ascent);
         g2.drawString(HELP_STRING,
                      xPos,
                      yPos);
