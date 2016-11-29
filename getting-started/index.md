@@ -102,12 +102,15 @@ Reconfiguring the user interface is easy. Adding and removing tabs and views is 
 
 All changes will be saved when Protege is properly shut down (or the save can be forced by selecting "Save current layout" in the Window menu).
 
+For a demonstration on view manipulation please watch the video below.
 <figure>
-  <img src="{{site.baseurl}}/assets/tabs/entities/dropping-view.png" alt="Dropping a view into the Entities tab" style="max-width: 300px;">
-  <figcaption>
-  Dropping a view into the Entities tab.  The View will be positioned in the lower half of the
-  Class hierarchy view.
-  </figcaption>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/JObQC-L2piA" frameborder="0" allowfullscreen></iframe>
+</figure>
+
+For a demostration on how to add, reset and close tabs please watch the video below.
+
+<figure>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/rO2pYQr1l-M" frameborder="0" allowfullscreen></iframe>
 </figure>
 
 # Human Readable Entity Names
