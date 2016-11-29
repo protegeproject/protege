@@ -6,9 +6,9 @@ menuPath: Class views > Class hierarchy
 ---
 The class hierarchy view displays the asserted and inferred class hierarchies.  The asserted class hierarchy is visible by default.
 
-The asserted class hierarchy view is one of the primary navigation devices in {{site.protege}}.  It is presented as a tree where tree nodes correspond to classes.  A child node represents a class that is a subclass of the class represented by the parent node.
+The asserted class hierarchy view is one of the primary navigation devices in {{site.protege}}.  It is presented as a tree where nodes in the tree represent classes.  A child-parent relationship in the tree represents a sub/super class relationship in the class hierarchy.  
 
-A class will be shown under another class if it is asserted to be a SubClassOf that other class, or if it is asserted to be EquivalentTo a class expression that is an intersection containing that other class as an operand.  For example, if the ontology contains ```A SubClassOf B```, then ```A``` will appear under ```B``` in the tree.  Similarly, if the ontology contains ```E Equivalent to B and hasPart some C``` then ```E``` will also be shown as a chid of ```B``` in the tree.  Any classes that are not asserted to be a subclass of some other class will show up directly under ```owl:Thing``` (the root).
+In the asserted class hierarchy, a class will be shown as a child of another class in the tree if it is asserted to be a SubClassOf that other class, or if it is asserted to be EquivalentTo a class expression that is an intersection containing that other class as an operand.  For example, if the ontology contains ```A SubClassOf B```, then ```A``` will appear under ```B``` in the tree.  Similarly, if the ontology contains ```E EquivalentTo B and D``` (where D is any other class expression) then ```E``` will also be shown as a chid of ```B``` in the tree.  Any classes that are not asserted to be a subclass of some other class will show up directly under ```owl:Thing``` (the root).
 
 Note that names in the class hierarchy are quoted using single quotes if the name contains spaces.  The quotes, however, are not part of the name.
 
@@ -29,7 +29,11 @@ New classes can be inserted into the class hierarchy using the class creation bu
   <img src="{{site.baseurl}}/assets/views/class-hierarchy/class-hierarchy-toolbar.png" style="max-width: 120px;"/>
   <figcaption>The class hierarchy toolbar.  From left to right the buttons are: "Add SubClass", "Add sibling class", "Delete selected class"</figcaption>
 </figure>
-
+* **Add SubClasses Popup Menu Item** - Make sure that the Asserted class hierarchy is selected.  Right click (or CMD+Click on a Mac) a class in the class hierarchy.  The popup menu will be displayed.  Select the "Add SubClasses..." item from the menu.  The wizard shown below will be displayed for entering a tab indented hierarchy of class names.  The tab indented hierarchy that you enter will be converted into a sub-hierarchy that will be rooted at the selected class.
+<figure>
+  <img src="{{site.baseurl}}/assets/views/class-hierarchy/tab-indented-hierarchy.png" style="max-width: 600px;"/>
+  <figcaption>The **Add SubClasses** Wizard.  On this Wizard page a tab-indented hierarchy has been entered.  Upon completion, this hierarchy will be created as a sub-hierarchy of the selected class.</figcaption>
+</figure>
 * **Add Sibling Class Popup Menu Item** - Make sure that the Asserted class hierarchy is selected.Right click (or CMD+Click on a Mac) a class in the class hierarchy.  The popup menu will be displayed.  Select the "Add subclass..." item from the menu. A dialog will be displayed for specifying the name of the new class.  The new class will be inserted as a subclass of the class that was clicked.
 * **Add Sibling Class Popup Menu Item** -  Make sure that the Asserted class hierarchy is selected. Right click (or CMD+Click on a Mac) a class in the class hierarchy.  The popup menu will be displayed.  Select the "Add sibling class..." item from the menu. A dialog will be displayed for specifying the name of the new class.  The new class will be inserted as a sibling class of the selected class.
 * **Add SubClass Keyboard Shortcut** - Make sure that the Asserted class hierarchy is selected. Select a class and press ```Ctrl+E``` on Windows/Linux or ```Cmd+E``` on a Mac.  A dialog will be displayed for specifying the name of the new class.  The new class will be inserted as a subclass of the selected class.
