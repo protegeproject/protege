@@ -7,8 +7,14 @@ import org.protege.editor.core.plugin.ExtensionInstantiator;
 import org.protege.editor.core.plugin.JPFUtil;
 import org.protege.editor.core.plugin.PluginProperties;
 import org.protege.editor.core.ui.workspace.Workspace;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Optional;
 import java.util.Set;
 /*
  * Copyright (C) 2007, University of Manchester
@@ -27,6 +33,8 @@ import java.util.Set;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class ViewComponentPluginJPFImpl implements ViewComponentPlugin {
+
+    private static final Logger logger = LoggerFactory.getLogger(ViewComponentPluginJPFImpl.class);
 
     public static final String ID = "ViewComponent";
 
@@ -101,6 +109,20 @@ public class ViewComponentPluginJPFImpl implements ViewComponentPlugin {
         return PluginProperties.getParameterValues(extension, NAVIGATES);
     }
 
+    @Nonnull
+    @Override
+    public Optional<URI> getHelpLink() {
+        return Optional.ofNullable(
+                PluginProperties.getParameterValue(extension, "help", null)
+        ).flatMap(u -> {
+            try {
+                return Optional.of(new URI(u));
+            } catch (URISyntaxException e) {
+                logger.warn("Malformed help URL ({}): {}", u, e.getMessage());
+                return Optional.empty();
+            }
+        });
+    }
 
     /**
      * Creates an instance of the plugin.  It is expected that

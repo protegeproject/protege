@@ -367,6 +367,7 @@
         <headerColor value="@org.protege.classcolor"/>
         <category value="@org.protege.classcategory"/>
         <navigates value="@org.protege.classcategory"/>
+        <help value="http://protegeproject.github.io/protege/views/class-hierarchy"/>
     </extension>
 
     <extension id="InferredOWLClassHierarchy"
@@ -403,6 +404,7 @@
         <class value="org.protege.editor.owl.ui.view.cls.OWLClassAnnotationsViewComponent"/>
         <headerColor value="@org.protege.classcolor"/>
         <category value="@org.protege.classcategory"/>
+        <help value="http://protegeproject.github.io/protege/views/annotations"/>
     </extension>
 
 
@@ -413,6 +415,7 @@
         <headerColor value="@org.protege.classcolor"/>
         <category value="@org.protege.classcategory"/>
         <navigates value="@org.protege.classcategory"/>
+        <help value="http://protegeproject.github.io/protege/views/class-description"/>
     </extension>
 
 
@@ -434,6 +437,7 @@
         <headerColor value="@org.protege.objectpropertycolor"/>
         <category value="@org.protege.objectpropertycategory"/>
         <navigates value="@org.protege.objectpropertycategory"/>
+        <help value="http://protegeproject.github.io/protege/views/object-property-hierarchy"/>
     </extension>
 
 
@@ -453,6 +457,7 @@
         <class value="org.protege.editor.owl.ui.view.objectproperty.OWLObjectPropertyAnnotationsViewComponent"/>
         <headerColor value="@org.protege.objectpropertycolor"/>
         <category value="@org.protege.objectpropertycategory"/>
+        <help value="http://protegeproject.github.io/protege/views/annotations"/>
     </extension>
 
     <extension
@@ -463,6 +468,7 @@
         <headerColor value="@org.protege.objectpropertycolor"/>
         <category value="@org.protege.objectpropertycategory"/>
         <navigates value="@org.protege.objectpropertycategory"/>
+        <help value="http://protegeproject.github.io/protege/views/object-property-description"/>
     </extension>
 
 
@@ -483,6 +489,7 @@
         <class value="org.protege.editor.owl.ui.view.objectproperty.OWLObjectPropertyCharacteristicsViewComponent"/>
         <headerColor value="@org.protege.objectpropertycolor"/>
         <category value="@org.protege.objectpropertycategory"/>
+        <help value="http://protegeproject.github.io/protege/views/object-property-characteristics/"/>
     </extension>
 
 
@@ -495,6 +502,7 @@
         <headerColor value="@org.protege.datapropertycolor"/>
         <category value="@org.protege.datapropertycategory"/>
         <navigates value="@org.protege.datapropertycategory"/>
+        <help value="http://protegeproject.github.io/protege/views/data-property-hierarchy"/>
     </extension>
 
 
@@ -513,6 +521,7 @@
         <class value="org.protege.editor.owl.ui.view.dataproperty.OWLDataPropertyAnnotationsViewComponent"/>
         <headerColor value="@org.protege.datapropertycolor"/>
         <category value="@org.protege.datapropertycategory"/>
+        <help value="http://protegeproject.github.io/protege/views/annotations"/>
     </extension>
 
 
@@ -576,6 +585,7 @@
         <headerColor value="@org.protege.individualcolor"/>
         <category value="@org.protege.individualcategory"/>
         <navigates value="@org.protege.individualcategory"/>
+        <help value="http://protegeproject.github.io/protege/views/instances"/>
     </extension>
     
     <extension id="OWLInferredMembersList"
@@ -594,6 +604,7 @@
         <class value="org.protege.editor.owl.ui.view.individual.OWLIndividualAnnotationsViewComponent"/>
         <headerColor value="@org.protege.individualcolor"/>
         <category value="@org.protege.individualcategory"/>
+        <help value="http://protegeproject.github.io/protege/views/annotations"/>
     </extension>
 
 
@@ -603,6 +614,7 @@
         <class value="org.protege.editor.owl.ui.view.individual.OWLIndividualDescriptionViewComponent"/>
         <headerColor value="@org.protege.individualcolor"/>
         <category value="@org.protege.individualcategory"/>
+        <help value="http://protegeproject.github.io/protege/views/individual-description"/>
     </extension>
 
 
@@ -633,6 +645,7 @@
         <class value="org.protege.editor.owl.ui.view.annotationproperty.OWLAnnotationPropertyAnnotationsViewComponent"/>
         <headerColor value="@org.protege.annotationscolor"/>
         <category value="@org.protege.annotationpropertycategory"/>
+        <help value="http://protegeproject.github.io/protege/views/annotations"/>
     </extension>
 
 
@@ -663,6 +676,7 @@
         <class value="org.protege.editor.owl.ui.view.datatype.OWLDataTypeAnnotationsViewComponent"/>
         <headerColor value="@org.protege.datatypecolor"/>
         <category value="@org.protege.datatypecategory"/>
+        <help value="http://protegeproject.github.io/protege/views/annotations"/>
     </extension>
 
 
@@ -712,6 +726,7 @@
         <class value="org.protege.editor.owl.ui.view.ontology.OWLOntologyAnnotationViewComponent"/>
         <headerColor value="@org.protege.ontologycolor"/>
         <category value="@org.protege.ontologycategory"/>
+        <help value="http://protegeproject.github.io/protege/views/ontology-header/"/>
     </extension>
 
     <extension id="OWLOntologyPrefixesView"
@@ -728,6 +743,7 @@
         <class value="org.protege.editor.owl.ui.metrics.AxiomMetricsViewComponent"/>
         <headerColor value="@org.protege.ontologycolor"/>
         <category value="@org.protege.ontologycategory"/>
+        <help value="http://protegeproject.github.io/protege/views/ontology-metrics"/>
     </extension>
 
 
@@ -746,6 +762,7 @@
         <class value="org.protege.editor.owl.ui.view.ontology.OWLImportsDeclarationsViewComponent"/>
         <headerColor value="@org.protege.ontologycolor"/>
         <category value="@org.protege.ontologycategory"/>
+        <help value="http://protegeproject.github.io/protege/views/imported-ontologies"/>
     </extension>
 
 

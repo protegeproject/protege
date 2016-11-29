@@ -2,8 +2,10 @@ package org.protege.editor.core.ui.view;
 
 import org.protege.editor.core.ui.view.button.ViewButtonUI;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -123,23 +125,33 @@ public class ViewBanner extends JPanel {
         toolBar.removeAll();
     }
 
+    /**
+     * Adds an action to the view header.
+     * @param name The name of the action.
+     * @param icon An icon to display in the view header for the action.
+     * @param runnable The code that should be called when the action is executed.
+     */
+    public void addAction(@Nonnull String name,
+                          @Nonnull Icon icon,
+                          @Nonnull final Runnable runnable) {
+        addAction(new AbstractAction(name, icon) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                runnable.run();
+            }
+        });
+    }
 
     /**
      * Adds an action to the view header.
      * @param action The action to be added.
      */
-    public void addAction(Action action) {
+    public void addAction(@Nonnull Action action) {
         String name = (String) action.getValue(Action.NAME);
         action.putValue(Action.NAME, "");
         action.putValue(Action.SHORT_DESCRIPTION, name);
         JButton button = new JButton(action) {
-            /**
-             * 
-             */
-            private static final long serialVersionUID = -5577350824168578334L;
-
             public void updateUI() {
-//                super.updateUI();
             }
         };
         button.setFocusable(false);
