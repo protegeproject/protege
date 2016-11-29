@@ -7,8 +7,13 @@ import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
 import java.util.Collections;
 import java.util.Set;
 /*
@@ -27,21 +32,40 @@ import java.util.Set;
  */
 public class OWLClassExpressionExpressionEditor extends AbstractOWLClassExpressionEditor{
 
+    private static final Logger logger = LoggerFactory.getLogger(OWLClassExpressionExpressionEditor.class);
+
+    private static final String CLASS_EXPRESSION_SYNTAX_URL = "http://protegeproject.github.io/protege/class-expression-syntax";
+
     private ExpressionEditor<OWLClassExpression> editor;
 
-    private JScrollPane scroller;
+    private JPanel editorPanel = new JPanel(new BorderLayout(3, 3));
 
     public void initialise() throws Exception {
         final OWLEditorKit eKit = getOWLEditorKit();
         final OWLExpressionChecker<OWLClassExpression> checker = eKit.getModelManager().getOWLExpressionCheckerFactory().getOWLClassExpressionChecker();
         editor = new ExpressionEditor<>(eKit, checker);
+        JScrollPane sp = new JScrollPane(editor);
+        editorPanel.add(sp);
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        editorPanel.add(buttonPanel, BorderLayout.SOUTH);
+        JButton helpButton = new JButton("Help...");
+        buttonPanel.add(helpButton);
+        helpButton.addActionListener(e -> showClassExpressionSyntaxHelp());
+    }
 
-        scroller = new JScrollPane(editor);
+    private void showClassExpressionSyntaxHelp() {
+        try {
+            Desktop.getDesktop().browse(URI.create(CLASS_EXPRESSION_SYNTAX_URL));
+        } catch (IOException ex) {
+            logger.warn("An error occurred when attempting to display the Class Expression documentation: {}",
+                        ex.getMessage(),
+                        ex);
+        }
     }
 
 
     public JComponent getComponent() {
-        return scroller;
+        return editorPanel;
     }
 
 
