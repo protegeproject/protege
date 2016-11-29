@@ -8,7 +8,7 @@ url: "http://protegeproject.github.io" # the base hostname & protocol for your s
 twitter_username: protegeproject
 github_username:  protegeproject
 protege: Protégé
-protver: Protégé 5.0.0
+protver: Protégé 5.1.0
 
 # Build settings
 markdown: kramdown
