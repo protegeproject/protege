@@ -3,6 +3,7 @@ title: Getting Started
 layout: default
 main: true
 blurb: A quick start guide for {{site.protege}}.
+sortingIndex: A
 ---
 # Introduction
 
@@ -59,7 +60,7 @@ In addition, the various hierarchy views have their own search dialogs
 # Reasoning
 
 Reasoning over your ontology is a commonly performed activity and Protege comes
-with a built-in reasoner called [HermiT](http://www.hermit-reasoner.com). To reason over your ontology, open the **Reasoner** menu and select **HermiT**.  Next press **Ctrl+R** (or **Cmd+R** on a Mac). This will start the reasoner.  After the reasoner finishes you can inspect your ontology to view inferred information.  For example, select American in the class hierarchy (under NamedPizza, which is under Pizza, which is under Food, which is under DomainConcept).  Notice that some of the information on the right hand side is displayed with a yellow background - this is inferred information.  In other words, it is information that has been computed by the reasoner.  
+with a built-in reasoner called [HermiT](http://www.hermit-reasoner.com). To reason over your ontology, open the **Reasoner** menu and select **HermiT**.  Next press **Ctrl+R** (or **CMD+R** on a Mac). This will start the reasoner.  After the reasoner finishes you can inspect your ontology to view inferred information.  For example, select American in the class hierarchy (under NamedPizza, which is under Pizza, which is under Food, which is under DomainConcept).  Notice that some of the information on the right hand side is displayed with a yellow background - this is inferred information.  In other words, it is information that has been computed by the reasoner.  
 
 You can also switch to the inferred class hierarchy using the drop down box in the top right of the class hierarchy.  Notice the difference between this inferred hierarchy (the hierarchy computed by the reasoner) and the asserted hierarchy (the hierarchy written down in the ontology).
 
