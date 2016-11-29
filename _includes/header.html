@@ -15,7 +15,8 @@
       </a>
 
       <div class="trigger">
-        {% for my_page in site.pages %}
+        {% assign sorted_pages = (site.pages | sort: 'sortingIndex') %}
+        {% for my_page in sorted_pages %}
           {% if my_page.main %}
           <a class="page-link" href="{{ my_page.url | prepend: site.baseurl }}">{{ my_page.title }}</a>
           {% endif %}

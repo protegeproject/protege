@@ -2,6 +2,7 @@
 title: Class Expression Syntax
 layout: default
 main: true
+sortingIndex: E
 description: Provides a reference for the class expression syntax that is used throughout Protégé.
 ---
 Class expressions are used to describe individuals that share common characteristics.  This includes both **class names** (or named classes) and **complex class expressions**.  The table below presents the keywords that are used to build up complex class expressions along with some examples.  Class expressions can be nested to arbitrary depths in order to build up rich descriptions of the domain being modelled.

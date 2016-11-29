@@ -2,8 +2,8 @@
 title: Getting Started
 layout: default
 main: true
-blurb: A quick start guide for {{site.protege}}.
-sortingIndex: A
+description: A quick start guide for Protege.
+sortingIndex: B
 ---
 # Introduction
 
@@ -13,7 +13,7 @@ In just a few minutes you should be able to install Protege, load an ontology, n
 
 # Download, Install and Start {{site.protege}}
 
-If you haven't already done so, you need to download and install Protege Desktop from the [Protege website](http://protege.stanford.edu/products.php#desktop-protege).  Please follow the step-by-step instructions to install Protege from [here]({{site.baseurl}}/installation).
+If you haven't already done so, you need to download and install Protege Desktop from the [Protege website](http://protege.stanford.edu/products.php#desktop-protege).  Please follow the [step-by-step instructions to install Protege]({{site.baseurl}}/installation).
 
 # Open the Pizza Ontology
 
@@ -67,7 +67,7 @@ You can also switch to the inferred class hierarchy using the drop down box in t
 There are other reasoners available for Protege, including Pellet and FaCT++.  These reasoners are available for download from the **File > Check for plugins...** menu item.
 
 <figure>
-  <img src="{{site.baseurl}}/assets/dialogs/auto-update.png" alt="The Auto Update Dialog">
+  <img src="{{site.baseurl}}/assets/dialogs/auto-update.png" alt="The Auto Update Dialog"  style="max-width: 500px;">
   <figcaption>
   Selecting File > Check for plugins... opens the Auto-Update dialog.  From here you can install
   various plugins such as Reasoners.
@@ -96,11 +96,19 @@ Reconfiguring the user interface is easy. Adding and removing tabs and views is 
 
 1. Switch to the **Entities Tab**
 2. Select a class to make sure the Selected Entity view is showing class views.
-3. Select **Window > Views > Class Views > Asserted Superclass Hierarchy**. Now, when you move the mouse pointer over the Entities tab, a blue outline shows where the new view will be dropped - either on top of, above, below, left, or right of each of the current views.  Move the mouse around to see how this works.
+3. Select **Window > Views > Class Views > Superclass hierarchy**. Now, when you move the mouse pointer over the Entities tab, a blue outline shows where the new view will be dropped - either on top of, above, below, left, or right of each of the current views.  Move the mouse around to see how this works.
 4. When happy with the position, click the left mouse button to drop the view (if you want to cancel this operation just click somewhere on the toolbar instead).
 5. The superclass tree view is now visible (the tree shows the "upside-down" version of the subclass tree, using the current class as the root).
 
 All changes will be saved when Protege is properly shut down (or the save can be forced by selecting "Save current layout" in the Window menu).
+
+<figure>
+  <img src="{{site.baseurl}}/assets/tabs/entities/dropping-view.png" alt="Dropping a view into the Entities tab" style="max-width: 300px;">
+  <figcaption>
+  Dropping a view into the Entities tab.  The View will be positioned in the lower half of the
+  Class hierarchy view.
+  </figcaption>
+</figure>
 
 # Human Readable Entity Names
 
@@ -115,7 +123,7 @@ Many ontologies, in particular biomedical ontologies, use alpha-numeric codes as
 The current renderer selected will be preserved next time you open Protege to save this step in the future.
 
 <figure>
-  <img src="{{site.baseurl}}/assets/Preferences/renderer/renderer-preferences.png" alt="The Renderer preferences">
+  <img src="{{site.baseurl}}/assets/Preferences/renderer/renderer-preferences.png" alt="The Renderer preferences" style="max-width: 500px;">
   <figcaption>
   The renderer preferences.  The Entity rendering section specifies how the names of classes, properties and individuals should be derived and displayed in the user interface.  Here, "Render by annotation property" is selected, meaning that if an entity has an annotation, such as an rdfs:label, the value of this annotation will be used for the entity display name.
   </figcaption>

@@ -12,7 +12,7 @@ layout: default
 
 
 
-  {% assign sorted_pages = (site.pages | sort: 'title') %}
+  {% assign sorted_pages = (site.pages | sort: 'sortingIndex') %}
   {% for page in sorted_pages %}
     {% if page.main %}
     <div class="main-page">

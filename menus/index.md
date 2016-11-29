@@ -2,6 +2,7 @@
 title: Menus
 layout: default
 main: true
+sortingIndex: D
 description: Explains what each menu item in Protégé does
 ---
 

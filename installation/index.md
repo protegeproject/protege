@@ -2,6 +2,7 @@
 title: Installation
 layout: default
 main: true
+sortingIndex: A
 description: Explains how to install Protégé on Windows, Mac OS X and Linux.
 ---
 
