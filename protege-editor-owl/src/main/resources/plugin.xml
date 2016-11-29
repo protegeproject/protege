@@ -1419,6 +1419,13 @@
         <editorKitId value="any"/>
     </extension>
 
+    <extension id="menu.ClassExpressionDocumentationMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Class Expression Syntax"/>
+        <toolTip value="Documentation for the Class Expression Syntax used in Prot\u00E9g\u00E9"/>
+        <url value="http://protegeproject.github.io/protege/class-expression-syntax"/>
+        <path value="org.protege.editor.core.application.menu.HelpMenu/SlotF-B"/>
+        <editorKitId value="any"/>
+    </extension>
     <!--
 
     <extension id="SPARQLQueryTab">
