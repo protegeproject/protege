@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.*;
 
 
@@ -335,39 +336,13 @@ public class View extends JComponent implements NodeComponent, Disposable {
 
     private void addViewManipulationActions() {
         // View manipulation toolbar
-        viewBarComponent.getViewBar().getViewBanner().addAction(new AbstractAction("Split vertically",
-                                                                                   Icons.getIcon(
-                                                                                           SPLIT_VERTICALLY_ICON_NAME)) {
-
-            public void actionPerformed(ActionEvent e) {
-                splitVertically();
-            }
-        });
-        viewBarComponent.getViewBar().getViewBanner().addAction(new AbstractAction("Split horizontally",
-                                                                                   Icons.getIcon(
-                                                                                           SPLIT_HORIZONTALLY_ICON_NAME)) {
-
-
-            public void actionPerformed(ActionEvent e) {
-                splitHorizontally();
-            }
-        });
-        viewBarComponent.getViewBar().getViewBanner().addAction(new AbstractAction("Float",
-                                                                                   Icons.getIcon(FLOAT_ICON_NAME)) {
-
-            public void actionPerformed(ActionEvent e) {
-                copyAndFloatView();
-            }
-        });
-        viewBarComponent.getViewBar().getViewBanner().addAction(new AbstractAction("Close",
-                                                                                   Icons.getIcon(CLOSE_ICON_NAME)) {
-
-            public void actionPerformed(ActionEvent e) {
-                closeView();
-            }
-        });
+        ViewBanner viewBanner = viewBarComponent.getViewBar().getViewBanner();
+        plugin.getHelpLink().ifPresent(u -> viewBanner.addAction("Help", HelpIcon.get(), this::showHelpIfPresent));
+        viewBanner.addAction("Split vertically", SplitVerticallyIcon.get(), this::splitVertically);
+        viewBanner.addAction("Split horizontally", SplitHorizontallyIcon.get(), this::splitHorizontally);
+        viewBanner.addAction("Float", FloatIcon.get(), this::copyAndFloatView);
+        viewBanner.addAction("Close", CloseIcon.get(), this::closeView);
     }
-
 
     private NodePanel getNodePanel() {
         return (NodePanel) SwingUtilities.getAncestorOfClass(NodePanel.class, this);
@@ -415,6 +390,18 @@ public class View extends JComponent implements NodeComponent, Disposable {
         else if (getParent() instanceof ViewContainer) {
             ((ViewContainer) getParent()).splitHorizontally(createView(plugin));
         }
+    }
+
+    private void showHelpIfPresent() {
+        plugin.getHelpLink().ifPresent(l -> {
+            try {
+                Desktop.getDesktop().browse(l);
+            } catch (IOException e1) {
+                logger.warn("An error occurred whilst navigating to the help for the {} view.  URL: {}",
+                            plugin.getLabel(),
+                            l);
+            }
+        });
     }
 
 
