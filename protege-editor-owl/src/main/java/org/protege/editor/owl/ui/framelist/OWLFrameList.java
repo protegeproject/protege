@@ -338,7 +338,7 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
         addToPopupMenu(new MoveAxiomsToOntologyAction<>());
         addToPopupMenu(new CreateConjunctTermAction<>());
         addToPopupMenu(new CreateDisjunctTermAction<>());
-        addToPopupMenu(new SplitEquivTermsAction<>());
+        //addToPopupMenu(new SplitEquivTermsAction<>());
     }
 
     public void addToPopupMenu(OWLFrameListPopupMenuAction<R> action) {
