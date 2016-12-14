@@ -29,7 +29,7 @@ public class AxiomAnnotationsList extends AbstractAnnotationsList<OWLAxiomInstan
 
 
     public AxiomAnnotationsList(OWLEditorKit eKit) {
-        super(eKit);
+        super(eKit, false);
     }
 
 

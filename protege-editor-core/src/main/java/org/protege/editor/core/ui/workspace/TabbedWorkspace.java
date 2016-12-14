@@ -14,6 +14,7 @@ import javax.swing.JTabbedPane;
 import org.protege.editor.core.ui.tabbedpane.CloseableTabbedPaneUI;
 import org.protege.editor.core.ui.tabbedpane.WorkspaceTabCloseHandler;
 import org.protege.editor.core.ui.util.ComponentFactory;
+import org.protege.editor.core.ui.view.ViewComponent;
 import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,6 +69,13 @@ public abstract class TabbedWorkspace extends Workspace {
             }
         }
     }
+    
+    public boolean isReadOnly(ViewComponentPlugin vc) {
+    	if (this.checkPermissionLevel != null) {
+    		return checkPermissionLevel.isReadOnly(vc);
+    	}
+    	return false;
+    }
 
    public boolean canShow(WorkspaceTabPlugin plugin) {
     	
@@ -77,6 +85,15 @@ public abstract class TabbedWorkspace extends Workspace {
     	return true;
 
     }
+   
+   public boolean isRequired(WorkspaceTabPlugin plugin) {
+   	
+   	if (this.checkPermissionLevel != null) {
+   		return checkPermissionLevel.isRequired(plugin);
+   	}
+   	return true;
+
+   }
    
    public boolean canShow(ViewComponentPlugin plugin) {
    	
@@ -92,7 +109,7 @@ public abstract class TabbedWorkspace extends Workspace {
         // If no tabs are set as visible (ie we have yet to customise, show all by default
         for (WorkspaceTabPlugin plugin : getOrderedPlugins()) {
         	WorkspaceTab tab = getWorkspaceTab(plugin.getId());
-        	if (canShow(plugin)) {  
+        	if (canShow(plugin) && isRequired(plugin)) {         		
         		if (tab == null) {
         			try {
 						tab = plugin.newInstance();

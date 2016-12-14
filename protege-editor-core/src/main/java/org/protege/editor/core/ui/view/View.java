@@ -61,6 +61,8 @@ public class View extends JComponent implements NodeComponent, Disposable {
     // Maintain a reference to the plugin that created
     // the view.
     private ViewComponentPlugin plugin;
+    
+    public ViewComponentPlugin getPlugin() { return plugin; }
 
     // The workspace tab that the view is a child of.
     private Workspace workspace;
@@ -89,6 +91,7 @@ public class View extends JComponent implements NodeComponent, Disposable {
     private boolean syncronizing = true;
 
     private boolean persist = true;
+    
 
     // A flag that is used to initialise the view
     // in the most lazy way possible.  The View is

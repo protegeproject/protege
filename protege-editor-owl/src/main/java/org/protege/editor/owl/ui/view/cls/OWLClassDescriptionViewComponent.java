@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.swing.JScrollPane;
 
+import org.protege.editor.core.ui.workspace.TabbedWorkspace;
 import org.protege.editor.owl.ui.frame.cls.OWLClassDescriptionFrame;
 import org.protege.editor.owl.ui.frame.cls.OWLSubClassAxiomFrameSectionRow;
 import org.protege.editor.owl.ui.framelist.CreateClosureAxiomAction;
@@ -38,7 +39,8 @@ public class OWLClassDescriptionViewComponent extends AbstractOWLClassViewCompon
     private OWLFrameList<OWLClass> list;
 
     public void initialiseClassView() throws Exception {
-        list = new OWLFrameList<>(getOWLEditorKit(), new OWLClassDescriptionFrame(getOWLEditorKit()));
+    	boolean read_only = ((TabbedWorkspace) getWorkspace()).isReadOnly(this.getView().getPlugin());
+        list = new OWLFrameList<>(getOWLEditorKit(), new OWLClassDescriptionFrame(getOWLEditorKit()), read_only);
         setLayout(new BorderLayout());
         JScrollPane sp = new JScrollPane(list);
         sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

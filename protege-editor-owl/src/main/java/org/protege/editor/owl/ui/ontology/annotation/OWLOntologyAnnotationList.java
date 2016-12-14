@@ -26,8 +26,8 @@ import java.util.List;
  */
 public class OWLOntologyAnnotationList extends AbstractAnnotationsList<OntologyAnnotationContainer> {
 
-    public OWLOntologyAnnotationList(OWLEditorKit eKit) {
-        super(eKit);
+    public OWLOntologyAnnotationList(OWLEditorKit eKit, boolean read_only) {
+        super(eKit, read_only);
     }
 
 

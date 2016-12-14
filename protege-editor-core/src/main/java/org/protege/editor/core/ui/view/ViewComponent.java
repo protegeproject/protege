@@ -46,6 +46,8 @@ public abstract class ViewComponent extends JComponent implements ProtegePluginI
     public View getView() {
         return view;
     }
+    
+    
 
 
     public Workspace getWorkspace() {

@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.view.datatype;
 
+import org.protege.editor.core.ui.workspace.TabbedWorkspace;
 import org.protege.editor.owl.ui.frame.datatype.OWLDatatypeDescriptionFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owlapi.model.OWLDatatype;
@@ -26,8 +27,9 @@ public class OWLDataTypeDescriptionViewComponent extends AbstractOWLDataTypeView
 
 
     public void initialiseView() throws Exception {
+    	boolean read_only = ((TabbedWorkspace) getWorkspace()).isReadOnly(this.getView().getPlugin());
         list = new OWLFrameList<>(getOWLEditorKit(),
-                                             new OWLDatatypeDescriptionFrame(getOWLEditorKit()));
+                                             new OWLDatatypeDescriptionFrame(getOWLEditorKit()), read_only);
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
     }

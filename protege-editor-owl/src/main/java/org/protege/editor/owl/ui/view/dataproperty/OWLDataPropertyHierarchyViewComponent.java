@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.view.dataproperty;
 
 import org.protege.editor.core.ui.menu.PopupMenuId;
+import org.protege.editor.core.ui.workspace.TabbedWorkspace;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.selection.SelectionDriver;
@@ -35,7 +36,10 @@ public class OWLDataPropertyHierarchyViewComponent
 
     @Override
     protected void performExtraInitialisation() throws Exception {
-        super.performExtraInitialisation();
+    	boolean read_only = ((TabbedWorkspace) getWorkspace()).isReadOnly(this.getView().getPlugin());
+    	if (!read_only) {
+    		super.performExtraInitialisation();
+    	}
         getAssertedTree().setPopupMenuId(new PopupMenuId("[AssertedDataPropertyHierarchy]"));
     }
 

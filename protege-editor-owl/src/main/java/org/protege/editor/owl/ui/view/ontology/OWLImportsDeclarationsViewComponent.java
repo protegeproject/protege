@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.view.ontology;
 
+import org.protege.editor.core.ui.workspace.TabbedWorkspace;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
@@ -28,12 +29,17 @@ public class OWLImportsDeclarationsViewComponent extends AbstractOWLViewComponen
     private OntologyImportsList list;
 
     private OWLModelManagerListener listener;
+    
+    private boolean read_only = false;
 
 
     protected void initialiseOWLView() throws Exception {
         setLayout(new BorderLayout());
+        if (((TabbedWorkspace) getWorkspace()).isReadOnly(this.getView().getPlugin())) {
+        	read_only = true;
+        }
 
-        list = new OntologyImportsList(getOWLEditorKit());
+        list = new OntologyImportsList(getOWLEditorKit(), read_only);
         list.setOntology(getOWLModelManager().getActiveOntology());
         listener = event -> {
             if (event.isType(EventType.ACTIVE_ONTOLOGY_CHANGED) || event.isType(EventType.ONTOLOGY_RELOADED)) {

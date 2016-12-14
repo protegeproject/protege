@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.view.annotationproperty;
 
+import org.protege.editor.core.ui.workspace.TabbedWorkspace;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
@@ -37,30 +38,35 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
         implements CreateNewChildTarget, CreateNewSiblingTarget, SelectionDriver {
 
     protected void performExtraInitialisation() throws Exception {
-        addAction(new AbstractOWLTreeAction<OWLAnnotationProperty>("Add sub property", new AddChildIcon(new OWLAnnotationPropertyIcon()),
-                getTree().getSelectionModel()) {
-            public void actionPerformed(ActionEvent event) {
-                createNewChild();
-            }
+    	if (((TabbedWorkspace) this.getWorkspace()).isReadOnly(this.getView().getPlugin())) {
 
-            protected boolean canPerform(OWLAnnotationProperty prop) {
-                return canCreateNewChild();
-            }
-        }, "A", "A");
+    	} else {
 
-        addAction(new AbstractOWLTreeAction<OWLAnnotationProperty>("Add sibling property", new AddSiblingIcon(new OWLAnnotationPropertyIcon()),
-                getTree().getSelectionModel()) {
+    		addAction(new AbstractOWLTreeAction<OWLAnnotationProperty>("Add sub property", new AddChildIcon(new OWLAnnotationPropertyIcon()),
+    				getTree().getSelectionModel()) {
+    			public void actionPerformed(ActionEvent event) {
+    				createNewChild();
+    			}
 
-            public void actionPerformed(ActionEvent event) {
-                createNewSibling();
-            }
+    			protected boolean canPerform(OWLAnnotationProperty prop) {
+    				return canCreateNewChild();
+    			}
+    		}, "A", "A");
 
-            protected boolean canPerform(OWLAnnotationProperty cls) {
-                return canCreateNewSibling();
-            }
-        }, "A", "B");
+    		addAction(new AbstractOWLTreeAction<OWLAnnotationProperty>("Add sibling property", new AddSiblingIcon(new OWLAnnotationPropertyIcon()),
+    				getTree().getSelectionModel()) {
 
-        addAction(new DeleteAnnotationPropertyAction(), "B", "A");
+    			public void actionPerformed(ActionEvent event) {
+    				createNewSibling();
+    			}
+
+    			protected boolean canPerform(OWLAnnotationProperty cls) {
+    				return canCreateNewSibling();
+    			}
+    		}, "A", "B");
+
+    		addAction(new DeleteAnnotationPropertyAction(), "B", "A");
+    	}
     }
 
 

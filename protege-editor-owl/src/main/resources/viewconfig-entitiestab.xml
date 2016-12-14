@@ -16,10 +16,7 @@
             </Component>
             <Component label="Datatypes">
                 <Property id="pluginId" value="org.protege.editor.owl.OWLDatatypeList"/>
-            </Component>
-            <Component label="Individuals">
-                <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualsList"/>
-            </Component>
+            </Component>            
         </CNode>
         <CNode>
             <Component label="Selected entity">

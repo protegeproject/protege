@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.view.dataproperty;
 
+import org.protege.editor.core.ui.workspace.TabbedWorkspace;
 import org.protege.editor.owl.ui.frame.dataproperty.OWLDataPropertyDescriptionFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owlapi.model.OWLDataProperty;
@@ -20,8 +21,9 @@ public class OWLDataPropertyDescriptionViewComponent extends AbstractOWLDataProp
 
 
     public void initialiseView() throws Exception {
+    	boolean read_only = ((TabbedWorkspace) getWorkspace()).isReadOnly(this.getView().getPlugin());
         list = new OWLFrameList<>(getOWLEditorKit(),
-                                                  new OWLDataPropertyDescriptionFrame(getOWLEditorKit()));
+                                                  new OWLDataPropertyDescriptionFrame(getOWLEditorKit()), read_only);
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
     }

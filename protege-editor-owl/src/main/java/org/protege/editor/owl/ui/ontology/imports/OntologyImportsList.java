@@ -32,7 +32,7 @@ public class OntologyImportsList extends MList {
 
     private OWLOntologyChangeListener ontChangeListener = this::handleOntologyChanges;
 
-    public OntologyImportsList(OWLEditorKit editorKit) {
+    public OntologyImportsList(OWLEditorKit editorKit, boolean read_only) {
         this.editorKit = editorKit;
         setFixedCellHeight(-1);
         setCellRenderer(new OntologyImportsItemRenderer(editorKit));
@@ -42,6 +42,9 @@ public class OntologyImportsList extends MList {
                 return "Direct Imports";
             }
             public boolean canAdd() {
+            	if (read_only) {
+            		return false;
+            	}
                 return true;
             }
         };
@@ -51,6 +54,9 @@ public class OntologyImportsList extends MList {
                 return "Indirect Imports";
             }
             public boolean canAdd() {
+            	if (read_only) {
+            		return false;
+            	}
                 return false;
             }
         };

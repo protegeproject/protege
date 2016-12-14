@@ -46,6 +46,8 @@ public abstract class AbstractAnnotationsList<O extends AnnotationContainer> ext
     private OWLAnnotationEditor editor;
 
     private O root;
+    
+    private boolean read_only = false;
 
     private MListSectionHeader header = new MListSectionHeader() {
 
@@ -69,11 +71,24 @@ public abstract class AbstractAnnotationsList<O extends AnnotationContainer> ext
     };
 
 
-    public AbstractAnnotationsList(OWLEditorKit eKit) {
+    public AbstractAnnotationsList(OWLEditorKit eKit, boolean read_only) {
         this.editorKit = eKit;
         setCellRenderer(new OWLAnnotationCellRenderer2(eKit));
         addMouseListener(mouseListener);
         eKit.getOWLModelManager().addOntologyChangeListener(ontChangeListener);
+        if (read_only) {
+        	header = new MListSectionHeader() {
+
+                public String getName() {
+                    return HEADER_TEXT;
+                }
+
+                public boolean canAdd() {
+                    return false;
+                }
+            };
+        }
+        this.read_only = read_only;
     }
 
 
@@ -133,7 +148,7 @@ public abstract class AbstractAnnotationsList<O extends AnnotationContainer> ext
                 return owlObjectComparator.compare(a1.getValue(), a2.getValue());
             });
             for (OWLAnnotation annot : annotations){
-                data.add(new AnnotationsListItem(annot));
+                data.add(new AnnotationsListItem(annot, read_only));
             }
         }
 
@@ -169,9 +184,12 @@ public abstract class AbstractAnnotationsList<O extends AnnotationContainer> ext
     public class AnnotationsListItem implements MListItem {
 
         private OWLAnnotation annot;
+        
+        private boolean read_only = false;
 
-        public AnnotationsListItem(OWLAnnotation annot) {
+        public AnnotationsListItem(OWLAnnotation annot, boolean read_only) {
             this.annot = annot;
+            this.read_only = read_only;
         }
 
 
@@ -181,6 +199,9 @@ public abstract class AbstractAnnotationsList<O extends AnnotationContainer> ext
 
 
         public boolean isEditable() {
+        	if (read_only) {
+        		return false;
+        	}
             return true;
         }
 
@@ -205,6 +226,9 @@ public abstract class AbstractAnnotationsList<O extends AnnotationContainer> ext
 
 
         public boolean isDeleteable() {
+        	if (read_only) {
+        		return false;
+        	}
             return true;
         }
 

@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.view.objectproperty;
 
+import org.protege.editor.core.ui.workspace.TabbedWorkspace;
 import org.protege.editor.owl.ui.frame.objectproperty.OWLObjectPropertyDescriptionFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
@@ -24,8 +25,14 @@ public class OWLObjectPropertyDescriptionViewComponent extends AbstractOWLObject
 
 
     public void initialiseView() throws Exception {
-        list = new OWLFrameList<>(getOWLEditorKit(),
-                                                    new OWLObjectPropertyDescriptionFrame(getOWLEditorKit()));
+    	if (((TabbedWorkspace) getWorkspace()).isReadOnly(this.getView().getPlugin())) {
+    		list = new OWLFrameList<>(getOWLEditorKit(),
+    				new OWLObjectPropertyDescriptionFrame(getOWLEditorKit()), true);
+
+    	} else {
+    		list = new OWLFrameList<>(getOWLEditorKit(),
+    				new OWLObjectPropertyDescriptionFrame(getOWLEditorKit()));
+    	}
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
     }

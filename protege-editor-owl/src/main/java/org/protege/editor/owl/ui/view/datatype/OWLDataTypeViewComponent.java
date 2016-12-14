@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.view.datatype;
 
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.view.DisposableAction;
+import org.protege.editor.core.ui.workspace.TabbedWorkspace;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
@@ -69,6 +70,7 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
 
 
     public void initialiseView() throws Exception {
+    	boolean read_only = ((TabbedWorkspace) getWorkspace()).isReadOnly(this.getView().getPlugin());
         setLayout(new BorderLayout());
 
         changeListenerMediator = new ChangeListenerMediator();
@@ -78,7 +80,7 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
 
         reload();
 
-        setupActions();
+        setupActions(read_only);
 
         getOWLModelManager().addOntologyChangeListener(ontChangeListener);
         getOWLModelManager().addListener(modelManagerListener);
@@ -87,40 +89,42 @@ public class OWLDataTypeViewComponent extends AbstractOWLDataTypeViewComponent
     }
 
 
-    private void setupActions() {
-        final DisposableAction addDatatypeAction = new DisposableAction("Add datatype", new AddEntityIcon(new OWLDatatypeIcon())) {
+    private void setupActions(boolean read_only) {
+    	if (!read_only) {
+    		final DisposableAction addDatatypeAction = new DisposableAction("Add datatype", new AddEntityIcon(new OWLDatatypeIcon())) {
 
-            public void actionPerformed(ActionEvent event) {
-                createNewDatatype();
-            }
+    			public void actionPerformed(ActionEvent event) {
+    				createNewDatatype();
+    			}
 
-            public void dispose() {
-                // do nothing
-            }
-        };
+    			public void dispose() {
+    				// do nothing
+    			}
+    		};
 
-        final OWLSelectionViewAction deleteDatatypeAction = new OWLSelectionViewAction("Delete datatype", new DeleteEntityIcon(new OWLDatatypeIcon(OWLEntityIcon.FillType.HOLLOW))) {
-
-
-
-            public void actionPerformed(ActionEvent event) {
-                deleteDatatype();
-            }
+    		final OWLSelectionViewAction deleteDatatypeAction = new OWLSelectionViewAction("Delete datatype", new DeleteEntityIcon(new OWLDatatypeIcon(OWLEntityIcon.FillType.HOLLOW))) {
 
 
-            public void updateState() {
-                // @@TODO should check if this is a built in datatype
-                setEnabled(list.getSelectedIndex() != -1);
-            }
+
+    			public void actionPerformed(ActionEvent event) {
+    				deleteDatatype();
+    			}
 
 
-            public void dispose() {
-                // do nothing
-            }
-        };
+    			public void updateState() {
+    				// @@TODO should check if this is a built in datatype
+    				setEnabled(list.getSelectedIndex() != -1);
+    			}
 
-        addAction(addDatatypeAction, "A", "A");
-        addAction(deleteDatatypeAction, "B", "A");
+
+    			public void dispose() {
+    				// do nothing
+    			}
+    		};
+
+    		addAction(addDatatypeAction, "A", "A");
+    		addAction(deleteDatatypeAction, "B", "A");
+    	}
     }
 
 
