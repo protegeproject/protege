@@ -781,6 +781,7 @@
         <class value="org.protege.editor.owl.ui.view.InferredAxiomsViewComponent"/>
         <headerColor value="@org.protege.ontologycolor"/>
         <category value="@org.protege.ontologycategory"/>
+        <category value="Classification results"/>
     </extension>
 
     <!-- Renderer views -->

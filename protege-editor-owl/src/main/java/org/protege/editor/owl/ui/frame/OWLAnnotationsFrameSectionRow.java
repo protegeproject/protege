@@ -59,4 +59,6 @@ public class OWLAnnotationsFrameSectionRow extends AbstractOWLFrameSectionRow<OW
     public List<OWLAnnotation> getManipulatableObjects() {
         return getObjects();
     }
+    
+    
 }

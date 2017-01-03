@@ -146,7 +146,7 @@ public class EnumEditor implements OWLObjectEditor<OWLLiteral> {
 		return results;
 	}
 	
-	public IRI getDataType(OWLAnnotationProperty prop) {
+	private IRI getDataType(OWLAnnotationProperty prop) {
 		Set<OWLAnnotationPropertyRangeAxiom> types = 
 				kit.getOWLModelManager().getActiveOntology().getAnnotationPropertyRangeAxioms(prop);
 		
