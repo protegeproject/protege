@@ -3,6 +3,8 @@ package org.protege.editor.owl.ui.explanation;
 import java.awt.Frame;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -86,17 +88,28 @@ public class ExplanationManager implements Disposable {
 		JOptionPane op = new JOptionPane(explanation, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION);
         JDialog dlg = op.createDialog(owner, getExplanationDialogTitle(axiom));
 		dlg.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		dlg.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				dispose(explanation);
+			}			
+		});
         dlg.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentHidden(ComponentEvent e) {
-            	openedExplanations.remove(explanation);
-                explanation.dispose();
+            	dispose(explanation);
             }
         });
         dlg.setModal(false);
         dlg.setResizable(true);
         dlg.pack();
         dlg.setVisible(true);
+	}
+	
+	private void dispose(ExplanationDialog explanation) {
+		if (openedExplanations.remove(explanation)) {
+			explanation.dispose();
+		}
 	}
 
     private String getExplanationDialogTitle(OWLAxiom entailment) {
