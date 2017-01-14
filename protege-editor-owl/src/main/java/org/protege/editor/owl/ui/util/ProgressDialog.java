@@ -47,8 +47,11 @@ public class ProgressDialog {
                 dlg.setLocation(
                         (screenSize.width - prefSize.width) / 2,
                         (screenSize.height - prefSize.height) / 2);
+                dlg.setVisible(true);
+            } else {
+                dlg.setVisible(false);
+                dlg.dispose();
             }
-            dlg.setVisible(visible);
         };
 
         if(SwingUtilities.isEventDispatchThread()) {
