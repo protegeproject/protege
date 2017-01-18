@@ -48,20 +48,14 @@ public class OntologySaver {
      * @throws OWLOntologyStorageException if there was a problem saving an ontology.
      */
     public void saveOntologies() throws OWLOntologyStorageException {
-        ListenableFuture<Void> future = executorService.submit(this::saveOntologyInternal);
-        Futures.addCallback(future, new FutureCallback<Void>() {
-            @Override
-            public void onSuccess(Void result) {
-                dlg.setVisible(false);
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                dlg.setVisible(false);
-            }
-        });
-        // Block here
-        dlg.setVisible(true);
+		ListenableFuture<Void> future = executorService.submit(() -> {
+			dlg.setVisible(true);
+			try {
+				return saveOntologyInternal();
+			} finally {
+				dlg.setVisible(false);
+			}
+		});
         try {
             future.get();
         } catch (InterruptedException e) {
