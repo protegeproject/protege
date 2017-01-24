@@ -52,7 +52,7 @@ public class FilteredOWLObjectPropertyHierarchyProvider extends OWLObjectPropert
 		if (dom != null) {
 			return isSubClass(ont, cls, dom);			
 		} else {
-			System.out.println("Property has no domain: " + p);
+			//System.out.println("Property has no domain: " + p);
 		}
 		
 		return true;

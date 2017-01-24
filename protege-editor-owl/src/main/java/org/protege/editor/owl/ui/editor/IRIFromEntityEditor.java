@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.editor;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.selector.OWLEntitySelectorPanel;
+import org.protege.editor.owl.ui.selector.OWLEntitySelectorPanel2;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -23,7 +24,7 @@ import java.util.Set;
  */
 public class IRIFromEntityEditor implements OWLObjectEditor<IRI> {
 
-    private OWLEntitySelectorPanel entitySelectorPanel;
+    private OWLEntitySelectorPanel2 entitySelectorPanel;
 
     private OWLEditorKit eKit;
 
@@ -32,7 +33,7 @@ public class IRIFromEntityEditor implements OWLObjectEditor<IRI> {
 
     public IRIFromEntityEditor(OWLEditorKit owlEditorKit) {
         this.eKit = owlEditorKit;
-        entitySelectorPanel = new OWLEntitySelectorPanel(owlEditorKit, false);
+        entitySelectorPanel = new OWLEntitySelectorPanel2(owlEditorKit, false);
     }
 
 

@@ -46,7 +46,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
     private OWLObjectTree<E> assertedTree;
 
-    private Optional<OWLObjectTree<E>> inferredTree;
+    private Optional<OWLObjectTree<E>> inferredTree = Optional.empty();
 
     private TreeSelectionListener listener;
 
@@ -76,7 +76,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
         viewModeComponent.add(assertedTree, ViewMode.ASSERTED, true);
 
 
-        performExtraInitialisation();
+        //performExtraInitialisation();
         E entity = getSelectedEntity();
         if (entity != null) {
             setGlobalSelection(entity);
@@ -138,6 +138,8 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
         if (inferredTree.isPresent()) {
             inferredTree.get().addTreeSelectionListener(listener);
         }
+        
+        performExtraInitialisation();
     }
 
     protected boolean isInAssertedMode() {
@@ -208,6 +210,13 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
     public OWLObjectTree<E> getAssertedTree() {
         return assertedTree;
+    }
+    
+    public OWLObjectTree<E> getInferredTree() {
+    	if (inferredTree.isPresent()) {
+    		return this.inferredTree.get();
+    	}
+    	return null;
     }
 
 

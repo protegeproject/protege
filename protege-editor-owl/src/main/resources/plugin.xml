@@ -384,6 +384,7 @@
         <label value="Superclass hierarchy"/>
         <class value="org.protege.editor.owl.ui.view.cls.ToldSuperClassHierarchyViewComponent"/>
         <headerColor value="@org.protege.classcolor"/>
+        <category value="Superclass hierarchy"/>
         <category value="@org.protege.classcategory"/>
         <navigates value="@org.protege.classcategory"/>
     </extension>
@@ -394,6 +395,7 @@
         <label value="Superclass hierarchy (inferred)"/>
         <class value="org.protege.editor.owl.ui.view.cls.InferredSuperClassHierarchyViewComponent"/>
         <headerColor value="@org.protege.classcolor"/>
+        <category value="Superclass hierarchy (inferred)"/>
         <category value="@org.protege.classcategory"/>
         <navigates value="@org.protege.classcategory"/>
     </extension>
