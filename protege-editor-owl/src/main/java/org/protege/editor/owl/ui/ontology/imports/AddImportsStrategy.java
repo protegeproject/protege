@@ -61,26 +61,20 @@ public class AddImportsStrategy {
     }
 
     private void addImportsInOtherThread() {
-        ListenableFuture<List<OWLOntologyChange>> future = service.submit(this::loadImportsInternal);
-        Futures.addCallback(future, new FutureCallback<List<OWLOntologyChange>>() {
-            @Override
-            public void onSuccess(List<OWLOntologyChange> result) {
-                SwingUtilities.invokeLater(() -> {
-                    logger.info("Adding imports statements");
-                    editorKit.getModelManager().applyChanges(result);
-                    logger.info("Finished adding imports");
-                });
-                dlg.setVisible(false);
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                dlg.setVisible(false);
-            }
-        });
-        if (!future.isDone()) {
-            dlg.setVisible(true);
-        }
+		service.submit(() -> {
+			dlg.setVisible(true);
+			try {
+				List<OWLOntologyChange> result = loadImportsInternal();
+				SwingUtilities.invokeLater(() -> {
+					logger.info("Adding imports statements");
+					editorKit.getModelManager().applyChanges(result);
+					logger.info("Finished adding imports");
+				});
+				return result;
+			} finally {
+				dlg.setVisible(false);
+			}
+		});        
     }
 
 

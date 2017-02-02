@@ -73,21 +73,15 @@ public class OntologyReloader {
     }
 
     private List<OWLOntologyChange> reloadOntologyAndGetPatch() throws OWLOntologyCreationException {
-        ListenableFuture<List<OWLOntologyChange>> future = executorService.submit(this::performReloadAndGetPatch);
-        Futures.addCallback(future, new FutureCallback<List<OWLOntologyChange>>() {
-            @Override
-            public void onSuccess(List<OWLOntologyChange> result) {
-                dlg.setVisible(false);
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                dlg.setVisible(false);
-            }
-        });
-        if (!future.isDone()) {
-            dlg.setVisible(true);
-        }
+		ListenableFuture<List<OWLOntologyChange>> future = executorService
+				.submit(() -> {
+					dlg.setVisible(true);
+					try {
+						return performReloadAndGetPatch();
+					} finally {
+						dlg.setVisible(false);
+					}
+				});
         try {
             return future.get();
         } catch (InterruptedException e) {
