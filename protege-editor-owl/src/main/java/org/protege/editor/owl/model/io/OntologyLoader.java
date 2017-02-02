@@ -21,7 +21,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
 
 /**
  * Matthew Horridge
@@ -55,20 +54,15 @@ public class OntologyLoader {
     }
 
     private Optional<OWLOntology> loadOntologyInOtherThread(URI uri) throws OWLOntologyCreationException {
-        ListenableFuture<Optional<OWLOntology>> result = ontologyLoadingService.submit(() -> loadOntologyInternal(uri));
-        Futures.addCallback(result, new FutureCallback<Optional<OWLOntology>>() {
-            @Override
-            public void onSuccess(Optional<OWLOntology> result) {
-                showProgressDialog(false);
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                showProgressDialog(false);
-            }
-        });
-        showProgressDialog(true);
-
+		ListenableFuture<Optional<OWLOntology>> result = ontologyLoadingService
+				.submit(() -> {
+					dlg.setVisible(true);
+					try {
+						return loadOntologyInternal(uri);
+					} finally {
+						dlg.setVisible(false);
+					}					
+				});
         try {
             return result.get();
         } catch (InterruptedException e) {
@@ -81,16 +75,6 @@ public class OntologyLoader {
                 logger.error("An error occurred whilst loading the ontology at {}. Cause: {}", e.getCause().getMessage());
             }
             return Optional.empty();
-        }
-    }
-
-
-    private void showProgressDialog(boolean b) {
-        if (!SwingUtilities.isEventDispatchThread()) {
-            SwingUtilities.invokeLater(() -> dlg.setVisible(b));
-        }
-        else {
-            dlg.setVisible(b);
         }
     }
 
