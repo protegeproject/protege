@@ -254,6 +254,7 @@ public class MetricsPanel extends JPanel {
         metrics.add(new ReferencedObjectPropertyCount(getOntology()));
         metrics.add(new ReferencedDataPropertyCount(getOntology()));
         metrics.add(new ReferencedIndividualCount(getOntology()));
+        metrics.add(new ReferencedAnnotationPropertyCount(getOntology()));
         metrics.add(new DLExpressivity(getOntology()));
     	/*
     	 * Degenericized to be compatible with changing OWLAPI interfaces
