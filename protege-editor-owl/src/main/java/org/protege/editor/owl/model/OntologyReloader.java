@@ -3,17 +3,13 @@ package org.protege.editor.owl.model;
 import com.google.common.base.Stopwatch;
 import com.google.common.util.concurrent.*;
 import org.protege.editor.core.log.LogBanner;
-import org.protege.editor.owl.model.io.IOListener;
 import org.protege.editor.owl.ui.util.ProgressDialog;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.model.parameters.OntologyCopy;
 import org.semanticweb.owlapi.util.PriorityCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -74,14 +70,14 @@ public class OntologyReloader {
 
     private List<OWLOntologyChange> reloadOntologyAndGetPatch() throws OWLOntologyCreationException {
 		ListenableFuture<List<OWLOntologyChange>> future = executorService
-				.submit(() -> {
-					dlg.setVisible(true);
+				.submit(() -> {					
 					try {
 						return performReloadAndGetPatch();
 					} finally {
 						dlg.setVisible(false);
 					}
 				});
+		dlg.setVisible(true);
         try {
             return future.get();
         } catch (InterruptedException e) {
