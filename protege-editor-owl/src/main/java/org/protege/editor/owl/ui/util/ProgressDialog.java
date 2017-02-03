@@ -33,11 +33,12 @@ public class ProgressDialog {
      * event dispatch thread when it is shown.
      * The dialog will be packed and positioned before it is made visible.
      * Note that this method may be called from a thread other than the event dispatch thread.  The implementation
-     * will use SwingUtilities.invoke later.
+     * will check to see whether the calling thread is the event dispatch thread or not and, if necessary, will
+     * use SwingUtilities.invoke later.
      * @param visible true if the dialog should be made visible, or false if the dialog should be hidden.
      */
     public void setVisible(boolean visible) {
-    	SwingUtilities.invokeLater(() -> {
+        Runnable r = () -> {
             if (visible) {
                 dlg.pack();
                 Dimension prefSize = dlg.getPreferredSize();
@@ -50,7 +51,14 @@ public class ProgressDialog {
             } else {
             	dlg.dispose(); // dlg.setVisible(false) has problems with openjdk; see https://bugs.openjdk.java.net/browse/JDK-5109571
             }
-        });
+        };
+
+        if(visible && SwingUtilities.isEventDispatchThread()) {
+            r.run();
+        }
+        else {
+            SwingUtilities.invokeLater(r);
+        }
     }
 
     /**

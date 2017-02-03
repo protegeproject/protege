@@ -4,10 +4,8 @@ import com.google.common.util.concurrent.*;
 import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.io.*;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
-import org.protege.editor.owl.ui.ontology.imports.missing.MissingImportHandlerUI;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportInfo;
 import org.protege.editor.owl.ui.util.ProgressDialog;
 import org.protege.xmlcatalog.CatalogUtilities;
@@ -17,7 +15,6 @@ import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.IRIDocumentSource;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.OntologyCopy;
-import org.semanticweb.owlapi.util.PriorityCollection;
 import org.semanticweb.owlapi.util.SimpleIRIMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,8 +58,7 @@ public class AddImportsStrategy {
     }
 
     private void addImportsInOtherThread() {
-		service.submit(() -> {
-			dlg.setVisible(true);
+		service.submit(() -> {			
 			try {
 				List<OWLOntologyChange> result = loadImportsInternal();
 				SwingUtilities.invokeLater(() -> {
@@ -74,7 +70,8 @@ public class AddImportsStrategy {
 			} finally {
 				dlg.setVisible(false);
 			}
-		});        
+		});
+		dlg.setVisible(true);
     }
 
 
