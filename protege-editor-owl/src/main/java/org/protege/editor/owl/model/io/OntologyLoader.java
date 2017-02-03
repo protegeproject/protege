@@ -53,16 +53,16 @@ public class OntologyLoader {
         return loadOntologyInOtherThread(documentUri);
     }
 
-    private Optional<OWLOntology> loadOntologyInOtherThread(URI uri) throws OWLOntologyCreationException {
-		ListenableFuture<Optional<OWLOntology>> result = ontologyLoadingService
-				.submit(() -> {
-					dlg.setVisible(true);
-					try {
+    private Optional<OWLOntology> loadOntologyInOtherThread(URI uri) throws OWLOntologyCreationException {    	
+    	ListenableFuture<Optional<OWLOntology>> result = ontologyLoadingService
+				.submit(() -> {					
+					try {						
 						return loadOntologyInternal(uri);
 					} finally {
 						dlg.setVisible(false);
 					}					
 				});
+    	dlg.setVisible(true);
         try {
             return result.get();
         } catch (InterruptedException e) {

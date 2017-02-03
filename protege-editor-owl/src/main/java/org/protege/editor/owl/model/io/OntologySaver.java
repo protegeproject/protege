@@ -2,7 +2,6 @@ package org.protege.editor.owl.model.io;
 
 import com.google.common.util.concurrent.*;
 import org.apache.commons.io.FileUtils;
-import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.owl.ui.util.ProgressDialog;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDocumentFormat;
@@ -48,14 +47,14 @@ public class OntologySaver {
      * @throws OWLOntologyStorageException if there was a problem saving an ontology.
      */
     public void saveOntologies() throws OWLOntologyStorageException {
-		ListenableFuture<Void> future = executorService.submit(() -> {
-			dlg.setVisible(true);
+		ListenableFuture<Void> future = executorService.submit(() -> {			
 			try {
 				return saveOntologyInternal();
 			} finally {
 				dlg.setVisible(false);
 			}
 		});
+		dlg.setVisible(true);
         try {
             future.get();
         } catch (InterruptedException e) {
