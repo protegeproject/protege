@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  */
 public class PubMedLinkExtractor {
 
-    public static final Pattern PUB_MED_ID_PATTERN = Pattern.compile("PMID:(\\d+)", Pattern.CASE_INSENSITIVE);
+    public static final Pattern PUB_MED_ID_PATTERN = Pattern.compile("PMID:\\s*(\\d+)", Pattern.CASE_INSENSITIVE);
 
     public static final String PUBMED_URL_BASE = "http://www.ncbi.nlm.nih.gov/pubmed/";
 

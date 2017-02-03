@@ -51,6 +51,13 @@ public class PubMedLinkExtractor_TestCase {
     }
 
     @Test
+    public void shouldAllowWhiteSpaceAfterPrefix() {
+        String id = "PMID: 123456";
+        Optional<String> extractedId = extractor.extractLinkLiteral(id);
+        assertThat(extractedId, is(Optional.of(PubMedLinkExtractor.PUBMED_URL_BASE + "123456")));
+    }
+
+    @Test
     public void shouldNotExtractIdInCaseOfWhiteSpace() {
         String id = "PMID:123 456";
         Optional<String> extractedId = extractor.extractLinkLiteral(id);
