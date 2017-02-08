@@ -275,14 +275,17 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             }
             OntologyLoader loader = new OntologyLoader(this, userResolvedIRIMapper);
             Optional<OWLOntology> loadedOntology = loader.loadOntology(uri);
+            logger.info("Loading for ontology and imports closure successfully completed in {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
+            loadedOntology.ifPresent(ontology -> {
+                DocumentFormatUpdater formatUpdater = new DocumentFormatUpdater(new DocumentFormatMapper());
+                formatUpdater.updateFormat(ontology);
+            });
+            logger.info(LogBanner.end());
             return loadedOntology.isPresent();
         } catch (OWLOntologyCreationException e) {
             OWLOntologyID id = new OWLOntologyID(com.google.common.base.Optional.of(IRI.create(uri)), com.google.common.base.Optional.<IRI>absent());
             handleLoadError(id, uri, e);
             return false;
-        } finally {
-            logger.info("Loading for ontology and imports closure successfully completed in {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
-            logger.info(LogBanner.end());
         }
     }
 
