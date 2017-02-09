@@ -44,7 +44,7 @@ public class LiteralChecker {
 
     private static boolean checkXMLLiteral(OWLLiteral literal) {
         try {
-            SAXParsers.initParserWithOWLAPIStandards(null).parse(new InputSource(new StringReader(literal.getLiteral())),
+            SAXParsers.initParserWithOWLAPIStandards(null, "1000000").parse(new InputSource(new StringReader(literal.getLiteral())),
                     new DefaultHandler());
             return true;
         } catch (SAXException | IOException e) {
