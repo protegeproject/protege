@@ -3,6 +3,7 @@ package org.protege.editor.owl.model.repository.extractors;
 import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration;
 import org.semanticweb.owlapi.rdf.rdfxml.parser.RDFConsumer;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 import org.xml.sax.SAXException;
@@ -27,7 +28,12 @@ public class RdfExtractorConsumer implements RDFConsumer {
     public RdfExtractorConsumer() {
         ontologyProperties.add(OWLRDFVocabulary.OWL_IMPORTS.getIRI().toString());
     }
-    
+
+    @Override
+    public OWLOntologyLoaderConfiguration getConfiguration() {
+        return new OWLOntologyLoaderConfiguration();
+    }
+
     public Optional<OWLOntologyID> getOntologyID() {
         if (possibleOntologyNames.size() != 1) {
             return Optional.absent();
