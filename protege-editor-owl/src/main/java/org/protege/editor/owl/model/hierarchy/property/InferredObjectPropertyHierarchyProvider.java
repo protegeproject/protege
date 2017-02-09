@@ -37,8 +37,8 @@ public class InferredObjectPropertyHierarchyProvider extends OWLObjectPropertyHi
         super(mngr.getOWLOntologyManager());
         this.mngr = mngr;
         listener = e -> {
-            if (e.isType(EventType.ONTOLOGY_CLASSIFIED)
-                    || e.isType(EventType.REASONER_CHANGED)) {
+            if (e.isType(EventType.REASONER_CHANGED) || e.isType(EventType.ACTIVE_ONTOLOGY_CHANGED)
+                    || e.isType(EventType.ONTOLOGY_CLASSIFIED) || e.isType(EventType.ONTOLOGY_RELOADED)) {
                 fireHierarchyChanged();
             }
         };
