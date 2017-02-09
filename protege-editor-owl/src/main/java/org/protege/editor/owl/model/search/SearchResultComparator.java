@@ -65,7 +65,7 @@ public class SearchResultComparator implements Comparator<SearchResult> {
         }
         String rendering = searchResult.getSearchString();
         ImmutableList<SearchResultMatch> matches = searchResult.getMatches();
-        if(matches.isEmpty()) {
+        if (matches.isEmpty()) {
             return false;
         }
         SearchResultMatch firstMatch = matches.get(0);

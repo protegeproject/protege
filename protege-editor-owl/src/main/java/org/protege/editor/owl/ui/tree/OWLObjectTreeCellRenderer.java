@@ -19,6 +19,10 @@ import java.awt.*;
 public class OWLObjectTreeCellRenderer extends OWLCellRenderer {
 
 
+    public OWLObjectTreeCellRenderer(OWLEditorKit owlEditorKit, UserRendering mr) {
+        super(owlEditorKit, mr);
+    }
+    
     public OWLObjectTreeCellRenderer(OWLEditorKit owlEditorKit) {
         super(owlEditorKit);
     }

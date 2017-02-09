@@ -1,4 +1,6 @@
-package org.protege.editor.owl.model.search;
+package org.protege.editor.owl.model.search.impl;
+
+import org.protege.editor.owl.model.search.SearchCategory;
 
 import org.semanticweb.owlapi.model.OWLEntity;
 

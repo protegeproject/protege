@@ -404,5 +404,12 @@ public abstract class Workspace extends JComponent implements Disposable {
         public Set<String> getNavigates() {
             return Collections.emptySet();
         }
+
+
+		@Override
+		public boolean isEager() {
+			// TODO Auto-generated method stub
+			return false;
+		}
     }
 }

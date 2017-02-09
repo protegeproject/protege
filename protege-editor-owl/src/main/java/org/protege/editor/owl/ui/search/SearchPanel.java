@@ -1,17 +1,11 @@
 package org.protege.editor.owl.ui.search;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
-import org.protege.editor.owl.model.search.SearchManager;
-import org.protege.editor.owl.model.search.SearchRequest;
 import org.protege.editor.owl.model.search.SearchResultSet;
 import org.protege.editor.owl.ui.transfer.TransferableOWLObject;
 import org.protege.editor.owl.ui.view.ViewClipboard;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,8 +14,6 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -33,17 +25,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class SearchPanel extends JPanel {
 
-    private static final String WHITE_SPACE_PATTERN = "\\s+";
+    private SearchOptionsPanel searchOptionsPanel;
 
-    private final SearchOptionsPanel searchOptionsPanel;
+    private SearchResultsPanel searchResultsPanel;
 
-    private final SearchResultsPanel searchResultsPanel;
+    private String searchString;
 
-    private final Logger logger = LoggerFactory.getLogger(SearchPanel.class);
-
-    private final OWLEditorKit editorKit;
-
-    private String searchString = "";
+    private OWLEditorKit editorKit;
 
     public SearchPanel(OWLEditorKit editorKit) {
         this.editorKit = editorKit;
@@ -72,77 +60,31 @@ public class SearchPanel extends JPanel {
         add(searchActionsPanel, BorderLayout.SOUTH);
     }
 
-    private String getSearchString() {
-        return searchString;
-    }
-
     public void setSearchResultClickedListener(SearchResultClickedListener searchResultClickedListener) {
         searchResultsPanel.setSearchResultClickedListener(searchResultClickedListener);
     }
 
     public void setSearchString(String searchString) {
-        this.searchString = checkNotNull(searchString);
+        checkNotNull(searchString);
+        this.searchString = toLowerCase(searchString);
         searchOptionsPanel.refresh();
         doSearch();
     }
 
-    private SearchRequest createSearchRequest() throws PatternSyntaxException {
-            OWLEntityFinderPreferences prefs = OWLEntityFinderPreferences.getInstance();
-            int flags = Pattern.DOTALL | (prefs.isCaseSensitive() ? 0 : Pattern.CASE_INSENSITIVE);
-
-            ImmutableList.Builder<Pattern> builder = ImmutableList.builder();
-
-            String preparedSearchString;
-            for (String splitSearchString : getSearchString().split(WHITE_SPACE_PATTERN)) {
-                if (prefs.isUseRegularExpressions()) {
-                    preparedSearchString = splitSearchString;
-                    if (prefs.isIgnoreWhiteSpace()) {
-                        preparedSearchString = preparedSearchString.replace(" ", WHITE_SPACE_PATTERN);
-                    }
-                }
-                else {
-                    if (prefs.isIgnoreWhiteSpace()) {
-                        StringBuilder sb = new StringBuilder();
-                        String[] split = splitSearchString.split(WHITE_SPACE_PATTERN);
-                        for (int i = 0; i < split.length; i++) {
-                            String s = split[i];
-                            sb.append(Pattern.quote(s));
-                            if (i < split.length - 1) {
-                                sb.append(WHITE_SPACE_PATTERN);
-                            }
-                        }
-                        preparedSearchString = sb.toString();
-                    }
-                    else {
-                        preparedSearchString = Pattern.quote(splitSearchString);
-                    }
-                }
-                if (prefs.isWholeWords()) {
-                    preparedSearchString = "\\b(:?" + preparedSearchString + ")\\b";
-                }
-                builder.add(Pattern.compile(preparedSearchString, flags));
-            }
-            return new SearchRequest(builder.build());
+    private String toLowerCase(String str) {
+        return str.toLowerCase();
     }
 
     private void doSearch() {
-        String searchStr = getSearchString();
-        if (searchStr.trim().isEmpty()) {
+        if (searchString.trim().isEmpty()) {
             searchResultsPanel.clearSearchResults();
             return;
         }
-        try {
-            SearchManager searchManager = editorKit.getSearchManager();
-            SearchRequest searchRequest = createSearchRequest();
-            searchManager.performSearch(searchRequest, searchResults -> {
-                int categorySizeLimit = getCategoryLimit();
-                SearchResultSet searchResultSet = new SearchResultSet(searchResults);
-                SwingUtilities.invokeLater(() -> searchResultsPanel.setSearchResults(searchResultSet, categorySizeLimit));
-
-            });
-        } catch (PatternSyntaxException e) {
-            logger.info("Invalid regular expression in search pattern: {}", e.getPattern());
-        }
+        editorKit.getSearchManager().performSearch(searchString, searchResults -> {
+            int categorySizeLimit = getCategoryLimit();
+            SearchResultSet searchResultSet = new SearchResultSet(searchResults);
+            SwingUtilities.invokeLater(() -> searchResultsPanel.setSearchResults(searchResultSet, categorySizeLimit));
+        });
     }
 
     private int getCategoryLimit() {

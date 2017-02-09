@@ -37,14 +37,17 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
     private Set<OWLOntology> ontologies;
 
     private Set<OWLAnnotationProperty> roots;
+    
+    private Set<OWLAnnotationProperty> filterProps = null;
 
     private OWLOntologyChangeListener ontologyListener = changes -> handleChanges(changes);
 
 
-    public OWLAnnotationPropertyHierarchyProvider(OWLOntologyManager owlOntologyManager) {
+    public OWLAnnotationPropertyHierarchyProvider(OWLOntologyManager owlOntologyManager, Set<OWLAnnotationProperty> filterProps) {
         super(owlOntologyManager);
         this.roots = new HashSet<>();
         ontologies = new HashSet<>();
+        this.filterProps = filterProps;
         ReentrantReadWriteLock locks = new ReentrantReadWriteLock();
         ontologySetReadLock = locks.readLock();
         ontologySetWriteLock = locks.writeLock();
@@ -250,9 +253,13 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
             annotationProperties.addAll(ont.getAnnotationPropertiesInSignature());
         }
         for (OWLAnnotationProperty prop : annotationProperties) {
-            if (isRoot(prop)) {
-                roots.add(prop);
-            }
+        	if (isRoot(prop)) {
+        		if ((filterProps != null) && (filterProps.contains(prop))) {
+
+        		} else {
+        			roots.add(prop);
+        		}
+        	}
         }
 
         for (IRI uri : OWLRDFVocabulary.BUILT_IN_ANNOTATION_PROPERTY_IRIS){

@@ -1,18 +1,19 @@
 package org.protege.editor.owl.model.search;
 
-import com.google.common.collect.ImmutableList;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.search.impl.DefaultSearchManager;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
 import java.util.Collection;
-import java.util.Optional;
 import java.util.Set;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import com.google.common.collect.ImmutableList;
 
 /**
  * Matthew Horridge
@@ -38,6 +39,7 @@ public class SearchManagerSelector {
         SearchManagerPluginLoader loader = new SearchManagerPluginLoader(editorKit);
         Set<SearchManagerPlugin> plugins = loader.getPlugins();
         this.plugins = ImmutableList.copyOf(plugins);
+        initCurrentSearchManager();
     }
 
     /**
@@ -68,6 +70,10 @@ public class SearchManagerSelector {
 
     private Preferences getSearchManagerPreferences() {
         return PreferencesManager.getInstance().getApplicationPreferences("search.manager.preferences");
+    }
+
+    private void initCurrentSearchManager() {
+        updateCurrentSearchManager();
     }
 
     public synchronized SearchManager getCurrentSearchManager() {

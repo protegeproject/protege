@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class TabsMenuAction extends ProtegeDynamicAction {
 
@@ -26,18 +28,24 @@ public class TabsMenuAction extends ProtegeDynamicAction {
 	}
 
 	public void rebuildChildMenuItems(JMenu thisMenuItem) {
-        if (!(getWorkspace() instanceof TabbedWorkspace)) {
-            // Don't bother to show a tabs menu for non
-            // tabbed workspaces.
-            return;
-        }
+		if (!(getWorkspace() instanceof TabbedWorkspace)) {
+			// Don't bother to show a tabs menu for non
+			// tabbed workspaces.
+			return;
+		}
 		thisMenuItem.removeAll();
-        for (final WorkspaceTabPlugin plugin : ((TabbedWorkspace) getWorkspace()).getOrderedPlugins()) {
-            addMenuItem(thisMenuItem, plugin);
-        }
+		for (final WorkspaceTabPlugin plugin : ((TabbedWorkspace) getWorkspace()).getOrderedPlugins()) {
+			addMenuItem(thisMenuItem, plugin);
+		}
 
 	}
-	
+
+	private boolean canShowTab(WorkspaceTabPlugin plugin) {
+
+		return ((TabbedWorkspace) getWorkspace()).canShow(plugin);
+
+	}
+
     private void addMenuItem(JMenu thisMenuItem, final WorkspaceTabPlugin plugin) {
         final TabbedWorkspace workspace = (TabbedWorkspace) getWorkspace();
         JCheckBoxMenuItem item = new JCheckBoxMenuItem(new AbstractAction(plugin.getLabel()) {
@@ -62,6 +70,13 @@ public class TabsMenuAction extends ProtegeDynamicAction {
             }
         });
         item.setSelected(workspace.containsTab(plugin.getId()));
+        if (canShowTab(plugin)) {
+        	
+        } else {
+        	item.setEnabled(false);
+        }
+        
+      
         thisMenuItem.add(item);
     }
 	

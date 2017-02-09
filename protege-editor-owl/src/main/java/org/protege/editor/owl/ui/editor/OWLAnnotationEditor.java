@@ -93,7 +93,7 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
     protected OWLAnnotationPropertySelectorPanel createAnnotationPropertySelector() {
         final OWLModelManager mngr = owlEditorKit.getOWLModelManager();
         final OWLAnnotationPropertyHierarchyProvider hp =
-                mngr.getOWLHierarchyManager().getOWLAnnotationPropertyHierarchyProvider();
+                mngr.getOWLHierarchyManager().getOWLAnnotationPropertyHierarchyProvider(null);
         return new OWLAnnotationPropertySelectorPanel(owlEditorKit, true, hp);
 	}
 

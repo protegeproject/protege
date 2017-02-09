@@ -1,11 +1,12 @@
 package org.protege.editor.owl.model.search;
 
-import org.protege.editor.core.Disposable;
 import org.protege.editor.core.plugin.ProtegePluginInstance;
 import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.util.ProgressMonitor;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Matthew Horridge
@@ -35,5 +36,11 @@ public abstract class SearchManager implements ProtegePluginInstance {
 
     public abstract void setCategories(Collection<SearchCategory> categories);
 
-    public abstract void performSearch(SearchRequest searchRequest, SearchResultHandler searchResultHandler);
+    public abstract void performSearch(String searchString, SearchResultHandler searchResultHandler);
+    
+    public abstract void enableIncrementalIndexing();
+    
+    public abstract void updateIndex(List<? extends OWLOntologyChange> changes);
+    
+    public abstract void disableIncrementalIndexing();
 }
