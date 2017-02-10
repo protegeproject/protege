@@ -10,7 +10,9 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 
 import javax.annotation.Nonnull;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -29,6 +31,8 @@ public class HierarchyNodeCreator<E extends OWLEntity> {
     private final OWLEntityFinder entityFinder;
 
     private final OWLEntityFactory entityFactory;
+
+    private final Map<String, OWLEntity> entityName2EntityMap = new HashMap<>();
 
     /**
      * Constructs a HierarchyNodeCreator that will create hierarchy nodes by reusing existing nodes where possible.
@@ -56,20 +60,27 @@ public class HierarchyNodeCreator<E extends OWLEntity> {
      * @return The created entity.
      */
     @Nonnull
+    @SuppressWarnings("unchecked")
     public E createEntity(@Nonnull Optional<String> entityName, @Nonnull List<OWLOntologyChange> changes) {
         return entityName.map(name -> {
             Optional<E> existingEntity = entityFinder.getOWLEntity(entityType, name);
             return existingEntity.orElseGet(() -> {
+                OWLEntity mappedEntity = entityName2EntityMap.get(name);
+                if(mappedEntity != null) {
+                    return (E) mappedEntity;
+                }
                 OWLEntityCreationSet<E> creationSet = createEntity(name);
                 changes.addAll(creationSet.getOntologyChanges());
-                return creationSet.getOWLEntity();
+                E freshEntity = creationSet.getOWLEntity();
+                entityName2EntityMap.put(name, freshEntity);
+                return freshEntity;
             });
         }).orElse(rootEntity);
     }
 
     private OWLEntityCreationSet<E> createEntity(@Nonnull String name) {
         try {
-            return entityFactory.createOWLEntity(entityType, name, Optional.<IRI>empty());
+            return entityFactory.createOWLEntity(entityType, name, Optional.empty());
         } catch (OWLEntityCreationException e) {
             throw new RuntimeException(e);
         }
