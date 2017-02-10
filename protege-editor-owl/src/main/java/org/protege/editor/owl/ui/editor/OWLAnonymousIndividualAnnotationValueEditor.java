@@ -6,6 +6,7 @@ import org.protege.editor.owl.ui.frame.OWLAnnotationFrameSection;
 import org.protege.editor.owl.ui.frame.individual.OWLClassAssertionAxiomTypeFrameSection;
 import org.protege.editor.owl.ui.frame.individual.OWLIndividualPropertyAssertionsFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
+import org.protege.editor.owl.ui.renderer.OWLIndividualIcon;
 import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLOntologyID;
@@ -92,15 +93,11 @@ public class OWLAnonymousIndividualAnnotationValueEditor implements OWLObjectEdi
     public boolean setEditedObject(OWLAnonymousIndividual object) {
         if (object == null) {
             String id = "genid-" + UUID.randomUUID().toString();
-            final OWLOntologyID ontologyID = editorKit.getModelManager().getActiveOntology().getOntologyID();
-            if (!ontologyID.isAnonymous()){
-                id = ontologyID.getOntologyIRI().get() + "#" + id;
-            }
             object = editorKit.getModelManager().getOWLDataFactory().getOWLAnonymousIndividual(id);
         }
         frameList.setRootObject(object);
         mainComponent.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        annotationValueLabel.setIcon(OWLIcons.getIcon("individual.png"));
+        annotationValueLabel.setIcon(new OWLIndividualIcon());
         annotationValueLabel.setText(editorKit.getModelManager().getRendering(object));
         return true;
     }
