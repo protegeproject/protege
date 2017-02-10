@@ -309,11 +309,11 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
             }
 
             if (match.trim().length() == 0) {
-                    logger.debug("Attempt to match the empty string (no results)");
+                logger.debug("Attempt to match the empty string (no results)");
             }
             else{
                 match = match.toLowerCase();
-                    logger.debug("Match: " + match);
+                logger.debug("Match: {}", match);
                 for (String rendering : getRenderings(type)) {
                     if (rendering.length() > 0){
                         if (matcher.matches(rendering.toLowerCase(), match)) {
