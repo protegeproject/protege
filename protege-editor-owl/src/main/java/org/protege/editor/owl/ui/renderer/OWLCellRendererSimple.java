@@ -31,12 +31,23 @@ public class OWLCellRendererSimple implements TreeCellRenderer, ListCellRenderer
 
     private DefaultListCellRenderer listCellRenderDelegate;
 
+    private boolean displayQuotes = true;
+
     public OWLCellRendererSimple(OWLEditorKit owlEditorKit) {
         this.owlEditorKit = owlEditorKit;
         treeCellRendererDelegate = new DefaultTreeCellRenderer();
         listCellRenderDelegate = new DefaultListCellRenderer();
     }
 
+    /**
+     * Specifies whether or not single quotation marks should be displayed.  Protege surrounds names containing
+     * spaces with single quotes.  This setting can be used to suppress this behaviour for this particular render
+     * instance.  Quotes are displayed by default.
+     * @param displayQuotes true if quotes should be displayed, otherwise false.
+     */
+    public void setDisplayQuotes(boolean displayQuotes) {
+        this.displayQuotes = displayQuotes;
+    }
 
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JLabel label = (JLabel) treeCellRendererDelegate.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
@@ -69,7 +80,13 @@ public class OWLCellRendererSimple implements TreeCellRenderer, ListCellRenderer
         if(value instanceof OWLObject) {
             OWLObject obj = (OWLObject) value;
             String rendering = owlEditorKit.getModelManager().getRendering(obj);
-            renderer.setText(rendering);
+            if(!displayQuotes && rendering.length() > 2 && rendering.startsWith("'") && rendering.endsWith("'")) {
+                String stripped = rendering.substring(1, rendering.length() - 1);
+                renderer.setText(stripped);
+            }
+            else {
+                renderer.setText(rendering);
+            }
         }
     }
 
