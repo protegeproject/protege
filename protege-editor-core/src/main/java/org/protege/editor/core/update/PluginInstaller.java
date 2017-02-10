@@ -201,7 +201,7 @@ public class PluginInstaller {
         catch (IOException e) {
             try {
                 File userPluginDirectory = ProtegeDirectories.getUserPluginDirectory();
-                logger.warn("Could not copy plugin to plugins directory: {}", e.getMessage(), e);
+                logger.info("Could not copy the plugin to Protege plugins directory: {}", e.getMessage());
                 File userDirectoryPluginFile = new File(userPluginDirectory, info.getId() + ".jar");
                 FileUtils.copyFileToDirectory(downloadedPlugin, userDirectoryPluginFile);
                 logger.info("Copied the {} plugin to the user plugin directory at {}.  " +
