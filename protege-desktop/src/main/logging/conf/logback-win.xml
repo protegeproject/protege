@@ -9,7 +9,7 @@
 
 
     <appender name="files" class="ch.qos.logback.core.FileAppender">
-        <file>${user.home}/.protege/logs/protege.log</file>
+        <file>${user.home}/.Protege/logs/protege.log</file>
         <append>true</append>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{0}    %msg%n</Pattern>
