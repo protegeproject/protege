@@ -65,11 +65,8 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
         mainPanel.add(splitPane);
 
         annotationPropertySelector = createAnnotationPropertySelector();
-        JPanel listHolder = new JPanel(new BorderLayout());
-        listHolder.add(annotationPropertySelector);
-        listHolder.setPreferredSize(new Dimension(200, 300));
 
-        splitPane.setLeftComponent(listHolder);
+        splitPane.setLeftComponent(annotationPropertySelector);
         splitPane.setRightComponent(tabbedPane);
         splitPane.setBorder(null);
         loadEditors();
