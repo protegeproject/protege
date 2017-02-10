@@ -26,11 +26,12 @@ import java.util.Set;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class OWLObjectList<O extends OWLObject> extends JList<O> {
-    private static final long serialVersionUID = -817749022854204056L;
 
 
     public OWLObjectList(OWLEditorKit owlEditorKit) {
-        setCellRenderer(new OWLCellRendererSimple(owlEditorKit));
+        OWLCellRendererSimple renderer = new OWLCellRendererSimple(owlEditorKit);
+        renderer.setDisplayQuotes(false);
+        setCellRenderer(renderer);
         DragSource ds = DragSource.getDefaultDragSource();
         ds.createDefaultDragGestureRecognizer(this,
                                               DnDConstants.ACTION_COPY,
