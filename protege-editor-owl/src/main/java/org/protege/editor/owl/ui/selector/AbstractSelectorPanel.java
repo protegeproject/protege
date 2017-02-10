@@ -88,8 +88,8 @@ public abstract class AbstractSelectorPanel<O extends OWLObject> extends JPanel
         view.createUI();
         view.setShowViewBanner(false);
         add(view);
-        setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY),
-                                                     BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+//        setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY),
+//                                                     BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 
         // only attach change listeners once the component is shown
         // (as those that use a view component are lazilly created)
