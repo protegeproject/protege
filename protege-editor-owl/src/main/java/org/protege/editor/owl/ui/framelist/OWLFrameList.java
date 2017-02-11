@@ -65,6 +65,8 @@ import java.util.Set;
  */
 public class OWLFrameList<R> extends MList implements LinkedObjectComponent, DropTargetListener, Copyable, Pasteable, Cuttable, Deleteable, RefreshableComponent {
 
+    private static final int EDITOR_SCREEN_MARGIN = 100;
+
     private final Logger logger = LoggerFactory.getLogger(OWLFrameList.class);
 
     private static final Border inferredBorder = new OWLFrameListInferredSectionRowBorder();
@@ -473,7 +475,15 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
         else if (rootObject != null) {
             dlg.setTitle(rootObject.toString());
         }
-
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension dlgSize = dlg.getSize();
+        if(dlg.getHeight() > screenSize.height - EDITOR_SCREEN_MARGIN) {
+            dlgSize.height = screenSize.height - EDITOR_SCREEN_MARGIN;
+        }
+        if(dlg.getWidth() > screenSize.width - EDITOR_SCREEN_MARGIN) {
+            dlgSize.width = screenSize.width - EDITOR_SCREEN_MARGIN;
+        }
+        dlg.setSize(dlgSize);
         dlg.setVisible(true);
     }
 
