@@ -129,7 +129,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
     }
 
     private void clearErrorMessage() {
-        messageLabel.setText("Value");
+        messageLabel.setText("");
         messageLabel.setForeground(null);
         annotationContent.setToolTipText(null);
         annotationContent.setForeground(null);
