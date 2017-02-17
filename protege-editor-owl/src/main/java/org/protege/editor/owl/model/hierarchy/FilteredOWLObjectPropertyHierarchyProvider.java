@@ -69,7 +69,11 @@ public class FilteredOWLObjectPropertyHierarchyProvider extends OWLObjectPropert
 				if (s.getSuperClass().asOWLClass().equals(sup)) {
 					return true;
 				} else {
-					return isSubClass(ont, s.getSuperClass().asOWLClass(), sup);
+					if (sub.equals(s.getSuperClass().asOWLClass())) {
+						return false;
+					} else {
+						return isSubClass(ont, s.getSuperClass().asOWLClass(), sup);
+					}
 				}
 			}
 		}
