@@ -19,6 +19,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+import javax.swing.JOptionPane;
+
 
 /**
  * Author: Matthew Horridge<br>
@@ -183,12 +185,14 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
         List<OWLOntologyChange> changes = new ArrayList<>();
         for (E editedObject : editedObjects) {
             final A ax = createAxiom(editedObject);
-            FreshAxiomLocationPreferences prefs = FreshAxiomLocationPreferences.getPreferences();
-            FreshActionStrategySelector strategySelector = new FreshActionStrategySelector(prefs, owlEditorKit);
-            FreshAxiomLocationStrategy strategy = strategySelector.getFreshAxiomLocationStrategy();
-            OWLOntology ontology = strategy.getFreshAxiomLocation(ax, getOWLModelManager());
-            changes.add(new AddAxiom(ontology, ax));
-            axioms.add(ax);
+            if (ax != null) {
+            	FreshAxiomLocationPreferences prefs = FreshAxiomLocationPreferences.getPreferences();
+            	FreshActionStrategySelector strategySelector = new FreshActionStrategySelector(prefs, owlEditorKit);
+            	FreshAxiomLocationStrategy strategy = strategySelector.getFreshAxiomLocationStrategy();
+            	OWLOntology ontology = strategy.getFreshAxiomLocation(ax, getOWLModelManager());
+            	changes.add(new AddAxiom(ontology, ax));
+            	axioms.add(ax);
+            }
         }
         getOWLModelManager().applyChanges(changes);
         for (A axiom : axioms){
