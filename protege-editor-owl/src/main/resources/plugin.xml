@@ -941,6 +941,7 @@
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
+    <!--
     <extension id="reloadontology"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Reload"/>
@@ -950,6 +951,7 @@
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="shift R"/>
     </extension>
+    -->
 
     <extension id="find"
                point="org.protege.editor.core.application.EditorKitMenuAction">
