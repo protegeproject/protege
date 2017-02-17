@@ -11,6 +11,8 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
 import java.util.*;
 
+import javax.swing.JOptionPane;
+
 
 /**
  * Author: Matthew Horridge<br>
@@ -85,7 +87,11 @@ public class OWLSubClassAxiomFrameSection extends AbstractOWLClassAxiomFrameSect
 
 
     protected OWLSubClassOfAxiom createAxiom(OWLClassExpression object) {
+    	if (getRootObject().equals(object)) {    		
+    		return null;
+    	} else {
             return getOWLDataFactory().getOWLSubClassOfAxiom(getRootObject(), object);
+    	}
     }
 
 
