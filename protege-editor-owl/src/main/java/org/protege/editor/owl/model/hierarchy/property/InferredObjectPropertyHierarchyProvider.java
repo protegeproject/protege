@@ -98,12 +98,14 @@ public class InferredObjectPropertyHierarchyProvider extends OWLObjectPropertyHi
                 return Collections.emptySet();
             }
             Set<OWLObjectPropertyExpression> equivs = getReasoner().getEquivalentObjectProperties(objectProperty).getEntities();
-            equivs.remove(objectProperty);
+            //equivs.remove(objectProperty);
             Set<OWLObjectProperty> ret = new HashSet<>();
             for (OWLObjectPropertyExpression p : equivs) {
-                if (p instanceof OWLObjectProperty) {
-                    ret.add((OWLObjectProperty) p);
-                }
+            	if (p instanceof OWLObjectProperty) {
+            		if (!p.equals(objectProperty)) {
+            			ret.add((OWLObjectProperty) p);
+            		}
+            	}
             }
             return ret;
         } catch (Exception e) {
