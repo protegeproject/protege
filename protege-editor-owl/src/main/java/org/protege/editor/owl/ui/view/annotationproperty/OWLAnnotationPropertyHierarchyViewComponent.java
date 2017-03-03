@@ -95,17 +95,19 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
 
 
     public void createNewChild() {
-        List<OWLOntologyChange> changes = new ArrayList<>();
-        OWLEntityCreationSet<OWLAnnotationProperty> set = getOWLWorkspace().createOWLAnnotationProperty();
-        changes.addAll(set.getOntologyChanges());
-        OWLDataFactory df = getOWLModelManager().getOWLDataFactory();
-        OWLAnnotationProperty selProp = getSelectedEntity();
-        if (selProp != null) {
-            OWLAxiom ax = df.getOWLSubAnnotationPropertyOfAxiom(set.getOWLEntity(), selProp);
-            changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
-        }
-        getOWLModelManager().applyChanges(changes);
-        setGlobalSelection(set.getOWLEntity());
+    	List<OWLOntologyChange> changes = new ArrayList<>();
+    	OWLEntityCreationSet<OWLAnnotationProperty> set = getOWLWorkspace().createOWLAnnotationProperty();
+    	if (set != null) {
+    		changes.addAll(set.getOntologyChanges());
+    		OWLDataFactory df = getOWLModelManager().getOWLDataFactory();
+    		OWLAnnotationProperty selProp = getSelectedEntity();
+    		if (selProp != null) {
+    			OWLAxiom ax = df.getOWLSubAnnotationPropertyOfAxiom(set.getOWLEntity(), selProp);
+    			changes.add(new AddAxiom(getOWLModelManager().getActiveOntology(), ax));
+    		}
+    		getOWLModelManager().applyChanges(changes);
+    		setGlobalSelection(set.getOWLEntity());
+    	}
     }
 
 
