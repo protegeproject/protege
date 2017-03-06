@@ -68,7 +68,7 @@ public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> i
         setCellRenderer(renderer);
         setHighlightKeywords(false);
         setupListener();
-        installPopupMenu();
+        //installPopupMenu();
         setRowHeight(-1);
         autoExpandTree();
     }

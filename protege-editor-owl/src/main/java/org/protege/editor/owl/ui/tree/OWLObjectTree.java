@@ -119,7 +119,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         dragSource.createDefaultDragGestureRecognizer(this,
                 DnDConstants.ACTION_COPY_OR_MOVE,
                 new OWLObjectTreeDragGestureListener(eKit, this));
-
+/**
         addMouseListener(new MouseAdapter() {
 
             public void mouseReleased(MouseEvent e) {
@@ -132,14 +132,17 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
             }
 
             public void mousePressed(MouseEvent e) {
-                if (e.isPopupTrigger()) {
-                    showPopupMenu(e);
+                if (e.isPopupTrigger()) {   
+                	ensureSelected(e.getX(), e.getY());
+                	showPopupMenu(e);
                 }
                 if (e.isAltDown()) {
                     expandDescendantsOfRowAt(e.getX(), e.getY());
                 }
             }
         });
+        **/
+        
 
         getSelectionModel().addTreeSelectionListener(event -> {
             scrollPathToVisible(event.getNewLeadSelectionPath());
@@ -155,14 +158,28 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         }
     }
 
-    private void expandDescendantsOfRowAt(final int x, int y) {
+    public void expandDescendantsOfRowAt(final int x, int y) {
         // It's necessary to traverse all rows to find the path where the user clicked.  This is because
         // the getRowAt(X,Y) call only returns a row index if the actual node rendering is clicked.  We
         // Want to detect if the node handle is clicked (or anywhere in the white space of a row).
         for(int i = 0; i < getRowCount(); i++) {
             Rectangle rowBounds = getRowBounds(i);
             if(rowBounds != null && rowBounds.y <= y && y <= rowBounds.y + rowBounds.height) {
-                expandDescendantsOfRow(i);
+            	expandDescendantsOfRow(i);
+                break;
+            }
+        }
+    }
+    
+    public void ensureSelected(final int x, int y) {
+        // It's necessary to traverse all rows to find the path where the user clicked.  This is because
+        // the getRowAt(X,Y) call only returns a row index if the actual node rendering is clicked.  We
+        // Want to detect if the node handle is clicked (or anywhere in the white space of a row).
+        for(int i = 0; i < getRowCount(); i++) {
+            Rectangle rowBounds = getRowBounds(i);
+            if(rowBounds != null && rowBounds.y <= y && y <= rowBounds.y + rowBounds.height) {
+            	this.setSelectionRow(i);
+            	this.requestFocusInWindow();
                 break;
             }
         }
@@ -198,7 +215,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         return popupMenuId;
     }
 
-    private void showPopupMenu(MouseEvent e) {
+    public void showPopupMenu(MouseEvent e) {
         if (!getPopupMenuId().isPresent()) {
             return;
         }

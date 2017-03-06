@@ -104,6 +104,12 @@ public class OWLObjectRestrictionCreatorPanel extends AbstractRestrictionCreator
         		.getModelManager().getOWLOntologyManager(), getOWLEditorKit());
     	op.setOntologies(getOWLEditorKit().getModelManager().getActiveOntologies());
     	//getOWLEditorKit().getModelManager().getOWLHierarchyManager().setOWLObjectPropertyHierarchyProvider(op);
+    	try {
+			((FilteredOWLObjectPropertyHierarchyProvider) op).selectionChanged();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return new OWLObjectPropertySelectorPanel(getOWLEditorKit(), false, op);
     }
     
