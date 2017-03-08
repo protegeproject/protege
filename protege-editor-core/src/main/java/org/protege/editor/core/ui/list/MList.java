@@ -94,15 +94,13 @@ public class MList extends JList {
         };
         this.addMouseMotionListener(mouseMovementListener);
         MouseListener mouseButtonListener = new MouseAdapter() {
+           
             @Override
-            public void mousePressed(MouseEvent e) {
-                MList.this.mouseDown = true;
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                MList.this.handleMouseClick(e);
-                MList.this.mouseDown = false;
+            public void mouseClicked(MouseEvent e) {
+            	if (e.getClickCount() == 1) {
+            		MList.this.handleMouseClick(e);            		
+            	}
+            	
             }
 
             @Override

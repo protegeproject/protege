@@ -838,12 +838,7 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
                     if (e.isPopupTrigger()) {
                         showingPopup = true;
                         showPopupMenu(e);
-                    }
-                    else if (e.getClickCount() == 2) {
-                        if (!showingPopup) {
-                            handleEdit();
-                        }
-                    }
+                    }                    
                     else {
                         super.mouseReleased(e);
                     }
