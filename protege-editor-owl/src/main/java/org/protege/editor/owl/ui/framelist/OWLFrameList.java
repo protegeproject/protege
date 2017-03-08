@@ -722,7 +722,9 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
     //
     // /////////////////////////////////////////////////////////////////////////////////////////////////////////
     public boolean canCopy() {
-        return getRootObject() != null && getSelectedIndex() != -1;
+    	boolean can = getRootObject() != null && getSelectedIndex() != -1 &&
+        		getSelectedValues().length == 1;
+    	return can;
     }
 
     public List<OWLObject> getObjectsToCopy() {
