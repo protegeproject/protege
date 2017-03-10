@@ -119,7 +119,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         dragSource.createDefaultDragGestureRecognizer(this,
                 DnDConstants.ACTION_COPY_OR_MOVE,
                 new OWLObjectTreeDragGestureListener(eKit, this));
-/**
+
         addMouseListener(new MouseAdapter() {
 
             public void mouseReleased(MouseEvent e) {
@@ -141,7 +141,8 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
                 }
             }
         });
-        **/
+        
+        
         
 
         getSelectionModel().addTreeSelectionListener(event -> {
