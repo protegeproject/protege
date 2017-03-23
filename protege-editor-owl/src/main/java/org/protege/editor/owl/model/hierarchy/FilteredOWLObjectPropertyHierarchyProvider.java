@@ -80,23 +80,27 @@ public class FilteredOWLObjectPropertyHierarchyProvider extends OWLObjectPropert
 	
 	private boolean isSubClass(OWLOntology ont, OWLClass sub, OWLClass sup) {
 				
-		CheckSubsumptionRelation checker = new CheckSubsumptionRelation(ont, sup);
+		CheckSubsumptionRelation checker = new CheckSubsumptionRelation(ont, sub, sup);
+		return isSubClass1(checker, ont, sub);
+	}
+	
+	private boolean isSubClass1(CheckSubsumptionRelation ch, OWLOntology ont, OWLClass cls) {
 		
-		Set<OWLSubClassOfAxiom> subaxs = ont.getSubClassAxiomsForSubClass(sub);
+		Set<OWLSubClassOfAxiom> subaxs = ont.getSubClassAxiomsForSubClass(cls);
 		for (OWLSubClassOfAxiom s : subaxs) {
-			s.getSuperClass().accept(checker);
-			if (checker.isSub()) {
+			s.getSuperClass().accept(ch);
+			if (ch.isSub()) {
 				return true;
 			}
 		}
 		
-		Set<OWLEquivalentClassesAxiom> eqs = ont.getEquivalentClassesAxioms(sub);
+		Set<OWLEquivalentClassesAxiom> eqs = ont.getEquivalentClassesAxioms(cls);
 		for (OWLEquivalentClassesAxiom eq : eqs) {
 			for (OWLClassExpression exp : eq.getClassExpressions()) {
-				if (!exp.isAnonymous() && exp.asOWLClass().equals(sub)) {
+				if (!exp.isAnonymous() && exp.asOWLClass().equals(cls)) {
 				} else {
-					exp.accept(checker);
-					if (checker.isSub()) {
+					exp.accept(ch);
+					if (ch.isSub()) {
 						return true;
 					}
 				}
@@ -130,22 +134,30 @@ public class FilteredOWLObjectPropertyHierarchyProvider extends OWLObjectPropert
 		
 		public boolean isSub() { return isSub; }
 		
+		
+		private OWLClass sub = null;
 		private OWLClass sup = null;
 		
 		private OWLOntology ont = null;
 		
-		public CheckSubsumptionRelation(OWLOntology o, OWLClass c) {
+		public CheckSubsumptionRelation(OWLOntology o, OWLClass s, OWLClass c) {
+			sub = s;
 			sup = c;
 			ont = o;
 		}
 
 		@Override
 		public void visit(OWLClass ce) {
-			if (ce.equals(sup)) {
-				isSub = true;
+			if (sub.equals(ce)) {
+
 			} else {
-				isSub = isSubClass(ont, ce, sup);
+				if (ce.equals(sup)) {
+					isSub = true;
+				} else {
+					isSub = isSubClass1(this, ont, ce);
+				}
 			}
+
 		}
 
 		@Override
