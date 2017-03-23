@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class OWLClassAssertionSelectionModel implements Disposable {
 	public static Logger logger = LoggerFactory.getLogger(OWLClassAssertionSelectionModel.class);
@@ -60,7 +61,7 @@ public class OWLClassAssertionSelectionModel implements Disposable {
 			individual = individual;
 			inferredOwlClassNeedsRecalculation = true;
 			OWLModelManager modelManager = editorKit.getOWLModelManager();
-			Collection<OWLClassExpression> types = EntitySearcher.getTypes(individual, modelManager.getActiveOntologies());
+			Collection<OWLClassExpression> types = EntitySearcher.getTypes(individual, modelManager.getActiveOntologies().stream()).collect(Collectors.toList());
 			if (!types.contains(owlClass)) {
 				owlClass = null;
 				for (OWLClassExpression type : types) {

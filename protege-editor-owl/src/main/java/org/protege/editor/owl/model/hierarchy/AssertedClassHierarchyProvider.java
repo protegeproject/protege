@@ -318,7 +318,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
         try {
             Set<OWLClass> result = new HashSet<>();
             for (OWLOntology ont : ontologies) {
-                for (OWLClassExpression equiv : EntitySearcher.getEquivalentClasses(object, ont)) {
+                for (OWLClassExpression equiv : EntitySearcher.getEquivalentClasses(object, ont).toArray(OWLClassExpression[]::new)) {
                     if (!equiv.isAnonymous()) {
                         result.add((OWLClass) equiv);
                     }

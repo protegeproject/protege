@@ -20,7 +20,7 @@ public class CoerceDataPropertyValuesIntoPropertyRangeAction extends ProtegeOWLA
 
 
     public void actionPerformed(ActionEvent e) {
-        CoerceConstantsIntoDataPropertyRange refactor = new CoerceConstantsIntoDataPropertyRange(getOWLDataFactory(),
+        CoerceConstantsIntoDataPropertyRange refactor = new CoerceConstantsIntoDataPropertyRange(getOWLModelManager().getOWLOntologyManager(),
                                                                                                  getOWLModelManager().getOntologies());
 
         getOWLModelManager().applyChanges(refactor.getChanges());

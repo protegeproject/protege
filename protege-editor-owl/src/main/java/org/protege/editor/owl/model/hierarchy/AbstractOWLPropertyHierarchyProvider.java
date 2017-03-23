@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
+import java.util.stream.Collectors;
 
 
 /**
@@ -229,8 +230,15 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
                     }
                 }
             }
-
-            for (E prop : EntitySearcher.getEquivalentProperties(object, ontologies)) {
+            if (object instanceof OWLDataProperty)
+            	for (OWLDataPropertyExpression prop : EntitySearcher.getEquivalentProperties((OWLDataProperty)object, ontologies.stream()).collect(Collectors.toList())) {
+                    if (!prop.isAnonymous()) {
+                        result.add((P) prop);
+                    }
+                }
+            	
+            if (object instanceof OWLObjectPropertyExpression)
+            for (OWLObjectPropertyExpression prop : EntitySearcher.getEquivalentProperties((OWLObjectPropertyExpression)object, ontologies.stream()).collect(Collectors.toList())) {
                 if (!prop.isAnonymous()) {
                     result.add((P) prop);
                 }

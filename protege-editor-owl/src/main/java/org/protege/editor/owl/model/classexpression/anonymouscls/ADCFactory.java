@@ -3,7 +3,6 @@ package org.protege.editor.owl.model.classexpression.anonymouscls;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.parser.OWLParseException;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +24,7 @@ import java.util.Set;
  * Bio Health Informatics Group<br>
  * Date: Jan 8, 2009<br><br>
  */
-public class ADCFactory extends OWLObjectVisitorAdapter {
+public class ADCFactory implements OWLObjectVisitor {
 
     private final Logger logger = LoggerFactory.getLogger(ADCFactory.class);
 

@@ -36,7 +36,7 @@ public abstract class AbstractPropertyDomainFrameSectionRow<P extends OWLPropert
     protected OWLObjectEditor<OWLClassExpression> getObjectEditor() {
         final OWLComponentFactory cf = getOWLEditorKit().getWorkspace().getOWLComponentFactory();
         final A ax = getAxiom();
-        return cf.getOWLClassDescriptionEditor(ax.getDomain(), ax.getAxiomType());
+        return cf.getOWLClassDescriptionEditor((OWLClassExpression) ax.getDomain(), ax.getAxiomType());
     }
 
 

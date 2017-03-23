@@ -3,7 +3,6 @@ package org.protege.editor.owl.model.axiom;
 import com.google.common.collect.Sets;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.Imports;
-import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -16,7 +15,7 @@ public class DefaultSubjectDefinitionExtractor implements SubjectDefinitionExtra
 
     @Override
     public Set<OWLAxiom> getDefiningAxioms(final OWLObject subject, final OWLOntology ontology) {
-            return new HashSet<>(subject.accept(new OWLObjectVisitorExAdapter<Set<? extends OWLAxiom>>(Collections.emptySet()) {
+            return new HashSet<>(subject.accept(new OWLObjectVisitorEx<Set<? extends OWLAxiom>>() {
 
                 @Override
                 public Set<? extends OWLAxiom> visit(OWLClass cls) {

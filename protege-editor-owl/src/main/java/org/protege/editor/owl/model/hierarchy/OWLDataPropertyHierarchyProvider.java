@@ -65,8 +65,7 @@ public class OWLDataPropertyHierarchyProvider extends AbstractOWLPropertyHierarc
 
     @Override
     protected Collection<OWLDataProperty> getSuperProperties(OWLDataProperty subProperty, Set<OWLOntology> ontologies) {
-        return EntitySearcher.getSuperProperties(subProperty, ontologies)
-                .stream()
+        return EntitySearcher.getSuperProperties(subProperty, ontologies.stream())
                 .filter(p -> !p.isAnonymous())
                 .map(p -> (OWLDataProperty) p)
                 .collect(toList());

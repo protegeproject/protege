@@ -72,7 +72,7 @@ public class AnonymousDefinedClassManager implements Disposable {
 
         idGen = new PseudoRandomAutoIDGenerator();
 
-        adcRewriter = new ADCRewriter(this, mngr.getOWLDataFactory());
+        adcRewriter = new ADCRewriter(this, mngr.getOWLOntologyManager());
 
         adcFactory = new ADCFactory(this);
 
@@ -129,7 +129,7 @@ public class AnonymousDefinedClassManager implements Disposable {
 
 
     public OWLClassExpression getExpression(OWLClass cls) {
-        for (OWLClassExpression descr : EntitySearcher.getEquivalentClasses(cls, mngr.getActiveOntologies())){
+        for (OWLClassExpression descr : EntitySearcher.getEquivalentClasses(cls, mngr.getActiveOntologies().stream()).toArray(OWLClassExpression[]::new)){
             if (!descr.equals(cls)){
                 return descr;
             }

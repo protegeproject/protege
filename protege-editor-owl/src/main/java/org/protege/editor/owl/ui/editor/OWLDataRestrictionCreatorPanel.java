@@ -5,7 +5,6 @@ import org.protege.editor.owl.ui.selector.AbstractSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLDataTypeSelectorPanel;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,7 +106,7 @@ public class OWLDataRestrictionCreatorPanel extends AbstractRestrictionCreatorPa
     }
 
 
-    class AcceptableExpressionFilter extends OWLClassExpressionVisitorAdapter {
+    class AcceptableExpressionFilter implements OWLClassExpressionVisitor {
         private boolean isAcceptable = false;
         private OWLDataProperty p;
         private OWLDatatype f;
@@ -115,7 +114,7 @@ public class OWLDataRestrictionCreatorPanel extends AbstractRestrictionCreatorPa
         private int cardinality = -1;
 
         private void handleRestriction(OWLQuantifiedRestriction<OWLDataRange>  r) {
-            if (!r.getProperty().isAnonymous() && r.getFiller().isDatatype()){
+            if (!r.getProperty().isAnonymous() && r.getFiller().isOWLDatatype()){
                 p = (OWLDataProperty) r.getProperty();
                 f = r.getFiller().asOWLDatatype();
                 isAcceptable = true;

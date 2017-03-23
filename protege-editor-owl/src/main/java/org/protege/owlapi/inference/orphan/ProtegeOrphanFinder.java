@@ -1,8 +1,6 @@
 package org.protege.owlapi.inference.orphan;
 
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
-
 import java.util.*;
 
 public class ProtegeOrphanFinder  {
@@ -104,7 +102,7 @@ public class ProtegeOrphanFinder  {
         return false;
     }
     
-    private class ParentClassExtractor extends OWLAxiomVisitorAdapter {
+    private class ParentClassExtractor implements OWLAxiomVisitor {
 
         private NamedClassExtractor extractor = new NamedClassExtractor();
 

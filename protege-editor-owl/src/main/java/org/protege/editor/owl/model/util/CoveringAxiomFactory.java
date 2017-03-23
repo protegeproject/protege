@@ -3,8 +3,8 @@ package org.protege.editor.owl.model.util;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLClassExpressionVisitor;
 import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +19,7 @@ import java.util.Set;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class CoveringAxiomFactory extends OWLClassExpressionVisitorAdapter {
+public class CoveringAxiomFactory implements OWLClassExpressionVisitor {
 
     private OWLDataFactory owlDataFactory;
 

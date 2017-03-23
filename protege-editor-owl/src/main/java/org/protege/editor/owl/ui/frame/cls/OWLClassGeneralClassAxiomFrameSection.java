@@ -8,7 +8,6 @@ import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLAxiomVisitorExAdapter;
 
 import javax.swing.*;
 import java.util.Comparator;
@@ -99,7 +98,7 @@ public class OWLClassGeneralClassAxiomFrameSection extends AbstractOWLFrameSecti
             return false;
         }
         OWLAxiom axiom = change.getAxiom();
-        return axiom.accept(new OWLAxiomVisitorExAdapter<Boolean>(false) {
+        return axiom.accept(new OWLAxiomVisitorEx<Boolean>() {
 
             @Override
             public Boolean visit(OWLSubClassOfAxiom axiom) {

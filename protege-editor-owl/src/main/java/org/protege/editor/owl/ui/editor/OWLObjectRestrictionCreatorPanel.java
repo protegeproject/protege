@@ -5,7 +5,6 @@ import org.protege.editor.owl.ui.selector.AbstractSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,7 +114,7 @@ public class OWLObjectRestrictionCreatorPanel extends AbstractRestrictionCreator
         return false;
     }
 
-    class AcceptableExpressionFilter extends OWLClassExpressionVisitorAdapter {
+    class AcceptableExpressionFilter implements OWLClassExpressionVisitor {
         private boolean isAcceptable = false;
         private OWLObjectProperty p;
         private OWLClass f;

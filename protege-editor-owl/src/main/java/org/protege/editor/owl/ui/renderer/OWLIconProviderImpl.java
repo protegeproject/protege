@@ -5,7 +5,6 @@ import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.renderer.context.DefinedClassChecker;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.search.EntitySearcher;
-import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
@@ -23,7 +22,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLIconProvider {
+public class OWLIconProviderImpl implements OWLObjectVisitor, OWLIconProvider {
 
     private Icon icon;
 

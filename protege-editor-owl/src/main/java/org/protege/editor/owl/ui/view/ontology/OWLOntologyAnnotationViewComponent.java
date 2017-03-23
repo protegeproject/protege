@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.view.ontology;
 
-import com.google.common.base.Optional;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.ui.util.AugmentedJTextField;
 import org.protege.editor.core.ui.util.LinkLabel;
@@ -12,7 +11,6 @@ import org.protege.editor.owl.model.refactor.ontology.EntityIRIUpdaterOntologyCh
 import org.protege.editor.owl.ui.ontology.annotation.OWLOntologyAnnotationList;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLOntologyChangeVisitorAdapter;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -24,6 +22,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.NumberFormat;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -319,7 +318,7 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
             IRI ontologyIRI = IRI.create(ontURI);
             String versionIRIString = ontologyVersionIRIField.getText().trim();
             if (versionIRIString.isEmpty()) {
-                return new OWLOntologyID(Optional.of(ontologyIRI), Optional.<IRI>absent());
+                return new OWLOntologyID(Optional.of(ontologyIRI), Optional.<IRI>empty());
             }
 
             URI verURI = new URI(versionIRIString);
@@ -336,7 +335,7 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
 
     private void handleOntologyChanges(List<? extends OWLOntologyChange> changes) {
         for (OWLOntologyChange change : changes) {
-            change.accept(new OWLOntologyChangeVisitorAdapter() {
+            change.accept(new OWLOntologyChangeVisitor() {
                 @Override
                 public void visit(SetOntologyID change) {
                     updateView();

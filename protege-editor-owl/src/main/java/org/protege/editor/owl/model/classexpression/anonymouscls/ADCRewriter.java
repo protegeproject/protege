@@ -26,18 +26,9 @@ public class ADCRewriter {
     private OWLObjectDuplicator duplicator;
 
 
-    public ADCRewriter(final AnonymousDefinedClassManager adcManager, final OWLDataFactory df) {
+    public ADCRewriter(final AnonymousDefinedClassManager adcManager, final OWLOntologyManager om) {
         this.adcManager = adcManager;
-        this.duplicator = new OWLObjectDuplicator(df){
-            public void visit(OWLClass owlClass) {
-                if (adcManager.isAnonymous(owlClass)){
-                    setLastObject(adcManager.getExpression(owlClass));
-                }
-                else{
-                    setLastObject(owlClass);
-                }
-            }
-        };
+        this.duplicator = new OWLObjectDuplicator(om);
     }
 
 

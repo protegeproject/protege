@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Author: drummond<br>
@@ -57,7 +58,7 @@ public class OWLMembersListViewComponent extends OWLIndividualListViewComponent 
         if (cls != null) {
             typeLabel.setText(getOWLModelManager().getRendering(cls));
             typeLabel.setIcon(getOWLWorkspace().getOWLIconProvider().getIcon(cls));
-            Collection<OWLIndividual> individuals = EntitySearcher.getIndividuals(cls, getOntologies());
+            Collection<OWLIndividual> individuals = EntitySearcher.getIndividuals(cls, getOntologies().stream()).collect(Collectors.toList());
             for (OWLIndividual ind : individuals) {
                 if (!ind.isAnonymous()) {
                     individualsInList.add(ind.asOWLNamedIndividual());
@@ -82,7 +83,7 @@ public class OWLMembersListViewComponent extends OWLIndividualListViewComponent 
         Set<OWLOntology> importsClosure = activeOntology.getImportsClosure();
 
         for (OWLNamedIndividual individual : activeOntology.getIndividualsInSignature(Imports.INCLUDED)) {
-            Collection<OWLClassExpression> types = EntitySearcher.getTypes(individual, importsClosure);
+            Collection<OWLClassExpression> types = EntitySearcher.getTypes(individual, importsClosure.stream()).collect(Collectors.toList());
             if (types.size() == 0) {
                 untypedIndividuals.add(individual);
             }

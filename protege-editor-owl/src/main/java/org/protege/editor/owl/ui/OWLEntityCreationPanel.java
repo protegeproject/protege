@@ -208,8 +208,8 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
         OWLOntologyManager owlOntologyManager = owlModelManager.getOWLOntologyManager();
         for(OWLOntology ont : owlModelManager.getActiveOntologies()) {
             OWLDocumentFormat format = owlOntologyManager.getOntologyFormat(ont);
-            if(format != null && format.isPrefixOWLOntologyFormat()) {
-                PrefixDocumentFormat prefixFormat = format.asPrefixOWLOntologyFormat();
+            if(format != null && format.isPrefixOWLDocumentFormat()) {
+                PrefixDocumentFormat prefixFormat = format.asPrefixOWLDocumentFormat();
                 for(String prefix : prefixFormat.getPrefixNames()) {
                     if(entityName.startsWith(prefix)) {
                         return true;
@@ -376,8 +376,8 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
             }
         }
         int colonIndex = text.indexOf(':');
-        if (colonIndex >= 0 && format != null && format.isPrefixOWLOntologyFormat()) {
-            PrefixDocumentFormat prefixes = format.asPrefixOWLOntologyFormat();
+        if (colonIndex >= 0 && format != null && format.isPrefixOWLDocumentFormat()) {
+            PrefixDocumentFormat prefixes = format.asPrefixOWLDocumentFormat();
             String prefixName = text.substring(0, colonIndex + 1);
             String prefix = prefixes.getPrefix(prefixName);
             if (prefix != null) {

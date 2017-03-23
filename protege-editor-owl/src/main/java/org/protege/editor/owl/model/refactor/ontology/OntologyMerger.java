@@ -60,7 +60,7 @@ public class OntologyMerger {
                     	if (ontologies.contains(ont.getOWLOntologyManager().getImportedOntology(decl))) {
                     		continue;
                     	}
-                        Optional<IRI> defaultDocumentIRI = targetOntology.getOntologyID().getDefaultDocumentIRI();
+                        java.util.Optional<IRI> defaultDocumentIRI = targetOntology.getOntologyID().getDefaultDocumentIRI();
                         if (defaultDocumentIRI.isPresent() && !decl.getIRI().equals(defaultDocumentIRI.get())){
                             changes.add(new AddImport(targetOntology, decl));
                         }

@@ -75,7 +75,7 @@ public abstract class AbstractOWLPropertyHierarchyViewComponent<O extends OWLPro
 		         									getDeleteIcon(),
 		         									getOWLEditorKit(),
 		         									getHierarchyProvider(),
-                                                    () -> getSelectedEntities()) {
+                                                    () -> getSelectedEntities().stream()) {
 
         	protected String getPluralDescription() {
         		return "properties";

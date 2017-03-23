@@ -77,12 +77,9 @@ public class ClosureAxiomFactory extends ObjectSomeValuesFromFillerExtractor {
             return;
         }
         visitedClasses.add(cls);
-        for (OWLClassExpression superCls : EntitySearcher.getSuperClasses(cls, onts)) {
-            superCls.accept(this);
-        }
-        for (OWLClassExpression equiv : EntitySearcher.getEquivalentClasses(cls, onts)) {
-            equiv.accept(this);
-        }
+        EntitySearcher.getSuperClasses(cls, onts.stream()).forEach(superCls -> superCls.accept(this));
+        
+        EntitySearcher.getEquivalentClasses(cls, onts.stream()).forEach(equiv -> equiv.accept(this));
     }
 
 

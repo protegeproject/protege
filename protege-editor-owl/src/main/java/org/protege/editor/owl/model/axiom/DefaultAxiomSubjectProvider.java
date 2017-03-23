@@ -10,7 +10,7 @@ import org.semanticweb.owlapi.model.OWLObject;
 public class DefaultAxiomSubjectProvider implements AxiomSubjectProvider {
     @Override
     public Optional<OWLObject> getAxiomSubject(OWLAxiom axiom) {
-        org.semanticweb.owlapi.util.AxiomSubjectProvider provider = new org.semanticweb.owlapi.util.AxiomSubjectProvider();
+        org.semanticweb.owlapi.util.AxiomSubjectProviderEx provider = new org.semanticweb.owlapi.util.AxiomSubjectProviderEx();
         OWLObject subject = provider.getSubject(axiom);
         return Optional.fromNullable(subject);
     }

@@ -283,7 +283,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             logger.info(LogBanner.end());
             return loadedOntology.isPresent();
         } catch (OWLOntologyCreationException e) {
-            OWLOntologyID id = new OWLOntologyID(com.google.common.base.Optional.of(IRI.create(uri)), com.google.common.base.Optional.<IRI>absent());
+            OWLOntologyID id = new OWLOntologyID(java.util.Optional.of(IRI.create(uri)), java.util.Optional.<IRI>empty());
             handleLoadError(id, uri, e);
             return false;
         }

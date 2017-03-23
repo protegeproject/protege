@@ -101,7 +101,7 @@ public class OWLIndividualListViewComponent extends AbstractOWLIndividualViewCom
     protected void setupActions() {
         addAction(new AddIndividualAction(), "A", "A");
         addAction(new DeleteIndividualAction(getOWLEditorKit(),
-                () -> getSelectedIndividuals()), "B", "A");
+                () -> getSelectedIndividuals().stream()), "B", "A");
     }
 
 

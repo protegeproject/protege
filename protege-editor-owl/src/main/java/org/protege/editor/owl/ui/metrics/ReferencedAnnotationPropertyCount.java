@@ -5,7 +5,7 @@ import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 import javax.annotation.Nonnull;
-import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * Matthew Horridge
@@ -26,7 +26,7 @@ public class ReferencedAnnotationPropertyCount extends ObjectCountMetric<OWLAnno
 
     @Nonnull
     @Override
-    protected Set<? extends OWLAnnotationProperty> getObjects(@Nonnull OWLOntology owlOntology) {
-        return owlOntology.getAnnotationPropertiesInSignature();
+    protected Stream<OWLAnnotationProperty> getObjects(@Nonnull OWLOntology owlOntology) {
+        return owlOntology.annotationPropertiesInSignature();
     }
 }

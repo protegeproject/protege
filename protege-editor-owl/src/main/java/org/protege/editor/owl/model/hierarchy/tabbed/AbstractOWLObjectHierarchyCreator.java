@@ -80,7 +80,7 @@ public abstract class AbstractOWLObjectHierarchyCreator {
 
     protected IRI getIRI(String s) {
         try {
-            final Optional<IRI> defaultDocURI = ontology.getOntologyID().getDefaultDocumentIRI();
+            final java.util.Optional<IRI> defaultDocURI = ontology.getOntologyID().getDefaultDocumentIRI();
             return IRI.create(new URI(defaultDocURI.get().getScheme(), defaultDocURI.get().toURI().getSchemeSpecificPart(), s));
         }
         catch (Exception e) {

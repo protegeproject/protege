@@ -94,7 +94,7 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
 
         DeleteClassAction deleteClassAction =
                 new DeleteClassAction(getOWLEditorKit(),
-                                      () -> new HashSet<>(getTree().getSelectedOWLObjects())) {
+                                      () -> getTree().getSelectedOWLObjects().stream()) {
                     @Override
                     public void updateState() {
                         super.updateState();

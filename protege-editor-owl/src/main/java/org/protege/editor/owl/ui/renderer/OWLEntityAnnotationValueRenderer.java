@@ -42,7 +42,7 @@ public class OWLEntityAnnotationValueRenderer extends AbstractOWLEntityRenderer 
             propLangMap.putAll(ap, iriLangMap.get(iri));
         }
         provider = new AnnotationValueShortFormProvider(
-                () -> getOWLModelManager().getActiveOntologies(),
+                () -> getOWLModelManager().getActiveOntologies().stream(),
                 new OWLEntityRendererImpl(),
                 new SimpleIRIShortFormProvider(),
                 properties,

@@ -23,6 +23,7 @@ import java.util.List;
 *
 *
 */
+import java.util.stream.Stream;
 
 /**
  * Author: drummond<br>
@@ -138,6 +139,11 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
         public Set<OWLAnnotationProperty> getEntities() {
             return new HashSet<>(getTree().getSelectedOWLObjects());
         }
+
+		@Override
+		public Stream<OWLAnnotationProperty> entities() {
+			return getEntities().stream();
+		}
     }
 
     @Override
