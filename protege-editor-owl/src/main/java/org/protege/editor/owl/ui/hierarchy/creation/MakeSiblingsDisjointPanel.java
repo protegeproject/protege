@@ -46,7 +46,7 @@ public class MakeSiblingsDisjointPanel extends AbstractOWLWizardPanel {
         checkBox.setBackground(null);
         this.entityType = entityType;
         this.recommendation = recommendation;
-        setInstructions(String.format("Do you want to make sibling %s disjoint? (%s)",
+        setInstructions(String.format("Make sibling %s disjoint (%s)",
                 entityType.getPluralPrintName().toLowerCase(),
                 recommendation.getPrintName()));
         JPanel parent = new JPanel(new BorderLayout());
