@@ -24,7 +24,8 @@ public class SearchManagerSelector {
 
     private static final Logger logger = LoggerFactory.getLogger(SearchManagerSelector.class);
 
-    public static final String DEFAULT_PLUGIN_ID = "org.protege.editor.owl.DefaultSearchManager";
+    public static final String DEFAULT_PLUGIN_ID = "lucene-search-tab.SearchTabManager";
+    		//org.protege.editor.owl.DefaultSearchManager";
 
     private final ImmutableList<SearchManagerPlugin> plugins;
 
