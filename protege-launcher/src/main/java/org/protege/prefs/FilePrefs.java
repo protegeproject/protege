@@ -103,19 +103,17 @@ public class FilePrefs extends AbstractPreferences {
 			StringBuilder sb = new StringBuilder();
 			getPath(sb);
 			String path = sb.toString();
-
-			final Enumeration<?> pnen = p.propertyNames();
-			while (pnen.hasMoreElements()) {
-				String propKey = (String) pnen.nextElement();
-				if (propKey.startsWith(path)) {
-					String subKey = propKey.substring(path.length());
-					// Only load immediate descendents
-					if (subKey.indexOf('/') == -1) {
-						root.put(subKey, p.getProperty(propKey));
-					} else {
-						children_names.add(subKey.substring(0,subKey.indexOf('/')));
-					}
-				}
+			
+			List<String> propKeys = getPropNamesWithPrefix(p, path);
+			
+			for(String propKey : propKeys) {
+				String subKey = propKey.substring(path.length());
+				// Only load immediate descendents
+				if (subKey.indexOf('/') == -1) {
+					root.put(subKey, p.getProperty(propKey));
+				} else {
+					children_names.add(subKey.substring(0,subKey.indexOf('/')));
+				}				
 			}
 		}
 		catch (IOException e) {
@@ -147,18 +145,15 @@ public class FilePrefs extends AbstractPreferences {
 				p.load(new FileInputStream(file));
 
 				List<String> toRemove = new ArrayList<String>();
-
-				// Make a list of all direct children of this node to be removed
-				final Enumeration<?> pnen = p.propertyNames();
-				while (pnen.hasMoreElements()) {
-					String propKey = (String) pnen.nextElement();
-					if (propKey.startsWith(path)) {
-						String subKey = propKey.substring(path.length());
-						// Only do immediate descendants
-						if (subKey.indexOf('/') == -1) {
-							toRemove.add(propKey);
-						}
-					}
+				
+				List<String> propKeys = getPropNamesWithPrefix(p, path);
+				
+				for(String propKey : propKeys) {
+					String subKey = propKey.substring(path.length());
+					// Only do immediate descendants
+					if (subKey.indexOf('/') == -1) {
+						toRemove.add(propKey);
+					}					
 				}
 
 				// Remove them now that the enumeration is done with
@@ -188,5 +183,19 @@ public class FilePrefs extends AbstractPreferences {
 			throw new BackingStoreException(e);
 		}
 	}
-
+	
+	private static List<String> getPropNamesWithPrefix(Properties p, String path) {
+		
+		List<String> names = new ArrayList<String>();
+		
+		// Make a list of all direct children of this node to be removed
+		final Enumeration<?> pnen = p.propertyNames();
+		while (pnen.hasMoreElements()) {
+			String propKey = (String) pnen.nextElement();
+			if (propKey.startsWith(path)) {
+				names.add(propKey);
+			}
+		}
+		return names;		
+	}
 }
