@@ -16,6 +16,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.prefs.Preferences;
 
 
 public class Launcher {
@@ -44,6 +45,8 @@ public class Launcher {
 
 
     public Launcher(File config) throws IOException, ParserConfigurationException, SAXException {
+    	// call preferences userRoot() to force factory to load before OSGI
+    	Preferences.userRoot();
         parseConfig(config);
         factoryClass = locateOSGi();
         frameworkDir = new File(System.getProperty("java.io.tmpdir"), "ProtegeCache-" + UUID.randomUUID().toString());
