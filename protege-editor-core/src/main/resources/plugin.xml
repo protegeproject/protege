@@ -17,6 +17,9 @@
    <extension-point id="preferencespanel" 
                     name="preferencespanel"
                     schema="schema/preferencespanel.exsd"/>
+   <extension-point id="explanationpreferencespanel"
+                    name="explanationpreferencespanel"
+                    schema="schema/explanationpreferencespanel.exsd"/>
    <extension-point id="EditorKitHook"
                      name="EditorKit Hook"
                      schema="schema/EditorKitHook.exsd"/>
@@ -258,6 +261,12 @@
         <url value="http://protege.stanford.edu/about.php#citing"/>
         <path value="org.protege.editor.core.application.menu.HelpMenu/SlotH-A"/>
         <editorKitId value="any"/>
+    </extension>
+
+    <extension id="ui.preferences.explanation"
+               point="org.protege.editor.core.application.preferencespanel">
+        <label value="Explanations"/>
+        <class value="org.protege.editor.core.ui.explanationpreferences.ExplanationPreferencesPanel"/>
     </extension>
 
     <!-- Autoupdate preferences -->
