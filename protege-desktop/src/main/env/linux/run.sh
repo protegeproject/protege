@@ -13,6 +13,7 @@ jre/bin/java -Xmx${conf.mem.xmx}M -Xms${conf.mem.xms}M \
      -DentityExpansionLimit=100000000 \
      -Dlogback.configurationFile=conf/logback.xml \
      -Dfile.encoding=UTF-8 \
+     -Djava.util.prefs.PreferencesFactory=org.protege.prefs.FileBackingStorePrefsFactory \
      ${conf.extra.args} \
      -classpath bundles/guava.jar:bundles/logback-classic.jar:bundles/logback-core.jar:bundles/slf4j-api.jar:bin/org.apache.felix.main.jar:bin/maven-artifact.jar:bin/protege-launcher.jar \
      $CMD_OPTIONS org.protege.osgi.framework.Launcher $1
