@@ -1495,6 +1495,12 @@
         <class value="org.protege.editor.owl.ui.annotation.EntityCreationMetadataPreferencesPanel"/>
     </extension>
 
+    <extension id="ui.preferences.explanation.general"
+               point="org.protege.editor.core.application.explanationpreferencespanel">
+        <label value="General"/>
+        <class value="org.protege.editor.owl.ui.explanation.ExplanationPreferencesGeneralPanel"/>
+    </extension>
+
     <!-- Move axioms kits -->
 
     <extension id="MoveAxiomsByReference"
