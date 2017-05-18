@@ -22,24 +22,26 @@
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>protege-launcher</artifactId>
 			<version>${project.parent.version}</version>
-			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.googlecode.mdock</groupId>
 			<artifactId>mdock</artifactId>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.jgoodies</groupId>
 			<artifactId>jgoodies-looks</artifactId>
 			<version>2.5.3</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.jgoodies</groupId>
 			<artifactId>jgoodies-common</artifactId>
 			<version>1.6.0</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -72,7 +74,7 @@
 					<instructions>
 						<Bundle-Activator>org.protege.editor.core.ProtegeApplication</Bundle-Activator>						
 						<Bundle-SymbolicName>org.protege.editor.core.application;singleton:=true</Bundle-SymbolicName>
-						<Embed-Dependency>*;scope=!provided;scope=compile|runtime;inline=false</Embed-Dependency>
+						<Embed-Dependency>*;scope=provided;inline=true</Embed-Dependency>
 						<Export-Package>
 							org.protege.editor.core.*,
 						</Export-Package>
