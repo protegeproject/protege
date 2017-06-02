@@ -497,7 +497,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
     			rendering += " \u2261 " + getOWLModelManager().getRendering(eqObj);
     		}
     		if (user_render != null) {
-    			return user_render.render(rendering);
+    			return user_render.render(object, rendering);
     		} else {
     			return rendering;
     		}
