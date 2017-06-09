@@ -45,11 +45,15 @@ public class OWLObjectRestrictionCreatorPanel extends AbstractRestrictionCreator
         types.add(some = new RestrictionCreator<OWLObjectProperty, OWLClass>("Some (existential)") {
             public void createRestrictions(Set<OWLObjectProperty> properties, Set<OWLClass> fillers,
                                            Set<OWLClassExpression> result) {
-                for (OWLObjectProperty prop : properties) {
-                    for (OWLClass filler : fillers) {
-                        result.add(getDataFactory().getOWLObjectSomeValuesFrom(prop, filler));
-                    }
-                }
+            	for (OWLObjectProperty prop : properties) {
+            		if (prop.getIRI().getShortForm().equals("topObjectProperty")) {
+                      // prevent using top object prop
+            		} else {
+            			for (OWLClass filler : fillers) {
+            				result.add(getDataFactory().getOWLObjectSomeValuesFrom(prop, filler));
+            			}
+            		}
+            	}
             }
         });
         types.add(only = new RestrictionCreator<OWLObjectProperty, OWLClass>("Only (universal)") {
