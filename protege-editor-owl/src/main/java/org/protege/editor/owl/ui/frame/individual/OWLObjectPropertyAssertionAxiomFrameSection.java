@@ -37,7 +37,7 @@ public class OWLObjectPropertyAssertionAxiomFrameSection extends AbstractOWLFram
 
 
     protected void clear() {
-
+        added.clear();
     }
 
 
@@ -46,7 +46,6 @@ public class OWLObjectPropertyAssertionAxiomFrameSection extends AbstractOWLFram
      * by the system and should be directly called.
      */
     protected void refill(OWLOntology ontology) {
-        added.clear();
         for (OWLObjectPropertyAssertionAxiom ax : ontology.getObjectPropertyAssertionAxioms(getRootObject())) {
             addRow(new OWLObjectPropertyAssertionAxiomFrameSectionRow(getOWLEditorKit(),
                                                                       this,
