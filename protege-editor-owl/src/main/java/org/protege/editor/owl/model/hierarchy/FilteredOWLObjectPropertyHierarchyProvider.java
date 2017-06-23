@@ -106,7 +106,7 @@ public class FilteredOWLObjectPropertyHierarchyProvider extends OWLObjectPropert
 				}
 			}
 		}
-		return false;
+		return ch.isSub();
 	}
 	
 	public OWLClass findDomain(OWLOntology ont, OWLObjectProperty p) {
@@ -132,7 +132,13 @@ public class FilteredOWLObjectPropertyHierarchyProvider extends OWLObjectPropert
 		
 		private boolean isSub = false;
 		
-		public boolean isSub() { return isSub; }
+		public boolean isSub() {
+			if (sub.equals(sup)) {
+				return true; 
+			} else {
+				return isSub;
+			}
+		}
 		
 		
 		private OWLClass sub = null;
