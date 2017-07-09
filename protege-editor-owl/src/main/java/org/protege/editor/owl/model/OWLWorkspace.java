@@ -750,6 +750,11 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         if (activeOntology == null) {
             return null;
         }
+        
+        if (mngr.getServerConnectionData() != null && !mngr.getServerConnectionData().isEmpty()) {
+        	return mngr.getServerConnectionData();
+        }
+        
         URI locURI = mngr.getOntologyPhysicalURI(activeOntology);
         String location = "*";
         if (locURI != null) {

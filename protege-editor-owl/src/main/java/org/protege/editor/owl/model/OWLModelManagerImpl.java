@@ -109,6 +109,8 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     private ExplanationManager explanationManager;
 
     private OWLEntityFactory entityFactory;
+    
+    private String serverConnectionData;
 
     /**
      * A cache for the imports closure.  Originally, we just requested this
@@ -371,6 +373,14 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     }
 
 
+    public void setServerConnectionData(String serverConnectionData) {
+    	this.serverConnectionData = serverConnectionData;
+    }
+    
+    public String getServerConnectionData() {
+    	return this.serverConnectionData;
+    }
+    
     public OWLOntology createNewOntology(OWLOntologyID ontologyID, URI physicalURI) throws OWLOntologyCreationException {
         if (physicalURI != null && ontologyID.getDefaultDocumentIRI().isPresent()) {
             manager.getIRIMappers().add(new SimpleIRIMapper(ontologyID.getDefaultDocumentIRI().get(), IRI.create(physicalURI)));

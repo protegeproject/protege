@@ -277,7 +277,10 @@ public interface OWLModelManager extends ModelManager, HasActiveOntology {
 
 
     void setPhysicalURI(OWLOntology ontology, URI physicalURI);
+    
+    void setServerConnectionData(String serverConnectionData);
 
+    String getServerConnectionData();
 
     OWLEntityFactory getOWLEntityFactory();
 
