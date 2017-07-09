@@ -1,6 +1,9 @@
 package org.protege.editor.owl.model.hierarchy;
 
+import java.util.Set;
+
 import org.protege.editor.core.Disposable;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
@@ -41,7 +44,7 @@ public interface OWLHierarchyManager extends Disposable {
     OWLObjectHierarchyProvider<OWLDataProperty> getOWLDataPropertyHierarchyProvider();
 
 
-    OWLAnnotationPropertyHierarchyProvider getOWLAnnotationPropertyHierarchyProvider();
+    OWLAnnotationPropertyHierarchyProvider getOWLAnnotationPropertyHierarchyProvider(Set<OWLAnnotationProperty> filterProps);
 
 
     IndividualsByTypeHierarchyProvider getOWLIndividualsByTypeHierarchyProvider();    

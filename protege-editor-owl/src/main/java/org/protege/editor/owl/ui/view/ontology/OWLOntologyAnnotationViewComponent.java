@@ -4,6 +4,7 @@ import com.google.common.base.Optional;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.ui.util.AugmentedJTextField;
 import org.protege.editor.core.ui.util.LinkLabel;
+import org.protege.editor.core.ui.workspace.TabbedWorkspace;
 import org.protege.editor.owl.model.OntologyAnnotationContainer;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
@@ -67,12 +68,17 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
     private OWLOntologyID initialOntologyID = null;
 
     private boolean ontologyIRIShowing = false;
+    
+    private boolean read_only = false;
 
 
     private final OWLOntologyChangeListener ontologyChangeListener = owlOntologyChanges -> handleOntologyChanges(owlOntologyChanges);
 
 
     protected void initialiseOWLView() throws Exception {
+    	if (((TabbedWorkspace) getWorkspace()).isReadOnly(this.getView().getPlugin())) {
+    		read_only = true;
+    	}
         setLayout(new BorderLayout());
 
         setLayout(new BorderLayout());
@@ -83,30 +89,35 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
             showOntologyIRIDocumentation();
         }), new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.BASELINE_TRAILING, GridBagConstraints.NONE, insets, 0, 0));
         ontologyIRIPanel.add(ontologyIRIField, new GridBagConstraints(1, 0, 1, 1, 100.0, 0.0, GridBagConstraints.BASELINE_LEADING, GridBagConstraints.HORIZONTAL, insets, 0, 0));
-        ontologyIRIField.getDocument().addDocumentListener(new DocumentListener() {
-            public void insertUpdate(DocumentEvent e) {
-                updateModelFromView();
-            }
+        if (!read_only) {
+        	ontologyIRIField.getDocument().addDocumentListener(new DocumentListener() {
+        		public void insertUpdate(DocumentEvent e) {
+        			updateModelFromView();
+        		}
 
-            public void removeUpdate(DocumentEvent e) {
-                updateModelFromView();
-            }
+        		public void removeUpdate(DocumentEvent e) {
+        			updateModelFromView();
+        		}
 
-            public void changedUpdate(DocumentEvent e) {
+        		public void changedUpdate(DocumentEvent e) {
 
-            }
-        });
-        ontologyIRIField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                handleOntologyIRIFieldFocusLost();
-            }
+        		}
+        	});
+        	ontologyIRIField.addFocusListener(new FocusAdapter() {
+        		@Override
+        		public void focusLost(FocusEvent e) {
+        			handleOntologyIRIFieldFocusLost();
+        		}
 
-            @Override
-            public void focusGained(FocusEvent e) {
-                handleOntologyIRIFieldFocusGained();
-            }
-        });
+        		@Override
+        		public void focusGained(FocusEvent e) {
+        			handleOntologyIRIFieldFocusGained();
+        		}
+        	});
+        } else {
+        	this.ontologyIRIField.setEditable(false);
+        	this.ontologyVersionIRIField.setEditable(false);
+        }
         ontologyIRIShowing = ontologyIRIField.isShowing();
         ontologyIRIField.addHierarchyListener(e -> {
             handleComponentHierarchyChanged();
@@ -134,8 +145,8 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
 
         ontologyIRIPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
 
+        list = new OWLOntologyAnnotationList(getOWLEditorKit(), read_only);
 
-        list = new OWLOntologyAnnotationList(getOWLEditorKit());
         add(new JScrollPane(list));
         list.setRootObject(new OntologyAnnotationContainer(activeOntology()));
         listener = event -> handleModelManagerChangeEvent(event);

@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.view.dataproperty;
 
+import org.protege.editor.core.ui.workspace.TabbedWorkspace;
 import org.protege.editor.owl.ui.frame.dataproperty.OWLDataPropertyDomainsAndRangesFrame;
 import org.protege.editor.owl.ui.framelist.CreateNewEquivalentClassAction;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
@@ -25,8 +26,9 @@ public class OWLDataPropertyDomainsAndRangesViewComponent extends AbstractOWLDat
 
 
     public void initialiseView() throws Exception {
+    	boolean read_only = ((TabbedWorkspace) getWorkspace()).isReadOnly(this.getView().getPlugin());
         list = new OWLFrameList<>(getOWLEditorKit(),
-                                                  new OWLDataPropertyDomainsAndRangesFrame(getOWLEditorKit()));
+                                                  new OWLDataPropertyDomainsAndRangesFrame(getOWLEditorKit()), read_only);
         setLayout(new BorderLayout());
         add(new JScrollPane(list));
         list.addToPopupMenu(new CreateNewEquivalentClassAction<>());

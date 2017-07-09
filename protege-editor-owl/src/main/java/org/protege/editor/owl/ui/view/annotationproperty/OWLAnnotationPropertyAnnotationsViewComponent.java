@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.view.annotationproperty;
 
+import org.protege.editor.core.ui.workspace.TabbedWorkspace;
 import org.protege.editor.owl.ui.frame.OWLAnnotationsFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
@@ -27,7 +28,11 @@ public class OWLAnnotationPropertyAnnotationsViewComponent extends AbstractOWLAn
 
 
     public void initialiseView() throws Exception {
-        list = new OWLFrameList<>(getOWLEditorKit(), new OWLAnnotationsFrame(getOWLEditorKit()));
+    	if (((TabbedWorkspace) getWorkspace()).isReadOnly(this.getView().getPlugin())) {
+    		list = new OWLFrameList<>(getOWLEditorKit(), new OWLAnnotationsFrame(getOWLEditorKit()), true);   		
+    	} else {
+    		list = new OWLFrameList<>(getOWLEditorKit(), new OWLAnnotationsFrame(getOWLEditorKit()));
+    	}
         setLayout(new BorderLayout());
         JScrollPane sp = new JScrollPane(list);
         sp.getVerticalScrollBar().setUnitIncrement(20);

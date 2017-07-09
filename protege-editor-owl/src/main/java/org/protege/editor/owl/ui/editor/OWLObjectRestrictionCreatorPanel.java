@@ -1,5 +1,8 @@
 package org.protege.editor.owl.ui.editor;
 
+import org.protege.editor.owl.model.hierarchy.AssertedClassSubHierarchyProvider;
+import org.protege.editor.owl.model.hierarchy.FilteredOWLObjectPropertyHierarchyProvider;
+import org.protege.editor.owl.model.hierarchy.OWLObjectPropertyHierarchyProvider;
 import org.protege.editor.owl.ui.selector.AbstractHierarchySelectorPanel;
 import org.protege.editor.owl.ui.selector.AbstractSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
@@ -42,11 +45,15 @@ public class OWLObjectRestrictionCreatorPanel extends AbstractRestrictionCreator
         types.add(some = new RestrictionCreator<OWLObjectProperty, OWLClass>("Some (existential)") {
             public void createRestrictions(Set<OWLObjectProperty> properties, Set<OWLClass> fillers,
                                            Set<OWLClassExpression> result) {
-                for (OWLObjectProperty prop : properties) {
-                    for (OWLClass filler : fillers) {
-                        result.add(getDataFactory().getOWLObjectSomeValuesFrom(prop, filler));
-                    }
-                }
+            	for (OWLObjectProperty prop : properties) {
+            		if (prop.getIRI().getShortForm().equals("topObjectProperty")) {
+                      // prevent using top object prop
+            		} else {
+            			for (OWLClass filler : fillers) {
+            				result.add(getDataFactory().getOWLObjectSomeValuesFrom(prop, filler));
+            			}
+            		}
+            	}
             }
         });
         types.add(only = new RestrictionCreator<OWLObjectProperty, OWLClass>("Only (universal)") {
@@ -88,12 +95,65 @@ public class OWLObjectRestrictionCreatorPanel extends AbstractRestrictionCreator
 
 
     protected AbstractSelectorPanel<OWLClass> createFillerSelectorPanel() {
-        return new OWLClassSelectorPanel(getOWLEditorKit());
+    	AssertedClassSubHierarchyProvider ac = 
+    			new AssertedClassSubHierarchyProvider(getOWLEditorKit().getOWLModelManager().getOWLOntologyManager());
+    	ac.setOntologies(getOWLEditorKit().getModelManager().getActiveOntologies());
+        return new OWLClassSelectorPanel(getOWLEditorKit(), false, ac);
     }
 
 
     protected AbstractHierarchySelectorPanel<OWLObjectProperty> createPropertySelectorPanel() {
-        return new OWLObjectPropertySelectorPanel(getOWLEditorKit());
+    	
+    	OWLObjectPropertyHierarchyProvider op = new FilteredOWLObjectPropertyHierarchyProvider(getOWLEditorKit()
+        		.getModelManager().getOWLOntologyManager(), getOWLEditorKit());
+    	op.setOntologies(getOWLEditorKit().getModelManager().getActiveOntologies());
+    	//getOWLEditorKit().getModelManager().getOWLHierarchyManager().setOWLObjectPropertyHierarchyProvider(op);
+    	try {
+			((FilteredOWLObjectPropertyHierarchyProvider) op).selectionChanged();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        return new OWLObjectPropertySelectorPanel(getOWLEditorKit(), false, op);
+    }
+    
+    protected void propChosen() {
+    	OWLOntology ont = getOWLEditorKit().getOWLModelManager().getActiveOntology();
+    	OWLObjectProperty p = (OWLObjectProperty) propertySelectorPanel.getSelectedObject();
+    	OWLClassSelectorPanel ocsp = (OWLClassSelectorPanel) fillerSelectorPanel;
+    	
+    	OWLClass root = findRange(ont, p);
+    	
+    	if (root != null) {
+    		ocsp.setTreeRoot(root);
+    	} else {
+    		ocsp.setTreeRoot(getOWLEditorKit().getOWLModelManager().getOWLDataFactory().getOWLThing());
+    		System.out.println("The object property has no range: " + p);
+    	}
+
+    	
+    }
+    
+    private OWLClass findRange(OWLOntology ont, OWLObjectProperty p) {
+    	
+    	Set<OWLObjectPropertyRangeAxiom> raxs = ont.getObjectPropertyRangeAxioms(p);
+    	if (raxs.isEmpty()) {
+    		Set<OWLSubObjectPropertyOfAxiom> subs = ont.getObjectSubPropertyAxiomsForSubProperty(p);
+			for (OWLSubObjectPropertyOfAxiom ax : subs) {
+				OWLClass ocls = findRange(ont, ax.getSuperProperty().asOWLObjectProperty());
+				if (ocls != null) {
+					return ocls;
+				}
+			}
+    	} else {
+    		for (OWLObjectPropertyRangeAxiom ra : raxs) {
+    			if (!ra.getRange().isAnonymous()) {
+    				return ra.getRange().asOWLClass();   			
+    			}    		
+    		}
+    	}
+    	return null;
+    	
     }
 
 

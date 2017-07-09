@@ -1,6 +1,10 @@
-package org.protege.editor.owl.model.search.importer;
+package org.protege.editor.owl.model.search.impl.importer;
 
 import org.protege.editor.owl.model.search.*;
+import org.protege.editor.owl.model.search.impl.EntityBasedSearchMDImporter;
+import org.protege.editor.owl.model.search.impl.SearchMetadataDB;
+import org.protege.editor.owl.model.search.impl.SearchMetadataImportContext;
+
 import org.semanticweb.owlapi.model.OWLEntity;
 
 import java.util.Set;

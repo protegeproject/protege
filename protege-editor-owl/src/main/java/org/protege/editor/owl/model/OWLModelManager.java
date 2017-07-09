@@ -220,6 +220,8 @@ public interface OWLModelManager extends ModelManager, HasActiveOntology {
      * been made to various ontologies and has support for undo and redo.
      */
     public HistoryManager getHistoryManager();
+    
+    public void setHistoryManager(HistoryManager hm);
 
 
     /**
@@ -275,7 +277,10 @@ public interface OWLModelManager extends ModelManager, HasActiveOntology {
 
 
     void setPhysicalURI(OWLOntology ontology, URI physicalURI);
+    
+    void setServerConnectionData(String serverConnectionData);
 
+    String getServerConnectionData();
 
     OWLEntityFactory getOWLEntityFactory();
 

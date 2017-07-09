@@ -36,6 +36,15 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
     private Object userObject;
 
     private OWLFrameSection section;
+    
+    private boolean can_edit = true;
+    
+    protected AbstractOWLFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection<R,A,E> section, OWLOntology ontology,
+            R rootObject, A axiom, boolean isEditable) {
+    	this(owlEditorKit, section, ontology, rootObject, axiom);
+    	can_edit = isEditable;
+
+}
 
     protected AbstractOWLFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection<R,A,E> section, OWLOntology ontology,
                                          R rootObject, A axiom) {
@@ -230,7 +239,11 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
      *         if the row is not editable.
      */
     public boolean isEditable() {
-        return getOntology() != null;
+    	if (can_edit) {
+    		return getOntology() != null;
+    	} else {
+    		return false;
+    	}
     }
 
 

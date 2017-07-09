@@ -20,7 +20,13 @@ import java.util.List;
  */
 public class OWLAnnotationsFrameSectionRow extends AbstractOWLFrameSectionRow<OWLAnnotationSubject, OWLAnnotationAssertionAxiom, OWLAnnotation> {
 
-    public OWLAnnotationsFrameSectionRow(OWLEditorKit owlEditorKit, 
+	public OWLAnnotationsFrameSectionRow(OWLEditorKit owlEditorKit, 
+			OWLFrameSection<OWLAnnotationSubject, OWLAnnotationAssertionAxiom, OWLAnnotation> section, 
+			OWLOntology ontology,
+			OWLAnnotationSubject rootObject, OWLAnnotationAssertionAxiom axiom, boolean isEditable) {
+		super(owlEditorKit, section, ontology, rootObject, axiom, isEditable);
+	}
+	public OWLAnnotationsFrameSectionRow(OWLEditorKit owlEditorKit, 
     									 OWLFrameSection<OWLAnnotationSubject, OWLAnnotationAssertionAxiom, OWLAnnotation> section, 
     									 OWLOntology ontology,
                                          OWLAnnotationSubject rootObject, OWLAnnotationAssertionAxiom axiom) {
@@ -53,4 +59,6 @@ public class OWLAnnotationsFrameSectionRow extends AbstractOWLFrameSectionRow<OW
     public List<OWLAnnotation> getManipulatableObjects() {
         return getObjects();
     }
+    
+    
 }

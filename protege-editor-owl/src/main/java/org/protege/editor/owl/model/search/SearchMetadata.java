@@ -108,7 +108,6 @@ public class SearchMetadata implements Comparable<SearchMetadata> {
         return new StyledString(searchString);
     }
 
-
     public int compareTo(SearchMetadata o) {
         int catDiff = this.category.compareTo(o.category);
         if (catDiff != 0) {
@@ -127,5 +126,42 @@ public class SearchMetadata implements Comparable<SearchMetadata> {
             return subjectDiff;
         }
         return searchString.compareTo(o.searchString);
+    }
+
+    @Override
+    public int hashCode() {
+        return "SearchMetadata".hashCode()
+                + category.hashCode()
+                + groupDescription.hashCode()
+                + subject.hashCode()
+                + subjectRendering.hashCode()
+                + searchString.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == this) {
+            return true;
+        }
+        if(!(o instanceof SearchMetadata)) {
+            return false;
+        }
+        SearchMetadata other = (SearchMetadata) o;
+        return this.category.equals(other.category)
+                && this.groupDescription.equals(other.groupDescription)
+                && this.subject.equals(other.subject)
+                && this.subjectRendering.equals(other.subjectRendering)
+                && this.searchString.equals(other.searchString);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        return sb.append("category: ").append(category).append(", ")
+                 .append("groupDescription: ").append(groupDescription).append(", ")
+                 .append("subject: ").append(subject).append(", ")
+                 .append("subjectRendering").append(subjectRendering).append(", ")
+                 .append("searchString").append(searchString)
+                 .toString();
     }
 }

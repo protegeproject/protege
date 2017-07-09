@@ -1,4 +1,4 @@
-package org.protege.editor.owl.model.search;
+package org.protege.editor.owl.model.search.impl;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLEditorKitOntologyShortFormProvider;
@@ -35,6 +35,10 @@ public class SearchMetadataImportContext {
 
     public OWLEditorKit getEditorKit() {
         return editorKit;
+    }
+
+    public OWLOntology getActiveOntology() {
+        return editorKit.getOWLModelManager().getActiveOntology();
     }
 
     public Set<OWLOntology> getOntologies() {

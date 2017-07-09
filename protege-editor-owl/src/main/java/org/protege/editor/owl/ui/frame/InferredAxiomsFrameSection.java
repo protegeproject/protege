@@ -60,21 +60,19 @@ public class InferredAxiomsFrameSection extends AbstractOWLFrameSection<OWLOntol
             OWLOntologyManager man = OWLManager.createOWLOntologyManager();
             OWLOntology inferredOnt = man.createOntology(IRI.create("http://another.com/ontology" + System.currentTimeMillis()));
             InferredOntologyGenerator ontGen = new InferredOntologyGenerator(getOWLModelManager().getReasoner(), new ArrayList<>());
-            ontGen.addGenerator(new InferredSubClassAxiomGenerator());
-            ontGen.addGenerator(new InferredClassAssertionAxiomGenerator());
-            ontGen.addGenerator(new InferredSubObjectPropertyAxiomGenerator());
-            ontGen.addGenerator(new InferredSubDataPropertyAxiomGenerator());
+            //ontGen.addGenerator(new InferredSubClassAxiomGenerator());
+            //ontGen.addGenerator(new InferredClassAssertionAxiomGenerator());
+            //ontGen.addGenerator(new InferredSubObjectPropertyAxiomGenerator());
+            //ontGen.addGenerator(new InferredSubDataPropertyAxiomGenerator());
             ontGen.fillOntology(man.getOWLDataFactory(), inferredOnt);
 
 
             for (OWLAxiom ax : new TreeSet<>(inferredOnt.getAxioms())) {
                 boolean add = true;
-                for (OWLOntology actOnt : getOWLModelManager().getActiveOntologies()) {
-                    if (actOnt.containsAxiom(ax)) {
-                        add = false;
-                        break;
-                    }
+                if (getOWLModelManager().getActiveOntology().containsAxiom(ax)) {
+                	add = false;
                 }
+                
                 if (add) {
                 	addInferredRowIfNontrivial(new InferredAxiomsFrameSectionRow(getOWLEditorKit(), this, null, getRootObject(), ax));
                 }

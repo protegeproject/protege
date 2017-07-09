@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.view.cls;
 
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
+import org.protege.editor.owl.ui.tree.UserRendering;
 import org.protege.editor.owl.ui.view.AbstractOWLEntityHierarchyViewComponent;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLObject;
@@ -55,5 +56,12 @@ public class InferredOWLClassHierarchyViewComponent extends AbstractOWLEntityHie
     protected boolean isOWLClassView() {
         return true;
     }
+
+
+	@Override
+	protected UserRendering getUserRenderer() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

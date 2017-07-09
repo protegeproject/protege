@@ -10,6 +10,7 @@ import org.protege.editor.core.plugin.PluginUtilities;
 
 import javax.swing.*;
 import java.net.URL;
+import java.util.List;
 
 
 /**
@@ -48,7 +49,7 @@ public class WorkspaceTabPluginJPFImpl implements WorkspaceTabPlugin {
      * A flag that indicates whether the tab is displayed by default
      */
     private static final String PROTEGE_DEFAULT_TAB = "protegeDefaultTab";
-
+    
     private TabbedWorkspace workspace;
 
     private IExtension extension;
@@ -89,6 +90,10 @@ public class WorkspaceTabPluginJPFImpl implements WorkspaceTabPlugin {
     public Icon getIcon() {
         return null;
     }
+    
+    public String getPermissionLevel() {
+    	return PluginProperties.getParameterValue(extension, "permissionLevel", "allow");
+    }
 
 
     public String getDocumentation() {
@@ -99,10 +104,9 @@ public class WorkspaceTabPluginJPFImpl implements WorkspaceTabPlugin {
      * Invoked by reflection.  Do not remove.
      */
     public boolean isProtegeDefaultTab() {
-        return PluginProperties.getBooleanParameterValue(extension, PROTEGE_DEFAULT_TAB, false);
+    	return PluginProperties.getBooleanParameterValue(extension, PROTEGE_DEFAULT_TAB, false);
     }
-
-
+    
     public WorkspaceTab newInstance() throws InstantiationException, ClassNotFoundException, IllegalAccessException {
         ExtensionInstantiator<WorkspaceTab> instantiator = new ExtensionInstantiator<>(extension);
         WorkspaceTab tab = instantiator.instantiate();

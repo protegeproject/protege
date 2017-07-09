@@ -35,7 +35,7 @@ public class OWLAnnotationPropertySelectorPanel extends AbstractHierarchySelecto
     }
 
     public OWLAnnotationPropertySelectorPanel(OWLEditorKit editorKit, boolean editable) {
-        this(editorKit, editable, editorKit.getModelManager().getOWLHierarchyManager().getOWLAnnotationPropertyHierarchyProvider());
+        this(editorKit, editable, editorKit.getModelManager().getOWLHierarchyManager().getOWLAnnotationPropertyHierarchyProvider(null));
     }
 
     public OWLAnnotationPropertySelectorPanel(OWLEditorKit editorKit, boolean editable, OWLObjectHierarchyProvider<OWLAnnotationProperty> hp) {
@@ -77,6 +77,13 @@ public class OWLAnnotationPropertySelectorPanel extends AbstractHierarchySelecto
             public Color getBackgroundColor() {
                 return OWLSystemColors.getOWLClassColor();
             }
+
+
+			@Override
+			public boolean isEager() {
+				// TODO Auto-generated method stub
+				return false;
+			}
         };
     }
 

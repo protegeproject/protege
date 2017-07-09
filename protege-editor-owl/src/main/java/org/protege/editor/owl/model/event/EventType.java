@@ -38,5 +38,9 @@ public enum EventType {
 
     ONTOLOGY_RELOADED,
 
-    ONTOLOGY_SAVED
+    ONTOLOGY_SAVED,
+
+    SERVER_PAUSED,
+
+    SERVER_RESUMED
 }

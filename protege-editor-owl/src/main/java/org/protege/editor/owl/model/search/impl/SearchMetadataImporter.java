@@ -1,6 +1,7 @@
-package org.protege.editor.owl.model.search;
+package org.protege.editor.owl.model.search.impl;
 
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.search.SearchCategory;
 
 import java.util.Set;
 

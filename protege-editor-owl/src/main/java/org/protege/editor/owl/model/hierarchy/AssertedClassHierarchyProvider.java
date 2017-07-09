@@ -22,9 +22,9 @@ import java.util.stream.Collectors;
  */
 public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyProvider<OWLClass> {
 
-    private OWLOntologyManager owlOntologyManager;
+    protected OWLOntologyManager owlOntologyManager;
 
-    private ReadLock ontologySetReadLock;
+    protected ReadLock ontologySetReadLock;
 
     private WriteLock ontologySetWriteLock;
 
@@ -40,17 +40,17 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
      * When an ontology changes name it gets a new Hash Code and it is sorted 
      * differently, so these Collections do not work.
      */
-    private Collection<OWLOntology> ontologies;
+    protected Collection<OWLOntology> ontologies;
 
-    private volatile OWLClass root;
+    protected volatile OWLClass root;
 
-    private ParentClassExtractor parentClassExtractor;
+    protected ParentClassExtractor parentClassExtractor;
 
-    private ChildClassExtractor childClassExtractor;
+    protected ChildClassExtractor childClassExtractor;
 
     private OWLOntologyChangeListener listener;
 
-    private TerminalElementFinder<OWLClass> rootFinder;
+    protected TerminalElementFinder<OWLClass> rootFinder;
 
     private Set<OWLClass> nodesToUpdate = new HashSet<>();
 
@@ -105,7 +105,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
     }
 
 
-    private void rebuildImplicitRoots() {
+    protected void rebuildImplicitRoots() {
 //    	getReadLock().lock();
         ontologySetReadLock.lock();
         try {
@@ -252,7 +252,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
         }
     }
 
-    private Set<OWLClass> extractChildren(OWLClass parent) {
+    protected Set<OWLClass> extractChildren(OWLClass parent) {
         childClassExtractor.setCurrentParentClass(parent);
         for (OWLOntology ont : ontologies) {
             for (OWLAxiom ax : ont.getReferencingAxioms(parent)) {

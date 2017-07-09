@@ -1,5 +1,52 @@
 package org.protege.editor.owl.ui.framelist;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.BorderFactory;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.JWindow;
+import javax.swing.KeyStroke;
+import javax.swing.ListCellRenderer;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.MouseInputListener;
+import javax.swing.plaf.basic.BasicListUI;
+
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.prefs.Preferences;
@@ -14,39 +61,37 @@ import org.protege.editor.core.ui.util.VerifyingOptionPane;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.util.OWLAxiomInstance;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.axiom.AxiomAnnotationPanel;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.explanation.ExplanationManager;
-import org.protege.editor.owl.ui.frame.*;
+import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
+import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
+import org.protege.editor.owl.ui.frame.OWLFrame;
+import org.protege.editor.owl.ui.frame.OWLFrameListener;
+import org.protege.editor.owl.ui.frame.OWLFrameObject;
+import org.protege.editor.owl.ui.frame.OWLFrameSection;
+import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.protege.editor.owl.ui.preferences.GeneralPreferencesPanel;
 import org.protege.editor.owl.ui.renderer.LinkedObjectComponent;
 import org.protege.editor.owl.ui.renderer.LinkedObjectComponentMediator;
 import org.protege.editor.owl.ui.transfer.OWLObjectDataFlavor;
-import org.protege.editor.owl.ui.view.*;
-import org.semanticweb.owlapi.model.*;
+import org.protege.editor.owl.ui.view.ChangeListenerMediator;
+import org.protege.editor.owl.ui.view.Copyable;
+import org.protege.editor.owl.ui.view.Cuttable;
+import org.protege.editor.owl.ui.view.Deleteable;
+import org.protege.editor.owl.ui.view.Pasteable;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLRuntimeException;
+import org.semanticweb.owlapi.model.RemoveAxiom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.MouseInputListener;
-import javax.swing.plaf.basic.BasicListUI;
-import java.awt.*;
-import java.awt.dnd.DropTargetDragEvent;
-import java.awt.dnd.DropTargetDropEvent;
-import java.awt.dnd.DropTargetEvent;
-import java.awt.dnd.DropTargetListener;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 /*
  * Copyright (C) 2007, University of Manchester
@@ -68,6 +113,13 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
     private static final int EDITOR_SCREEN_MARGIN = 100;
 
     private final Logger logger = LoggerFactory.getLogger(OWLFrameList.class);
+
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	
 
     private static final Border inferredBorder = new OWLFrameListInferredSectionRowBorder();
 
@@ -102,6 +154,13 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
     private ListSelectionListener selListener = event -> handleSelectionEvent(event);
 
     private boolean axiomSelectionGlobal = true;
+    
+    private boolean read_only = false;
+    
+    public OWLFrameList(OWLEditorKit editorKit, OWLFrame<R> frame, boolean read_only) {
+    	this(editorKit, frame);
+    	this.read_only = read_only;
+    }
 
 
     public OWLFrameList(OWLEditorKit editorKit, OWLFrame<R> frame) {
@@ -192,26 +251,34 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
     }
 
     protected List<MListButton> getButtons(Object value) {
-        List<MListButton> buttons = new ArrayList<>(super.getButtons(value));
-        if (value instanceof OWLFrameSectionRow) {
-            OWLFrameSectionRow<?,?,?> frameRow = (OWLFrameSectionRow<?,?,?>) value;
-            buttons.add(axiomAnnotationButton);
-            axiomAnnotationButton.setAnnotationPresent(isAnnotationPresent(frameRow));
+    	List<MListButton> buttons = new ArrayList<MListButton>();
+    	if (read_only) {
 
-            if (getExplanationManager().hasExplanation(frameRow.getAxiom())) {
-                buttons.addAll(inferredRowButtons);
-            }
-        }
-        if (value instanceof AbstractOWLFrameSectionRow) {
-            List<MListButton> additional = ((AbstractOWLFrameSectionRow) value).getAdditionalButtons();
-            if (!additional.isEmpty()) {
-                buttons.addAll(additional);
-            }
-        }
-        if (value instanceof AbstractOWLFrameSection) {
-            buttons.addAll(((AbstractOWLFrameSection) value).getAdditionalButtons());
-        }
-        return buttons;
+    	} else {
+    		buttons = new ArrayList<>(super.getButtons(value));
+    		if (value instanceof OWLFrameSectionRow) {
+    			if (((OWLFrameSectionRow) value).isEditable()) {
+    				OWLFrameSectionRow<?,?,?> frameRow = (OWLFrameSectionRow<?,?,?>) value;
+    				buttons.add(axiomAnnotationButton);
+    				axiomAnnotationButton.setAnnotationPresent(isAnnotationPresent(frameRow));
+
+    				if (getExplanationManager().hasExplanation(frameRow.getAxiom())) {
+    					buttons.addAll(inferredRowButtons);
+    				}
+    			}
+    		}
+    		if (value instanceof AbstractOWLFrameSectionRow) {
+    			List<MListButton> additional = ((AbstractOWLFrameSectionRow) value).getAdditionalButtons();
+    			if (!additional.isEmpty()) {
+    				buttons.addAll(additional);
+    			}
+    		}
+    		if (value instanceof AbstractOWLFrameSection) {
+    			buttons.addAll(((AbstractOWLFrameSection) value).getAdditionalButtons());
+    		}
+
+    	}
+    	return buttons;
     }
 
 
@@ -269,6 +336,10 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
         addToPopupMenu(new SwitchToDefiningOntologyAction<>());
         addToPopupMenu(new PullIntoActiveOntologyAction<>());
         addToPopupMenu(new MoveAxiomsToOntologyAction<>());
+        addToPopupMenu(new CreateConjunctTermAction<>());
+        addToPopupMenu(new SplitSubClassTermAction<>());
+        addToPopupMenu(new CreateDisjunctTermAction<>());
+        //addToPopupMenu(new SplitEquivTermsAction<>());
     }
 
     public void addToPopupMenu(OWLFrameListPopupMenuAction<R> action) {
@@ -651,7 +722,9 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
     //
     // /////////////////////////////////////////////////////////////////////////////////////////////////////////
     public boolean canCopy() {
-        return getRootObject() != null && getSelectedIndex() != -1;
+    	boolean can = getRootObject() != null && getSelectedIndex() != -1 &&
+        		getSelectedValues().length == 1;
+    	return can;
     }
 
     public List<OWLObject> getObjectsToCopy() {
@@ -767,12 +840,7 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
                     if (e.isPopupTrigger()) {
                         showingPopup = true;
                         showPopupMenu(e);
-                    }
-                    else if (e.getClickCount() == 2) {
-                        if (!showingPopup) {
-                            handleEdit();
-                        }
-                    }
+                    }                    
                     else {
                         super.mouseReleased(e);
                     }

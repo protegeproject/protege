@@ -11,6 +11,7 @@ import org.protege.editor.owl.ui.OWLObjectComparatorAdapter;
 import org.protege.editor.owl.ui.action.OWLObjectHierarchyDeleter;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
+import org.protege.editor.owl.ui.tree.UserRendering;
 import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.protege.editor.owl.ui.tree.OWLObjectTree;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -45,7 +46,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
     private OWLObjectTree<E> assertedTree;
 
-    private Optional<OWLObjectTree<E>> inferredTree;
+    private Optional<OWLObjectTree<E>> inferredTree = Optional.empty();
 
     private TreeSelectionListener listener;
 
@@ -59,7 +60,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
     final public void initialiseView() throws Exception {
         setLayout(new BorderLayout(0, 0));
         add(viewModeComponent, BorderLayout.CENTER);
-        assertedTree = new OWLModelManagerTree<>(getOWLEditorKit(), getHierarchyProvider());
+        assertedTree = new OWLModelManagerTree<>(getOWLEditorKit(), getHierarchyProvider(), getUserRenderer());
 
         // ordering based on default, but putting Nothing at the top
         OWLObjectComparatorAdapter<OWLObject> treeNodeComp = createComparator(getOWLModelManager());
@@ -75,7 +76,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
         viewModeComponent.add(assertedTree, ViewMode.ASSERTED, true);
 
 
-        performExtraInitialisation();
+        //performExtraInitialisation();
         E entity = getSelectedEntity();
         if (entity != null) {
             setGlobalSelection(entity);
@@ -97,8 +98,17 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
         assertedTree.getModel().addTreeModelListener(treeModelListener);
 
         assertedTree.addMouseListener(new MouseAdapter() {
-            public void mouseReleased(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {
+            	assertedTree.ensureSelected(e.getX(), e.getY());
                 transmitSelection();
+                if (e.isPopupTrigger()) {  
+                	
+                	assertedTree.showPopupMenu(e);
+                }
+                if (e.isAltDown()) {
+                    assertedTree.expandDescendantsOfRowAt(e.getX(), e.getY());
+                }
+                
             }
         });
 
@@ -137,6 +147,8 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
         if (inferredTree.isPresent()) {
             inferredTree.get().addTreeSelectionListener(listener);
         }
+        
+        performExtraInitialisation();
     }
 
     protected boolean isInAssertedMode() {
@@ -185,6 +197,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
     protected abstract void performExtraInitialisation() throws Exception;
 
+    protected abstract UserRendering getUserRenderer();
 
     protected abstract OWLObjectHierarchyProvider<E> getHierarchyProvider();
 
@@ -206,6 +219,13 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
     public OWLObjectTree<E> getAssertedTree() {
         return assertedTree;
+    }
+    
+    public OWLObjectTree<E> getInferredTree() {
+    	if (inferredTree.isPresent()) {
+    		return this.inferredTree.get();
+    	}
+    	return null;
     }
 
 

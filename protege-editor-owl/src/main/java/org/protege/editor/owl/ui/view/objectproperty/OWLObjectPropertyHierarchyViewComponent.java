@@ -1,11 +1,13 @@
 package org.protege.editor.owl.ui.view.objectproperty;
 
 import org.protege.editor.core.ui.menu.PopupMenuId;
+import org.protege.editor.core.ui.workspace.TabbedWorkspace;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.selection.SelectionDriver;
 import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.renderer.*;
+import org.protege.editor.owl.ui.tree.UserRendering;
 import org.protege.editor.owl.ui.view.AbstractOWLPropertyHierarchyViewComponent;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
@@ -28,7 +30,11 @@ public class OWLObjectPropertyHierarchyViewComponent
 
     @Override
     protected void performExtraInitialisation() throws Exception {
-        super.performExtraInitialisation();
+    	if (((TabbedWorkspace) getWorkspace()).isReadOnly(this.getView().getPlugin())) {
+
+    	} else {
+    		super.performExtraInitialisation();
+    	}
         getAssertedTree().setPopupMenuId(new PopupMenuId("[AssertedObjectPropertyHierarchy]"));
     }
 
@@ -84,4 +90,11 @@ public class OWLObjectPropertyHierarchyViewComponent
     public Optional<OWLObject> getSelection() {
         return Optional.ofNullable(getSelectedEntity());
     }
+
+
+	@Override
+	protected UserRendering getUserRenderer() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -211,6 +211,23 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         }
         return true;
     }
+    
+    public void setDataType(OWLDatatype type) {
+    	if (type == null) {
+    		datatypeComboBox.setSelectedIndex(0);
+
+    	} else {
+    		int cnt = this.datatypeComboBox.getItemCount();
+    		for (int i = 1; i < cnt; i++) {
+    			// skip 0 as it is always null
+    			OWLDatatype dt = this.datatypeComboBox.getItemAt(i);
+    			if (dt.equals(type)) {
+    				this.datatypeComboBox.setSelectedIndex(i);
+    				break;
+    			}
+    		}
+    	}
+    }
 
     public boolean isMultiEditSupported() {
         return false;

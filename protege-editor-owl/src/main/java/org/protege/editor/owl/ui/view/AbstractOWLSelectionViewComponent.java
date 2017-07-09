@@ -267,7 +267,7 @@ public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewC
     }
 
 
-    public final boolean canShowEntity(OWLEntity owlEntity){
+    public boolean canShowEntity(OWLEntity owlEntity){
         return owlEntity != null && new AcceptableEntityVisitor().canShowEntity(owlEntity);
     }
 

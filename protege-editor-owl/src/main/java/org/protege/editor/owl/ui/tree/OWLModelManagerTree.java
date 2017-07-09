@@ -36,6 +36,14 @@ public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> i
     private OWLEntityRendererListener rendererListener;
 
     public OWLModelManagerEntityRenderer currentRenderer = null; // only use to clean up old listeners
+    
+    private UserRendering user_render = null;
+    
+    public OWLModelManagerTree(OWLEditorKit owlEditorKit, OWLObjectHierarchyProvider<N> provider, UserRendering mr) {
+        super(owlEditorKit, provider);
+        user_render = mr;
+        initialise(owlEditorKit);
+    }
 
     public OWLModelManagerTree(OWLEditorKit owlEditorKit, OWLObjectHierarchyProvider<N> provider) {
         super(owlEditorKit, provider);
@@ -50,12 +58,17 @@ public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> i
 
 
     private void initialise(OWLEditorKit owlEditorKit) {
-        final OWLObjectTreeCellRenderer renderer = new OWLObjectTreeCellRenderer(owlEditorKit);
+        OWLObjectTreeCellRenderer renderer = null;
+        if (user_render != null) {
+        	renderer = new OWLObjectTreeCellRenderer(owlEditorKit, user_render);
+        } else {
+        	renderer = new OWLObjectTreeCellRenderer(owlEditorKit);
+        }
         renderer.setWrap(false);
         setCellRenderer(renderer);
         setHighlightKeywords(false);
         setupListener();
-        installPopupMenu();
+        //installPopupMenu();
         setRowHeight(-1);
         autoExpandTree();
     }
