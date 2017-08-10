@@ -1383,6 +1383,14 @@
 		<class value="org.protege.editor.owl.model.library.UriEntryManager"/>
 	</extension>
 
+    <extension id="NextCatalogEntry" point="org.protege.editor.owl.repository">
+        <class value="org.protege.editor.owl.model.library.NextCatalogManager"/>
+    </extension>
+
+    <extension id="RewriteUriEntry" point="org.protege.editor.owl.repository">
+        <class value="org.protege.editor.owl.model.library.RewriteUriEntryManager"/>
+    </extension>
+
     <!-- Species validation -->
 
 

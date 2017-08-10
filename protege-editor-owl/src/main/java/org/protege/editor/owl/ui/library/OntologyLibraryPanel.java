@@ -12,14 +12,11 @@ import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.xmlcatalog.CatalogUtilities;
 import org.protege.xmlcatalog.XMLCatalog;
-import org.protege.xmlcatalog.entry.Entry;
-import org.protege.xmlcatalog.entry.GroupEntry;
-import org.protege.xmlcatalog.entry.UriEntry;
+import org.protege.xmlcatalog.entry.*;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
+import javax.swing.event.*;
 import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -49,6 +46,7 @@ public class OntologyLibraryPanel extends JPanel {
     private File catalogFile;
 
     private JTree tree;
+    private DefaultTreeModel model;
 
     private Action addLibraryAction;
     private Action removeLibraryAction;
@@ -64,6 +62,11 @@ public class OntologyLibraryPanel extends JPanel {
         this.catalogFile = catalogFile;
         catalog = CatalogUtilities.parseDocument(catalogFile.toURI().toURL());
         createUI();
+    }
+
+    @FunctionalInterface
+    public interface JTreeRefresh{
+        void refreshView();
     }
 
 
@@ -82,7 +85,8 @@ public class OntologyLibraryPanel extends JPanel {
         add(vbc);
         rootNode = new DefaultMutableTreeNode("Ontology libraries");
         rootNode.setUserObject(catalogFile);
-        DefaultTreeModel model = new DefaultTreeModel(rootNode);
+        model = new DefaultTreeModel(rootNode);
+
         tree = new JTree(model);
         tree.setRowHeight(-1);
         tree.setRootVisible(true);
@@ -154,7 +158,6 @@ public class OntologyLibraryPanel extends JPanel {
         updateState();
     }
 
-
     private void showPopupMenu(MouseEvent e) {
         TreePath selectionPath = tree.getSelectionPath();
         if (selectionPath == null) {
@@ -166,13 +169,17 @@ public class OntologyLibraryPanel extends JPanel {
             return;
         }
         else if (o instanceof Entry) {
-            Entry entry = (Entry) o;
             JPopupMenu popupMenu = new JPopupMenu();
-            
             if (o instanceof UriEntry) {
-                popupMenu.add(new EditUriAction(tree, selectionPath, catalogFile));
+                popupMenu.add(new EditUriAction(tree, node, catalog, () -> model.reload(node)));
             }
-            popupMenu.add(new DeleteRedirectAction(tree, selectionPath));
+            if(o instanceof NextCatalogEntry){
+                popupMenu.add(new EditNextCatalogAction(tree, node, catalog, () -> model.reload(node)));
+            }
+            if(o instanceof RewriteUriEntry){
+                popupMenu.add(new EditRewriteUriAction(tree, node, catalog, () -> model.reload(node)));
+            }
+            popupMenu.add(new DeleteRedirectAction(catalog, node, () -> model.removeNodeFromParent(node)));
             
             popupMenu.show(tree, e.getX(), e.getY());
         }
@@ -214,7 +221,6 @@ public class OntologyLibraryPanel extends JPanel {
         }
         catalog.removeEntry(lib);
         catalog.addEntry(i-1, lib);
-        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         model.removeNodeFromParent(node);
         model.insertNodeInto(node, rootNode, i-1);
         tree.setSelectionPath(path);
@@ -236,7 +242,6 @@ public class OntologyLibraryPanel extends JPanel {
         }
         catalog.removeEntry(lib);
         catalog.addEntry(i+1, lib);
-        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         model.removeNodeFromParent(node);
         model.insertNodeInto(node, rootNode, i+1);
         tree.setSelectionPath(path);
@@ -262,11 +267,10 @@ public class OntologyLibraryPanel extends JPanel {
         for (Entry lib : catalog.getEntries()) {
             insertLibraryIntoTree(lib);
         }
-        ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(rootNode);
+        model.nodeStructureChanged(rootNode);
     }
 
     private void removeLibraryFromTree(Entry lib) {
-        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         MutableTreeNode removeNode = null;
         for (int i=0; i<rootNode.getChildCount(); i++){
             DefaultMutableTreeNode node = (DefaultMutableTreeNode)rootNode.getChildAt(i);
@@ -282,7 +286,6 @@ public class OntologyLibraryPanel extends JPanel {
 
 
     private void insertLibraryIntoTree(Entry entry) {
-        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         DefaultMutableTreeNode libNode = new DefaultMutableTreeNode(entry);
         model.insertNodeInto(libNode, rootNode, rootNode.getChildCount());
         if (entry instanceof GroupEntry) {
@@ -298,7 +301,6 @@ public class OntologyLibraryPanel extends JPanel {
         	UriEntry uriEntry = (UriEntry) entry;
         	String redirectDescription = "<html><body><b>Imported Location: " + uriEntry.getName() + "</b><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" 
             						           + "<font color=\"gray\">Redirected To: " + uriEntry.getUri() + "</font></body></html>";
-        	DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         	DefaultMutableTreeNode entryNode = new DefaultMutableTreeNode(redirectDescription);
         	model.insertNodeInto(entryNode, parent, parent.getChildCount());
         }

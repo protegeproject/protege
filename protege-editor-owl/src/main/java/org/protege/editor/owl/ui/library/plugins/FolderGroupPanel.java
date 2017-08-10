@@ -38,7 +38,7 @@ public class FolderGroupPanel extends NewEntryPanel {
         physicalLocationPanel.setLayout(new FlowLayout());
         physicalLocationPanel.add(new JLabel("Directory: "));
         physicalLocationField = new JTextField();
-        physicalLocationField.setPreferredSize(new JTextField("/home/tredmond/Shared/ontologies/simple/pizza-good.owl").getPreferredSize());
+        physicalLocationField.setPreferredSize(getDefaultTextFieldDimension());
         physicalLocationField.addActionListener(e -> {
             fireListeners();
         });
