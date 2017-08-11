@@ -263,6 +263,9 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
 
 
     public Rectangle getTabBounds(JTabbedPane pane, int i) {
+        if (i < 0){
+            return new Rectangle(0,0);
+        }
         Rectangle tabBounds = super.getTabBounds(pane, i);
         tabBounds.height = getTabHeight();
         return tabBounds;
