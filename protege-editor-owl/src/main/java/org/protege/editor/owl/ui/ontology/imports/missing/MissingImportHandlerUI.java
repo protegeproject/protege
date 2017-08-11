@@ -4,8 +4,10 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.MissingImportHandler;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
 import org.protege.editor.owl.ui.UIHelper;
+import org.protege.editor.owl.ui.library.XMLCatalogManager;
 import org.protege.xmlcatalog.CatalogUtilities;
 import org.protege.xmlcatalog.XMLCatalog;
+import org.protege.xmlcatalog.entry.NextCatalogEntry;
 import org.protege.xmlcatalog.entry.UriEntry;
 import org.semanticweb.owlapi.model.IRI;
 import org.slf4j.Logger;
@@ -15,6 +17,9 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
@@ -33,6 +38,7 @@ public class MissingImportHandlerUI implements MissingImportHandler {
     private final Logger logger = LoggerFactory.getLogger(MissingImportHandlerUI.class);
 
     private final OWLEditorKit owlEditorKit;
+    private Map<IRI, IRI> cache = new HashMap<>();
 
 
     public MissingImportHandlerUI(OWLEditorKit owlEditorKit) {
@@ -41,6 +47,10 @@ public class MissingImportHandlerUI implements MissingImportHandler {
 
 
     public IRI getDocumentIRI(IRI ontologyIRI) {
+        IRI fromCache = cache.get(ontologyIRI);
+        if(fromCache !=null){
+            return fromCache;
+        }
         FutureTask<IRI> futureTask = new FutureTask<>(() -> {
             int ret = JOptionPane.showConfirmDialog(null,
                     "<html><body>The system couldn't locate the ontology:<br><font color=\"blue\">" + ontologyIRI.toString() + "</font><br><br>" +
@@ -53,12 +63,27 @@ public class MissingImportHandlerUI implements MissingImportHandler {
                 return null;
             }
             UIHelper helper = new UIHelper(owlEditorKit);
-            File file = helper.chooseOWLFile("Please select an ontology file");
+            File file = helper.chooseOWLOrCatalogFile("Please select an ontology or a catalog file");
             if (file == null) {
                 return ontologyIRI;
             }
-            updateActiveCatalog(ontologyIRI, file);
-            return IRI.create(file);
+            boolean isFileCatalog = true;
+            XMLCatalogManager xmlCatalogManager=null;
+            try{
+                XMLCatalog catalog = CatalogUtilities.parseDocument(file.toURI().toURL());
+                xmlCatalogManager = new XMLCatalogManager(catalog);
+            }
+            catch (Exception e){
+                ;//Not a catalog, probably an ontology
+                isFileCatalog = false;
+                updateActiveCatalog(ontologyIRI, file, isFileCatalog);
+                return IRI.create(file);
+            }
+
+            updateActiveCatalog(ontologyIRI, file, isFileCatalog);
+            xmlCatalogManager.getAllUriEntries().forEach(entry -> cache.put(entry.getOntologyIRI(), IRI.create(entry.getPhysicalLocation())));
+            IRI result =cache.get(ontologyIRI);
+            return result == null ? ontologyIRI: result;
         });
 
         SwingUtilities.invokeLater(futureTask);
@@ -73,14 +98,20 @@ public class MissingImportHandlerUI implements MissingImportHandler {
         }
     }
     
-    private void updateActiveCatalog(IRI ontologyIRI, File file) {
+    private void updateActiveCatalog(IRI ontologyIRI, File file, boolean isFileCatalog) {
         OntologyCatalogManager catalogManager = owlEditorKit.getOWLModelManager().getOntologyCatalogManager();
         XMLCatalog activeCatalog = catalogManager.getActiveCatalog();
         if (activeCatalog == null) {
             return;
         }
         URI relativeFile = CatalogUtilities.relativize(file.toURI(), activeCatalog);
-        activeCatalog.addEntry(0, new UriEntry("User Entered Import Resolution", activeCatalog, ontologyIRI.toString(), relativeFile, null));
+        if(isFileCatalog){
+            activeCatalog.addEntry(0, new NextCatalogEntry("User Entered Import Resolution", activeCatalog, relativeFile, null));
+        }
+        else{
+            activeCatalog.addEntry(0, new UriEntry("User Entered Import Resolution", activeCatalog, ontologyIRI.toString(), relativeFile, null));
+        }
+
         File catalogLocation = new File(activeCatalog.getXmlBaseContext().getXmlBase());
         try {
             CatalogUtilities.save(activeCatalog, catalogLocation);

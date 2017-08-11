@@ -263,6 +263,14 @@ public class UIHelper {
         return UIUtil.openFile(f, title, "OWL File", OWL_EXTENSIONS);
     }
 
+    public File chooseOWLOrCatalogFile(String title) {
+        JFrame f = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, getParent());
+        if (f == null) {
+            f = new JFrame();
+        }
+        return UIUtil.openFile(f, title, "OWL or Catalog File", OWL_EXTENSIONS);
+    }
+
 
     public File saveOWLFile(String title) {
         return UIUtil.saveFile((JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, getParent()),

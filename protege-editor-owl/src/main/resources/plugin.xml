@@ -1160,12 +1160,21 @@
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
+    <extension id="file.changeontologylibrary"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Change active ontology catalog file..."/>
+        <class value="org.protege.editor.owl.ui.library.ChangeActiveOntologyLibraryAction"/>
+        <toolTip value="Change an active ontology catalog file"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotD-C"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
     <extension id="file.ontologylocations"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Loaded ontology sources..."/>
         <class value="org.protege.editor.owl.ui.ontology.location.ShowOntologyLocationsAction"/>
         <toolTip value="Shows the physical URLs from where currently loaded ontologies were obtained from"/>
-        <path value="org.protege.editor.core.application.menu.FileMenu/SlotD-C"/>
+        <path value="org.protege.editor.core.application.menu.FileMenu/SlotD-D"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
