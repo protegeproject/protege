@@ -4,8 +4,7 @@ import org.protege.editor.core.Disposable;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 
 
@@ -28,40 +27,40 @@ public interface OWLObjectHierarchyProvider<N extends OWLObject> extends Disposa
      * Sets the ontologies that this hierarchy provider should use
      * in order to determine the hierarchy.
      */
-    public void setOntologies(Set<OWLOntology> ontologies);
+    void setOntologies(Set<OWLOntology> ontologies);
 
 
     /**
      * Gets the objects that represent the roots of the hierarchy.
      */
-    public Set<N> getRoots();
+    Set<N> getRoots();
 
 
-    public Set<N> getChildren(N object);
+    Set<N> getChildren(N object);
 
 
-    public Set<N> getDescendants(N object);
+    Set<N> getDescendants(N object);
 
 
-    public Set<N> getParents(N object);
+    Set<N> getParents(N object);
 
 
-    public Set<N> getAncestors(N object);
+    Set<N> getAncestors(N object);
 
 
-    public Set<N> getEquivalents(N object);
+    Set<N> getEquivalents(N object);
 
 
-    public Set<List<N>> getPathsToRoot(N object);
+    Set<List<N>> getPathsToRoot(N object);
 
 
-    public boolean containsReference(N object);
+    boolean containsReference(N object);
 
 
-    public void addListener(OWLObjectHierarchyProviderListener<N> listener);
+    void addListener(OWLObjectHierarchyProviderListener<N> listener);
 
 
-    public void removeListener(OWLObjectHierarchyProviderListener<N> listener);
+    void removeListener(OWLObjectHierarchyProviderListener<N> listener);
 
     void dispose(); // override as previous implementations did not implement Disposable and did not throw an exception
 
@@ -81,4 +80,17 @@ public interface OWLObjectHierarchyProvider<N extends OWLObject> extends Disposa
         return n -> true;
     }
 
+    /**
+     * Get the relationship between a parent-child.
+     * @param parent The parent.
+     * @param child The child.
+     * @return A relationship object that describes the relationship.
+     */
+    default Optional<?> getRelationship(N parent, N child) {
+        return Optional.empty();
+    }
+
+    default Set<?> getDisplayedRelationships() {
+        return Collections.emptySet();
+    }
 }

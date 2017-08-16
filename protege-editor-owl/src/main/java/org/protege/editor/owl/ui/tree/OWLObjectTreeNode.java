@@ -2,6 +2,8 @@ package org.protege.editor.owl.ui.tree;
 
 import org.semanticweb.owlapi.model.OWLObject;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import java.util.*;
@@ -23,6 +25,9 @@ public class OWLObjectTreeNode<N extends OWLObject> extends DefaultMutableTreeNo
     private boolean isLoaded;
 
     private Set<N> equivalentObjects;
+
+    @Nullable
+    private Object relationship;
 
     public OWLObjectTreeNode(Object userObject, OWLObjectTree tree) {
         super(userObject);
@@ -58,8 +63,17 @@ public class OWLObjectTreeNode<N extends OWLObject> extends DefaultMutableTreeNo
     }
 
 
+    @Nullable
     public N getOWLObject() {
         return (N) getUserObject();
+    }
+
+    public void setRelationship(@Nonnull Object rel) {
+        this.relationship = rel;
+    }
+
+    public Optional<Object> getRelationship() {
+        return Optional.ofNullable(relationship);
     }
 
 

@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.tree;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
+import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,13 +25,27 @@ public class OWLObjectTreeCellRenderer extends OWLCellRenderer {
     }
 
 
+    @SuppressWarnings("unchecked")
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
                                                   boolean leaf, int row, boolean hasFocus) {
+        clearRelationship();
+        setRelationshipsDisplayed(false);
+        Object renderedValue;
         if (value instanceof OWLObjectTreeNode){
-            OWLObjectTreeNode node = (OWLObjectTreeNode) value;
+            OWLObjectTreeNode<OWLObject> node = (OWLObjectTreeNode<OWLObject>) value;
             setEquivalentObjects(node.getEquivalentObjects());
-            value = node.getOWLObject();
+            OWLObject owlObject = node.getOWLObject();
+            renderedValue = owlObject;
+            boolean displayRelationships = false;
+            if(tree instanceof OWLModelManagerTree) {
+                displayRelationships = !((OWLModelManagerTree) tree).getProvider().getDisplayedRelationships().isEmpty();
+            }
+            setRelationshipsDisplayed(displayRelationships && owlObject != null && !owlObject.isTopEntity());
+            node.getRelationship().ifPresent(this::setRelationship);
         }
-        return super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+        else {
+            renderedValue = value;
+        }
+        return super.getTreeCellRendererComponent(tree, renderedValue, selected, expanded, leaf, row, hasFocus);
     }
 }

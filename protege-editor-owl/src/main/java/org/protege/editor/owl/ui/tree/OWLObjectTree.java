@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.tree;
 
-import com.google.common.eventbus.Subscribe;
 import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.core.ui.menu.MenuBuilder;
 import org.protege.editor.core.ui.menu.PopupMenuId;
@@ -9,6 +8,7 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProviderListener;
 import org.protege.editor.owl.ui.OWLObjectComparator;
+import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.protege.editor.owl.ui.transfer.OWLObjectDragSource;
 import org.protege.editor.owl.ui.transfer.OWLObjectDropTarget;
 import org.protege.editor.owl.ui.transfer.OWLObjectTreeDragGestureListener;
@@ -19,11 +19,14 @@ import org.protege.editor.owl.ui.view.HasExpandAll;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.event.ChangeListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -210,14 +213,40 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
 
     public String getToolTipText(MouseEvent event) {
-        N obj = getOWLObjectAtMousePosition(event);
-        if (obj instanceof OWLEntity) {
-            return ((OWLEntity) obj).getIRI().toString();
-        }
-        return null;
+        return getNodeAtMousePosition(event).map(node -> {
+            OWLObject obj = node.getOWLObject();
+            if (obj instanceof OWLEntity) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("<html><body>");
+                sb.append(((OWLEntity) obj).getIRI().toString());
+                node.getRelationship().ifPresent(rel -> {
+                    if(rel instanceof OWLObject) {
+                        sb.append("<br><br>");
+                        String relRendering = "<span style=\"font-weight: bold; color: #0079BA;\">" + getOWLModelManager().getRendering((OWLObject) rel) + "</span>";
+                        sb.append("Related to parent via ");
+                        sb.append(relRendering);
+                        TreeNode parentNode = node.getParent();
+                        if(parentNode instanceof OWLObjectTreeNode) {
+                            String parentRendering = getOWLModelManager().getRendering(((OWLObjectTreeNode) parentNode).getOWLObject());
+                            sb.append("<br><span style=\"padding-left: 20px;\">");
+                            sb.append(getOWLModelManager().getRendering(obj));
+                            sb.append(" ");
+                            sb.append(relRendering);
+                            sb.append(" ");
+                            sb.append(parentRendering);
+                            sb.append("</span>");
+                        }
+                    }
+                });
+                sb.append("</body></html>");
+                return sb.toString();
+            }
+            return null;
+        }).orElse(null);
     }
 
 
+    @SuppressWarnings("unchecked")
     private void updateNode(N node) {
         // This method is called when the parents or children of
         // a node might have changed.  We handle the following possibilities
@@ -270,6 +299,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
                 for (N child : children) {
                     if (!existingChildren.contains(child)) {
                         OWLObjectTreeNode<N> childTreeNode = createTreeNode(child);
+                        provider.getRelationship(treeNode.getOWLObject(), child).ifPresent(childTreeNode::setRelationship);
                         ((DefaultTreeModel) getModel()).insertNodeInto(childTreeNode, treeNode, 0);
                     }
                 }
@@ -408,7 +438,9 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         }
         for (N child : children) {
             if (!parentObjects.contains(child)) {
-                result.add(createTreeNode(child));
+                OWLObjectTreeNode<N> treeNode = createTreeNode(child);
+                result.add(treeNode);
+                provider.getRelationship(parent.getOWLObject(), child).ifPresent(treeNode::setRelationship);
             }
         }
         return result;
@@ -777,14 +809,20 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
     }
 
+    @Nullable
     protected N getOWLObjectAtMousePosition(MouseEvent event) {
+        return getNodeAtMousePosition(event).map(OWLObjectTreeNode::getOWLObject).orElse(null);
+    }
+
+    @Nonnull
+    @SuppressWarnings("unchecked")
+    private Optional<OWLObjectTreeNode<N>> getNodeAtMousePosition(MouseEvent event) {
         Point pt = event.getPoint();
         TreePath path = getPathForLocation(pt.x, pt.y);
         if (path == null) {
-            return null;
+            return Optional.empty();
         }
-        OWLObjectTreeNode<N> node = (OWLObjectTreeNode<N>) path.getLastPathComponent();
-        return node.getOWLObject();
+        return Optional.of((OWLObjectTreeNode<N>) path.getLastPathComponent());
     }
 
     @Override
