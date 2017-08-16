@@ -198,6 +198,16 @@
         <checkbox value="true"/>
     </extension>
 
+    <extension id="tree.showrelationships"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Display relationships in class hierarchy"/>
+        <class value="org.protege.editor.owl.model.hierarchy.DisplayRelationshipsInClassHierarchyAction"/>
+        <toolTip value="Display relationships in the class hierarchy"/>
+        <path value="org.protege.editor.owl.ui.view.menu/SlotAAA-AE"/>
+        <editorKitId value="OWLEditorKit"/>
+        <checkbox value="true"/>
+    </extension>
+
     <!-- Active ontology strategies in View menu-->
 
     <extension id="ontologies.activeontology"

@@ -5,6 +5,7 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
 import org.semanticweb.owlapi.util.ShortFormProvider;
+import org.semanticweb.owlapi.vocab.SWRLBuiltInsVocabulary;
 import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxObjectRenderer;
 
 import java.io.IOException;
@@ -103,7 +104,15 @@ public class OWLObjectRendererImpl implements OWLObjectRenderer {
          */
         @Override
         public void visit(SWRLBuiltInAtom node) {
-            write(mngr.getOWLEntityRenderer().render(node.getPredicate()));
+            SWRLBuiltInsVocabulary vocabulary = SWRLBuiltInsVocabulary.getBuiltIn(node.getPredicate());
+            // Workaround for https://github.com/protegeproject/protege/issues/660
+            // Render using short name
+            if(vocabulary != null) {
+                write(vocabulary.getShortForm());
+            }
+            else {
+                write(mngr.getOWLEntityRenderer().render(node.getPredicate()));
+            }
             write("(");
             for (Iterator<SWRLDArgument> it = node.getArguments().iterator(); it.hasNext();) {
                 it.next().accept(this);

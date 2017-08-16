@@ -190,7 +190,7 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
     protected Optional<OWLObjectHierarchyProvider<OWLClass>> getInferredHierarchyProvider() {
         return Optional.of(getOWLModelManager().getOWLHierarchyManager().getInferredOWLClassHierarchyProvider());
     }
-///////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
     //
     // Create new target
     //

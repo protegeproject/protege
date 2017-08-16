@@ -1,14 +1,14 @@
 package org.protege.owlapi.inference.cls;
 
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLClassExpression;
-import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
-import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
+import com.google.common.collect.ImmutableSet;
+import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 
-import java.util.HashSet;
-import java.util.Set;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.*;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 
 
 public class ChildClassExtractor extends OWLAxiomVisitorAdapter {
@@ -18,22 +18,42 @@ public class ChildClassExtractor extends OWLAxiomVisitorAdapter {
 
     private NamedClassExtractor namedClassExtractor = new NamedClassExtractor();
 
+    @Nullable
     private OWLClass currentParentClass;
+
+    private ImmutableSet<OWLObjectProperty> relationships = ImmutableSet.of();
 
     private Set<OWLClass> results = new HashSet<>();
 
+    private Map<OWLClass, OWLObjectPropertyExpression> child2RelationshipMap = new HashMap<>();
 
+
+    @Deprecated
     public void reset() {
+        clear();
+    }
+
+
+    /**
+     * Sets the parent class whose children are to be extracted.
+     * @param currentParentClass The parent class.
+     */
+    public void setCurrentParentClass(@Nonnull OWLClass currentParentClass) {
+        this.currentParentClass = checkNotNull(currentParentClass);
+        clear();
+    }
+
+
+    @Nonnull
+    public Optional<OWLClass> getCurrentParentClass() {
+        return Optional.ofNullable(currentParentClass);
+    }
+
+    private void clear() {
         results.clear();
         namedClassExtractor.reset();
+        child2RelationshipMap.clear();
     }
-
-
-    public void setCurrentParentClass(OWLClass currentParentClass) {
-        this.currentParentClass = currentParentClass;
-        reset();
-    }
-
 
     public Set<OWLClass> getResult() {
         return new HashSet<>(results);
@@ -41,22 +61,37 @@ public class ChildClassExtractor extends OWLAxiomVisitorAdapter {
 
 
     public void visit(OWLSubClassOfAxiom axiom) {
+        if (axiom.getSubClass().isAnonymous()) {
+            // Not in our results because we only want to return class names
+            return;
+        }
         // Example:
         // If searching for subs of B, candidates are:
         // SubClassOf(A B)
         // SubClassOf(A And(B ...))
         if (checker.containsConjunct(currentParentClass, axiom.getSuperClass())) {
-            // We only want named classes
-            if (!axiom.getSubClass().isAnonymous()) {
-                results.add(axiom.getSubClass().asOWLClass());
-            }
+            results.add(axiom.getSubClass().asOWLClass());
+        }
+        else if (!relationships.isEmpty()) {
+            // SubClassOf(A ObjectSomeValuesFrom(p B))
+            axiom.getSuperClass().asConjunctSet().stream()
+                 .filter(ce -> ce instanceof OWLObjectSomeValuesFrom)
+                 .map(ce -> ((OWLObjectSomeValuesFrom) ce))
+                 .filter(svf -> !svf.getProperty().isAnonymous())
+                 .filter(svf -> svf.getFiller().equals(currentParentClass))
+                 .filter(svf -> relationships.contains(svf.getProperty().asOWLObjectProperty()))
+                 .findFirst().ifPresent(c -> {
+                OWLClass child = axiom.getSubClass().asOWLClass();
+                results.add(child);
+                child2RelationshipMap.put(child, c.getProperty());
+            });
         }
     }
 
 
     public void visit(OWLEquivalentClassesAxiom axiom) {
         // EquivalentClasses(A  And(B...))
-        if (!namedClassInEquivalentAxiom(axiom)){
+        if (!namedClassInEquivalentAxiom(axiom)) {
             return;
         }
         Set<OWLClassExpression> candidateDescriptions = new HashSet<>();
@@ -83,10 +118,21 @@ public class ChildClassExtractor extends OWLAxiomVisitorAdapter {
         results.addAll(namedClassExtractor.getResult());
     }
 
+    public void setRelationshipProperties(ImmutableSet<OWLObjectProperty> properties) {
+        this.relationships = properties;
+    }
+
+    public Set<OWLObjectProperty> getRelationships() {
+        return relationships;
+    }
+
+    public Optional<OWLObjectPropertyExpression> getRelationship(OWLClass child) {
+        return Optional.ofNullable(child2RelationshipMap.get(child));
+    }
 
     private boolean namedClassInEquivalentAxiom(OWLEquivalentClassesAxiom axiom) {
-        for (OWLClassExpression equiv : axiom.getClassExpressions()){
-            if (!equiv.isAnonymous()){
+        for (OWLClassExpression equiv : axiom.getClassExpressions()) {
+            if (!equiv.isAnonymous()) {
                 return true;
             }
         }
