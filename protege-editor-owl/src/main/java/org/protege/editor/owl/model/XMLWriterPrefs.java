@@ -1,7 +1,7 @@
 package org.protege.editor.owl.model;
 
 import org.protege.editor.core.prefs.PreferencesManager;
-import org.semanticweb.owlapi.rdf.rdfxml.renderer.XMLWriterPreferences;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -34,8 +34,8 @@ public class XMLWriterPrefs {
         return PreferencesManager.getInstance().getApplicationPreferences(KEY).getBoolean(USE_ENTITIES, true);
     }
 
-    public void setUseEntities(boolean b) {
+    public void setUseEntities(OWLOntologyManager manager, boolean b) {
         PreferencesManager.getInstance().getApplicationPreferences(KEY).putBoolean(USE_ENTITIES, b);
-        XMLWriterPreferences.getInstance().setUseNamespaceEntities(b);
+        manager.setOntologyConfigurator(manager.getOntologyConfigurator().withUseNamespaceEntities(b));
     }
 }

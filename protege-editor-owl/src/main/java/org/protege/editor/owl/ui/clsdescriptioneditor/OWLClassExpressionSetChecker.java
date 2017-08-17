@@ -8,6 +8,7 @@ import org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntaxParserI
 import org.semanticweb.owlapi.manchestersyntax.renderer.ParserException;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration;
+import org.semanticweb.owlapi.model.OntologyConfigurator;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
 
 import java.util.Set;
@@ -39,7 +40,7 @@ class OWLClassExpressionSetChecker implements OWLExpressionChecker<Set<OWLClassE
 
 
     public Set<OWLClassExpression> createObject(String text) throws OWLExpressionParserException {
-        ManchesterOWLSyntaxParser parser = new ManchesterOWLSyntaxParserImpl(OWLOntologyLoaderConfiguration::new,
+        ManchesterOWLSyntaxParser parser = new ManchesterOWLSyntaxParserImpl(new OntologyConfigurator(),
                 mngr.getOWLDataFactory());
         parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr.getOWLEntityFinder()));
         try {

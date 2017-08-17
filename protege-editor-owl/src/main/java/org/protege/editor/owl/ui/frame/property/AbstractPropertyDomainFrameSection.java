@@ -93,7 +93,7 @@ public abstract class AbstractPropertyDomainFrameSection<P extends OWLProperty, 
     protected final void refill(OWLOntology ontology) {
         for (A ax : getAxioms(ontology)) {
             addRow(createFrameSectionRow(ax, ontology));
-            addedDomains.add(ax.getDomain());
+            addedDomains.add((OWLClassExpression) ax.getDomain());
         }
     }
 

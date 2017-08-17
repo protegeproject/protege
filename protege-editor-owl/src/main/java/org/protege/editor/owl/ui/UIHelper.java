@@ -229,7 +229,7 @@ public class UIHelper {
     public String getHTMLOntologyList(Collection<OWLOntology> ontologies) {
         StringBuilder result = new StringBuilder();
         for (OWLOntology ont : ontologies) {
-            com.google.common.base.Optional<IRI> defaultDocumentIRI = ont.getOntologyID().getDefaultDocumentIRI();
+            java.util.Optional<IRI> defaultDocumentIRI = ont.getOntologyID().getDefaultDocumentIRI();
             if (defaultDocumentIRI.isPresent()) {
                 if (getOWLModelManager().getActiveOntology().equals(ont)) {
                     result.append("<font color=\"0000ff\"><b>");

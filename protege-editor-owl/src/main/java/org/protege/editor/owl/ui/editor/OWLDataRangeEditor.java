@@ -48,7 +48,7 @@ public class OWLDataRangeEditor extends AbstractOWLObjectEditor<OWLDataRange> {
 
     public boolean setEditedObject(OWLDataRange dataRange){
         expressionEditor.setExpressionObject(dataRange);
-        if (dataRange != null && dataRange.isDatatype()){
+        if (dataRange != null && dataRange.isOWLDatatype()){
             datatypeList.setSelection((OWLDatatype)dataRange);
             tabbedPane.setSelectedComponent(datatypeList);
         }

@@ -1,7 +1,6 @@
 package org.protege.editor.owl.model.hierarchy;
 
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import java.util.Collections;
@@ -201,7 +200,7 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
         final Set<OWLAnnotationProperty> props = new HashSet<>();
         for (OWLOntologyChange chg : changes){
             if(chg.isAxiomChange()){
-                chg.getAxiom().accept(new OWLAxiomVisitorAdapter(){
+                chg.getAxiom().accept(new OWLAxiomVisitor(){
                     public void visit(OWLSubAnnotationPropertyOfAxiom owlSubAnnotationPropertyOfAxiom) {
                         props.add(owlSubAnnotationPropertyOfAxiom.getSubProperty());
                         props.add(owlSubAnnotationPropertyOfAxiom.getSuperProperty());
@@ -255,7 +254,7 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
             }
         }
 
-        for (IRI uri : OWLRDFVocabulary.BUILT_IN_ANNOTATION_PROPERTY_IRIS){
+        for (IRI uri : OWLRDFVocabulary.BUILT_IN_AP_IRIS){
             roots.add(df.getOWLAnnotationProperty(uri));
         }
     }

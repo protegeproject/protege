@@ -1,9 +1,7 @@
 package org.protege.editor.owl.model.hierarchy;
 
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -68,7 +66,7 @@ public class OWLPropertyHierarchyProvider extends AbstractOWLObjectHierarchyProv
 
     @Override
     public boolean containsReference(OWLEntity object) {
-        return object.accept(new OWLObjectVisitorExAdapter<Boolean>(false) {
+        return object.accept(new OWLObjectVisitorEx<Boolean>() {
             @Override
             public Boolean visit(OWLAnnotationProperty property) {
                 return annotationPropertyHierarchyProvider.containsReference(property);
@@ -113,7 +111,7 @@ public class OWLPropertyHierarchyProvider extends AbstractOWLObjectHierarchyProv
 
     @Override
     public Set<OWLEntity> getUnfilteredChildren(OWLEntity object) {
-        Set<? extends OWLObject> result = object.accept(new OWLObjectVisitorExAdapter<Set<? extends OWLEntity>>(Collections.emptySet()) {
+        Set<? extends OWLObject> result = object.accept(new OWLObjectVisitorEx<Set<? extends OWLEntity>>() {
             @Override
             public Set<? extends OWLEntity> visit(OWLAnnotationProperty property) {
                 return annotationPropertyHierarchyProvider.getChildren(property);
@@ -134,7 +132,7 @@ public class OWLPropertyHierarchyProvider extends AbstractOWLObjectHierarchyProv
 
     @Override
     public Set<OWLEntity> getParents(OWLEntity object) {
-        Set<? extends OWLEntity> result = object.accept(new OWLObjectVisitorExAdapter<Set<? extends OWLEntity>>(Collections.emptySet()) {
+        Set<? extends OWLEntity> result = object.accept(new OWLObjectVisitorEx<Set<? extends OWLEntity>>() {
             @Override
             public Set<? extends OWLEntity> visit(OWLAnnotationProperty property) {
                 return annotationPropertyHierarchyProvider.getParents(property);
@@ -155,7 +153,7 @@ public class OWLPropertyHierarchyProvider extends AbstractOWLObjectHierarchyProv
 
     @Override
     public Set<OWLEntity> getEquivalents(OWLEntity object) {
-        Set<? extends OWLEntity> result = object.accept(new OWLObjectVisitorExAdapter<Set<? extends OWLEntity>>(Collections.emptySet()) {
+        Set<? extends OWLEntity> result = object.accept(new OWLObjectVisitorEx<Set<? extends OWLEntity>>() {
             @Override
             public Set<? extends OWLEntity> visit(OWLAnnotationProperty property) {
                 return annotationPropertyHierarchyProvider.getEquivalents(property);

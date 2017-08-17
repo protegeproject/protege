@@ -41,10 +41,10 @@ public class RdfExtractorConsumer implements RDFConsumer {
         String name = possibleOntologyNames.iterator().next();
         String version = nameToVersionMap.get(name);
         if (version == null) {
-            return Optional.of(new OWLOntologyID(Optional.of(IRI.create(name)), Optional.<IRI>absent()));
+            return Optional.of(new OWLOntologyID(java.util.Optional.of(IRI.create(name)), java.util.Optional.<IRI>empty()));
         }
         else {
-            return Optional.of(new OWLOntologyID(Optional.of(IRI.create(name)), Optional.of(IRI.create(version))));
+            return Optional.of(new OWLOntologyID(java.util.Optional.of(IRI.create(name)), java.util.Optional.of(IRI.create(version))));
         }
     }
 

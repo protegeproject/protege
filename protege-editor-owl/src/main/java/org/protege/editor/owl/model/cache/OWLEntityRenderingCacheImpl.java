@@ -96,7 +96,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
         }
 
         // standard annotation properties        
-        for (IRI uri : OWLRDFVocabulary.BUILT_IN_ANNOTATION_PROPERTY_IRIS){
+        for (IRI uri : OWLRDFVocabulary.BUILT_IN_AP_IRIS){
             addRendering(factory.getOWLAnnotationProperty(uri), owlAnnotationPropertyMap);
         }
 

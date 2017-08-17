@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.rename;
 
-import com.google.common.base.Optional;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
@@ -15,6 +14,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
+import java.util.Optional;
 
 
 /**
@@ -86,7 +86,7 @@ public class RenameEntityPanel extends JPanel {
      */
     private String getFragment() {
         Optional<String> fragment = owlEntity.getIRI().getRemainder();
-        return fragment.or("");
+        return fragment.orElse("");
     }
 
 

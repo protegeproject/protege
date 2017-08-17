@@ -8,7 +8,7 @@ import org.protege.editor.owl.ui.renderer.context.OWLObjectRenderingContext;
 import org.protege.editor.owl.ui.renderer.styledstring.OWLObjectStyledStringRenderer;
 import org.protege.editor.owl.ui.renderer.styledstring.StyledString;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.AxiomSubjectProvider;
+import org.semanticweb.owlapi.util.AxiomSubjectProviderEx;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -67,7 +67,7 @@ public class DefaultSearchMetadataImporter implements SearchMetadataImporter {
         for (AxiomBasedSearchMetadataImporter importer : getAxiomBasedSearchMetadataImporters(categories, axiomType)) {
             for (OWLOntology ontology : context.getOntologies()) {
                 for (OWLAxiom ax : ontology.getAxioms(axiomType)) {
-                    OWLObject subject = new AxiomSubjectProvider().getSubject(ax);
+                    OWLObject subject = new AxiomSubjectProviderEx().getSubject(ax);
                     if (subject instanceof OWLEntity) {
                         OWLEntity entSubject = (OWLEntity) subject;
                         String rendering = context.getRendering(entSubject);

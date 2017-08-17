@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.renderer;
 
-import com.google.common.base.Optional;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
@@ -67,7 +66,7 @@ public class OWLObjectRendererImpl implements OWLObjectRenderer {
         }
 
         // shows the version uri or the ont uri if there is no version
-        Optional<IRI> iri = ontology.getOntologyID().getDefaultDocumentIRI();
+        java.util.Optional<IRI> iri = ontology.getOntologyID().getDefaultDocumentIRI();
         if (iri.isPresent()) {
             return ontURISFP.getShortForm(iri.get());
         }

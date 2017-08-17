@@ -1,10 +1,7 @@
 package org.protege.editor.owl.ui.renderer;
 
-import com.google.common.base.Optional;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
-import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 
 import java.util.*;
 
@@ -15,7 +12,7 @@ import java.util.*;
  * Bio-Health Informatics Group<br>
  * Date: 24-Jan-2007<br><br>
  */
-public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implements OWLObjectRenderer {
+public class OWLObjectRendererDLSyntax implements OWLObjectVisitor, OWLObjectRenderer {
 
 //    private static final Logger logger = LoggerFactory.getLogger(OWLObjectRendererImpl.class);
 
@@ -464,7 +461,7 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
     }
 
 
-    private class BracketWriter extends OWLClassExpressionVisitorAdapter implements OWLDataVisitor {
+    private class BracketWriter implements OWLClassExpressionVisitor, OWLDataVisitor {
 
         boolean nested = false;
 

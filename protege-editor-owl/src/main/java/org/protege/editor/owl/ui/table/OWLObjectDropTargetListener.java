@@ -84,7 +84,7 @@ public class OWLObjectDropTargetListener implements DropTargetListener {
             List<OWLObject> dupObjs = new ArrayList<>();
             OWLObject dupObj = null;
             for (OWLObject obj : objs) {
-                OWLObjectDuplicator duplicator = new OWLObjectDuplicator(target.getOWLModelManager().getOWLDataFactory());
+                OWLObjectDuplicator duplicator = new OWLObjectDuplicator(target.getOWLModelManager().getOWLOntologyManager());
                 dupObj = duplicator.duplicateObject(obj);
                 dupObjs.add(dupObj);
             }

@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.renderer;
 
-import com.google.common.base.Optional;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -14,6 +13,7 @@ import java.awt.*;
  *
  *
  */
+import java.util.Optional;
 
 
 /**

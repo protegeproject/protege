@@ -3,7 +3,6 @@ package org.protege.editor.owl.ui.framelist;
 import org.protege.editor.owl.model.util.ClosureAxiomFactory;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -80,7 +79,7 @@ public class CreateClosureAxiomAction extends OWLFrameListPopupMenuAction<OWLCla
     /**
      * Gets the properties of some, min and exact restrictions from super or equivalent class axioms
      */
-    class ClosureSourceIdentifier extends OWLObjectVisitorAdapter {
+    class ClosureSourceIdentifier implements OWLObjectVisitor {
 
         private final Set<OWLObjectProperty> propertiesToClose = new HashSet<>();
 

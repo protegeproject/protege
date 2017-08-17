@@ -145,7 +145,7 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
             public void dispose() {
             }
         } , "A", "A");
-        addAction(new DeleteIndividualAction(getOWLEditorKit(), () -> getSelectedIndividuals()), "B", "A");
+        addAction(new DeleteIndividualAction(getOWLEditorKit(), () -> getSelectedIndividuals().stream()), "B", "A");
         addAction(new DisposableAction("Add empty class to list", new AddEntityIcon(new OWLClassIcon())) {
             @Override
             public void dispose() {

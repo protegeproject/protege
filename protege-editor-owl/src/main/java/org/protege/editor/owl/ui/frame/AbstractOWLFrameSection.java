@@ -13,7 +13,6 @@ import org.protege.editor.owl.ui.editor.OWLObjectEditorHandler;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
-import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,8 +27,8 @@ import java.util.*;
  *
  * The visitor methods can be overriden to be notified when an axiom is added or removed
  */
-public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxiom, E> extends OWLAxiomVisitorAdapter 
-        implements OWLFrameSection<R, A, E>, OWLObjectEditorHandler<E> {
+public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxiom, E> 
+        implements OWLAxiomVisitor, OWLFrameSection<R, A, E>, OWLObjectEditorHandler<E> {
 
 	private final Logger logger = LoggerFactory.getLogger(AbstractOWLFrameSection.class);
 

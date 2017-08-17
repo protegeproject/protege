@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.ontology.imports;
 
-import com.google.common.base.Optional;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.renderer.layout.*;
 import org.semanticweb.owlapi.model.IRI;
@@ -12,6 +11,7 @@ import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.util.Optional;
 
 /**
  * @author Matthew Horridge, Stanford University, Bio-Medical Informatics Research Group, Date: 12/06/2014

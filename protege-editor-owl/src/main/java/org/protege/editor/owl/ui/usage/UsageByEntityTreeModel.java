@@ -80,7 +80,7 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
             }
             // This is terribly inefficient but there are no indexes in the OWL API to do this.
             for (OWLAnnotationAssertionAxiom ax : ont.getAxioms(AxiomType.ANNOTATION_ASSERTION)) {
-                com.google.common.base.Optional<IRI> valueIRI = ax.getValue().asIRI();
+                java.util.Optional<IRI> valueIRI = ax.getValue().asIRI();
                 if (valueIRI.isPresent()) {
                     if (valueIRI.get().equals(owlEntity.getIRI())) {
                         addUsage(ax);

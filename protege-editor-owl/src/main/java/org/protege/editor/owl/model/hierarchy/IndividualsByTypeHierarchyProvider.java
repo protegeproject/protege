@@ -1,8 +1,6 @@
 package org.protege.editor.owl.model.hierarchy;
 
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
-import org.semanticweb.owlapi.util.OWLOntologyChangeVisitorAdapter;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -150,19 +148,19 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
     /**
      * Scans changes for nodes that have changed in the tree
      */
-    class TypesChangeVisitor extends OWLOntologyChangeVisitorAdapter {
+    class TypesChangeVisitor implements OWLOntologyChangeVisitor {
 
         private Set<OWLObject> changedNodes = new HashSet<>();
 
         Set<OWLNamedIndividual> checkIndividuals = new HashSet<>();
 
-        private OWLAxiomVisitor addAxiomVisitor = new OWLAxiomVisitorAdapter(){
+        private OWLAxiomVisitor addAxiomVisitor = new OWLAxiomVisitor(){
             public void visit(OWLClassAssertionAxiom ax) {
                 handleAddClassAssertionAxiom(ax);
             }
         };
 
-        private OWLAxiomVisitor removeAxiomVisitor = new OWLAxiomVisitorAdapter(){
+        private OWLAxiomVisitor removeAxiomVisitor = new OWLAxiomVisitor(){
             public void visit(OWLClassAssertionAxiom ax) {
                 handleRemoveClassAssertionAxiom(ax);
             }

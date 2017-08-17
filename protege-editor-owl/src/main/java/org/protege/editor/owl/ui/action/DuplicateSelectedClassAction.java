@@ -71,7 +71,7 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
         Map<IRI, IRI> replacementIRIMap = new HashMap<>();
         replacementIRIMap.put(selectedClass.getIRI(), set.getOWLEntity().getIRI());
         OWLModelManager mngr = getOWLModelManager();
-        OWLObjectDuplicator dup = new OWLObjectDuplicator(mngr.getOWLDataFactory(), replacementIRIMap);
+        OWLObjectDuplicator dup = new OWLObjectDuplicator(mngr.getOWLOntologyManager(), replacementIRIMap);
         List<OWLOntologyChange> changes = new ArrayList<>(set.getOntologyChanges());
 
         changes.addAll(duplicateClassAxioms(selectedClass, dup, prefs));
@@ -120,10 +120,10 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
         }
 
         for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
-            for (OWLAnnotationAssertionAxiom ax : EntitySearcher.getAnnotationAssertionAxioms(selectedClass, ont)){
+            for (OWLAnnotationAssertionAxiom ax : EntitySearcher.getAnnotationAssertionAxioms(selectedClass, ont).toArray(OWLAnnotationAssertionAxiom[]::new)){
                 final OWLAnnotation annot = ax.getAnnotation();
                 if (annotIRIs == null || !annotIRIs.contains(annot.getProperty().getIRI())){
-                    Optional<OWLLiteral> literal = annot.getValue().asLiteral();
+                    java.util.Optional<OWLLiteral> literal = annot.getValue().asLiteral();
                     if(literal.isPresent()) {
                         String label = literal.get().getLiteral();
                         if (!label.equals(selectedClassName)){

@@ -37,4 +37,9 @@ public interface OWLModelManagerEntityRenderer extends ShortFormProvider, Proteg
     void addListener(OWLEntityRendererListener listener);
 
     void removeListener(OWLEntityRendererListener listener);
+
+	@Override
+	default void dispose() {
+		// Do nothing (as in ShortFormProvider & Disposable)
+	}
 }

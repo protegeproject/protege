@@ -21,7 +21,7 @@ public class ConvertMinOneToSomeValuesFromAction extends ProtegeOWLAction {
 
 
     public void actionPerformed(ActionEvent actionEvent) {
-        MinCardiOneReplacer replacer = new MinCardiOneReplacer(getOWLModelManager().getOWLDataFactory());
+        MinCardiOneReplacer replacer = new MinCardiOneReplacer(getOWLModelManager().getOWLOntologyManager());
         List<OWLOntologyChange> changes = new ArrayList<>();
         int count = 0;
         for (OWLOntology ont : getOWLModelManager().getActiveOntologies()){
@@ -57,31 +57,31 @@ public class ConvertMinOneToSomeValuesFromAction extends ProtegeOWLAction {
      */
     class MinCardiOneReplacer extends OWLObjectDuplicator{
 
-        public MinCardiOneReplacer(OWLDataFactory owlDataFactory) {
-            super(owlDataFactory);
+        public MinCardiOneReplacer(OWLOntologyManager manager) {
+            super(manager);
         }
 
 
-        public void visit(OWLObjectMinCardinality min) {
+        public OWLObjectMinCardinality visit(OWLObjectMinCardinality min) {
             if (min.getCardinality() == 1 && min.isQualified()){
                 OWLObjectSomeValuesFrom someValuesFrom =
                         getOWLDataFactory().getOWLObjectSomeValuesFrom(min.getProperty(), min.getFiller());
-                visit(someValuesFrom);
+                return (OWLObjectMinCardinality) visit(someValuesFrom);
             }
             else{
-                super.visit(min);
+                return super.visit(min);
             }
         }
 
 
-        public void visit(OWLDataMinCardinality min) {
+        public OWLDataMinCardinality visit(OWLDataMinCardinality min) {
             if (min.getCardinality() == 1 && min.isQualified()){
                 OWLDataSomeValuesFrom someValuesFrom =
                         getOWLDataFactory().getOWLDataSomeValuesFrom(min.getProperty(), min.getFiller());
-                visit(someValuesFrom);
+                return (OWLDataMinCardinality) visit(someValuesFrom);
             }
             else{
-                super.visit(min);
+            	return super.visit(min);
             }
         }
     }

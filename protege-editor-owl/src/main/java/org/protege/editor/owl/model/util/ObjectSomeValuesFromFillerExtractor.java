@@ -1,7 +1,6 @@
 package org.protege.editor.owl.model.util;
 
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -35,7 +34,7 @@ import java.util.Set;
  * would return the set <code>{B, (C and D)}</code>.
 
  */
-public class ObjectSomeValuesFromFillerExtractor extends OWLClassExpressionVisitorAdapter {
+public class ObjectSomeValuesFromFillerExtractor implements OWLClassExpressionVisitor {
 
     private OWLDataFactory dataFactory;
 

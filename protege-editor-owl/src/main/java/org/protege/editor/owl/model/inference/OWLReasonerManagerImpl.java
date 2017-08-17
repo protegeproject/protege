@@ -51,7 +51,7 @@ public class OWLReasonerManagerImpl implements OWLReasonerManager {
     private List<ReasonerFilter> reasonerFilters = new ArrayList<>();
 
     private OWLOntologyChangeListener nonBufferingOntologyChangeListener = new OWLOntologyChangeListener() {
-        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) throws OWLException {
+        public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
             OWLReasoner reasoner = getCurrentReasoner();
             if (reasoner instanceof NoOpReasoner || reasoner.getBufferingMode() != BufferingMode.NON_BUFFERING) {
                 return;

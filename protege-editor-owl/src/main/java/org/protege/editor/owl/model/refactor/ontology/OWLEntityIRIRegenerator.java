@@ -62,7 +62,7 @@ public class OWLEntityIRIRegenerator implements Disposable {
 
 
     private IRI getBaseIRI(OWLEntity entity) {
-        Optional<String> remainder = entity.getIRI().getRemainder();
+        java.util.Optional<String> remainder = entity.getIRI().getRemainder();
         if (remainder.isPresent()){
             IRI iri = entity.getIRI();
             int remainderIndex = iri.toString().lastIndexOf(remainder.get());

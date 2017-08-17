@@ -1,7 +1,6 @@
 package org.protege.editor.owl.model.util;
 
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,7 +23,7 @@ import java.util.Set;
  * out, so any restrictions that are contained as one of their operands
  * are also visited.
  */
-public class RestrictedPropertyExtractor extends OWLClassExpressionVisitorAdapter {
+public class RestrictedPropertyExtractor implements OWLClassExpressionVisitor {
 
     private Set<OWLPropertyExpression> properties;
 
