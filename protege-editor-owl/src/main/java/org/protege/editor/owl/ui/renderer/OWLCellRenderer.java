@@ -797,12 +797,38 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                     // Paint red because of inconsistency
                     doc.setCharacterAttributes(tokenStartIndex, tokenLength, inconsistentClassStyle, true);
                 }
-                else if (isOntologyURI(curToken)){
-                    fadeOntologyURI(doc, tokenStartIndex, tokenLength, enclosedByBracket);
-                }
-                else if (curToken.equals("(")){
-                    parenthesisRendered = true;
-                }
+				else
+					switch (curToken) {
+					case " ":
+						break;
+					case "(":
+						parenthesisRendered = true;
+						break;
+					case ")":
+						break;
+					case "[":
+						break;
+					case "]":
+						break;
+					case "{":
+						break;
+					case "}":
+						break;
+					case ",":
+						break;	
+					case "\n":
+						break;					
+					case "\t":
+						break;
+					case "'":
+						break;					
+					default:
+						// expensive test!
+						if (isOntologyURI(curToken)) {
+							fadeOntologyURI(doc, tokenStartIndex, tokenLength,
+									enclosedByBracket);
+						}
+					}
             }
         }
     }

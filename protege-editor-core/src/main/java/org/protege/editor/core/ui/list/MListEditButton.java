@@ -2,6 +2,8 @@ package org.protege.editor.core.ui.list;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
 
 
 /**
@@ -12,20 +14,24 @@ import java.awt.event.ActionListener;
  */
 public class MListEditButton extends MListButton {
 
+	private final Ellipse2D border_ = new Ellipse2D.Float();
+	
     public MListEditButton(ActionListener actionListener) {
         super("Edit", new Color(20, 80, 210), actionListener);
     }
 
-
-    public void paintButtonContent(Graphics2D g) {
+    @Override
+	public void paintButtonContent(Graphics2D g) {
         Rectangle bounds = getBounds();
         int x = bounds.x;
         int y = bounds.y;
         int size = bounds.width;
         int quarterSize = (Math.round(bounds.width / 4.0f) / 2) * 2;
-        g.fillOval(x + size / 2 - quarterSize, y + size / 2 - quarterSize, 2 * quarterSize, 2 * quarterSize);
-        g.setColor(getBackground());
-        g.fillOval(x + size / 2 - quarterSize / 2, y + size / 2 - quarterSize / 2, quarterSize, quarterSize);
+        border_.setFrame(x + size / 2 - quarterSize, y + size / 2 - quarterSize, 2 * quarterSize, 2 * quarterSize);
+        Area area = new Area(border_);
+        border_.setFrame(x + size / 2 - quarterSize / 2, y + size / 2 - quarterSize / 2, quarterSize, quarterSize);
+        area.subtract(new Area(border_));
+        g.fill(area);
     }
 
     @Override

@@ -464,6 +464,9 @@
 							<extensions>true</extensions>
 							<configuration>
 								<manifestLocation>META-INF</manifestLocation>
+								<instructions>
+								<Bundle-ClassPath>.,target/dependency</Bundle-ClassPath>
+								</instructions>
 							</configuration>
 						</plugin>
 						<!-- Copy all Maven dependencies so that it is possible to run Protege 
@@ -474,22 +477,17 @@
 							<version>2.8</version>
 							<executions>
 								<execution>
-									<id>copy-dependencies</id>
-									<phase>process-sources</phase>
+									<id>copy-provided-dependencies</id>
+									<phase>package</phase>
 									<goals>
-										<goal>copy-dependencies</goal>
+										<goal>unpack-dependencies</goal>
 									</goals>
-									<configuration>
-										<outputDirectory>${lib.location}</outputDirectory>
-										<excludeScope>provided</excludeScope>
-										<includeScope>compile</includeScope>
-										<includeScope>runtime</includeScope>										
-										<overWriteReleases>false</overWriteReleases>
-										<overWriteSnapshots>false</overWriteSnapshots>
-										<overWriteIfNewer>true</overWriteIfNewer>
-									</configuration>
 								</execution>
 							</executions>
+							<configuration>
+								<includeScope>provided</includeScope>
+								<outputDirectory>${project.build.directory}/dependency</outputDirectory>
+							</configuration>
 						</plugin>
 						<!-- Copy plugin.xml where PDE in Eclipse can find it (PDE + m2e + 
 							OSGi Framework launcher). -->
