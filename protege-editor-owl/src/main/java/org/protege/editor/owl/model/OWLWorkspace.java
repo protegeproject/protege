@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -432,7 +432,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         addReasonerListener(menuBar);
         updateTitleBar();
 
-        Optional<JMenu> menu = getWindowMenu(menuBar);
+        java.util.Optional<JMenu> menu = getWindowMenu(menuBar);
         if (!menu.isPresent()) {
             return;
         }
@@ -518,7 +518,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     private void rebuildReasonerMenu(JMenuBar menuBar) {
         final OWLModelManager mngr = getOWLModelManager();
 
-        Optional<JMenu> menu = getReasonerMenu(menuBar);
+        java.util.Optional<JMenu> menu = getReasonerMenu(menuBar);
 
         if (!menu.isPresent()) {
             return;
@@ -604,32 +604,32 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     }
 
-    private Optional<JMenu> getOntologiesMenu(JMenuBar menuBar) {
+    private java.util.Optional<JMenu> getOntologiesMenu(JMenuBar menuBar) {
         return getMenu(menuBar, "Ontologies");
     }
 
 
-    private static Optional<JMenu> getReasonerMenu(JMenuBar menuBar) {
+    private static java.util.Optional<JMenu> getReasonerMenu(JMenuBar menuBar) {
         return getMenu(menuBar, "Reasoner");
     }
 
 
-    private static Optional<JMenu> getWindowMenu(JMenuBar menuBar) {
+    private static java.util.Optional<JMenu> getWindowMenu(JMenuBar menuBar) {
         return getMenu(menuBar, "Window");
     }
 
-    private static Optional<JMenu> getMenu(JMenuBar menuBar, String name) {
+    private static java.util.Optional<JMenu> getMenu(JMenuBar menuBar, String name) {
         for (int i = 0; i < menuBar.getMenuCount(); i++) {
             JMenu menu = menuBar.getMenu(i);
             if (menu != null) {
                 if (menu.getText() != null) {
                     if (menu.getText().equals(name)) {
-                        return Optional.of(menu);
+                        return java.util.Optional.of(menu);
                     }
                 }
             }
         }
-        return Optional.absent();
+        return java.util.Optional.empty();
     }
 
 
@@ -752,7 +752,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         }
 
         String ontShortName = mngr.getRendering(activeOntology);
-        Optional<IRI> defaultDocumentIRI = activeOntology.getOntologyID().getDefaultDocumentIRI();
+        com.google.common.base.Optional<IRI> defaultDocumentIRI = activeOntology.getOntologyID().getDefaultDocumentIRI();
         String documentIRIPart = "";
         if (defaultDocumentIRI.isPresent()) {
             documentIRIPart = " (" + defaultDocumentIRI.get() + ") ";
