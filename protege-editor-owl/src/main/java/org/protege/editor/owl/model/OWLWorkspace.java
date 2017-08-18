@@ -1,6 +1,5 @@
 package org.protege.editor.owl.model;
 
-import java.util.Optional;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -25,6 +24,9 @@ import org.protege.editor.owl.ProtegeOWL;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.model.git.GitRepoStatusPresenter;
+import org.protege.editor.owl.model.git.GitStatusView;
+import org.protege.editor.owl.model.git.GitStatusViewImpl;
 import org.protege.editor.owl.model.inference.*;
 import org.protege.editor.owl.model.selection.OWLSelectionHistoryManager;
 import org.protege.editor.owl.model.selection.OWLSelectionHistoryManagerImpl;
@@ -127,6 +129,10 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private final JLabel reasonerStatus = new JLabel();
 
+    private final GitStatusView gitStatusView = new GitStatusViewImpl();
+
+    private GitRepoStatusPresenter repoStatusPresenter;
+
     private final JCheckBox displayReasonerResults = new JCheckBox("Show Inferences");
 
     private final JPanel statusArea = new JPanel();
@@ -167,16 +173,18 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     private JDialog searchDialog;
 
 
-
     public OWLWorkspace() {
         super();
-        statusArea.setBorder(BorderFactory.createEmptyBorder(0, 0, 1, 1));
+        statusArea.setBorder(BorderFactory.createEmptyBorder(0, 5, 1, 2));
         statusArea.setLayout(new BoxLayout(statusArea, BoxLayout.X_AXIS));
         statusArea.add(Box.createHorizontalGlue());
+        statusArea.add(gitStatusView.asJComponent());
+        statusArea.add(Box.createHorizontalStrut(30));
         statusArea.add(reasonerStatus);
         statusArea.add(Box.createHorizontalStrut(10));
         statusArea.add(displayReasonerResults);
         statusArea.add(Box.createHorizontalStrut(10));
+
 
         reselectionEventTypes.add(EventType.ACTIVE_ONTOLOGY_CHANGED);
         reselectionEventTypes.add(EventType.ONTOLOGY_RELOADED);
@@ -188,6 +196,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         hiddenAnnotationURIs.addAll(AnnotationPreferences.getHiddenAnnotationURIs());
     }
+
 
     public OWLEditorKit getOWLEditorKit() {
         return (OWLEditorKit) getEditorKit();
@@ -220,16 +229,22 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             ReasonerPreferences prefs = reasonerManager.getReasonerPreferences();
             prefs.setShowInferences(displayReasonerResults.isSelected());
         });
-
-
         reasonerStatus.setFont(Fonts.getSmallDialogFont());
         displayReasonerResults.putClientProperty("JComponent.sizeVariant", "small");
         displayReasonerResults.setFont(Fonts.getSmallDialogFont());
 
+        repoStatusPresenter = new GitRepoStatusPresenter(mngr, gitStatusView);
+        repoStatusPresenter.start();
 
         new OntologySourcesChangedHandlerUI(this);
     }
 
+    @Override
+    public void handleActivated() {
+        super.handleActivated();
+        updateTitleBar();
+        repoStatusPresenter.update();
+    }
 
     private void handleOntologiesChanged(List<? extends OWLOntologyChange> changes) {
         boolean reasonerDirty = false;
@@ -805,7 +820,6 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         synchronizeReasonerAction.putValue(Action.ACCELERATOR_KEY, status.isEnableSynchronization() ? shortcut : null);
     }
 
-
     public void displayOWLEntity(OWLEntity owlEntity) {
         OWLEntityDisplayProvider candidate = null;
         for (OWLEntityDisplayProvider provider : entityDisplayProviders) {
@@ -863,6 +877,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         super.dispose();
 
         owlComponentFactory.dispose();
+
+        repoStatusPresenter.dispose();
 
         ProtegeApplication.getLogManager().removeErrorLogListener(errorLogListener);
 
