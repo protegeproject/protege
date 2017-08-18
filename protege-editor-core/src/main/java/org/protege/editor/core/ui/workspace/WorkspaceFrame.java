@@ -67,6 +67,7 @@ public class WorkspaceFrame extends JFrame {
                 if (OSUtils.isOSX()){
                     ProtegeAppleApplication.getInstance().setEditorKit(WorkspaceFrame.this.workspace.getEditorKit());
                 }
+                workspace.handleActivated();
             }
         });
     }

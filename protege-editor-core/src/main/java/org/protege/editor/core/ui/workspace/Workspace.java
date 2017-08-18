@@ -338,6 +338,8 @@ public abstract class Workspace extends JComponent implements Disposable {
         return "";
     }
 
+    public void handleActivated() {
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////
 
