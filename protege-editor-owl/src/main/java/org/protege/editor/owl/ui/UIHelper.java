@@ -237,7 +237,7 @@ public class UIHelper {
                     result.append("</font></b>");
                 }
                 else {
-                    result.append(defaultDocumentIRI);
+                    result.append(defaultDocumentIRI.get());
                 }
             }
             if (!getOWLModelManager().isMutable(ont)) {
