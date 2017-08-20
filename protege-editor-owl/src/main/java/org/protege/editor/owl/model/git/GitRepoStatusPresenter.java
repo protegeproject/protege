@@ -66,14 +66,14 @@ public class GitRepoStatusPresenter {
 
     private void updateStatusView() {
         try {
-            GitRepository repository = GitRepository.get(modelManager);
-            if (repository.isPresent()) {
+            GitRepositoryManager repository = GitRepositoryManager.get(modelManager);
+            if (repository.isGitRepositoryPresent()) {
                 Optional<String> branch = repository.getBranchName();
                 branch.ifPresent(b -> {
                     logger.info("[GitRepo] On branch: {}", b);
                     view.setBranch(b);
                 });
-                view.setModified(repository.isAnyOntologyModified());
+                view.setModified(repository.isAnyOntologyDocumentModified());
                 repository.dispose();
             }
             else {

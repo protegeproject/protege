@@ -26,10 +26,15 @@ import static java.util.stream.Collectors.toSet;
  * Matthew Horridge
  * Stanford Center for Biomedical Informatics Research
  * 18 Aug 2017
+ *
+ * A {@link GitRepositoryManager} is associated with an {@link OWLModelManager} and manage an
+ * underlying Git repository if present.  The underlying repository is determined based on
+ * the root ontology document IRI.  If the document IRI is contained within an ancestor directory
+ * that contains a .git directory then this is taken to be the underlying Git repository.
  */
-public class GitRepository {
+public class GitRepositoryManager {
 
-    private static final Logger logger = LoggerFactory.getLogger(GitRepository.class);
+    private static final Logger logger = LoggerFactory.getLogger(GitRepositoryManager.class);
 
     @Nonnull
     private final OWLModelManager modelManager;
@@ -37,39 +42,65 @@ public class GitRepository {
     @Nullable
     private final Repository repository;
 
-    private GitRepository(@Nonnull OWLModelManager modelManager,
-                          @Nullable Repository repository) {
+    /**
+     * Constructs a {@link GitRepositoryManager} wrapper around a given model manager and repository
+     * @param modelManager The model manager.
+     * @param repository The repository.  This may be null - in this case a NoOp {@link GitRepositoryManager}
+     *                   will be created.
+     */
+    private GitRepositoryManager(@Nonnull OWLModelManager modelManager,
+                                 @Nullable Repository repository) {
         this.modelManager = checkNotNull(modelManager);
         this.repository = repository;
     }
 
-    public static GitRepository get(@Nonnull OWLModelManager modelManager) {
-        Optional<Path> repoDir = getRepositoryDirectory(modelManager);
+    /**
+     * Creates a {@link GitRepositoryManager} based on the specified model manager.
+     * @param modelManager The model manage.
+     * @return The {@link GitRepositoryManager} for the specified model manager.
+     */
+    @Nonnull
+    public static GitRepositoryManager get(@Nonnull OWLModelManager modelManager) {
+        Optional<Path> repoDir = getRepositoryDirectory(checkNotNull(modelManager));
         if(repoDir.isPresent()) {
             logger.info("[GitRepo] Git repository detected: {}", repoDir.get());
             try {
                 Repository repo = new FileRepositoryBuilder()
                         .setGitDir(repoDir.get().toFile())
                         .build();
-                return new GitRepository(modelManager, repo);
+                return new GitRepositoryManager(modelManager, repo);
             } catch (IOException e) {
                 logger.warn("[GitRepo] An error occurred whilst build the Git repository: {}", e.getMessage(), e);
-                return new GitRepository(modelManager, null);
+                return new GitRepositoryManager(modelManager, null);
             }
         }
         else {
-            return new GitRepository(modelManager, null);
+            return new GitRepositoryManager(modelManager, null);
         }
     }
 
-    public boolean isPresent() {
+    /**
+     * Determines if the underlying Git repository is present.
+     * @return true if the underlying Git repository is present, otherwise false.
+     */
+    public boolean isGitRepositoryPresent() {
         return repository != null;
     }
 
+    /**
+     * Gets the underlying Git repository.
+     * @return The underlying Git repository, which may or may not be present.
+     */
+    @Nonnull
     public Optional<Repository> getRepository() {
         return Optional.ofNullable(repository);
     }
 
+    /**
+     * Gets the current branch that is checked out in the underlying Git repository.
+     * @return The current branch name.  An empty value will be returned if there is no underlying Git repository.
+     */
+    @Nonnull
     public Optional<String> getBranchName() {
         if (repository == null) {
             return Optional.empty();
@@ -85,7 +116,14 @@ public class GitRepository {
         }
     }
 
-    public boolean isAnyOntologyModified() {
+    /**
+     * Determines if an ontology document has been modified.  The ontology document will be a document in the Git
+     * repository that is the document for an ontology loaded into the model manager that this repository was created
+     * over.
+     * @return true if there is at least one ontology document that has been modified (according to the above criteria)
+     * otherwise false.
+     */
+    public boolean isAnyOntologyDocumentModified() {
         try {
             if (repository == null) {
                 return false;
@@ -111,6 +149,9 @@ public class GitRepository {
         }
     }
 
+    /**
+     * Disposes of this manager and closes any connection to the underlying repository.
+     */
     public void dispose() {
         getRepository().ifPresent(Repository::close);
     }
