@@ -58,7 +58,7 @@ public class RenameEntityPanel extends JPanel {
 
         textField = new JTextField(50);
 
-        renamePunsCheckBox = new JCheckBox("Change all entities with this URI", renamePuns);
+        renamePunsCheckBox = new JCheckBox("Change all types of entity with this IRI", renamePuns);
         renamePunsCheckBox.addActionListener(e -> {
             renamePuns = renamePunsCheckBox.isSelected();
         });
@@ -165,7 +165,7 @@ public class RenameEntityPanel extends JPanel {
         RenameEntityPanel panel = new RenameEntityPanel(owlEditorKit, entity);
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         if (JOptionPaneEx.showConfirmDialog(null,
-                                            "Change entity URI",
+                                            "Change Entity IRI",
                                             panel,
                                             JOptionPane.PLAIN_MESSAGE,
                                             JOptionPane.OK_CANCEL_OPTION,
