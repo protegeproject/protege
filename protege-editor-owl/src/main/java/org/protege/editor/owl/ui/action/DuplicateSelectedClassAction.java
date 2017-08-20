@@ -157,7 +157,11 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
 
 
             entityNamePanel = new OWLEntityCreationPanel<>(editorKit, OWLClass.class);
-            entityNamePanel.setName(editorKit.getOWLModelManager().getRendering(selectedClass));
+            String clsRendering = editorKit.getOWLModelManager().getRendering(selectedClass);
+            if(clsRendering.startsWith("'") && clsRendering.endsWith("'")) {
+                clsRendering = clsRendering.substring(1, clsRendering.length() - 1);
+            }
+            entityNamePanel.setName(clsRendering);
 
             final boolean duplicateIntoActiveOnt = prefs.getBoolean(DUPLICATE_INTO_ACTIVE_ONTOLOGY_KEY, false);
 
