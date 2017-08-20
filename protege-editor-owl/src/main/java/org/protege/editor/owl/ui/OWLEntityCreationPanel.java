@@ -112,12 +112,13 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
         setLayout(new BorderLayout());
         JPanel holder = new JPanel(new GridBagLayout());
         add(holder);
-        Insets insets = new Insets(0, 0, 2, 2);
+        Insets insets = new Insets(0, 0, 2, 4);
 
         int rowIndex = 0;
 
-        holder.add(new JLabel("Name:"), new GridBagConstraints(0, rowIndex, 1, 1, 0.0, 0.0, GridBagConstraints.BASELINE_TRAILING, GridBagConstraints.NONE, insets, 0, 0));
-
+        JLabel nameLabel = new JLabel("Name");
+        holder.add(nameLabel, new GridBagConstraints(0, rowIndex, 1, 1, 0.0, 0.0, GridBagConstraints.BASELINE_TRAILING, GridBagConstraints.NONE, insets, 0, 0));
+        nameLabel.setFont(nameLabel.getFont().deriveFont(Font.BOLD));
 
         userSuppliedNameField = new AugmentedJTextField(30, "Short name or full IRI or Prefix-Name");
         userSuppliedNameField.getDocument().addDocumentListener(new DocumentListener() {
@@ -141,7 +142,8 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
         holder.add(new JSeparator(), new GridBagConstraints(0, rowIndex, 2, 1, 100.0, 0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(10, 2, 10, 2), 0, 0));
 
         rowIndex++;
-        holder.add(new JLabel("IRI:"), new GridBagConstraints(0, rowIndex, 1, 1, 0.0, 0.0, GridBagConstraints.BASELINE_TRAILING, GridBagConstraints.NONE, insets, 0, 0));
+        JLabel iriLabel = new JLabel("IRI");
+        holder.add(iriLabel, new GridBagConstraints(0, rowIndex, 1, 1, 0.0, 0.0, GridBagConstraints.BASELINE_TRAILING, GridBagConstraints.NONE, insets, 0, 0));
         entityIRIField.setForeground(Color.GRAY);
         entityIRIField.setEditable(false);
         holder.add(entityIRIField, new GridBagConstraints(1, rowIndex, 1, 1, 100.0, 0.0, GridBagConstraints.BASELINE_TRAILING, GridBagConstraints.HORIZONTAL, insets, 0, 0));
@@ -156,7 +158,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
 
 
         rowIndex++;
-        holder.add(new JSeparator(), new GridBagConstraints(0, rowIndex, 2, 1, 100.0, 0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(10, 2, 5, 2), 0, 0));
+//        holder.add(new JSeparator(), new GridBagConstraints(0, rowIndex, 2, 1, 100.0, 0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(10, 2, 5, 2), 0, 0));
 
         rowIndex++;
         messageArea.setBackground(null);
