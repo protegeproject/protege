@@ -300,7 +300,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
     public static <T extends OWLEntity> OWLEntityCreationSet<T> showDialog(@Nonnull OWLEditorKit owlEditorKit, @Nonnull Class<T> type) {
         OWLEntityCreationPanel<T> panel = new OWLEntityCreationPanel<>(owlEditorKit, type);
         int ret = new UIHelper(owlEditorKit).showValidatingDialog(
-                "Create a new " + type.getSimpleName(),
+                "Create a new " + getTypeName(type),
                 panel,
                 panel.userSuppliedNameField);
         if (ret == JOptionPane.OK_OPTION) {
@@ -308,6 +308,30 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
         }
         else {
             return null;
+        }
+    }
+
+    private static  <T extends OWLEntity>  String getTypeName(Class<T> type) {
+        if(type.equals(OWLClass.class)) {
+            return EntityType.CLASS.getPrintName();
+        }
+        else if(type.equals(OWLObjectProperty.class)) {
+            return EntityType.OBJECT_PROPERTY.getPrintName();
+        }
+        else if(type.equals(OWLDataProperty.class)) {
+            return EntityType.DATA_PROPERTY.getPrintName();
+        }
+        else if(type.equals(OWLAnnotationProperty.class)) {
+            return EntityType.ANNOTATION_PROPERTY.getPrintName();
+        }
+        else if(type.equals(OWLDatatype.class)) {
+            return EntityType.DATATYPE.getPrintName();
+        }
+        else if(type.equals(OWLNamedIndividual.class)) {
+            return EntityType.NAMED_INDIVIDUAL.getPrintName();
+        }
+        else {
+            return type.getSimpleName();
         }
     }
 
