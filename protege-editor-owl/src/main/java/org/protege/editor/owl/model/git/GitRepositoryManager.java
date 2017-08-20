@@ -6,7 +6,6 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owlapi.model.OWLOntology;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,11 +16,9 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.stream.Collectors.toSet;
@@ -30,7 +27,7 @@ import static java.util.stream.Collectors.toSet;
  * Matthew Horridge
  * Stanford Center for Biomedical Informatics Research
  * 18 Aug 2017
- *
+ * <p>
  * A {@link GitRepositoryManager} is associated with an {@link OWLModelManager} and manage an
  * underlying Git repository if present.  The underlying repository is determined based on
  * the root ontology document IRI.  If the document IRI is contained within an ancestor directory
@@ -48,9 +45,10 @@ public class GitRepositoryManager {
 
     /**
      * Constructs a {@link GitRepositoryManager} wrapper around a given model manager and repository
+     *
      * @param modelManager The model manager.
-     * @param repository The repository.  This may be null - in this case a NoOp {@link GitRepositoryManager}
-     *                   will be created.
+     * @param repository   The repository.  This may be null - in this case a NoOp {@link GitRepositoryManager}
+     *                     will be created.
      */
     private GitRepositoryManager(@Nonnull OWLModelManager modelManager,
                                  @Nullable Repository repository) {
@@ -60,13 +58,14 @@ public class GitRepositoryManager {
 
     /**
      * Creates a {@link GitRepositoryManager} based on the specified model manager.
+     *
      * @param modelManager The model manage.
      * @return The {@link GitRepositoryManager} for the specified model manager.
      */
     @Nonnull
     public static GitRepositoryManager get(@Nonnull OWLModelManager modelManager) {
         Optional<Path> repoDir = getRepositoryDirectory(checkNotNull(modelManager));
-        if(repoDir.isPresent()) {
+        if (repoDir.isPresent()) {
             logger.info("[GitRepo] Git repository detected: {}", repoDir.get());
             try {
                 Repository repo = new FileRepositoryBuilder()
@@ -85,6 +84,7 @@ public class GitRepositoryManager {
 
     /**
      * Determines if the underlying Git repository is present.
+     *
      * @return true if the underlying Git repository is present, otherwise false.
      */
     public boolean isGitRepositoryPresent() {
@@ -93,6 +93,7 @@ public class GitRepositoryManager {
 
     /**
      * Gets the underlying Git repository.
+     *
      * @return The underlying Git repository, which may or may not be present.
      */
     @Nonnull
@@ -102,6 +103,7 @@ public class GitRepositoryManager {
 
     /**
      * Gets the current branch that is checked out in the underlying Git repository.
+     *
      * @return The current branch name.  An empty value will be returned if there is no underlying Git repository.
      */
     @Nonnull
@@ -114,7 +116,9 @@ public class GitRepositoryManager {
                 String branchName = repository.getBranch();
                 return Optional.of(branchName);
             } catch (IOException e) {
-                logger.warn("[GitRepo] An error occurred whilst getting the current branch name: {}", e.getMessage(), e);
+                logger.warn("[GitRepo] An error occurred whilst getting the current branch name: {}",
+                            e.getMessage(),
+                            e);
                 return Optional.empty();
             }
         }
@@ -124,39 +128,51 @@ public class GitRepositoryManager {
      * Determines if an ontology document has been modified.  The ontology document will be a document in the Git
      * repository that is the document for an ontology loaded into the model manager that this repository was created
      * over.
+     *
      * @return true if there is at least one ontology document that has been modified (according to the above criteria)
      * otherwise false.
      */
     public boolean isAnyOntologyDocumentModified() {
+        if (repository == null) {
+            return false;
+        }
+        Stream<Path> ontologyDocumentPathsStream = getModifiedOntologyDocumentPaths();
+        return ontologyDocumentPathsStream.findFirst().isPresent();
+    }
+
+    /**
+     * Gets a stream of {@link Path}s that correspond to modified ontology document paths.
+     *
+     * @return A stream of modified ontology document paths.
+     */
+    private Stream<Path> getModifiedOntologyDocumentPaths() {
         try {
             if (repository == null) {
-                return false;
+                return Stream.empty();
             }
-            else {
-                Git git = new Git(repository);
-                Status status = git.status().call();
-                Path gitDirectory = repository.getDirectory().toPath();
-                Path parentDirectory = gitDirectory.getParent();
-                Stream<String> paths = Stream.concat(status.getModified().stream(),
-                                                          status.getChanged().stream());
-                Set<Path> ontologyDocumentPaths = getFileBasedOntologyDocumentPaths();
-                return paths.map(parentDirectory::resolve)
-                                    .filter(ontologyDocumentPaths::contains).findFirst().isPresent();
-            }
+            Git git = new Git(repository);
+            Status status = git.status().call();
+            Path gitDirectory = repository.getDirectory().toPath();
+            Path parentDirectory = gitDirectory.getParent();
+            Stream<String> paths = Stream.concat(status.getModified().stream(),
+                                                 status.getChanged().stream());
+            Set<Path> ontologyDocumentPaths = getFileBasedOntologyDocumentPaths();
+            return paths.map(parentDirectory::resolve)
+                        .filter(ontologyDocumentPaths::contains);
         } catch (GitAPIException e) {
             logger.warn("[GitRepo] An error occurred whilst getting repository information: ", e.getMessage(), e);
-            return false;
+            return Stream.empty();
         }
     }
 
     private Set<Path> getFileBasedOntologyDocumentPaths() {
         return modelManager.getOntologies().stream()
-                                                                  .map(modelManager::getOntologyPhysicalURI)
-                                                                  .filter(u -> u.getScheme().equals("file"))
-                                                                  .map(Paths::get)
-                                                                  .collect(toSet());
+                           .map(modelManager::getOntologyPhysicalURI)
+                           .filter(u -> u.getScheme().equals("file"))
+                           .map(Paths::get)
+                           .collect(toSet());
     }
-    
+
     /**
      * Disposes of this manager and closes any connection to the underlying repository.
      */
