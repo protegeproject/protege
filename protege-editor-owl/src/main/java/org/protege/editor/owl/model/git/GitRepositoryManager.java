@@ -6,6 +6,7 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owlapi.model.OWLOntology;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,8 +17,11 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.stream.Collectors.toSet;
@@ -131,16 +135,12 @@ public class GitRepositoryManager {
             else {
                 Git git = new Git(repository);
                 Status status = git.status().call();
-                Set<String> modifiedPaths = status.getModified();
                 Path gitDirectory = repository.getDirectory().toPath();
                 Path parentDirectory = gitDirectory.getParent();
-                Set<Path> ontologyDocumentPaths = modelManager.getOntologies().stream()
-                                                              .map(modelManager::getOntologyPhysicalURI)
-                                                              .filter(u -> u.getScheme().equals("file"))
-                                                              .map(Paths::get)
-                                                              .collect(toSet());
-                return modifiedPaths.stream()
-                                    .map(parentDirectory::resolve)
+                Stream<String> paths = Stream.concat(status.getModified().stream(),
+                                                          status.getChanged().stream());
+                Set<Path> ontologyDocumentPaths = getFileBasedOntologyDocumentPaths();
+                return paths.map(parentDirectory::resolve)
                                     .filter(ontologyDocumentPaths::contains).findFirst().isPresent();
             }
         } catch (GitAPIException e) {
@@ -149,6 +149,14 @@ public class GitRepositoryManager {
         }
     }
 
+    private Set<Path> getFileBasedOntologyDocumentPaths() {
+        return modelManager.getOntologies().stream()
+                                                                  .map(modelManager::getOntologyPhysicalURI)
+                                                                  .filter(u -> u.getScheme().equals("file"))
+                                                                  .map(Paths::get)
+                                                                  .collect(toSet());
+    }
+    
     /**
      * Disposes of this manager and closes any connection to the underlying repository.
      */
