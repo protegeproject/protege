@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui;
 
+import org.obolibrary.obo2owl.Obo2OWLConstants;
 import org.protege.editor.core.ui.util.AugmentedJTextField;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
@@ -8,10 +9,12 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.entity.CustomOWLEntityFactory;
 import org.protege.editor.owl.model.entity.OWLEntityCreationException;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
+import org.protege.editor.owl.model.util.OboUtilities;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditorPreferences;
 import org.protege.editor.owl.ui.preferences.NewEntitiesPreferencesPanel;
 import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.vocab.Namespaces;
 
 import javax.annotation.Nonnull;
@@ -120,7 +123,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
         holder.add(nameLabel, new GridBagConstraints(0, rowIndex, 1, 1, 0.0, 0.0, GridBagConstraints.BASELINE_TRAILING, GridBagConstraints.NONE, insets, 0, 0));
         nameLabel.setFont(nameLabel.getFont().deriveFont(Font.BOLD));
 
-        userSuppliedNameField = new AugmentedJTextField(30, "Short name or full IRI or Prefix-Name");
+        userSuppliedNameField = new AugmentedJTextField(30, "Short name or full IRI or Prefix-Name or OBO Id");
         userSuppliedNameField.getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e) {
                 update();
@@ -195,6 +198,15 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
     }
 
     /**
+     * Determines whether the entered value is an OBO Id
+     * @return true if the entered value is an OBO Id otherwise false.
+     */
+    private boolean isOboId() {
+        String enteredValue = getEntityName();
+        return !enteredValue.isEmpty() && OboUtilities.isOboId(enteredValue);
+    }
+
+    /**
      * Determines if the entity name represents an IRI rather than a short name.
      * @return <code>true</code> if the entity name represents an IRI rather than a short name, otherwise
      * <code>false</code>.
@@ -246,11 +258,14 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
         try {
             if (isEntityIRI()) {
                 IRI iri = getRawIRI();
-                OWLOntology ontology = owlEditorKit.getModelManager().getActiveOntology();
-                OWLDataFactory factory = owlEditorKit.getModelManager().getOWLDataFactory();
-                T owlEntity = CustomOWLEntityFactory.getOWLEntity(factory, type, iri);
-                OWLOntologyChange addDecl = new AddAxiom(ontology, factory.getOWLDeclarationAxiom(owlEntity));
-                return new OWLEntityCreationSet<>(owlEntity, Collections.singletonList(addDecl));
+                return getCreationSetForIri(iri);
+            }
+            else if(isOboId()) {
+                IRI iri = OboUtilities.getIriFromOboId(getEntityName());
+                if(owlEditorKit.getOWLModelManager().getActiveOntology().containsEntityInSignature(iri, Imports.INCLUDED)) {
+                    throw new OWLEntityCreationException("Entity already exists: " + iri);
+                }
+                return getCreationSetForIri(iri);
             }
             else {
             	switch (preview) {
@@ -266,6 +281,14 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
         catch (OWLEntityCreationException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private OWLEntityCreationSet<T> getCreationSetForIri(IRI iri) {
+        OWLOntology ontology = owlEditorKit.getModelManager().getActiveOntology();
+        OWLDataFactory factory = owlEditorKit.getModelManager().getOWLDataFactory();
+        T owlEntity = CustomOWLEntityFactory.getOWLEntity(factory, type, iri);
+        OWLOntologyChange addDecl = new AddAxiom(ontology, factory.getOWLDeclarationAxiom(owlEntity));
+        return new OWLEntityCreationSet<>(owlEntity, Collections.singletonList(addDecl));
     }
 
 
