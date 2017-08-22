@@ -4,11 +4,15 @@ import org.protege.editor.core.HasUpdateState;
 import org.protege.editor.core.ui.view.View;
 import org.protege.editor.core.ui.view.ViewAction;
 import org.protege.editor.core.ui.view.ViewMode;
+import org.protege.editor.core.util.HandlerRegistration;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.util.OWLUtilities;
 import org.protege.editor.owl.ui.OWLObjectComparatorAdapter;
 import org.protege.editor.owl.ui.action.OWLObjectHierarchyDeleter;
+import org.protege.editor.owl.ui.breadcrumb.Breadcrumb;
+import org.protege.editor.owl.ui.breadcrumb.BreadcrumbTrailChangedHandler;
+import org.protege.editor.owl.ui.breadcrumb.BreadcrumbTrailProvider;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
@@ -18,19 +22,20 @@ import org.semanticweb.owlapi.model.OWLObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.List;
 
 /**
  * Author: drummond<br>
@@ -41,7 +46,7 @@ import java.util.Set;
  * Date: Apr 23, 2009<br><br>
  */
 public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntity> extends AbstractOWLSelectionViewComponent
- implements Findable<E>, Deleteable, HasDisplayDeprecatedEntities {
+ implements Findable<E>, Deleteable, HasDisplayDeprecatedEntities, BreadcrumbTrailProvider {
 
     private OWLObjectTree<E> assertedTree;
 
@@ -55,6 +60,8 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
     private final ViewModeComponent<OWLObjectTree<E>> viewModeComponent = new ViewModeComponent<>();
 
+    @Nullable
+    private HandlerRegistration breadCrumbTrailProviderRegistration;
 
     final public void initialiseView() throws Exception {
         setLayout(new BorderLayout(0, 0));
@@ -137,6 +144,8 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
         if (inferredTree.isPresent()) {
             inferredTree.get().addTreeSelectionListener(listener);
         }
+
+        breadCrumbTrailProviderRegistration = getOWLWorkspace().registerBreadcrumbTrailProvider(this);
     }
 
     protected boolean isInAssertedMode() {
@@ -173,6 +182,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
         }
         updateViewActions();
         updateView();
+        fireBreadcrumbTrailChanged();
     }
 
     private void updateViewActions() {
@@ -250,7 +260,6 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
     protected void transmitSelection() {
         deletableChangeListenerMediator.fireStateChanged(this);
-
         E selEntity = getSelectedEntity();
         if (selEntity != null) {
             final View view = getView();
@@ -266,8 +275,8 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
         else {
             setGlobalSelection(null);
         }
-
         updateHeader(selEntity);
+        fireBreadcrumbTrailChanged();
     }
 
 
@@ -295,6 +304,9 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
         if (inferredTree.isPresent()) {
             inferredTree.get().removeTreeSelectionListener(listener);
             inferredTree.get().dispose();
+        }
+        if(breadCrumbTrailProviderRegistration != null) {
+            breadCrumbTrailProviderRegistration.removeHandler();
         }
     }
 
@@ -355,5 +367,41 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
     private boolean isNotDeprecated(E e) {
         return !OWLUtilities.isDeprecated(getOWLModelManager(), e);
+    }
+
+
+    ////////////////////////////////
+
+
+    @Nonnull
+    @Override
+    public List<Breadcrumb> getBreadcrumbTrail() {
+        return getTree().getBreadcrumbTrail();
+    }
+
+    private final List<BreadcrumbTrailChangedHandler> breadcrumbTrailChangedHandlers = new ArrayList<>();
+
+    @Nonnull
+    @Override
+    public HandlerRegistration addBreadcrumbTrailChangedHandler(@Nonnull BreadcrumbTrailChangedHandler handler) {
+        breadcrumbTrailChangedHandlers.add(handler);
+        return () -> {
+            breadcrumbTrailChangedHandlers.remove(handler);
+        };
+    }
+
+    @Override
+    public void goToBreadcrumb(@Nonnull Breadcrumb breadcrumb) {
+        getTree().goToBreadcrumb(breadcrumb);
+    }
+
+    private void fireBreadcrumbTrailChanged() {
+        new ArrayList<>(breadcrumbTrailChangedHandlers).forEach(BreadcrumbTrailChangedHandler::handleBreadcrumbTrailChanged);
+    }
+
+    @Nonnull
+    @Override
+    public JComponent asJComponent() {
+        return this;
     }
 }

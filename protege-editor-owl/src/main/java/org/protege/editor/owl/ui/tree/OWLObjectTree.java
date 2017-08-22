@@ -3,12 +3,15 @@ package org.protege.editor.owl.ui.tree;
 import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.core.ui.menu.MenuBuilder;
 import org.protege.editor.core.ui.menu.PopupMenuId;
+import org.protege.editor.core.util.HandlerRegistration;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProviderListener;
 import org.protege.editor.owl.ui.OWLObjectComparator;
-import org.protege.editor.owl.ui.renderer.OWLSystemColors;
+import org.protege.editor.owl.ui.breadcrumb.BreadcrumbTrailChangedHandler;
+import org.protege.editor.owl.ui.breadcrumb.BreadcrumbTrailProvider;
+import org.protege.editor.owl.ui.breadcrumb.Breadcrumb;
 import org.protege.editor.owl.ui.transfer.OWLObjectDragSource;
 import org.protege.editor.owl.ui.transfer.OWLObjectDropTarget;
 import org.protege.editor.owl.ui.transfer.OWLObjectTreeDragGestureListener;
@@ -42,8 +45,10 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Author: Matthew Horridge<br>
@@ -54,7 +59,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObjectDropTarget, OWLObjectDragSource, HasExpandAll, HasCopySubHierarchyToClipboard, Copyable, RefreshableComponent {
+public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObjectDropTarget, OWLObjectDragSource, HasExpandAll, HasCopySubHierarchyToClipboard, Copyable, RefreshableComponent, BreadcrumbTrailProvider {
 
     private Map<OWLObject, Set<OWLObjectTreeNode<N>>> nodeMap;
 
@@ -74,6 +79,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
     private Optional<PopupMenuId> popupMenuId = Optional.empty();
 
+    private final List<BreadcrumbTrailChangedHandler> breadcrumbTrailChangedHandlers = new ArrayList<>();
 
     public OWLObjectTree(OWLEditorKit eKit, OWLObjectHierarchyProvider<N> provider) {
         this(eKit, provider, null);
@@ -120,8 +126,8 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         DropTarget dt = new DropTarget(this, new OWLObjectTreeDropTargetListener(this, treePreferences));
         DragSource dragSource = DragSource.getDefaultDragSource();
         dragSource.createDefaultDragGestureRecognizer(this,
-                DnDConstants.ACTION_COPY_OR_MOVE,
-                new OWLObjectTreeDragGestureListener(eKit, this));
+                                                      DnDConstants.ACTION_COPY_OR_MOVE,
+                                                      new OWLObjectTreeDragGestureListener(eKit, this));
 
         addMouseListener(new MouseAdapter() {
 
@@ -146,11 +152,12 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
         getSelectionModel().addTreeSelectionListener(event -> {
             scrollPathToVisible(event.getNewLeadSelectionPath());
+            fireBreadcrumbTrailChanged();
         });
     }
 
     private void setupLineStyle() {
-        if(OWLTreePreferences.getInstance().isPaintLines()) {
+        if (OWLTreePreferences.getInstance().isPaintLines()) {
             putClientProperty("JTree.lineStyle", "Angled");
         }
         else {
@@ -162,9 +169,9 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         // It's necessary to traverse all rows to find the path where the user clicked.  This is because
         // the getRowAt(X,Y) call only returns a row index if the actual node rendering is clicked.  We
         // Want to detect if the node handle is clicked (or anywhere in the white space of a row).
-        for(int i = 0; i < getRowCount(); i++) {
+        for (int i = 0; i < getRowCount(); i++) {
             Rectangle rowBounds = getRowBounds(i);
-            if(rowBounds != null && rowBounds.y <= y && y <= rowBounds.y + rowBounds.height) {
+            if (rowBounds != null && rowBounds.y <= y && y <= rowBounds.y + rowBounds.height) {
                 expandDescendantsOfRow(i);
                 break;
             }
@@ -220,13 +227,14 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
                 sb.append("<html><body>");
                 sb.append(((OWLEntity) obj).getIRI().toString());
                 node.getRelationship().ifPresent(rel -> {
-                    if(rel instanceof OWLObject) {
+                    if (rel instanceof OWLObject) {
                         sb.append("<br><br>");
-                        String relRendering = "<span style=\"font-weight: bold; color: #0079BA;\">" + getOWLModelManager().getRendering((OWLObject) rel) + "</span>";
+                        String relRendering = "<span style=\"font-weight: bold; color: #0079BA;\">" + getOWLModelManager()
+                                .getRendering((OWLObject) rel) + "</span>";
                         sb.append("Related to parent via ");
                         sb.append(relRendering);
                         TreeNode parentNode = node.getParent();
-                        if(parentNode instanceof OWLObjectTreeNode) {
+                        if (parentNode instanceof OWLObjectTreeNode) {
                             String parentRendering = getOWLModelManager().getRendering(((OWLObjectTreeNode) parentNode).getOWLObject());
                             sb.append("<br><span style=\"padding-left: 20px;\">");
                             sb.append(getOWLModelManager().getRendering(obj));
@@ -299,7 +307,8 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
                 for (N child : children) {
                     if (!existingChildren.contains(child)) {
                         OWLObjectTreeNode<N> childTreeNode = createTreeNode(child);
-                        provider.getRelationship(treeNode.getOWLObject(), child).ifPresent(childTreeNode::setRelationship);
+                        provider.getRelationship(treeNode.getOWLObject(), child)
+                                .ifPresent(childTreeNode::setRelationship);
                         ((DefaultTreeModel) getModel()).insertNodeInto(childTreeNode, treeNode, 0);
                     }
                 }
@@ -337,6 +346,53 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         }
     }
 
+    @Nonnull
+    @Override
+    public List<Breadcrumb> getBreadcrumbTrail() {
+        TreePath path = getSelectionPath();
+        if (path == null) {
+            return Collections.emptyList();
+        }
+        return Stream.of(path.getPath())
+                     .filter(o -> o instanceof OWLObjectTreeNode)
+                     .map(o -> ((OWLObjectTreeNode) o))
+                     .filter(n -> n.getUserObject() instanceof OWLObject)
+                     .map(n -> new Breadcrumb(n.getOWLObject(), n.getRelationship().orElse(null)))
+                     .collect(toList());
+    }
+
+    @Override
+    public void goToBreadcrumb(@Nonnull Breadcrumb breadcrumb) {
+        TreePath treePath = getSelectionPath();
+        while(treePath != null) {
+            Object object = treePath.getLastPathComponent();
+            if(object instanceof OWLObjectTreeNode) {
+                Object obj = ((DefaultMutableTreeNode) object).getUserObject();
+                if(obj.equals(breadcrumb.getObject())) {
+                    setSelectionPath(treePath);
+                    break;
+                }
+            }
+            treePath = treePath.getParentPath();
+        }
+    }
+
+    @Nonnull
+    @Override
+    public HandlerRegistration addBreadcrumbTrailChangedHandler(@Nonnull BreadcrumbTrailChangedHandler handler) {
+        breadcrumbTrailChangedHandlers.add(handler);
+        return () -> breadcrumbTrailChangedHandlers.remove(handler);
+    }
+
+    private void fireBreadcrumbTrailChanged() {
+        new ArrayList<>(breadcrumbTrailChangedHandlers).forEach(BreadcrumbTrailChangedHandler::handleBreadcrumbTrailChanged);
+    }
+
+    @Nonnull
+    @Override
+    public JComponent asJComponent() {
+        return this;
+    }
 
     public void dispose() {
         provider.removeListener(listener);
@@ -366,7 +422,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
 
     private void expandDescendantsOfRow(int row) {
-        if(row == -1) {
+        if (row == -1) {
             return;
         }
         TreePath pathToExpand = getPathForRow(row);
