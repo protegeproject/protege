@@ -208,6 +208,16 @@
         <checkbox value="true"/>
     </extension>
 
+    <extension id="showbreadcrumbtrail"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Show breadcrumb trail"/>
+        <class value="org.protege.editor.owl.ui.breadcrumb.ShowBreadcrumbTrailAction"/>
+        <toolTip value="Show a breadcrumb trail for the current selection"/>
+        <path value="org.protege.editor.owl.ui.view.menu/SlotAAAB-A"/>
+        <editorKitId value="OWLEditorKit"/>
+        <checkbox value="true"/>
+    </extension>
+
     <!-- Active ontology strategies in View menu-->
 
     <extension id="ontologies.activeontology"

@@ -3,6 +3,7 @@ package org.protege.editor.owl.model.util;
 import org.semanticweb.owlapi.model.IRI;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,6 +28,8 @@ public class OboUtilities {
 
     private static final String IRI_BASE = "http://purl.obolibrary.org/obo/";
 
+    private static final Pattern OBO_ID_IRI_PATTERN = Pattern.compile(Pattern.quote(IRI_BASE) + "(([A-Z]|[a-z])+(_([A-Z]|[a-z])+)?)_(\\d+)");
+
     private static final int ID_SPACE_GROUP = 1;
 
     private static final int LOCAL_ID_GROUP = 5;
@@ -46,6 +49,7 @@ public class OboUtilities {
      *              otherwise a {@link RuntimeException} will be thrown.
      * @return The IRI that corresponds to the OBO Id.
      */
+    @Nonnull
     public static IRI getIriFromOboId(@Nonnull String oboId) {
         Matcher matcher = OBO_ID_PATTERN.matcher(checkNotNull(oboId));
         if(!matcher.matches()) {
@@ -53,5 +57,18 @@ public class OboUtilities {
         }
         MatchResult matchResult = matcher.toMatchResult();
         return IRI.create(IRI_BASE + matchResult.group(ID_SPACE_GROUP) + "_" + matchResult.group(LOCAL_ID_GROUP));
+    }
+
+    @Nonnull
+    public static Optional<String> getOboIdFromIri(@Nonnull IRI iri) {
+        String iriString = iri.toString();
+        if(!iriString.startsWith(IRI_BASE)) {
+            return Optional.empty();
+        }
+        Matcher matcher = OBO_ID_IRI_PATTERN.matcher(iriString);
+        if(!matcher.matches()) {
+            return Optional.empty();
+        }
+        return Optional.of(matcher.group(ID_SPACE_GROUP) + ":" + matcher.group(LOCAL_ID_GROUP));
     }
 }

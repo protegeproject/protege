@@ -3,6 +3,8 @@ package org.protege.editor.owl.model.util;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
 
+import java.util.Optional;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -43,5 +45,23 @@ public class OboUtilities_TestCase {
     @Test(expected = RuntimeException.class)
     public void shouldThrowRuntimeException() {
         OboUtilities.getIriFromOboId("owl:Thing");
+    }
+
+    @Test
+    public void shouldGetOboIdFromIri() {
+        Optional<String> id = OboUtilities.getOboIdFromIri(IRI.create("http://purl.obolibrary.org/obo/GO_0001234"));
+        assertThat(id, is(Optional.of("GO:0001234")));
+    }
+
+    @Test
+    public void shouldGetOboIdFromIriWithUnderscoreLocalPart() {
+        Optional<String> id = OboUtilities.getOboIdFromIri(IRI.create("http://purl.obolibrary.org/obo/OTHER_THING_0001234"));
+        assertThat(id, is(Optional.of("OTHER_THING:0001234")));
+    }
+
+    @Test
+    public void shouldNotGetOboIdFromInvalidOboIri() {
+        Optional<String> id = OboUtilities.getOboIdFromIri(IRI.create("http://purl.obolibrary.org/obo/otherthing"));
+        assertThat(id.isPresent(), is(false));
     }
 }

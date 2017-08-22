@@ -18,7 +18,11 @@ public class Fonts {
 
     private static final Font OS_X_SMALL_DIALOG_FONT = new Font("Helvetica Neue", Font.PLAIN, 10);
 
+    private static final Font OS_X_MEDIUM_DIALOG_FONT = new Font("Helvetica Neue", Font.PLAIN, 11);
+
     private static final Font SMALL_DIALOG_FONT = new Font("Dialog", Font.PLAIN, 10);
+
+    private static final Font MEDIUM_DIALOG_FONT = new Font("Dialog", Font.PLAIN, 11);
 
     /**
      * Scales the font size in the UI based on a default font size of 12.
@@ -48,6 +52,15 @@ public class Fonts {
         }
         else {
             return SMALL_DIALOG_FONT;
+        }
+    }
+
+    public static Font getMediumDialogFont() {
+        if(OSUtils.isOSX()) {
+            return OS_X_MEDIUM_DIALOG_FONT;
+        }
+        else {
+            return MEDIUM_DIALOG_FONT;
         }
     }
 }

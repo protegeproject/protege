@@ -17,6 +17,8 @@ import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.core.ui.error.ErrorLogListener;
 import org.protege.editor.core.ui.error.ErrorNotificationLabel;
 import org.protege.editor.core.ui.error.SendErrorReportHandler;
+import org.protege.editor.core.util.HandlerRegistration;
+import org.protege.editor.owl.ui.breadcrumb.*;
 import org.protege.editor.core.ui.progress.BackgroundTaskLabel;
 import org.protege.editor.core.ui.workspace.*;
 import org.protege.editor.owl.OWLEditorKit;
@@ -73,7 +75,7 @@ import java.util.List;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHandler {
+public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHandler, HasBreadcrumbTrailProvider {
 
     public static final String REASONER_INITIALIZE = "Start reasoner";
 
@@ -137,6 +139,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private final JPanel statusArea = new JPanel();
 
+    private BreadcrumbTrailPresenter breadcrumbTrailPresenter;
+
     private final OWLIconProvider iconProvider = new OWLIconProviderImpl(
             c -> {
                 for(OWLOntology ontology : getOWLModelManager().getActiveOntologies()) {
@@ -172,6 +176,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private JDialog searchDialog;
 
+    private final BreadcrumbTrailProviderManager breadcrumbTrailProviderManager;
+
 
     public OWLWorkspace() {
         super();
@@ -195,6 +201,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
 
         hiddenAnnotationURIs.addAll(AnnotationPreferences.getHiddenAnnotationURIs());
+        breadcrumbTrailProviderManager = new BreadcrumbTrailProviderManager(this);
     }
 
 
@@ -210,6 +217,12 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         super.initialise();
 
         ProtegeApplication.getLogManager().addErrorLogListener(errorLogListener);
+
+
+        breadcrumbTrailProviderManager.start();
+
+        breadcrumbTrailPresenter = new BreadcrumbTrailPresenter(this, new BreadcrumbTrailViewImpl(this));
+        breadcrumbTrailPresenter.start();
 
         createActiveOntologyPanel();
 
@@ -235,6 +248,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
         repoStatusPresenter = new GitRepoStatusPresenter(mngr, gitStatusView);
         repoStatusPresenter.start();
+
+
 
         new OntologySourcesChangedHandlerUI(this);
     }
@@ -651,7 +666,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
     private void createActiveOntologyPanel() {
 
         JPanel topBarPanel = new JPanel(new GridBagLayout());
-        topBarPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 3, 10));
+        topBarPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 2, 10));
         topBarPanel.add(new OWLEntityNavPanel(getOWLEditorKit()),
                 new GridBagConstraints(
                         0, 0,
@@ -720,9 +735,27 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
                 )
         );
 
+        topBarPanel.add(breadcrumbTrailPresenter.getBreadcrumbTrailView().asJComponent(),
+                        new GridBagConstraints(
+                                0, 1,
+                                4, 1,
+                                100, 0,
+                                GridBagConstraints.BASELINE_LEADING,
+                                GridBagConstraints.HORIZONTAL,
+                                new Insets(1, 0, 0, 0),
+                                0, 0
+                        ));
         add(topBarPanel, BorderLayout.NORTH);
 
         updateTitleBar();
+    }
+
+    public void setBreadcrumbTrailVisible(boolean visible) {
+        breadcrumbTrailPresenter.getBreadcrumbTrailView().asJComponent().setVisible(visible);
+    }
+
+    public boolean isBreadcrumbTrailVisible() {
+        return breadcrumbTrailPresenter.getBreadcrumbTrailView().asJComponent().isVisible();
     }
 
     public void showSearchDialog() {
@@ -869,6 +902,21 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     public void unregisterOWLEntityDisplayProvider(OWLEntityDisplayProvider provider) {
         entityDisplayProviders.remove(provider);
+    }
+
+    @Override
+    public Optional<BreadcrumbTrailProvider> getBreadcrumbTrailProvider() {
+        return breadcrumbTrailProviderManager.getActiveProvider();
+    }
+
+    @Nonnull
+    public HandlerRegistration registerBreadcrumbTrailProvider(@Nonnull BreadcrumbTrailProvider provider) {
+        return breadcrumbTrailProviderManager.registerBreadcrumbTrailProvider(provider);
+    }
+
+    @Nonnull
+    public HandlerRegistration addBreadcrumbTrailChangedHandler(@Nonnull BreadcrumbTrailChangedHandler handler) {
+        return breadcrumbTrailProviderManager.addBreadcrumbTrailChangedHandler(handler);
     }
 
 
