@@ -124,6 +124,9 @@ public class DefaultSearchManager extends SearchManager {
             stopwatch.stop();
             logger.info("    ...rebuilt search metadata cache in {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
         }
+        catch (Exception e) {
+            logger.error("An error occurred whilst rebuilding the search metadata cache: {}", e.getMessage(), e);
+        }
         finally {
             fireIndexingFinished();
         }
