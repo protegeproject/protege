@@ -3,10 +3,7 @@ package org.protege.editor.core.ui.wizard;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -411,16 +408,12 @@ public class Wizard extends WindowAdapter implements PropertyChangeListener {
         cardPanel.setLayout(cardLayout);
 
         InputMap im = cardPanel.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "NEXT");
+//        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "NEXT");
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.CTRL_DOWN_MASK), "NEXT");
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "CANCEL");
 
         ActionMap am = cardPanel.getActionMap();
         am.put("NEXT", new AbstractAction() {
-            /**
-             * 
-             */
-            private static final long serialVersionUID = -3864632637556035283L;
-
             public void actionPerformed(ActionEvent e) {
                 if (nextButton.isEnabled()) {
                     wizardController.next();
@@ -428,11 +421,6 @@ public class Wizard extends WindowAdapter implements PropertyChangeListener {
             }
         });
         am.put("CANCEL", new AbstractAction() {
-            /**
-             * 
-             */
-            private static final long serialVersionUID = -8452940328933517427L;
-
             public void actionPerformed(ActionEvent e) {
                 wizardController.cancel();
             }

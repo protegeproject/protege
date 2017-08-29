@@ -4,16 +4,17 @@ import com.google.common.base.Optional;
 import org.protege.editor.core.ui.util.AugmentedJTextField;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
-import org.protege.editor.owl.model.search.SearchResult;
 import org.protege.editor.owl.ui.search.SearchPanel;
-import org.protege.editor.owl.ui.search.SearchResultClickedListener;
 import org.semanticweb.owlapi.model.OWLEntity;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 
 /**
@@ -27,9 +28,6 @@ import java.awt.event.*;
  */
 public class EntityFinderField extends AugmentedJTextField {
 
-    private static final long serialVersionUID = -5383341925424297227L;
-
-
     public static final int WINDOW_WIDTH = 800;
 
     private JWindow window;
@@ -40,23 +38,36 @@ public class EntityFinderField extends AugmentedJTextField {
 
     private OWLEditorKit editorKit;
 
+    private EntityFoundHandler entityFoundHandler = this::invokeDefaultEntityChosenHander;
+
+    private SearchStartedHandler searchStartedHandler = () -> {};
+
+    private boolean settingText = false;
+
+    private final AbstractAction selectEntityAction = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            selectEntity();
+        }
+    };
+
     public EntityFinderField(JComponent parent, OWLEditorKit editorKit) {
         super(20, "Search for entity");
         this.editorKit = editorKit;
         putClientProperty("JTextField.variant", "search");
         this.parent = parent;
         searchPanel = new SearchPanel(editorKit);
-        addKeyListener(new KeyAdapter() {
-            public void keyReleased(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                    closeResults();
-                }
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    selectEntity();
-                }
+        getInputMap(WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "ESC");
+        getActionMap().put("ESC", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                closeResults();
             }
-
-
+        });
+        selectEntityAction.setEnabled(false);
+        getInputMap(WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "ENTER");
+        getActionMap().put("ENTER", selectEntityAction);
+        addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_UP) {
                     decrementListSelection();
@@ -90,7 +101,34 @@ public class EntityFinderField extends AugmentedJTextField {
         });
     }
 
+    @Override
+    public void setText(String t) {
+        this.settingText = true;
+        try {
+            super.setText(t);
+        } finally {
+            this.settingText = false;
+        }
+
+    }
+
+    public void setEntityFoundHandler(@Nonnull EntityFoundHandler handler) {
+        this.entityFoundHandler = checkNotNull(handler);
+    }
+
+    public void setSearchStartedHandler(@Nonnull SearchStartedHandler searchStartedHandler) {
+        this.searchStartedHandler = checkNotNull(searchStartedHandler);
+    }
+
     private void selectEntity() {
+        Optional<OWLEntity> selectedEntity = searchPanel.getSelectedEntity();
+        if (selectedEntity.isPresent()) {
+            entityFoundHandler.handleChosenEntity(selectedEntity.get());
+        }
+        closeResults();
+    }
+
+    private void invokeDefaultEntityChosenHander(@Nonnull OWLEntity entity) {
         Optional<OWLEntity> selectedEntity = searchPanel.getSelectedEntity();
         if (selectedEntity.isPresent()) {
             editorKit.getWorkspace().getOWLSelectionModel().setSelectedEntity(selectedEntity.get());
@@ -118,6 +156,7 @@ public class EntityFinderField extends AugmentedJTextField {
 
     private void closeResults() {
         getWindow().setVisible(false);
+        selectEntityAction.setEnabled(false);
     }
 
 
@@ -135,6 +174,10 @@ public class EntityFinderField extends AugmentedJTextField {
 
 
     private void performFind() {
+        if(this.settingText) {
+            return;
+        }
+        searchStartedHandler.handleSearchStarted();
         timer.setDelay((int) OWLEntityFinderPreferences.getInstance().getSearchDelay());
         timer.restart();
     }
@@ -164,10 +207,11 @@ public class EntityFinderField extends AugmentedJTextField {
 
 
     private void showResults() {
+        selectEntityAction.setEnabled(true);
         JWindow window = getWindow();
         Point pt = new Point(0, 0);
         SwingUtilities.convertPointToScreen(pt, this);
-        window.setLocation(pt.x + (getWidth() - WINDOW_WIDTH), pt.y + getHeight() + 2);
+        window.setLocation(pt.x + (getWidth() - WINDOW_WIDTH) / 2, pt.y + getHeight() + 2);
 
         Container parent = window.getParent();
         int height = 400;

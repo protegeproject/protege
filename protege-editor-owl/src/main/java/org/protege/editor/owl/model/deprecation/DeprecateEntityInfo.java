@@ -18,16 +18,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class DeprecateEntityInfo<E extends OWLEntity> {
 
-    /**
-     * The entity that will be deprecated.
-     */
     @Nonnull
     private final E entityToDeprecate;
 
-    /**
-     * A string that explains the reason for the deprecation.  If non-empty this string will be added as an
-     * annotation value to the deprecated entity.
-     */
     @Nonnull
     private final String reasonForDeprecation;
 
@@ -46,15 +39,29 @@ public class DeprecateEntityInfo<E extends OWLEntity> {
 
     public DeprecateEntityInfo(@Nonnull E entityToDeprecate,
                                @Nullable E replacementEntity,
-                               @Nonnull String reasonForDeprecation) {
+                               @Nonnull String reasonForDeprecation,
+                               @Nonnull Set<E> alternateEntities) {
         this.entityToDeprecate = checkNotNull(entityToDeprecate);
         this.replacementEntity = replacementEntity;
         this.reasonForDeprecation = checkNotNull(reasonForDeprecation);
+        this.alternateEntities.addAll(checkNotNull(alternateEntities));
     }
 
+    /**
+     * Gets the entity that will be deprecated.
+     */
     @Nonnull
     public E getEntityToDeprecate() {
         return entityToDeprecate;
+    }
+
+    /**
+     * Gets a string that explains the reason for the deprecation.  If non-empty this string will be added as an
+     * annotation value to the deprecated entity.
+     */
+    @Nonnull
+    public String getReasonForDeprecation() {
+        return reasonForDeprecation;
     }
 
     @Nonnull
@@ -64,11 +71,6 @@ public class DeprecateEntityInfo<E extends OWLEntity> {
 
     @Nonnull
     public Set<E> getAlternateEntities() {
-        return alternateEntities;
-    }
-
-    @Nonnull
-    public String getReasonForDeprecation() {
-        return reasonForDeprecation;
+        return new HashSet<E>(alternateEntities);
     }
 }

@@ -1,18 +1,21 @@
 package org.protege.editor.owl.model.deprecation;
 
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Matthew Horridge
  * Stanford Center for Biomedical Informatics Research
  * 23 Aug 2017
  */
-public class OboDeprecatedEntityStrategy implements DeprecatedEntityStrategy {
+public class OboDeprecationProfile implements DeprecationProfile {
 
     private static final String LABEL_PREFIX = "obsolete";
 
@@ -24,30 +27,31 @@ public class OboDeprecatedEntityStrategy implements DeprecatedEntityStrategy {
 
     private static final IRI DEFINITION_PROPERTY_IRI = IRI.create("http://purl.obolibrary.org/obo/IAO_0000115");
 
-    @Nonnull
-    private final OWLDataFactory dataFactory;
-
-
-    public OboDeprecatedEntityStrategy(@Nonnull OWLDataFactory dataFactory) {
-        this.dataFactory = dataFactory;
+    public OboDeprecationProfile() {
     }
 
     @Nonnull
     @Override
-    public OWLAnnotationProperty getReplacedByAnnotationProperty() {
-        return dataFactory.getOWLAnnotationProperty(TERM_REPLACED_BY_IRI);
+    public String getName() {
+        return "OBO (Gene Ontology)";
     }
 
     @Nonnull
     @Override
-    public OWLAnnotationProperty getDeprecationReasonAnnotationProperty() {
-        return dataFactory.getRDFSComment();
+    public IRI getReplacedByAnnotationPropertyIri() {
+        return TERM_REPLACED_BY_IRI;
     }
 
     @Nonnull
     @Override
-    public OWLAnnotationProperty getAlternateEntityAnnotationProperty() {
-        return dataFactory.getOWLAnnotationProperty(CONSIDER_IRI);
+    public IRI getDeprecationReasonAnnotationPropertyIri() {
+        return OWLRDFVocabulary.OWL_DEPRECATED.getIRI();
+    }
+
+    @Nonnull
+    @Override
+    public Optional<IRI> getAlternateEntityAnnotationPropertyIri() {
+        return Optional.of(CONSIDER_IRI);
     }
 
     @Nonnull
@@ -58,14 +62,14 @@ public class OboDeprecatedEntityStrategy implements DeprecatedEntityStrategy {
 
     @Nonnull
     @Override
-    public String getDeprecatedEntityAnnotationValuePrefix() {
+    public String getPreservedAnnotationValuePrefix() {
         return DEFINITION_PREFIX;
     }
 
     @Nonnull
     @Override
-    public Set<OWLAnnotationProperty> getPreservedAnnotationProperties() {
-        return Collections.singleton(dataFactory.getOWLAnnotationProperty(DEFINITION_PROPERTY_IRI));
+    public Set<IRI> getPreservedAnnotationValuePropertiesIris() {
+        return Collections.singleton(DEFINITION_PROPERTY_IRI);
     }
 
     @Override
@@ -74,42 +78,37 @@ public class OboDeprecatedEntityStrategy implements DeprecatedEntityStrategy {
     }
 
     @Override
-    public boolean shouldRemoveDanglingReferences() {
-        return false;
-    }
-
-    @Override
     public boolean shouldRemoveAnnotationAssertions() {
-        return false;
+        return true;
     }
 
     @Nonnull
     @Override
-    public Optional<OWLClass> getDeprecatedClassParent() {
+    public Optional<IRI> getDeprecatedClassParentIri() {
         return Optional.empty();
     }
 
     @Nonnull
     @Override
-    public Optional<OWLObjectProperty> getDeprecatedObjectPropertyParent() {
+    public Optional<IRI> getDeprecatedObjectPropertyParentIri() {
         return Optional.empty();
     }
 
     @Nonnull
     @Override
-    public Optional<OWLDataProperty> getDeprecatedDataPropertyParent() {
+    public Optional<IRI> getDeprecatedDataPropertyParentIri() {
         return Optional.empty();
     }
 
     @Nonnull
     @Override
-    public Optional<OWLAnnotationProperty> getDeprecatedAnnotationPropertyParent() {
+    public Optional<IRI> getDeprecatedAnnotationPropertyParentIri() {
         return Optional.empty();
     }
 
     @Nonnull
     @Override
-    public Optional<OWLClass> getDeprecatedIndividualParent() {
+    public Optional<IRI> getDeprecatedIndividualParentClassIri() {
         return Optional.empty();
     }
 }

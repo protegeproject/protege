@@ -15,12 +15,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class ReparentVisitor implements OWLEntityVisitorEx<Optional<OWLAxiom>> {
 
     @Nonnull
-    private final DeprecatedEntityStrategy strategy;
+    private final DeprecationProfile strategy;
 
     @Nonnull
     private final OWLDataFactory dataFactory;
 
-    public ReparentVisitor(@Nonnull DeprecatedEntityStrategy strategy,
+    public ReparentVisitor(@Nonnull DeprecationProfile strategy,
                            @Nonnull OWLDataFactory dataFactory) {
         this.strategy = checkNotNull(strategy);
         this.dataFactory = checkNotNull(dataFactory);
@@ -29,29 +29,29 @@ public class ReparentVisitor implements OWLEntityVisitorEx<Optional<OWLAxiom>> {
     @Nonnull
     @Override
     public Optional<OWLAxiom> visit(@Nonnull OWLClass cls) {
-        return strategy.getDeprecatedClassParent()
-                       .map(parent -> dataFactory.getOWLSubClassOfAxiom(cls, parent));
+        return strategy.getDeprecatedClassParentIri()
+                       .map(parent -> dataFactory.getOWLSubClassOfAxiom(cls, dataFactory.getOWLClass(parent)));
     }
 
     @Nonnull
     @Override
     public Optional<OWLAxiom> visit(@Nonnull OWLObjectProperty property) {
-        return strategy.getDeprecatedObjectPropertyParent()
-                       .map(parent -> dataFactory.getOWLSubObjectPropertyOfAxiom(property, parent));
+        return strategy.getDeprecatedObjectPropertyParentIri()
+                       .map(parent -> dataFactory.getOWLSubObjectPropertyOfAxiom(property, dataFactory.getOWLObjectProperty(parent)));
     }
 
     @Nonnull
     @Override
     public Optional<OWLAxiom> visit(@Nonnull OWLDataProperty property) {
-        return strategy.getDeprecatedDataPropertyParent()
-                       .map(parent -> dataFactory.getOWLSubDataPropertyOfAxiom(property, parent));
+        return strategy.getDeprecatedDataPropertyParentIri()
+                       .map(parent -> dataFactory.getOWLSubDataPropertyOfAxiom(property, dataFactory.getOWLDataProperty(parent)));
     }
 
     @Nonnull
     @Override
     public Optional<OWLAxiom> visit(@Nonnull OWLNamedIndividual individual) {
-        return strategy.getDeprecatedIndividualParent()
-                       .map(parent -> dataFactory.getOWLClassAssertionAxiom(parent, individual));
+        return strategy.getDeprecatedIndividualParentClassIri()
+                       .map(parent -> dataFactory.getOWLClassAssertionAxiom(dataFactory.getOWLClass(parent), individual));
     }
 
     @Nonnull
@@ -63,8 +63,8 @@ public class ReparentVisitor implements OWLEntityVisitorEx<Optional<OWLAxiom>> {
     @Nonnull
     @Override
     public Optional<OWLAxiom> visit(@Nonnull OWLAnnotationProperty property) {
-        return strategy.getDeprecatedAnnotationPropertyParent()
-                       .map(parent -> dataFactory.getOWLSubAnnotationPropertyOfAxiom(property, parent));
+        return strategy.getDeprecatedAnnotationPropertyParentIri()
+                       .map(parent -> dataFactory.getOWLSubAnnotationPropertyOfAxiom(property, dataFactory.getOWLAnnotationProperty(parent)));
     }
 
 }

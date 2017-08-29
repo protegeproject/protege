@@ -15,7 +15,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  * 23 Aug 2017
  */
-public class ClassDefinitionRemover {
+public class ClassDefinitionExtractor {
 
     @Nonnull
     private final OWLClass cls;
@@ -24,26 +24,37 @@ public class ClassDefinitionRemover {
     private final OWLDataFactory dataFactory;
 
     @Nonnull
-    private final Set<OWLOntology> ontologies = new HashSet<>();
+    private final OWLOntology ontology;
 
-    public ClassDefinitionRemover(@Nonnull OWLClass cls,
-                                  @Nonnull Set<OWLOntology> ontologies,
-                                  @Nonnull OWLDataFactory dataFactory) {
+    public ClassDefinitionExtractor(@Nonnull OWLClass cls,
+                                    @Nonnull OWLOntology ontology,
+                                    @Nonnull OWLDataFactory dataFactory) {
         this.cls = checkNotNull(cls);
         this.dataFactory = checkNotNull(dataFactory);
-        this.ontologies.addAll(checkNotNull(ontologies));
+        this.ontology = checkNotNull(ontology);
     }
 
     /**
-     * Gets a list of changes that are necessary to remove the axioms that constitue the logical definition
+     * Gets a list of changes that are necessary to remove the axioms that constitute the logical definition
      * of the target class.
      * @return A list of changes.
      */
     @Nonnull
     public List<OWLOntologyChange> getChangesToRemoveDefinition() {
         List<OWLOntologyChange> changes = new ArrayList<>();
-        ontologies.forEach(o -> generateChangesToRemoveDefinitionFromOntology(o, changes));
+        generateChangesToRemoveDefinitionFromOntology(ontology, changes);
         return changes;
+    }
+
+    @Nonnull
+    public Set<OWLAxiom> getDefiningAxioms() {
+        Set<OWLAxiom> result = new HashSet<>();
+        result.addAll(ontology.getSubClassAxiomsForSubClass(cls));
+        result.addAll(ontology.getEquivalentClassesAxioms(cls));
+        result.addAll(ontology.getDisjointClassesAxioms(cls));
+        result.addAll(ontology.getHasKeyAxioms(cls));
+        result.addAll(ontology.getDisjointUnionAxioms(cls));
+        return result;
     }
 
     private void generateChangesToRemoveDefinitionFromOntology(@Nonnull OWLOntology o,
