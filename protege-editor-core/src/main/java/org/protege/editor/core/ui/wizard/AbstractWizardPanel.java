@@ -25,7 +25,7 @@ import java.util.Set;
 public abstract class AbstractWizardPanel extends WizardPanel {
 
 
-    private final JTextArea  instructionArea = new JTextArea();
+    private final JLabel  instructionArea = new JLabel();
 
     private JPanel marginPanel = new JPanel(new BorderLayout());
 
@@ -93,9 +93,9 @@ public abstract class AbstractWizardPanel extends WizardPanel {
         marginLabel.setBorder(BorderFactory.createEmptyBorder(30, 8, 0, 0));
         instructionArea.setBorder(null);
         instructionArea.setOpaque(false);
-        instructionArea.setWrapStyleWord(true);
-        instructionArea.setLineWrap(true);
-        instructionArea.setEditable(false);
+//        instructionArea.setWrapStyleWord(true);
+//        instructionArea.setLineWrap(true);
+//        instructionArea.setEditable(false);
 
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         JPanel containerPanel = new JPanel(new BorderLayout(7, 7));
@@ -165,7 +165,7 @@ public abstract class AbstractWizardPanel extends WizardPanel {
 
 
     public void setInstructions(String instructions) {
-        instructionArea.setText(instructions);
+        instructionArea.setText("<html><body>" + instructions.replace("\n", "<br>") + "</body></html>");
     }
 
 
@@ -194,7 +194,7 @@ public abstract class AbstractWizardPanel extends WizardPanel {
                                                          BorderFactory.createEmptyBorder(20, 20, 20, 20)));
             setLayout(new BorderLayout(7, 20));
             setOpaque(false);
-            color = new Color(255, 255, 255, 230);
+            color = new Color(255, 255, 255, 245);
         }
 
 
