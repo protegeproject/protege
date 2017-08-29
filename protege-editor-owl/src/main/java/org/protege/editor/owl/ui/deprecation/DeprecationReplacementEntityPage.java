@@ -24,8 +24,6 @@ public class DeprecationReplacementEntityPage extends AbstractOWLWizardPanel {
 
     public static final String ID = "DeprecationReplacementEntityPage";
 
-    private final DeprecationProfile strategy;
-
     @Nonnull
     private final DeprecateEntityWizardState wizardState;
 
@@ -37,10 +35,8 @@ public class DeprecationReplacementEntityPage extends AbstractOWLWizardPanel {
     private final EntityFinderField entityFinderField;
 
     public DeprecationReplacementEntityPage(@Nonnull OWLEditorKit editorKit,
-                                            @Nonnull DeprecationProfile strategy,
                                             @Nonnull DeprecateEntityWizardState wizardState) {
         super(ID, "Direct replacement entity", editorKit);
-        this.strategy = strategy;
         this.wizardState = checkNotNull(wizardState);
         setInstructions("Please specify an entity that should be used as a direct replacement for the deprecated entity.\n\n" +
                                 "Specifying a replacement entity will replace usages of the deprecated entity with the replacement entity. An " +
@@ -91,7 +87,8 @@ public class DeprecationReplacementEntityPage extends AbstractOWLWizardPanel {
     @Nullable
     @Override
     public Object getNextPanelDescriptor() {
-        if(strategy.getAlternateEntityAnnotationPropertyIri().isPresent()
+        Optional<DeprecationProfile> profile = wizardState.getDeprecationProfile();
+        if(profile.isPresent() && profile.get().getAlternateEntityAnnotationPropertyIri().isPresent()
                 && !selectedEntity.isPresent()) {
             return AlternateEntitiesPage.ID;
         }

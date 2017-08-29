@@ -50,6 +50,12 @@ public class DeprecationReasonPage extends AbstractOWLWizardPanel {
 
     @Nullable
     @Override
+    public Object getBackPanelDescriptor() {
+        return DeprecationProfilePage.ID;
+    }
+
+    @Nullable
+    @Override
     public Object getNextPanelDescriptor() {
         return DeprecationReplacementEntityPage.ID;
     }
