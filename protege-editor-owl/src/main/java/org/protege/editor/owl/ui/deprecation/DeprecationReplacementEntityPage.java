@@ -38,7 +38,7 @@ public class DeprecationReplacementEntityPage extends AbstractOWLWizardPanel {
                                             @Nonnull DeprecateEntityWizardState wizardState) {
         super(ID, "Direct replacement entity", editorKit);
         this.wizardState = checkNotNull(wizardState);
-        setInstructions("Please specify an entity that should be used as a direct replacement for the deprecated entity.\n\n" +
+        setInstructions("<b>Please specify an entity that should be used as a direct replacement for the deprecated entity.</b>\n\n" +
                                 "Specifying a replacement entity will replace usages of the deprecated entity with the replacement entity. An " +
                                 "annotation will also be added to \"point\" to this replacement entity.\n\n" +
                                 "Use the search field below to search for a replacement entity.  If " +

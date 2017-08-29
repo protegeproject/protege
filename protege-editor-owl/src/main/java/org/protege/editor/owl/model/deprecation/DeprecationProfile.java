@@ -25,6 +25,12 @@ public class DeprecationProfile {
     @Nonnull
     private final String name;
 
+    @Nonnull
+    private final String description;
+
+    @Nullable
+    private final String activatedBy;
+
     private final boolean removeLogicalDefinition;
 
     private final boolean removeAnnotationAssertions;
@@ -63,14 +69,17 @@ public class DeprecationProfile {
     private final String deprecatedIndividualParentClassIri;
 
     @JsonCreator
-    public DeprecationProfile(@Nonnull @JsonProperty("name") String name,
+    public DeprecationProfile(@Nonnull @JsonProperty(value = "name", required = true) String name,
+                              @Nonnull @JsonProperty(value = "description", required = true) String description,
+                              @Nullable @JsonProperty(value = "activatedBy") String activatedBy,
                               @JsonProperty("removeLogicalDefinition") boolean removeLogicalDefinition,
                               @JsonProperty("removeAnnotationAssertions") boolean removeAnnotationAssertions,
                               @JsonProperty("replacedByAnnotationPropertyIri") String replacedByAnnotationPropertyIri,
                               @JsonProperty("reasonAnnotationPropertyIri") String reasonAnnotationPropertyIri,
                               @JsonProperty("alternateEntityAnnotationPropertyIri") String alternateEntityAnnotationPropertyIri,
                               @Nonnull @JsonProperty(value = "labelPrefix", defaultValue = "") String labelPrefix,
-                              @Nonnull @JsonProperty(value = "annotationValuePrefix", defaultValue = "") String annotationValuePrefix,
+                              @Nonnull @JsonProperty(value = "annotationValuePrefix",
+                                                     defaultValue = "") String annotationValuePrefix,
                               @Nullable @JsonProperty(value = "preservedAnnotationAssertionPropertyIris") Set<String> preservedAnnotationAssertionPropertyIris,
                               @Nullable @JsonProperty("deprecatedClassParentIri") String deprecatedClassParentIri,
                               @Nullable @JsonProperty("deprecatedObjectPropertyParentIri") String deprecatedObjectPropertyParentIri,
@@ -78,6 +87,8 @@ public class DeprecationProfile {
                               @Nullable @JsonProperty("deprecatedAnnotationPropertyParentIri") String deprecatedAnnotationPropertyParentIri,
                               @Nullable @JsonProperty("deprecatedIndividualParentClassIri") String deprecatedIndividualParentClassIri) {
         this.name = name;
+        this.description = description;
+        this.activatedBy = activatedBy;
         this.removeLogicalDefinition = removeLogicalDefinition;
         this.removeAnnotationAssertions = removeAnnotationAssertions;
         this.replacedByAnnotationPropertyIri = replacedByAnnotationPropertyIri;
@@ -99,6 +110,23 @@ public class DeprecationProfile {
     @Nonnull
     public String getName() {
         return name;
+    }
+
+    /**
+     * Gets a description of this profile
+     */
+    @Nonnull
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Gets an IRI representing an ontology IRI that indicates this profile should be active by default
+     * for the specified ontology IRI.
+     */
+    @Nonnull
+    public Optional<IRI> getActivatedBy() {
+        return Optional.ofNullable(activatedBy).map(IRI::create);
     }
 
     /**
