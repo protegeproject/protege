@@ -119,7 +119,10 @@ public class EntityDeprecator<E extends OWLEntity> {
         }
         ontologies.forEach(o -> {
             o.getAnnotationAssertionAxioms(info.getEntityToDeprecate().getIRI()).stream()
-             .filter(ax -> !profile.getPreservedAnnotationValuePropertiesIris().contains(ax.getProperty().getIRI()))
+             .filter(ax -> {
+                 Set<IRI> preservedAnnotationValuePropertiesIris = profile.getPreservedAnnotationValuePropertiesIris();
+                 return !preservedAnnotationValuePropertiesIris.contains(ax.getProperty().getIRI());
+             })
              .forEach(ax -> changes.add(new RemoveAxiom(o, ax)));
         });
     }
@@ -172,13 +175,15 @@ public class EntityDeprecator<E extends OWLEntity> {
         if (reasonForDeprecation.isEmpty()) {
             return;
         }
-        OWLAnnotationAssertionAxiom ax = dataFactory.getOWLAnnotationAssertionAxiom(
-                dataFactory.getOWLAnnotationProperty(profile.getDeprecationReasonAnnotationPropertyIri()),
-                info.getEntityToDeprecate().getIRI(),
-                dataFactory.getOWLLiteral(reasonForDeprecation, OWL2Datatype.XSD_STRING)
-        );
-        logger.info("[Deprecate Entity] Added reason for deprecation as an annotation on the deprecated entity");
-        changes.add(new AddAxiom(getHomeOntology(), ax));
+        profile.getDeprecationReasonAnnotationPropertyIri().ifPresent(propIri -> {
+            OWLAnnotationAssertionAxiom ax = dataFactory.getOWLAnnotationAssertionAxiom(
+                    dataFactory.getOWLAnnotationProperty(propIri),
+                    info.getEntityToDeprecate().getIRI(),
+                    dataFactory.getOWLLiteral(reasonForDeprecation, OWL2Datatype.XSD_STRING)
+            );
+            logger.info("[Deprecate Entity] Added reason for deprecation as an annotation on the deprecated entity");
+            changes.add(new AddAxiom(getHomeOntology(), ax));
+        });
     }
 
     /**
@@ -188,14 +193,15 @@ public class EntityDeprecator<E extends OWLEntity> {
      */
     private void addReplacedByAnnotation(List<OWLOntologyChange> changes) {
         info.getReplacementEntity().ifPresent(replacementEntity -> {
-            IRI propIri = profile.getReplacedByAnnotationPropertyIri();
-            OWLAxiom ax = dataFactory.getOWLAnnotationAssertionAxiom(
-                    dataFactory.getOWLAnnotationProperty(propIri),
-                    info.getEntityToDeprecate().getIRI(),
-                    replacementEntity.getIRI()
-            );
-            logger.info("[Deprecate Entity] Added annotation to point to deprecated entity replacement");
-            changes.add(new AddAxiom(getHomeOntology(), ax));
+            profile.getReplacedByAnnotationPropertyIri().ifPresent(propIri -> {
+                OWLAxiom ax = dataFactory.getOWLAnnotationAssertionAxiom(
+                        dataFactory.getOWLAnnotationProperty(propIri),
+                        info.getEntityToDeprecate().getIRI(),
+                        replacementEntity.getIRI()
+                );
+                logger.info("[Deprecate Entity] Added annotation to point to deprecated entity replacement");
+                changes.add(new AddAxiom(getHomeOntology(), ax));
+            });
         });
     }
 

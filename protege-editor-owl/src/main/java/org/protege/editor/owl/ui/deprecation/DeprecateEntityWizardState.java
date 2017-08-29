@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.deprecation;
 
+import org.protege.editor.owl.model.deprecation.DeprecationProfile;
 import org.semanticweb.owlapi.model.OWLEntity;
 
 import javax.annotation.Nonnull;
@@ -8,12 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Matthew Horridge
  * Stanford Center for Biomedical Informatics Research
  * 24 Aug 2017
  */
 public class DeprecateEntityWizardState {
+
+    private DeprecationProfile deprecationProfile;
 
     @Nonnull
     private String reasonForDeprecation = "";
@@ -22,6 +27,15 @@ public class DeprecateEntityWizardState {
     private OWLEntity replacementEntity;
 
     private final List<OWLEntity> alternateEntities = new ArrayList<>();
+
+    public void setDeprecationProfile(@Nonnull DeprecationProfile deprecationProfile) {
+        this.deprecationProfile = checkNotNull(deprecationProfile);
+    }
+
+    @Nonnull
+    public Optional<DeprecationProfile> getDeprecationProfile() {
+        return Optional.ofNullable(deprecationProfile);
+    }
 
     @Nonnull
     public String getReasonForDeprecation() {

@@ -1,10 +1,16 @@
 package org.protege.editor.owl.model.deprecation;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.semanticweb.owlapi.model.*;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Matthew Horridge
@@ -13,26 +19,104 @@ import java.util.Set;
  *
  * Represents configurable vocabulary for the purposes of Entity deprecation.
  */
-public interface DeprecationProfile {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class DeprecationProfile {
+
+    @Nonnull
+    private final String name;
+
+    private final boolean removeLogicalDefinition;
+
+    private final boolean removeAnnotationAssertions;
+
+    @Nullable
+    private final String replacedByAnnotationPropertyIri;
+
+    @Nullable
+    private final String reasonAnnotationPropertyIri;
+
+    @Nullable
+    private final String alternateEntityAnnotationPropertyIri;
+
+    @Nullable
+    private final String labelPrefix;
+
+    @Nullable
+    private final String annotationValuePrefix;
+
+    @Nonnull
+    private final Set<String> preservedAnnotationAssertionPropertyIris;
+
+    @Nullable
+    private final String deprecatedClassParentIri;
+
+    @Nullable
+    private final String deprecatedObjectPropertyParentIri;
+
+    @Nullable
+    private final String deprecatedDataPropertyParentIri;
+
+    @Nullable
+    private final String deprecatedAnnotationPropertyParentIri;
+
+    @Nullable
+    private final String deprecatedIndividualParentClassIri;
+
+    @JsonCreator
+    public DeprecationProfile(@Nonnull @JsonProperty("name") String name,
+                              @JsonProperty("removeLogicalDefinition") boolean removeLogicalDefinition,
+                              @JsonProperty("removeAnnotationAssertions") boolean removeAnnotationAssertions,
+                              @JsonProperty("replacedByAnnotationPropertyIri") String replacedByAnnotationPropertyIri,
+                              @JsonProperty("reasonAnnotationPropertyIri") String reasonAnnotationPropertyIri,
+                              @JsonProperty("alternateEntityAnnotationPropertyIri") String alternateEntityAnnotationPropertyIri,
+                              @Nonnull @JsonProperty(value = "labelPrefix", defaultValue = "") String labelPrefix,
+                              @Nonnull @JsonProperty(value = "annotationValuePrefix", defaultValue = "") String annotationValuePrefix,
+                              @Nullable @JsonProperty(value = "preservedAnnotationAssertionPropertyIris") Set<String> preservedAnnotationAssertionPropertyIris,
+                              @Nullable @JsonProperty("deprecatedClassParentIri") String deprecatedClassParentIri,
+                              @Nullable @JsonProperty("deprecatedObjectPropertyParentIri") String deprecatedObjectPropertyParentIri,
+                              @Nullable @JsonProperty("deprecatedDataPropertyParentIri") String deprecatedDataPropertyParentIri,
+                              @Nullable @JsonProperty("deprecatedAnnotationPropertyParentIri") String deprecatedAnnotationPropertyParentIri,
+                              @Nullable @JsonProperty("deprecatedIndividualParentClassIri") String deprecatedIndividualParentClassIri) {
+        this.name = name;
+        this.removeLogicalDefinition = removeLogicalDefinition;
+        this.removeAnnotationAssertions = removeAnnotationAssertions;
+        this.replacedByAnnotationPropertyIri = replacedByAnnotationPropertyIri;
+        this.reasonAnnotationPropertyIri = reasonAnnotationPropertyIri;
+        this.alternateEntityAnnotationPropertyIri = alternateEntityAnnotationPropertyIri;
+        this.labelPrefix = labelPrefix;
+        this.annotationValuePrefix = annotationValuePrefix;
+        this.preservedAnnotationAssertionPropertyIris = preservedAnnotationAssertionPropertyIris != null ? preservedAnnotationAssertionPropertyIris : Collections.emptySet();
+        this.deprecatedClassParentIri = deprecatedClassParentIri;
+        this.deprecatedObjectPropertyParentIri = deprecatedObjectPropertyParentIri;
+        this.deprecatedDataPropertyParentIri = deprecatedDataPropertyParentIri;
+        this.deprecatedAnnotationPropertyParentIri = deprecatedAnnotationPropertyParentIri;
+        this.deprecatedIndividualParentClassIri = deprecatedIndividualParentClassIri;
+    }
 
     /**
      * Gets the name of this strategy
      */
     @Nonnull
-    String getName();
+    public String getName() {
+        return name;
+    }
 
     /**
      * Determines if the logical definition of the entity that is being deprecated should be removed.
      * @return true if the logical definition should be removed, otherwise false.
      */
-    boolean shouldRemoveLogicalDefinition();
+    public boolean shouldRemoveLogicalDefinition() {
+        return removeLogicalDefinition;
+    }
 
     /**
      * Determines if annotation assertions that are along properties other than rdfs:label and annotation properties
      * that are returned by the {@link #getPreservedAnnotationValuePropertiesIris()} method should be removed.
      * @return true if annotation assertions should be removed, otherwise false.
      */
-    boolean shouldRemoveAnnotationAssertions();
+    public boolean shouldRemoveAnnotationAssertions() {
+        return removeAnnotationAssertions;
+    }
 
     /**
      * Specifies an annotation property that will be used to create an annotation assertion that will point to
@@ -40,14 +124,18 @@ public interface DeprecationProfile {
      * {@code http://purl.obolibrary.org/obo/IAO_0100001}.
      */
     @Nonnull
-    IRI getReplacedByAnnotationPropertyIri();
+    public Optional<IRI> getReplacedByAnnotationPropertyIri() {
+        return expandIri(replacedByAnnotationPropertyIri);
+    }
 
     /**
      * Gets the annotation property IRI that is used to specify the reason for the deprecation.  In the GO workflow
      * this is rdfs:comment.
      */
     @Nonnull
-    IRI getDeprecationReasonAnnotationPropertyIri();
+    public Optional<IRI> getDeprecationReasonAnnotationPropertyIri() {
+        return expandIri(reasonAnnotationPropertyIri);
+    }
 
     /**
      * Gets the annotation property IRI that is used to annotated the deprecated entity with pointers to alternate
@@ -57,7 +145,9 @@ public interface DeprecationProfile {
      * {@code http://www.geneontology.org/formats/oboInOwl#consider}
      */
     @Nonnull
-    Optional<IRI> getAlternateEntityAnnotationPropertyIri();
+    public Optional<IRI> getAlternateEntityAnnotationPropertyIri() {
+        return expandIri(alternateEntityAnnotationPropertyIri);
+    }
 
     /**
      * Gets a string that represents a prefix that will be placed in front of the
@@ -65,14 +155,18 @@ public interface DeprecationProfile {
      * This value may be the empty string.
      */
     @Nonnull
-    String getDeprecatedEntityLabelPrefix();
+    public String getDeprecatedEntityLabelPrefix() {
+        return labelPrefix != null ? labelPrefix : "";
+    }
 
     /**
      * Gets a string that represents a prefix that will be placed in front of annotation values that annotate
      * the deprecated entity.  This value may be the empty string.
      */
     @Nonnull
-    String getPreservedAnnotationValuePrefix();
+    public String getPreservedAnnotationValuePrefix() {
+        return annotationValuePrefix != null ? annotationValuePrefix : "";
+    }
 
     /**
      * A set of annotation properties IRIs (other than rdfs:label, which has special treatment) that identify
@@ -80,41 +174,61 @@ public interface DeprecationProfile {
      * with the value returned by {@link #getPreservedAnnotationValuePrefix()}
      */
     @Nonnull
-    Set<IRI> getPreservedAnnotationValuePropertiesIris();
+    public Set<IRI> getPreservedAnnotationValuePropertiesIris() {
+        return preservedAnnotationAssertionPropertyIris.stream()
+                                                       .map(DeprecationProfile::expandIri)
+                                                       .filter(Optional::isPresent)
+                                                       .map(Optional::get)
+                                                       .collect(Collectors.toSet());
+    }
 
     /**
      * An optional parent class for the deprecated classes.  If present, deprecated classes will be made subclasses
      * of this class.
      */
     @Nonnull
-    Optional<IRI> getDeprecatedClassParentIri();
+    public Optional<IRI> getDeprecatedClassParentIri() {
+        return expandIri(deprecatedClassParentIri);
+    }
 
     /**
      * An optional parent object property IRI for the deprecated object properties.
      * If present, deprecated object properties will be made sub properties of this property.
      */
     @Nonnull
-    Optional<IRI> getDeprecatedObjectPropertyParentIri();
+    public Optional<IRI> getDeprecatedObjectPropertyParentIri() {
+        return expandIri(deprecatedObjectPropertyParentIri);
+    }
 
     /**
      * An optional parent data property IRI for the deprecated data properties.
      * If present, deprecated data properties will be made sub properties of this property.
      */
     @Nonnull
-    Optional<IRI> getDeprecatedDataPropertyParentIri();
+    public Optional<IRI> getDeprecatedDataPropertyParentIri() {
+        return expandIri(deprecatedDataPropertyParentIri);
+    }
 
     /**
      * An optional parent annotation property IRI for the deprecated annotation properties.
      * If present, deprecated annotation properties will be made sub properties of this property.
      */
     @Nonnull
-    Optional<IRI> getDeprecatedAnnotationPropertyParentIri();
+    public Optional<IRI> getDeprecatedAnnotationPropertyParentIri() {
+        return expandIri(deprecatedAnnotationPropertyParentIri);
+    }
 
     /**
      * An optional class IRI that will be used as a type for deprecated individuals.
      * If present, deprecated individuals will be made instances of this class.
      */
     @Nonnull
-    Optional<IRI> getDeprecatedIndividualParentClassIri();
+    public Optional<IRI> getDeprecatedIndividualParentClassIri() {
+        return expandIri(deprecatedIndividualParentClassIri);
+    }
 
+
+    private static Optional<IRI> expandIri(@Nullable String iri) {
+        return IRIExpander.expand(iri);
+    }
 }

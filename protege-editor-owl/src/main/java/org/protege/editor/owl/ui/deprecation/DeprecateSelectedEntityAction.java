@@ -2,16 +2,22 @@ package org.protege.editor.owl.ui.deprecation;
 
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.model.deprecation.DeprecateEntityInfo;
+import org.protege.editor.owl.model.deprecation.DeprecationProfile;
+import org.protege.editor.owl.model.deprecation.DeprecationProfileLoader;
 import org.protege.editor.owl.model.deprecation.EntityDeprecator;
-import org.protege.editor.owl.model.deprecation.OboDeprecationProfile;
 import org.protege.editor.owl.model.entity.HomeOntologySupplier;
 import org.protege.editor.owl.ui.action.SelectedOWLEntityAction;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.parameters.Imports;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collections;
 import java.util.HashSet;
 
 /**
@@ -21,23 +27,30 @@ import java.util.HashSet;
  */
 public class DeprecateSelectedEntityAction extends SelectedOWLEntityAction {
 
+    private static final Logger logger = LoggerFactory.getLogger(DeprecateSelectedEntityAction.class);
+
     @Override
     protected void actionPerformed(OWLEntity selectedEntity) {
         Frame frame = (Frame) SwingUtilities.getAncestorOfClass(Frame.class, getWorkspace());
-        OboDeprecationProfile strategy = new OboDeprecationProfile();
-        DeprecateEntityWizard wizard = new DeprecateEntityWizard(frame,
-                                                                 getOWLEditorKit(),
-                                                                 selectedEntity,
-                                                                 strategy);
-        int ret = wizard.showModalDialog();
-        if(ret == Wizard.FINISH_RETURN_CODE) {
-            runDeprecation(selectedEntity, strategy, wizard);
+        DeprecationProfileLoader profileLoader = new DeprecationProfileLoader();
+        try {
+            List<DeprecationProfile> profiles = profileLoader.loadProfiles();
+
+            DeprecateEntityWizard wizard = new DeprecateEntityWizard(frame,
+                                                                     getOWLEditorKit(),
+                                                                     selectedEntity,
+                                                                     profiles);
+            int ret = wizard.showModalDialog();
+            if(ret == Wizard.FINISH_RETURN_CODE) {
+                runDeprecation(selectedEntity, wizard);
+            }
+        } catch (IOException e) {
+            logger.error("Unabled to load deprecation profiles: {}", e.getMessage(), e);
         }
 
     }
 
     private void runDeprecation(OWLEntity selectedEntity,
-                                OboDeprecationProfile strategy,
                                 DeprecateEntityWizard wizard) {
         DeprecateEntityWizardState state = wizard.getWizardState();
         DeprecateEntityInfo<?> info = new DeprecateEntityInfo<>(
@@ -47,7 +60,7 @@ public class DeprecateSelectedEntityAction extends SelectedOWLEntityAction {
                 new HashSet<>(state.getAlternateEntities())
         );
         EntityDeprecator<?> deprecator = new EntityDeprecator<>(info,
-                                                                strategy,
+                                                                wizard.getWizardState().getDeprecationProfile().get(),
                                                                 getOWLModelManager().getActiveOntologies(),
                                                                 new HomeOntologySupplier(),
                                                                 getOWLDataFactory());

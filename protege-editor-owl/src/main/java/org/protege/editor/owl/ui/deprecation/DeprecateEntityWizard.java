@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.deprecation;
 
+import java.util.List;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.deprecation.DeprecationProfile;
@@ -21,23 +22,26 @@ public class DeprecateEntityWizard extends Wizard {
     public DeprecateEntityWizard(@Nonnull Frame owner,
                                  @Nonnull OWLEditorKit editorKit,
                                  @Nonnull OWLEntity entityToDeprecate,
-                                 @Nonnull DeprecationProfile strategy) {
+                                 @Nonnull List<DeprecationProfile> depreactionProfiles) {
         super(owner);
         setTitle(generateTitle(editorKit, entityToDeprecate));
+        registerWizardPanel(DeprecationProfilePage.ID,
+                            new DeprecationProfilePage(editorKit,
+                                                       wizardState,
+                                                       depreactionProfiles));
         registerWizardPanel(DeprecationReasonPage.ID,
                             new DeprecationReasonPage(editorKit,
                                                       wizardState,
                                                       entityToDeprecate));
         registerWizardPanel(DeprecationReplacementEntityPage.ID,
                             new DeprecationReplacementEntityPage(editorKit,
-                                                                 strategy,
                                                                  wizardState));
         registerWizardPanel(AlternateEntitiesPage.ID, new AlternateEntitiesPage(editorKit, wizardState));
 
         registerWizardPanel(DeprecationSummaryPage.ID,
                             new DeprecationSummaryPage(editorKit, entityToDeprecate, wizardState));
 
-        setCurrentPanel(DeprecationReasonPage.ID);
+        setCurrentPanel(DeprecationProfilePage.ID);
     }
 
     private static String generateTitle(OWLEditorKit editorKit, OWLEntity entityToDeprecate) {
