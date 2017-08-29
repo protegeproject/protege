@@ -38,7 +38,7 @@ public class DeprecationProfilePage extends AbstractOWLWizardPanel {
         super(ID, "Deprecation Profile", owlEditorKit);
         this.deprecationProfiles.addAll(deprecationProfiles);
         this.wizardState = wizardState;
-        setInstructions("Please choose a deprecation profile");
+        setInstructions("<b>Please choose a deprecation profile</b>");
         profilesCombo = new JComboBox<>(deprecationProfiles.toArray(new DeprecationProfile [deprecationProfiles.size()]));
         profilesCombo.setRenderer(new DeprecationProfileRenderer());
         profilesCombo.addActionListener(e -> setDescription());
@@ -63,6 +63,7 @@ public class DeprecationProfilePage extends AbstractOWLWizardPanel {
                 }
             });
         });
+        setDescription();
     }
 
     private void setDescription() {
