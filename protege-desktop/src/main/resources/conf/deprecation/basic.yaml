@@ -1,6 +1,10 @@
 ---
 name: Basic
-description: A profile for deprecation of OWL entities
+description: >
+             A profile for deprecation of OWL entities that uses basic built in OWL vocabulary
+             to mark the entity as deprecated.  Labels (rdfs:label), comments (rdfs:comment) and
+             and textual definitions (skos:definition) annotations are preserved and marked as being
+             deprecated.
 removeLogicalDefinition: true
 removeAnnotationAssertions: true
 replacedByAnnotationPropertyIri: rdfs:seeAlso
