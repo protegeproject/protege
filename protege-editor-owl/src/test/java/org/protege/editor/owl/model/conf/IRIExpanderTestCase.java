@@ -1,4 +1,4 @@
-package org.protege.editor.owl.model.deprecation;
+package org.protege.editor.owl.model.conf;
 
 import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;

@@ -33,6 +33,9 @@ public class DeprecateEntityWizard extends Wizard {
                             new DeprecationReasonPage(editorKit,
                                                       wizardState,
                                                       entityToDeprecate));
+        registerWizardPanel(DeprecationCodePage.ID,
+                            new DeprecationCodePage(editorKit,
+                                                    wizardState));
         registerWizardPanel(DeprecationReplacementEntityPage.ID,
                             new DeprecationReplacementEntityPage(editorKit,
                                                                  wizardState));

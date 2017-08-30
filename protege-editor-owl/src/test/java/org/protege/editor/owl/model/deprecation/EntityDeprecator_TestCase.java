@@ -114,8 +114,8 @@ public class EntityDeprecator_TestCase {
                 toDeprecate,
                 replacementCls,
                 THE_DEPRECATION_REASON,
-                Collections.singleton(alternateCls)
-        );
+                Collections.singleton(alternateCls),
+                null);
         entityDeprecator = new EntityDeprecator<>(info,
                                                   deprecationProfile,
                                                   ontologies,

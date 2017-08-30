@@ -64,6 +64,7 @@ public class EntityDeprecator<E extends OWLEntity> {
 
         addDeprecatedAnnotationAssertion(changes);
         addDeprecationReason(changes);
+        addDeprecationCode(changes);
         relabelDeprecatedEntity(changes);
         prefixDeprecatedAnnotationValues(changes);
 
@@ -138,11 +139,17 @@ public class EntityDeprecator<E extends OWLEntity> {
         if (prefix.isEmpty()) {
             return;
         }
-        String replacement = prefix.trim() + " $0";
+        String replacementPrefix = getReplacementPrefix(prefix);
+        String replacement = replacementPrefix + "$0";
         logger.info("[Deprecate Entity] Relabelled deprecated entity");
         replaceAnnotationAssertions(changes,
                                     singleton(dataFactory.getRDFSLabel().getIRI()),
                                     replacement);
+    }
+
+    private String getReplacementPrefix(String prefix) {
+        String trimmedPrefix = prefix.trim();
+        return trimmedPrefix.endsWith("_") || trimmedPrefix.endsWith("-") ? trimmedPrefix : trimmedPrefix + " ";
     }
 
     /**
@@ -158,7 +165,7 @@ public class EntityDeprecator<E extends OWLEntity> {
         if (prefix.isEmpty()) {
             return;
         }
-        String replacement = prefix.trim() + " $0";
+        String replacement = getReplacementPrefix(prefix) + "$0";
         logger.info("[Deprecate Entity] Prefixed deprecated entity annotations with \"{}\"", prefix);
         replaceAnnotationAssertions(changes,
                                     profile.getPreservedAnnotationValuePropertiesIris(),
@@ -183,6 +190,19 @@ public class EntityDeprecator<E extends OWLEntity> {
             );
             logger.info("[Deprecate Entity] Added reason for deprecation as an annotation on the deprecated entity");
             changes.add(new AddAxiom(getHomeOntology(), ax));
+        });
+    }
+
+    private void addDeprecationCode(List<OWLOntologyChange> changes) {
+        profile.getDeprecationCode().ifPresent(deprecationCode -> {
+            info.getDeprecationCode().ifPresent(selectedCode -> {
+                OWLAnnotationAxiom ax = dataFactory.getOWLAnnotationAssertionAxiom(
+                        dataFactory.getOWLAnnotationProperty(deprecationCode.getPropertyIri()),
+                        info.getEntityToDeprecate().getIRI(),
+                        selectedCode
+                );
+                changes.add(new AddAxiom(getHomeOntology(), ax));
+            });
         });
     }
 

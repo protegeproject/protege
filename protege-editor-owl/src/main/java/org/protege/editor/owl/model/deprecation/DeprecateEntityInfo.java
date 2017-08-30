@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.deprecation;
 
-import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLAnnotationValue;
 import org.semanticweb.owlapi.model.OWLEntity;
 
 import javax.annotation.Nonnull;
@@ -24,6 +24,9 @@ public class DeprecateEntityInfo<E extends OWLEntity> {
     @Nonnull
     private final String reasonForDeprecation;
 
+    @Nullable
+    private final OWLAnnotationValue deprecationCode;
+
     /**
      * The entity that should be used instead of the deprecated entity.  This is optional.
      */
@@ -40,10 +43,12 @@ public class DeprecateEntityInfo<E extends OWLEntity> {
     public DeprecateEntityInfo(@Nonnull E entityToDeprecate,
                                @Nullable E replacementEntity,
                                @Nonnull String reasonForDeprecation,
-                               @Nonnull Set<E> alternateEntities) {
+                               @Nonnull Set<E> alternateEntities,
+                               @Nullable OWLAnnotationValue deprecationCode) {
         this.entityToDeprecate = checkNotNull(entityToDeprecate);
         this.replacementEntity = replacementEntity;
         this.reasonForDeprecation = checkNotNull(reasonForDeprecation);
+        this.deprecationCode = deprecationCode;
         this.alternateEntities.addAll(checkNotNull(alternateEntities));
     }
 
@@ -72,5 +77,10 @@ public class DeprecateEntityInfo<E extends OWLEntity> {
     @Nonnull
     public Set<E> getAlternateEntities() {
         return new HashSet<E>(alternateEntities);
+    }
+
+    @Nonnull
+    public Optional<OWLAnnotationValue> getDeprecationCode() {
+        return Optional.ofNullable(deprecationCode);
     }
 }

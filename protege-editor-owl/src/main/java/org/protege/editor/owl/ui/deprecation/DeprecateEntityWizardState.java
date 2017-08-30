@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.deprecation;
 
 import org.protege.editor.owl.model.deprecation.DeprecationProfile;
+import org.semanticweb.owlapi.model.OWLAnnotationValue;
 import org.semanticweb.owlapi.model.OWLEntity;
 
 import javax.annotation.Nonnull;
@@ -24,6 +25,9 @@ public class DeprecateEntityWizardState {
     private String reasonForDeprecation = "";
 
     @Nullable
+    private OWLAnnotationValue deprecationCode;
+
+    @Nullable
     private OWLEntity replacementEntity;
 
     private final List<OWLEntity> alternateEntities = new ArrayList<>();
@@ -35,6 +39,15 @@ public class DeprecateEntityWizardState {
     @Nonnull
     public Optional<DeprecationProfile> getDeprecationProfile() {
         return Optional.ofNullable(deprecationProfile);
+    }
+
+    @Nonnull
+    public Optional<OWLAnnotationValue> getDeprecationCode() {
+        return Optional.ofNullable(deprecationCode);
+    }
+
+    public void setDeprecationCode(@Nullable OWLAnnotationValue deprecationCode) {
+        this.deprecationCode = deprecationCode;
     }
 
     @Nonnull

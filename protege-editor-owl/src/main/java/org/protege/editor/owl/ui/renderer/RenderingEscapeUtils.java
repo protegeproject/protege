@@ -6,6 +6,8 @@ package org.protege.editor.owl.ui.renderer;
  */
 
 
+import javax.annotation.Nonnull;
+
 /**
  * Author: Matthew Horridge<br>
  * The University Of Manchester<br>
@@ -33,4 +35,15 @@ public class RenderingEscapeUtils {
             return originalRendering;
         }
     }
+
+    @Nonnull
+    public static String unescape(@Nonnull String rendering) {
+        if(rendering.startsWith("'") && rendering.endsWith("'")) {
+            return rendering.substring(1, rendering.length() - 1);
+        }
+        else {
+            return rendering;
+        }
+    }
+
 }

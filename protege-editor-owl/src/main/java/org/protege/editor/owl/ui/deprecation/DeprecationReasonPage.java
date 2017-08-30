@@ -57,7 +57,12 @@ public class DeprecationReasonPage extends AbstractOWLWizardPanel {
     @Nullable
     @Override
     public Object getNextPanelDescriptor() {
-        return DeprecationReplacementEntityPage.ID;
+        if (wizardState.getDeprecationProfile().map(profile -> profile.getDeprecationCode().isPresent()).orElse(false)) {
+            return DeprecationCodePage.ID;
+        }
+        else {
+            return DeprecationReplacementEntityPage.ID;
+        }
     }
 
     @Override
