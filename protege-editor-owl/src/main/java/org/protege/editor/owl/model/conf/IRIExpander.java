@@ -1,4 +1,4 @@
-package org.protege.editor.owl.model.deprecation;
+package org.protege.editor.owl.model.conf;
 
 import org.protege.editor.owl.model.util.OboUtilities;
 import org.semanticweb.owlapi.model.IRI;
@@ -28,6 +28,13 @@ public class IRIExpander {
         }
     }
 
+    /**
+     * Expands a string representation of an IRI into an IRI.  OBO Library Identifiers are handled as are built in
+     * OWL IRIs.  This means that IAO:0000115 is expanded to http://purl.obolibrary.org/obo/IAO_0000115 for example,
+     * and rdfs:label is expanded into its full IRI for example.
+     * @param iri The string representation of the IRI.
+     * @return The expanded IRI.  If the string representation is null then the empty value is returned.
+     */
     public static Optional<IRI> expand(@Nullable String iri) {
         if(iri == null) {
             return Optional.empty();

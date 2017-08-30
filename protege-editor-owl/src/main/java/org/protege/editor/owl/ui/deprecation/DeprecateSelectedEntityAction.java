@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.util.List;
 import javax.swing.*;
 import java.awt.*;
-import java.util.Collections;
 import java.util.HashSet;
 
 /**
@@ -57,8 +56,8 @@ public class DeprecateSelectedEntityAction extends SelectedOWLEntityAction {
                 selectedEntity,
                 state.getReplacementEntity().orElse(null),
                 state.getReasonForDeprecation(),
-                new HashSet<>(state.getAlternateEntities())
-        );
+                new HashSet<>(state.getAlternateEntities()),
+                state.getDeprecationCode().orElse(null));
         EntityDeprecator<?> deprecator = new EntityDeprecator<>(info,
                                                                 wizard.getWizardState().getDeprecationProfile().get(),
                                                                 getOWLModelManager().getActiveOntologies(),

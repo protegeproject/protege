@@ -3,6 +3,7 @@ package org.protege.editor.owl.model.deprecation;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.protege.editor.owl.model.conf.IRIExpander;
 import org.semanticweb.owlapi.model.*;
 
 import javax.annotation.Nonnull;
@@ -68,6 +69,9 @@ public class DeprecationProfile {
     @Nullable
     private final String deprecatedIndividualParentClassIri;
 
+    @Nullable
+    private final DeprecationCode deprecationCode;
+
     @JsonCreator
     public DeprecationProfile(@Nonnull @JsonProperty(value = "name", required = true) String name,
                               @Nonnull @JsonProperty(value = "description", required = true) String description,
@@ -85,7 +89,8 @@ public class DeprecationProfile {
                               @Nullable @JsonProperty("deprecatedObjectPropertyParentIri") String deprecatedObjectPropertyParentIri,
                               @Nullable @JsonProperty("deprecatedDataPropertyParentIri") String deprecatedDataPropertyParentIri,
                               @Nullable @JsonProperty("deprecatedAnnotationPropertyParentIri") String deprecatedAnnotationPropertyParentIri,
-                              @Nullable @JsonProperty("deprecatedIndividualParentClassIri") String deprecatedIndividualParentClassIri) {
+                              @Nullable @JsonProperty("deprecatedIndividualParentClassIri") String deprecatedIndividualParentClassIri,
+                              @Nullable @JsonProperty("deprecationCode") DeprecationCode deprecationCode) {
         this.name = name;
         this.description = description;
         this.activatedBy = activatedBy;
@@ -102,6 +107,7 @@ public class DeprecationProfile {
         this.deprecatedDataPropertyParentIri = deprecatedDataPropertyParentIri;
         this.deprecatedAnnotationPropertyParentIri = deprecatedAnnotationPropertyParentIri;
         this.deprecatedIndividualParentClassIri = deprecatedIndividualParentClassIri;
+        this.deprecationCode = deprecationCode;
     }
 
     /**
@@ -255,6 +261,14 @@ public class DeprecationProfile {
         return expandIri(deprecatedIndividualParentClassIri);
     }
 
+    /**
+     * Gets settings for specifying a deprecation code (see OBI for an example of this)
+     * @return The optional deprecation code.
+     */
+    @Nonnull
+    public Optional<DeprecationCode> getDeprecationCode() {
+        return Optional.ofNullable(deprecationCode);
+    }
 
     private static Optional<IRI> expandIri(@Nullable String iri) {
         return IRIExpander.expand(iri);
