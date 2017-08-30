@@ -175,7 +175,7 @@ public class EntityDeprecator<E extends OWLEntity> {
         if (reasonForDeprecation.isEmpty()) {
             return;
         }
-        profile.getDeprecationReasonAnnotationPropertyIri().ifPresent(propIri -> {
+        profile.getDeprecationTextualReasonAnnotationPropertyIri().ifPresent(propIri -> {
             OWLAnnotationAssertionAxiom ax = dataFactory.getOWLAnnotationAssertionAxiom(
                     dataFactory.getOWLAnnotationProperty(propIri),
                     info.getEntityToDeprecate().getIRI(),

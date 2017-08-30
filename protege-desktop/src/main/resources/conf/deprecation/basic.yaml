@@ -8,7 +8,6 @@ description: >
 removeLogicalDefinition: true
 removeAnnotationAssertions: true
 replacedByAnnotationPropertyIri: rdfs:seeAlso
-reasonAnnotationPropertyIri: rdfs:comment
 alternateEntityAnnotationPropertyIri: rdfs:seeAlso
 labelPrefix: Deprecated
 annotationValuePrefix: Deprecated
@@ -16,3 +15,4 @@ preservedAnnotationAssertionPropertyIris:
   - rdfs:label
   - rdfs:comment
   - skos:definition
+textualReasonAnnotationPropertyIri: rdfs:comment
