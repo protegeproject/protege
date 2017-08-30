@@ -8,7 +8,6 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import java.io.File;
-import java.net.URL;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -43,8 +42,14 @@ public class GOProfile_TestCase {
     }
 
     @Test
+    public void shouldReadGOProfileYamlTextualReason() {
+        assertThat(profile.getDeprecationTextualReasonAnnotationPropertyIri(),
+                   is(Optional.of(OWLRDFVocabulary.RDFS_COMMENT.getIRI())));
+    }
+
+    @Test
     public void shouldReadGOProfileYamlReasonProperty() {
-        assertThat(profile.getDeprecationReasonAnnotationPropertyIri(), is(Optional.of(OWLRDFVocabulary.RDFS_COMMENT.getIRI())));
+        assertThat(profile.getDeprecationTextualReasonAnnotationPropertyIri(), is(Optional.of(OWLRDFVocabulary.RDFS_COMMENT.getIRI())));
     }
 
     @Test

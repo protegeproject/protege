@@ -39,7 +39,7 @@ public class DeprecationProfile {
     private final String replacedByAnnotationPropertyIri;
 
     @Nullable
-    private final String reasonAnnotationPropertyIri;
+    private final String textualReasonAnnotationPropertyIri;
 
     @Nullable
     private final String alternateEntityAnnotationPropertyIri;
@@ -75,7 +75,7 @@ public class DeprecationProfile {
                               @JsonProperty("removeLogicalDefinition") boolean removeLogicalDefinition,
                               @JsonProperty("removeAnnotationAssertions") boolean removeAnnotationAssertions,
                               @JsonProperty("replacedByAnnotationPropertyIri") String replacedByAnnotationPropertyIri,
-                              @JsonProperty("reasonAnnotationPropertyIri") String reasonAnnotationPropertyIri,
+                              @JsonProperty("textualReasonAnnotationPropertyIri") String textualReasonAnnotationPropertyIri,
                               @JsonProperty("alternateEntityAnnotationPropertyIri") String alternateEntityAnnotationPropertyIri,
                               @Nonnull @JsonProperty(value = "labelPrefix", defaultValue = "") String labelPrefix,
                               @Nonnull @JsonProperty(value = "annotationValuePrefix",
@@ -92,7 +92,7 @@ public class DeprecationProfile {
         this.removeLogicalDefinition = removeLogicalDefinition;
         this.removeAnnotationAssertions = removeAnnotationAssertions;
         this.replacedByAnnotationPropertyIri = replacedByAnnotationPropertyIri;
-        this.reasonAnnotationPropertyIri = reasonAnnotationPropertyIri;
+        this.textualReasonAnnotationPropertyIri = textualReasonAnnotationPropertyIri;
         this.alternateEntityAnnotationPropertyIri = alternateEntityAnnotationPropertyIri;
         this.labelPrefix = labelPrefix;
         this.annotationValuePrefix = annotationValuePrefix;
@@ -157,12 +157,12 @@ public class DeprecationProfile {
     }
 
     /**
-     * Gets the annotation property IRI that is used to specify the reason for the deprecation.  In the GO workflow
-     * this is rdfs:comment.
+     * Gets the annotation property IRI that is used to specify the textual reason for the deprecation.  In the GO workflow
+     * this is rdfs:comment.  In some schemes this isn't used.
      */
     @Nonnull
-    public Optional<IRI> getDeprecationReasonAnnotationPropertyIri() {
-        return expandIri(reasonAnnotationPropertyIri);
+    public Optional<IRI> getDeprecationTextualReasonAnnotationPropertyIri() {
+        return expandIri(textualReasonAnnotationPropertyIri);
     }
 
     /**

@@ -99,7 +99,7 @@ public class EntityDeprecator_TestCase {
         reasonAP = AnnotationProperty("reason", pm).getIRI();
         when(deprecationProfile.shouldRemoveLogicalDefinition()).thenReturn(true);
         when(deprecationProfile.getReplacedByAnnotationPropertyIri()).thenReturn(Optional.of(replacedByAP));
-        when(deprecationProfile.getDeprecationReasonAnnotationPropertyIri()).thenReturn(Optional.of(reasonAP));
+        when(deprecationProfile.getDeprecationTextualReasonAnnotationPropertyIri()).thenReturn(Optional.of(reasonAP));
         when(deprecationProfile.getAlternateEntityAnnotationPropertyIri()).thenReturn(Optional.of(alternateAP));
         when(deprecationProfile.getDeprecatedEntityLabelPrefix()).thenReturn(LABEL_PREFIX);
         when(deprecationProfile.getPreservedAnnotationValuePrefix()).thenReturn(VALUE_PREFIX);
