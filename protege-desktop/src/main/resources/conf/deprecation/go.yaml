@@ -3,7 +3,7 @@ name: Gene Ontology (GO)
 description: A profile for obsoletion of entities in the Gene Ontology (GO)
 activatedBy: http://purl.obolibrary.org/obo/go.owl
 removeLogicalDefinition: true
-removeAnnotationAssertions: true
+removeAnnotationAssertions: false
 reasonAnnotationPropertyIri: rdfs:comment
 alternateEntityAnnotationPropertyIri: http://www.geneontology.org/formats/oboInOwl#consider
 replacedByAnnotationPropertyIri: IAO:0100001
