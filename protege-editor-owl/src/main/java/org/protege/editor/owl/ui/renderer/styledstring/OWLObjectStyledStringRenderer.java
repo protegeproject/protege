@@ -7,6 +7,7 @@ import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
 import org.semanticweb.owlapi.util.ShortFormProvider;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -105,7 +106,7 @@ public class OWLObjectStyledStringRenderer {
             }
         }
 
-        public void visit(OWLAnnotation annotation) {
+        public void visit(@Nonnull OWLAnnotation annotation) {
             int propStart = builder.mark();
             annotation.getProperty().accept(this);
             int propEnd = builder.mark();
@@ -137,7 +138,7 @@ public class OWLObjectStyledStringRenderer {
 
         }
 
-        public void visit(OWLSubClassOfAxiom axiom) {
+        public void visit(@Nonnull OWLSubClassOfAxiom axiom) {
             axiom.getSubClass().accept(this);
             renderSpace();
             renderKeywordWithSpaces(ManchesterOWLSyntax.SUBCLASS_OF);
@@ -145,16 +146,16 @@ public class OWLObjectStyledStringRenderer {
             axiom.getSuperClass().accept(this);
         }
 
-        public void visit(OWLNegativeObjectPropertyAssertionAxiom axiom) {
+        public void visit(@Nonnull OWLNegativeObjectPropertyAssertionAxiom axiom) {
 
         }
 
-        public void visit(OWLAsymmetricObjectPropertyAxiom axiom) {
+        public void visit(@Nonnull OWLAsymmetricObjectPropertyAxiom axiom) {
             renderKeywordColonSpace(ManchesterOWLSyntax.ASYMMETRIC);
             axiom.getProperty().accept(this);
         }
 
-        public void visit(OWLReflexiveObjectPropertyAxiom axiom) {
+        public void visit(@Nonnull OWLReflexiveObjectPropertyAxiom axiom) {
             renderKeywordColonSpace(ManchesterOWLSyntax.REFLEXIVE);
             axiom.getProperty().accept(this);
         }
@@ -187,7 +188,7 @@ public class OWLObjectStyledStringRenderer {
             }
         }
 
-        public void visit(OWLDisjointClassesAxiom axiom) {
+        public void visit(@Nonnull OWLDisjointClassesAxiom axiom) {
             renderBinaryOrNaryList(axiom.getClassExpressionsAsList(), ManchesterOWLSyntax.DISJOINT_WITH, ManchesterOWLSyntax.DISJOINT_CLASSES, COMMA_SEPARATOR);
         }
 
@@ -198,30 +199,30 @@ public class OWLObjectStyledStringRenderer {
             axiom.getDomain().accept(this);
         }
 
-        public void visit(OWLDataPropertyDomainAxiom axiom) {
+        public void visit(@Nonnull OWLDataPropertyDomainAxiom axiom) {
             renderDomainAxiom(axiom);
         }
 
-        public void visit(OWLObjectPropertyDomainAxiom axiom) {
+        public void visit(@Nonnull OWLObjectPropertyDomainAxiom axiom) {
             renderDomainAxiom(axiom);
         }
 
-        public void visit(OWLEquivalentObjectPropertiesAxiom axiom) {
+        public void visit(@Nonnull OWLEquivalentObjectPropertiesAxiom axiom) {
             renderBinaryOrNaryList(axiom.getProperties(), ManchesterOWLSyntax.EQUIVALENT_TO, ManchesterOWLSyntax.EQUIVALENT_PROPERTIES, COMMA_SEPARATOR);
         }
 
-        public void visit(OWLNegativeDataPropertyAssertionAxiom axiom) {
+        public void visit(@Nonnull OWLNegativeDataPropertyAssertionAxiom axiom) {
         }
 
-        public void visit(OWLDifferentIndividualsAxiom axiom) {
+        public void visit(@Nonnull OWLDifferentIndividualsAxiom axiom) {
             renderBinaryOrNaryList(axiom.getIndividuals(), ManchesterOWLSyntax.SAME_AS, ManchesterOWLSyntax.SAME_INDIVIDUAL, COMMA_SEPARATOR);
         }
 
-        public void visit(OWLDisjointDataPropertiesAxiom axiom) {
+        public void visit(@Nonnull OWLDisjointDataPropertiesAxiom axiom) {
             renderBinaryOrNaryList(axiom.getProperties(), ManchesterOWLSyntax.DISJOINT_WITH, ManchesterOWLSyntax.DISJOINT_PROPERTIES, COMMA_SEPARATOR);
         }
 
-        public void visit(OWLDisjointObjectPropertiesAxiom axiom) {
+        public void visit(@Nonnull OWLDisjointObjectPropertiesAxiom axiom) {
             renderBinaryOrNaryList(axiom.getProperties(), ManchesterOWLSyntax.DISJOINT_WITH, ManchesterOWLSyntax.DISJOINT_PROPERTIES, COMMA_SEPARATOR);
         }
 
@@ -231,54 +232,54 @@ public class OWLObjectStyledStringRenderer {
             axiom.getRange().accept(this);
         }
 
-        public void visit(OWLObjectPropertyRangeAxiom axiom) {
+        public void visit(@Nonnull OWLObjectPropertyRangeAxiom axiom) {
             renderRangeAxiom(axiom);
         }
 
-        public void visit(OWLObjectPropertyAssertionAxiom axiom) {
+        public void visit(@Nonnull OWLObjectPropertyAssertionAxiom axiom) {
             renderPropertyAssertion(axiom);
         }
 
-        public void visit(OWLFunctionalObjectPropertyAxiom axiom) {
+        public void visit(@Nonnull OWLFunctionalObjectPropertyAxiom axiom) {
             renderKeywordColonSpace(ManchesterOWLSyntax.FUNCTIONAL);
             axiom.getProperty().accept(this);
         }
 
-        public void visit(OWLSubObjectPropertyOfAxiom axiom) {
+        public void visit(@Nonnull OWLSubObjectPropertyOfAxiom axiom) {
             axiom.getSubProperty().accept(this);
             renderKeywordWithSpaces(ManchesterOWLSyntax.SUB_PROPERTY_OF);
             axiom.getSuperProperty().accept(this);
         }
 
-        public void visit(OWLDisjointUnionAxiom axiom) {
+        public void visit(@Nonnull OWLDisjointUnionAxiom axiom) {
             axiom.getOWLClass().accept(this);
             renderKeywordWithSpaces(ManchesterOWLSyntax.DISJOINT_UNION_OF);
             renderCollection(axiom, axiom.getClassExpressions(), COMMA_SEPARATOR, ComplexClassExpressionBracketingStrategy.get());
         }
 
-        public void visit(OWLDeclarationAxiom axiom) {
+        public void visit(@Nonnull OWLDeclarationAxiom axiom) {
             axiom.getEntity().accept(new OWLEntityVisitor() {
-                public void visit(OWLClass owlClass) {
+                public void visit(@Nonnull OWLClass owlClass) {
                     renderKeywordColonSpace(ManchesterOWLSyntax.CLASS);
                 }
 
-                public void visit(OWLObjectProperty property) {
+                public void visit(@Nonnull OWLObjectProperty property) {
                     renderKeywordColonSpace(ManchesterOWLSyntax.OBJECT_PROPERTY);
                 }
 
-                public void visit(OWLDataProperty dataProperty) {
+                public void visit(@Nonnull OWLDataProperty dataProperty) {
                     renderKeywordColonSpace(ManchesterOWLSyntax.DATA_PROPERTY);
                 }
 
-                public void visit(OWLNamedIndividual individual) {
+                public void visit(@Nonnull OWLNamedIndividual individual) {
                     renderKeywordColonSpace(ManchesterOWLSyntax.INDIVIDUAL);
                 }
 
-                public void visit(OWLDatatype owlDatatype) {
+                public void visit(@Nonnull OWLDatatype owlDatatype) {
                     renderKeywordColonSpace(ManchesterOWLSyntax.DATATYPE);
                 }
 
-                public void visit(OWLAnnotationProperty property) {
+                public void visit(@Nonnull OWLAnnotationProperty property) {
                     renderKeywordColonSpace(ManchesterOWLSyntax.ANNOTATION_PROPERTY);
                 }
             });
@@ -292,7 +293,7 @@ public class OWLObjectStyledStringRenderer {
             axiom.getObject().accept(this);
         }
 
-        public void visit(OWLAnnotationAssertionAxiom axiom) {
+        public void visit(@Nonnull OWLAnnotationAssertionAxiom axiom) {
             if(axiom.getSubject() instanceof IRI) {
                 builder.append(renderingContext.getIriShortFormProvider().getShortForm((IRI) axiom.getSubject()));
             }
@@ -303,111 +304,111 @@ public class OWLObjectStyledStringRenderer {
             axiom.getAnnotation().accept(this);
         }
 
-        public void visit(OWLSymmetricObjectPropertyAxiom axiom) {
+        public void visit(@Nonnull OWLSymmetricObjectPropertyAxiom axiom) {
             renderKeywordColonSpace(ManchesterOWLSyntax.SYMMETRIC);
             axiom.getProperty().accept(this);
         }
 
-        public void visit(OWLDataPropertyRangeAxiom axiom) {
+        public void visit(@Nonnull OWLDataPropertyRangeAxiom axiom) {
             renderRangeAxiom(axiom);
         }
 
-        public void visit(OWLFunctionalDataPropertyAxiom axiom) {
+        public void visit(@Nonnull OWLFunctionalDataPropertyAxiom axiom) {
             renderKeywordColonSpace(ManchesterOWLSyntax.FUNCTIONAL);
             axiom.getProperty().accept(this);
         }
 
-        public void visit(OWLEquivalentDataPropertiesAxiom axiom) {
+        public void visit(@Nonnull OWLEquivalentDataPropertiesAxiom axiom) {
             renderBinaryOrNaryList(axiom.getProperties(), ManchesterOWLSyntax.EQUIVALENT_TO, ManchesterOWLSyntax.EQUIVALENT_PROPERTIES, COMMA_SEPARATOR);
         }
 
-        public void visit(OWLClassAssertionAxiom axiom) {
+        public void visit(@Nonnull OWLClassAssertionAxiom axiom) {
             axiom.getIndividual().accept(this);
             renderKeywordWithSpaces(ManchesterOWLSyntax.TYPE);
             axiom.getClassExpression().accept(this);
         }
 
-        public void visit(OWLEquivalentClassesAxiom axiom) {
+        public void visit(@Nonnull OWLEquivalentClassesAxiom axiom) {
             renderBinaryOrNaryList(axiom.getClassExpressions(), ManchesterOWLSyntax.EQUIVALENT_TO, ManchesterOWLSyntax.EQUIVALENT_CLASSES, COMMA_SEPARATOR);
         }
 
-        public void visit(OWLDataPropertyAssertionAxiom axiom) {
+        public void visit(@Nonnull OWLDataPropertyAssertionAxiom axiom) {
             renderPropertyAssertion(axiom);
         }
 
-        public void visit(OWLTransitiveObjectPropertyAxiom axiom) {
+        public void visit(@Nonnull OWLTransitiveObjectPropertyAxiom axiom) {
             renderKeywordColonSpace(ManchesterOWLSyntax.TRANSITIVE);
             axiom.getProperty().accept(this);
         }
 
-        public void visit(OWLIrreflexiveObjectPropertyAxiom axiom) {
+        public void visit(@Nonnull OWLIrreflexiveObjectPropertyAxiom axiom) {
             renderKeywordColonSpace(ManchesterOWLSyntax.IRREFLEXIVE);
             axiom.getProperty().accept(this);
         }
 
-        public void visit(OWLSubDataPropertyOfAxiom axiom) {
+        public void visit(@Nonnull OWLSubDataPropertyOfAxiom axiom) {
             axiom.getSubProperty().accept(this);
             renderKeywordWithSpaces(ManchesterOWLSyntax.SUB_PROPERTY_OF);
             axiom.getSuperProperty().accept(this);
         }
 
-        public void visit(OWLInverseFunctionalObjectPropertyAxiom axiom) {
+        public void visit(@Nonnull OWLInverseFunctionalObjectPropertyAxiom axiom) {
             renderKeywordColonSpace(ManchesterOWLSyntax.INVERSE_FUNCTIONAL);
             axiom.getProperty().accept(this);
         }
 
-        public void visit(OWLSameIndividualAxiom axiom) {
+        public void visit(@Nonnull OWLSameIndividualAxiom axiom) {
             renderBinaryOrNaryList(axiom.getIndividuals(), ManchesterOWLSyntax.SAME_AS, ManchesterOWLSyntax.SAME_INDIVIDUAL, COMMA_SEPARATOR);
         }
 
-        public void visit(OWLSubPropertyChainOfAxiom axiom) {
+        public void visit(@Nonnull OWLSubPropertyChainOfAxiom axiom) {
             renderCollection(axiom, axiom.getPropertyChain(), " o ", NullBracketingStrategy.get());
             renderKeywordWithSpaces(ManchesterOWLSyntax.SUB_PROPERTY_OF);
             axiom.getSuperProperty().accept(this);
         }
 
-        public void visit(OWLInverseObjectPropertiesAxiom axiom) {
+        public void visit(@Nonnull OWLInverseObjectPropertiesAxiom axiom) {
             axiom.getFirstProperty().accept(this);
             renderKeywordWithSpaces(ManchesterOWLSyntax.INVERSE_OF);
             axiom.getSecondProperty().accept(this);
         }
 
-        public void visit(OWLHasKeyAxiom axiom) {
+        public void visit(@Nonnull OWLHasKeyAxiom axiom) {
         }
 
 
-        public void visit(OWLDatatypeDefinitionAxiom axiom) {
+        public void visit(@Nonnull OWLDatatypeDefinitionAxiom axiom) {
         }
 
-        public void visit(SWRLRule swrlRule) {
+        public void visit(@Nonnull SWRLRule swrlRule) {
             renderCollection(swrlRule, swrlRule.getBody(), COMMA_SEPARATOR, NullBracketingStrategy.get());
             builder.append(" -> ");
             renderCollection(swrlRule, swrlRule.getHead(), COMMA_SEPARATOR, NullBracketingStrategy.get());
         }
 
-        public void visit(OWLSubAnnotationPropertyOfAxiom axiom) {
+        public void visit(@Nonnull OWLSubAnnotationPropertyOfAxiom axiom) {
             axiom.getSubProperty().accept(this);
             renderKeywordWithSpaces(ManchesterOWLSyntax.SUB_PROPERTY_OF);
             axiom.getSuperProperty().accept(this);
         }
 
-        public void visit(OWLAnnotationPropertyDomainAxiom axiom) {
+        public void visit(@Nonnull OWLAnnotationPropertyDomainAxiom axiom) {
             axiom.getProperty().accept(this);
             renderKeywordWithSpaces(ManchesterOWLSyntax.DOMAIN);
             axiom.getDomain().accept(this);
         }
 
-        public void visit(OWLAnnotationPropertyRangeAxiom axiom) {
+        public void visit(@Nonnull OWLAnnotationPropertyRangeAxiom axiom) {
             axiom.getProperty().accept(this);
             renderKeywordWithSpaces(ManchesterOWLSyntax.RANGE);
             axiom.getRange().accept(this);
         }
 
-        public void visit(IRI iri) {
+        public void visit(@Nonnull IRI iri) {
             builder.append(iri.toQuotedString());
         }
 
-        public void visit(OWLAnonymousIndividual individual) {
+        public void visit(@Nonnull OWLAnonymousIndividual individual) {
             builder.append(individual.getID().getID());
         }
 
@@ -431,19 +432,19 @@ public class OWLObjectStyledStringRenderer {
             builder.applyStyle(renderingStart, renderingEnd, style);
         }
 
-        public void visit(OWLClass owlClass) {
+        public void visit(@Nonnull OWLClass owlClass) {
             renderEntity(owlClass);
         }
 
-        public void visit(OWLObjectIntersectionOf owlObjectIntersectionOf) {
+        public void visit(@Nonnull OWLObjectIntersectionOf owlObjectIntersectionOf) {
             renderCollection(owlObjectIntersectionOf, owlObjectIntersectionOf.getOperands(), ManchesterOWLSyntax.AND, ComplexClassExpressionBracketingStrategy.get());
         }
 
-        public void visit(OWLObjectUnionOf owlObjectUnionOf) {
+        public void visit(@Nonnull OWLObjectUnionOf owlObjectUnionOf) {
             renderCollection(owlObjectUnionOf, owlObjectUnionOf.getOperands(), ManchesterOWLSyntax.OR, ComplexClassExpressionBracketingStrategy.get());
         }
 
-        public void visit(OWLObjectComplementOf owlObjectComplementOf) {
+        public void visit(@Nonnull OWLObjectComplementOf owlObjectComplementOf) {
             renderKeyword(ManchesterOWLSyntax.NOT);
             renderSpace();
             owlObjectComplementOf.getOperand().accept(this);
@@ -473,11 +474,11 @@ public class OWLObjectStyledStringRenderer {
         }
 
 
-        public void visit(OWLObjectSomeValuesFrom owlObjectSomeValuesFrom) {
+        public void visit(@Nonnull OWLObjectSomeValuesFrom owlObjectSomeValuesFrom) {
             renderQuantifiedRestriction(owlObjectSomeValuesFrom, ManchesterOWLSyntax.SOME);
         }
 
-        public void visit(OWLObjectAllValuesFrom owlObjectAllValuesFrom) {
+        public void visit(@Nonnull OWLObjectAllValuesFrom owlObjectAllValuesFrom) {
             renderQuantifiedRestriction(owlObjectAllValuesFrom, ManchesterOWLSyntax.ONLY);
         }
 
@@ -488,7 +489,7 @@ public class OWLObjectStyledStringRenderer {
             restriction.getValue().accept(this);
         }
 
-        public void visit(OWLObjectHasValue owlObjectHasValue) {
+        public void visit(@Nonnull OWLObjectHasValue owlObjectHasValue) {
             renderHasValueRestriction(owlObjectHasValue);
         }
 
@@ -500,79 +501,79 @@ public class OWLObjectStyledStringRenderer {
             renderRestrictionFiller(restriction.getFiller());
         }
 
-        public void visit(OWLObjectMinCardinality owlObjectMinCardinality) {
+        public void visit(@Nonnull OWLObjectMinCardinality owlObjectMinCardinality) {
             renderCardinalityRestriction(owlObjectMinCardinality, ManchesterOWLSyntax.MIN);
         }
 
-        public void visit(OWLObjectExactCardinality owlObjectExactCardinality) {
+        public void visit(@Nonnull OWLObjectExactCardinality owlObjectExactCardinality) {
             renderCardinalityRestriction(owlObjectExactCardinality, ManchesterOWLSyntax.EXACTLY);
         }
 
-        public void visit(OWLObjectMaxCardinality owlObjectMaxCardinality) {
+        public void visit(@Nonnull OWLObjectMaxCardinality owlObjectMaxCardinality) {
             renderCardinalityRestriction(owlObjectMaxCardinality, ManchesterOWLSyntax.MAX);
         }
 
-        public void visit(OWLObjectHasSelf owlObjectHasSelf) {
+        public void visit(@Nonnull OWLObjectHasSelf owlObjectHasSelf) {
             owlObjectHasSelf.getProperty().accept(this);
             renderSpace();
             renderKeyword(ManchesterOWLSyntax.SELF);
         }
 
-        public void visit(OWLObjectOneOf owlObjectOneOf) {
+        public void visit(@Nonnull OWLObjectOneOf owlObjectOneOf) {
             builder.append("{");
             renderCollection(owlObjectOneOf, owlObjectOneOf.getIndividuals(), COMMA_SEPARATOR, NullBracketingStrategy.get());
             builder.append("}");
         }
 
-        public void visit(OWLDataSomeValuesFrom owlDataSomeValuesFrom) {
+        public void visit(@Nonnull OWLDataSomeValuesFrom owlDataSomeValuesFrom) {
             renderQuantifiedRestriction(owlDataSomeValuesFrom, ManchesterOWLSyntax.SOME);
         }
 
-        public void visit(OWLDataAllValuesFrom owlDataAllValuesFrom) {
+        public void visit(@Nonnull OWLDataAllValuesFrom owlDataAllValuesFrom) {
             renderQuantifiedRestriction(owlDataAllValuesFrom, ManchesterOWLSyntax.ONLY);
         }
 
-        public void visit(OWLDataHasValue owlDataHasValue) {
+        public void visit(@Nonnull OWLDataHasValue owlDataHasValue) {
             renderHasValueRestriction(owlDataHasValue);
         }
 
-        public void visit(OWLDataMinCardinality owlDataMinCardinality) {
+        public void visit(@Nonnull OWLDataMinCardinality owlDataMinCardinality) {
             renderCardinalityRestriction(owlDataMinCardinality, ManchesterOWLSyntax.MIN);
         }
 
-        public void visit(OWLDataExactCardinality owlDataExactCardinality) {
+        public void visit(@Nonnull OWLDataExactCardinality owlDataExactCardinality) {
             renderCardinalityRestriction(owlDataExactCardinality, ManchesterOWLSyntax.EXACTLY);
         }
 
-        public void visit(OWLDataMaxCardinality owlDataMaxCardinality) {
+        public void visit(@Nonnull OWLDataMaxCardinality owlDataMaxCardinality) {
             renderCardinalityRestriction(owlDataMaxCardinality, ManchesterOWLSyntax.MAX);
         }
 
-        public void visit(OWLDatatype owlDatatype) {
+        public void visit(@Nonnull OWLDatatype owlDatatype) {
             renderEntity(owlDatatype);
         }
 
-        public void visit(OWLDataComplementOf owlDataComplementOf) {
+        public void visit(@Nonnull OWLDataComplementOf owlDataComplementOf) {
             renderKeyword(ManchesterOWLSyntax.NOT);
             renderSpace();
             owlDataComplementOf.getDataRange().accept(this);
         }
 
-        public void visit(OWLDataOneOf owlDataOneOf) {
+        public void visit(@Nonnull OWLDataOneOf owlDataOneOf) {
             builder.append("{");
             renderCollection(owlDataOneOf, owlDataOneOf.getValues(), COMMA_SEPARATOR, NullBracketingStrategy.get());
             builder.append("}");
         }
 
-        public void visit(OWLDataIntersectionOf owlDataIntersectionOf) {
+        public void visit(@Nonnull OWLDataIntersectionOf owlDataIntersectionOf) {
             renderCollection(owlDataIntersectionOf, owlDataIntersectionOf.getOperands(), ManchesterOWLSyntax.AND, NullBracketingStrategy.get());
         }
 
-        public void visit(OWLDataUnionOf owlDataUnionOf) {
+        public void visit(@Nonnull OWLDataUnionOf owlDataUnionOf) {
             renderCollection(owlDataUnionOf, owlDataUnionOf.getOperands(), ManchesterOWLSyntax.OR, NullBracketingStrategy.get());
         }
 
-        public void visit(OWLDatatypeRestriction owlDatatypeRestriction) {
+        public void visit(@Nonnull OWLDatatypeRestriction owlDatatypeRestriction) {
             owlDatatypeRestriction.getDatatype().accept(this);
             renderSpace();
             builder.append("[");
@@ -580,18 +581,18 @@ public class OWLObjectStyledStringRenderer {
             builder.append("]");
         }
 
-        public void visit(OWLLiteral owlLiteral) {
+        public void visit(@Nonnull OWLLiteral owlLiteral) {
             if (owlLiteral.isBoolean()) {
-                builder.append(Boolean.toString(owlLiteral.parseBoolean()));
+                builder.append(owlLiteral.getLiteral());
             }
             else if (owlLiteral.isDouble()) {
-                builder.append(owlLiteral.parseDouble());
+                builder.append(owlLiteral.getLiteral());
             }
             else if (owlLiteral.isFloat()) {
-                builder.append(owlLiteral.parseFloat());
+                builder.append(owlLiteral.getLiteral());
             }
             else if (owlLiteral.isInteger()) {
-                builder.append(owlLiteral.parseInteger());
+                builder.append(owlLiteral.getLiteral());
             }
             else {
                 builder.append("\"");
@@ -601,21 +602,21 @@ public class OWLObjectStyledStringRenderer {
             }
         }
 
-        public void visit(OWLFacetRestriction owlFacetRestriction) {
+        public void visit(@Nonnull OWLFacetRestriction owlFacetRestriction) {
             builder.append(owlFacetRestriction.getFacet().getPrefixedName());
             renderSpace();
             owlFacetRestriction.getFacetValue().accept(this);
         }
 
-        public void visit(OWLNamedIndividual individual) {
+        public void visit(@Nonnull OWLNamedIndividual individual) {
             renderEntity(individual);
         }
 
-        public void visit(OWLAnnotationProperty property) {
+        public void visit(@Nonnull OWLAnnotationProperty property) {
             renderEntity(property);
         }
 
-        public void visit(OWLOntology owlOntology) {
+        public void visit(@Nonnull OWLOntology owlOntology) {
             OntologyIRIShortFormProvider ontSfp = renderingContext.getOntologyIRIShortFormProvider();
             String ontShortForm = ontSfp.getShortForm(owlOntology);
             builder.append(ontShortForm);
@@ -632,17 +633,17 @@ public class OWLObjectStyledStringRenderer {
             }
         }
 
-        public void visit(OWLObjectProperty property) {
+        public void visit(@Nonnull OWLObjectProperty property) {
             renderEntity(property);
         }
 
-        public void visit(OWLObjectInverseOf owlObjectInverseOf) {
+        public void visit(@Nonnull OWLObjectInverseOf owlObjectInverseOf) {
             renderKeyword(ManchesterOWLSyntax.INVERSE_OF);
             renderSpace();
             owlObjectInverseOf.getInverse().accept(this);
         }
 
-        public void visit(OWLDataProperty dataProperty) {
+        public void visit(@Nonnull OWLDataProperty dataProperty) {
             renderEntity(dataProperty);
         }
 
@@ -653,50 +654,50 @@ public class OWLObjectStyledStringRenderer {
             builder.append(")");
         }
 
-        public void visit(SWRLClassAtom swrlClassAtom) {
+        public void visit(@Nonnull SWRLClassAtom swrlClassAtom) {
             renderSWRLAtom(swrlClassAtom, swrlClassAtom.getPredicate());
         }
 
-        public void visit(SWRLDataRangeAtom swrlDataRangeAtom) {
+        public void visit(@Nonnull SWRLDataRangeAtom swrlDataRangeAtom) {
             renderSWRLAtom(swrlDataRangeAtom, swrlDataRangeAtom.getPredicate());
         }
 
-        public void visit(SWRLObjectPropertyAtom swrlObjectPropertyAtom) {
+        public void visit(@Nonnull SWRLObjectPropertyAtom swrlObjectPropertyAtom) {
             renderSWRLAtom(swrlObjectPropertyAtom, swrlObjectPropertyAtom.getPredicate());
         }
 
-        public void visit(SWRLDataPropertyAtom swrlDataPropertyAtom) {
+        public void visit(@Nonnull SWRLDataPropertyAtom swrlDataPropertyAtom) {
             renderSWRLAtom(swrlDataPropertyAtom, swrlDataPropertyAtom.getPredicate());
         }
 
-        public void visit(SWRLBuiltInAtom atom) {
+        public void visit(@Nonnull SWRLBuiltInAtom atom) {
             atom.getPredicate().accept(this);
             builder.append("(");
             renderCollection(atom, atom.getAllArguments(), COMMA_SEPARATOR, NullBracketingStrategy.get());
             builder.append(")");
         }
 
-        public void visit(SWRLVariable swrlVariable) {
+        public void visit(@Nonnull SWRLVariable swrlVariable) {
             builder.append("?");
             builder.append(swrlVariable.getIRI().getRemainder().or(swrlVariable.getIRI().toString()));
         }
 
-        public void visit(SWRLIndividualArgument swrlIndividualArgument) {
+        public void visit(@Nonnull SWRLIndividualArgument swrlIndividualArgument) {
             swrlIndividualArgument.getIndividual().accept(this);
         }
 
-        public void visit(SWRLLiteralArgument swrlLiteralArgument) {
+        public void visit(@Nonnull SWRLLiteralArgument swrlLiteralArgument) {
             swrlLiteralArgument.getLiteral().accept(this);
         }
 
-        public void visit(SWRLSameIndividualAtom atom) {
+        public void visit(@Nonnull SWRLSameIndividualAtom atom) {
             builder.append(ManchesterOWLSyntax.SAME_INDIVIDUAL.toString());
             builder.append("(");
             renderCollection(atom, atom.getAllArguments(), COMMA_SEPARATOR, NullBracketingStrategy.get());
             builder.append(")");
         }
 
-        public void visit(SWRLDifferentIndividualsAtom atom) {
+        public void visit(@Nonnull SWRLDifferentIndividualsAtom atom) {
             builder.append(ManchesterOWLSyntax.DIFFERENT_INDIVIDUALS.toString());
             builder.append("(");
             renderCollection(atom, atom.getAllArguments(), COMMA_SEPARATOR, NullBracketingStrategy.get());
