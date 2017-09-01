@@ -40,7 +40,7 @@ public class IRIExpander {
             return Optional.empty();
         }
         if(OboUtilities.isOboId(iri)) {
-            return Optional.of(OboUtilities.getIriFromOboId(iri));
+            return Optional.of(OboUtilities.getOboLibraryIriFromOboId(iri));
         }
         IRI builtInIri = builtInVocabulary.get(iri);
         if(builtInIri != null) {

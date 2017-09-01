@@ -19,6 +19,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
@@ -74,8 +75,6 @@ public class SearchResultsPanel extends JPanel {
         resultsTable.setRowMargin(0);
         add(scrollPane);
 
-        setupColumnRenderers();
-
         resultsTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -99,7 +98,12 @@ public class SearchResultsPanel extends JPanel {
         TableColumn entityColumn = columnModel.getColumn(1);
         entityColumn.setCellRenderer(new ResultsTableCellRendererWrapper(new EntityRenderer()));
         entityColumn.setPreferredWidth(ENTITY_COLUMN_PREFERRED_WIDTH);
-        columnModel.getColumn(2).setCellRenderer(new ResultsTableCellRendererWrapper(new EntityFinderResultsRenderer(editorKit)));
+        int oboIdColumn = model.getOboIdColumn();
+        if(oboIdColumn != -1) {
+            columnModel.getColumn(oboIdColumn).setCellRenderer(new ResultsTableCellRendererWrapper(new DefaultTableCellRenderer()));
+        }
+        int resultColumn = model.getResultsColumn();
+        columnModel.getColumn(resultColumn).setCellRenderer(new ResultsTableCellRendererWrapper(new EntityFinderResultsRenderer(editorKit)));
     }
 
     private void handleScrollpaneViewportChanged() {
@@ -226,6 +230,7 @@ public class SearchResultsPanel extends JPanel {
 
     private void setData(Collection<SearchResult> results) {
         model.setResultList(results);
+        setupColumnRenderers();
         Font font = OWLRendererPreferences.getInstance().getFont();
         resultsTable.setFont(font);
         resultsTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);

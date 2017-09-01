@@ -2,6 +2,7 @@ package org.protege.editor.owl.model.util;
 
 import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import java.util.Optional;
 
@@ -31,20 +32,35 @@ public class OboUtilities_TestCase {
     }
 
     @Test
+    public void shouldRecogniseOboLibraryIri() {
+        assertThat(OboUtilities.isOboIri(IRI.create("http://purl.obolibrary.org/obo/GO_0001234")), is(true));
+    }
+
+    @Test
+    public void shouldRecogniseOboIri() {
+        assertThat(OboUtilities.isOboIri(IRI.create("http://other.place.org/obo/MY_0001234")), is(true));
+    }
+
+    @Test
+    public void shouldNotRecogniseOboIri() {
+        assertThat(OboUtilities.isOboIri(OWLRDFVocabulary.RDFS_LABEL.getIRI()), is(false));
+    }
+
+    @Test
     public void shouldParseOboId() {
-        IRI iri = OboUtilities.getIriFromOboId("GO:0001234");
+        IRI iri = OboUtilities.getOboLibraryIriFromOboId("GO:0001234");
         assertThat(iri.toString(), is("http://purl.obolibrary.org/obo/GO_0001234"));
     }
 
     @Test
     public void shouldParseOboIdWithUnderscore() {
-        IRI iri = OboUtilities.getIriFromOboId("OTHER_THING:0001234");
+        IRI iri = OboUtilities.getOboLibraryIriFromOboId("OTHER_THING:0001234");
         assertThat(iri.toString(), is("http://purl.obolibrary.org/obo/OTHER_THING_0001234"));
     }
 
     @Test(expected = RuntimeException.class)
     public void shouldThrowRuntimeException() {
-        OboUtilities.getIriFromOboId("owl:Thing");
+        OboUtilities.getOboLibraryIriFromOboId("owl:Thing");
     }
 
     @Test

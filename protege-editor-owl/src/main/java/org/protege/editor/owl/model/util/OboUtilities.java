@@ -26,9 +26,12 @@ public class OboUtilities {
      */
     private static final Pattern OBO_ID_PATTERN = Pattern.compile("(([A-Z]|[a-z])+(_([A-Z]|[a-z])+)?):(\\d+)", Pattern.CASE_INSENSITIVE);
 
-    private static final String IRI_BASE = "http://purl.obolibrary.org/obo/";
+    private static final String OBO_LIBRARY_IRI_BASE = "http://purl.obolibrary.org/obo/";
 
-    private static final Pattern OBO_ID_IRI_PATTERN = Pattern.compile(Pattern.quote(IRI_BASE) + "(([A-Z]|[a-z])+(_([A-Z]|[a-z])+)?)_(\\d+)");
+    /**
+     * Any string that ends with something that looks like an Obo Id
+     */
+    private static final Pattern OBO_ID_IRI_PATTERN = Pattern.compile("/(([A-Z]|[a-z])+(_([A-Z]|[a-z])+)?)_(\\d+)$");
 
     private static final int ID_SPACE_GROUP = 1;
 
@@ -40,7 +43,15 @@ public class OboUtilities {
      * @return true if the value to be tested matches the OBO Id pattern.
      */
     public static boolean isOboId(@Nonnull String value) {
-        return OBO_ID_PATTERN.matcher(checkNotNull(value)).matches();
+        return OBO_ID_PATTERN.matcher(checkNotNull(value)).find();
+    }
+
+    /**
+     * Determines if an IRI has a pattern that matches OBO Ids.
+     * @param iri The IRI to be tested.
+     */
+    public static boolean isOboIri(@Nonnull IRI iri) {
+       return OBO_ID_IRI_PATTERN.matcher(iri.toString()).find();
     }
 
     /**
@@ -50,23 +61,20 @@ public class OboUtilities {
      * @return The IRI that corresponds to the OBO Id.
      */
     @Nonnull
-    public static IRI getIriFromOboId(@Nonnull String oboId) {
+    public static IRI getOboLibraryIriFromOboId(@Nonnull String oboId) {
         Matcher matcher = OBO_ID_PATTERN.matcher(checkNotNull(oboId));
         if(!matcher.matches()) {
             throw new RuntimeException("Invalid OBO Id");
         }
         MatchResult matchResult = matcher.toMatchResult();
-        return IRI.create(IRI_BASE + matchResult.group(ID_SPACE_GROUP) + "_" + matchResult.group(LOCAL_ID_GROUP));
+        return IRI.create(OBO_LIBRARY_IRI_BASE + matchResult.group(ID_SPACE_GROUP) + "_" + matchResult.group(LOCAL_ID_GROUP));
     }
 
     @Nonnull
     public static Optional<String> getOboIdFromIri(@Nonnull IRI iri) {
         String iriString = iri.toString();
-        if(!iriString.startsWith(IRI_BASE)) {
-            return Optional.empty();
-        }
         Matcher matcher = OBO_ID_IRI_PATTERN.matcher(iriString);
-        if(!matcher.matches()) {
+        if(!matcher.find()) {
             return Optional.empty();
         }
         return Optional.of(matcher.group(ID_SPACE_GROUP) + ":" + matcher.group(LOCAL_ID_GROUP));

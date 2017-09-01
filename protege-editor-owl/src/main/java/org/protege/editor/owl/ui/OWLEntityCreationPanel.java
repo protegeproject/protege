@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui;
 
-import org.obolibrary.obo2owl.Obo2OWLConstants;
 import org.protege.editor.core.ui.util.AugmentedJTextField;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
@@ -261,7 +260,7 @@ public class OWLEntityCreationPanel<T extends OWLEntity> extends JPanel implemen
                 return getCreationSetForIri(iri);
             }
             else if(isOboId()) {
-                IRI iri = OboUtilities.getIriFromOboId(getEntityName());
+                IRI iri = OboUtilities.getOboLibraryIriFromOboId(getEntityName());
                 if(owlEditorKit.getOWLModelManager().getActiveOntology().containsEntityInSignature(iri, Imports.INCLUDED)) {
                     throw new OWLEntityCreationException("Entity already exists: " + iri);
                 }

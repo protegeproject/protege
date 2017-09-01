@@ -4,6 +4,9 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.search.SearchResult;
 import org.protege.editor.owl.model.search.SearchResultComparator;
 import org.protege.editor.owl.model.search.SearchResultSet;
+import org.protege.editor.owl.model.util.OboUtilities;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
@@ -20,11 +23,21 @@ public class SearchResultsTableModel extends AbstractTableModel {
 
     public static final int DEFAULT_CATEGORY_SIZE_LIMIT = 10;
 
+    private static final String FOUND_IN = "Found in";
+
+    private static final String ENTITY = "Entity";
+
+    private static final String OBO_ID = "Id";
+
+    private static final String MATCH = "Match";
+
     private OWLEditorKit editorKit;
 
     private int categorySizeLimit = DEFAULT_CATEGORY_SIZE_LIMIT;
 
     private java.util.List<ResultsTableModelRow> rows = new ArrayList<>();
+
+    private boolean hasOboIdsInResults = false;
 
     public SearchResultsTableModel(OWLEditorKit editorKit) {
         this.editorKit = editorKit;
@@ -32,7 +45,47 @@ public class SearchResultsTableModel extends AbstractTableModel {
 
     public void clear() {
         rows.clear();
-        fireTableDataChanged();
+        if(hasOboIdsInResults) {
+            hasOboIdsInResults = false;
+            fireTableStructureChanged();
+        }
+        else {
+            fireTableDataChanged();
+        }
+    }
+
+    private boolean hasOboIds() {
+        return rows.stream()
+                   .map(row -> row.getSearchResult().getSubject())
+                   .filter(subject -> subject instanceof OWLEntity)
+                   .map(subject -> (OWLEntity) subject)
+                   .map(OWLEntity::getIRI)
+                   .filter(OboUtilities::isOboIri)
+                   .findAny()
+                   .isPresent();
+    }
+
+    /**
+     * Gets the column used to show OBO Ids.
+     *
+     * @return The column index used to show OBO Ids or -1 if there is no such column
+     */
+    public int getOboIdColumn() {
+        if (hasOboIds()) {
+            return 2;
+        }
+        else {
+            return -1;
+        }
+    }
+
+    public int getResultsColumn() {
+        if (hasOboIds()) {
+            return 3;
+        }
+        else {
+            return 2;
+        }
     }
 
     public int getCategorySizeLimit() {
@@ -79,7 +132,14 @@ public class SearchResultsTableModel extends AbstractTableModel {
                 rows.add(new PlaceHolderRow(categoryResultsCount));
             }
         }
-        fireTableDataChanged();
+        boolean containsOboIds = hasOboIds();
+        if(containsOboIds != hasOboIdsInResults) {
+            hasOboIdsInResults = containsOboIds;
+            fireTableStructureChanged();
+        }
+        else {
+            fireTableDataChanged();
+        }
     }
 
     public ResultsTableModelRow getRow(int rowIndex) {
@@ -94,17 +154,27 @@ public class SearchResultsTableModel extends AbstractTableModel {
     @Override
     public String getColumnName(int column) {
         if (column == 0) {
-            return "Found in";
+            return FOUND_IN;
         }
-        else if (column == 1) {
-            return "Entity";
+        if (column == 1) {
+            return ENTITY;
         }
-        else if (column == 2) {
-            return "Match";
+
+        if (hasOboIds()) {
+            if (column == 2) {
+                return OBO_ID;
+            }
+            if (column == 3) {
+                return MATCH;
+            }
         }
         else {
-            return "";
+            if (column == 2) {
+                return MATCH;
+            }
         }
+
+        return "";
     }
 
     public int getRowCount() {
@@ -112,7 +182,7 @@ public class SearchResultsTableModel extends AbstractTableModel {
     }
 
     public int getColumnCount() {
-        return 3;
+        return hasOboIds() ? 4 : 3;
     }
 
 
@@ -156,15 +226,26 @@ public class SearchResultsTableModel extends AbstractTableModel {
             if (columnIndex == 0) {
                 return searchResult.getGroupDescription();
             }
-            else if (columnIndex == 1) {
+            if (columnIndex == 1) {
                 return searchResult.getSubject();
             }
-            else if (columnIndex == 2) {
-                return searchResult.getSearchString();
+            if (hasOboIds()) {
+                if (columnIndex == 2) {
+                    OWLObject subject = searchResult.getSubject();
+                    if (subject instanceof OWLEntity) {
+                        return OboUtilities.getOboIdFromIri(((OWLEntity) subject).getIRI()).orElse("");
+                    }
+                }
+                if (columnIndex == 3) {
+                    return searchResult.getSearchString();
+                }
             }
             else {
-                return "";
+                if (columnIndex == 2) {
+                    return searchResult.getSearchString();
+                }
             }
+            return "";
         }
     }
 
