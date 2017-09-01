@@ -1,0 +1,50 @@
+---
+# The name of the profile.  This is displayed in the user interface.
+name: Ontology for Biomedical Investigation (OBI)
+
+# A description of the profile.  This is displayed in the user interface when deprecating an entity.
+description: >
+             A profile for obsoletion of OWL entities in the Ontology for Biomedical Investigation (OBI)
+
+# Activated by the OBI ontology
+activatedBy: http://purl.obolibrary.org/obo/obi.owl
+
+# Specifies a prefix - NB Some terms in OBI are prefixed with "obsolete_" and others with "obsolete "
+labelPrefix: obsolete_
+
+# Specifies whether or not the logical definition of the deprecated entity should be removed
+# a value of true means that the logical definition will be removed.  A value of false means that
+# the logical definition will not be removed
+removeLogicalDefinition: true
+
+# Specifies whether or not non-preserved annotations on the deprecated entity will be removed.
+# See the preservedAnnotationAssertionPropertyIris property.
+removeAnnotationAssertions: false
+
+# A list of annotation properties that will be preserved (not removed) during the deprecation.
+# It is not necessary to list rdfs:label as this is treated in a special way and not removed
+preservedAnnotationAssertionPropertyIris:
+  - IAO:0000111 # Editor preferred term
+
+# Preserved annotations will be prefixed with this string
+annotationValuePrefix: obsolete_
+
+# If the deprecated entity has a direct replacement entity then this entity will be pointed to
+# with an annotation along the annotation property specified here.
+replacedByAnnotationPropertyIri: IAO:0100001
+
+# If the deprecated entity does not have a direct replacement then it may be annotated with alternate
+# entities using the annotation property specified here
+alternateEntityAnnotationPropertyIri: rdfs:seeAlso
+
+# The annotation property that is used to provide an annotation that specifies a textual explanation
+# as to why the entity was deprecated
+textualReasonAnnotationPropertyIri: IAO:0000116
+
+deprecatedClassParentIri: http://www.geneontology.org/formats/oboInOwl#ObsoleteClass
+
+deprecationCode:
+  property: IAO:0000231 # has obsolesence reason
+  valueSet:
+    type: Individuals
+    classIri: IAO:0000225 # Obsolescence reason specification

@@ -55,8 +55,8 @@ public class ChildClassExtractor extends OWLAxiomVisitorAdapter {
         child2RelationshipMap.clear();
     }
 
-    public Set<OWLClass> getResult() {
-        return new HashSet<>(results);
+    public Collection<OWLClass> getResult() {
+        return new ArrayList<>(results);
     }
 
 

@@ -1,0 +1,43 @@
+---
+# The name of the profile.  This is displayed in the user interface.
+name: Basic
+
+# A description of the profile.  This is displayed in the user interface when deprecating an entity.
+description: >
+             A profile for deprecation of OWL entities that uses basic built in OWL vocabulary
+             to mark the entity as deprecated.  Labels (rdfs:label), comments (rdfs:comment) and
+             and textual definitions (skos:definition) annotations are preserved and marked as being
+             deprecated.
+
+# Specifies a prefix
+labelPrefix: DEPRECATED
+
+# Specifies whether or not the logical definition of the deprecated entity should be removed
+# a value of true means that the logical definition will be removed.  A value of false means that
+# the logical definition will not be removed
+removeLogicalDefinition: true
+
+# Specifies whether or not non-preserved annotations on the deprecated entity will be removed.
+# See the preservedAnnotationAssertionPropertyIris property.
+removeAnnotationAssertions: true
+
+# A list of annotation properties that will be preserved (not removed) during the deprecation.
+# It is not necessary to list rdfs:label as this is treated in a special way and not removed
+preservedAnnotationAssertionPropertyIris:
+  - rdfs:comment
+  - skos:definition
+
+# Preserved annotations will be prefixed with this string
+annotationValuePrefix: DEPRECATED
+
+# If the deprecated entity has a direct replacement entity then this entity will be pointed to
+# with an annotation along the annotation property specified here.
+replacedByAnnotationPropertyIri: rdfs:seeAlso
+
+# If the deprecated entity does not have a direct replacement then it may be annotated with alternate
+# entities using the annotation property specified here
+alternateEntityAnnotationPropertyIri: rdfs:seeAlso
+
+# The annotation property that is used to provide an annotation that specifies a textual explanation
+# as to why the entity was deprecated
+textualReasonAnnotationPropertyIri: rdfs:comment

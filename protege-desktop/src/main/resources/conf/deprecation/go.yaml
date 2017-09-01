@@ -1,0 +1,13 @@
+---
+name: Gene Ontology (GO)
+description: A profile for obsoletion of entities in the Gene Ontology (GO)
+activatedBy: http://purl.obolibrary.org/obo/go.owl
+removeLogicalDefinition: true
+removeAnnotationAssertions: false
+alternateEntityAnnotationPropertyIri: http://www.geneontology.org/formats/oboInOwl#consider
+replacedByAnnotationPropertyIri: IAO:0100001
+labelPrefix: obsolete
+annotationValuePrefix: OBSOLETE
+preservedAnnotationAssertionPropertyIris:
+  - IAO:0000115
+textualReasonAnnotationPropertyIri: rdfs:comment

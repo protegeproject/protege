@@ -1141,6 +1141,16 @@
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
+
+    <extension id="deprecateentity"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Deprecate/Obsolete entity..."/>
+        <class value="org.protege.editor.owl.ui.deprecation.DeprecateSelectedEntityAction"/>
+        <toolTip value="Deprecates the selected entity"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotM-I"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
     <extension id="menu.RemoveAllDisjointAxioms"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Remove all disjoint classes axioms..."/>

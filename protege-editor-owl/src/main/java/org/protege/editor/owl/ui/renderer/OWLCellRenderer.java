@@ -344,7 +344,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         preferredWidth = table.getParent().getWidth();
         componentBeingRendered = table;
         // Set the size of the table cell
-//        setPreferredWidth(table.getColumnModel().getColumn(column).getWidth());
         return prepareRenderer(value, isSelected, hasFocus);
     }
 
@@ -361,8 +360,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         setupLinkedObjectComponent(tree, cellBounds);
         preferredWidth = -1;
         minTextHeight = 12;
-//        textPane.setBorder(BorderFactory.createEmptyBorder(1, 2, 1, 2 + rightMargin));
-        tree.setToolTipText(value != null ? value.toString() : "");
         Component c = prepareRenderer(value, selected, hasFocus);
         reset();
         return c;
@@ -468,7 +465,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                 ontology = getOWLModelManager().getActiveOntology();
             }
             entity.accept(activeEntityVisitor);
-            if (OWLUtilities.isDeprecated(getOWLModelManager(), entity)) {
+            if (getOWLModelManager().isDeprecated(entity)) {
                 setStrikeThrough(true);
             }
             else {
@@ -818,7 +815,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                 else if (highlightUnsatisfiableProperties && curEntity instanceof OWLObjectProperty) {
                     highlightPropertyIfUnsatisfiable(curEntity, doc, tokenStartIndex, tokenLength);
                 }
-                if (OWLUtilities.isDeprecated(owlEditorKit.getOWLModelManager(), curEntity)) {
+                if (getOWLModelManager().isDeprecated(curEntity)) {
                     setStrikeThrough(true);
                 }
                 else {
