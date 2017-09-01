@@ -391,7 +391,7 @@ public class SearchResultsPanel extends JPanel {
                     }
                 }
 
-                if (OWLUtilities.isDeprecated(editorKit.getOWLModelManager(), owlObject)) {
+                if (editorKit.getOWLModelManager().isDeprecated(owlObject)) {
                     builder.applyStyleAttributes(StrikeThroughAttribute.getSingle());
                 }
                 if (isSelected) {

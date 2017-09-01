@@ -125,7 +125,7 @@ public abstract class AbstractOWLObjectHierarchyProvider<N extends OWLObject> im
                 .collect(toSet());
     }
 
-    protected Set<N> getUnfilteredChildren(N object) {
+    protected Collection<N> getUnfilteredChildren(N object) {
         return Collections.emptySet();
     }
 
