@@ -1088,7 +1088,7 @@
         <name value="Convert to primitive class"/>
         <class value="org.protege.editor.owl.ui.action.ConvertToPrimitiveClassAction"/>
         <toolTip value="Converts the equivalent classes of the selected class to superclasses."/>
-        <path value="org.protege.editor.core.application.menu.EditMenu/SlotM-B"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotG-A"/>
         <accelerator value="P"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
@@ -1099,8 +1099,36 @@
         <name value="Convert to defined class"/>
         <class value="org.protege.editor.owl.ui.action.ConvertToDefinedClassAction"/>
         <toolTip value="Converts the superclasses of the selected class to an equivalent class."/>
-        <path value="org.protege.editor.core.application.menu.EditMenu/SlotM-C"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotG-B"/>
         <accelerator value="D"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="context.menu.MakePrimitiveSiblingsDisjoint"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Make primitive siblings disjoint"/>
+        <class value="org.protege.editor.owl.ui.action.MakePrimitiveSiblingsDisjoint"/>
+        <toolTip value="Makes primitive sibling classes disjoint.  All disjoint axioms are added to the current ontology."/>
+        <path value="[AssertedClassHierarchy]/SlotG-C"/>
+        <editorKitId value="OWLEditorKit"/>
+        <accelerator value="J"/>
+    </extension>
+
+    <extension id="menu.MakeAllIndividualsDistinct"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Make all individuals different"/>
+        <class value="org.protege.editor.owl.ui.action.MakeAllIndividualsDifferent"/>
+        <toolTip value="Removes all DifferentIndividuals axioms and adds one DifferentIndividuals axiom containing all individuals in the signature of the active ontologies."/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotG-D"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="menu.MakeInstancesOfClassDifferentIndividuals"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Make instances different"/>
+        <class value="org.protege.editor.owl.ui.action.MakeInstancesOfClassDifferentIndividualsAction"/>
+        <toolTip value="Makes the individuals that are instances the selected class different individuals.  This only changes the active ontology."/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotG-E"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
@@ -1109,65 +1137,42 @@
         <name value="Add covering axiom"/>
         <class value="org.protege.editor.owl.ui.action.AddCoveringAxiomAction"/>
         <toolTip value="Adds a covering axiom to the selected class.  If a class A has subclassses B, C and D then the covering axiom for A is the union class (B or C or D).  This forces all instances of A to be a member of one of its subclasses."/>
-        <path value="org.protege.editor.core.application.menu.EditMenu/SlotM-D"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotG-F"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
-    <extension id="menu.MakeAllIndividualsDistinct"
-               point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Make all individuals different"/>
-        <class value="org.protege.editor.owl.ui.action.MakeAllIndividualsDifferent"/>
-        <toolTip value="Removes all DifferentIndividuals axioms and adds one DifferentIndividuals axiom containing all individuals in the signature of the active ontologies.  This only changes the active ontology."/>
-        <path value="org.protege.editor.core.application.menu.EditMenu/SlotN-A"/>
-        <editorKitId value="OWLEditorKit"/>
-    </extension>
-
-    <extension id="menu.MakePrimitiveSiblingsDisjoint"
-               point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Make primitive siblings disjoint"/>
-        <class value="org.protege.editor.owl.ui.action.MakePrimitiveSiblingsDisjoint"/>
-        <toolTip value="Makes primitive sibling classes disjoint.  All disjoint axioms are added to the current ontology."/>
-        <path value="org.protege.editor.core.application.menu.EditMenu/SlotM-F"/>
-        <editorKitId value="OWLEditorKit"/>
-        <accelerator value="J"/>
-    </extension>
 
     <extension id="menu.RemoveLocalDisjointAxioms"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Remove disjoint classes axioms that mention subclasses..."/>
+        <name value="Remove local disjoint classes axioms..."/>
         <class value="org.protege.editor.owl.ui.action.RemoveLocalDisjointAxiomsAction"/>
         <toolTip value="Removes all of the disjoint classes axioms that reference subclasses of the selected class."/>
-        <path value="org.protege.editor.core.application.menu.EditMenu/SlotM-G"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotO-D"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
-
-    <extension id="deprecateentity"
-               point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Deprecate/Obsolete entity..."/>
-        <class value="org.protege.editor.owl.ui.deprecation.DeprecateSelectedEntityAction"/>
-        <toolTip value="Deprecates the selected entity"/>
-        <path value="org.protege.editor.core.application.menu.EditMenu/SlotM-I"/>
-        <editorKitId value="OWLEditorKit"/>
-    </extension>
 
     <extension id="menu.RemoveAllDisjointAxioms"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Remove all disjoint classes axioms..."/>
         <class value="org.protege.editor.owl.ui.action.RemoveAllDisjointAxiomsAction"/>
         <toolTip value="Removes all of the disjoint classes axioms in the active ontologies"/>
-        <path value="org.protege.editor.core.application.menu.EditMenu/SlotN-B"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotO-E"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
-    <extension id="menu.MakeInstancesOfClassDifferentIndividuals"
+
+    <extension id="deprecateentity"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Make instances different individuals"/>
-        <class value="org.protege.editor.owl.ui.action.MakeInstancesOfClassDifferentIndividualsAction"/>
-        <toolTip value="Makes the individuals that are instances the selected class different individuals.  This only changes the active ontology."/>
-        <path value="org.protege.editor.core.application.menu.EditMenu/SlotM-H"/>
+        <name value="Deprecate entity..."/>
+        <class value="org.protege.editor.owl.ui.deprecation.DeprecateSelectedEntityAction"/>
+        <toolTip value="Deprecates the selected entity"/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotP-A"/>
         <editorKitId value="OWLEditorKit"/>
     </extension>
+
+
+
 
     <!-- Ontology libraries/locations -->
 
@@ -1610,16 +1615,6 @@
         <path value="[AssertedClassHierarchy]/SlotM-C"/>
         <accelerator value="D"/>
         <editorKitId value="OWLEditorKit"/>
-    </extension>
-
-    <extension id="context.menu.MakePrimitiveSiblingsDisjoint"
-               point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Make primitive siblings disjoint"/>
-        <class value="org.protege.editor.owl.ui.action.MakePrimitiveSiblingsDisjoint"/>
-        <toolTip value="Makes primitive sibling classes disjoint.  All disjoint axioms are added to the current ontology."/>
-        <path value="[AssertedClassHierarchy]/SlotM-F"/>
-        <editorKitId value="OWLEditorKit"/>
-        <accelerator value="J"/>
     </extension>
 
     <extension id="context.menu.RemoveLocalDisjointAxioms"
