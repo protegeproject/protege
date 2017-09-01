@@ -7,6 +7,7 @@ import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
 import org.protege.editor.owl.model.search.SearchManager;
 import org.protege.editor.owl.model.search.SearchRequest;
 import org.protege.editor.owl.model.search.SearchResultSet;
+import org.protege.editor.owl.model.util.OboUtilities;
 import org.protege.editor.owl.ui.transfer.TransferableOWLObject;
 import org.protege.editor.owl.ui.view.ViewClipboard;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -93,8 +94,11 @@ public class SearchPanel extends JPanel {
             ImmutableList.Builder<Pattern> builder = ImmutableList.builder();
 
             String preparedSearchString;
-            for (String splitSearchString : getSearchString().split(WHITE_SPACE_PATTERN)) {
-                if (prefs.isUseRegularExpressions()) {
+            for (final String splitSearchString : getSearchString().split(WHITE_SPACE_PATTERN)) {
+                if(OboUtilities.isOboId(splitSearchString)) {
+                    preparedSearchString = splitSearchString.replace(":", "(?::|_)");
+                }
+                else if (prefs.isUseRegularExpressions()) {
                     preparedSearchString = splitSearchString;
                     if (prefs.isIgnoreWhiteSpace()) {
                         preparedSearchString = preparedSearchString.replace(" ", WHITE_SPACE_PATTERN);
