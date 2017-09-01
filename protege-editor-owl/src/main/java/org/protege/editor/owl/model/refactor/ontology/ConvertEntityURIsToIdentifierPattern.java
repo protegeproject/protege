@@ -2,10 +2,10 @@ package org.protege.editor.owl.model.refactor.ontology;
 
 import com.google.common.collect.ListMultimap;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.ui.renderer.AnnotationValueShortFormProvider;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.AnnotationValueShortFormProvider;
 import org.semanticweb.owlapi.util.OWLEntityURIConverter;
 import org.semanticweb.owlapi.util.OWLEntityURIConverterStrategy;
 import org.semanticweb.owlapi.util.ShortFormProvider;
