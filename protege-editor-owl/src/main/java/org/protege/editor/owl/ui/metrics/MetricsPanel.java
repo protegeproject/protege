@@ -1,14 +1,14 @@
 package org.protege.editor.owl.ui.metrics;
 
-import org.protege.editor.core.ui.util.ComponentFactory;
+import org.protege.editor.core.Disposable;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.OWLAxiomTypeFramePanel;
-import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.semanticweb.owlapi.metrics.*;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
@@ -33,11 +33,13 @@ import java.util.List;
  * Bio-Health Informatics Group<br>
  * Date: 29-Oct-2007<br><br>
  */
-public class MetricsPanel extends JPanel {
+public class MetricsPanel extends JPanel implements Disposable {
 
     private final Map<String, OWLMetricManager> metricManagerMap = new LinkedHashMap<>();
 
     private final Map<OWLMetricManager, MetricsTableModel> tableModelMap = new HashMap<>();
+
+    private final OWLOntologyChangeListener ontologyChangeListener = changes -> invalidateMetrics();
 
     private OWLEditorKit owlEditorKit;
 
@@ -51,8 +53,17 @@ public class MetricsPanel extends JPanel {
         setOpaque(true);
         initialiseOWLView();
         createPopupMenu();
+        editorKit.getOWLModelManager().addOntologyChangeListener(ontologyChangeListener);
     }
 
+    @Override
+    public void dispose() throws Exception {
+        owlEditorKit.getOWLModelManager().removeOntologyChangeListener(ontologyChangeListener);
+    }
+
+    private void invalidateMetrics() {
+        tableModelMap.values().forEach(MetricsTableModel::invalidate);
+    }
 
     private void createPopupMenu() {
         JMenuItem showAxioms = new JMenuItem("Show axioms");

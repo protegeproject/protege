@@ -2,6 +2,8 @@ package org.protege.editor.owl.ui.metrics;
 
 import org.protege.editor.owl.ui.view.AbstractActiveOntologyViewComponent;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 /*
@@ -19,6 +21,8 @@ import java.awt.*;
  */
 public class AxiomMetricsViewComponent extends AbstractActiveOntologyViewComponent {
 
+    private static final Logger logger = LoggerFactory.getLogger(AxiomMetricsViewComponent.class);
+
     private MetricsPanel metricsPanel;
 
     protected void initialiseOntologyView() throws Exception {
@@ -28,7 +32,11 @@ public class AxiomMetricsViewComponent extends AbstractActiveOntologyViewCompone
     }
 
     protected void disposeOntologyView() {
-        // do nothing
+        try {
+            metricsPanel.dispose();
+        } catch (Exception e) {
+            logger.error("An error occurred whilst disposing of the metrics panel", e);
+        }
     }
 
     protected void updateView(OWLOntology activeOntology) throws Exception {

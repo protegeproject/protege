@@ -4,6 +4,8 @@ import org.semanticweb.owlapi.metrics.OWLMetric;
 import org.semanticweb.owlapi.metrics.OWLMetricManager;
 
 import javax.swing.table.AbstractTableModel;
+import java.util.ArrayList;
+import java.util.List;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -20,6 +22,8 @@ import javax.swing.table.AbstractTableModel;
 public class MetricsTableModel extends AbstractTableModel {
 
     private OWLMetricManager metricManager;
+
+    private List<Object> metricsValues = new ArrayList<>();
 
 
     public MetricsTableModel(OWLMetricManager metricManager) {
@@ -38,13 +42,24 @@ public class MetricsTableModel extends AbstractTableModel {
 
 
     public Object getValueAt(int rowIndex, int columnIndex) {
+        if(metricsValues.isEmpty()) {
+            rebuild();
+        }
         OWLMetric<?> metric = metricManager.getMetrics().get(rowIndex);
         if (columnIndex == 0) {
             return metric.getName();
         }
         else {
-            return metric.getValue();
+            return metricsValues.get(rowIndex);
         }
+    }
+
+    private void rebuild() {
+        metricManager.getMetrics().forEach(m -> metricsValues.add(m.getValue()));
+    }
+
+    public void invalidate() {
+        metricsValues.clear();
     }
 
 
