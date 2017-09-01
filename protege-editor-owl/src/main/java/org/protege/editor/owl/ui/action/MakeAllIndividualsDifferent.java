@@ -3,6 +3,7 @@ package org.protege.editor.owl.ui.action;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.refactor.AllDifferentCreator;
+import org.semanticweb.owlapi.model.HasIndividualsInSignature;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
@@ -68,7 +69,8 @@ public class MakeAllIndividualsDifferent extends ProtegeOWLAction {
         changes.stream()
                .filter(OWLOntologyChange::isAxiomChange)
                .map(OWLOntologyChange::getAxiom)
-               .filter(ax -> ax.getAxiomType() == DIFFERENT_INDIVIDUALS)
+               .map(HasIndividualsInSignature::getIndividualsInSignature)
+               .filter(inds -> !inds.isEmpty())
                .findAny()
                .ifPresent(ax -> updateState());
     }
