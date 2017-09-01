@@ -16,7 +16,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static java.util.stream.Collectors.toSet;
 
 
 /**
@@ -58,8 +57,6 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
     private final TerminalElementFinder<OWLClass> rootFinder;
 
     private final Set<OWLClass> nodesToUpdate = new HashSet<>();
-
-//    private ImmutableSet<OWLObjectProperty> relationshipProperties = ImmutableSet.of();
 
     public AssertedClassHierarchyProvider(@Nonnull OWLOntologyManager owlOntologyManager) {
         super(owlOntologyManager);
@@ -223,7 +220,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
         return Collections.singleton(root);
     }
 
-    protected Set<OWLClass> getUnfilteredChildren(OWLClass object) {
+    protected Collection<OWLClass> getUnfilteredChildren(OWLClass object) {
         ontologySetReadLock.lock();
         try {
             if (object.equals(root)) {
@@ -234,21 +231,14 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
                 return result;
             }
             else {
-                Set<OWLClass> result = extractChildren(object);
-                for (Iterator<OWLClass> it = result.iterator(); it.hasNext(); ) {
-                    OWLClass curChild = it.next();
-                    if (getAncestors(object).contains(curChild)) {
-                        it.remove();
-                    }
-                }
-                return result;
+                return extractChildren(object);
             }
         } finally {
             ontologySetReadLock.unlock();
         }
     }
 
-    private Set<OWLClass> extractChildren(OWLClass parent) {
+    private Collection<OWLClass> extractChildren(OWLClass parent) {
         childClassExtractor.setCurrentParentClass(parent);
         for (OWLOntology ont : ontologies) {
             for (OWLAxiom ax : ont.getReferencingAxioms(parent)) {
@@ -287,6 +277,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
             // Thing if the object is a root class
             if (rootFinder.getTerminalElements().contains(object)) {
                 result.add(root);
+                return result;
             }
             // Not a root, so must have another parent
             parentClassExtractor.reset();
@@ -315,16 +306,6 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
                     }
                 }
             }
-            Set<OWLClass> ancestors = getAncestors(object);
-            if (ancestors.contains(object)) {
-                for (OWLClass cls : ancestors) {
-                    if (getAncestors(cls).contains(object)) {
-                        result.add(cls);
-                    }
-                }
-                result.remove(object);
-                result.remove(root);
-            }
             return result;
         } finally {
             ontologySetReadLock.unlock();
@@ -344,6 +325,9 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
     @Override
     public Optional<?> getRelationship(OWLClass parent, OWLClass child) {
         if(parent.isOWLThing()) {
+            return Optional.empty();
+        }
+        if(childClassExtractor.getRelationships().isEmpty()) {
             return Optional.empty();
         }
         if (childClassExtractor.getCurrentParentClass().equals(Optional.of(parent))) {

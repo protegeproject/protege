@@ -9,6 +9,7 @@ import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCacheImpl;
 import org.protege.editor.owl.model.cache.OWLObjectRenderingCache;
 import org.protege.editor.owl.model.classexpression.anonymouscls.AnonymousDefinedClassManager;
+import org.protege.editor.owl.model.cache.DeprecationCache;
 import org.protege.editor.owl.model.entity.CustomOWLEntityFactory;
 import org.protege.editor.owl.model.entity.OWLEntityFactory;
 import org.protege.editor.owl.model.event.EventType;
@@ -46,6 +47,7 @@ import org.semanticweb.owlapi.util.SimpleIRIMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.io.File;
 import java.net.URI;
@@ -123,6 +125,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     private OWLExpressionCheckerFactory owlExpressionCheckerFactory;
 
+    private final DeprecationCache deprecationCache;
 
     // error handlers
 
@@ -144,12 +147,13 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     private final List<IOListener> ioListeners = new ArrayList<>();
 
 
+
+
     public OWLModelManagerImpl() {
         super();
 
         manager = OWLManager.createConcurrentOWLOntologyManager();
         manager.addOntologyChangeListener(this);
-        manager.addOntologyLoaderListener(this);
 
         // URI mappers for loading - added in reverse order
         PriorityCollection<OWLOntologyIRIMapper> iriMappers = manager.getIRIMappers();
@@ -175,6 +179,8 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         owlReasonerManager = new OWLReasonerManagerImpl(this);
         owlReasonerManager.getReasonerPreferences().addListener(() -> fireEvent(EventType.ONTOLOGY_CLASSIFIED));
 
+
+        deprecationCache = new DeprecationCache(manager.getOWLDataFactory().getOWLDeprecated());
 
         // force the renderer to be created
         // to prevent double cache rebuild once ontologies loaded
@@ -641,6 +647,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         this.activeOntology = activeOntology;
         logger.debug("Setting active ontology to " + activeOntology.getOntologyID());
         rebuildActiveOntologiesCache();
+        deprecationCache.rebuildCacheFromActiveOntologies(getActiveOntologies());
         // Rebuild entity indices
         entityRenderer.ontologiesChanged();
         rebuildEntityIndices();
@@ -705,6 +712,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         if (changes.isEmpty()) {
             return;
         }
+        deprecationCache.handleOntologyChanges(changes, getActiveOntologies());
         getHistoryManager().logChanges(changes);
         boolean refreshActiveOntology = false;
         for (OWLOntologyChange change : changes) {
@@ -928,6 +936,11 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         logger.debug("Rebuilt entity indices in {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
     }
 
+    @Override
+    public boolean isDeprecated(@Nonnull OWLObject object) {
+        return deprecationCache.isDeprecated(object);
+    }
+
     //////////////////////////////////////////////////////////////////////////////////////
     //
     //  Reasoner
@@ -963,4 +976,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     public void setLoadErrorHandler(OntologyLoadErrorHandler handler) {
         this.loadErrorHandler = handler;
     }
+
+
 }

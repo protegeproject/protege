@@ -47,7 +47,7 @@ public class SubClassesValueSet implements ValueSet {
             OWLClass cls = modelManager.getOWLDataFactory().getOWLClass(iri);
             return hierarchyProvider.getChildren(cls).stream()
                                     // Exclude deprecated entities
-                                    .filter(c -> !OWLUtilities.isDeprecated(modelManager, c))
+                                    .filter(c -> !modelManager.isDeprecated(c))
                                     .map(child -> new LabelledValue(cls, unescape(modelManager.getRendering(child))))
                                     .collect(toList());
         }).orElse(Collections.emptyList());

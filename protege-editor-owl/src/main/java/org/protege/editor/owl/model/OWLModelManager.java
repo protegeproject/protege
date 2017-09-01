@@ -21,6 +21,7 @@ import org.protege.xmlcatalog.XMLCatalog;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.net.URI;
 import java.util.Comparator;
@@ -313,4 +314,13 @@ public interface OWLModelManager extends ModelManager, HasActiveOntology {
     void setLoadErrorHandler(OntologyLoadErrorHandler handler);
 
     XMLCatalog addRootFolder(File dir);
+
+    /**
+     * Determines if the specified entity is deprecated by axioms in the active ontologies.
+     * @param entity The entity.
+     * @return true if the entity is deprecated by statements in the active ontologies otherwise false.
+     */
+    default boolean isDeprecated(@Nonnull OWLObject entity) {
+        return false;
+    }
 }

@@ -163,8 +163,8 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
                     return 1;
                 }
                 else {
-                    boolean deprecated1 = OWLUtilities.isDeprecated(modelManager, o1);
-                    boolean deprecated2 = OWLUtilities.isDeprecated(modelManager, o2);
+                    boolean deprecated1 = modelManager.isDeprecated(o1);
+                    boolean deprecated2 = modelManager.isDeprecated(o2);
                     if (deprecated1 != deprecated2) {
                         return deprecated1 ? 1 : -1;
                     }
@@ -366,7 +366,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
     }
 
     private boolean isNotDeprecated(E e) {
-        return !OWLUtilities.isDeprecated(getOWLModelManager(), e);
+        return !getOWLModelManager().isDeprecated(e);
     }
 
 

@@ -9,6 +9,7 @@ import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
 import org.protege.editor.owl.ui.action.DeleteClassAction;
 import org.protege.editor.owl.ui.renderer.AddChildIcon;
 import org.protege.editor.owl.ui.renderer.AddSiblingIcon;
+import org.protege.editor.owl.ui.renderer.ProtegeTreeNodeRenderer;
 import org.protege.editor.owl.ui.renderer.OWLClassIcon;
 import org.protege.editor.owl.ui.tree.OWLObjectTreeNode;
 import org.protege.editor.owl.ui.tree.OWLTreeDragAndDropHandler;
@@ -128,6 +129,7 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
             }
         });
         getAssertedTree().setPopupMenuId(new PopupMenuId("[AssertedClassHierarchy]"));
+        getAssertedTree().setCellRenderer(new ProtegeTreeNodeRenderer(getOWLEditorKit()));
     }
 
     private void handleAdd(OWLClass child, OWLClass parent) {
