@@ -151,7 +151,6 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         });
 
         getSelectionModel().addTreeSelectionListener(event -> {
-            scrollPathToVisible(event.getNewLeadSelectionPath());
             fireBreadcrumbTrailChanged();
         });
     }
