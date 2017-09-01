@@ -1104,6 +1104,18 @@
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
+
+    <extension id="context.menu.MakePrimitiveSiblingsDisjoint"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Make primitive siblings disjoint"/>
+        <class value="org.protege.editor.owl.ui.action.MakePrimitiveSiblingsDisjoint"/>
+        <toolTip value="Makes primitive sibling classes disjoint.  All disjoint axioms are added to the current ontology."/>
+        <path value="org.protege.editor.core.application.menu.EditMenu/SlotG-C"/>
+        <editorKitId value="OWLEditorKit"/>
+        <accelerator value="J"/>
+    </extension>
+
+
     <extension id="context.menu.MakePrimitiveSiblingsDisjoint"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Make primitive siblings disjoint"/>
