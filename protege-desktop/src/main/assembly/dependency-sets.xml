@@ -35,6 +35,8 @@
                 <include>com.google.inject.extensions:guice-multibindings:jar</include>
                 <include>org.apache.servicemix.bundles:org.apache.servicemix.bundles.javax-inject:jar</include>
                 <include>org.apache.servicemix.bundles:org.apache.servicemix.bundles.aopalliance:jar</include>
+                <include>org.eclipse.jgit:org.eclipse.jgit:jar</include>
+                <include>com.googlecode.javaewah:JavaEWAH:jar</include>
             </includes>
             <useStrictFiltering>true</useStrictFiltering>
             <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
