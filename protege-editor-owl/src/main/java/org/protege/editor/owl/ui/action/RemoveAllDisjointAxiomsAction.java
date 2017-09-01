@@ -11,6 +11,10 @@ import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static javax.swing.JOptionPane.*;
+import static org.semanticweb.owlapi.model.AxiomType.DISJOINT_CLASSES;
 
 
 /**
@@ -32,6 +36,8 @@ public class RemoveAllDisjointAxiomsAction extends ProtegeOWLAction {
         }
     };
 
+    private OWLOntologyChangeListener changeListener = this::handleOntologyChanges;
+
 
     public void actionPerformed(ActionEvent e) {
         try {
@@ -39,22 +45,24 @@ public class RemoveAllDisjointAxiomsAction extends ProtegeOWLAction {
             int result = uiHelper.showOptionPane("Remove axioms from imported ontologies?",
                                                  "Do you want to remove the disjoint classes axioms from " +
                                                          "imported ontologies?",
-                                                 JOptionPane.YES_NO_CANCEL_OPTION,
-                                                 JOptionPane.QUESTION_MESSAGE);
+                                                 YES_NO_CANCEL_OPTION,
+                                                 QUESTION_MESSAGE);
 
             Set<OWLOntology> ontologies = new HashSet<>();
-            if (result == JOptionPane.YES_OPTION) {
+            if (result == YES_OPTION) {
                 ontologies.addAll(getOWLModelManager().getActiveOntologies());
             }
-            else if (result == JOptionPane.NO_OPTION) {
+            else if (result == NO_OPTION) {
                 ontologies = Collections.singleton(getOWLModelManager().getActiveOntology());
             }
             List<OWLOntologyChange> changes = new ArrayList<>();
-            for (OWLOntology ont : ontologies) {
-                for (OWLDisjointClassesAxiom ax : ont.getAxioms(AxiomType.DISJOINT_CLASSES)) {
-                    changes.add(new RemoveAxiom(ont, ax));
-                }
-            }
+            ontologies.forEach(o -> {
+                changes.addAll(o.getAxioms(DISJOINT_CLASSES)
+                                  .stream()
+                                  .map(ax -> new RemoveAxiom(o, ax))
+                                  .collect(Collectors.toList()));
+
+            });
             getOWLModelManager().applyChanges(changes);
         }
         catch (Exception ex) {
@@ -64,17 +72,30 @@ public class RemoveAllDisjointAxiomsAction extends ProtegeOWLAction {
 
 
     private void updateState() {
-        setEnabled(getOWLModelManager().isActiveOntologyMutable());
+        boolean containsDisjointClassesAxioms = getOWLModelManager().getActiveOntologies().stream()
+                                                                    .filter(o -> o.getAxiomCount(DISJOINT_CLASSES) > 0)
+                                                                    .findAny().isPresent();
+        setEnabled(getOWLModelManager().isActiveOntologyMutable() && containsDisjointClassesAxioms);
+    }
+
+    private void handleOntologyChanges(List<? extends OWLOntologyChange> changes) {
+        changes.stream()
+                .filter(OWLOntologyChange::isAxiomChange)
+                .map(OWLOntologyChange::getAxiom)
+                .filter(ax -> ax.getAxiomType() == DISJOINT_CLASSES)
+                .findAny().ifPresent(ax -> updateState());
     }
 
 
     public void initialise() throws Exception {
         getOWLModelManager().addListener(listener);
+        getOWLModelManager().addOntologyChangeListener(changeListener);
         updateState();
     }
 
 
     public void dispose() {
         getOWLModelManager().removeListener(listener);
+        getOWLModelManager().removeOntologyChangeListener(changeListener);
     }
 }
