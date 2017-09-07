@@ -56,7 +56,7 @@ public class GitStatusViewImpl implements GitStatusView {
         sb.append(branchName);
         sb.append("</span>");
         if(modified) {
-            sb.append(" (ontologies modified)");
+            sb.append(" (uncommitted changes to ontologies)");
         }
         sb.append("</body></html>");
         label.setText(sb.toString());
