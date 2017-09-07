@@ -15,6 +15,8 @@ public class UserNamePreferencesManager {
 
     public static final String PREFERENCES_KEY = "user.name";
 
+    private static final String USE_GIT_USER_NAME = "use.git.user.name";
+
     private final Preferences preferences;
 
     /**
@@ -23,6 +25,19 @@ public class UserNamePreferencesManager {
      */
     public UserNamePreferencesManager(Preferences preferences) {
         this.preferences = checkNotNull(preferences);
+    }
+
+    /**
+     * Determines whether or not the user name provided by Git (given the context of active ontologies that are under
+     * Git version control) should be used as the user name.
+     * @return true if the Git user name should be used when available or false if it should never be used.
+     */
+    public boolean isUseGitUserNameIfAvailable() {
+        return preferences.getBoolean(USE_GIT_USER_NAME, false);
+    }
+
+    public void setUseGitUserNameIfAvailable(boolean b) {
+        preferences.putBoolean(USE_GIT_USER_NAME, b);
     }
 
     public Optional<String> getUserName() {
@@ -43,7 +58,4 @@ public class UserNamePreferencesManager {
     public void clearUserName() {
         preferences.putString(PREFERENCES_KEY, null);
     }
-
-
-
 }

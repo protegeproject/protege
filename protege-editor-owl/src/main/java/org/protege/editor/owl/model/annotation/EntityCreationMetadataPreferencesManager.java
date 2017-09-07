@@ -25,6 +25,8 @@ public class EntityCreationMetadataPreferencesManager {
 
     private static final String CREATED_BY_USE_ORCID = "created.by.use.orcid";
 
+    private static final String CREATED_BY_USE_GIT_USERNAME = "created.by.use.git.username";
+
 
     private static final String CREATION_DATE_ANNOTATION_ENABLED_KEY = "creation.date.enabled";
 
@@ -60,6 +62,14 @@ public class EntityCreationMetadataPreferencesManager {
 
     public void setCreationDateAnnotationEnabled(boolean enabled) {
         preferences.putBoolean(CREATION_DATE_ANNOTATION_ENABLED_KEY, enabled);
+    }
+
+    public boolean isCreatedByValueGitUserName() {
+        return preferences.getBoolean(CREATED_BY_USE_GIT_USERNAME, false);
+    }
+
+    public void setCreatedByValueGitUserName(boolean b) {
+        preferences.putBoolean(CREATED_BY_USE_GIT_USERNAME, b);
     }
 
     public IRI getCreatedByAnnotationPropertyIRI() {

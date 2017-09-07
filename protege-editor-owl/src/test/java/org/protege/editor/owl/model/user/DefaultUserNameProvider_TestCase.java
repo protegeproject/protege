@@ -26,28 +26,42 @@ public class DefaultUserNameProvider_TestCase {
 
     private DefaultUserNameProvider provider;
 
+
+    @Mock
+    private UserNameProvider gitRepoUserNameProvider;
+
     @Mock
     private UserNamePreferencesManager preferencesManager;
 
     @Mock
     private Properties properties;
 
+
     @Before
     public void setUp() throws Exception {
-        provider = new DefaultUserNameProvider(preferencesManager, properties);
+        provider = new DefaultUserNameProvider(gitRepoUserNameProvider, preferencesManager, properties);
+    }
+
+    @Test
+    public void shouldReturnGitRepositoryUserName() {
+        when(preferencesManager.isUseGitUserNameIfAvailable()).thenReturn(true);
+        when(gitRepoUserNameProvider.getUserName()).thenReturn(Optional.of("git.repo.user.name"));
+        assertThat(provider.getUserName(), is(Optional.of("git.repo.user.name")));
     }
 
     @Test
     public void shouldReturnPreferencesManagerUserName() {
         Optional<String> userName = Optional.of(USER_NAME);
         when(preferencesManager.getUserName()).thenReturn(userName);
+        when(gitRepoUserNameProvider.getUserName()).thenReturn(Optional.empty());
         assertThat(provider.getUserName(), is(userName));
         verify(properties, never()).getProperty(anyString());
     }
 
     @Test
     public void shouldReturnPropertiesUserName() {
-        when(preferencesManager.getUserName()).thenReturn(Optional.<String>empty());
+        when(gitRepoUserNameProvider.getUserName()).thenReturn(Optional.empty());
+        when(preferencesManager.getUserName()).thenReturn(Optional.empty());
         when(properties.getProperty("user.name")).thenReturn(USER_NAME);
         assertThat(provider.getUserName(), is(Optional.of(USER_NAME)));
         verify(preferencesManager, times(1)).getUserName();
@@ -55,7 +69,8 @@ public class DefaultUserNameProvider_TestCase {
     }
 
     @Test
-    public void shouldReturnAbsent() {
+    public void shouldReturnEmpty() {
+        when(gitRepoUserNameProvider.getUserName()).thenReturn(Optional.empty());
         Optional<String> empty = Optional.<String>empty();
         when(preferencesManager.getUserName()).thenReturn(empty);
         when(properties.getProperty(anyString())).thenReturn(null);

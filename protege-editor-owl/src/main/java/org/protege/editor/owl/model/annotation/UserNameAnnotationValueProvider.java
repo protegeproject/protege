@@ -1,9 +1,11 @@
 package org.protege.editor.owl.model.annotation;
 
+import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.user.UserNameProvider;
 import org.semanticweb.owlapi.model.OWLAnnotationValue;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 
+import javax.annotation.Nonnull;
 import java.util.Optional;
 
 /**
@@ -15,7 +17,7 @@ public class UserNameAnnotationValueProvider implements AnnotationValueProvider 
 
     private final UserNameProvider userNameProvider;
 
-    public UserNameAnnotationValueProvider(UserNameProvider userNameProvider) {
+    public UserNameAnnotationValueProvider(@Nonnull UserNameProvider userNameProvider) {
         this.userNameProvider = userNameProvider;
     }
 
