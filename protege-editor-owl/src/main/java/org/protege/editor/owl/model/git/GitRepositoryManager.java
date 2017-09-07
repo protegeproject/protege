@@ -6,6 +6,7 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.user.UserNameProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,9 +34,13 @@ import static java.util.stream.Collectors.toSet;
  * the root ontology document IRI.  If the document IRI is contained within an ancestor directory
  * that contains a .git directory then this is taken to be the underlying Git repository.
  */
-public class GitRepositoryManager {
+public class GitRepositoryManager implements UserNameProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(GitRepositoryManager.class);
+
+    private static final String USER_SECTION = "user";
+
+    private static final String USER_NAME = "name";
 
     @Nonnull
     private final OWLModelManager modelManager;
@@ -122,6 +127,15 @@ public class GitRepositoryManager {
                 return Optional.empty();
             }
         }
+    }
+
+    /**
+     * Gets the user name for underlying Git repository.
+     * @return The username or an empty value if there is no underlying Git repository.
+     */
+    @Nonnull
+    public Optional<String> getUserName() {
+        return getRepository().map(repo -> repo.getConfig().getString(USER_SECTION, null, USER_NAME));
     }
 
     /**

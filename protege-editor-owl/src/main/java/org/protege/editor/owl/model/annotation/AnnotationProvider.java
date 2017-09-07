@@ -1,5 +1,7 @@
 package org.protege.editor.owl.model.annotation;
 
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.*;
 
 import javax.inject.Provider;
@@ -30,5 +32,9 @@ public final class AnnotationProvider {
                     return dataFactory.getOWLAnnotation(property, annotationValue.get());
                 }
         );
+    }
+
+    public Optional<OWLAnnotation> getAnnotation(OWLEditorKit editorKit) {
+        return Optional.empty();
     }
 }

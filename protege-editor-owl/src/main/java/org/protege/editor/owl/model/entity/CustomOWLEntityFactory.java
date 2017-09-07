@@ -197,6 +197,7 @@ public class CustomOWLEntityFactory implements OWLEntityFactory {
 
     private EntityCreationMetadataProvider getEntityCreationMetadataProvider() {
         PreferencesBasedEntityCreationMetadataProviderFactory factory = new PreferencesBasedEntityCreationMetadataProviderFactory(
+                mngr,
                 new UserNamePreferencesManager(UserPreferences.get()),
                 new OrcidPreferencesManager(UserPreferences.get()),
                 new EntityCreationMetadataPreferencesManager(EntityCreationMetadataPreferences.get())
