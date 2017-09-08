@@ -38,6 +38,10 @@ public abstract class SelectedOWLEntityAction extends ProtegeOWLAction {
         getOWLWorkspace().getOWLSelectionModel().addListener(listener);
     }
 
+    public void performExtraInitialisation() {
+
+    }
+
 
     private void updateState() {
         OWLSelectionModel selectionModel = getOWLWorkspace().getOWLSelectionModel();

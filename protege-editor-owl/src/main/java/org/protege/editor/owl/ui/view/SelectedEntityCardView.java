@@ -1,9 +1,13 @@
 package org.protege.editor.owl.ui.view;
 
+import org.protege.editor.core.ui.menu.MenuButton;
+import org.protege.editor.core.ui.menu.MenuIcon;
 import org.protege.editor.core.ui.util.Resettable;
 import org.protege.editor.core.ui.view.ViewsPane;
 import org.protege.editor.core.ui.view.ViewsPaneMemento;
 import org.protege.editor.core.util.HandlerRegistration;
+import org.protege.editor.owl.model.entity.EntityBannerPresenter;
+import org.protege.editor.owl.model.entity.EntityBannerViewImpl;
 import org.protege.editor.owl.model.selection.SelectionDriver;
 import org.protege.editor.owl.model.selection.SelectionPlane;
 import org.protege.editor.owl.ui.renderer.OWLSystemColors;
@@ -20,6 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static java.awt.BorderLayout.CENTER;
+import static java.awt.BorderLayout.NORTH;
+import static java.awt.BorderLayout.WEST;
 
 
 /**
@@ -52,19 +60,15 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
 
     private static final String BLANK_PANEL = "Blank";
 
+    private EntityBannerPresenter entityBannerPresenter;
 
     private static final Logger logger = LoggerFactory.getLogger(SelectedEntityCardView.class);
 
-    private JLabel entityIRILabel;
-
-    private EntityBannerFormatter entityBannerFormatter;
-
     protected void initialiseOWLView() throws Exception {
+        entityBannerPresenter = new EntityBannerPresenter(new EntityBannerViewImpl(), getOWLEditorKit());
+        entityBannerPresenter.getView().setBorder(BorderFactory.createEmptyBorder(0, 0, 1, 0));
         setLayout(new BorderLayout());
-        entityBannerFormatter = new EntityBannerFormatterImpl();
-        entityIRILabel = new JLabel();
-        entityIRILabel.setBorder(BorderFactory.createEmptyBorder(1, 4, 3, 0));
-        add(entityIRILabel, BorderLayout.NORTH);
+        add(entityBannerPresenter.getView(), NORTH);
         add(cardPanel);
         cardPanel.setLayout(cardLayout);
         cardPanel.add(new NothingSelectedPanel(), BLANK_PANEL);
@@ -72,6 +76,7 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
         getOWLWorkspace().getOWLSelectionModel().addListener(this::processSelection);
         getView().setShowViewBar(false);
         processSelection();
+        entityBannerPresenter.start();
     }
 
 
@@ -128,7 +133,6 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
         }
 
         viewsPanes.clear();
-        entityIRILabel.setText("");
         createViewPanes(true);
         validate();
 
@@ -141,9 +145,6 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
     private void processSelection() {
         OWLObject selectedObject = getOWLWorkspace().getOWLSelectionModel().getSelectedObject();
         if(selectedObject == null) {
-            entityIRILabel.setIcon(null);
-            entityIRILabel.setText("");
-            entityIRILabel.setBackground(null);
             selectPanel(BLANK_PANEL);
             return;
         }
@@ -151,9 +152,6 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
             return;
         }
         OWLEntity selEntity = (OWLEntity) selectedObject;
-        String banner = entityBannerFormatter.formatBanner(selEntity, getOWLEditorKit());
-        entityIRILabel.setIcon(getOWLWorkspace().getOWLIconProvider().getIcon(selEntity));
-        entityIRILabel.setText(banner);
         selEntity.accept(new OWLEntityVisitor() {
             public void visit(@Nonnull OWLClass cls) {
                 selectPanel(CLASSES_PANEL);
@@ -198,6 +196,7 @@ public class SelectedEntityCardView extends AbstractOWLViewComponent implements 
             pane.saveViews();
             pane.dispose();
         }
+        entityBannerPresenter.dispose();
     }
 
     @Override

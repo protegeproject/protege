@@ -1184,6 +1184,55 @@
     </extension>
 
 
+    <!-- Entity Banner Actions -->
+
+    <extension id="entitybanner.menu.CopyEntityIri"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Copy IRI"/>
+        <class value="org.protege.editor.owl.model.entity.CopyEntityIriAction"/>
+        <toolTip value="Copies the IRI of the selected entity to the clipboard"/>
+        <path value="[EntityBanner]/SlotA-A"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="entitybanner.menu.CopyOboId"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Copy OBO Id"/>
+        <class value="org.protege.editor.owl.model.entity.CopyOboIdAction"/>
+        <toolTip value="Copies the OBO Id (if present) of the selected entity to the clipboard"/>
+        <path value="[EntityBanner]/SlotA-B"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="entitybanner.menu.CopyEntityDisplayName"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Copy display name"/>
+        <class value="org.protege.editor.owl.model.entity.CopyEntityDisplayName"/>
+        <toolTip value="Copies the display name of the selected entity to the clipboard"/>
+        <path value="[EntityBanner]/SlotA-C"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="entitybanner.menu.ShowEntityIriInWebBrowser"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Show IRI in Web browser"/>
+        <class value="org.protege.editor.owl.model.entity.ShowEntityIriInWebBroswerAction"/>
+        <toolTip value="Shows the IRI of the selected entity in the default Web browser"/>
+        <path value="[EntityBanner]/SlotC-A"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+
+    <extension id="entitybanner.menu.ChangeEntityIri"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Change IRI (Rename)..."/>
+        <class value="org.protege.editor.owl.ui.action.RenameEntityAction"/>
+        <toolTip value="Changes the IRI of the selected entity"/>
+        <path value="[EntityBanner]/SlotD-A"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+
 
 
     <!-- Ontology libraries/locations -->
@@ -1599,6 +1648,18 @@
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="shift E"/>
     </extension>
+
+
+    <extension id="context.edit.duplicate"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Duplicate class..."/>
+        <class value="org.protege.editor.owl.ui.action.DuplicateSelectedClassAction"/>
+        <toolTip value="Duplicates the current class. This copies the class, its superclasses and equivalent classes."/>
+        <path value="[AssertedClassHierarchy]/SlotAA-D"/>
+        <editorKitId value="OWLEditorKit"/>
+        <accelerator value="shift C"/>
+    </extension>
+
     <extension id="Change Class IRI"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Change IRI (Rename)..."/>
@@ -1608,6 +1669,7 @@
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="U"/>
     </extension>
+
     <extension id="context.menu.ConvertToPrimitveClass"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Convert to primitive class"/>
@@ -1650,25 +1712,54 @@
     </extension>
 
 
+    <extension id="context.CopyEntityIri"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Copy IRI"/>
+        <class value="org.protege.editor.owl.model.entity.CopyEntityIriAction"/>
+        <toolTip value="Copies the IRI of the selected entity to the clipboard"/>
+        <path value="[AssertedClassHierarchy]/SlotC-CA"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="context.CopyOboId"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Copy OBO Id"/>
+        <class value="org.protege.editor.owl.model.entity.CopyOboIdAction"/>
+        <toolTip value="Copies the OBO Id (if present) of the selected entity to the clipboard"/>
+        <path value="[AssertedClassHierarchy]/SlotC-CB"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="context.CopyEntityDisplayName"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Copy display name"/>
+        <class value="org.protege.editor.owl.model.entity.CopyEntityDisplayName"/>
+        <toolTip value="Copies the display name of the selected entity to the clipboard"/>
+        <path value="[AssertedClassHierarchy]/SlotC-CC"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
     <extension id="context.copySubHierarchy"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Copy sub-hierarchy as tab indented text"/>
         <class value="org.protege.editor.owl.ui.action.CopySubHierarchyToClipboardAction"/>
         <toolTip value="Copy the sub-hierarchy of the selection to the clipboard as tab indented text"/>
-        <path value="[AssertedClassHierarchy]/SlotC-CA"/>
+        <path value="[AssertedClassHierarchy]/SlotC-CD"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="alt C"/>
     </extension>
 
-    <extension id="context.edit.duplicate"
+
+
+    <extension id="context.ShowEntityIriInWebBrowser"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Duplicate class..."/>
-        <class value="org.protege.editor.owl.ui.action.DuplicateSelectedClassAction"/>
-        <toolTip value="Duplicates the current class. This copies the class, its superclasses and equivalent classes."/>
-        <path value="[AssertedClassHierarchy]/SlotC-F"/>
+        <name value="Show IRI in Web browser"/>
+        <class value="org.protege.editor.owl.model.entity.ShowEntityIriInWebBroswerAction"/>
+        <toolTip value="Shows the IRI of the selected entity in the default Web browser"/>
+        <path value="[AssertedClassHierarchy]/SlotD-E"/>
         <editorKitId value="OWLEditorKit"/>
-        <accelerator value="shift C"/>
     </extension>
+
 
 
     <extension id="context.class.CreateSubHierarchy"
