@@ -24,9 +24,9 @@ public class MenuIcon implements Icon {
 
     private static final MenuIcon GRAY_ICON = new MenuIcon(Color.GRAY);
 
-    private final int WIDTH = 16;
+    private final int WIDTH = 14;
 
-    private final int HEIGHT = 16;
+    private final int HEIGHT = 14;
 
     @Nonnull
     private final Color color;
@@ -52,7 +52,7 @@ public class MenuIcon implements Icon {
 
         final int padding = 1;
         final int barWidth = WIDTH - (2 * padding);
-        final int barHeight = 3;
+        final int barHeight = 2;
         final int spacingHeight = 2;
 
         int xOffset = x + 1;
