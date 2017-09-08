@@ -20,6 +20,10 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
  */
 public class MenuIcon implements Icon {
 
+    private static final MenuIcon DARK_GRAY_ICON = new MenuIcon(Color.DARK_GRAY);
+
+    private static final MenuIcon GRAY_ICON = new MenuIcon(Color.GRAY);
+
     private final int WIDTH = 16;
 
     private final int HEIGHT = 16;
@@ -33,7 +37,11 @@ public class MenuIcon implements Icon {
     }
 
     public static MenuIcon getGrayIcon() {
-        return new MenuIcon(Color.GRAY);
+        return GRAY_ICON;
+    }
+
+    public static MenuIcon getDarkGrayIcon() {
+        return DARK_GRAY_ICON;
     }
 
     @Override
