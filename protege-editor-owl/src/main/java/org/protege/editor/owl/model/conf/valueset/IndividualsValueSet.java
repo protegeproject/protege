@@ -50,7 +50,7 @@ public class IndividualsValueSet implements ValueSet {
                                .flatMap(o -> o.getClassAssertionAxioms(cls).stream())
                                .map(OWLClassAssertionAxiom::getIndividual)
                                .filter(OWLIndividual::isNamed)
-                               .filter(modelManager::isDeprecated)
+                               .filter(i -> !modelManager.isDeprecated(i))
                                .map(ind -> new LabelledValue(ind, RenderingEscapeUtils.unescape(modelManager.getRendering(ind))))
                                .sorted((o1, o2) -> o1.getLabel().compareToIgnoreCase(o2.getLabel()))
                                .collect(toList());
