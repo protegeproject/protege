@@ -7,13 +7,11 @@ import org.protege.editor.core.ui.view.ViewMode;
 import org.protege.editor.core.util.HandlerRegistration;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
-import org.protege.editor.owl.model.util.OWLUtilities;
 import org.protege.editor.owl.ui.OWLObjectComparatorAdapter;
 import org.protege.editor.owl.ui.action.OWLObjectHierarchyDeleter;
 import org.protege.editor.owl.ui.breadcrumb.Breadcrumb;
 import org.protege.editor.owl.ui.breadcrumb.BreadcrumbTrailChangedHandler;
 import org.protege.editor.owl.ui.breadcrumb.BreadcrumbTrailProvider;
-import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.protege.editor.owl.ui.tree.OWLObjectTree;
@@ -36,16 +34,18 @@ import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 
+import static org.protege.editor.owl.ui.framelist.OWLFrameList.INFERRED_BG_COLOR;
+
 /**
  * Author: drummond<br>
  * http://www.cs.man.ac.uk/~drummond/<br><br>
-
+ * <p>
  * The University Of Manchester<br>
  * Bio Health Informatics Group<br>
  * Date: Apr 23, 2009<br><br>
  */
 public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntity> extends AbstractOWLSelectionViewComponent
- implements Findable<E>, Deleteable, HasDisplayDeprecatedEntities, BreadcrumbTrailProvider {
+        implements Findable<E>, Deleteable, HasDisplayDeprecatedEntities, BreadcrumbTrailProvider {
 
     private OWLObjectTree<E> assertedTree;
 
@@ -74,7 +74,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
         // render keywords should be on now for class expressions
         final TreeCellRenderer treeCellRenderer = assertedTree.getCellRenderer();
-        if (treeCellRenderer instanceof OWLCellRenderer){
+        if (treeCellRenderer instanceof OWLCellRenderer) {
             ((OWLCellRenderer) treeCellRenderer).setHighlightKeywords(true);
         }
 
@@ -90,12 +90,15 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
             @Override
             public void treeNodesChanged(TreeModelEvent e) {
             }
+
             public void treeNodesInserted(TreeModelEvent e) {
                 ensureSelection();
             }
+
             public void treeNodesRemoved(TreeModelEvent e) {
                 ensureSelection();
             }
+
             public void treeStructureChanged(TreeModelEvent e) {
                 ensureSelection();
             }
@@ -111,33 +114,32 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
         try {
             Optional<OWLObjectHierarchyProvider<E>> inferredHierarchyProvider = getInferredHierarchyProvider();
-            if (inferredHierarchyProvider.isPresent()) {
-                inferredTree = Optional.of(new OWLModelManagerTree<>(getOWLEditorKit(), inferredHierarchyProvider.get()));
-                inferredTree.get().setBackground(OWLFrameList.INFERRED_BG_COLOR);
-                inferredTree.get().setOWLObjectComparator(treeNodeComp);
-                inferredTree.get().getModel().addTreeModelListener(treeModelListener);
-                inferredTree.get().addMouseListener(new MouseAdapter() {
+            this.inferredTree = inferredHierarchyProvider.map(hierarchyProvider -> {
+                OWLModelManagerTree<E> infTree = new OWLModelManagerTree<>(getOWLEditorKit(),
+                                                                           hierarchyProvider);
+                infTree.setBackground(INFERRED_BG_COLOR);
+                infTree.setOWLObjectComparator(treeNodeComp);
+                infTree.getModel().addTreeModelListener(treeModelListener);
+                infTree.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseReleased(MouseEvent e) {
                         transmitSelection();
                     }
                 });
-                viewModeComponent.add(inferredTree.get(), ViewMode.INFERRED, true);
+                viewModeComponent.add(infTree, ViewMode.INFERRED, true);
                 getView().addViewMode(ViewMode.ASSERTED);
                 getView().addViewMode(ViewMode.INFERRED);
                 getView().addViewModeChangedHandler(this::switchViewMode);
-            }
-            else {
-                inferredTree = Optional.empty();
-            }
+                return infTree;
+            });
         } catch (Exception e) {
             logger.error("An error occurred whilst getting the inferred hierarchy provider", e);
         }
 
         hierarchyDeleter = new OWLObjectHierarchyDeleter<>(getOWLEditorKit(),
-                                                                   getHierarchyProvider(),
-                                                                    () -> new HashSet<>(assertedTree.getSelectedOWLObjects()),
-                                                                   getCollectiveTypeName());
+                                                           getHierarchyProvider(),
+                                                           () -> new HashSet<>(assertedTree.getSelectedOWLObjects()),
+                                                           getCollectiveTypeName());
         listener = e -> transmitSelection();
         assertedTree.addTreeSelectionListener(listener);
         if (inferredTree.isPresent()) {
@@ -176,7 +178,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
     private void switchViewMode(Optional<ViewMode> viewMode) {
         E sel = viewModeComponent.getComponentForCurrentViewMode().getSelectedOWLObject();
         viewModeComponent.setViewMode(viewMode);
-        if(sel != null) {
+        if (sel != null) {
             setSelectedEntity(sel);
         }
         updateViewActions();
@@ -185,8 +187,8 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
     }
 
     private void updateViewActions() {
-        for(ViewAction viewAction : getView().getViewActions()) {
-            if(viewAction instanceof HasUpdateState) {
+        for (ViewAction viewAction : getView().getViewActions()) {
+            if (viewAction instanceof HasUpdateState) {
                 ((HasUpdateState) viewAction).updateState();
             }
         }
@@ -202,9 +204,10 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
     /**
      * Override with the name of the entities to be used in the Edit | Delete menu - eg "classes"
+     *
      * @return String the name of the entities
      */
-    protected String getCollectiveTypeName(){
+    protected String getCollectiveTypeName() {
         return "entities";
     }
 
@@ -252,7 +255,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
 
     protected OWLObjectTree<E> getTree() {
-        Optional<ViewMode> viewMode= getView().getViewMode();
+        Optional<ViewMode> viewMode = getView().getViewMode();
         return viewModeComponent.getComponentForViewMode(viewMode);
     }
 
@@ -262,12 +265,12 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
         E selEntity = getSelectedEntity();
         if (selEntity != null) {
             final View view = getView();
-            if (view != null && !view.isPinned()){
+            if (view != null && !view.isPinned()) {
                 view.setPinned(true); // so that we don't follow the selection
                 setGlobalSelection(selEntity);
                 view.setPinned(false);
             }
-            else{
+            else {
                 setGlobalSelection(selEntity);
             }
         }
@@ -304,7 +307,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
             inferredTree.get().removeTreeSelectionListener(listener);
             inferredTree.get().dispose();
         }
-        if(breadCrumbTrailProviderRegistration != null) {
+        if (breadCrumbTrailProviderRegistration != null) {
             breadCrumbTrailProviderRegistration.removeHandler();
         }
     }
@@ -349,14 +352,13 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
     /////////////////////////////////////////////////////////////////////////////////////
 
 
-
     public void show(E owlEntity) {
         getTree().setSelectedOWLObject(owlEntity);
     }
 
     @Override
     public void setShowDeprecatedEntities(boolean showDeprecatedEntities) {
-        if(showDeprecatedEntities) {
+        if (showDeprecatedEntities) {
             getHierarchyProvider().setFilter(e -> true);
         }
         else {
