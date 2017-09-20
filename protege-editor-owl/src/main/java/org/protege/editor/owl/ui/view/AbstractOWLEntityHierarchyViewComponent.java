@@ -303,10 +303,10 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
             assertedTree.removeTreeSelectionListener(listener);
             assertedTree.dispose();
         }
-        if (inferredTree.isPresent()) {
-            inferredTree.get().removeTreeSelectionListener(listener);
-            inferredTree.get().dispose();
-        }
+        inferredTree.ifPresent(tree -> {
+            tree.removeTreeSelectionListener(listener);
+            tree.dispose();
+        });
         if (breadCrumbTrailProviderRegistration != null) {
             breadCrumbTrailProviderRegistration.removeHandler();
         }
