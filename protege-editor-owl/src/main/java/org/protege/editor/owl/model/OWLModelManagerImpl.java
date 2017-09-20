@@ -128,9 +128,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     private final DeprecationCache deprecationCache;
 
     // error handlers
-
-//    private SaveErrorHandler saveErrorHandler;
-
+    
     private OntologyLoadErrorHandler loadErrorHandler;
 
     private final UserResolvedIRIMapper userResolvedIRIMapper = new UserResolvedIRIMapper(new MissingImportHandlerImpl());
@@ -296,15 +294,14 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     }
 
 
-    public void startedLoadingOntology(LoadingStartedEvent event) {
+    public void startedLoadingOntology(@Nonnull LoadingStartedEvent event) {
         logger.info("Loading {} from {}", event.getOntologyID(), event.getDocumentIRI());
         fireBeforeLoadEvent(event.getOntologyID(), event.getDocumentIRI().toURI());
     }
 
 
-    public void finishedLoadingOntology(LoadingFinishedEvent event) {
+    public void finishedLoadingOntology(@Nonnull LoadingFinishedEvent event) {
         if (!event.isSuccessful()) {
-            Exception e = event.getException();
             handleLoadError(event.getOntologyID(), event.getDocumentIRI().toURI(), event.getException());
         }
         fireAfterLoadEvent(event.getOntologyID(), event.getDocumentIRI().toURI());
@@ -680,7 +677,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             if (adcManager != null) {
                 change = adcManager.getChangeRewriter().rewriteChange(change);
             }
-            applyChanges(Arrays.asList(change));
+            applyChanges(Collections.singletonList(change));
         } catch (OWLOntologyChangeException e) {
             throw new OWLRuntimeException(e);
         }
@@ -708,7 +705,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     }
 
 
-    public void ontologiesChanged(List<? extends OWLOntologyChange> changes) {
+    public void ontologiesChanged(@Nonnull List<? extends OWLOntologyChange> changes) {
         if (changes.isEmpty()) {
             return;
         }
