@@ -151,6 +151,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         });
 
         getSelectionModel().addTreeSelectionListener(event -> {
+            scrollPathToVisible(event.getNewLeadSelectionPath());
             fireBreadcrumbTrailChanged();
         });
     }
@@ -208,13 +209,11 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
     }
 
     private void showPopupMenu(MouseEvent e) {
-        if (!getPopupMenuId().isPresent()) {
-            return;
-        }
-        MenuBuilder menuBuilder = new MenuBuilder(eKit);
-        PopupMenuId popupMenuId = getPopupMenuId().get();
-        JPopupMenu popupMenu = menuBuilder.buildPopupMenu(popupMenuId);
-        popupMenu.show(this, e.getX(), e.getY());
+        getPopupMenuId().ifPresent(popupMenuId -> {
+            MenuBuilder menuBuilder = new MenuBuilder(eKit);
+            JPopupMenu popupMenu = menuBuilder.buildPopupMenu(popupMenuId);
+            popupMenu.show(this, e.getX(), e.getY());
+        });
     }
 
 
