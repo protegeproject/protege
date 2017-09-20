@@ -30,7 +30,6 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreeCellRenderer;
-import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -385,9 +384,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
     @Override
     public HandlerRegistration addBreadcrumbTrailChangedHandler(@Nonnull BreadcrumbTrailChangedHandler handler) {
         breadcrumbTrailChangedHandlers.add(handler);
-        return () -> {
-            breadcrumbTrailChangedHandlers.remove(handler);
-        };
+        return () -> breadcrumbTrailChangedHandlers.remove(handler);
     }
 
     @Override
