@@ -109,6 +109,7 @@ public class EntityDeprecator_TestCase {
         when(deprecationProfile.getDeprecatedDataPropertyParentIri()).thenReturn(Optional.empty());
         when(deprecationProfile.getDeprecatedAnnotationPropertyParentIri()).thenReturn(Optional.empty());
         when(deprecationProfile.getDeprecatedIndividualParentClassIri()).thenReturn(Optional.empty());
+        when(deprecationProfile.getDeprecationCode()).thenReturn(Optional.empty());
 
         DeprecateEntityInfo<OWLClass> info = new DeprecateEntityInfo<>(
                 toDeprecate,
