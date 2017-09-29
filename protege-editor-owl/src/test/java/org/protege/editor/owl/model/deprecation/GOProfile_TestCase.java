@@ -25,8 +25,7 @@ public class GOProfile_TestCase {
 
     @Before
     public void setUp() throws Exception {
-        File file = new File("protege-desktop/src/main/resources/conf/deprecation/go.yaml");
-        System.out.println(file.getAbsoluteFile());
+        File file = new File("../protege-desktop/src/main/resources/conf/deprecation/go.yaml");
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         profile = mapper.readValue(file, DeprecationProfile.class);
     }
