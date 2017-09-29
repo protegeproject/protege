@@ -7,7 +7,7 @@
             <Component label="Annotations">
                 <Property id="pluginId" value="org.protege.editor.owl.OWLObjectPropertyAnnotations"/>
             </Component>
-            <Component label="Object Property Usage">
+            <Component label="Usage">
                 <Property id="pluginId" value="org.protege.editor.owl.OWLObjectPropertyUsageView"/>
             </Component>
         </CNode>

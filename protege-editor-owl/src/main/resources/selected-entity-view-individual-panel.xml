@@ -4,10 +4,10 @@
     <HSNode splits="0.375 0.625">
 
         <CNode>
-            <Component label="Individual Annotations">
+            <Component label="Annotations">
                 <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualAnnotations"/>
             </Component>
-            <Component label="Individual Usage">
+            <Component label="Usage">
                 <Property id="pluginId" value="org.protege.editor.owl.OWLIndividualUsageView"/>
             </Component>
         </CNode>

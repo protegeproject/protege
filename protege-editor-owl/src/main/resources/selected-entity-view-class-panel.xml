@@ -2,10 +2,10 @@
 <layout>
     <HSNode splits="0.375 0.625">
         <CNode>
-            <Component label="Class Annotations">
+            <Component label="Annotations">
                 <Property id="pluginId" value="org.protege.editor.owl.OWLClassAnnotations"/>
             </Component>
-            <Component label="Class Usage">
+            <Component label="Usage">
                 <Property id="pluginId" value="org.protege.editor.owl.OWLClassUsageView"/>
             </Component>
         </CNode>
