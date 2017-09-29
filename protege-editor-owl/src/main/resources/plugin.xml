@@ -1213,6 +1213,15 @@
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
+    <extension id="entitybanner.menu.CopyEntityAsMarkdown"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Copy as Markdown"/>
+        <class value="org.protege.editor.owl.model.entity.CopyEntityAsMarkdownAction"/>
+        <toolTip value="Copies the display name and IRI of the selected entity to the clipboard as Markdown"/>
+        <path value="[EntityBanner]/SlotA-D"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
     <extension id="entitybanner.menu.ShowEntityIriInWebBrowser"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Show IRI in Web browser"/>
@@ -1739,12 +1748,21 @@
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
+    <extension id="context.menu.CopyEntityAsMarkdown"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Copy as Markdown"/>
+        <class value="org.protege.editor.owl.model.entity.CopyEntityAsMarkdownAction"/>
+        <toolTip value="Copies the display name and IRI of the selected entity to the clipboard as Markdown"/>
+        <path value="[AssertedClassHierarchy]/SlotC-CD"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
     <extension id="context.copySubHierarchy"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Copy sub-hierarchy as tab indented text"/>
         <class value="org.protege.editor.owl.ui.action.CopySubHierarchyToClipboardAction"/>
         <toolTip value="Copy the sub-hierarchy of the selection to the clipboard as tab indented text"/>
-        <path value="[AssertedClassHierarchy]/SlotC-CD"/>
+        <path value="[AssertedClassHierarchy]/SlotC-CE"/>
         <editorKitId value="OWLEditorKit"/>
         <accelerator value="alt C"/>
     </extension>
