@@ -22,7 +22,7 @@ public class OBIProfile_TestCase {
 
     @Before
     public void setUp() throws Exception {
-        File file = new File("protege-desktop/src/main/resources/conf/deprecation/obi.yaml");
+        File file = new File("../protege-desktop/src/main/resources/conf/deprecation/obi.yaml");
         System.out.println(file.getAbsoluteFile());
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         profile = mapper.readValue(file, DeprecationProfile.class);
