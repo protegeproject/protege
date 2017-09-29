@@ -58,11 +58,7 @@ public class AssertedClassHierarchyTest {
         assertTrue(children.contains(a));
         assertTrue(children.contains(b));
         assertTrue(children.contains(c));
-        
-        assertTrue(hierarchy.getChildren(a).isEmpty());
-        assertTrue(hierarchy.getChildren(b).isEmpty());
-        assertTrue(hierarchy.getChildren(c).isEmpty());
-        
+
         OWLAxiom axiom = factory.getOWLSubClassOfAxiom(a, c);
         manager.applyChange(new RemoveAxiom(ontology, axiom));
         
