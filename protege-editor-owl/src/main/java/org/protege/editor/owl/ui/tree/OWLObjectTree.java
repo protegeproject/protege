@@ -12,6 +12,7 @@ import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.protege.editor.owl.ui.breadcrumb.BreadcrumbTrailChangedHandler;
 import org.protege.editor.owl.ui.breadcrumb.BreadcrumbTrailProvider;
 import org.protege.editor.owl.ui.breadcrumb.Breadcrumb;
+import org.protege.editor.owl.ui.renderer.RenderingEscapeUtils;
 import org.protege.editor.owl.ui.transfer.OWLObjectDragSource;
 import org.protege.editor.owl.ui.transfer.OWLObjectDropTarget;
 import org.protege.editor.owl.ui.transfer.OWLObjectTreeDragGestureListener;
@@ -894,7 +895,8 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
             printWriter.print("\t");
         }
         String rendering = getOWLModelManager().getRendering(object);
-        printWriter.println(rendering);
+        String unescapedRendering = RenderingEscapeUtils.unescape(rendering);
+        printWriter.println(unescapedRendering);
         Set<N> children = provider.getChildren(object);
         List<N> sortedChildren = new ArrayList<>(children);
         sortedChildren.sort(new OWLObjectComparator<>(getOWLModelManager()));
