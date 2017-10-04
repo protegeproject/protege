@@ -8,6 +8,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProviderListener;
+import org.protege.editor.owl.model.util.OboUtilities;
 import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.protege.editor.owl.ui.breadcrumb.BreadcrumbTrailChangedHandler;
 import org.protege.editor.owl.ui.breadcrumb.BreadcrumbTrailProvider;
@@ -20,6 +21,7 @@ import org.protege.editor.owl.ui.transfer.OWLObjectTreeDropTargetListener;
 import org.protege.editor.owl.ui.view.Copyable;
 import org.protege.editor.owl.ui.view.HasCopySubHierarchyToClipboard;
 import org.protege.editor.owl.ui.view.HasExpandAll;
+import org.semanticweb.owlapi.model.HasIRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 
@@ -896,7 +898,13 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         }
         String rendering = getOWLModelManager().getRendering(object);
         String unescapedRendering = RenderingEscapeUtils.unescape(rendering);
-        printWriter.println(unescapedRendering);
+        printWriter.print(unescapedRendering);
+        if(object instanceof HasIRI) {
+            OboUtilities.getOboIdFromIri(((HasIRI) object).getIRI()).ifPresent(iri -> {
+                printWriter.printf(" (%s)", iri);
+            });
+        }
+        printWriter.println();
         Set<N> children = provider.getChildren(object);
         List<N> sortedChildren = new ArrayList<>(children);
         sortedChildren.sort(new OWLObjectComparator<>(getOWLModelManager()));
