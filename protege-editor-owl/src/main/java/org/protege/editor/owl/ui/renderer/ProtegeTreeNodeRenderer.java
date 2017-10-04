@@ -167,27 +167,32 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
 
         @Override
         public Boolean visit(OWLClass ce) {
-            return !modelManager.getActiveOntology().getAxioms(ce, Imports.EXCLUDED).isEmpty();
+            return !modelManager.getActiveOntology().getAxioms(ce, Imports.EXCLUDED).isEmpty()
+                    || !modelManager.getActiveOntology().getAnnotationAssertionAxioms(ce.getIRI()).isEmpty();
         }
 
         @Override
         public Boolean visit(OWLDataProperty property) {
-            return !modelManager.getActiveOntology().getAxioms(property, Imports.EXCLUDED).isEmpty();
+            return !modelManager.getActiveOntology().getAxioms(property, Imports.EXCLUDED).isEmpty()
+                    || !modelManager.getActiveOntology().getAnnotationAssertionAxioms(property.getIRI()).isEmpty();
         }
 
         @Override
         public Boolean visit(OWLObjectProperty property) {
-            return !modelManager.getActiveOntology().getAxioms(property, Imports.EXCLUDED).isEmpty();
+            return !modelManager.getActiveOntology().getAxioms(property, Imports.EXCLUDED).isEmpty()
+                    || !modelManager.getActiveOntology().getAnnotationAssertionAxioms(property.getIRI()).isEmpty();
         }
 
         @Override
         public Boolean visit(OWLNamedIndividual individual) {
-            return !modelManager.getActiveOntology().getAxioms(individual, Imports.EXCLUDED).isEmpty();
+            return !modelManager.getActiveOntology().getAxioms(individual, Imports.EXCLUDED).isEmpty()
+                    || !modelManager.getActiveOntology().getAnnotationAssertionAxioms(individual.getIRI()).isEmpty();
         }
 
         @Override
         public Boolean visit(OWLAnnotationProperty property) {
-            return !modelManager.getActiveOntology().getAxioms(property, Imports.EXCLUDED).isEmpty();
+            return !modelManager.getActiveOntology().getAxioms(property, Imports.EXCLUDED).isEmpty()
+                    || !modelManager.getActiveOntology().getAnnotationAssertionAxioms(property.getIRI()).isEmpty();
         }
     }
 
