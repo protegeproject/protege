@@ -43,13 +43,7 @@ public class IOUtils {
      * @throws java.io.IOException if there was an <code>IOException</code> in obtaining the input stream from the URI.
      */
     public static InputStream getInputStream(URI documentURI, boolean connectionAcceptHTTPCompression, int connectionTimeout) throws IOException {
-        String requestType = getRequestTypes();
-        URLConnection conn = documentURI.toURL().openConnection();
-        conn.addRequestProperty("Accept", requestType);
-        if (connectionAcceptHTTPCompression) {
-            conn.setRequestProperty("Accept-Encoding", "gzip, deflate");
-        }
-        conn.setConnectTimeout(connectionTimeout);
+        URLConnection conn = getUrlConnection(documentURI, connectionAcceptHTTPCompression, connectionTimeout);
         String contentEncoding = conn.getContentEncoding();
         InputStream is = getInputStreamFromContentEncoding(conn, contentEncoding);
         if (isZipName(documentURI, conn)) {
@@ -58,6 +52,19 @@ public class IOUtils {
             is = new BufferedInputStream(zis);
         }
         return is;
+    }
+
+    public static URLConnection getUrlConnection(URI documentURI,
+                                                  boolean connectionAcceptHTTPCompression,
+                                                  int connectionTimeout) throws IOException {
+        String requestType = getRequestTypes();
+        URLConnection conn = documentURI.toURL().openConnection();
+        conn.addRequestProperty("Accept", requestType);
+        if (connectionAcceptHTTPCompression) {
+            conn.setRequestProperty("Accept-Encoding", "gzip, deflate");
+        }
+        conn.setConnectTimeout(connectionTimeout);
+        return conn;
     }
 
     private static String getRequestTypes() {
