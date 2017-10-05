@@ -152,16 +152,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
         manager = OWLManager.createConcurrentOWLOntologyManager();
         manager.addOntologyChangeListener(this);
-
-        // URI mappers for loading - added in reverse order
-        PriorityCollection<OWLOntologyIRIMapper> iriMappers = manager.getIRIMappers();
-        iriMappers.clear();
-        iriMappers.add(userResolvedIRIMapper);
-        iriMappers.add(new WebConnectionIRIMapper());
-        AutoMappedRepositoryIRIMapper autoMappedRepositoryIRIMapper = new AutoMappedRepositoryIRIMapper(ontologyCatalogManager);
-        iriMappers.add(autoMappedRepositoryIRIMapper);
-
-
         objectRenderer = new OWLObjectRendererImpl(this);
         owlEntityRenderingCache = new OWLEntityRenderingCacheImpl();
         owlEntityRenderingCache.setOWLModelManager(this);
@@ -272,11 +262,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             logger.info(LogBanner.start("Loading Ontology"));
             logger.info("Loading ontology from {}", uri);
             stopwatch.start();
-            if (UIUtil.isLocalFile(uri)) {
-                // Load the URIs of other ontologies that are contained in the same folder.
-                File parentFile = new File(uri).getParentFile();
-                addRootFolder(parentFile);
-            }
             OntologyLoader loader = new OntologyLoader(this, userResolvedIRIMapper);
             Optional<OWLOntology> loadedOntology = loader.loadOntology(uri);
             logger.info("Loading for ontology and imports closure successfully completed in {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
