@@ -7,8 +7,10 @@ import org.protege.xmlcatalog.entry.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.*;
 
@@ -175,6 +177,12 @@ public class OntologyCatalogManager {
     public XMLCatalog getActiveCatalog() {
     	return activeCatalog;
     }
+
+	public void changeActiveCatalog(@Nonnull File newCatalogFile) throws IOException {
+		File newCatalogDir = newCatalogFile.getParentFile();
+		localCatalogs.put(newCatalogDir, CatalogUtilities.parseDocument(newCatalogFile.toURI().toURL()));
+		activeCatalog = localCatalogs.get(newCatalogDir);
+	}
     
     public File getActiveCatalogFolder() {
 		return activeCatalogFolder;
