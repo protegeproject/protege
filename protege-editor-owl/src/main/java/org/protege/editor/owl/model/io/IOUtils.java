@@ -1,5 +1,6 @@
 package org.protege.editor.owl.model.io;
 
+import org.eclipse.jgit.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,8 +43,11 @@ public class IOUtils {
      * @return The input stream obtained from the URI
      * @throws java.io.IOException if there was an <code>IOException</code> in obtaining the input stream from the URI.
      */
-    public static InputStream getInputStream(URI documentURI, boolean connectionAcceptHTTPCompression, int connectionTimeout) throws IOException {
-        URLConnection conn = getUrlConnection(documentURI, connectionAcceptHTTPCompression, connectionTimeout);
+    @NonNull
+    public static InputStream getInputStream(@NonNull URI documentURI,
+                                             boolean connectionAcceptHTTPCompression,
+                                             int connectionTimeoutMS) throws IOException {
+        URLConnection conn = getUrlConnection(documentURI, connectionAcceptHTTPCompression, connectionTimeoutMS);
         String contentEncoding = conn.getContentEncoding();
         InputStream is = getInputStreamFromContentEncoding(conn, contentEncoding);
         if (isZipName(documentURI, conn)) {
@@ -54,16 +58,17 @@ public class IOUtils {
         return is;
     }
 
-    public static URLConnection getUrlConnection(URI documentURI,
+    @NonNull
+    public static URLConnection getUrlConnection(@NonNull URI documentURI,
                                                   boolean connectionAcceptHTTPCompression,
-                                                  int connectionTimeout) throws IOException {
+                                                  int connectionTimeoutMS) throws IOException {
         String requestType = getRequestTypes();
         URLConnection conn = documentURI.toURL().openConnection();
         conn.addRequestProperty("Accept", requestType);
         if (connectionAcceptHTTPCompression) {
             conn.setRequestProperty("Accept-Encoding", "gzip, deflate");
         }
-        conn.setConnectTimeout(connectionTimeout);
+        conn.setConnectTimeout(connectionTimeoutMS);
         return conn;
     }
 
@@ -71,6 +76,7 @@ public class IOUtils {
         return "application/rdf+xml, application/xml; q=0.5, text/xml; q=0.3, */*; q=0.2";
     }
 
+    @NonNull
     private static InputStream getInputStreamFromContentEncoding(URLConnection conn, String contentEncoding) throws IOException {
         InputStream is;
         if ("gzip".equals(contentEncoding)) {
