@@ -1,5 +1,6 @@
 package org.protege.editor.owl.model.io;
 
+import org.eclipse.jgit.annotations.NonNull;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -7,7 +8,10 @@ import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import java.net.URI;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Author: drummond<br>
@@ -36,12 +40,12 @@ public class AutoMappedRepositoryIRIMapper implements OWLOntologyIRIMapper {
     private final OntologyCatalogManager ontologyCatalogManager;
     
 
-    public AutoMappedRepositoryIRIMapper(OntologyCatalogManager ontologyCatalogManager) {
-        this.ontologyCatalogManager = ontologyCatalogManager;
+    public AutoMappedRepositoryIRIMapper(@NonNull OntologyCatalogManager ontologyCatalogManager) {
+        this.ontologyCatalogManager = checkNotNull(ontologyCatalogManager);
     }
-
-
-    public IRI getDocumentIRI(IRI importedIRI) {
+    
+    @NonNull
+    public IRI getDocumentIRI(@Nonnull IRI importedIRI) {
     	URI u = ontologyCatalogManager.getRedirect(importedIRI.toURI());
         if (u == null) {
             logger.info("Imported ontology document {} was not resolved to any documents defined in the ontology catalog.", importedIRI);
