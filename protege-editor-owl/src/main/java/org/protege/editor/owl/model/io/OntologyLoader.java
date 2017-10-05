@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import java.io.File;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.Optional;
@@ -92,7 +93,8 @@ public class OntologyLoader {
         iriMappers.clear();
         iriMappers.add(userResolvedIRIMapper);
         iriMappers.add(new WebConnectionIRIMapper());
-        iriMappers.add(new AutoMappedRepositoryIRIMapper(modelManager.getOntologyCatalogManager()));
+        iriMappers.add(new AutoMappedRepositoryIRIMapper(
+                modelManager.getOntologyCatalogManager(), documentURI));
 
         loadingManager.addOntologyLoaderListener(new ProgressDialogOntologyLoaderListener(dlg, logger));
         OWLOntologyLoaderConfiguration configuration = new OWLOntologyLoaderConfiguration();

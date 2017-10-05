@@ -1,6 +1,7 @@
 package org.protege.editor.owl.model.io;
 
 import org.eclipse.jgit.annotations.NonNull;
+import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -9,7 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
+import java.io.File;
 import java.net.URI;
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -35,18 +38,52 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class AutoMappedRepositoryIRIMapper implements OWLOntologyIRIMapper {
 
-    private final Logger logger = LoggerFactory.getLogger(AutoMappedRepositoryIRIMapper.class);
+    private static final Logger logger = LoggerFactory.getLogger(AutoMappedRepositoryIRIMapper.class);
 
+    private static final String FILE_SCHEME = "file";
+
+    @NonNull
     private final OntologyCatalogManager ontologyCatalogManager;
-    
 
+    @NonNull
+    private final Optional<URI> rootOntologyDocument;
+
+    /**
+     * Constructs an {@link AutoMappedRepositoryIRIMapper} using the specified catalog manager.
+     * @deprecated Use the constructor that takes a root ontology document URI.
+     */
+    @Deprecated
     public AutoMappedRepositoryIRIMapper(@NonNull OntologyCatalogManager ontologyCatalogManager) {
         this.ontologyCatalogManager = checkNotNull(ontologyCatalogManager);
+        rootOntologyDocument = Optional.empty();
     }
-    
+
+    /**
+     * Constructs an {@link AutoMappedRepositoryIRIMapper}.  If the root ontology document is
+     * a file URI (has the scheme "file") then sub-directories will be lazily searched for imports.
+     * @param ontologyCatalogManager The catalog manager that will be used to index ontology documents
+     *                               contained in sub-directories if the root ontology document is a file.
+     * @param rootOntologyDocument The root ontology document.
+     */
+    public AutoMappedRepositoryIRIMapper(@NonNull OntologyCatalogManager ontologyCatalogManager,
+                                         @NonNull URI rootOntologyDocument) {
+        this.ontologyCatalogManager = checkNotNull(ontologyCatalogManager);
+        this.rootOntologyDocument = Optional.of(rootOntologyDocument);
+    }
+
     @NonNull
     public IRI getDocumentIRI(@Nonnull IRI importedIRI) {
-    	URI u = ontologyCatalogManager.getRedirect(importedIRI.toURI());
+        final URI uri = importedIRI.toURI();
+        rootOntologyDocument.ifPresent(rootOntologyDocument -> {
+            if(FILE_SCHEME.equals(rootOntologyDocument.getScheme())) {
+                // We are being asked for a redirect for an import that is imported directly or indirectly
+                // from a root ontology contained in the local file system.  Therefore, index local files
+                // to see if there is a local import
+                File rootOntologyDocumentDirectory = new File(rootOntologyDocument).getParentFile();
+                ontologyCatalogManager.addFolder(rootOntologyDocumentDirectory);
+            }
+        });
+    	URI u = ontologyCatalogManager.getRedirect(uri);
         if (u == null) {
             logger.info("Imported ontology document {} was not resolved to any documents defined in the ontology catalog.", importedIRI);
             return null;
