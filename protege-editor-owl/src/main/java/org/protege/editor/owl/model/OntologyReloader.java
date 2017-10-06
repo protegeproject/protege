@@ -107,11 +107,11 @@ public class OntologyReloader {
         for(OWLOntology o : manager.getOntologies()) {
             // We don't need the ontology that we want to reload
             if (!o.equals(ontologyToReload)) {
-                reloadingManager.createOntology(o.getOntologyID());
-                reloadingManager.setOntologyDocumentIRI(o, manager.getOntologyDocumentIRI(o));
+                OWLOntology odecl = reloadingManager.createOntology(o.getOntologyID());
+                reloadingManager.setOntologyDocumentIRI(odecl, manager.getOntologyDocumentIRI(o));
                 Set<OWLDeclarationAxiom> axioms = o.getAxioms(AxiomType.DECLARATION);
                 logger.info("Copying {} declaration axioms from {} for reloading", axioms.size(), o.getOntologyID());
-                reloadingManager.addAxioms(o, axioms);
+                reloadingManager.addAxioms(odecl, axioms);
             }
         }
         sw.stop();
@@ -120,6 +120,7 @@ public class OntologyReloader {
         logger.info("Copied ontologies in {} ms.  Used: {} MB", sw.elapsed(TimeUnit.MILLISECONDS), usedMemMb);
 
         IRI ontologyDocumentIRI = manager.getOntologyDocumentIRI(ontologyToReload);
+        logger.info("Reloading {} from {}", ontologyToReload.getOntologyID(), ontologyDocumentIRI);
         OWLOntology reloadedOntology = reloadingManager.loadOntologyFromOntologyDocument(ontologyDocumentIRI);
         List<OWLOntologyChange> changes = new ArrayList<>();
         // Compute a diff between the original and the reloaded ontology
