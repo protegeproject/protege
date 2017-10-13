@@ -2,6 +2,7 @@ package org.protege.editor.core.ui.util;
 
 import org.protege.editor.core.PropertyUtil;
 import org.protege.editor.core.ProtegeProperties;
+import org.protege.editor.core.platform.OSUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,11 +23,6 @@ import java.awt.event.MouseEvent;
  */
 public class LinkLabel extends JLabel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -4294549567545547816L;
-
     private Color linkColor;
 
     private Color hoverColor;
@@ -39,10 +35,8 @@ public class LinkLabel extends JLabel {
     public LinkLabel(String text, ActionListener linkListener) {
         super(text);
         this.linkListener = linkListener;
-        linkColor = PropertyUtil.getColor(ProtegeProperties.getInstance().getProperty(ProtegeProperties.PROPERTY_COLOR_KEY),
-                                          Color.GRAY);
-        hoverColor = PropertyUtil.getColor(ProtegeProperties.getInstance().getProperty(ProtegeProperties.CLASS_COLOR_KEY),
-                                           Color.GRAY);
+        linkColor = Color.BLACK;
+        hoverColor = Color.BLUE;
 
         setForeground(linkColor);
 
@@ -61,6 +55,7 @@ public class LinkLabel extends JLabel {
                 activateLink();
             }
         });
+
         setFont(getFont().deriveFont(Font.BOLD));
     }
 
