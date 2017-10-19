@@ -25,7 +25,7 @@ public class PrefixUtilities {
 		OWLOntologyManager owlManager = modelManager.getOWLOntologyManager();
 		DefaultPrefixManager prefixes = new DefaultPrefixManager();
 		List<OWLOntology> ontologies = new ArrayList<>(modelManager.getOntologies());
-		Collections.sort(ontologies, new ActiveOntologyComparator());
+		ontologies.sort(new ActiveOntologyComparator());
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Sorted ontologies = " + ontologies);
 		}
