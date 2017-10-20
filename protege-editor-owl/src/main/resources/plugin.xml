@@ -271,10 +271,10 @@
        <sortPosition value="A"/>
     </extension>
 
-    <extension id="OWLEntityQNameRenderer"
+    <extension id="OWLEntityPrefixedNameRenderer"
     		   point="org.protege.editor.owl.entity_renderer">
        <name value="Render by prefixed name"/>
-       <class value="org.protege.editor.owl.ui.renderer.OWLEntityQNameRenderer"/>
+       <class value="org.protege.editor.owl.ui.prefix.OWLEntityPrefixedNameRenderer"/>
        <sortPosition value="B"/>
     </extension>
 
