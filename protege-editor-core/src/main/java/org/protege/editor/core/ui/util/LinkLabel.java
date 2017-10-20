@@ -1,5 +1,6 @@
 package org.protege.editor.core.ui.util;
 
+import org.protege.editor.core.Fonts;
 import org.protege.editor.core.PropertyUtil;
 import org.protege.editor.core.ProtegeProperties;
 import org.protege.editor.core.platform.OSUtils;
@@ -56,7 +57,7 @@ public class LinkLabel extends JLabel {
             }
         });
 
-        setFont(getFont().deriveFont(Font.BOLD));
+        setFont(Fonts.getMediumDialogFont().deriveFont(Font.BOLD, 14f));
     }
 
 

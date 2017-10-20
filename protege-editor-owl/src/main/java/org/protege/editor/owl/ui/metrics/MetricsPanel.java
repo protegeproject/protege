@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.metrics;
 
 import org.protege.editor.core.Disposable;
+import org.protege.editor.core.Fonts;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.OWLAxiomTypeFramePanel;
@@ -226,6 +227,7 @@ public class MetricsPanel extends JPanel implements Disposable {
             });
             JLabel titleLabel = new JLabel(metricsSet);
             titleLabel.setOpaque(false);
+            titleLabel.setFont(Fonts.getMediumDialogFont().deriveFont(Font.BOLD, 14f));
             tablePanel.add(titleLabel, BorderLayout.NORTH);
             tablePanel.setOpaque(false);
             JPanel tableHolder = new JPanel(new BorderLayout());
