@@ -17,7 +17,9 @@ import org.semanticweb.owlapi.vocab.Namespaces;
 
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
+ *
  */
+@Deprecated
 public class OWLEntityQNameRenderer extends AbstractOWLEntityRenderer implements PrefixBasedRenderer {
 
     private final DefaultPrefixManager prefixManager = new DefaultPrefixManager();

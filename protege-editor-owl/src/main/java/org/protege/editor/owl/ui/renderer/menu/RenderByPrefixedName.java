@@ -1,13 +1,12 @@
 package org.protege.editor.owl.ui.renderer.menu;
 
-import org.protege.editor.owl.ui.renderer.OWLEntityQNameRenderer;
+import org.protege.editor.owl.ui.prefix.OWLEntityPrefixedNameRenderer;
 import org.protege.editor.owl.ui.renderer.plugin.RendererPlugin;
 
 public class RenderByPrefixedName extends AbstractByRendererMenu {
-	private static final long serialVersionUID = 7364664042805363135L;
 
 	protected boolean isMyRendererPlugin(RendererPlugin plugin) {
-		return plugin.getRendererClassName().equals(OWLEntityQNameRenderer.class.getName());
+		return plugin.getRendererClassName().equals(OWLEntityPrefixedNameRenderer.class.getName());
 	}
 	
 	@Override
