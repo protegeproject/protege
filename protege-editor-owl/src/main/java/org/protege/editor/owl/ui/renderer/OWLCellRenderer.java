@@ -967,17 +967,15 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
                 Rectangle tokenRect = new Rectangle(startRect.x, startRect.y, width, heght);
                 tokenRect.grow(0, -2);
-                if (linkedObjectComponent.getMouseCellLocation() != null) {
-                    Point mouseCellLocation = linkedObjectComponent.getMouseCellLocation();
-                    if (mouseCellLocation != null) {
-                        mouseCellLocation = SwingUtilities.convertPoint(renderingComponent,
-                                                                        mouseCellLocation,
-                                                                        textPane);
-                        if (tokenRect.contains(mouseCellLocation)) {
-                            doc.setCharacterAttributes(tokenStartIndex, tokenLength, linkStyle, false);
-                            linkedObjectComponent.setLinkedObject(curEntity);
-                            linkRendered = true;
-                        }
+                Point mouseCellLocation = linkedObjectComponent.getMouseCellLocation();
+                if (mouseCellLocation != null) {
+                    mouseCellLocation = SwingUtilities.convertPoint(renderingComponent,
+                                                                    mouseCellLocation,
+                                                                    textPane);
+                    if (tokenRect.contains(mouseCellLocation)) {
+                        doc.setCharacterAttributes(tokenStartIndex, tokenLength, linkStyle, false);
+                        linkedObjectComponent.setLinkedObject(curEntity);
+                        linkRendered = true;
                     }
                 }
             }
