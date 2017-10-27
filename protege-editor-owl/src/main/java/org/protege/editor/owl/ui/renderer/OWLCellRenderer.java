@@ -433,8 +433,11 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 			if (!ignoreLinks) {
 				ignoreLinks = true;
 				save();
-				cellBounds = tree.getRowBounds(row);
-				restore();
+				try {
+					cellBounds = tree.getRowBounds(row);
+				} finally {
+					restore();
+				}
 				ignoreLinks = false;
 			}
 			setupLinkedObjectComponent(tree, cellBounds);
@@ -457,8 +460,11 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 			if (!ignoreLinks) {
 				ignoreLinks = true;
 				save();
-				cellBounds = list.getCellBounds(index, index);
-				restore();
+				try {
+					cellBounds = list.getCellBounds(index, index);
+				} finally {	
+					restore();
+				}
 				ignoreLinks = false;
 			}
 			minTextHeight = 12;
