@@ -77,7 +77,7 @@ public class MList extends JList {
 
     private List<MListButton> deleteButtonList = Arrays.asList(deleteButton);
 
-    public int lastMousePositionCellIndex = 0;
+    public int lastMousePositionCellIndex = -1;
 
     
     public MList() {
@@ -149,19 +149,22 @@ public class MList extends JList {
 
     private void handleMouseMoved() {
         if (MList.this.getModel().getSize() > 0) {
-            Point pt = MList.this.getMousePosition();
-            // more efficient than repainting the whole component every time
-            // the mouse moves
+        	    // only repaint all the cells the mouse has moved over
+        	    Rectangle dirty = getCellBounds(lastMousePositionCellIndex, lastMousePositionCellIndex);
+        	    if (dirty != null) {        	    	  
+        	    	   repaint(dirty);
+        	    }
+            Point pt = MList.this.getMousePosition();            
             if (pt != null) {
-                int index = MList.this.locationToIndex(pt);
-                // only repaint all the cells the mouse has moved over
-                MList.this.repaint(MList.this.getCellBounds(Math.min(index, lastMousePositionCellIndex), Math.max(index, lastMousePositionCellIndex)));
-                lastMousePositionCellIndex = index;
+                lastMousePositionCellIndex = MList.this.locationToIndex(pt);
             }
             else {
-                MList.this.repaint();
-                lastMousePositionCellIndex = 0;
+                lastMousePositionCellIndex = -1;
             }
+			dirty = getCellBounds(lastMousePositionCellIndex, lastMousePositionCellIndex);
+			if (dirty != null) {
+				repaint(dirty);
+			}
         }
     }
 

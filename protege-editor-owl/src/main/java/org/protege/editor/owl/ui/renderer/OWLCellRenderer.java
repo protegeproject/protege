@@ -39,17 +39,17 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private boolean forceReadOnlyRendering;
 
-    private final OWLEditorKit owlEditorKit;
+    private OWLEditorKit owlEditorKit;
 
-    private final boolean renderIcon;
+    private boolean renderIcon;
 
-    private final boolean renderExpression;
+    private boolean renderExpression;
 
     private boolean strikeThrough;
 
     private OWLOntology ontology;
 
-    private final Set<OWLObject> equivalentObjects;
+    private Set<OWLObject> equivalentObjects;
 
     private LinkedObjectComponent linkedObjectComponent;
 
@@ -63,7 +63,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     public static final Color FOREGROUND = UIManager.getDefaults().getColor("List.foreground");
 
-    private boolean ignoreLinks = false;
+    private boolean ignoreLinks;
     
     /**
      * to ensure that the renderer is not used recursively accidently
@@ -75,7 +75,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
      */
     private final OWLCellRenderer tmp;
 
-    private final List<OWLEntityColorProvider> entityColorProviders;
+    private List<OWLEntityColorProvider> entityColorProviders;
 
     // The object that determines which icon should be displayed.
     private OWLObject iconObject;
@@ -86,11 +86,11 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private JComponent componentBeingRendered;
 
-    private final JPanel renderingComponent;
+    private JPanel renderingComponent;
 
     private final IconComponent iconComponent = new IconComponent();
 
-    private final JTextPane textPane;
+    private JTextPane textPane;
 
     private int preferredWidth;
 
@@ -110,16 +110,15 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     private boolean highlightUnsatisfiableProperties = true;
 
-    private final Set<OWLEntity> crossedOutEntities;
+    private Set<OWLEntity> crossedOutEntities;
 
-    private final Set<String> unsatisfiableNames;
+    private Set<String> unsatisfiableNames;
 
-    private final Set<String> boxedNames;
+    private Set<String> boxedNames;
 
     private boolean opaque = false;
 
 
-    
     private class OWLCellRendererPanel extends JPanel {
 
         private OWLCellRendererPanel(LayoutManager layout) {
@@ -396,6 +395,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 			throw new RuntimeException(
 					"Renderer was not locked!");
 		}
+		reset();
 		isLocked = false;
 	}
     
@@ -412,22 +412,16 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                                                    int row, int column) {
 		lock();
 		try {
-			componentBeingRendered = table;
-			if (!ignoreLinks && setupLinkedObjectComponent(table)) {
-				ignoreLinks = true;
-				save();
-				Rectangle cellBounds = table.getCellRect(row, column, true);
-				restore();
-				ignoreLinks = false;
-				setupRenderLinks(table, cellBounds);
-			}
+			setupLinkedObjectComponent(table,
+					table.getCellRect(row, column, true));
 			preferredWidth = table.getParent().getWidth();
+			componentBeingRendered = table;
 			// Set the size of the table cell
 			return prepareRenderer(value, isSelected, hasFocus);
 		} finally {
 			unlock();
 		}
-	}
+    }
 
 
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
@@ -435,21 +429,22 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 		lock();
 		try {
 			componentBeingRendered = tree;
-			if (!ignoreLinks && setupLinkedObjectComponent(tree)) {
+			Rectangle cellBounds = new Rectangle();
+			if (!ignoreLinks) {
 				ignoreLinks = true;
 				save();
-				Rectangle cellBounds = tree.getRowBounds(row);
+				cellBounds = tree.getRowBounds(row);
 				restore();
 				ignoreLinks = false;
-				setupRenderLinks(tree, cellBounds);
 			}
+			setupLinkedObjectComponent(tree, cellBounds);
 			preferredWidth = -1;
 			minTextHeight = 12;
 			return prepareRenderer(value, selected, hasFocus);
 		} finally {
 			unlock();
 		}
-	}
+    }
 
 
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
@@ -457,14 +452,14 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 		lock();
 		try {
 			componentBeingRendered = list;
+			Rectangle cellBounds = new Rectangle();
 			// We need to prevent infinite recursion here!
-			if (!ignoreLinks && setupLinkedObjectComponent(list)) {
+			if (!ignoreLinks) {
 				ignoreLinks = true;
 				save();
-				Rectangle cellBounds = list.getCellBounds(index, index);
+				cellBounds = list.getCellBounds(index, index);
 				restore();
 				ignoreLinks = false;
-				setupRenderLinks(list, cellBounds);
 			}
 			minTextHeight = 12;
 			if (list.getParent() != null) {
@@ -473,39 +468,32 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 			// preferredWidth = -1;
 			// textPane.setBorder(BorderFactory.createEmptyBorder(1, 2, 1, 2 +
 			// rightMargin));
-			Component c = prepareRenderer(value, isSelected, cellHasFocus);
-			reset();
-			return c;
+			setupLinkedObjectComponent(list, cellBounds);
+			return prepareRenderer(value, isSelected, cellHasFocus);
 		} finally {
 			unlock();
 		}
-	}
+    }
 
-	private boolean setupLinkedObjectComponent(JComponent component) {
-		if (component instanceof LinkedObjectComponent
-				&& OWLRendererPreferences.getInstance().isRenderHyperlinks()) {
-			linkedObjectComponent = (LinkedObjectComponent) component;
-			return true;
-		} else {
-			linkedObjectComponent = null;
-			return false;
-		}
-	}
-	
-	private boolean setupRenderLinks(JComponent component, Rectangle cellRect) {
-		renderLinks = false;
-		if (cellRect != null) {
-			Point mouseLoc = component.getMousePosition(true);
-			if (mouseLoc != null) {
-				renderLinks = cellRect.contains(mouseLoc);        
-	        }	
-		}
-		if (!renderLinks) {
-			linkedObjectComponent.setLinkedObject(null);
-		}
-		return renderLinks;		
-	}
-    
+
+    private void setupLinkedObjectComponent(JComponent component, Rectangle cellRect) {
+        renderLinks = false;
+        linkedObjectComponent = null;
+        if (cellRect == null) {
+            return;
+        }
+        if (component instanceof LinkedObjectComponent && OWLRendererPreferences.getInstance().isRenderHyperlinks()) {
+            linkedObjectComponent = (LinkedObjectComponent) component;
+            Point mouseLoc = component.getMousePosition(true);
+            if (mouseLoc == null) {
+                linkedObjectComponent.setLinkedObject(null);
+                return;
+            }
+            renderLinks = cellRect.contains(mouseLoc);
+        }
+    }
+
+
     private class ActiveEntityVisitor implements OWLEntityVisitor {
 
         public void visit(OWLClass cls) {
