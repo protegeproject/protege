@@ -63,7 +63,17 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     public static final Color FOREGROUND = UIManager.getDefaults().getColor("List.foreground");
 
-    private boolean gettingCellBounds;
+    private boolean ignoreLinks;
+    
+    /**
+     * to ensure that the renderer is not used recursively accidently
+     */
+    private boolean isLocked = false;
+    
+    /**
+     * used to copy the settings when running recursively
+     */
+    private final OWLCellRenderer tmp;
 
     private List<OWLEntityColorProvider> entityColorProviders;
 
@@ -120,8 +130,13 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         this(owlEditorKit, true, true);
     }
 
-
+    
     public OWLCellRenderer(OWLEditorKit owlEditorKit, boolean renderExpression, boolean renderIcon) {
+		this(owlEditorKit, renderExpression, renderIcon, new OWLCellRenderer(
+				owlEditorKit, renderExpression, renderIcon, null));
+    }
+
+    OWLCellRenderer(OWLEditorKit owlEditorKit, boolean renderExpression, boolean renderIcon, OWLCellRenderer tmp) {
         this.owlEditorKit = owlEditorKit;
         this.renderExpression = renderExpression;
         this.renderIcon = renderIcon;
@@ -152,6 +167,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         boxedNames = new HashSet<>();
         prepareStyles();
         setupFont();
+        this.tmp = tmp;
     }
 
 
@@ -222,7 +238,44 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         unsatisfiableNames.clear();
         boxedNames.clear();
     }
+    
+	public void save() {
+		tmp.iconObject = iconObject;
+		tmp.rightMargin = rightMargin;
+		tmp.ontology = ontology;
+		tmp.focusedEntity = focusedEntity;
+		tmp.commentedOut = commentedOut;
+		tmp.feint = feint;
+		tmp.strikeThrough = strikeThrough;
+		tmp.highlightUnsatisfiableClasses = highlightUnsatisfiableClasses;
+		tmp.highlightUnsatisfiableProperties = highlightUnsatisfiableProperties;
+		tmp.crossedOutEntities.clear();
+		tmp.crossedOutEntities.addAll(crossedOutEntities);
+		tmp.unsatisfiableNames.clear();
+		tmp.unsatisfiableNames.addAll(unsatisfiableNames);
+		tmp.boxedNames.clear();
+		tmp.boxedNames.addAll(boxedNames);
+		unlock();
+	}
 
+	public void restore() {
+		lock();
+		iconObject = tmp.iconObject;
+		rightMargin = tmp.rightMargin;
+		ontology = tmp.ontology;
+		focusedEntity = tmp.focusedEntity;
+		commentedOut= tmp.commentedOut;
+		feint = tmp.feint;
+		strikeThrough = tmp.strikeThrough;
+		highlightUnsatisfiableClasses = tmp.highlightUnsatisfiableClasses;
+		highlightUnsatisfiableProperties = tmp.highlightUnsatisfiableProperties;
+		crossedOutEntities.clear();
+		crossedOutEntities.addAll(tmp.crossedOutEntities);
+		unsatisfiableNames.clear();
+		unsatisfiableNames.addAll(tmp.unsatisfiableNames);
+		boxedNames.clear();
+		boxedNames.addAll(tmp.boxedNames);
+	}
 
     public void setFocusedEntity(OWLEntity entity) {
         focusedEntity = entity;
@@ -329,6 +382,23 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         this.wrap = wrap;
     }
 
+	void lock() {
+		if (isLocked) {
+			throw new RuntimeException(
+					"Renderer used recursively without saving the settings!");
+		}
+		isLocked = true;
+	}
+
+	void unlock() {
+		if (!isLocked) {
+			throw new RuntimeException(
+					"Renderer was not locked!");
+		}
+		reset();
+		isLocked = false;
+	}
+    
     ////////////////////////////////////////////////////////////////////////////////////////
     //
     // Implementation of renderer interfaces
@@ -340,52 +410,75 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
                                                    int row, int column) {
-        setupLinkedObjectComponent(table, table.getCellRect(row, column, true));
-        preferredWidth = table.getParent().getWidth();
-        componentBeingRendered = table;
-        // Set the size of the table cell
-        return prepareRenderer(value, isSelected, hasFocus);
+		lock();
+		try {
+			setupLinkedObjectComponent(table,
+					table.getCellRect(row, column, true));
+			preferredWidth = table.getParent().getWidth();
+			componentBeingRendered = table;
+			// Set the size of the table cell
+			return prepareRenderer(value, isSelected, hasFocus);
+		} finally {
+			unlock();
+		}
     }
 
 
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
                                                   boolean leaf, int row, boolean hasFocus) {
-        componentBeingRendered = tree;
-        Rectangle cellBounds = new Rectangle();
-        if (!gettingCellBounds) {
-            gettingCellBounds = true;
-            cellBounds = tree.getRowBounds(row);
-            gettingCellBounds = false;
-        }
-        setupLinkedObjectComponent(tree, cellBounds);
-        preferredWidth = -1;
-        minTextHeight = 12;
-        Component c = prepareRenderer(value, selected, hasFocus);
-        reset();
-        return c;
+		lock();
+		try {
+			componentBeingRendered = tree;
+			Rectangle cellBounds = new Rectangle();
+			if (!ignoreLinks) {
+				ignoreLinks = true;
+				save();
+				try {
+					cellBounds = tree.getRowBounds(row);
+				} finally {
+					restore();
+				}
+				ignoreLinks = false;
+			}
+			setupLinkedObjectComponent(tree, cellBounds);
+			preferredWidth = -1;
+			minTextHeight = 12;
+			return prepareRenderer(value, selected, hasFocus);
+		} finally {
+			unlock();
+		}
     }
 
 
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
                                                   boolean cellHasFocus) {
-        componentBeingRendered = list;
-        Rectangle cellBounds = new Rectangle();
-        // We need to prevent infinite recursion here!
-        if (!gettingCellBounds) {
-            gettingCellBounds = true;
-            cellBounds = list.getCellBounds(index, index);
-            gettingCellBounds = false;
-        }
-        minTextHeight = 12;
-        if (list.getParent() != null) {
-            preferredWidth = list.getParent().getWidth();
-        }
-//        preferredWidth = -1;
-//        textPane.setBorder(BorderFactory.createEmptyBorder(1, 2, 1, 2 + rightMargin));
-        setupLinkedObjectComponent(list, cellBounds);
-        Component c = prepareRenderer(value, isSelected, cellHasFocus);
-        reset();
-        return c;
+		lock();
+		try {
+			componentBeingRendered = list;
+			Rectangle cellBounds = new Rectangle();
+			// We need to prevent infinite recursion here!
+			if (!ignoreLinks) {
+				ignoreLinks = true;
+				save();
+				try {
+					cellBounds = list.getCellBounds(index, index);
+				} finally {	
+					restore();
+				}
+				ignoreLinks = false;
+			}
+			minTextHeight = 12;
+			if (list.getParent() != null) {
+				preferredWidth = list.getParent().getWidth();
+			}
+			// preferredWidth = -1;
+			// textPane.setBorder(BorderFactory.createEmptyBorder(1, 2, 1, 2 +
+			// rightMargin));
+			setupLinkedObjectComponent(list, cellBounds);
+			return prepareRenderer(value, isSelected, cellHasFocus);
+		} finally {
+			unlock();
+		}
     }
 
 
@@ -880,17 +973,15 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
                 Rectangle tokenRect = new Rectangle(startRect.x, startRect.y, width, heght);
                 tokenRect.grow(0, -2);
-                if (linkedObjectComponent.getMouseCellLocation() != null) {
-                    Point mouseCellLocation = linkedObjectComponent.getMouseCellLocation();
-                    if (mouseCellLocation != null) {
-                        mouseCellLocation = SwingUtilities.convertPoint(renderingComponent,
-                                                                        mouseCellLocation,
-                                                                        textPane);
-                        if (tokenRect.contains(mouseCellLocation)) {
-                            doc.setCharacterAttributes(tokenStartIndex, tokenLength, linkStyle, false);
-                            linkedObjectComponent.setLinkedObject(curEntity);
-                            linkRendered = true;
-                        }
+                Point mouseCellLocation = linkedObjectComponent.getMouseCellLocation();
+                if (mouseCellLocation != null) {
+                    mouseCellLocation = SwingUtilities.convertPoint(renderingComponent,
+                                                                    mouseCellLocation,
+                                                                    textPane);
+                    if (tokenRect.contains(mouseCellLocation)) {
+                        doc.setCharacterAttributes(tokenStartIndex, tokenLength, linkStyle, false);
+                        linkedObjectComponent.setLinkedObject(curEntity);
+                        linkRendered = true;
                     }
                 }
             }

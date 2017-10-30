@@ -18,15 +18,14 @@ import java.awt.*;
  */
 public class OWLLinkedObjectTree extends JTree implements LinkedObjectComponent {
 
-    private OWLObject linkedObject;
-
     private boolean drawNodeSeperators = false;
-
+    
+    private final LinkedObjectComponentMediator mediator;
 
     public OWLLinkedObjectTree(OWLEditorKit eKit) {
+    		mediator = new LinkedObjectComponentMediator(eKit, this);
         setCellRenderer(new OWLObjectTreeCellRenderer(eKit));
-        setRowHeight(-1); // gets the height from the renderer - used for wrapped objects        
-        LinkedObjectComponentMediator mediator = new LinkedObjectComponentMediator(eKit, this);
+        setRowHeight(-1); // gets the height from the renderer - used for wrapped objects                
     }
 
 
@@ -53,7 +52,7 @@ public class OWLLinkedObjectTree extends JTree implements LinkedObjectComponent 
 
 
     public OWLObject getLinkedObject() {
-        return linkedObject;
+    		return mediator.getLinkedObject();
     }
 
 
@@ -86,7 +85,7 @@ public class OWLLinkedObjectTree extends JTree implements LinkedObjectComponent 
 
     //    public Object getCellObject();
     public void setLinkedObject(OWLObject object) {
-        linkedObject = object;
+    		mediator.setLinkedObject(object);
     }
 
 
