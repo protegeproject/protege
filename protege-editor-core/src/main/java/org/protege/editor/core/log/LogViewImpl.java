@@ -16,11 +16,13 @@ public class LogViewImpl implements LogView {
     private final JComponent view;
 
     private final LogRecordModel logRecordModel;
+    
+    private final JList<LogRecordElement> list;
 
     public LogViewImpl() {
         view = new JPanel(new BorderLayout(7, 7));
         view.setPreferredSize(new Dimension(800, 600));
-        JList<LogRecordElement> list = new JList<>(logRecordModel = new LogRecordModel());
+        list = new JList<>(logRecordModel = new LogRecordModel());
         JScrollPane sp = new JScrollPane(list);
         sp.getVerticalScrollBar().setUnitIncrement(15);
         view.add(sp);
@@ -48,7 +50,14 @@ public class LogViewImpl implements LogView {
 
     @Override
     public void append(LogRecord logRecord) {
-        SwingUtilities.invokeLater(() -> logRecordModel.append(logRecord));
+		SwingUtilities.invokeLater(() -> {
+			int lastVisible = list.getLastVisibleIndex();
+			boolean autoScroll = (lastVisible == logRecordModel.getSize() - 1);
+			logRecordModel.append(logRecord);
+			if (autoScroll) {
+				list.ensureIndexIsVisible(logRecordModel.getSize() - 1);
+			}
+		});
     }
 
 }
