@@ -1,9 +1,7 @@
 package org.protege.editor.core.log;
 
-import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.AppenderBase;
-import org.protege.editor.core.ui.error.ErrorLogListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +20,7 @@ public class LogManager {
 
     private final AppenderBase<ILoggingEvent> appender;
 
-    private final List<ErrorLogListener> listenerList = new ArrayList<>();
+    private final List<LogStatusListener> listenerList = new ArrayList<>();
 
     private final LoggingEventTranslator translator = new LoggingEventTranslator();
 
@@ -32,12 +30,9 @@ public class LogManager {
         this.logView = logView;
         appender = new AppenderBase<ILoggingEvent>() {
             @Override
-            protected void append(ILoggingEvent event) {
-                LogManager.this.logView.append(translator.toLogRecord(event));
-                if(event.getLevel() == Level.ERROR) {
-                    fireErrorLogged();
-                }
-            }
+			protected void append(ILoggingEvent event) {
+				fireEvent(event);
+			}
         };
 
         JOptionPane op = new JOptionPane(logView.asJComponent(), JOptionPane.PLAIN_MESSAGE);
@@ -46,19 +41,24 @@ public class LogManager {
         logViewDialog.setResizable(true);
     }
 
-    public void addErrorLogListener(ErrorLogListener listener) {
+    public synchronized void addErrorLogListener(LogStatusListener listener) {
         listenerList.add(listener);
     }
 
-    public void removeErrorLogListener(ErrorLogListener listener) {
-        listenerList.remove(listener);
-    }
+	public synchronized void removeErrorLogListener(LogStatusListener listener) {
+		listenerList.remove(listener);
+	}
 
-    private void fireErrorLogged() {
-        new ArrayList<>(listenerList)
-                .stream()
-                .forEach(ErrorLogListener::errorLogged);
-    }
+	private synchronized void fireEvent(ILoggingEvent event) {
+		logView.append(translator.toLogRecord(event));
+		for (int i = 0; i < listenerList.size(); i++) {
+			listenerList.get(i).eventLogged(event);			
+		}
+	}
+
+	private synchronized void fireErrorsCleared() {
+		listenerList.stream().forEach(LogStatusListener::statusCleared);
+	}
 
     private ch.qos.logback.classic.Logger getRootLogger() {
         return (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
@@ -77,5 +77,6 @@ public class LogManager {
 
     public void showLogView() {
         logViewDialog.setVisible(true);
+        fireErrorsCleared();
     }
 }

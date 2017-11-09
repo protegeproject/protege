@@ -5,7 +5,6 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Optional;
 
 /**
  * Matthew Horridge
@@ -20,7 +19,7 @@ public class LogRecordRenderer implements ListCellRenderer<LogRecordElement> {
 
     private final DefaultListCellRenderer defaultRenderer;
 
-    private final static Border border = BorderFactory.createEmptyBorder(2, 0, 2, 0);
+    private final static Border BORDER = BorderFactory.createEmptyBorder(2, 0, 2, 0);
 
     public LogRecordRenderer() {
         defaultRenderer = new DefaultListCellRenderer();
@@ -46,7 +45,7 @@ public class LogRecordRenderer implements ListCellRenderer<LogRecordElement> {
                 label.setForeground(Color.LIGHT_GRAY);
             }
         }
-        label.setBorder(border);
+        label.setBorder(BORDER);
         return label;
     }
 
