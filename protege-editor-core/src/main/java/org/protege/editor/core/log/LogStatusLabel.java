@@ -28,7 +28,7 @@ public class LogStatusLabel extends JLabel implements LogStatusListener {
 			LOG_ICON = Icons.getIcon("log.png");
 
 	private static final String LOG_TOOLTIP = "Click to open the log",
-			LOG_EVENT_TOOLTIP = "<html>%s<br>" + LOG_TOOLTIP + "</html>";
+			LOG_EVENT_TOOLTIP = "<html><body>...<br>%s<br>" + LOG_TOOLTIP + "</body></html>";
 
 	private static int LOG_MESSAGE_LIMIT = 64; // characters
 
