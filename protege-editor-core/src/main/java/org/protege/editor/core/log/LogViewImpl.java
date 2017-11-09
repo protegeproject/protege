@@ -2,6 +2,7 @@ package org.protege.editor.core.log;
 
 
 import org.protege.editor.core.FileUtils;
+import org.protege.editor.core.ui.action.TimestampOutputAction;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,10 +30,16 @@ public class LogViewImpl implements LogView {
         view.add(sp);
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton clearLogButton = new JButton("Clear log");
+        clearLogButton.setToolTipText("Remove all log messages");
         clearLogButton.addActionListener(e -> clearView());
         JButton showLogFile = new JButton("Show log file");
+        showLogFile.setToolTipText("Show the log file in the system file browser");
         showLogFile.addActionListener(e -> FileUtils.showLogFile());
+        JButton timeStampButton = new JButton("Time stamp");
+		timeStampButton.addActionListener(e -> TimestampOutputAction.createTimeStamp(view));
+		timeStampButton.setToolTipText("Print a timestamp and optional message into the logs or console");
         buttonPanel.add(showLogFile);
+        buttonPanel.add(timeStampButton);
         buttonPanel.add(clearLogButton);
         view.add(buttonPanel, BorderLayout.SOUTH);
         list.setFont(new Font("monospaced", Font.PLAIN, 12));
