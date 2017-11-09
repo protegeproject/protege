@@ -54,6 +54,14 @@ public final class LogRecordElement {
             formatThrowableInfo(level + 1, pw, info.getCause());
         }
     }
+    
+    String getTooltip() {
+    	   String message = logRecord.getFormattedMessage();
+    	   if (message.length() <= 80) {
+    		   return null; // should be visible fine
+    	   }
+    	   return "<html><p width=\"500\">" + message + "</p></html>";
+    }
 
     @Override
     public int hashCode() {

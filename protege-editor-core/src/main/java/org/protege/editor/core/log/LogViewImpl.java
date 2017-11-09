@@ -5,6 +5,7 @@ import org.protege.editor.core.FileUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
 /**
  * Matthew Horridge
@@ -36,6 +37,15 @@ public class LogViewImpl implements LogView {
         view.add(buttonPanel, BorderLayout.SOUTH);
         list.setFont(new Font("monospaced", Font.PLAIN, 12));
         list.setCellRenderer(new LogRecordRenderer());
+        list.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                int index = list.locationToIndex(e.getPoint());
+                if( index > -1 ) {
+                    list.setToolTipText(logRecordModel.getElementAt(index).getTooltip());
+                }
+            }
+        });
     }
 
     @Override
