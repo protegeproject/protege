@@ -1,7 +1,10 @@
 package org.protege.editor.core.log;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.AppenderBase;
+import ch.qos.logback.core.Context;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,21 +19,37 @@ import java.util.List;
  */
 public class LogManager {
 
-    private final LogView logView;
-
-    private final AppenderBase<ILoggingEvent> appender;
+    private final Appender<ILoggingEvent> appender;
 
     private final List<LogStatusListener> listenerList = new ArrayList<>();
-
-    private final LoggingEventTranslator translator = new LoggingEventTranslator();
 
     private final JDialog logViewDialog;
 
     public LogManager(LogView logView) {
-        this.logView = logView;
+        
         appender = new AppenderBase<ILoggingEvent>() {
+        	
+        	    @Override
+        	    public void start() {
+       	    	   logView.start();
+        	    	   super.start();  
+        	    }
+        	    
+        	    @Override
+			public void stop() {
+				super.stop();
+				logView.stop();
+			}
+        	    
+        	    @Override
+        	    public void setContext(Context context) {
+        	    	    logView.setContext(context);
+          	    super.setContext(context);
+        	    }
+        	
             @Override
 			protected void append(ILoggingEvent event) {
+            	    logView.doAppend(event);
 				fireEvent(event);
 			}
         };
@@ -49,8 +68,7 @@ public class LogManager {
 		listenerList.remove(listener);
 	}
 
-	private synchronized void fireEvent(ILoggingEvent event) {
-		logView.append(translator.toLogRecord(event));
+	private synchronized void fireEvent(ILoggingEvent event) {	    		
 		for (int i = 0; i < listenerList.size(); i++) {
 			listenerList.get(i).eventLogged(event);			
 		}
@@ -66,13 +84,14 @@ public class LogManager {
 
     public void bind() {
         ch.qos.logback.classic.Logger rootLogger = getRootLogger();
-        rootLogger.addAppender(appender);
+        appender.setContext(rootLogger.getLoggerContext());
         appender.start();
+        rootLogger.addAppender(appender);
     }
 
-    public void unbind() {
-        appender.stop();
+    public void unbind() {        
         getRootLogger().detachAppender(appender);
+        appender.stop();
     }
 
     public void showLogView() {
