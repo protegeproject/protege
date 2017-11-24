@@ -261,6 +261,14 @@
         <class value="org.protege.editor.core.update.PluginPreferencesPanel"/>
     </extension>
     
+    <!-- Log preferences -->
+    
+    <extension id="ui.preferences.update"
+               point="org.protege.editor.core.application.preferencespanel">
+        <label value="Log"/>
+        <class value="org.protege.editor.core.log.LogPreferencesPanel"/>
+    </extension>
+    
     <!-- Other startup actions --> 
     
     <extension id ="AltCheckForPluginsAction"
