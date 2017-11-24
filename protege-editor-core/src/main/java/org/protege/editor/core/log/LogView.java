@@ -12,6 +12,8 @@ import ch.qos.logback.core.Appender;
  */
 public interface LogView extends Appender<ILoggingEvent> {
 
+	void applyPreferences();
+	
     void clearView();
 
     JComponent asJComponent();

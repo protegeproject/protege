@@ -21,14 +21,14 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
  */
 public class LogStatusLabel extends JLabel implements LogStatusListener {
 
-	private static final long serialVersionUID = -6000196744393026164L;
+	private final static long serialVersionUID = -6000196744393026164L;
 
-	private static final Icon LOG_ERROR_ICON = Icons.getIcon("error.png"),
-			LOG_WARNING_ICON = Icons.getIcon("warning.png"),
-			LOG_ICON = Icons.getIcon("log.png");
+	private final static Icon LOG_ERROR_ICON_ = Icons.getIcon("error.png"),
+			LOG_WARNING_ICON_ = Icons.getIcon("warning.png"),
+			LOG_ICON_ = Icons.getIcon("log.png");
 
-	private static final String LOG_TOOLTIP = "Click to open the log",
-			LOG_EVENT_TOOLTIP = "<html><body>...<br>%s<br>" + LOG_TOOLTIP + "</body></html>";
+	private final static String LOG_TOOLTIP_ = "Click to open the log",
+			LOG_EVENT_TOOLTIP_ = "<html><body>...<br>%s<br>" + LOG_TOOLTIP_ + "</body></html>";
 
 	private static int LOG_MESSAGE_LIMIT = 64; // characters
 
@@ -44,7 +44,7 @@ public class LogStatusLabel extends JLabel implements LogStatusListener {
 				ProtegeApplication.showLogView();
 			}
 		});
-		setToolTipText(LOG_TOOLTIP);
+		setToolTipText(LOG_TOOLTIP_);
 	}
 
 	@Override
@@ -54,9 +54,9 @@ public class LogStatusLabel extends JLabel implements LogStatusListener {
 			thresholdLevel = logLevel;
 			lastImportantEvent = event;
 			if (logLevel.isGreaterOrEqual(Level.ERROR)) {
-				setIcon(LOG_ERROR_ICON);
+				setIcon(LOG_ERROR_ICON_);
 			} else {
-				setIcon(LOG_WARNING_ICON);
+				setIcon(LOG_WARNING_ICON_);
 			}
 		}
 	}
@@ -65,13 +65,13 @@ public class LogStatusLabel extends JLabel implements LogStatusListener {
 	public synchronized void statusCleared() {
 		lastImportantEvent = null;
 		thresholdLevel = Level.WARN;
-		setIcon(LOG_ICON);
+		setIcon(LOG_ICON_);
 	}
 
 	@Override
 	public synchronized String getToolTipText(MouseEvent event) {
 		if (lastImportantEvent != null) {
-			return String.format(LOG_EVENT_TOOLTIP,
+			return String.format(LOG_EVENT_TOOLTIP_,
 					truncate(lastImportantEvent.toString()));
 		} else {
 			return super.getToolTipText(event);
