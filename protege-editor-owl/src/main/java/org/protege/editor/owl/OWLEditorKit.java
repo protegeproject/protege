@@ -35,6 +35,7 @@ import javax.swing.*;
 import java.io.File;
 import java.net.URI;
 import java.util.*;
+import org.protege.editor.owl.ui.ontology.authentication.BasicAuthenticationDialog;
 
 
 /**
@@ -66,6 +67,8 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     private final Set<URI> newPhysicalURIs = new HashSet<>();
 
     private final OntologyLoadErrorHandlerUI loadErrorHandler;
+    
+    private final BasicAuthenticationDialog basicAuthenticationDialogHandler;
 
     private final ServiceRegistration<?> registration;
 
@@ -97,7 +100,9 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         modelManager.setExplanationManager(new ExplanationManager(this));
         modelManager.setMissingImportHandler(new MissingImportHandlerUI(this));
         loadErrorHandler = new OntologyLoadErrorHandlerUI(this);
+        basicAuthenticationDialogHandler = new BasicAuthenticationDialog(this);
         modelManager.setLoadErrorHandler(loadErrorHandler);
+        modelManager.setBasicAuthenticationHandler(basicAuthenticationDialogHandler);
 
 
         loadIOListenerPlugins();

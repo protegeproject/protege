@@ -26,6 +26,8 @@ import java.net.URI;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import org.protege.editor.owl.ui.ontology.authentication.BasicAuthenticationDialog;
+import org.protege.editor.owl.ui.ontology.authentication.BasicAuthenticationHandler;
 
 
 /**
@@ -311,6 +313,8 @@ public interface OWLModelManager extends ModelManager, HasActiveOntology {
 
 
     void setLoadErrorHandler(OntologyLoadErrorHandler handler);
+    
+    void setBasicAuthenticationHandler(BasicAuthenticationHandler handler);
 
     XMLCatalog addRootFolder(File dir);
 }
