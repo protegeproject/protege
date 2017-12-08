@@ -17,6 +17,8 @@ import org.protege.editor.owl.ui.error.OntologyLoadErrorHandler;
 import org.protege.editor.owl.ui.explanation.ExplanationManager;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
+import org.protege.editor.owl.ui.ontology.authentication.BasicAuthenticationDialog;
+import org.protege.editor.owl.ui.ontology.authentication.BasicAuthenticationHandler;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
@@ -27,8 +29,6 @@ import java.net.URI;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
-import org.protege.editor.owl.ui.ontology.authentication.BasicAuthenticationDialog;
-import org.protege.editor.owl.ui.ontology.authentication.BasicAuthenticationHandler;
 
 
 /**
