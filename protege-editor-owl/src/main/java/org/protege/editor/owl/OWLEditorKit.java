@@ -20,6 +20,7 @@ import org.protege.editor.owl.ui.OntologyFormatPanel;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandlerUI;
 import org.protege.editor.owl.ui.explanation.ExplanationManager;
+import org.protege.editor.owl.ui.ontology.authentication.BasicAuthenticationDialog;
 import org.protege.editor.owl.ui.ontology.OntologyPreferences;
 import org.protege.editor.owl.ui.ontology.imports.missing.MissingImportHandlerUI;
 import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
@@ -66,6 +67,8 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     private final Set<URI> newPhysicalURIs = new HashSet<>();
 
     private final OntologyLoadErrorHandlerUI loadErrorHandler;
+    
+    private final BasicAuthenticationDialog basicAuthenticationDialogHandler;
 
     private final ServiceRegistration<?> registration;
 
@@ -97,7 +100,9 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         modelManager.setExplanationManager(new ExplanationManager(this));
         modelManager.setMissingImportHandler(new MissingImportHandlerUI(this));
         loadErrorHandler = new OntologyLoadErrorHandlerUI(this);
+        basicAuthenticationDialogHandler = new BasicAuthenticationDialog(this);
         modelManager.setLoadErrorHandler(loadErrorHandler);
+        modelManager.setBasicAuthenticationHandler(basicAuthenticationDialogHandler);
 
 
         loadIOListenerPlugins();

@@ -37,6 +37,8 @@ import org.protege.editor.owl.ui.error.OntologyLoadErrorHandler;
 import org.protege.editor.owl.ui.explanation.ExplanationManager;
 import org.protege.editor.owl.ui.renderer.*;
 import org.protege.editor.owl.ui.renderer.plugin.RendererPlugin;
+import org.protege.editor.owl.ui.ontology.authentication.BasicAuthenticationDialog;
+import org.protege.editor.owl.ui.ontology.authentication.BasicAuthenticationHandler;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
@@ -128,8 +130,10 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     private final DeprecationCache deprecationCache;
 
     // error handlers
-    
+
     private OntologyLoadErrorHandler loadErrorHandler;
+
+    private BasicAuthenticationHandler basicAuthenticationHandler;
 
     private final UserResolvedIRIMapper userResolvedIRIMapper = new UserResolvedIRIMapper(new MissingImportHandlerImpl());
 
@@ -146,12 +150,12 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
 
-
     public OWLModelManagerImpl() {
         super();
 
         manager = OWLManager.createConcurrentOWLOntologyManager();
         manager.addOntologyChangeListener(this);
+
         objectRenderer = new OWLObjectRendererImpl(this);
         owlEntityRenderingCache = new OWLEntityRenderingCacheImpl();
         owlEntityRenderingCache.setOWLModelManager(this);
@@ -166,7 +170,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
         owlReasonerManager = new OWLReasonerManagerImpl(this);
         owlReasonerManager.getReasonerPreferences().addListener(() -> fireEvent(EventType.ONTOLOGY_CLASSIFIED));
-
 
         deprecationCache = new DeprecationCache(manager.getOWLDataFactory().getOWLDeprecated());
 
@@ -273,23 +276,83 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             return loadedOntology.isPresent();
         } catch (OWLOntologyCreationException e) {
             OWLOntologyID id = new OWLOntologyID(com.google.common.base.Optional.of(IRI.create(uri)), com.google.common.base.Optional.<IRI>absent());
-            handleLoadError(id, uri, e);
+            // Check error message contain 401 or 403 then show the popup and get user name and password
+            if (e.getMessage().contains("Server returned HTTP response code: 401") || e.getMessage().contains("Server returned HTTP response code: 403")) {
+                logger.info(e.getMessage());
+                // Show popup & Get Username & Password then convert username password as base64 encoded
+                String authenticationValue = handleBasicAuthentication(id, uri, e);
+                if (authenticationValue != null) {
+                    return loadOntologyFromPhysicalURIWithAuthentication(uri, authenticationValue);
+                } else {
+                    handleLoadError(id, uri, e);
+                }
+            } else {
+                handleLoadError(id, uri, e);
+            }
             return false;
         }
     }
 
+
+    /**
+     * A convenience method that loads an ontology from a file The location of
+     * the file is specified by the URI argument with basic authentication value.
+     */
+    public boolean loadOntologyFromPhysicalURIWithAuthentication(URI uri, String authenticationValue) {
+        Stopwatch stopwatch = Stopwatch.createUnstarted();
+        try {
+            logger.info(LogBanner.start("Loading Ontology"));
+            logger.info("Loading ontology from {}", uri);
+            stopwatch.start();
+            OntologyLoader loader = new OntologyLoader(this, userResolvedIRIMapper);
+            Optional<OWLOntology> loadedOntology = loader.loadOntology(uri, authenticationValue);
+            logger.info("Loading for ontology and imports closure successfully completed in {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
+            loadedOntology.ifPresent(ontology -> {
+                DocumentFormatUpdater formatUpdater = new DocumentFormatUpdater(new DocumentFormatMapper());
+                formatUpdater.updateFormat(ontology);
+            });
+            logger.info(LogBanner.end());
+            return loadedOntology.isPresent();
+        } catch (OWLOntologyCreationException e) {
+            OWLOntologyID id = new OWLOntologyID(com.google.common.base.Optional.of(IRI.create(uri)), com.google.common.base.Optional.<IRI>absent());
+            if (e.getMessage().contains("Server returned HTTP response code: 401") || e.getMessage().contains("Server returned HTTP response code: 403")) {
+                logger.info(e.getMessage());
+                // Show popup & Get Username & Password then convert username password as base64 encoded
+                String base64AuthenticationValue = handleBasicAuthentication(id, uri, e);
+                if (base64AuthenticationValue != null) {
+                    return loadOntologyFromPhysicalURIWithAuthentication(uri, base64AuthenticationValue);
+                } else {
+                    handleLoadError(id, uri, e);
+                }
+            } else {
+                handleLoadError(id, uri, e);
+            }
+            return false;
+        }
+    }
 
     public void startedLoadingOntology(@Nonnull LoadingStartedEvent event) {
         logger.info("Loading {} from {}", event.getOntologyID(), event.getDocumentIRI());
         fireBeforeLoadEvent(event.getOntologyID(), event.getDocumentIRI().toURI());
     }
 
-
     public void finishedLoadingOntology(@Nonnull LoadingFinishedEvent event) {
         if (!event.isSuccessful()) {
             handleLoadError(event.getOntologyID(), event.getDocumentIRI().toURI(), event.getException());
         }
         fireAfterLoadEvent(event.getOntologyID(), event.getDocumentIRI().toURI());
+    }
+
+    private String handleBasicAuthentication(OWLOntologyID owlOntologyID, URI documentURI, Exception e) {
+        if (basicAuthenticationHandler != null) {
+            try {
+                return basicAuthenticationHandler.handleBasicAuthenticationOntology(owlOntologyID, documentURI, e);
+            } catch (Throwable e1) {
+                // if, for any reason, the loadErrorHandler cannot report the error
+                ErrorLogPanel.showErrorDialog(e1);
+            }
+        }
+        return null;
     }
 
     private void handleLoadError(OWLOntologyID owlOntologyID, URI documentURI, Exception e) {
@@ -689,7 +752,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         }
     }
 
-
     public void ontologiesChanged(@Nonnull List<? extends OWLOntologyChange> changes) {
         if (changes.isEmpty()) {
             return;
@@ -959,5 +1021,16 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         this.loadErrorHandler = handler;
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////
+    //
+    //  Basic Authentication handling
+    //
+    //////////////////////////////////////////////////////////////////////////////////////
 
+
+    public void setBasicAuthenticationHandler(BasicAuthenticationHandler handler) {
+        this.basicAuthenticationHandler = handler;
+    }
 }
+
+

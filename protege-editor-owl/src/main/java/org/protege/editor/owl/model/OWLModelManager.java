@@ -17,6 +17,8 @@ import org.protege.editor.owl.ui.error.OntologyLoadErrorHandler;
 import org.protege.editor.owl.ui.explanation.ExplanationManager;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
+import org.protege.editor.owl.ui.ontology.authentication.BasicAuthenticationDialog;
+import org.protege.editor.owl.ui.ontology.authentication.BasicAuthenticationHandler;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
@@ -312,6 +314,8 @@ public interface OWLModelManager extends ModelManager, HasActiveOntology {
 
 
     void setLoadErrorHandler(OntologyLoadErrorHandler handler);
+    
+    void setBasicAuthenticationHandler(BasicAuthenticationHandler handler);
 
     XMLCatalog addRootFolder(File dir);
 

@@ -46,12 +46,44 @@ public class OntologyLoader {
         this.modelManager = modelManager;
         this.userResolvedIRIMapper = userResolvedIRIMapper;
     }
+    
+    public Optional<OWLOntology> loadOntology(URI documentUri, String authenticationValue) throws OWLOntologyCreationException {
+        if (!SwingUtilities.isEventDispatchThread()) {
+            throw new IllegalStateException("The ontology loader must be called from the Event Dispatch Thread");
+        }
+        return loadOntologyInOtherThread(documentUri, authenticationValue);
+    }
 
     public Optional<OWLOntology> loadOntology(URI documentUri) throws OWLOntologyCreationException {
         if (!SwingUtilities.isEventDispatchThread()) {
             throw new IllegalStateException("The ontology loader must be called from the Event Dispatch Thread");
         }
         return loadOntologyInOtherThread(documentUri);
+    }
+    
+    private Optional<OWLOntology> loadOntologyInOtherThread(URI uri, String authenticationValue) throws OWLOntologyCreationException {    	
+    	ListenableFuture<Optional<OWLOntology>> result = ontologyLoadingService
+				.submit(() -> {					
+					try {						
+						return loadOntologyInternal(uri, authenticationValue);
+					} finally {
+						dlg.setVisible(false);
+					}					
+				});
+    	dlg.setVisible(true);
+        try {
+            return result.get();
+        } catch (InterruptedException e) {
+            return Optional.empty();
+        } catch (ExecutionException e) {
+            if(e.getCause() instanceof OWLOntologyCreationException) {
+                throw (OWLOntologyCreationException) e.getCause();
+            }
+            else {
+                logger.error("An error occurred whilst loading the ontology at {}. Cause: {}", e.getCause().getMessage());
+            }
+            return Optional.empty();
+        }
     }
 
     private Optional<OWLOntology> loadOntologyInOtherThread(URI uri) throws OWLOntologyCreationException {    	
@@ -82,7 +114,51 @@ public class OntologyLoader {
     private OWLOntologyManager getOntologyManager() {
         return modelManager.getOWLOntologyManager();
     }
+    
+    private Optional<OWLOntology> loadOntologyInternal(URI documentURI, String authenticationValue) throws OWLOntologyCreationException {
 
+        // I think the loading manager needs to be a concurrent manager because we
+        // copy over the ontologies and the ontologies have to be concurrent ontology implementations
+        OWLOntologyManager loadingManager = OWLManager.createConcurrentOWLOntologyManager();
+
+        PriorityCollection<OWLOntologyIRIMapper> iriMappers = loadingManager.getIRIMappers();
+        iriMappers.clear();
+        iriMappers.add(userResolvedIRIMapper);
+        iriMappers.add(new WebConnectionIRIMapper());
+        iriMappers.add(new AutoMappedRepositoryIRIMapper(modelManager.getOntologyCatalogManager()));
+
+        loadingManager.addOntologyLoaderListener(new ProgressDialogOntologyLoaderListener(dlg, logger));
+        OWLOntologyLoaderConfiguration configuration = new OWLOntologyLoaderConfiguration();
+        configuration = configuration.setMissingImportHandlingStrategy(MissingImportHandlingStrategy.SILENT);
+        configuration = configuration.setAuthorizationValue(authenticationValue);
+        IRIDocumentSource documentSource = new IRIDocumentSource(IRI.create(documentURI));
+        OWLOntology ontology = loadingManager.loadOntologyFromOntologyDocument(documentSource, configuration);
+        Set<OWLOntology> alreadyLoadedOntologies = new HashSet<>();
+        for (OWLOntology loadedOntology : loadingManager.getOntologies()) {
+            if (!modelManager.getOntologies().contains(loadedOntology)) {
+                OWLOntologyManager modelManager = getOntologyManager();
+                fireBeforeLoad(loadedOntology, documentURI);
+                modelManager.copyOntology(loadedOntology, OntologyCopy.MOVE);
+                fireAfterLoad(loadedOntology, documentURI);
+            }
+            else {
+                alreadyLoadedOntologies.add(loadedOntology);
+            }
+        }
+        if(!alreadyLoadedOntologies.isEmpty()) {
+            displayOntologiesAlreadyLoadedMessage(alreadyLoadedOntologies);
+        }
+
+
+        modelManager.setActiveOntology(ontology);
+        modelManager.fireEvent(EventType.ONTOLOGY_LOADED);
+        OWLOntologyID id = ontology.getOntologyID();
+        if (!id.isAnonymous()) {
+            getOntologyManager().getIRIMappers().add(new SimpleIRIMapper(id.getDefaultDocumentIRI().get(), IRI.create(documentURI)));
+        }
+        return Optional.of(ontology);
+    }
+    
     private Optional<OWLOntology> loadOntologyInternal(URI documentURI) throws OWLOntologyCreationException {
 
         // I think the loading manager needs to be a concurrent manager because we
