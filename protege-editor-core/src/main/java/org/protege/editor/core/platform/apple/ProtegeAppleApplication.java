@@ -8,9 +8,7 @@ import org.protege.editor.core.ui.preferences.PreferencesDialogPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Desktop;
 import java.io.File;
 /*
 * Copyright (C) 2007, University of Manchester
@@ -26,7 +24,7 @@ import java.io.File;
  * Bio Health Informatics Group<br>
  * Date: Sep 19, 2008<br><br>
  */
-public class ProtegeAppleApplication extends AbstractAppleApplicationWrapper {
+public class ProtegeAppleApplication {
 
     private static final Logger logger = LoggerFactory.getLogger(ProtegeAppleApplication.class);
 
@@ -43,17 +41,27 @@ public class ProtegeAppleApplication extends AbstractAppleApplicationWrapper {
     }
 
 
-    private ProtegeAppleApplication() {
-    }
+	private ProtegeAppleApplication() {
+		Desktop application = Desktop.getDesktop();
+		application.setPreferencesHandler(event -> handlePreferencesRequest());
+		application.setAboutHandler(event -> handleAboutRequest());
+		application.setOpenFileHandler(event -> {
+			File file = event.getFiles().get(0);
+			try {
+				editFile(file.getAbsolutePath());
+			} catch (Exception e) {
+				logger.error("invalid file: {}", file);
+			}
+		});
+		application.setQuitHandler((event, response) -> handleQuitRequest());
+	}
 
 
     public void setEditorKit(EditorKit eKit){
         this.eKit = eKit;
-        setEnabledPreferencesMenu(eKit != null);
     }
     
-    @Override
-    protected void editFile(String fileName) throws Exception {
+    protected void editFile(String fileName) throws Exception {    	    
         ProtegeManager.getInstance().getApplication().editURI(new File(fileName).toURI());
     }
 
