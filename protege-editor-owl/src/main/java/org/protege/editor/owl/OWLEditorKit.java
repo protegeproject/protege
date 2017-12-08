@@ -20,6 +20,7 @@ import org.protege.editor.owl.ui.OntologyFormatPanel;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandlerUI;
 import org.protege.editor.owl.ui.explanation.ExplanationManager;
+import org.protege.editor.owl.ui.ontology.authentication.BasicAuthenticationDialog;
 import org.protege.editor.owl.ui.ontology.OntologyPreferences;
 import org.protege.editor.owl.ui.ontology.imports.missing.MissingImportHandlerUI;
 import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
@@ -35,7 +36,6 @@ import javax.swing.*;
 import java.io.File;
 import java.net.URI;
 import java.util.*;
-import org.protege.editor.owl.ui.ontology.authentication.BasicAuthenticationDialog;
 
 
 /**
