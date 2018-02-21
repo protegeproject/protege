@@ -1,16 +1,14 @@
 package org.protege.editor.owl.ui.rename;
 
-import com.google.common.base.Optional;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.util.IriSplitter;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -84,14 +82,14 @@ public class RenameEntityPanel extends JPanel {
      * @return The fragment, or the empty string if there
      *         is no fragment.
      */
-    private String getFragment() {
-        Optional<String> fragment = owlEntity.getIRI().getRemainder();
-        return fragment.or("");
+    private String getShortName() {
+        IriSplitter splitter = new IriSplitter();
+        return splitter.getShortName(owlEntity.getIRI()).orElse("");
     }
 
 
     private String getBase() {
-        String fragment = getFragment();
+        String fragment = getShortName();
         if (fragment != null) {
             try {
                 String uriString = URLDecoder.decode(owlEntity.getIRI().toString(), "utf-8");
@@ -113,7 +111,7 @@ public class RenameEntityPanel extends JPanel {
                 textField.setText(getBase() + enteredFragment);
             }
             else {
-                textField.setText(getBase() + getFragment());
+                textField.setText(getBase() + getShortName());
             }
         }
         else {
@@ -125,11 +123,11 @@ public class RenameEntityPanel extends JPanel {
                     textField.setText(fragment);
                 }
                 else {
-                    textField.setText(getFragment());
+                    textField.setText(getShortName());
                 }
             }
             catch (URISyntaxException e) {
-                textField.setText(getFragment());
+                textField.setText(getShortName());
             }
         }
     }
