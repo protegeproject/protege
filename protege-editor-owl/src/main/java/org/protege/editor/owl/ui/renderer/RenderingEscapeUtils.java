@@ -21,14 +21,26 @@ public class RenderingEscapeUtils {
 
     /**
      * Produces an "escaped" rendering.  If the original rendering contains
-     * spaces, the returned value is the original rendering enclosed in
+     * spaces, braces, brackets or commas, and various other symbols used as delimeters in the
+     * Manchester syntax parser then the returned value is the original rendering enclosed in
      * single quotes.
      * @param originalRendering The rendering to be escaped
      * @return The escaped rendering.
      */
     public static String getEscapedRendering(String originalRendering) {
-        if (originalRendering.indexOf(' ') != -1 || originalRendering.indexOf('(') != -1 || originalRendering.indexOf(
-                ')') != -1) {
+        if (originalRendering.indexOf(' ') != -1
+                || originalRendering.indexOf(',') != -1
+                || originalRendering.indexOf('<') != -1
+                || originalRendering.indexOf('>') != -1
+                || originalRendering.indexOf('=') != -1
+                || originalRendering.indexOf('^') != -1
+                || originalRendering.indexOf('@') != -1
+                || originalRendering.indexOf('{') != -1
+                || originalRendering.indexOf('}') != -1
+                || originalRendering.indexOf('[') != -1
+                || originalRendering.indexOf(']') != -1
+                || originalRendering.indexOf('(') != -1
+                || originalRendering.indexOf(')') != -1) {
             return "'" + originalRendering + "'";
         }
         else {
