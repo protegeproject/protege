@@ -99,9 +99,15 @@ public class AddImportsStrategy {
                             .add(man.getIRIMappers());
                     ProgressDialogOntologyLoaderListener listener = new ProgressDialogOntologyLoaderListener(dlg, logger);
                     loadingManager.addOntologyLoaderListener(listener);
-                    loadingManager.loadOntologyFromOntologyDocument(
+                    if(importParameters.getBasicAuthentication() != null && !importParameters.getBasicAuthentication().isEmpty()) {
+                        loadingManager.loadOntologyFromOntologyDocument(
+                            new IRIDocumentSource(IRI.create(physicalLocation)),
+                            new OWLOntologyLoaderConfiguration().setMissingImportHandlingStrategy(MissingImportHandlingStrategy.SILENT).setAuthorizationValue(importParameters.getBasicAuthentication()));
+                    } else {
+                        loadingManager.loadOntologyFromOntologyDocument(
                             new IRIDocumentSource(IRI.create(physicalLocation)),
                             new OWLOntologyLoaderConfiguration().setMissingImportHandlingStrategy(MissingImportHandlingStrategy.SILENT));
+                    }
                     loadingManager.removeOntologyLoaderListener(listener);
 //                        editorKit.getModelManager().fireEvent(EventType.ONTOLOGY_LOADED);
                     for(OWLOntology importedOntology : loadingManager.getOntologies()) {

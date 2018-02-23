@@ -6,8 +6,10 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.library.folder.XmlBaseAlgorithm;
 import org.protege.editor.owl.model.repository.MasterOntologyIDExtractor;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
+import org.protege.editor.owl.ui.error.OntologyLoadErrorHandlerUI;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportInfo;
 import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
+import org.protege.editor.owl.ui.ontology.authentication.BasicAuthenticationDialog;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.slf4j.LoggerFactory;
@@ -38,9 +40,16 @@ public class AnticipateOntologyIdPage extends AbstractOWLWizardPanel {
     private JProgressBar progressBar;
 
     private Runnable checker;
+    
+    private BasicAuthenticationDialog basicAuthenticationDialogHandler;
+    
+    private OntologyLoadErrorHandlerUI loadErrorHandler;
+    
+    private final OWLEditorKit owlEditorKit;
 
     public AnticipateOntologyIdPage(OWLEditorKit owlEditorKit) {
         super(ID, "Import verification", owlEditorKit);
+        this.owlEditorKit = owlEditorKit;
         checker = () -> checkImport();
     }
 
@@ -105,10 +114,15 @@ public class AnticipateOntologyIdPage extends AbstractOWLWizardPanel {
                 continue;
             }
             try {
-                MasterOntologyIDExtractor extractor = new MasterOntologyIDExtractor();
+                basicAuthenticationDialogHandler = new BasicAuthenticationDialog(owlEditorKit);
+                loadErrorHandler = new OntologyLoadErrorHandlerUI(owlEditorKit);
+                MasterOntologyIDExtractor extractor = new MasterOntologyIDExtractor(basicAuthenticationDialogHandler, loadErrorHandler);
                 Optional<OWLOntologyID> id = extractor.getOntologyId(parameters.getPhysicalLocation());
                 if (id.isPresent()) {
                     parameters.setOntologyID(id.get());
+                    if(basicAuthenticationDialogHandler.getSavedBasicAuthenticationString() != null && !basicAuthenticationDialogHandler.getSavedBasicAuthenticationString().isEmpty()) {
+                        parameters.setBasicAuthentication(basicAuthenticationDialogHandler.getSavedBasicAuthenticationString());
+                    }
                 }
                 else {
                     parameters.setOntologyID(null);
