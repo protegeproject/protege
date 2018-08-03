@@ -10,9 +10,9 @@ import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProviderListener;
 import org.protege.editor.owl.model.util.OboUtilities;
 import org.protege.editor.owl.ui.OWLObjectComparator;
+import org.protege.editor.owl.ui.breadcrumb.Breadcrumb;
 import org.protege.editor.owl.ui.breadcrumb.BreadcrumbTrailChangedHandler;
 import org.protege.editor.owl.ui.breadcrumb.BreadcrumbTrailProvider;
-import org.protege.editor.owl.ui.breadcrumb.Breadcrumb;
 import org.protege.editor.owl.ui.renderer.RenderingEscapeUtils;
 import org.protege.editor.owl.ui.transfer.OWLObjectDragSource;
 import org.protege.editor.owl.ui.transfer.OWLObjectDropTarget;
@@ -64,6 +64,8 @@ import static java.util.stream.Collectors.toList;
  */
 public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObjectDropTarget, OWLObjectDragSource, HasExpandAll, HasCopySubHierarchyToClipboard, Copyable, RefreshableComponent, BreadcrumbTrailProvider {
 
+    private final List<BreadcrumbTrailChangedHandler> breadcrumbTrailChangedHandlers = new ArrayList<>();
+
     private Map<OWLObject, Set<OWLObjectTreeNode<N>>> nodeMap;
 
     private OWLEditorKit eKit;
@@ -82,18 +84,32 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
     private Optional<PopupMenuId> popupMenuId = Optional.empty();
 
-    private final List<BreadcrumbTrailChangedHandler> breadcrumbTrailChangedHandlers = new ArrayList<>();
+    private int dropRow = -1;
+
+    /**
+     * A timer that is used to automatically expand nodes if the
+     * mouse hovers over a node during a drag and drop operation.
+     */
+    private Timer expandNodeTimer = new Timer(800, new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            if (dropRow != -1) {
+                TreePath path = getPathForRow(dropRow);
+                expandPath(path);
+                expandNodeTimer.stop();
+            }
+        }
+    });
+
+    private Stroke s = new BasicStroke(2.0f);
 
     public OWLObjectTree(OWLEditorKit eKit, OWLObjectHierarchyProvider<N> provider) {
         this(eKit, provider, null);
     }
 
-
     public OWLObjectTree(OWLEditorKit eKit, OWLObjectHierarchyProvider<N> provider,
                          Comparator<OWLObject> objectComparator) {
         this(eKit, provider, provider.getRoots(), objectComparator);
     }
-
 
     public OWLObjectTree(OWLEditorKit eKit, OWLObjectHierarchyProvider<N> provider, Set<N> rootObjects,
                          Comparator<OWLObject> owlObjectComparator) {
@@ -192,15 +208,6 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
     }
 
     /**
-     * Sets the popupMenuId for this tree.
-     *
-     * @param popupMenuId The id.  Not {@code null}.
-     */
-    public void setPopupMenuId(PopupMenuId popupMenuId) {
-        this.popupMenuId = Optional.of(checkNotNull(popupMenuId));
-    }
-
-    /**
      * Clears the popupMenuId for this tree.
      */
     public void clearPopupMenuId() {
@@ -211,6 +218,15 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         return popupMenuId;
     }
 
+    /**
+     * Sets the popupMenuId for this tree.
+     *
+     * @param popupMenuId The id.  Not {@code null}.
+     */
+    public void setPopupMenuId(PopupMenuId popupMenuId) {
+        this.popupMenuId = Optional.of(checkNotNull(popupMenuId));
+    }
+
     private void showPopupMenu(MouseEvent e) {
         getPopupMenuId().ifPresent(popupMenuId -> {
             MenuBuilder menuBuilder = new MenuBuilder(eKit);
@@ -219,14 +235,25 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         });
     }
 
-
     public String getToolTipText(MouseEvent event) {
         return getNodeAtMousePosition(event).map(node -> {
             OWLObject obj = node.getOWLObject();
             if (obj instanceof OWLEntity) {
                 StringBuilder sb = new StringBuilder();
                 sb.append("<html><body>");
-                sb.append(((OWLEntity) obj).getIRI().toString());
+                OWLEntity entity = (OWLEntity) obj;
+                sb.append("<span style=\"font-weight: bold;\">");
+                String rendering = getOWLModelManager().getRendering(entity);
+                sb.append(rendering);
+                sb.append("</span>");
+                OboUtilities.getOboIdFromIri(entity.getIRI()).ifPresent(id -> {
+                    sb.append("<br>");
+                    sb.append(id);
+                });
+                sb.append("<br>");
+                sb.append("<span style=\"color: #a0a0a0;\">");
+                sb.append(entity.getIRI().toString());
+                sb.append("</span>");
                 node.getRelationship().ifPresent(rel -> {
                     if (rel instanceof OWLObject) {
                         sb.append("<br><br>");
@@ -253,7 +280,6 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
             return null;
         }).orElse(null);
     }
-
 
     @SuppressWarnings("unchecked")
     private void updateNode(N node) {
@@ -365,11 +391,11 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
     @Override
     public void goToBreadcrumb(@Nonnull Breadcrumb breadcrumb) {
         TreePath treePath = getSelectionPath();
-        while(treePath != null) {
+        while (treePath != null) {
             Object object = treePath.getLastPathComponent();
-            if(object instanceof OWLObjectTreeNode) {
+            if (object instanceof OWLObjectTreeNode) {
                 Object obj = ((DefaultMutableTreeNode) object).getUserObject();
-                if(obj.equals(breadcrumb.getObject())) {
+                if (obj.equals(breadcrumb.getObject())) {
                     setSelectionPath(treePath);
                     break;
                 }
@@ -399,12 +425,10 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         provider.removeListener(listener);
     }
 
-
     public void updateUI() {
         super.updateUI();
         setRowHeight(getFontMetrics(getFont()).getHeight() + 4);
     }
-
 
     /**
      * Causes the tree to be reloaded.  Note that this will collapse
@@ -420,7 +444,6 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         ((DefaultTreeModel) getModel()).setRoot(rootNode);
         setSelectedOWLObject(currentSelection);
     }
-
 
     private void expandDescendantsOfRow(int row) {
         if (row == -1) {
@@ -444,36 +467,8 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         }
     }
 
-
     public void setDragAndDropHandler(OWLTreeDragAndDropHandler<N> dragAndDropHandler) {
         this.dragAndDropHandler = dragAndDropHandler;
-    }
-
-
-    /**
-     * @return the hierarchy provider that this tree uses to generate its branches
-     */
-    public OWLObjectHierarchyProvider<N> getProvider() {
-        return provider;
-    }
-
-
-    /**
-     * @return the comparator used to order sibling tree nodes
-     */
-    public Comparator<OWLObject> getOWLObjectComparator() {
-        return (comparator != null) ? comparator : eKit.getOWLModelManager().getOWLObjectComparator();
-    }
-
-
-    /**
-     * Sets the tree ordering and reloads the tree contents.
-     *
-     * @param owlObjectComparator the comparator that is used to order sibling tree nodes
-     */
-    public void setOWLObjectComparator(Comparator<OWLObject> owlObjectComparator) {
-        this.comparator = owlObjectComparator;
-        reload();
     }
 
 
@@ -485,6 +480,29 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 //        }
 //    }
 
+    /**
+     * @return the hierarchy provider that this tree uses to generate its branches
+     */
+    public OWLObjectHierarchyProvider<N> getProvider() {
+        return provider;
+    }
+
+    /**
+     * @return the comparator used to order sibling tree nodes
+     */
+    public Comparator<OWLObject> getOWLObjectComparator() {
+        return (comparator != null) ? comparator : eKit.getOWLModelManager().getOWLObjectComparator();
+    }
+
+    /**
+     * Sets the tree ordering and reloads the tree contents.
+     *
+     * @param owlObjectComparator the comparator that is used to order sibling tree nodes
+     */
+    public void setOWLObjectComparator(Comparator<OWLObject> owlObjectComparator) {
+        this.comparator = owlObjectComparator;
+        reload();
+    }
 
     protected List<OWLObjectTreeNode<N>> getChildNodes(OWLObjectTreeNode<N> parent) {
         List<OWLObjectTreeNode<N>> result = new ArrayList<>();
@@ -503,7 +521,6 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         return result;
     }
 
-
     private Set<N> getParentObjectsForNode(OWLObjectTreeNode<N> node) {
         Set<N> parentObjects = new HashSet<>();
         OWLObjectTreeNode<N> parentNode = node;
@@ -515,7 +532,6 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         return parentObjects;
     }
 
-
     protected int getChildCount(N owlObject) {
         if (owlObject == null) {
             return provider.getRoots().size();
@@ -524,7 +540,6 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
             return provider.getChildren(owlObject).size();
         }
     }
-
 
     /**
      * Gets the set of nodes that represent the specified
@@ -542,7 +557,6 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         return nodes;
     }
 
-
     protected OWLObjectTreeNode<N> createTreeNode(N owlObject) {
         OWLObjectTreeNode<N> treeNode = new OWLObjectTreeNode<>(owlObject, this);
         for (N equiv : provider.getEquivalents(owlObject)) {
@@ -552,29 +566,12 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         return treeNode;
     }
 
-
-    /**
-     * If the object is contained in a collapsed branch then the branch is expanded.
-     *
-     * @param selObject the object to select if it exists in the tree
-     */
-    public void setSelectedOWLObject(N selObject) {
-        setSelectedOWLObject(selObject, false);
-    }
-
-
     public void setSelectedOWLObject(N selObject, boolean selectAll) {
         if (selObject == null) {
             return;
         }
         setSelectedOWLObjects(Collections.singleton(selObject), selectAll);
     }
-
-
-    public void setSelectedOWLObjects(Set<N> owlObjects) {
-        setSelectedOWLObjects(owlObjects, false);
-    }
-
 
     public void setSelectedOWLObjects(Set<N> owlObjects, boolean selectAll) {
         List<N> currentSelection = getSelectedOWLObjects();
@@ -602,7 +599,6 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         }
     }
 
-
     private List<TreePath> getPaths(N selObject, boolean selectAll) {
         List<TreePath> paths = new ArrayList<>();
         Set<OWLObjectTreeNode<N>> nodes = getNodes(selObject);
@@ -615,7 +611,6 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         return paths;
     }
 
-
     private void expandAndSelectPaths(N obj, boolean selectAll) {
         for (List<N> objPath : provider.getPathsToRoot(obj)) {
             expandAndSelectPath(objPath);
@@ -624,7 +619,6 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
             }
         }
     }
-
 
     private void expandAndSelectPath(List<N> objectPath) {
         // Start from the end of the path and search back
@@ -656,7 +650,6 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         }
     }
 
-
     public N getSelectedOWLObject() {
         TreePath path = getSelectionPath();
         if (path == null) {
@@ -665,6 +658,14 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         return ((OWLObjectTreeNode<N>) path.getLastPathComponent()).getOWLObject();
     }
 
+    /**
+     * If the object is contained in a collapsed branch then the branch is expanded.
+     *
+     * @param selObject the object to select if it exists in the tree
+     */
+    public void setSelectedOWLObject(N selObject) {
+        setSelectedOWLObject(selObject, false);
+    }
 
     public List<N> getSelectedOWLObjects() {
         List<N> selObjects = new ArrayList<>();
@@ -677,16 +678,17 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         return selObjects;
     }
 
+    public void setSelectedOWLObjects(Set<N> owlObjects) {
+        setSelectedOWLObjects(owlObjects, false);
+    }
 
     public JComponent getComponent() {
         return this;
     }
 
-
     public void setDragOriginater(boolean b) {
         dragOriginator = b;
     }
-
 
     public boolean dropOWLObjects(final List<OWLObject> owlObjects, Point pt, int type) {
         if (dragAndDropHandler == null) {
@@ -767,33 +769,13 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         return true;
     }
 
-
     public OWLModelManager getOWLModelManager() {
         return eKit.getModelManager();
     }
 
-
-    private int dropRow = -1;
-
-    /**
-     * A timer that is used to automatically expand nodes if the
-     * mouse hovers over a node during a drag and drop operation.
-     */
-    private Timer expandNodeTimer = new Timer(800, new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-            if (dropRow != -1) {
-                TreePath path = getPathForRow(dropRow);
-                expandPath(path);
-                expandNodeTimer.stop();
-            }
-        }
-    });
-
-
     public int getDropRow() {
         return dropRow;
     }
-
 
     public void setDropRow(int dropRow) {
         expandNodeTimer.restart();
@@ -815,7 +797,6 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         }
     }
 
-
     public Rectangle getDropRowBounds() {
         Rectangle r = getRowBounds(dropRow);
         if (r == null) {
@@ -827,10 +808,6 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         r.height += 4;
         return r;
     }
-
-
-    private Stroke s = new BasicStroke(2.0f);
-
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -899,7 +876,7 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
         String rendering = getOWLModelManager().getRendering(object);
         String unescapedRendering = RenderingEscapeUtils.unescape(rendering);
         printWriter.print(unescapedRendering);
-        if(object instanceof HasIRI) {
+        if (object instanceof HasIRI) {
             OboUtilities.getOboIdFromIri(((HasIRI) object).getIRI()).ifPresent(iri -> {
                 printWriter.printf(" (%s)", iri);
             });
