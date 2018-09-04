@@ -441,7 +441,11 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
         } catch (Exception e) {
             ErrorLogPanel.showErrorDialog(e);
         }
-        registration.unregister();
+        try {
+            registration.unregister();
+        } catch (Exception e) {
+            logger.warn("Error whilst unregistering service: {}", e.getMessage());
+        }
         logger.info(LogBanner.end());
     }
 

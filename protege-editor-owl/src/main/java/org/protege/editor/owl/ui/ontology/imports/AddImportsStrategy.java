@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.*;
 import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OntologyManagerFactory;
 import org.protege.editor.owl.model.io.*;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportInfo;
@@ -94,7 +95,7 @@ public class AddImportsStrategy {
             OWLImportsDeclaration decl = man.getOWLDataFactory().getOWLImportsDeclaration(importedOntologyDocumentIRI);
             if (!man.contains(importParameters.getOntologyID())) {
                 try {
-                    OWLOntologyManager loadingManager = OWLManager.createConcurrentOWLOntologyManager();
+                    OWLOntologyManager loadingManager = OntologyManagerFactory.createManager();
                     loadingManager.getIRIMappers()
                             .add(man.getIRIMappers());
                     ProgressDialogOntologyLoaderListener listener = new ProgressDialogOntologyLoaderListener(dlg, logger);

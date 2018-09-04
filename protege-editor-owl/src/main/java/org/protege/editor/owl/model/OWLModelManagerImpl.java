@@ -41,11 +41,19 @@ import org.protege.xmlcatalog.XMLCatalog;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.owlxml.parser.OWLXMLParserFactory;
+import org.semanticweb.owlapi.rdf.rdfxml.parser.RDFXMLParserFactory;
+import org.semanticweb.owlapi.rdf.turtle.parser.TurtleOntologyParserFactory;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.util.PriorityCollection;
 import org.semanticweb.owlapi.util.SimpleIRIMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.ac.manchester.cs.owl.owlapi.OWLDataFactoryImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLOntologyFactoryImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl;
+import uk.ac.manchester.cs.owl.owlapi.concurrent.ConcurrentOWLOntologyBuilder;
+import uk.ac.manchester.cs.owl.owlapi.concurrent.NonConcurrentOWLOntologyBuilder;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
@@ -53,6 +61,7 @@ import java.io.File;
 import java.net.URI;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 
 /**
@@ -150,7 +159,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     public OWLModelManagerImpl() {
         super();
 
-        manager = OWLManager.createConcurrentOWLOntologyManager();
+        manager = OntologyManagerFactory.createManager();
         manager.addOntologyChangeListener(this);
         objectRenderer = new OWLObjectRendererImpl(this);
         owlEntityRenderingCache = new OWLEntityRenderingCacheImpl();
