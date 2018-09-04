@@ -3,6 +3,7 @@ package org.protege.editor.owl.model.io;
 import com.google.common.util.concurrent.*;
 import org.protege.editor.owl.model.IOListenerManager;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.OntologyManagerFactory;
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.ui.util.ProgressDialog;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -73,7 +74,7 @@ public class OntologyLoader {
                 throw (OWLOntologyCreationException) e.getCause();
             }
             else {
-                logger.error("An error occurred whilst loading the ontology at {}. Cause: {}", e.getCause().getMessage());
+                logger.error("An error occurred whilst loading the ontology at {}. Cause: {}", uri, e.getCause().getMessage());
             }
             return Optional.empty();
         }
@@ -87,7 +88,7 @@ public class OntologyLoader {
 
         // I think the loading manager needs to be a concurrent manager because we
         // copy over the ontologies and the ontologies have to be concurrent ontology implementations
-        OWLOntologyManager loadingManager = OWLManager.createConcurrentOWLOntologyManager();
+        OWLOntologyManager loadingManager = OntologyManagerFactory.createManager();
 
         PriorityCollection<OWLOntologyIRIMapper> iriMappers = loadingManager.getIRIMappers();
         iriMappers.clear();
