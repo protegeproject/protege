@@ -101,6 +101,15 @@
 		<system>GitHub</system>
 		<url>https://github.com/protegeproject/protege/issues</url>
 	</issueManagement>
+
+	<repositories>
+		<repository>
+			<id>oss</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<releases><enabled>false</enabled></releases>
+			<snapshots><enabled>true</enabled></snapshots>
+		</repository>
+	</repositories>
 	
 	<!-- Protege libraries are hosted on Sonatype OSSRH (OSS Repository Hosting Service). -->
 	<distributionManagement>
@@ -128,7 +137,7 @@
 			<dependency>
 				<groupId>net.sourceforge.owlapi</groupId>
 				<artifactId>owlapi-osgidistribution</artifactId>
-				<version>4.5.5</version>
+				<version>4.5.6</version>
 			</dependency>
 
 			<dependency>
