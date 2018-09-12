@@ -44,6 +44,14 @@
 			<scope>provided</scope>
 		</dependency>
 
+
+		<dependency>
+			<groupId>net.sf.trove4j</groupId>
+			<artifactId>core</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -82,6 +90,7 @@
 							!com.jgoodies.looks.plastic.icons.*,
 							org.coode.mdock.*,
 							com.jgoodies.*,
+							gnu.trove.*
 						</_exportcontents>
 						<Import-Package>
 							!com.sun.*,
