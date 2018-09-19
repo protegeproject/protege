@@ -104,7 +104,7 @@ As described in the introduction, by default, the class hierarchy tree is genera
 
 <figure>
   <img src="{{site.baseurl}}/assets/views/class-hierarchy/class-hierarchy-view-mixed-relationships.png" style="max-width: 500px;"/>
-  <figcaption>The class hierarchy toolbar showing mixed relationships. Gray arrow in front of the class icon represents a SubClassOf axiom, while blue arrow represents an axiom involving an object property.</figcaption>
+  <figcaption>The class hierarchy tree showing mixed relationships. Gray arrow in front of the class icon represents a SubClassOf axiom, while blue arrow represents an axiom involving an object property.</figcaption>
 </figure>
 
 Hovering over a class that has a blue arrow displayed in front of it will generate a tooltip, which, besides the usual information (display name, IRI, and OBO id, if applicable), will also show the name of the object property through which the class is related to its parent class. For an easier interpretation, the tooltip will also display a verbalized version of the full relationship between child and parent. See an example below.
