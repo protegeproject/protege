@@ -6,7 +6,7 @@ menuPath: Class views > Class hierarchy
 ---
 The class hierarchy view displays the asserted and inferred class hierarchies.  The asserted class hierarchy is visible by default.
 
-The asserted class hierarchy view is one of the primary navigation devices in {{site.protege}}.  It is presented as a tree where nodes in the tree represent classes.  A child-parent relationship in the tree represents a sub/super class relationship in the class hierarchy.   (Note: Starting with {{site.protege}} version 5.5 the class hierarchy can show other relationships as well. For details please check out the [Display relationships](#display-relationships)) section.)
+The asserted class hierarchy view is one of the primary navigation devices in {{site.protege}}.  It is presented as a tree where nodes in the tree represent classes.  A child-parent relationship in the tree represents a sub/super class relationship in the class hierarchy.   (Note: Starting with {{site.protege}} version 5.5 the class hierarchy can show other relationships as well. For details please check out the [Display relationships](#display-relationships) section.)
 
 In the asserted class hierarchy, a class will be shown as a child of another class in the tree if it is asserted to be a SubClassOf that other class, or if it is asserted to be EquivalentTo a class expression that is an intersection containing that other class as an operand.  For example, if the ontology contains ```A SubClassOf B```, then ```A``` will appear under ```B``` in the tree.  Similarly, if the ontology contains ```E EquivalentTo B and D``` (where D is any other class expression) then ```E``` will also be shown as a chid of ```B``` in the tree.  Any classes that are not asserted to be a subclass of some other class will show up directly under ```owl:Thing``` (the root).
 
@@ -100,7 +100,7 @@ The reason for this notation is that a cycle in the class hierarchy between two 
 
 ## Display relationships
 
-As described in the introduction, by default, the class hierarchy tree is generated based on the SubClassOf axioms. Starting with {{site.protege}} version 5.5, however, the class tree can also show other than subclass-superclass relationships among the classes. This feature can be activated and deactivated using the `View -> Display relationship in class hierarchy` menu. When display relationships is activated, the class hierarchy will show an additional arrow icon in the front of the (brown circle) class icon. The arrow will be gray for the standard subclass-superclass relationship, and it will be blue for any other relationship that is based on an axiom involving an object property. An example is shown below.
+As described in the introduction, by default, the class hierarchy tree is generated based on SubClassOf axioms. Starting with {{site.protege}} version 5.5, however, the class tree can also display other parent/child relationships besides SubClassOf. This feature can be activated and deactivated using the `View -> Display relationship in class hierarchy` menu. When display relationships is activated, the class hierarchy will show an additional arrow icon in the front of the solid yellow class icon. The arrow will be gray for the standard subclass-superclass relationship, and it will be blue for any other relationship that is based on an axiom involving an object property. An example is shown below.
 
 <figure>
   <img src="{{site.baseurl}}/assets/views/class-hierarchy/class-hierarchy-view-mixed-relationships.png" style="max-width: 500px;"/>
