@@ -100,17 +100,17 @@ The reason for this notation is that a cycle in the class hierarchy between two 
 
 ## Display relationships
 
-As described in the introduction, by default, the class hierarchy tree is generated based on the SubClassOf axioms. Starting with {{site.protege}} version 5.5, however, the class tree can also show other than subclass-superclass relationships amopng the classes. This feature can be activated and deactivated using the `View -> Display relationship in class hierarchy` menu. When display relationships is activated, the class hierarchy will show an additional arrow icon in the front of the (brown circle) class icon. The arrow will be gray for the standard subclass-superclass relationship, and it will be blue for any other relationship that is based on an axiom involving an object property. An example is shown below.
+As described in the introduction, by default, the class hierarchy tree is generated based on the SubClassOf axioms. Starting with {{site.protege}} version 5.5, however, the class tree can also show other than subclass-superclass relationships among the classes. This feature can be activated and deactivated using the `View -> Display relationship in class hierarchy` menu. When display relationships is activated, the class hierarchy will show an additional arrow icon in the front of the (brown circle) class icon. The arrow will be gray for the standard subclass-superclass relationship, and it will be blue for any other relationship that is based on an axiom involving an object property. An example is shown below.
 
 <figure>
-  <img src="{{site.baseurl}}/assets/views/class-hierarchy/class-hierarchy-view-mixed-relationships.png" style="max-width: 150px;"/>
+  <img src="{{site.baseurl}}/assets/views/class-hierarchy/class-hierarchy-view-mixed-relationships.png" style="max-width: 500px;"/>
   <figcaption>The class hierarchy toolbar showing mixed relationships. Gray arrow in front of the class icon represents a SubClassOf axiom, while blue arrow represents an axiom involving an object property.</figcaption>
 </figure>
 
 Hovering over a class that has a blue arrow displayed in front of it will generate a tooltip, which, besides the usual information (display name, IRI, and OBO id, if applicable), will also show the name of the object property through which the class is related to its parent class. For an easier interpretation, the tooltip will also display a verbalized version of the full relationship between child and parent. See an example below.
 
 <figure>
-  <img src="{{site.baseurl}}/assets/views/class-hierarchy/class-hierarchy-view-tooltips.png" style="max-width: 50px;"/>
+  <img src="{{site.baseurl}}/assets/views/class-hierarchy/class-hierarchy-view-tooltips.png" style="max-width: 500px;"/>
   <figcaption>An example tooltip in the mixed class hierarchy, showing details about the relationships between the child class and its parent.</figcaption>
 </figure>
 
