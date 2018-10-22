@@ -607,6 +607,10 @@ public class ProtegeApplication implements BundleActivator {
 
     }
 
+    public static void applyLogPreferences() {
+        logManager.applyPreferences();
+    }
+    
     public static void showLogView() {
         logManager.showLogView();
     }

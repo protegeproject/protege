@@ -214,22 +214,6 @@
         <editorKitId value="any"/>
     </extension>
 
-    <extension id="menu.window.timestamp" point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Timestamp log / console"/>
-        <path value="org.protege.editor.core.application.menu.window/SlotE-A"/>
-        <toolTip value="Prints a timestamp and optional message into the logs or console"/>
-        <class value="org.protege.editor.core.ui.action.TimestampOutputAction"/>
-        <editorKitId value="any"/>
-    </extension>
-
-    <extension id="menu.window.showlog" point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Show log..."/>
-        <path value="org.protege.editor.core.application.menu.window/SlotE-B"/>
-        <toolTip value="Prints a timestamp and optional message into the logs or console"/>
-        <class value="org.protege.editor.core.log.ShowLogAction"/>
-        <editorKitId value="any"/>
-    </extension>
-
     <!-- Help menu -->
 
     <extension id="menu.HelpMenu" point="org.protege.editor.core.application.EditorKitMenuAction">
@@ -275,6 +259,14 @@
                point="org.protege.editor.core.application.preferencespanel">
         <label value="Plugins"/>
         <class value="org.protege.editor.core.update.PluginPreferencesPanel"/>
+    </extension>
+    
+    <!-- Log preferences -->
+    
+    <extension id="ui.preferences.update"
+               point="org.protege.editor.core.application.preferencespanel">
+        <label value="Log"/>
+        <class value="org.protege.editor.core.log.LogPreferencesPanel"/>
     </extension>
     
     <!-- Other startup actions --> 

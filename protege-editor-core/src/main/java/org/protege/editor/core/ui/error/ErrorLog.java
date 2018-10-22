@@ -1,5 +1,6 @@
 package org.protege.editor.core.ui.error;
 
+import org.protege.editor.core.log.LogStatusListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,13 +24,13 @@ public class ErrorLog {
     }
 
     @Deprecated
-    public void addListener(ErrorLogListener listener) {
+    public void addListener(LogStatusListener listener) {
         logger.error("The listener {} has not been added.  The addListener method is deprecated.",
                 listener.getClass().getName());
     }
 
     @Deprecated
-    public void removeListener(ErrorLogListener listener) {
+    public void removeListener(LogStatusListener listener) {
         logger.error("The listener {} has not been removed.  The removeListener method is deprecated.",
                 listener.getClass().getName());
     }

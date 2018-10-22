@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.text.DateFormat;
 
@@ -22,10 +24,14 @@ public class TimestampOutputAction extends ProtegeAction {
      */
     private static final long serialVersionUID = -6250513189027502206L;
 
-    private final Logger logger = LoggerFactory.getLogger(TimestampOutputAction.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(TimestampOutputAction.class);
 
     public void actionPerformed(ActionEvent event) {
-        String message = JOptionPane.showInputDialog(getWorkspace(),
+    	    createTimeStamp(getWorkspace());
+    }
+    
+    public static void createTimeStamp(Component parent) {
+        String message = JOptionPane.showInputDialog(parent,
                                                      "<html><body>Please enter a message to label your timestamp <br>(or leave blank for no message)</body><html>",
                                                      "Timestamp", JOptionPane.PLAIN_MESSAGE);
 
@@ -34,11 +40,11 @@ public class TimestampOutputAction extends ProtegeAction {
 
         if (message != null){
 
-            logger.info("\n\n\n\n");
-            logger.info("------------------------------------------");
-            logger.info(timestamp + ": " + message);
-            logger.info("------------------------------------------");
-            logger.info("\n\n");
+            LOGGER.info("\n\n\n\n");
+            LOGGER.info("------------------------------------------");
+            LOGGER.info(timestamp + ": " + message);
+            LOGGER.info("------------------------------------------");
+            LOGGER.info("\n\n");
         }
     }
 
