@@ -24,7 +24,7 @@ public class OboUtilities {
         LOCALID ::= [0-9]+
         OBO_IDENTIFIER ::= IDSPACE ":" LOCALID
      */
-    private static final Pattern OBO_ID_PATTERN = Pattern.compile("(([A-Z]|[a-z])+(_([A-Z]|[a-z])+)?):(\\d+)", Pattern.CASE_INSENSITIVE);
+    private static final Pattern OBO_ID_PATTERN = Pattern.compile("(([A-Z]|[a-z])+(_([A-Z]|[a-z])+)?):(\\d+)");
 
     private static final String OBO_LIBRARY_IRI_BASE = "http://purl.obolibrary.org/obo/";
 
@@ -64,7 +64,7 @@ public class OboUtilities {
     public static IRI getOboLibraryIriFromOboId(@Nonnull String oboId) {
         Matcher matcher = OBO_ID_PATTERN.matcher(checkNotNull(oboId));
         if(!matcher.matches()) {
-            throw new RuntimeException("Invalid OBO Id");
+            throw new RuntimeException("Invalid OBO Id: " + oboId);
         }
         MatchResult matchResult = matcher.toMatchResult();
         return IRI.create(OBO_LIBRARY_IRI_BASE + matchResult.group(ID_SPACE_GROUP) + "_" + matchResult.group(LOCAL_ID_GROUP));
