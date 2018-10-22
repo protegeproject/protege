@@ -26,6 +26,14 @@ public class OboUtilities_TestCase {
         assertThat(OboUtilities.isOboId("OTHER_THING:0001234"), is(true));
     }
 
+    /**
+     * Test for https://github.com/protegeproject/protege/issues/765
+     */
+    @Test
+    public void shouldProcessLongName() {
+        assertThat(OboUtilities.isOboId("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"), is(false));
+    }
+
     @Test
     public void shouldNotRecogniseAsOboId() {
         assertThat(OboUtilities.isOboId("owl:Thing"), is(false));
