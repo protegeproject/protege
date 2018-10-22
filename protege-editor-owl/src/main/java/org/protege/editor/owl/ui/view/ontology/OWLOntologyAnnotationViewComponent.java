@@ -240,6 +240,9 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
      * Updates the view from the model - unless the changes were triggered by changes in the view.
      */
     private void updateViewFromModel() {
+        if(updatingModelFromView) {
+            return;
+        }
         updatingViewFromModel = true;
         try {
             OWLOntology activeOntology = getOWLEditorKit().getOWLModelManager().getActiveOntology();
