@@ -381,7 +381,9 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                     getOntologyCatalogManager().addFolder(containingDirectory);
                 }
             } catch (IllegalArgumentException iae) {
-                logger.warn("Cannot generate ontology catalog for ontology at " + physicalURI);
+                logger.info("Cannot generate ontology catalog for ontology at {}. {}",
+                            physicalURI,
+                            iae.getMessage());
             }
         }
         fireEvent(EventType.ONTOLOGY_CREATED);
