@@ -8,10 +8,12 @@ import org.protege.editor.owl.model.util.OboUtilities;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 
+import javax.annotation.Nullable;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
 
 /**
  * Author: Matthew Horridge<br>
@@ -45,24 +47,13 @@ public class SearchResultsTableModel extends AbstractTableModel {
 
     public void clear() {
         rows.clear();
-        if(hasOboIdsInResults) {
+        if (hasOboIdsInResults) {
             hasOboIdsInResults = false;
             fireTableStructureChanged();
         }
         else {
             fireTableDataChanged();
         }
-    }
-
-    private boolean hasOboIds() {
-        return rows.stream()
-                   .map(row -> row.getSearchResult().getSubject())
-                   .filter(subject -> subject instanceof OWLEntity)
-                   .map(subject -> (OWLEntity) subject)
-                   .map(OWLEntity::getIRI)
-                   .filter(OboUtilities::isOboIri)
-                   .findAny()
-                   .isPresent();
     }
 
     /**
@@ -77,6 +68,17 @@ public class SearchResultsTableModel extends AbstractTableModel {
         else {
             return -1;
         }
+    }
+
+    private boolean hasOboIds() {
+        return rows.stream()
+                .map(ResultsTableModelRow::getSearchResult)
+                .filter(Objects::nonNull)
+                .map(SearchResult::getSubject)
+                .filter(subject -> subject instanceof OWLEntity)
+                .map(subject -> (OWLEntity) subject)
+                .map(OWLEntity::getIRI)
+                .anyMatch(OboUtilities::isOboIri);
     }
 
     public int getResultsColumn() {
@@ -106,13 +108,6 @@ public class SearchResultsTableModel extends AbstractTableModel {
         }
     }
 
-
-    public SearchResult getSearchResultAt(int row) {
-        ResultsTableModelRow modelRow = rows.get(row);
-        return modelRow.getSearchResult();
-    }
-
-
     public void setResultList(Collection<SearchResult> resultList) {
         rows.clear();
         SearchResultSet resultSet = new SearchResultSet(resultList);
@@ -133,7 +128,7 @@ public class SearchResultsTableModel extends AbstractTableModel {
             }
         }
         boolean containsOboIds = hasOboIds();
-        if(containsOboIds != hasOboIdsInResults) {
+        if (containsOboIds != hasOboIdsInResults) {
             hasOboIdsInResults = containsOboIds;
             fireTableStructureChanged();
         }
@@ -210,6 +205,7 @@ public class SearchResultsTableModel extends AbstractTableModel {
             this.categoryResultCount = categoryResultCount;
         }
 
+        @Nullable
         public SearchResult getSearchResult() {
             return searchResult;
         }
@@ -257,6 +253,11 @@ public class SearchResultsTableModel extends AbstractTableModel {
         }
 
         @Override
+        public boolean isFirstRowInCategory() {
+            return false;
+        }
+
+        @Override
         public Object getRenderableObject(int columnIndex) {
             if (columnIndex == 1) {
                 return "    + " + (getCategoryResultCount() - categorySizeLimit) + " more results...";
@@ -264,11 +265,6 @@ public class SearchResultsTableModel extends AbstractTableModel {
             else {
                 return "";
             }
-        }
-
-        @Override
-        public boolean isFirstRowInCategory() {
-            return false;
         }
     }
 
