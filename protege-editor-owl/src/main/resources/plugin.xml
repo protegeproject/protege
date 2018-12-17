@@ -765,7 +765,7 @@
         <category value="@org.protege.ontologycategory"/>
         <help value="http://protegeproject.github.io/protege/views/ontology-metrics"/>
     </extension>
-    
+
 
     <extension id="OWLOntologyImportsTable"
                point="org.protege.editor.core.application.ViewComponent">
