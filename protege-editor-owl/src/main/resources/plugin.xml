@@ -765,16 +765,7 @@
         <category value="@org.protege.ontologycategory"/>
         <help value="http://protegeproject.github.io/protege/views/ontology-metrics"/>
     </extension>
-
-
-    <extension id="DLMetricsView"
-               point="org.protege.editor.core.application.ViewComponent">
-        <label value="DL metrics"/>
-        <class value="org.protege.editor.owl.ui.metrics.DLMetricsViewComponent"/>
-        <headerColor value="@org.protege.ontologycolor"/>
-        <category value="@org.protege.ontologycategory"/>
-    </extension>
-
+    
 
     <extension id="OWLOntologyImportsTable"
                point="org.protege.editor.core.application.ViewComponent">
