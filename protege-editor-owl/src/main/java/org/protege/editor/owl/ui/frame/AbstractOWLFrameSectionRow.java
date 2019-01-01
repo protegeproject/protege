@@ -35,7 +35,7 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
 
     private Object userObject;
 
-    private OWLFrameSection section;
+    protected OWLFrameSection section;
 
     protected AbstractOWLFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection<R,A,E> section, OWLOntology ontology,
                                          R rootObject, A axiom) {
