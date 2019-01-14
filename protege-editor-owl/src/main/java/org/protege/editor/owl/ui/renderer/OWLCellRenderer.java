@@ -681,11 +681,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             StyleConstants.setBold(s, true);
         }
         plainStyle = doc.addStyle("PLAIN_STYLE", null);
-//        StyleConstants.setForeground(plainStyle, Color.BLACK);
         StyleConstants.setItalic(plainStyle, false);
         StyleConstants.setSpaceAbove(plainStyle, 0);
-//        StyleConstants.setFontFamily(plainStyle, textPane.getFont().getFamily());
-
         boldStyle = doc.addStyle("BOLD_STYLE", null);
         StyleConstants.setBold(boldStyle, true);
 
