@@ -10,6 +10,8 @@ import org.protege.editor.owl.ui.renderer.plugin.RendererPluginLoader;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
+import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -58,21 +60,8 @@ public class OWLRendererPreferences {
 
     public static final String DISPLAY_THUMBNAILS_INLINE = "DISPLAY_THUMBNAILS_INLINE";
 
-    public static final int DEFAULT_FONT_SIZE = 12;
+    public static final int DEFAULT_FONT_SIZE = getDefaultFontSize();
 
-    /**
-     * The default logical font name.  This is mappable to a physical font on all systems.
-     * See http://docs.oracle.com/javase/tutorial/2d/text/fonts.html#logical-fonts for details.
-     */
-    public static final String DEFAULT_LOGICAL_FONT_FAMILY_NAME = "SansSerif";
-
-    /**
-     * The default preferred font.  Verdana works well if it is installed.  It is specifically designed for readability
-     * at small sizes on computer screens.  See http://en.wikipedia.org/wiki/Verdana for details.  This font will not
-     * be used if is not available on the system.
-     */
-    public static final String DEFAULT_PREFERRED_PHYSICAL_FONT_FAMILY_NAME = "Verdana";
-    
     public static final String DEFAULT_FONT_NAME = getDefaultFontName();
 
 
@@ -116,30 +105,6 @@ public class OWLRendererPreferences {
 
     private boolean displayThumbnailsInline;
 
-    /*
-     * HELP!
-     * 
-     * I don't really understand this stuff at all.  But it appears that there are two schemes of naming
-     * the dialog font.  The first one, which I believe is used by Windows and Linux is to have a series of
-     * fonts called things like Dialog.plain, Dialog.bold, Dialog.bolditalic and Dialog.italic.  Each of these 
-     * fonts has a family of Dialog and a style of plain.
-     * 
-     * OS/X uses a different scheme.  There is one dialog font with a name of Dialog (no .plain).  He can
-     * be detected by looking for the font with the family Dialog and the style plain.  I am not sure what 
-     * this should be doing exactly. There is also a DialogInput font.
-     * 
-     * This idea of setting the font is a bad idea and I agree with others here that we should get rid of it.
-     */
-    private static String getDefaultFontName() {
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        String [] fontFamilyNames = ge.getAvailableFontFamilyNames();
-        for(String name : fontFamilyNames) {
-            if(name.toLowerCase().equals(DEFAULT_PREFERRED_PHYSICAL_FONT_FAMILY_NAME.toLowerCase())) {
-                return name;
-            }
-        }
-        return DEFAULT_LOGICAL_FONT_FAMILY_NAME;
-    }
     
     public Font getFont() {
         return font;
@@ -150,7 +115,15 @@ public class OWLRendererPreferences {
         return fontName;
     }
 
+    private static String getDefaultFontName() {
+        Font font = (Font) UIManager.get("TextPane.font");
+        return font.getName();
+    }
 
+    private static int getDefaultFontSize() {
+        Font font = (Font) UIManager.get("TextPane.font");
+        return font.getSize();
+    }
     @Deprecated
     public void setFontName(String fontName) {
         this.fontName = fontName;
@@ -163,8 +136,6 @@ public class OWLRendererPreferences {
         font = new Font(this.fontName, Font.PLAIN, fontSize);
 
     }
-
-
 
     public int getFontSize() {
         return fontSize;
