@@ -7,6 +7,7 @@ import org.protege.editor.core.platform.OSUtils;
 import org.protege.editor.core.platform.apple.MacUIUtil;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
+import org.protege.editor.core.ui.workspace.WorkspaceManager;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -64,8 +65,19 @@ public class UIUtil {
     }
     
     public static File openFile(Component parent, String title, final String description, final Set<String> extensions) {
-        if (OSUtils.isOSX() && parent instanceof Window) {
-            return MacUIUtil.openFile((Window) parent, title, extensions);
+        Window parentWindow;
+        if(parent instanceof Window) {
+            parentWindow = (Window) parent;
+        }
+        else if(parent == null) {
+            // Bad caller, but try to deal with this
+            parentWindow = FocusManager.getCurrentManager().getActiveWindow();
+        }
+        else {
+            parentWindow = SwingUtilities.getWindowAncestor(parent);
+        }
+        if (OSUtils.isOSX() && parentWindow != null) {
+            return MacUIUtil.openFile(parentWindow, title, extensions);
         }
         JFileChooser fileDialog = new JFileChooser(getCurrentFileDirectory());
         if (extensions != null && !extensions.isEmpty()) {
