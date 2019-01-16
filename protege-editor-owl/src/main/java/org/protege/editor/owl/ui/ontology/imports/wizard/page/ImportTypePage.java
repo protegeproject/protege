@@ -4,7 +4,6 @@ import org.protege.editor.core.ui.wizard.AbstractWizardPanel;
 import org.protege.editor.owl.OWLEditorKit;
 
 import javax.swing.*;
-import java.awt.*;
 
 
 /**
@@ -20,37 +19,26 @@ public class ImportTypePage extends AbstractWizardPanel {
 
     public static final String ID = "ImportTypePage";
 
-    private JRadioButton webRadioButton;
+    private final JRadioButton localFileRadioButton = new JRadioButton("Import an ontology contained in a local file.");
 
-    private JRadioButton localFileRadioButton;
-
-    private JRadioButton libraryRadioButton;
-
-    private JRadioButton loadedOntologyButton;
+    private final JRadioButton webRadioButton = new JRadioButton("Import an ontology contained in a document located on the web.");
 
 
     public ImportTypePage(OWLEditorKit owlEditorKit) {
         super(ID, "Import type", owlEditorKit);
-    }
-
-
-    protected void createUI(JComponent parent) {
         setInstructions("Please choose an option:");
-        parent.setLayout(new BorderLayout());
         Box box = new Box(BoxLayout.Y_AXIS);
-        box.add(localFileRadioButton = new JRadioButton("Import an ontology contained in a specific file."));
-        box.add(webRadioButton = new JRadioButton("Import an ontology contained in a document located on the web."));
+        box.add(localFileRadioButton);
+        box.add(webRadioButton);
+        JRadioButton loadedOntologyButton;
         box.add(loadedOntologyButton = new JRadioButton("Import an ontology that is already loaded in the workspace."));
-        box.add(libraryRadioButton = new JRadioButton("Import an ontology that is contained in one of the ontology libraries."));
-        parent.add(box, BorderLayout.NORTH);
         ButtonGroup bg = new ButtonGroup();
         bg.add(webRadioButton);
         bg.add(localFileRadioButton);
-        bg.add(libraryRadioButton);
         bg.add(loadedOntologyButton);
         localFileRadioButton.setSelected(true);
+        setContent(box);
     }
-
 
     public Object getNextPanelDescriptor() {
         if (webRadioButton.isSelected()) {
@@ -58,9 +46,6 @@ public class ImportTypePage extends AbstractWizardPanel {
         }
         else if (localFileRadioButton.isSelected()) {
             return LocalFilePage.ID;
-        }
-        else if (libraryRadioButton.isSelected()) {
-            return LibraryPage.ID;
         }
         else {
             return LoadedOntologyPage.ID;
