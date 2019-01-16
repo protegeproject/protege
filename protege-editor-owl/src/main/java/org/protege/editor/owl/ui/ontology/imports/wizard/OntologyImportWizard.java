@@ -32,7 +32,6 @@ public class OntologyImportWizard extends Wizard {
         registerWizardPanel(LocalFilePage.ID, new LocalFilePage(owlEditorKit));
         registerWizardPanel(URLPage.ID, new URLPage(owlEditorKit));
         registerWizardPanel(LoadedOntologyPage.ID, new LoadedOntologyPage(owlEditorKit));
-        registerWizardPanel(LibraryPage.ID, new LibraryPage(owlEditorKit));
         registerWizardPanel(AnticipateOntologyIdPage.ID, new AnticipateOntologyIdPage(owlEditorKit));
         registerWizardPanel(SelectImportLocationPage.ID, new SelectImportLocationPage(owlEditorKit));
         registerWizardPanel(ImportConfirmationPage.ID, new ImportConfirmationPage(owlEditorKit));
