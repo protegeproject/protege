@@ -4,6 +4,8 @@ import org.protege.editor.core.Disposable;
 import org.protege.editor.core.Fonts;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
+import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.OWLAxiomTypeFramePanel;
 import org.semanticweb.owlapi.metrics.*;
 import org.semanticweb.owlapi.model.AxiomType;
@@ -42,6 +44,8 @@ public class MetricsPanel extends JPanel implements Disposable {
 
     private final OWLOntologyChangeListener ontologyChangeListener = changes -> invalidateMetrics();
 
+    private final OWLModelManagerListener owlModelManagerListener = event -> invalidateMetrics();
+
     private OWLEditorKit owlEditorKit;
 
     private final JPopupMenu popupMenu = new JPopupMenu();
@@ -54,12 +58,15 @@ public class MetricsPanel extends JPanel implements Disposable {
         setOpaque(true);
         initialiseOWLView();
         createPopupMenu();
-        editorKit.getOWLModelManager().addOntologyChangeListener(ontologyChangeListener);
+        OWLModelManager modelManager = editorKit.getOWLModelManager();
+        modelManager.addOntologyChangeListener(ontologyChangeListener);
+        modelManager.addListener(owlModelManagerListener);
     }
 
     @Override
     public void dispose() throws Exception {
         owlEditorKit.getOWLModelManager().removeOntologyChangeListener(ontologyChangeListener);
+        getOWLModelManager().removeListener(owlModelManagerListener);
     }
 
     private void invalidateMetrics() {
