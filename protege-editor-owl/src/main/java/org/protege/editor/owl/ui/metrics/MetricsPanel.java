@@ -81,10 +81,11 @@ public class MetricsPanel extends JPanel implements Disposable {
         panel.setPreferredSize(new Dimension(800, 300));
         JOptionPane op = new JOptionPane(panel, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
         JDialog dlg = op.createDialog(this, lastMetric.getName());
+        dlg.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         dlg.setResizable(true);
         dlg.addWindowListener(new WindowAdapter() {
-
-            public void windowClosed(WindowEvent e) {
+            @Override
+            public void windowClosing(WindowEvent e) {
                 panel.dispose();
             }
         });

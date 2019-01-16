@@ -23,11 +23,6 @@ import java.util.Set;
  */
 public class OWLAxiomTypeFramePanel extends JPanel {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -8388108511652522381L;
-
     private OWLEditorKit owlEditorKit;
 
     private OWLFrameList<Set<OWLAxiom>> frameList;
