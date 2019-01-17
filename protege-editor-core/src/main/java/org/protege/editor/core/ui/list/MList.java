@@ -2,13 +2,13 @@ package org.protege.editor.core.ui.list;
 
 import org.protege.editor.core.ui.util.UIUtil;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
 
 /**
@@ -79,7 +79,10 @@ public class MList extends JList {
 
     public int lastMousePositionCellIndex = -1;
 
-    
+    private Point cachedMousePosition = null;
+
+    private boolean cachedMousePositionStale = true;
+
     public MList() {
         ListCellRenderer renderer = this.getCellRenderer();
         this.ren = new MListCellRenderer();
@@ -148,13 +151,14 @@ public class MList extends JList {
 
 
     private void handleMouseMoved() {
+        cachedMousePositionStale = true;
         if (MList.this.getModel().getSize() > 0) {
         	    // only repaint all the cells the mouse has moved over
         	    Rectangle dirty = getCellBounds(lastMousePositionCellIndex, lastMousePositionCellIndex);
         	    if (dirty != null) {        	    	  
         	    	   repaint(dirty);
         	    }
-            Point pt = MList.this.getMousePosition();            
+            Point pt = getCachedMousePosition();
             if (pt != null) {
                 lastMousePositionCellIndex = MList.this.locationToIndex(pt);
             }
@@ -387,7 +391,7 @@ public class MList extends JList {
 
     @Override
     public String getToolTipText(MouseEvent event) {
-        Point mousePos = this.getMousePosition();
+        Point mousePos = getCachedMousePosition();
         if (mousePos == null) {
             return null;
         }
@@ -491,7 +495,7 @@ public class MList extends JList {
     }
 
     private Color getButtonColor(MListButton button) {
-        Point pt = this.getMousePosition();
+        Point pt = getCachedMousePosition();
         if (pt == null) {
             return button.getBackground();
         }
@@ -504,6 +508,15 @@ public class MList extends JList {
             }
         }
         return button.getBackground();
+    }
+
+    @Nullable
+    private Point getCachedMousePosition() {
+        if(cachedMousePositionStale) {
+            cachedMousePosition = getMousePosition();
+            cachedMousePositionStale = false;
+        }
+        return cachedMousePosition;
     }
 
 }
