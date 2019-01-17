@@ -1,6 +1,7 @@
 package org.protege.editor.core.ui.list;
 
 import org.protege.editor.core.ui.util.UIUtil;
+import org.protege.editor.owl.ui.util.MousePositionCache;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -79,9 +80,7 @@ public class MList extends JList {
 
     public int lastMousePositionCellIndex = -1;
 
-    private Point cachedMousePosition = null;
-
-    private boolean cachedMousePositionStale = true;
+    private final MousePositionCache mousePositionCache;
 
     public MList() {
         ListCellRenderer renderer = this.getCellRenderer();
@@ -95,6 +94,7 @@ public class MList extends JList {
                 handleMouseMoved();
             }
         };
+        mousePositionCache = MousePositionCache.createAndInstall(this);
         this.addMouseMotionListener(mouseMovementListener);
         MouseListener mouseButtonListener = new MouseAdapter() {
             @Override
@@ -151,7 +151,6 @@ public class MList extends JList {
 
 
     private void handleMouseMoved() {
-        cachedMousePositionStale = true;
         if (MList.this.getModel().getSize() > 0) {
         	    // only repaint all the cells the mouse has moved over
         	    Rectangle dirty = getCellBounds(lastMousePositionCellIndex, lastMousePositionCellIndex);
@@ -512,11 +511,7 @@ public class MList extends JList {
 
     @Nullable
     private Point getCachedMousePosition() {
-        if(cachedMousePositionStale) {
-            cachedMousePosition = getMousePosition();
-            cachedMousePositionStale = false;
-        }
-        return cachedMousePosition;
+        return mousePositionCache.getMousePosition();
     }
 
 }
