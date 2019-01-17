@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.function.Supplier;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -18,21 +19,27 @@ public class MousePositionCache {
     @Nonnull
     private final Component component;
 
+    @Nonnull
+    private final Supplier<Point> mousePositionSupplier;
+
     private boolean stale = true;
 
     private Point cachedPosition = null;
 
-    private MousePositionCache(@Nonnull Component component) {
+    private MousePositionCache(@Nonnull Component component,
+                               @Nonnull Supplier<Point> mousePositionSupplier) {
         this.component = checkNotNull(component);
+        this.mousePositionSupplier = checkNotNull(mousePositionSupplier);
     }
 
-    public static MousePositionCache createAndInstall(@Nonnull Component component) {
-        MousePositionCache cache = new MousePositionCache(component);
-        cache.attacheListeners();
+    public static MousePositionCache createAndInstall(@Nonnull Component component,
+                                                      @Nonnull Supplier<Point> mousePositionSupplier) {
+        MousePositionCache cache = new MousePositionCache(component, mousePositionSupplier);
+        cache.attachListeners();
         return cache;
     }
 
-    private void attacheListeners() {
+    private void attachListeners() {
         component.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
@@ -48,7 +55,7 @@ public class MousePositionCache {
     @Nullable
     public Point getMousePosition() {
         if(stale) {
-            cachedPosition = component.getMousePosition();
+            cachedPosition = mousePositionSupplier.get();
             stale = false;
         }
         return cachedPosition;

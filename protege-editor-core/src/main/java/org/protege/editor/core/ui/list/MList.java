@@ -94,7 +94,7 @@ public class MList extends JList {
                 handleMouseMoved();
             }
         };
-        mousePositionCache = MousePositionCache.createAndInstall(this);
+        mousePositionCache = MousePositionCache.createAndInstall(this, super::getMousePosition);
         this.addMouseMotionListener(mouseMovementListener);
         MouseListener mouseButtonListener = new MouseAdapter() {
             @Override
@@ -157,7 +157,7 @@ public class MList extends JList {
         	    if (dirty != null) {        	    	  
         	    	   repaint(dirty);
         	    }
-            Point pt = getCachedMousePosition();
+            Point pt = getMousePosition();
             if (pt != null) {
                 lastMousePositionCellIndex = MList.this.locationToIndex(pt);
             }
@@ -390,7 +390,7 @@ public class MList extends JList {
 
     @Override
     public String getToolTipText(MouseEvent event) {
-        Point mousePos = getCachedMousePosition();
+        Point mousePos = getMousePosition();
         if (mousePos == null) {
             return null;
         }
@@ -494,7 +494,7 @@ public class MList extends JList {
     }
 
     private Color getButtonColor(MListButton button) {
-        Point pt = getCachedMousePosition();
+        Point pt = getMousePosition();
         if (pt == null) {
             return button.getBackground();
         }
@@ -509,9 +509,8 @@ public class MList extends JList {
         return button.getBackground();
     }
 
-    @Nullable
-    private Point getCachedMousePosition() {
+    @Override
+    public Point getMousePosition() throws HeadlessException {
         return mousePositionCache.getMousePosition();
     }
-
 }
