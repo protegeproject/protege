@@ -71,21 +71,21 @@
 		<dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>jre.os-x</artifactId>
-			<version>1.8.0_40</version>
+			<version>1.8.0_121</version>
 			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>jre.win</artifactId>
-			<version>1.8.0_40</version>
+			<version>1.8.0_121</version>
 			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>jre.linux</artifactId>
-			<version>1.8.0_40</version>
+			<version>1.8.0_121</version>
 			<scope>runtime</scope>
 		</dependency>
 
