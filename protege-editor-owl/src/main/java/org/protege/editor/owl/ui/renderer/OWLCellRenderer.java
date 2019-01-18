@@ -490,7 +490,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         }
         if (component instanceof LinkedObjectComponent && OWLRendererPreferences.getInstance().isRenderHyperlinks()) {
             linkedObjectComponent = (LinkedObjectComponent) component;
-            Point mouseLoc = component.getMousePosition(true);
+            Point mouseLoc = component.getMousePosition();
             if (mouseLoc == null) {
                 linkedObjectComponent.setLinkedObject(null);
                 return;
