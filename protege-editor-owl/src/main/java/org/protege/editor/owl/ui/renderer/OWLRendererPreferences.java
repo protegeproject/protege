@@ -116,13 +116,11 @@ public class OWLRendererPreferences {
     }
 
     private static String getDefaultFontName() {
-        Font font = (Font) UIManager.get("TextPane.font");
-        return font.getName();
+        return "SansSerif";
     }
 
     private static int getDefaultFontSize() {
-        Font font = (Font) UIManager.get("TextPane.font");
-        return font.getSize();
+        return 12;
     }
     @Deprecated
     public void setFontName(String fontName) {
