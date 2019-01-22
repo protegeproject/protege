@@ -3,6 +3,7 @@ package org.protege.editor.core.ui.util;
 import com.jgoodies.looks.plastic.theme.ExperienceBlue;
 import org.protege.editor.core.ui.laf.CheckBoxMenuItemIcon;
 import org.protege.editor.core.ui.laf.ProtegeScrollBarUI;
+import org.protege.editor.core.ui.laf.RadioButtonMenuItemIcon;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -35,6 +36,7 @@ public class ProtegePlasticTheme extends ExperienceBlue {
                 "Button.background", new Color(255, 255, 255),
                 "Button.border", controlBorder,
                 "CheckBoxMenuItem.checkIcon", new CheckBoxMenuItemIcon(),
+                "RadioButtonMenuItem.checkIcon", new RadioButtonMenuItemIcon(),
                 "ComboBox.background", new Color(255, 255, 255),
                 "ComboBox.border", controlBorder,
                 "ComboBox.arrowButtonBorder", BorderFactory.createEmptyBorder(),
