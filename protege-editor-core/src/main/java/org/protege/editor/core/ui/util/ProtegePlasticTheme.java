@@ -1,6 +1,7 @@
 package org.protege.editor.core.ui.util;
 
 import com.jgoodies.looks.plastic.theme.ExperienceBlue;
+import org.protege.editor.core.ui.laf.CheckBoxMenuItemIcon;
 import org.protege.editor.core.ui.laf.ProtegeScrollBarUI;
 
 import javax.swing.*;
@@ -10,6 +11,7 @@ import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.plaf.basic.BasicSeparatorUI;
+import javax.swing.plaf.metal.MetalIconFactory;
 import java.awt.*;
 
 
@@ -32,6 +34,7 @@ public class ProtegePlasticTheme extends ExperienceBlue {
                 "Button.is3DEnabled", false,
                 "Button.background", new Color(255, 255, 255),
                 "Button.border", controlBorder,
+                "CheckBoxMenuItem.checkIcon", new CheckBoxMenuItemIcon(),
                 "ComboBox.background", new Color(255, 255, 255),
                 "ComboBox.border", controlBorder,
                 "ComboBox.arrowButtonBorder", BorderFactory.createEmptyBorder(),
@@ -78,7 +81,7 @@ public class ProtegePlasticTheme extends ExperienceBlue {
     }
 
     protected ColorUIResource getSecondary3() {
-        return new ColorUIResource(236, 236, 237);
+        return new ColorUIResource(240, 240, 240);
     }
 
     /**
