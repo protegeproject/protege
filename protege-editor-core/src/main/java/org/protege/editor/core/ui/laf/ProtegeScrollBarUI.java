@@ -19,7 +19,6 @@ public class ProtegeScrollBarUI extends BasicScrollBarUI {
 
     public ProtegeScrollBarUI() {
         super();
-        System.out.println("INSTAN SCROLL BAR");
     }
 
     @Override
