@@ -7,6 +7,7 @@ import org.protege.xmlcatalog.entry.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
@@ -42,8 +43,15 @@ public class OntologyCatalogManager {
 		}
 	    catalogFile.renameTo(backup);
 	}
-	
-	public static File getCatalogFile(File folder) {
+
+	/**
+	 * A utility method.
+	 * Gets a File representing the path of the catalog file in the specified folder.
+	 * This simply retrieves the path and does not imply the existence of the catalog file.
+	 * @param folder The folder
+	 */
+	@Nonnull
+	public static File getCatalogFile(@Nonnull File folder) {
 		return new File(folder, CATALOG_NAME);
 	}
 	
