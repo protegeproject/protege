@@ -15,8 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -49,7 +47,7 @@ public class UriEntryPanel extends NewEntryPanel {
         physicalLocationPanel.setLayout(new FlowLayout());
         physicalLocationPanel.add(new JLabel("Physical Location: "));
         physicalLocationField = new JTextField();
-        physicalLocationField.setPreferredSize(new JTextField("/home/tredmond/Shared/ontologies/simple/pizza-good.owl").getPreferredSize());
+        physicalLocationField.setPreferredSize(getDefaultTextFieldDimension());
         physicalLocationPanel.add(physicalLocationField);
         JButton browse = new JButton("Browse");
         browse.addActionListener(e -> {
@@ -152,7 +150,7 @@ public class UriEntryPanel extends NewEntryPanel {
             return null;
         }
         physicalLocation = CatalogUtilities.relativize(physicalLocation, catalog);
-        return new UriEntry("User Edited Redirect",
+        return new UriEntry(getUniqueId(),
                 catalog,
                 importDeclarationString,
                 physicalLocation,

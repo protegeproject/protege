@@ -30,7 +30,7 @@ public class AddEntryDialog extends JDialog {
         dialog.setVisible(true);
         Entry e = dialog.getEntry();
         if (e != null) {
-            catalog.addEntry(0, e);
+            catalog.addEntry(e);
             for (CatalogEntryManager entryManager : entryManagers) {
                 if (entryManager.isSuitable(e)) {
                     try {

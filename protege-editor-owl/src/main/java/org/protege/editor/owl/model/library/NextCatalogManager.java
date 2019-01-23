@@ -1,6 +1,7 @@
 package org.protege.editor.owl.model.library;
 
 import org.protege.editor.owl.ui.library.NewEntryPanel;
+import org.protege.editor.owl.ui.library.plugins.NextCatalogPanel;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.Entry;
 import org.protege.xmlcatalog.entry.NextCatalogEntry;
@@ -12,12 +13,12 @@ public class NextCatalogManager extends CatalogEntryManager {
 
     
     public String getDescription() {
-        return "Import Ontology Library";
+        return "Import XML Catalog";
     }
 
     
     public String getDescription(Entry entry) {
-        return "<html><body><b>Import Repository " +
+        return "<html><body><b>"+getDescription()+" " +
                 ((NextCatalogEntry) entry).getCatalog() +
                 "</b></body></html>";
     }
@@ -34,7 +35,7 @@ public class NextCatalogManager extends CatalogEntryManager {
 
     
     public NewEntryPanel newEntryPanel(XMLCatalog catalog) {
-        return null;
+        return new NextCatalogPanel(catalog);
     }
 
     

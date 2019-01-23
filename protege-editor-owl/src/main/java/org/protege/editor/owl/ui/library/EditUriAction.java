@@ -9,6 +9,7 @@ import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import javax.swing.event.DocumentListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.*;
@@ -19,53 +20,24 @@ import java.io.IOException;
 import java.net.URI;
 
 
-public class EditUriAction extends AbstractAction {
+public class EditUriAction extends EditLibraryEntryAction<UriEntry> {
 
     public static String UNKNOWN     = "Unknown";
     public static String CALCULATING = "Calculating...";
     public static String NO_PARSE    = "File didn't parse.";
     public static String NO_VERSION  = "No version present";
+
     
-    private JTree parent;
-    private TreePath selectionPath;
-    private File catalogFile;
-    
-    public EditUriAction(JTree parent, TreePath selectionPath, File catalogFile) {
-        super("Edit Library Entry");
-        this.parent = parent;
-        this.selectionPath = selectionPath;
-        this.catalogFile = catalogFile;
+    public EditUriAction(JTree parent, DefaultMutableTreeNode selectedNode, XMLCatalog catalog, OntologyLibraryPanel.JTreeRefresh action) {
+        super("Edit URI entry", parent, selectedNode, catalog, action);
     }
 
-    public void actionPerformed(ActionEvent e) {
-        XMLCatalog catalog = null;
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) selectionPath.getLastPathComponent();
-        Object container = ((DefaultMutableTreeNode) selectionPath.getPathComponent(selectionPath.getPathCount()-2)).getUserObject();
-
-        UriEntry entry = (UriEntry) node.getUserObject();
-        EditPanel panel = new EditPanel(entry);
-        JOptionPane pane = new JOptionPane(panel, JOptionPane.INFORMATION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
-        JDialog dialog = pane.createDialog(parent, "Edit URI Redirect");
-        dialog.setVisible(true);
-        Object value = pane.getValue();
-        if (value != null && value.equals(JOptionPane.OK_OPTION)) {
-            UriEntry editted = panel.getUriEntry();
-            if (container instanceof XMLCatalog) {
-            	XMLCatalog lib = (XMLCatalog) container;
-                lib.replaceEntry(entry, editted);
-                node.setUserObject(editted);
-                try {
-                    CatalogUtilities.save(lib, catalogFile);
-                }
-                catch (IOException ex) {
-                    LoggerFactory.getLogger(EditUriAction.class)
-                            .error("An error occurred whilst saving the XML Catalog file: {}", ex);
-                }
-            }
-        }
+    @Override
+    protected ILibraryEntryEditor<UriEntry> getNewEditorPanel(UriEntry entry) {
+        return new EditPanel(entry);
     }
-    
-    private class EditPanel extends JPanel {
+
+    private class EditPanel extends JPanel implements ILibraryEntryEditor<UriEntry>{
         private UriEntry original;
         private JTextField importedUri;
         private JTextField physicalLocation;
@@ -96,44 +68,42 @@ public class EditUriAction extends AbstractAction {
             fileButton.addActionListener(new ChooseFileAction(EditPanel.this, original, physicalLocation));
             add(fileButton);
         }
-        
 
-        
-        public UriEntry getUriEntry() {
-            URI base = CatalogUtilities.resolveXmlBase(original);
-            URI physicalUri = URI.create(physicalLocation.getText());
-            physicalUri = base.relativize(physicalUri);
-            return new UriEntry(original.getId(), original.getXmlBaseContext(), 
-                                importedUri.getText(), physicalUri, 
-                                original.getXmlBase());
-        }
-    }
-    
-    private class ChooseFileAction extends AbstractAction {
-        private JComponent parent;
-        private UriEntry original;
-        private JTextField physicalLocation;
-        
-        public ChooseFileAction(JComponent parent, UriEntry original, JTextField physicalLocation) {
-            this.parent = parent;
-            this.original = original;
-            this.physicalLocation = physicalLocation;
+        @Override
+        public UriEntry getEntry(UriEntry oldEntry) {
+            if(!isInputValid()){
+                return null;
+            }
+            URI base = CatalogUtilities.resolveXmlBase(oldEntry);
+            URI physicalUri = URI.create(physicalLocation.getText().trim());
+            return new UriEntry(oldEntry.getId(),
+                    oldEntry.getXmlBaseContext(),
+                    importedUri.getText().trim(),
+                    base == null ? physicalUri : base.relativize(physicalUri),
+                    oldEntry.getXmlBase());
         }
 
-        public void actionPerformed(ActionEvent e) {
-            JFileChooser fileChooser = new JFileChooser();
-            URI base = CatalogUtilities.resolveXmlBase(original);
-            File directory;
-            if (base != null && (directory = new File(base)).isDirectory()) {
-                fileChooser.setCurrentDirectory(directory);
+        @Override
+        public boolean isInputValid() {
+            if(importedUri.getText() == null || physicalLocation.getText() == null){
+                return false;
             }
-            int retValue = fileChooser.showOpenDialog(parent);
-            if (retValue == JFileChooser.APPROVE_OPTION) {
-                physicalLocation.setText(fileChooser.getSelectedFile().toURI().toString());
-            }
+            return !(importedUri.getText().trim().isEmpty() || physicalLocation.getText().trim().isEmpty());
+        }
+
+        @Override
+        public void addDocumentListener(DocumentListener documentListener)
+        {
+            importedUri.getDocument().addDocumentListener(documentListener);
+            physicalLocation.getDocument().addDocumentListener(documentListener);
+        }
+
+        @Override
+        public Component getComponent() {
+            return this;
         }
     }
-    
+
     private class GetOntologyNamePanel extends JDialog {        
         private JTextField ontologyNameField;
         private JTextField ontologyVersionField;
