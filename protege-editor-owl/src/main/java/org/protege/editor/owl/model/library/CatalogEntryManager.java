@@ -13,9 +13,12 @@ import java.io.IOException;
  * Author: Timothy Redmond
  */
 public abstract class CatalogEntryManager implements ProtegePluginInstance {
-	public static final String SHADOWED_SCHEME="shadowed:";
-	public static final String DUPLICATE_SCHEME="duplicate:";
-	public static final String[] IGNORED_SCHEMES = { DUPLICATE_SCHEME, SHADOWED_SCHEME };
+
+    public static final String SHADOWED_SCHEME = "shadowed:";
+
+    public static final String DUPLICATE_SCHEME = "duplicate:";
+
+    public static final String[] IGNORED_SCHEMES = {DUPLICATE_SCHEME, SHADOWED_SCHEME};
 
     private String id;
 
@@ -23,12 +26,13 @@ public abstract class CatalogEntryManager implements ProtegePluginInstance {
 
     public abstract boolean update(Entry entry) throws IOException;
 
-    public abstract boolean initializeCatalog(File folder, XMLCatalog catalog) throws IOException;
+    public abstract boolean initializeCatalog(File folder,
+                                              XMLCatalog catalog) throws IOException;
 
     public abstract NewEntryPanel newEntryPanel(XMLCatalog catalog);
 
     public abstract String getDescription();
-    
+
     public abstract String getDescription(Entry entry);
 
     public String getId() {
