@@ -43,9 +43,9 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
     public static final String ONTOLOGY_VERSION_IRI_FIELD_LABEL = "Ontology Version IRI";
 
 
-    public static final URI ONTOLOGY_IRI_DOCUMENTATION = URI.create("http://www.w3.org/TR/2009/REC-owl2-syntax-20091027/#Ontology_IRI_and_Version_IRI");
+    public static final URI ONTOLOGY_IRI_DOCUMENTATION = URI.create("https://www.w3.org/TR/owl2-syntax/#Ontology_IRI_and_Version_IRI");
 
-    public static final URI VERSION_IRI_DOCUMENTATION = URI.create("http://www.w3.org/TR/2009/REC-owl2-syntax-20091027/#Versioning_of_OWL_2_Ontologies");
+    public static final URI VERSION_IRI_DOCUMENTATION = URI.create("https://www.w3.org/TR/owl2-syntax/#Versioning_of_OWL_2_Ontologies");
 
 
     private OWLModelManagerListener listener;
