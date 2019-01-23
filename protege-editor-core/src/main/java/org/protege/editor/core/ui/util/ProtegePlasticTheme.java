@@ -24,9 +24,9 @@ public class ProtegePlasticTheme extends ExperienceBlue {
 	
     public void addCustomEntriesToTable(UIDefaults table) {
         super.addCustomEntriesToTable(table);
-        Border controlBorder = BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(getSecondary1(), 1, true),
-                BorderFactory.createEmptyBorder(2, 5, 2, 5)
+        Border lineBorder = BorderFactory.createLineBorder(getSecondary1(), 1, true);
+        Border controlBorder = BorderFactory.createCompoundBorder(lineBorder,
+                                                                  BorderFactory.createEmptyBorder(2, 5, 2, 5)
         );
         Color scrollBarThumbColor = new Color(200, 200, 200);
         Object[] uiDefaults = {
@@ -38,12 +38,13 @@ public class ProtegePlasticTheme extends ExperienceBlue {
                 "CheckBoxMenuItem.checkIcon", new CheckBoxMenuItemIcon(),
                 "RadioButtonMenuItem.checkIcon", new RadioButtonMenuItemIcon(),
                 "ComboBox.background", new Color(255, 255, 255),
-                "ComboBox.border", controlBorder,
+                "ComboBox.border", lineBorder,
                 "ComboBox.arrowButtonBorder", BorderFactory.createEmptyBorder(),
                 "Toolbar.background", new Color(255, 255, 255),
                 "Separator.ui", "javax.swing.plaf.basic.BasicSeparatorUI",
                 "Separator.background", getSecondary3(),
                 "Menu.borderPainted", false,
+                "MenuItem.disabledForeground", new Color(180, 180, 180),
                 "ScrollPane.background", Color.WHITE,
                 "ScrollBarUI", ProtegeScrollBarUI.class.getName(),
                 "scrollbar", getSecondary3(),
@@ -64,7 +65,7 @@ public class ProtegePlasticTheme extends ExperienceBlue {
                 "ScrollBar.width", 12,
                 "ScrollBar.track", Color.WHITE,
                 "ToolTip.background", new Color(250, 250, 250),
-                "ToolTip.border", BorderFactory.createLineBorder(getSecondary1(), 1, true),
+                "ToolTip.border", lineBorder,
                 "TitledBorder.titleColor", getMenuForeground()
         };
         table.putDefaults(uiDefaults);
@@ -84,7 +85,7 @@ public class ProtegePlasticTheme extends ExperienceBlue {
     }
 
     protected ColorUIResource getSecondary3() {
-        return new ColorUIResource(240, 240, 240);
+        return new ColorUIResource(244, 244, 244);
     }
 
     /**
