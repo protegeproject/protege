@@ -56,6 +56,7 @@ public class OntologyCatalogManager {
      * this works for catalogs that are generated from a parse or created
      * by the OntologyCatalogManager.
      */
+    @Nullable
     public static File getCatalogFile(XMLCatalog catalog) {
         if(catalog == null || catalog.getXmlBaseContext() == null) {
             return null;
