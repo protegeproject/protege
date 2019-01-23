@@ -80,10 +80,12 @@ public class OntologyCatalogManager {
         return new File(folder, CATALOG_NAME);
     }
 
+    @Nonnull
     public static File getGlobalCatalogFile() {
         return getCatalogFile(ProtegeDirectories.getDataDirectory());
     }
 
+    @Nonnull
     public List<CatalogEntryManager> getCatalogEntryManagers() {
         return Collections.unmodifiableList(entryManagers);
     }
@@ -100,6 +102,7 @@ public class OntologyCatalogManager {
         return redirect;
     }
 
+    @Nonnull
     public List<XMLCatalog> getAllCatalogs() {
         List<XMLCatalog> catalogs = new ArrayList<>();
         catalogs.addAll(getLocalCatalogs());
