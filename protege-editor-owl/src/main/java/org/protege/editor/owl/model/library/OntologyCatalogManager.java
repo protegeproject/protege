@@ -15,13 +15,7 @@ import java.util.*;
 
 
 /**
- * Author: Matthew Horridge<br>
- * The University Of Manchester<br>
- * Medical Informatics Group<br>
- * Date: 23-Aug-2006<br><br>
-
- * matthew.horridge@cs.man.ac.uk<br>
- * www.cs.man.ac.uk/~horridgm<br><br>
+ * Author: Tim Redmond, Stanford University.
  */
 public class OntologyCatalogManager {
 	public static final String CATALOG_NAME = "catalog-v001.xml";
