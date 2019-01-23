@@ -33,8 +33,8 @@ public class EditOntologyLibraryAction extends ProtegeOWLAction {
 			WorkspaceFrame frame = ProtegeManager.getInstance().getFrame(getOWLWorkspace());
 			File catalogFile = UIUtil.openFile(
 					frame,
-					"Choose catalog file containing ontology repository information",
-					"Choose XML Catalog",
+					"Select XML Catalog File",
+					"Choose the XML file that contains the catalog information",
 					Collections.singleton("xml"));
     		if (catalogFile != null) {
     			OntologyLibraryPanel.showDialog(getOWLEditorKit(), catalogFile);
@@ -42,7 +42,7 @@ public class EditOntologyLibraryAction extends ProtegeOWLAction {
     	}
     	catch (IOException ex) {
 			LoggerFactory.getLogger(EditActiveOntologyLibraryAction.class)
-					.error("An error occurred whilst attempting to edit the active ontology library: {}", e);
+					.error("An error occurred whilst attempting to edit the catalog file: {}", e);
     	}
     }
 
