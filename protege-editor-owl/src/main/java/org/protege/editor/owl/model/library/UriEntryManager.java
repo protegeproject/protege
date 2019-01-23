@@ -19,8 +19,8 @@ public class UriEntryManager extends CatalogEntryManager {
     
     public String getDescription(Entry entry) {
         UriEntry uriEntry = (UriEntry) entry;
-        return "<html><body><b>Imported Location: " + uriEntry.getName() + "</b><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" 
-        + "<font color=\"gray\">Redirected To: " + uriEntry.getUri() + "</font><p> </p></body></html>";
+        return "<html><body><b>Ontology IRI: " + uriEntry.getName() + "</b><br>"
+        + "Redirected To: " + uriEntry.getUri() + "</body></html>";
     }
 
     public boolean initializeCatalog(File folder, XMLCatalog catalog) throws IOException {
