@@ -64,7 +64,8 @@ public class ProtegePlasticTheme extends ExperienceBlue {
                 "ScrollBar.width", 12,
                 "ScrollBar.track", Color.WHITE,
                 "ToolTip.background", new Color(250, 250, 250),
-                "ToolTip.border", BorderFactory.createLineBorder(getSecondary1(), 1, true)
+                "ToolTip.border", BorderFactory.createLineBorder(getSecondary1(), 1, true),
+                "TitledBorder.titleColor", getMenuForeground()
         };
         table.putDefaults(uiDefaults);
         table.forEach((key, val) -> {
