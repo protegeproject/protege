@@ -43,6 +43,8 @@ import java.util.List;
  */
 public class OntologyLibraryPanel extends JPanel {
 
+    private final OntologyLibraryCellRenderer cellRenderer = new OntologyLibraryCellRenderer();
+
     private XMLCatalog catalog;
 
     private File catalogFile;
@@ -107,7 +109,7 @@ public class OntologyLibraryPanel extends JPanel {
         tree = new JTree(model);
         tree.setRowHeight(-1);
         tree.setRootVisible(true);
-        tree.setCellRenderer(new OntologyLibraryCellRenderer());
+        tree.setCellRenderer(cellRenderer);
 
         panel.add(ComponentFactory.createScrollPane(tree));
 
@@ -305,11 +307,8 @@ public class OntologyLibraryPanel extends JPanel {
     private void insertEntryIntoTree(DefaultMutableTreeNode parent,
                                      Entry entry) {
         if(entry instanceof UriEntry && !isHidden((UriEntry) entry)) {
-            UriEntry uriEntry = (UriEntry) entry;
-            String redirectDescription = "<html><body><b>Ontology IRI: " + uriEntry.getName() + "</b><br>" + "Redirected To: " + uriEntry
-                    .getUri() + "</body></html>";
             DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-            DefaultMutableTreeNode entryNode = new DefaultMutableTreeNode(redirectDescription);
+            DefaultMutableTreeNode entryNode = new DefaultMutableTreeNode(entry);
             model.insertNodeInto(entryNode, parent, parent.getChildCount());
         }
     }
