@@ -30,16 +30,17 @@ public class AddEntryDialog extends JPanel {
             return null;
         }
         Entry e = dialog.getEntry();
-        if(e != null) {
-            catalog.addEntry(0, e);
-            for(CatalogEntryManager entryManager : entryManagers) {
-                if(entryManager.isSuitable(e)) {
-                    try {
-                        entryManager.update(e);
-                    } catch(IOException ex) {
-                        LoggerFactory.getLogger(AddEntryDialog.class)
-                                .error("An error occurred whilst adding a catalog entry: ", ex);
-                    }
+        if(e == null) {
+            return e;
+        }
+        catalog.addEntry(0, e);
+        for(CatalogEntryManager entryManager : entryManagers) {
+            if(entryManager.isSuitable(e)) {
+                try {
+                    entryManager.update(e);
+                } catch(IOException ex) {
+                    LoggerFactory.getLogger(AddEntryDialog.class)
+                            .error("An error occurred whilst adding a catalog entry: ", ex);
                 }
             }
         }
