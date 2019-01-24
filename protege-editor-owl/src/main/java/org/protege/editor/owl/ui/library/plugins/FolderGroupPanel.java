@@ -75,7 +75,8 @@ public class FolderGroupPanel extends NewEntryPanel {
             return null;
         }
         try {
-        	URI folderUri = CatalogUtilities.relativize(new File(physicalLocationField.getText()).toURI(), catalog);
+            // There seems to be a bug in relativize and resolve so don't relativize here
+        	URI folderUri = new File(physicalLocationField.getText()).toURI();
         	if (importByName.isSelected()) {
         		return ImportByNameManager.createGroupEntry(folderUri, recursive.isSelected(), true, catalog);
         	}
