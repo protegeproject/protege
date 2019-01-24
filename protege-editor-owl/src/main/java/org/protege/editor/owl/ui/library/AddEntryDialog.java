@@ -1,8 +1,6 @@
 package org.protege.editor.owl.ui.library;
 
-import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
-import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.model.library.CatalogEntryManager;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.Entry;
@@ -10,11 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
 
