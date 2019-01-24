@@ -197,7 +197,8 @@ public class FolderGroupManager extends CatalogEntryManager {
                 HashSet<File> nonOwlFiles = new HashSet<>();
                 examineDirectoryContents(folder, new HashSet<>(), nonOwlFiles, 0);
                 if(nonOwlFiles.size() > NON_ONTOLOGY_DOCUMENT_TERMINATION_LIMIT) {
-                    logger.info("Search for ontology documents terminated as over {} non-ontology documents have been found.",
+                    logger.warn("Search for ontology documents in {} and sub-folders has been terminated as over {} non-ontology documents have been found.",
+                                folder.getAbsolutePath(),
                                 NON_ONTOLOGY_DOCUMENT_TERMINATION_LIMIT);
                 }
             }
