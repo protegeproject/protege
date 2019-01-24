@@ -156,7 +156,7 @@ public class FolderGroupManager extends CatalogEntryManager {
             logger.warn("Folder repository probably came from another system");
             logger.warn("Could not be updated because directory " + dir + " does not exist");
             if(!warnedUserOfBadRepositoryDeclaration) {
-                logger.error("Bad ontology library declaration - check logs. Warnings now disabled for this session.", new IOException());
+                logger.error("Bad ontology library declaration - check logs. Warnings now disabled for this session.");
                 warnedUserOfBadRepositoryDeclaration = true;
             }
             return false;
@@ -228,15 +228,15 @@ public class FolderGroupManager extends CatalogEntryManager {
     }
 
     public String getDescription() {
-        return "Folder Repository";
+        return "Folder";
     }
 
     public String getDescription(Entry ge) {
-        StringBuilder sb = new StringBuilder("<html><body><b>Folder Repository for ");
+        StringBuilder sb = new StringBuilder("<html><body><b>Folder ");
         sb.append(getDirectory((GroupEntry) ge));
         sb.append("</b>");
         if(LibraryUtilities.getBooleanProperty(ge, RECURSIVE_PROP, true)) {
-            sb.append(" <font color=\"gray\">(Recursive)</font>");
+            sb.append(" <font color=\"gray\">(includes sub-folders)</font>");
         }
         sb.append("</body></html>");
         return sb.toString();
