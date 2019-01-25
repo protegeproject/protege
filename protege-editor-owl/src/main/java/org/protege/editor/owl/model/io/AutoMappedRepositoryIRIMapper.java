@@ -83,14 +83,13 @@ public class AutoMappedRepositoryIRIMapper implements OWLOntologyIRIMapper {
                 ontologyCatalogManager.addFolder(rootOntologyDocumentDirectory);
             }
         });
-    	URI u = ontologyCatalogManager.getRedirect(uri);
-        if (u == null) {
-            logger.info("Imported ontology document {} was not resolved to any documents defined in the ontology catalog.", importedIRI);
-            return null;
+    	Optional<URI> redirect = ontologyCatalogManager.getRedirectForUri(uri);
+    	if (redirect.isPresent()) {
+            logger.info("Imported ontology document {} was resolved to {} by the ontology catalog.", importedIRI, redirect);
         }
         else {
-            logger.info("Imported ontology document {} was resolved to {} by the ontology catalog.", importedIRI, u);
-            return IRI.create(u);
+            logger.info("Imported ontology document {} was not resolved to any documents defined in the ontology catalog.", importedIRI);
         }
+        return redirect.map(IRI::create).orElse(null);
     }
 }

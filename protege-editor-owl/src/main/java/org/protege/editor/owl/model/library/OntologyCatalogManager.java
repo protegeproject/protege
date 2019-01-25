@@ -91,16 +91,24 @@ public class OntologyCatalogManager {
         return Collections.unmodifiableList(entryManagers);
     }
 
-    @Nullable
-    public URI getRedirect(URI original) {
-        URI redirect = null;
+
+    public Optional<URI> getRedirectForUri(@Nonnull URI originalURI) {
         for(XMLCatalog catalog : getAllCatalogs()) {
-            redirect = CatalogUtilities.getRedirect(original, catalog);
+            URI redirect = CatalogUtilities.getRedirect(originalURI, catalog);
             if(redirect != null) {
-                break;
+                return Optional.of(redirect);
             }
         }
-        return redirect;
+        return Optional.empty();
+    }
+
+    /**
+     * @deprecated Use {@link #getRedirectForUri(URI)} instead
+     */
+    @Deprecated
+    @Nullable
+    public URI getRedirect(URI original) {
+        return getRedirectForUri(original).orElse(null);
     }
 
     @Nonnull
