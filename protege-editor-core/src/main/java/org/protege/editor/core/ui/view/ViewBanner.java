@@ -62,8 +62,9 @@ public class ViewBanner extends JPanel {
         add(labelPanel, BorderLayout.NORTH);
         labelPanel.setBackground(null);
         labelPanel.setOpaque(true);
-        label.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
+        label.setBorder(BorderFactory.createEmptyBorder(0, 3, 1, 3));
         label.setForeground(foregroundColor);
+        label.setFont(label.getFont().deriveFont(14f));
         setText("");
         toolBar.setBorderPainted(false);
         toolBar.setFloatable(false);
