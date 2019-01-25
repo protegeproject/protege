@@ -12,7 +12,9 @@ import org.protege.editor.owl.model.selection.SelectionDriver;
 import org.protege.editor.owl.model.selection.SelectionPlane;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererListener;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
+import org.protege.editor.owl.ui.renderer.RenderingEscapeUtils;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.util.EscapeUtils;
 
 import javax.swing.*;
 import java.awt.event.HierarchyEvent;
@@ -211,7 +213,9 @@ public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewC
         // is displaying
         if (object != null) {
             updateRegisteredActions();
-            getView().setHeaderText(getOWLModelManager().getRendering(object));
+            String rendering = getOWLModelManager().getRendering(object);
+            String unescapedRendering = RenderingEscapeUtils.unescape(rendering);
+            getView().setHeaderText(unescapedRendering);
         }
         else {
             // Not displaying an entity, so disable all actions
