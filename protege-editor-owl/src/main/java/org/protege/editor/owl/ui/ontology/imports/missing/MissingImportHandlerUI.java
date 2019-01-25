@@ -76,19 +76,17 @@ public class MissingImportHandlerUI implements MissingImportHandler {
     
     private void updateActiveCatalog(IRI ontologyIRI, File file) {
         OntologyCatalogManager catalogManager = owlEditorKit.getOWLModelManager().getOntologyCatalogManager();
-        XMLCatalog activeCatalog = catalogManager.getActiveCatalog();
-        if (activeCatalog == null) {
-            return;
-        }
-        URI relativeFile = CatalogUtilities.relativize(file.toURI(), activeCatalog);
-        activeCatalog.addEntry(0, new UriEntry("User Entered Import Resolution", activeCatalog, ontologyIRI.toString(), relativeFile, null));
-        File catalogLocation = new File(activeCatalog.getXmlBaseContext().getXmlBase());
-        try {
-            CatalogUtilities.save(activeCatalog, catalogLocation);
-        }
-        catch (IOException e) {
-            logger.error("Could not save user supplied import redirection to catalog.", e);
-        }
+        catalogManager.getCurrentCatalog().ifPresent(catalog -> {
+            URI relativeFile = CatalogUtilities.relativize(file.toURI(), catalog);
+            catalog.addEntry(0, new UriEntry("User Entered Import Resolution", catalog, ontologyIRI.toString(), relativeFile, null));
+            File catalogLocation = new File(catalog.getXmlBaseContext().getXmlBase());
+            try {
+                CatalogUtilities.save(catalog, catalogLocation);
+            }
+            catch (IOException e) {
+                logger.error("Could not save user supplied import redirection to catalog.", e);
+            }
+        });
     }
 }
 
