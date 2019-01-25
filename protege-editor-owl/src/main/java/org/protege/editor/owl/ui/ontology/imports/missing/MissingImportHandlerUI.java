@@ -44,7 +44,7 @@ public class MissingImportHandlerUI implements MissingImportHandler {
     public IRI getDocumentIRI(@Nonnull IRI ontologyIRI) {
         FutureTask<IRI> futureTask = new FutureTask<>(() -> {
             int ret = JOptionPane.showConfirmDialog(null,
-                    "<html><body>The system couldn't locate the ontology:<br><font color=\"blue\">" + ontologyIRI.toString() + "</font><br><br>" +
+                    "<html><body>The system couldn't locate the ontology<br><br><b>" + ontologyIRI.toString() + "</b><br><br>" +
 
                             "Would you like to attempt to resolve the missing import?</body></html>",
                     "Resolve missing import?",
