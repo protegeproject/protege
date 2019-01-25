@@ -113,10 +113,12 @@ public class OntologyCatalogManager {
         return localCatalogs.values();
     }
 
+    @Nullable
     public XMLCatalog getActiveCatalog() {
         return activeCatalog;
     }
 
+    @Nullable
     public File getActiveCatalogFolder() {
         return activeCatalogFolder;
     }
