@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Path;
 import java.util.*;
 
 
@@ -113,11 +114,29 @@ public class OntologyCatalogManager {
         return localCatalogs.values();
     }
 
+    @Nonnull
+    public Optional<XMLCatalog> getCurrentCatalog() {
+        return Optional.ofNullable(activeCatalog);
+    }
+
+    /**
+     * @deprecated Use {@link #getCurrentCatalog()} instead
+     */
+    @Deprecated
     @Nullable
     public XMLCatalog getActiveCatalog() {
         return activeCatalog;
     }
 
+    @Nonnull
+    public Optional<Path> getCurrentCatalogDirectory() {
+        return Optional.ofNullable(activeCatalogFolder).map(File::toPath);
+    }
+
+    /**
+     * @deprecated Use {@link #getCurrentCatalogDirectory()} instead.
+     */
+    @Deprecated
     @Nullable
     public File getActiveCatalogFolder() {
         return activeCatalogFolder;

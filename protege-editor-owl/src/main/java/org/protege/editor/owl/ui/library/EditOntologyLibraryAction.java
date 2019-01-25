@@ -41,7 +41,7 @@ public class EditOntologyLibraryAction extends ProtegeOWLAction {
     		}
     	}
     	catch (IOException ex) {
-			LoggerFactory.getLogger(EditActiveOntologyLibraryAction.class)
+			LoggerFactory.getLogger(EditOntologyLibraryAction.class)
 					.error("An error occurred whilst attempting to edit the catalog file: {}", e);
     	}
     }
