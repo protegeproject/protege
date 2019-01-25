@@ -11,6 +11,7 @@ import org.semanticweb.owlapi.model.IRI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +41,7 @@ public class MissingImportHandlerUI implements MissingImportHandler {
     }
 
 
-    public IRI getDocumentIRI(IRI ontologyIRI) {
+    public IRI getDocumentIRI(@Nonnull IRI ontologyIRI) {
         FutureTask<IRI> futureTask = new FutureTask<>(() -> {
             int ret = JOptionPane.showConfirmDialog(null,
                     "<html><body>The system couldn't locate the ontology:<br><font color=\"blue\">" + ontologyIRI.toString() + "</font><br><br>" +
