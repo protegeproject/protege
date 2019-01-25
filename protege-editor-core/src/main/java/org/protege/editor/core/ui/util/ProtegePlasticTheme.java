@@ -69,9 +69,6 @@ public class ProtegePlasticTheme extends ExperienceBlue {
                 "TitledBorder.titleColor", getMenuForeground()
         };
         table.putDefaults(uiDefaults);
-        table.forEach((key, val) -> {
-            System.out.println(key + " ---> " + val);
-        });
     }
 
     // Enabled control lines
