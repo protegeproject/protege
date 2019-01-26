@@ -180,4 +180,13 @@ public class BundleInfo_TestCase {
         BundleInfo olderBundleInfo = new BundleInfo(mock(File.class), symbolicName, Optional.of(olderVersion));
         assertThat(newerBundleInfo.isNewerVersionThan(olderBundleInfo), is(true));
     }
+
+    @Test
+    public void shouldFindSnapshotVersionNewerThanPreviousVersion() {
+        Version newerVersion = new Version(1, 2, 4, "SNAPSHOT");
+        Version olderVersion = new Version(1, 2, 3);
+        BundleInfo newerBundleInfo = new BundleInfo(mock(File.class), symbolicName, Optional.of(newerVersion));
+        BundleInfo olderBundleInfo = new BundleInfo(mock(File.class), symbolicName, Optional.of(olderVersion));
+        assertThat(newerBundleInfo.isNewerVersionThan(olderBundleInfo), is(true));
+    }
 }
