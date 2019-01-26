@@ -600,7 +600,7 @@
 
     <extension id="OWLMembersList"
                point="org.protege.editor.core.application.ViewComponent">
-        <label value="Instances"/>
+        <label value="Direct instances"/>
         <class value="org.protege.editor.owl.ui.view.individual.OWLMembersListViewComponent"/>
         <headerColor value="@org.protege.individualcolor"/>
         <category value="@org.protege.individualcategory"/>
@@ -610,7 +610,7 @@
     
     <extension id="OWLInferredMembersList"
                point="org.protege.editor.core.application.ViewComponent">
-        <label value="Instances (inferred)"/>
+        <label value="Direct instances (inferred)"/>
         <class value="org.protege.editor.owl.ui.view.individual.OWLInferredMemberListViewComponent"/>
         <headerColor value="@org.protege.individualcolor"/>
         <category value="@org.protege.individualcategory"/>
