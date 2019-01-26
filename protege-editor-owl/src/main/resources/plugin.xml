@@ -266,7 +266,7 @@
     
     <extension id="OWLEntityRenderer"
     		   point="org.protege.editor.owl.entity_renderer">
-       <name value="Render by Entity IRI short name (Id)"/>
+       <name value="Render by entity IRI short name (Id)"/>
        <class value="org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl"/>
        <sortPosition value="A"/>
     </extension>
@@ -1512,7 +1512,7 @@
     </extension>
 
     <extension id="menu.ClassExpressionDocumentationMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Class Expression Syntax"/>
+        <name value="Class expression syntax"/>
         <toolTip value="Documentation for the Class Expression Syntax used in Prot\u00E9g\u00E9"/>
         <url value="http://protegeproject.github.io/protege/class-expression-syntax"/>
         <path value="org.protege.editor.core.application.menu.HelpMenu/SlotF-B"/>
@@ -1622,7 +1622,7 @@
 
     <extension id="Add SubClass"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Add Subclass..."/>
+        <name value="Add subclass..."/>
         <class value="org.protege.editor.owl.ui.action.CreateNewChildAction"/>
         <toolTip value="Add a subclass of the selected class"/>
         <path value="[AssertedClassHierarchy]/SlotAA-A"/>
@@ -1631,7 +1631,7 @@
     </extension>
     <extension id="Add Sibling Class"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Add Sibling Class..."/>
+        <name value="Add sibling class..."/>
         <class value="org.protege.editor.owl.ui.action.CreateNewSiblingAction"/>
         <toolTip value="Add a sibling of the selected class"/>
         <path value="[AssertedClassHierarchy]/SlotAA-B"/>
@@ -1763,7 +1763,7 @@
 
     <extension id="context.class.CreateSubHierarchy"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Add Subclasses..."/>
+        <name value="Add subclasses..."/>
         <class value="org.protege.editor.owl.ui.action.CreateSubClassHierarchyAction"/>
         <toolTip value="Adds a sub-hierarchy below the selected class created from tab indented text"/>
         <path value="[AssertedClassHierarchy]/SlotAA-C"/>
@@ -1772,7 +1772,7 @@
 
     <extension id="context.objectproperty.CreateSubHierarchy"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Add Sub-properties..."/>
+        <name value="Add sub-properties..."/>
         <class value="org.protege.editor.owl.ui.action.CreateSubObjectPropertyHierarchyAction"/>
         <toolTip value="Adds a sub-hierarchy below the selected object property created from tab indented text"/>
         <path value="[AssertedObjectPropertyHierarchy]/SlotD-B"/>
@@ -1781,7 +1781,7 @@
 
     <extension id="context.dataproperty.CreateSubHierarchy"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Add Sub-properties..."/>
+        <name value="Add sub-properties..."/>
         <class value="org.protege.editor.owl.ui.action.CreateSubDataPropertyHierarchyAction"/>
         <toolTip value="Adds a sub-hierarchy below the selected data property created from tab indented text"/>
         <path value="[AssertedDataPropertyHierarchy]/SlotD-C"/>
