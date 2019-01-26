@@ -92,7 +92,7 @@
 
     <extension id="ui.preferences.newentity"
                point="org.protege.editor.core.application.preferencespanel">
-        <label value="New Entities"/>
+        <label value="New entities"/>
         <class value="org.protege.editor.owl.ui.preferences.NewEntitiesPreferencesPanel"/>
     </extension>
     
@@ -298,7 +298,7 @@
 
     <extension id="OWLOntologyTab"
                point="org.protege.editor.core.application.WorkspaceTab">
-        <label value="Active Ontology"/>
+        <label value="Active ontology"/>
         <class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
         <editorKitId value="OWLEditorKit"/>
         <index value="A"/>
@@ -333,7 +333,7 @@
 
     <extension id="OWLObjectPropertiesTab"
                point="org.protege.editor.core.application.WorkspaceTab">
-        <label value="Object Properties"/>
+        <label value="Object properties"/>
         <class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
         <editorKitId value="OWLEditorKit"/>
         <index value="D"/>
@@ -344,7 +344,7 @@
 
     <extension id="OWLDataPropertiesTab"
                point="org.protege.editor.core.application.WorkspaceTab">
-        <label value="Data Properties"/>
+        <label value="Data properties"/>
         <class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
         <editorKitId value="OWLEditorKit"/>
         <index value="E"/>
@@ -355,7 +355,7 @@
 
     <extension id="OWLAnnotationsPropertiesTab"
                point="org.protege.editor.core.application.WorkspaceTab">
-        <label value="Annotation Properties"/>
+        <label value="Annotation properties"/>
         <class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
         <editorKitId value="OWLEditorKit"/>
         <index value="F"/>
@@ -1274,7 +1274,7 @@
     
     <extension id="ui.preferences.reasoner.display"
                point="org.protege.editor.owl.inference_preferences">
-        <label value="Displayed Inferences"/>
+        <label value="Displayed inferences"/>
         <class value="org.protege.editor.owl.ui.inference.DisplayedInferencesPreferencePanel"/>
     </extension>
 
@@ -1557,7 +1557,7 @@
 
     <extension id="ui.ontology.OntologyPreferencesPanel"
                point="org.protege.editor.core.application.preferencespanel">
-        <label value="New Ontologies"/>
+        <label value="New ontologies"/>
         <class value="org.protege.editor.owl.ui.ontology.OntologyPreferencesPanel"/>
     </extension>
 
@@ -1577,7 +1577,7 @@
 
     <extension id="ui.entitymetadata.prefs"
                point="org.protege.editor.core.application.preferencespanel">
-        <label value="New Entities Metadata"/>
+        <label value="New entities metadata"/>
         <class value="org.protege.editor.owl.ui.annotation.EntityCreationMetadataPreferencesPanel"/>
     </extension>
 
