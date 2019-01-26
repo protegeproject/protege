@@ -82,7 +82,10 @@ public class BundleSearchPath {
         return allowedBundles.isEmpty() || allowedBundles.contains(jarName);
     }
 
-    private void addJar(BundleInfo bundleInfo, Map<SymbolicName, BundleInfo> nameToFileMap) {
+    /**
+     * Do not override.  Exposed for testing
+     */
+    protected void addJar(BundleInfo bundleInfo, Map<SymbolicName, BundleInfo> nameToFileMap) {
         SymbolicName symbolicName = bundleInfo.getSymbolicName();
         BundleInfo existingBundleInfo = nameToFileMap.get(symbolicName);
         if (existingBundleInfo == null) {
