@@ -92,7 +92,7 @@
 
     <extension id="ui.preferences.newentity"
                point="org.protege.editor.core.application.preferencespanel">
-        <label value="New Entities"/>
+        <label value="New entities"/>
         <class value="org.protege.editor.owl.ui.preferences.NewEntitiesPreferencesPanel"/>
     </extension>
     
@@ -266,7 +266,7 @@
     
     <extension id="OWLEntityRenderer"
     		   point="org.protege.editor.owl.entity_renderer">
-       <name value="Render by Entity IRI short name (Id)"/>
+       <name value="Render by entity IRI short name (Id)"/>
        <class value="org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl"/>
        <sortPosition value="A"/>
     </extension>
@@ -298,7 +298,7 @@
 
     <extension id="OWLOntologyTab"
                point="org.protege.editor.core.application.WorkspaceTab">
-        <label value="Active Ontology"/>
+        <label value="Active ontology"/>
         <class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
         <editorKitId value="OWLEditorKit"/>
         <index value="A"/>
@@ -333,7 +333,7 @@
 
     <extension id="OWLObjectPropertiesTab"
                point="org.protege.editor.core.application.WorkspaceTab">
-        <label value="Object Properties"/>
+        <label value="Object properties"/>
         <class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
         <editorKitId value="OWLEditorKit"/>
         <index value="D"/>
@@ -344,7 +344,7 @@
 
     <extension id="OWLDataPropertiesTab"
                point="org.protege.editor.core.application.WorkspaceTab">
-        <label value="Data Properties"/>
+        <label value="Data properties"/>
         <class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
         <editorKitId value="OWLEditorKit"/>
         <index value="E"/>
@@ -355,7 +355,7 @@
 
     <extension id="OWLAnnotationsPropertiesTab"
                point="org.protege.editor.core.application.WorkspaceTab">
-        <label value="Annotation Properties"/>
+        <label value="Annotation properties"/>
         <class value="org.protege.editor.owl.ui.OWLWorkspaceViewsTab"/>
         <editorKitId value="OWLEditorKit"/>
         <index value="F"/>
@@ -600,7 +600,7 @@
 
     <extension id="OWLMembersList"
                point="org.protege.editor.core.application.ViewComponent">
-        <label value="Instances"/>
+        <label value="Direct instances"/>
         <class value="org.protege.editor.owl.ui.view.individual.OWLMembersListViewComponent"/>
         <headerColor value="@org.protege.individualcolor"/>
         <category value="@org.protege.individualcategory"/>
@@ -610,7 +610,7 @@
     
     <extension id="OWLInferredMembersList"
                point="org.protege.editor.core.application.ViewComponent">
-        <label value="Instances (inferred)"/>
+        <label value="Direct instances (inferred)"/>
         <class value="org.protege.editor.owl.ui.view.individual.OWLInferredMemberListViewComponent"/>
         <headerColor value="@org.protege.individualcolor"/>
         <category value="@org.protege.individualcategory"/>
@@ -1274,7 +1274,7 @@
     
     <extension id="ui.preferences.reasoner.display"
                point="org.protege.editor.owl.inference_preferences">
-        <label value="Displayed Inferences"/>
+        <label value="Displayed inferences"/>
         <class value="org.protege.editor.owl.ui.inference.DisplayedInferencesPreferencePanel"/>
     </extension>
 
@@ -1512,7 +1512,7 @@
     </extension>
 
     <extension id="menu.ClassExpressionDocumentationMenuItem" point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Class Expression Syntax"/>
+        <name value="Class expression syntax"/>
         <toolTip value="Documentation for the Class Expression Syntax used in Prot\u00E9g\u00E9"/>
         <url value="http://protegeproject.github.io/protege/class-expression-syntax"/>
         <path value="org.protege.editor.core.application.menu.HelpMenu/SlotF-B"/>
@@ -1557,7 +1557,7 @@
 
     <extension id="ui.ontology.OntologyPreferencesPanel"
                point="org.protege.editor.core.application.preferencespanel">
-        <label value="New Ontologies"/>
+        <label value="New ontologies"/>
         <class value="org.protege.editor.owl.ui.ontology.OntologyPreferencesPanel"/>
     </extension>
 
@@ -1577,7 +1577,7 @@
 
     <extension id="ui.entitymetadata.prefs"
                point="org.protege.editor.core.application.preferencespanel">
-        <label value="New Entities Metadata"/>
+        <label value="New entities metadata"/>
         <class value="org.protege.editor.owl.ui.annotation.EntityCreationMetadataPreferencesPanel"/>
     </extension>
 
@@ -1622,7 +1622,7 @@
 
     <extension id="Add SubClass"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Add Subclass..."/>
+        <name value="Add subclass..."/>
         <class value="org.protege.editor.owl.ui.action.CreateNewChildAction"/>
         <toolTip value="Add a subclass of the selected class"/>
         <path value="[AssertedClassHierarchy]/SlotAA-A"/>
@@ -1631,7 +1631,7 @@
     </extension>
     <extension id="Add Sibling Class"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Add Sibling Class..."/>
+        <name value="Add sibling class..."/>
         <class value="org.protege.editor.owl.ui.action.CreateNewSiblingAction"/>
         <toolTip value="Add a sibling of the selected class"/>
         <path value="[AssertedClassHierarchy]/SlotAA-B"/>
@@ -1763,7 +1763,7 @@
 
     <extension id="context.class.CreateSubHierarchy"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Add Subclasses..."/>
+        <name value="Add subclasses..."/>
         <class value="org.protege.editor.owl.ui.action.CreateSubClassHierarchyAction"/>
         <toolTip value="Adds a sub-hierarchy below the selected class created from tab indented text"/>
         <path value="[AssertedClassHierarchy]/SlotAA-C"/>
@@ -1772,7 +1772,7 @@
 
     <extension id="context.objectproperty.CreateSubHierarchy"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Add Sub-properties..."/>
+        <name value="Add sub-properties..."/>
         <class value="org.protege.editor.owl.ui.action.CreateSubObjectPropertyHierarchyAction"/>
         <toolTip value="Adds a sub-hierarchy below the selected object property created from tab indented text"/>
         <path value="[AssertedObjectPropertyHierarchy]/SlotD-B"/>
@@ -1781,7 +1781,7 @@
 
     <extension id="context.dataproperty.CreateSubHierarchy"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Add Sub-properties..."/>
+        <name value="Add sub-properties..."/>
         <class value="org.protege.editor.owl.ui.action.CreateSubDataPropertyHierarchyAction"/>
         <toolTip value="Adds a sub-hierarchy below the selected data property created from tab indented text"/>
         <path value="[AssertedDataPropertyHierarchy]/SlotD-C"/>
