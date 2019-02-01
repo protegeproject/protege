@@ -34,6 +34,11 @@
                 <include>org.apache.servicemix.bundles:org.apache.servicemix.bundles.aopalliance:jar</include>
                 <include>org.eclipse.jgit:org.eclipse.jgit:jar</include>
                 <include>com.googlecode.javaewah:JavaEWAH:jar</include>
+                <include>javax.xml.bind:jaxb-api:jar</include>
+                <include>com.sun.xml.bind:jaxb-core:jar</include>
+                <include>com.sun.xml.bind:jaxb-impl:jar</include>
+                <include>com.sun.activation:javax.activation</include>
+                
             </includes>
             <useStrictFiltering>true</useStrictFiltering>
             <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>

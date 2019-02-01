@@ -11,7 +11,6 @@ cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 java -Dlogback.configurationFile=conf/logback.xml \
      -DentityExpansionLimit=100000000 \
      -Dfile.encoding=UTF-8 \
-     --add-modules java.xml.bind \
      ${conf.extra.args} \
      -classpath bundles/guava.jar:bundles/logback-classic.jar:bundles/logback-core.jar:bundles/slf4j-api.jar:bin/org.apache.felix.main.jar:bin/maven-artifact.jar:bin/protege-launcher.jar \
      $CMD_OPTIONS org.protege.osgi.framework.Launcher $1
