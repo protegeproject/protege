@@ -1,5 +1,9 @@
 package org.protege.editor.owl.model.cache;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.SetMultimap;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.semanticweb.owlapi.model.*;
@@ -20,17 +24,17 @@ import java.util.*;
  */
 public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
 
-    private Map<String, OWLClass> owlClassMap = new HashMap<>();
+    private SetMultimap<String, OWLClass> owlClassMap = HashMultimap.create();
 
-    private Map<String, OWLObjectProperty> owlObjectPropertyMap = new HashMap<>();
+    private SetMultimap<String, OWLObjectProperty> owlObjectPropertyMap = HashMultimap.create();
 
-    private Map<String, OWLDataProperty> owlDataPropertyMap = new HashMap<>();
+    private SetMultimap<String, OWLDataProperty> owlDataPropertyMap = HashMultimap.create();
 
-    private Map<String, OWLAnnotationProperty> owlAnnotationPropertyMap = new HashMap<>();
+    private SetMultimap<String, OWLAnnotationProperty> owlAnnotationPropertyMap = HashMultimap.create();
 
-    private Map<String, OWLNamedIndividual> owlIndividualMap = new HashMap<>();
+    private SetMultimap<String, OWLNamedIndividual> owlIndividualMap = HashMultimap.create();
 
-    private Map<String, OWLDatatype> owlDatatypeMap = new HashMap<>();
+    private SetMultimap<String, OWLDatatype> owlDatatypeMap = HashMultimap.create();
 
     private Map<OWLEntity, String> entityRenderingMap = new HashMap<>();
 
@@ -129,34 +133,48 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
         entityRenderingMap.clear();
     }
 
+    private static <E extends OWLEntity> E getFirstEntityOrNull(Multimap<String, E> renderingMap, String rendering) {
+        return renderingMap.get(rendering).stream().findFirst().orElse(null);
+    }
 
     public OWLClass getOWLClass(String rendering) {
-        return owlClassMap.get(rendering);
+        return getFirstEntityOrNull(owlClassMap, rendering);
+    }
+
+    public Set<OWLEntity> getOWLEntities(String rendering) {
+        ImmutableSet.Builder<OWLEntity> builder = ImmutableSet.builder();
+        builder.addAll(owlClassMap.get(rendering));
+        builder.addAll(owlObjectPropertyMap.get(rendering));
+        builder.addAll(owlDataPropertyMap.get(rendering));
+        builder.addAll(owlAnnotationPropertyMap.get(rendering));
+        builder.addAll(owlIndividualMap.get(rendering));
+        builder.addAll(owlDatatypeMap.get(rendering));
+        return builder.build();
     }
 
 
     public OWLObjectProperty getOWLObjectProperty(String rendering) {
-        return owlObjectPropertyMap.get(rendering);
+        return getFirstEntityOrNull(owlObjectPropertyMap, rendering);
     }
 
 
     public OWLDataProperty getOWLDataProperty(String rendering) {
-        return owlDataPropertyMap.get(rendering);
+        return getFirstEntityOrNull(owlDataPropertyMap, rendering);
     }
 
 
     public OWLAnnotationProperty getOWLAnnotationProperty(String rendering) {
-        return owlAnnotationPropertyMap.get(rendering);
+        return getFirstEntityOrNull(owlAnnotationPropertyMap, rendering);
     }
 
 
     public OWLNamedIndividual getOWLIndividual(String rendering) {
-        return owlIndividualMap.get(rendering);
+        return getFirstEntityOrNull(owlIndividualMap, rendering);
     }
 
 
     public OWLDatatype getOWLDatatype(String rendering) {
-        return owlDatatypeMap.get(rendering);
+        return getFirstEntityOrNull(owlDatatypeMap, rendering);
     }
 
 
@@ -224,7 +242,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
     }
 
 
-    private <T extends OWLEntity> void addRendering(T entity, Map<String, T> map) {
+    private <T extends OWLEntity> void addRendering(T entity, Multimap<String, T> map) {
         if (!entityRenderingMap.containsKey(entity)) {
             String rendering = owlModelManager.getRendering(entity);
             map.put(rendering, entity);
@@ -240,27 +258,27 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
         owlEntity.accept(new OWLEntityVisitor() {
 
             public void visit(OWLClass entity) {
-                owlClassMap.remove(oldRendering);
+                owlClassMap.remove(oldRendering, entity);
             }
 
             public void visit(OWLDataProperty entity) {
-                owlDataPropertyMap.remove(oldRendering);
+                owlDataPropertyMap.remove(oldRendering, entity);
             }
 
             public void visit(OWLObjectProperty entity) {
-                owlObjectPropertyMap.remove(oldRendering);
+                owlObjectPropertyMap.remove(oldRendering, entity);
             }
 
-            public void visit(OWLAnnotationProperty owlAnnotationProperty) {
-                owlAnnotationPropertyMap.remove(oldRendering);
+            public void visit(OWLAnnotationProperty entity) {
+                owlAnnotationPropertyMap.remove(oldRendering, entity);
             }
 
             public void visit(OWLNamedIndividual entity) {
-                owlIndividualMap.remove(oldRendering);
+                owlIndividualMap.remove(oldRendering, entity);
             }
 
             public void visit(OWLDatatype entity) {
-                owlDatatypeMap.remove(oldRendering);
+                owlDatatypeMap.remove(oldRendering, entity);
             }
         });
     }

@@ -51,6 +51,10 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
         return cls;
     }
 
+    @Override
+    public Set<OWLEntity> getOWLEntities(String rendering) {
+        return renderingCache.getOWLEntities(rendering);
+    }
 
     public OWLObjectProperty getOWLObjectProperty(String rendering) {
         OWLObjectProperty prop = renderingCache.getOWLObjectProperty(rendering);

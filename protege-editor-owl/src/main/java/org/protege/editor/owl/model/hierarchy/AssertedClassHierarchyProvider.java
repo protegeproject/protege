@@ -247,7 +247,23 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
                 }
             }
         }
-        return childClassExtractor.getResult();
+        // Expand results with synonyms that are given via EquivalentClasses(A B)
+        Collection<OWLClass> result = childClassExtractor.getResult();
+        Set<OWLClass> synonyms = new HashSet<>();
+        for(OWLOntology ont : ontologies) {
+            for(OWLClass cls : result) {
+                ont.getEquivalentClassesAxioms(cls)
+                        .stream()
+                        .map(ax -> ax.getClassExpressions())
+                        .filter(classExpressions -> classExpressions.stream().noneMatch(OWLClassExpression::isAnonymous))
+                        .flatMap(classExpressions -> classExpressions.stream())
+                        .map(ce -> ce.asOWLClass())
+                        .filter(ce -> !ce.equals(cls))
+                        .forEach(synonyms::add);
+            }
+        }
+        result.addAll(synonyms);
+        return result;
     }
 
     public boolean containsReference(OWLClass object) {
