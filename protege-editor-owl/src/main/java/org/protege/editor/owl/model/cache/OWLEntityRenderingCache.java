@@ -38,6 +38,12 @@ public interface OWLEntityRenderingCache extends Disposable {
 
     OWLClass getOWLClass(String rendering);
 
+    /**
+     * Gets the entities that have the specified rendering
+     * @param rendering The rendering
+     * @return A set of entities that have the specified rendering
+     */
+    Set<OWLEntity> getOWLEntities(String rendering);
 
     OWLObjectProperty getOWLObjectProperty(String rendering);
 

@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.tree;
 
+import com.google.common.collect.Sets;
 import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.annotation.Nonnull;
@@ -20,11 +21,11 @@ import java.util.*;
  */
 public class OWLObjectTreeNode<N extends OWLObject> extends DefaultMutableTreeNode {
 
-    private OWLObjectTree tree;
+    private final OWLObjectTree tree;
 
     private boolean isLoaded;
 
-    private Set<N> equivalentObjects;
+    private final Set<N> equivalentObjects = new HashSet<>();
 
     @Nullable
     private Object relationship;
@@ -33,7 +34,6 @@ public class OWLObjectTreeNode<N extends OWLObject> extends DefaultMutableTreeNo
         super(userObject);
         this.tree = tree;
         isLoaded = false;
-        equivalentObjects = new HashSet<>();
     }
 
 
@@ -48,13 +48,12 @@ public class OWLObjectTreeNode<N extends OWLObject> extends DefaultMutableTreeNo
         }
         Set<N> equivalents = tree.getProvider().getEquivalents((OWLObject) getUserObject());
         equivalents.remove(getUserObject());
-        return equivalents;
+        return Sets.union(equivalents, equivalentObjects);
     }
 
 
     public OWLObjectTreeNode(OWLObjectTree tree) {
         this.tree = tree;
-        this.equivalentObjects = new HashSet<>();
     }
 
 

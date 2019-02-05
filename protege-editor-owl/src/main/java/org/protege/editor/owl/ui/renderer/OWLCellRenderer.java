@@ -236,6 +236,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         highlightUnsatisfiableProperties = true;
         crossedOutEntities.clear();
         unsatisfiableNames.clear();
+        equivalentObjects.clear();
         boxedNames.clear();
     }
     
@@ -273,6 +274,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 		crossedOutEntities.addAll(tmp.crossedOutEntities);
 		unsatisfiableNames.clear();
 		unsatisfiableNames.addAll(tmp.unsatisfiableNames);
+		equivalentObjects.clear();
+		equivalentObjects.addAll(tmp.equivalentObjects);
 		boxedNames.clear();
 		boxedNames.addAll(tmp.boxedNames);
 	}

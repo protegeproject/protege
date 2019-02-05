@@ -2,11 +2,15 @@ package org.protege.editor.owl.ui.renderer;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.prefix.PrefixedNameRenderer;
+import org.protege.editor.owl.model.util.OboUtilities;
+import org.protege.editor.owl.ui.prefix.OWLEntityPrefixedNameRenderer;
 import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.protege.editor.owl.ui.tree.OWLObjectTreeNode;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
+import org.semanticweb.owlapi.util.QNameShortFormProvider;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -14,6 +18,10 @@ import javax.swing.*;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
@@ -45,6 +53,11 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
     private Font plainFont = new Font("sans-serif", Font.PLAIN, 12);
 
     private Font boldFont = plainFont.deriveFont(Font.BOLD);
+
+    private final PrefixedNameRenderer prefixedNameRenderer = PrefixedNameRenderer.builder()
+            .withOwlPrefixes()
+            .withWellKnownPrefixes()
+            .build();
 
 
     public ProtegeTreeNodeRenderer(@Nonnull OWLEditorKit editorKit) {
@@ -81,7 +94,7 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
             OWLObjectTreeNode<?> node = (OWLObjectTreeNode<?>) value;
             OWLObject object = node.getOWLObject();
             if (object != null) {
-                rendering = RenderingEscapeUtils.unescape(editorKit.getOWLModelManager().getRendering(object));
+                rendering = getNodeStringRendering(node);
                 deprecated = isDeprecated(object);
                 satisfiable = isSatisfiable(object);
                 active = isActive(object);
@@ -122,6 +135,36 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
         renderingComponent.setIcon(icon);
         renderingComponent.setVerticalAlignment(CENTER);
         return renderingComponent;
+    }
+
+    private String getNodeStringRendering(OWLObjectTreeNode<?> node) {
+        OWLObject object = node.getOWLObject();
+        return getObjectRendering(object);
+    }
+
+    private String getObjectRendering(OWLObject object) {
+        OWLModelManager modelManager = editorKit.getModelManager();
+        String escapedRendering = modelManager.getRendering(object);
+        String unescapedRendering = RenderingEscapeUtils.unescape(escapedRendering);
+        // How many entities have this rendering?
+        if(object instanceof OWLEntity) {
+            Set<OWLEntity> matchingEntities = modelManager.getOWLEntityFinder().getOWLEntities(escapedRendering);
+            if(matchingEntities.size() > 1) {
+                // Display disambiguation where the rendering is the same
+                IRI entityIri = ((OWLEntity) object).getIRI();
+                Optional<String> oboId = OboUtilities.getOboIdFromIri(entityIri);
+                if(oboId.isPresent()) {
+                    unescapedRendering = unescapedRendering + " (" + oboId.get() + ")";
+                }
+                else {
+                    String prefixedName = prefixedNameRenderer.getPrefixedNameOrElse(entityIri, null);
+                    if(prefixedName != null) {
+                        unescapedRendering = unescapedRendering + " (" + prefixedName + ")";
+                    }
+                }
+            }
+        }
+        return unescapedRendering;
     }
 
     private static boolean shouldDisplayRelationships(@Nonnull JTree tree) {

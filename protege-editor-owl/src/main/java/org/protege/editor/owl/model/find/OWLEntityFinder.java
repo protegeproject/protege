@@ -24,23 +24,19 @@ public interface OWLEntityFinder {
 
     OWLClass getOWLClass(String rendering);
 
-
     OWLObjectProperty getOWLObjectProperty(String rendering);
-
 
     OWLDataProperty getOWLDataProperty(String rendering);
 
-
     OWLAnnotationProperty getOWLAnnotationProperty(String rendering);
-
 
     OWLNamedIndividual getOWLIndividual(String rendering);
 
-
     OWLDatatype getOWLDatatype(String rendering);
 
-
     OWLEntity getOWLEntity(String rendering);
+
+    Set<OWLEntity> getOWLEntities(String rendering);
 
     /**
      * Searches for an entity of the specified type with the specified rendering.

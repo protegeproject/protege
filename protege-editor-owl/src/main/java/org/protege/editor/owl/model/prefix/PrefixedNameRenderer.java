@@ -50,15 +50,19 @@ public final class PrefixedNameRenderer {
      * @return The prefixed name.
      */
     public String getPrefixedNameOrQuotedIri(@Nonnull IRI iri) {
+        return getPrefixedNameOrElse(iri, iri.toQuotedString());
+    }
+
+    public String getPrefixedNameOrElse(@Nonnull IRI iri, String alternate) {
         final String iriString = iri.toString();
         return prefix2PrefixNameMap.entrySet().stream()
-                                   // Match prefix
-                                   .filter(e -> iriString.startsWith(e.getKey()))
-                                   // Concatenate prefix name with local name
-                                   .map(e -> e.getValue() + iriString.substring(e.getKey().length()))
-                                   .findFirst()
-                                   // Return quoted IRI if we can't find a prefix match
-                                   .orElse(iri.toQuotedString());
+                // Match prefix
+                .filter(e -> iriString.startsWith(e.getKey()))
+                // Concatenate prefix name with local name
+                .map(e -> e.getValue() + iriString.substring(e.getKey().length()))
+                .findFirst()
+                // Return quoted IRI if we can't find a prefix match
+                .orElse(alternate);
     }
 
 
