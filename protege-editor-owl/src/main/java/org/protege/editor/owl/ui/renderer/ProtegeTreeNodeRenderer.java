@@ -16,7 +16,9 @@ import javax.swing.*;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
+import java.awt.font.TextLayout;
 import java.util.Optional;
 import java.util.Set;
 
@@ -132,7 +134,7 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
         renderingComponent.setIcon(icon);
         renderingComponent.setVerticalTextPosition(CENTER);
         renderingComponent.setVerticalAlignment(CENTER);
-        
+
         return renderingComponent;
     }
 
@@ -252,7 +254,7 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
             super.paintComponent(g);
             if(deprecated) {
                 int textOffset = getIcon().getIconWidth() + getIconTextGap();
-                int y = getHeight() / 2;
+                int y = (int) (getHeight() * 3.0 / 5.0);
                 g.drawLine(textOffset, y, getWidth(), y);
             }
         }
