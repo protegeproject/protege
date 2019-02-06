@@ -129,7 +129,6 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
             }
         });
         getAssertedTree().setPopupMenuId(new PopupMenuId("[AssertedClassHierarchy]"));
-        getAssertedTree().setCellRenderer(new ProtegeTreeNodeRenderer(getOWLEditorKit()));
     }
 
     private void handleAdd(OWLClass child, OWLClass parent) {

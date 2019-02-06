@@ -4,13 +4,11 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.prefix.PrefixedNameRenderer;
 import org.protege.editor.owl.model.util.OboUtilities;
-import org.protege.editor.owl.ui.prefix.OWLEntityPrefixedNameRenderer;
 import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.protege.editor.owl.ui.tree.OWLObjectTreeNode;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
-import org.semanticweb.owlapi.util.QNameShortFormProvider;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -18,10 +16,9 @@ import javax.swing.*;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
@@ -133,7 +130,9 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
         icon.setDeprecated(deprecated);
         icon.rebuild();
         renderingComponent.setIcon(icon);
+        renderingComponent.setVerticalTextPosition(CENTER);
         renderingComponent.setVerticalAlignment(CENTER);
+        
         return renderingComponent;
     }
 
@@ -330,12 +329,14 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
             if (icon == null) {
                 return;
             }
-            int xOffset = 1;
+
+            int xOffset = 1 + x;
             Graphics2D g2 = (Graphics2D) g;
             Composite comp = g2.getComposite();
             if(deprecated) {
                 g2.setComposite(alpha);
             }
+
             g2.setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON);
             if (relationshipsDisplayed) {
                 g2.setStroke(RELATIONSHIP_STROKE);
@@ -346,14 +347,14 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
                     g.setColor(UNSPECIFIED_RELATIONSHIP_COLOR);
                 }
                 // Paint a left pointing arrow
-                int lineY = height / 2;
+                int lineY = y + height / 2;
                 g.drawLine(xOffset + 5, lineY, xOffset + 14, lineY);
                 g.drawLine(xOffset + 4, lineY, xOffset + 6, lineY - 2);
                 g.drawLine(xOffset + 4, lineY, xOffset + 6, lineY + 2);
                 xOffset += 16;
             }
             if (icon != null) {
-                icon.paintIcon(c, g, xOffset, 0);
+                icon.paintIcon(c, g, xOffset, y);
             }
             g2.setComposite(comp);
         }
