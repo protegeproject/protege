@@ -23,6 +23,8 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.protege.editor.owl.ui.renderer.RenderingEscapeUtils.RenderingEscapeSetting.UNESCAPED_RENDERING;
+
 
 /**
  * Author: Matthew Horridge<br>
@@ -213,9 +215,8 @@ public abstract class AbstractOWLSelectionViewComponent extends AbstractOWLViewC
         // is displaying
         if (object != null) {
             updateRegisteredActions();
-            String rendering = getOWLModelManager().getRendering(object);
-            String unescapedRendering = RenderingEscapeUtils.unescape(rendering);
-            getView().setHeaderText(unescapedRendering);
+            String rendering = getOWLModelManager().getDisabmiguatedRendering(object, UNESCAPED_RENDERING);
+            getView().setHeaderText(rendering);
         }
         else {
             // Not displaying an entity, so disable all actions

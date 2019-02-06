@@ -19,6 +19,11 @@ import javax.annotation.Nonnull;
  */
 public class RenderingEscapeUtils {
 
+    public enum RenderingEscapeSetting {
+        ESCAPED_RENDERING,
+        UNESCAPED_RENDERING
+    }
+
     /**
      * Produces an "escaped" rendering.  If the original rendering contains
      * spaces, braces, brackets or commas, and various other symbols used as delimeters in the
