@@ -22,6 +22,7 @@ import java.util.List;
 
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+import static org.protege.editor.owl.ui.renderer.RenderingEscapeUtils.RenderingEscapeSetting.UNESCAPED_RENDERING;
 
 
 /**
@@ -590,7 +591,7 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 
     protected String getRendering(Object object) {
         if (object instanceof OWLObject) {
-            String rendering = getOWLModelManager().getRendering(((OWLObject) object));
+            String rendering = getOWLModelManager().getDisabmiguatedRendering((OWLObject) object, UNESCAPED_RENDERING);
             for (OWLObject eqObj : equivalentObjects) {
                 // Add in the equivalent class symbol
                 rendering += " \u2261 " + getOWLModelManager().getRendering(eqObj);

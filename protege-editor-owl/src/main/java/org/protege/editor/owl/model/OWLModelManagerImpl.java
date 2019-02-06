@@ -823,6 +823,9 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
     }
 
     public String getRendering(OWLObject object) {
+        if(object == null) {
+            return "";
+        }
         // Look for a cached version of the rendering first!
         if(object instanceof OWLEntity) {
             AnonymousDefinedClassManager adcManager = get(AnonymousDefinedClassManager.ID);

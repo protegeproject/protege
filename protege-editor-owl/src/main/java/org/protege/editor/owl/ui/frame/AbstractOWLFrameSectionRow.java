@@ -6,6 +6,7 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditorHandler;
+import org.protege.editor.owl.ui.renderer.RenderingEscapeUtils;
 import org.semanticweb.owlapi.model.*;
 
 import java.util.*;
@@ -250,7 +251,7 @@ public abstract class AbstractOWLFrameSectionRow<R extends Object, A extends OWL
 
 
     protected Object getObjectRendering(OWLObject ob) {
-        return getOWLModelManager().getRendering(ob);
+        return getOWLModelManager().getDisabmiguatedRendering(ob, RenderingEscapeUtils.RenderingEscapeSetting.ESCAPED_RENDERING);
     }
 
 
