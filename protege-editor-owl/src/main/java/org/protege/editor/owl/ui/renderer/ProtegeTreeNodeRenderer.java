@@ -26,6 +26,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 import static javax.swing.SwingConstants.CENTER;
+import static org.protege.editor.owl.ui.renderer.RenderingEscapeUtils.RenderingEscapeSetting.UNESCAPED_RENDERING;
 
 /**
  * Matthew Horridge
@@ -140,32 +141,7 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
 
     private String getNodeStringRendering(OWLObjectTreeNode<?> node) {
         OWLObject object = node.getOWLObject();
-        return getObjectRendering(object);
-    }
-
-    private String getObjectRendering(OWLObject object) {
-        OWLModelManager modelManager = editorKit.getModelManager();
-        String escapedRendering = modelManager.getRendering(object);
-        String unescapedRendering = RenderingEscapeUtils.unescape(escapedRendering);
-        // How many entities have this rendering?
-        if(object instanceof OWLEntity) {
-            Set<OWLEntity> matchingEntities = modelManager.getOWLEntityFinder().getOWLEntities(escapedRendering);
-            if(matchingEntities.size() > 1) {
-                // Display disambiguation where the rendering is the same
-                IRI entityIri = ((OWLEntity) object).getIRI();
-                Optional<String> oboId = OboUtilities.getOboIdFromIri(entityIri);
-                if(oboId.isPresent()) {
-                    unescapedRendering = unescapedRendering + " (" + oboId.get() + ")";
-                }
-                else {
-                    String prefixedName = prefixedNameRenderer.getPrefixedNameOrElse(entityIri, null);
-                    if(prefixedName != null) {
-                        unescapedRendering = unescapedRendering + " (" + prefixedName + ")";
-                    }
-                }
-            }
-        }
-        return unescapedRendering;
+        return editorKit.getOWLModelManager().getDisabmiguatedRendering(object, UNESCAPED_RENDERING);
     }
 
     private static boolean shouldDisplayRelationships(@Nonnull JTree tree) {

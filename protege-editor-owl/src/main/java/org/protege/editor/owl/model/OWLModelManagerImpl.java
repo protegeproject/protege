@@ -25,9 +25,11 @@ import org.protege.editor.owl.model.inference.OWLReasonerManagerImpl;
 import org.protege.editor.owl.model.inference.ReasonerPreferences;
 import org.protege.editor.owl.model.io.*;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
+import org.protege.editor.owl.model.prefix.PrefixedNameRenderer;
 import org.protege.editor.owl.model.selection.ontologies.ImportsClosureOntologySelectionStrategy;
 import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;
 import org.protege.editor.owl.model.util.ListenerManager;
+import org.protege.editor.owl.model.util.OboUtilities;
 import org.protege.editor.owl.ui.OWLObjectComparator;
 import org.protege.editor.owl.ui.OWLObjectRenderingComparator;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ManchesterOWLExpressionCheckerFactory;
@@ -35,6 +37,7 @@ import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactor
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandler;
 import org.protege.editor.owl.ui.explanation.ExplanationManager;
 import org.protege.editor.owl.ui.renderer.*;
+import org.protege.editor.owl.ui.renderer.RenderingEscapeUtils.RenderingEscapeSetting;
 import org.protege.editor.owl.ui.renderer.plugin.RendererPlugin;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
@@ -141,6 +144,8 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     private OntologyLoadErrorHandler loadErrorHandler;
 
+    private PrefixedNameRenderer prefixedNameRenderer;
+
 
     public OWLModelManagerImpl() {
         super();
@@ -148,6 +153,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         manager = OntologyManagerFactory.createManager();
         manager.addOntologyChangeListener(this);
         objectRenderer = new OWLObjectRendererImpl(this);
+        prefixedNameRenderer = PrefixedNameRenderer.builder().withOwlPrefixes().withWellKnownPrefixes().build();
         owlEntityRenderingCache = new OWLEntityRenderingCacheImpl();
         owlEntityRenderingCache.setOWLModelManager(this);
         owlObjectRenderingCache = new OWLObjectRenderingCache(this);
@@ -775,6 +781,47 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         ioListeners.add(listener);
     }
 
+    @Override
+    public String getDisabmiguatedRendering(OWLObject object,
+                                            RenderingEscapeSetting renderingEscapeSetting) {
+        final String escapedRendering = getRendering(object);
+        final String desiredRendering;
+        if(renderingEscapeSetting == RenderingEscapeSetting.ESCAPED_RENDERING) {
+            desiredRendering = escapedRendering;
+        }
+        else {
+            desiredRendering = RenderingEscapeUtils.unescape(escapedRendering);
+        }
+        if(!(object instanceof OWLEntity)) {
+            return desiredRendering;
+        }
+
+        // How many entities have this rendering?
+        Set<OWLEntity> matchingEntities = getOWLEntityFinder().getOWLEntities(escapedRendering);
+        if(matchingEntities.size() <= 1) {
+            return desiredRendering;
+        }
+        final String disambiguatedRendering;
+
+        // Display disambiguation where the rendering is the same
+        // For entity IRIs that are OBO Ids we display the OBO Id
+        IRI entityIri = ((OWLEntity) object).getIRI();
+        Optional<String> oboId = OboUtilities.getOboIdFromIri(entityIri);
+        if(oboId.isPresent()) {
+            disambiguatedRendering = desiredRendering + " (" + oboId.get() + ")";
+        }
+        else {
+            String prefixedName = prefixedNameRenderer.getPrefixedNameOrElse(entityIri, null);
+            if(prefixedName != null) {
+                disambiguatedRendering = desiredRendering + " (" + prefixedName + ")";
+            }
+            else {
+                disambiguatedRendering = desiredRendering;
+            }
+        }
+        return disambiguatedRendering;
+    }
+
     public String getRendering(OWLObject object) {
         // Look for a cached version of the rendering first!
         if(object instanceof OWLEntity) {
@@ -795,6 +842,13 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         }
 
         return owlObjectRenderingCache.getRendering(object, getOWLObjectRenderer());
+    }
+
+    public OWLEntityFinder getOWLEntityFinder() {
+        if(entityFinder == null) {
+            entityFinder = new OWLEntityFinderImpl(this, owlEntityRenderingCache);
+        }
+        return entityFinder;
     }
 
     public OWLObjectRenderer getOWLObjectRenderer() {
@@ -838,13 +892,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     public void setOWLEntityFactory(OWLEntityFactory owlEntityFactory) {
         this.entityFactory = owlEntityFactory;
-    }
-
-    public OWLEntityFinder getOWLEntityFinder() {
-        if(entityFinder == null) {
-            entityFinder = new OWLEntityFinderImpl(this, owlEntityRenderingCache);
-        }
-        return entityFinder;
     }
 
     public Comparator<OWLObject> getOWLObjectComparator() {
