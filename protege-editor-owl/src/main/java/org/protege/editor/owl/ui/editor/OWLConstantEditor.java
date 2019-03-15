@@ -19,6 +19,7 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
+import org.semanticweb.owlapi.vocab.XSDVocabulary;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -186,7 +187,18 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         }
         if (isDatatypeSelected()) {
             lastDatatype = getSelectedDatatype();
-            return dataFactory.getOWLLiteral(value, getSelectedDatatype());
+            if(lastDatatype.isBoolean()) {
+                if(OWL2Datatype.XSD_BOOLEAN.getPattern().matcher(value).matches()) {
+                    dataFactory.getOWLLiteral(value, OWL2Datatype.XSD_BOOLEAN);
+                }
+                else {
+                    dataFactory.getOWLLiteral(value, OWL2Datatype.XSD_STRING);
+                }
+            }
+            else {
+                return dataFactory.getOWLLiteral(value, getSelectedDatatype());
+            }
+
         }
 
         OWLLiteralParser parser = new OWLLiteralParser(dataFactory);
