@@ -84,7 +84,7 @@ public class OWLClassExpressionExpressionEditor extends AbstractOWLClassExpressi
         try {
             if (editor.isWellFormed()) {
                 OWLClassExpression owlDescription = editor.createObject();
-                OWLExpressionUserCache.getInstance(getOWLEditorKit().getModelManager()).add(owlDescription, editor.getText());
+                OWLExpressionUserCache.getInstance(getOWLEditorKit().getModelManager()).add(owlDescription, editor.getText().trim());
                 return Collections.singleton(owlDescription);
             }
             else {
