@@ -13,7 +13,7 @@ public class DisplayDeprecatedEntitiesAction extends ComponentHierarchyAction<Ha
 
     @Override
     protected Class<HasDisplayDeprecatedEntities> initialiseAction() {
-        putValue(SELECTED_KEY, true);
+        putValue(SELECTED_KEY, false);
         return HasDisplayDeprecatedEntities.class;
     }
 
