@@ -1,10 +1,15 @@
 package org.protege.editor.owl.ui;
 
+import com.google.common.collect.ImmutableList;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.lang.LangCode;
+import org.protege.editor.owl.model.lang.LangCodeRegistry;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
+import org.protege.editor.owl.ui.lang.LangCodeEditor;
+import org.protege.editor.owl.ui.lang.LangCodeRenderer;
 import org.protege.editor.owl.ui.list.OWLEntityListPanel;
 import org.protege.editor.owl.ui.renderer.OWLCellRendererSimple;
 import org.protege.editor.owl.ui.selector.*;
@@ -13,6 +18,7 @@ import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -284,6 +290,21 @@ public class UIHelper {
         c.setEditable(true);
         c.setModel(new DefaultComboBoxModel<>(new String[]{null, "en", "de", "es", "fr", "pt"}));
         return c;
+    }
+
+    public JComboBox<LangCode> getLangCodeSelector() {
+        LangCodeRegistry registry = LangCodeRegistry.get();
+        JComboBox<LangCode> comboBox = new JComboBox<>();
+        comboBox.setSelectedItem(null);
+        comboBox.setEditable(true);
+        ImmutableList<LangCode> langCodes = registry.getLangCodes();
+        List<LangCode> langCodeList = new ArrayList<>(langCodes);
+        langCodeList.add(0, null);
+        comboBox.setModel(new DefaultComboBoxModel(
+                langCodeList.toArray()));
+        comboBox.setEditor(new LangCodeEditor(registry));
+        comboBox.setRenderer(new LangCodeRenderer());
+        return comboBox;
     }
 
 

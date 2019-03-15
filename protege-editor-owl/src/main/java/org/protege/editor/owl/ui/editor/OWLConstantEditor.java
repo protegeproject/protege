@@ -8,6 +8,8 @@ package org.protege.editor.owl.ui.editor;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.classexpression.OWLExpressionParserException;
+import org.protege.editor.owl.model.lang.LangCode;
+import org.protege.editor.owl.model.lang.LangCodeRegistry;
 import org.protege.editor.owl.model.parser.OWLLiteralParser;
 import org.protege.editor.owl.model.util.LiteralChecker;
 import org.protege.editor.owl.ui.UIHelper;
@@ -41,7 +43,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
 
     private final JTextArea annotationContent = new JTextArea(8, 40);
 
-    private final JComboBox<String> langComboBox;
+    private final JComboBox<LangCode> langComboBox;
 
     private final JComboBox<OWLDatatype> datatypeComboBox;
 
@@ -49,10 +51,11 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
 
     private final OWLDataFactory dataFactory;
 
-    private String lastLanguage;
+    private LangCode lastLanguage;
 
     private OWLDatatype lastDatatype;
 
+    private LangCodeRegistry langCodeRegistry = LangCodeRegistry.get();
 
 
     private final JLabel messageLabel = new JLabel();
@@ -66,7 +69,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         annotationContent.setBorder(null);
 
         final UIHelper uiHelper = new UIHelper(owlEditorKit);
-        langComboBox = uiHelper.getLanguageSelector();
+        langComboBox = uiHelper.getLangCodeSelector();
 
         datatypeComboBox = uiHelper.getDatatypeSelector();
         datatypeComboBox.addActionListener(e -> {
@@ -178,8 +181,8 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         lastLanguage = null;
         String value = getLexicalValue();
         if (isLangSelected()) {
-            lastLanguage = getSelectedLang();
-            return dataFactory.getOWLLiteral(value, getSelectedLang());
+            lastLanguage = getSelectedLang().orElse(null);
+            return dataFactory.getOWLLiteral(value, getSelectedLang().map(LangCode::getLangCode).orElse(null));
         }
         if (isDatatypeSelected()) {
             lastDatatype = getSelectedDatatype();
@@ -206,7 +209,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
             if (!constant.isRDFPlainLiteral()) {
                 datatypeComboBox.setSelectedItem(constant.getDatatype());
             } else {
-                langComboBox.setSelectedItem(constant.getLang());
+                langCodeRegistry.getLangCode(constant.getLang()).ifPresent(langComboBox::setSelectedItem);
             }
         }
         return true;
@@ -235,8 +238,8 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         return datatypeComboBox.getSelectedItem() != null;
     }
 
-    private String getSelectedLang() {
-        return (String) langComboBox.getSelectedItem();
+    private Optional<LangCode> getSelectedLang() {
+        return Optional.ofNullable((LangCode) langComboBox.getSelectedItem());
     }
 
     /**
@@ -255,8 +258,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
                 throw new OWLExpressionParserException(text, 0, text.length(), true, true, true, true, true, true, new HashSet<>());
             }
 
-            public Object createObject(String text)
-                    throws OWLExpressionParserException {
+            public Object createObject(String text) {
                 return null;
             }
         });
