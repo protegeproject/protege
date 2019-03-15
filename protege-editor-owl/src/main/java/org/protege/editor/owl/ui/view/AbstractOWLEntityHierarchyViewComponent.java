@@ -148,6 +148,9 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
         }
 
         breadCrumbTrailProviderRegistration = getOWLWorkspace().registerBreadcrumbTrailProvider(this);
+
+        // Don't show deprecated entities by default
+        getHierarchyProvider().setFilter(this::isNotDeprecated);
     }
 
     protected boolean isInAssertedMode() {
