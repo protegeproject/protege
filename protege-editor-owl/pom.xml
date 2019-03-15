@@ -91,7 +91,17 @@
 			<artifactId>org.protege.xmlcatalog</artifactId>
 			<scope>provided</scope>
 		</dependency>
-				
+
+        <dependency>
+            <groupId>com.google.auto.value</groupId>
+            <artifactId>auto-value</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.auto.value</groupId>
+            <artifactId>auto-value-annotations</artifactId>
+        </dependency>
+
 		<dependency>
             <groupId>com.jcraft</groupId>
             <artifactId>jzlib</artifactId>

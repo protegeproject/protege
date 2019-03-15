@@ -300,6 +300,20 @@
 				<scope>test</scope>
 			</dependency>
 
+			<dependency>
+				<groupId>com.google.auto.value</groupId>
+				<artifactId>auto-value-annotations</artifactId>
+				<version>1.6.3rc1</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>com.google.auto.value</groupId>
+				<artifactId>auto-value</artifactId>
+				<version>1.6.3rc1</version>
+				<scope>provided</scope>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 				
@@ -309,7 +323,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.3</version>
+					<version>3.8.0</version>
 					<configuration>
 						<source>1.8</source>
 						<target>1.8</target>
