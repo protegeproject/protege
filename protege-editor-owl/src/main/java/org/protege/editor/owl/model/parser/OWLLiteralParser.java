@@ -1,10 +1,10 @@
 package org.protege.editor.owl.model.parser;
 
-import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
@@ -76,7 +76,7 @@ public class OWLLiteralParser {
                 return Optional.of(dataFactory.getOWLLiteral(normalisedValue, datatype));
             }
             else {
-                return Optional.absent();
+                return Optional.empty();
             }
         }
     }
