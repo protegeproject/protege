@@ -19,10 +19,8 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
-import org.semanticweb.owlapi.vocab.XSDVocabulary;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -176,7 +174,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         return this;
     }
 
-    @Nullable
+    @Nonnull
     public OWLLiteral getEditedObject() {
         lastDatatype = null;
         lastLanguage = null;
