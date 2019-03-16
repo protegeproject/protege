@@ -165,10 +165,6 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         return object instanceof OWLLiteral;
     }
 
-    public boolean isPreferred(Object object) {
-        return object instanceof OWLLiteral;
-    }
-
     @Nonnull
     public JComponent getEditorComponent() {
         return this;
