@@ -36,6 +36,8 @@ public class OWLExpressionUserCache implements Disposable {
 
     private OWLModelManager mngr;
 
+    private boolean enabled = false;
+
     private OWLModelManagerListener modelManagerListener = event -> {
         if (event.getType().equals(EventType.ACTIVE_ONTOLOGY_CHANGED) ||
             event.getType().equals(EventType.ENTITY_RENDERER_CHANGED) ||
@@ -64,6 +66,9 @@ public class OWLExpressionUserCache implements Disposable {
 
 
     public void add(OWLClassExpression owlDescription, String rendering) {
+        if(!enabled) {
+            return;
+        }
         if (!getRenderings().contains(rendering)){
             getRenderings().add(0, rendering); // add them backwards
         }
@@ -175,6 +180,9 @@ public class OWLExpressionUserCache implements Disposable {
 
 
     private String fromInternalForm(String input) {
+        if(!enabled) {
+            return null;
+        }
         if (input == null){
             return null;
         }
