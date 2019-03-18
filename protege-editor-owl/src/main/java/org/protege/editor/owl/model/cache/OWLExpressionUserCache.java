@@ -60,7 +60,6 @@ public class OWLExpressionUserCache implements Disposable {
     private OWLExpressionUserCache(OWLModelManager mngr){
         this.mngr = mngr;
         mngr.addListener(modelManagerListener);
-        load();
     }
 
 
@@ -104,7 +103,6 @@ public class OWLExpressionUserCache implements Disposable {
 
 
     public void dispose() {
-        save();
         renderingsCache.clear();
         renderingsCache = null;
         cacheExternalForm = null;
@@ -112,33 +110,6 @@ public class OWLExpressionUserCache implements Disposable {
         mngr.removeListener(modelManagerListener);
         mngr = null;
     }
-
-
-    private void save() {
-//        Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(getClass());
-//        prefs.putStringList(getPrefsID(), cacheInternalForm);
-    }
-
-
-    private void load() {
-//        Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(getClass());
-//        if (prefs != null){
-//            cacheExternalForm = new ArrayList<String>();
-//            for (String internal : prefs.getStringList(getPrefsID(), new ArrayList<String>())){
-//                String external = fromInternalForm(internal);
-//                try {
-//                    OWLClassExpression descr = mngr.getOWLExpressionCheckerFactory().getOWLClassExpressionChecker().createObject(external);
-//                    renderingsCache.put(descr, internal);
-//                    cacheInternalForm.add(internal);
-//                    cacheExternalForm.add(external);
-//                }
-//                catch (OWLExpressionParserException e) {
-//                    logger.warn("Could not reload expression from history files: " + internal);
-//                }
-//            }
-//        }
-    }
-
 
     private String getPrefsID() {
         final String fragment = mngr.getRendering(mngr.getActiveOntology());
