@@ -47,7 +47,7 @@ public class AboutPanel extends JPanel {
         panel.addGroupComponent(new JLabel(versionString, SwingConstants.CENTER));
         panel.addVerticalPadding();
         panel.addGroup("Memory settings");
-        panel.addGroupComponent(new JLabel(String.format("<html><body>Max memory set to %d MB    <span style='color: #707070;'>(via Java -Xmx setting)</span></body></html>", maxMemMB)));
+        panel.addGroupComponent(new JLabel(String.format("<html><body>Max memory set to %d MB</body></html>", maxMemMB)));
         panel.addGroupComponent(new JLabel(String.format("Currently using %d MB", usedMemMB)));
 
         panel.addVerticalPadding();

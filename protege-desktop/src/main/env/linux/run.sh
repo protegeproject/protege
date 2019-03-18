@@ -8,8 +8,7 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
 done
 cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-jre/bin/java -Xmx${conf.mem.xmx}M -Xms${conf.mem.xms}M \
-     -Xss${conf.mem.xss}M \
+jre/bin/java \
      -DentityExpansionLimit=100000000 \
      -Dlogback.configurationFile=conf/logback.xml \
      -Dfile.encoding=UTF-8 \
