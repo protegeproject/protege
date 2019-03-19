@@ -52,11 +52,8 @@ public class PrefixMapperTableModel extends AbstractTableModel {
     	prefixes.clear();
     	prefixValueMap.clear();
 
-        for (Map.Entry<String, String> prefixName2PrefixEntry : prefixManager.getPrefixName2PrefixMap().entrySet()) {
-        	String prefixName = prefixName2PrefixEntry.getKey();
-        	String prefix     = prefixName2PrefixEntry.getValue();
-        	prefixValueMap.put(prefixName, prefix);
-        }
+		prefixManager.getPrefixName2PrefixMap()
+				.forEach((prefixName, prefix) -> prefixValueMap.put(prefixName, prefix));
         prefixes.addAll(prefixValueMap.keySet());
         Collections.sort(prefixes);
         fireTableDataChanged();
