@@ -55,8 +55,6 @@ public class PrefixMapperTableModel extends AbstractTableModel {
         for (Map.Entry<String, String> prefixName2PrefixEntry : prefixManager.getPrefixName2PrefixMap().entrySet()) {
         	String prefixName = prefixName2PrefixEntry.getKey();
         	String prefix     = prefixName2PrefixEntry.getValue();
-        	// remove trailing :
-        	prefixName = prefixName.substring(0, prefixName.length() - 1);
         	prefixValueMap.put(prefixName, prefix);
         }
         prefixes.addAll(prefixValueMap.keySet());
@@ -101,7 +99,6 @@ public class PrefixMapperTableModel extends AbstractTableModel {
     			String prefixName = prefixName2PrefixEntry.getKey();
     			String prefix     = prefixName2PrefixEntry.getValue();
     			if (prefix != null && prefix.length() != 0) {
-    				// tailing : automatically added in here
     				prefixManager.setPrefix(prefixName, prefix);
     			}
     		}
