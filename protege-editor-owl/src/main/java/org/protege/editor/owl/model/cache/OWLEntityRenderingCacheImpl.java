@@ -10,6 +10,7 @@ import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.vocab.DublinCoreVocabulary;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 
 
@@ -215,27 +216,27 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
 
     public void addRendering(OWLEntity owlEntity) {
         owlEntity.accept(new OWLEntityVisitor() {
-            public void visit(OWLDataProperty entity) {
+            public void visit(@Nonnull OWLDataProperty entity) {
                 addRendering(entity, owlDataPropertyMap);
             }
 
-            public void visit(OWLObjectProperty entity) {
+            public void visit(@Nonnull OWLObjectProperty entity) {
                 addRendering(entity, owlObjectPropertyMap);
             }
 
-            public void visit(OWLAnnotationProperty owlAnnotationProperty) {
+            public void visit(@Nonnull OWLAnnotationProperty owlAnnotationProperty) {
                 addRendering(owlAnnotationProperty, owlAnnotationPropertyMap);
             }
 
-            public void visit(OWLNamedIndividual entity) {
+            public void visit(@Nonnull OWLNamedIndividual entity) {
                 addRendering(entity, owlIndividualMap);
             }
 
-            public void visit(OWLClass entity) {
+            public void visit(@Nonnull OWLClass entity) {
                 addRendering(entity, owlClassMap);
             }
 
-            public void visit(OWLDatatype entity) {
+            public void visit(@Nonnull OWLDatatype entity) {
                 addRendering(entity, owlDatatypeMap);
             }
         });
@@ -257,27 +258,27 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
 
         owlEntity.accept(new OWLEntityVisitor() {
 
-            public void visit(OWLClass entity) {
+            public void visit(@Nonnull OWLClass entity) {
                 owlClassMap.remove(oldRendering, entity);
             }
 
-            public void visit(OWLDataProperty entity) {
+            public void visit(@Nonnull OWLDataProperty entity) {
                 owlDataPropertyMap.remove(oldRendering, entity);
             }
 
-            public void visit(OWLObjectProperty entity) {
+            public void visit(@Nonnull OWLObjectProperty entity) {
                 owlObjectPropertyMap.remove(oldRendering, entity);
             }
 
-            public void visit(OWLAnnotationProperty entity) {
+            public void visit(@Nonnull OWLAnnotationProperty entity) {
                 owlAnnotationPropertyMap.remove(oldRendering, entity);
             }
 
-            public void visit(OWLNamedIndividual entity) {
+            public void visit(@Nonnull OWLNamedIndividual entity) {
                 owlIndividualMap.remove(oldRendering, entity);
             }
 
-            public void visit(OWLDatatype entity) {
+            public void visit(@Nonnull OWLDatatype entity) {
                 owlDatatypeMap.remove(oldRendering, entity);
             }
         });
