@@ -12,6 +12,7 @@ import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import javax.annotation.Nonnull;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -40,7 +41,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
     private final Map<OWLEntity, String> entityRenderingMap = new HashMap<>();
 
     private final OWLOntologyChangeListener listener = this::processChanges;
-    
+
     private OWLModelManager owlModelManager;
 
     public OWLEntityRenderingCacheImpl() {
@@ -54,16 +55,11 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
 
 
     private void processChanges(List<? extends OWLOntologyChange> changes) {
-    	Set<OWLEntity> changedEntities = new HashSet<>();
-        for (OWLOntologyChange change : changes) {
-            if (change instanceof OWLAxiomChange) {
-                OWLAxiomChange chg = (OWLAxiomChange) change;
-                changedEntities.addAll(chg.getSignature());
-            }
-        }
-        for (OWLEntity ent : changedEntities) {
-            updateRendering(ent);
-        }
+        changes.stream()
+                .filter(OWLOntologyChange::isAxiomChange)
+                .flatMap(chg -> chg.getSignature().stream())
+                .distinct()
+                .forEach(this::updateRendering);
     }
 
 
