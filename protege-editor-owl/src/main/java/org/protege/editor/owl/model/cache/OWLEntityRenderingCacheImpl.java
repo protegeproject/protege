@@ -7,13 +7,14 @@ import com.google.common.collect.SetMultimap;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.parameters.Imports;
+import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.vocab.DublinCoreVocabulary;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 /**
@@ -45,7 +46,14 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
 
     private OWLModelManager owlModelManager;
 
+    private static final Comparator<DefRefCount<?>> byDefinitionCountThenReferenceCount =
+            Comparator.<DefRefCount<?>>
+            comparingInt(DefRefCount::getDefinitionCount)
+            .thenComparingInt(DefRefCount::getReferenceCount);
+
+
     public OWLEntityRenderingCacheImpl() {
+
     }
 
 
@@ -130,9 +138,23 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
         entityRenderingMap.clear();
     }
 
-    private static <E extends OWLEntity> E getFirstEntityOrNull(Multimap<String, E> renderingMap, String rendering) {
-        return renderingMap.get(rendering).stream().findFirst().orElse(null);
+    private <E extends OWLEntity> E getFirstEntityOrNull(Multimap<String, E> renderingMap, String rendering) {
+        Collection<E> entities = renderingMap.get(rendering);
+        if(entities.isEmpty()) {
+            return null;
+        }
+        if(entities.size() == 1) {
+            return entities.stream().findFirst().get();
+        }
+        // Choose entity based on whether it is defined in the active ontology
+        // and how many axioms define it and how many axioms reference it.  This
+        // is hopefully preferable to choosing an entity at random.
+        return entities.stream().map(this::toActiveOntologyReferenceCount)
+                .max(byDefinitionCountThenReferenceCount)
+                .map(DefRefCount::getEntity)
+                .orElse(null);
     }
+
 
     public OWLClass getOWLClass(String rendering) {
         return getFirstEntityOrNull(owlClassMap, rendering);
@@ -341,5 +363,43 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
         renderings.addAll(owlIndividualMap.keySet());
         renderings.addAll(owlDatatypeMap.keySet());
         return renderings;
+    }
+
+    private <E extends OWLEntity> DefRefCount<E> toActiveOntologyReferenceCount(@Nonnull E entity) {
+        OWLOntology activeOntology = owlModelManager.getActiveOntology();
+        int refCount = activeOntology
+                .getReferencingAxioms(entity, Imports.EXCLUDED)
+                .size();
+        int defCount = EntitySearcher.getReferencingAxioms(entity, activeOntology).size();
+        return new DefRefCount<>(entity, defCount, refCount);
+    }
+
+    private static class DefRefCount<E extends OWLEntity> {
+
+        private E entity;
+
+        private int definitionCount;
+
+        private int referenceCount;
+
+        public DefRefCount(E entity,
+                           int definitionCount,
+                           int referenceCount) {
+            this.entity = entity;
+            this.definitionCount = definitionCount;
+            this.referenceCount = referenceCount;
+        }
+
+        public E getEntity() {
+            return entity;
+        }
+
+        public int getDefinitionCount() {
+            return definitionCount;
+        }
+
+        public int getReferenceCount() {
+            return referenceCount;
+        }
     }
 }
