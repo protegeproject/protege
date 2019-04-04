@@ -83,6 +83,7 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
                                                   int row,
                                                   boolean hasFocus) {
         setupFonts();
+        boolean consistent = true;
         boolean deprecated = false;
         boolean satisfiable = true;
         boolean active = false;
@@ -94,9 +95,12 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
             OWLObjectTreeNode<?> node = (OWLObjectTreeNode<?>) value;
             OWLObject object = node.getOWLObject();
             if (object != null) {
+                consistent = isConsistent();
+                if(consistent) {
+                    satisfiable = isSatisfiable(object);
+                }
                 rendering = getNodeStringRendering(node);
                 deprecated = isDeprecated(object);
-                satisfiable = isSatisfiable(object);
                 active = isActive(object);
                 Icon entityIcon = editorKit.getOWLWorkspace().getOWLIconProvider().getIcon(object);
                 icon.setIcon(entityIcon);
@@ -106,7 +110,7 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
             }
         }
         delegateTreeCellRenderer.setDeprecated(deprecated);
-        if(!satisfiable) {
+        if(!consistent || !satisfiable) {
             delegateTreeCellRenderer.setTextNonSelectionColor(UNSAT_ENTITY_COLOR);
         }
         else {
@@ -152,6 +156,13 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
 
     private boolean isDeprecated(@Nonnull OWLObject owlObject) {
         return editorKit.getOWLModelManager().isDeprecated(owlObject);
+    }
+
+    private boolean isConsistent() {
+        return editorKit.getOWLModelManager()
+                .getOWLReasonerManager()
+                .getCurrentReasoner()
+                .isConsistent();
     }
 
     private boolean isSatisfiable(@Nonnull OWLObject owlObject) {
