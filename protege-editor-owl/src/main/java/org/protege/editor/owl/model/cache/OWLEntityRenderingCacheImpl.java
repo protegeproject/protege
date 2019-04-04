@@ -25,24 +25,23 @@ import java.util.*;
  */
 public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
 
-    private SetMultimap<String, OWLClass> owlClassMap = HashMultimap.create();
+    private final SetMultimap<String, OWLClass> owlClassMap = HashMultimap.create();
 
-    private SetMultimap<String, OWLObjectProperty> owlObjectPropertyMap = HashMultimap.create();
+    private final SetMultimap<String, OWLObjectProperty> owlObjectPropertyMap = HashMultimap.create();
 
-    private SetMultimap<String, OWLDataProperty> owlDataPropertyMap = HashMultimap.create();
+    private final SetMultimap<String, OWLDataProperty> owlDataPropertyMap = HashMultimap.create();
 
-    private SetMultimap<String, OWLAnnotationProperty> owlAnnotationPropertyMap = HashMultimap.create();
+    private final SetMultimap<String, OWLAnnotationProperty> owlAnnotationPropertyMap = HashMultimap.create();
 
-    private SetMultimap<String, OWLNamedIndividual> owlIndividualMap = HashMultimap.create();
+    private final SetMultimap<String, OWLNamedIndividual> owlIndividualMap = HashMultimap.create();
 
-    private SetMultimap<String, OWLDatatype> owlDatatypeMap = HashMultimap.create();
+    private final SetMultimap<String, OWLDatatype> owlDatatypeMap = HashMultimap.create();
 
-    private Map<OWLEntity, String> entityRenderingMap = new HashMap<>();
+    private final Map<OWLEntity, String> entityRenderingMap = new HashMap<>();
 
+    private final OWLOntologyChangeListener listener = this::processChanges;
+    
     private OWLModelManager owlModelManager;
-
-    private OWLOntologyChangeListener listener = this::processChanges;
-
 
     public OWLEntityRenderingCacheImpl() {
     }
