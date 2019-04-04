@@ -11,6 +11,7 @@ import org.semanticweb.owlapi.vocab.DublinCoreVocabulary;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -179,6 +180,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
     }
 
 
+    @Nullable
     public OWLEntity getOWLEntity(String rendering) {
         // Examine in the order of class, property, individual
         OWLEntity entity = getOWLClass(rendering);
