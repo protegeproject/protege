@@ -41,7 +41,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
 
     private OWLModelManager owlModelManager;
 
-    private OWLOntologyChangeListener listener = changes -> processChanges(changes);
+    private OWLOntologyChangeListener listener = this::processChanges;
 
 
     public OWLEntityRenderingCacheImpl() {
