@@ -34,8 +34,6 @@ public class MergeEntitiesPanel extends JPanel implements VerifiedInputEditor {
     private InputVerificationStatusChangedListener listener = newState -> {};
 
     public MergeEntitiesPanel(OWLEditorKit editorKit) {
-        PreferencesLayoutPanel panel = new PreferencesLayoutPanel();
-        panel.addGroup("Target Entity");
         entityFinderField = new EntityFinderField(this, editorKit);
         entityFinderField.setEntityFoundHandler(entity -> {
             this.selectedEntity = Optional.of(entity);
@@ -45,10 +43,11 @@ public class MergeEntitiesPanel extends JPanel implements VerifiedInputEditor {
         entityFinderField.setSearchStartedHandler(() -> {
             this.listener.verifiedStatusChanged(false);
         });
-        panel.addGroupComponent(entityFinderField);
-        panel.addHelpText("The target entity is the entity that the selected entity will be merged into");
-        setLayout(new BorderLayout());
-        add(panel);
+        setLayout(new BorderLayout(7, 7));
+        add(new JLabel("<html><body>Please specify the <b>target entity</b> in the field below.<br>" +
+                               "This is the entity that the selected entity will be merged into.</body></html>"),
+            BorderLayout.NORTH);
+        add(entityFinderField, BorderLayout.SOUTH);
     }
 
     @Override
@@ -73,7 +72,7 @@ public class MergeEntitiesPanel extends JPanel implements VerifiedInputEditor {
         WorkspaceFrame parent = ProtegeManager.getInstance().getFrame(editorKit.getWorkspace());
         MergeEntitiesPanel mergeEntitiesPanel = new MergeEntitiesPanel(editorKit);
         JOptionPaneEx.showValidatingConfirmDialog(parent,
-                                                  "Select target entity",
+                                                  "Specify target entity",
                                                   mergeEntitiesPanel,
                                                   JOptionPane.PLAIN_MESSAGE,
                                                   JOptionPane.OK_CANCEL_OPTION,
