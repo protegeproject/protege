@@ -216,7 +216,10 @@ public class EntityFinderField extends AugmentedJTextField {
         Container parent = window.getParent();
         int height = 400;
         if (parent != null) {
-            height = (parent.getHeight() * 3) / 4;
+            int parentHeight = parent.getHeight();
+            if(parentHeight > 400) {
+                height = (parentHeight * 3) / 4;
+            }
         }
         window.setSize(WINDOW_WIDTH, height);
         searchPanel.setSearchString(getText().trim());
