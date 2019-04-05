@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.obolibrary.obo2owl.Obo2OWLConstants;
+import org.protege.editor.owl.ui.merge.MergeStrategy;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.*;
@@ -86,7 +87,7 @@ public class MergeEntitiesChangeListGenerator_TestCase {
     }
 
     private void createGeneratorAndApplyChanges() {
-        MergeEntitiesChangeListGenerator gen = new MergeEntitiesChangeListGenerator(rootOntology, dataFactory, sourceEntities, targetEntity);
+        MergeEntitiesChangeListGenerator gen = new MergeEntitiesChangeListGenerator(rootOntology, dataFactory, sourceEntities, targetEntity, MergeStrategy.DELETE_SOURCE_ENTITY);
         List<OWLOntologyChange> changeList = gen.generateChanges();
         manager.applyChanges(changeList);
     }
