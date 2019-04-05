@@ -46,7 +46,7 @@ public class OWLObjectRendererImpl implements OWLObjectRenderer {
         delegate = new PatchedManchesterOWLSyntaxObjectRenderer(writerDelegate, new ShortFormProvider() {
             @Nonnull
             public String getShortForm(@Nonnull OWLEntity owlEntity) {
-                return OWLObjectRendererImpl.this.mngr.getRendering(owlEntity);
+                return OWLObjectRendererImpl.this.mngr.getDisabmiguatedRendering(owlEntity, RenderingEscapeUtils.RenderingEscapeSetting.ESCAPED_RENDERING);
             }
 
             public void dispose() {
