@@ -1,6 +1,7 @@
 package org.protege.editor.owl.model.merge;
 
 import com.google.common.collect.ImmutableSet;
+import org.coode.owlapi.obo12.parser.OBOVocabulary;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,6 +45,10 @@ public class MergeEntitiesChangeListGenerator_TestCase {
 
     private OWLAnnotationProperty oboSynonym;
 
+    private OWLAnnotationProperty oboIdProperty;
+
+    private OWLAnnotationProperty oboAlternateId;
+
     private OWLAnnotationProperty rdfsComment;
 
     private OWLAnnotationValue hello;
@@ -73,6 +78,8 @@ public class MergeEntitiesChangeListGenerator_TestCase {
         skosPrefLabel = dataFactory.getOWLAnnotationProperty(SKOSVocabulary.PREFLABEL.getIRI());
         skosAltLabel = dataFactory.getOWLAnnotationProperty(SKOSVocabulary.ALTLABEL.getIRI());
         oboSynonym = dataFactory.getOWLAnnotationProperty(Obo2OWLConstants.Obo2OWLVocabulary.IRI_OIO_hasRelatedSynonym.getIRI());
+        oboIdProperty = dataFactory.getOWLAnnotationProperty(IRI.create("http://www.geneontology.org/formats/oboInOwl#id"));
+        oboAlternateId = dataFactory.getOWLAnnotationProperty(Obo2OWLConstants.Obo2OWLVocabulary.hasAlternativeId.getIRI());
         rdfsComment = dataFactory.getRDFSComment();
         hello = Literal("Hello", "en");
         bonjour = Literal("Bonjour", "fr");
@@ -131,6 +138,18 @@ public class MergeEntitiesChangeListGenerator_TestCase {
         assertThat(rootOntology.containsAxiom(AnnotationAssertion(rdfsLabel, targetEntity.getIRI(), hello)), is(false));
 
         assertThat(rootOntology.containsAxiom(AnnotationAssertion(oboSynonym, targetEntity.getIRI(), hello)), is(true));
+    }
+
+    @Test
+    public void shouldReplaceIdWithAlternateIdIfOboId() {
+        targetEntity = Class(IRI.create("http://purl.obolibrary.org/TO/TO_00000123"));
+        OWLLiteral idValue = Literal("IdValue");
+        OWLAnnotationAssertionAxiom idAnnotationAxiom = AnnotationAssertion(oboIdProperty, sourceEntity.getIRI(), idValue);
+        manager.applyChange(new AddAxiom(rootOntology, idAnnotationAxiom));
+        createGeneratorAndApplyChanges();
+        assertThat(rootOntology.containsAxiom(AnnotationAssertion(oboIdProperty, targetEntity.getIRI(), idValue)), is(false));
+
+        assertThat(rootOntology.containsAxiom(AnnotationAssertion(oboAlternateId, targetEntity.getIRI(), idValue)), is(true));
     }
 }
 

@@ -2,6 +2,8 @@ package org.protege.editor.owl.model.merge;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import org.coode.owlapi.obo12.parser.OBOVocabulary;
+import org.obolibrary.obo2owl.Obo2OWLConstants;
 import org.protege.editor.owl.model.util.OboUtilities;
 import org.protege.editor.owl.ui.merge.MergeStrategy;
 import org.semanticweb.owlapi.model.*;
@@ -66,6 +68,8 @@ public class MergeEntitiesChangeListGenerator {
         // Avoid conflicts with labels.  The merged term must not duplicate preferred labels for
         // a given language.
         replaceLabels(builder);
+
+        replaceId(builder);
 
         // Deprecated, if necessary
         deprecateSourceEntities(builder);
@@ -175,6 +179,26 @@ public class MergeEntitiesChangeListGenerator {
         }
     }
 
+    private void replaceId(@Nonnull ImmutableList.Builder<OWLOntologyChange> builder) {
+        if(!OboUtilities.isOboIri(targetEntity.getIRI())) {
+            return;
+        }
+        ontologyStream(rootOntology, Imports.INCLUDED)
+                .forEach(ontology -> {
+                    sourceEntities.forEach(sourceEntity -> {
+                        ontology.getAnnotationAssertionAxioms(sourceEntity.getIRI())
+                                .stream()
+                                .filter(this::isOboIdAnnotationAssertion)
+                                .map(this::toTargetAnnotationAssertion)
+                                // Remove the id annotation assertion, which will be on
+                                // the target entity IRI by now
+                                .peek(ax -> builder.add(new RemoveAxiom(ontology, ax)))
+                                // Replace with OBO Alt Id annotation assertion
+                                .map(this::toOboAltIdAnnotationAssertion)
+                                .forEach(ax -> builder.add(new AddAxiom(ontology, ax)));
+                    });
+                });
+    }
 
     private static Stream<OWLOntology> ontologyStream(OWLOntology ontology,
                                                       Imports imports) {
@@ -184,5 +208,25 @@ public class MergeEntitiesChangeListGenerator {
         else {
             return Stream.of(ontology);
         }
+    }
+
+    private boolean isOboIdAnnotationAssertion(OWLAnnotationAssertionAxiom axiom) {
+        return axiom.getProperty().getIRI().equals(IRI.create("http://www.geneontology.org/formats/oboInOwl#id"));
+    }
+
+    private OWLAnnotationAssertionAxiom toTargetAnnotationAssertion(OWLAnnotationAssertionAxiom axiom) {
+        return dataFactory.getOWLAnnotationAssertionAxiom(axiom.getProperty(),
+                                                          targetEntity.getIRI(),
+                                                          axiom.getValue(),
+                                                          axiom.getAnnotations());
+    }
+
+    @Nonnull
+    private OWLAnnotationAssertionAxiom toOboAltIdAnnotationAssertion(@Nonnull OWLAnnotationAssertionAxiom ax) {
+        OWLAnnotationProperty prop = dataFactory.getOWLAnnotationProperty(Obo2OWLConstants.Obo2OWLVocabulary.hasAlternativeId.getIRI());
+        return dataFactory.getOWLAnnotationAssertionAxiom(prop,
+                                                          ax.getSubject(),
+                                                          ax.getValue(),
+                                                          ax.getAnnotations());
     }
 }
