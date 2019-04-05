@@ -1,18 +1,20 @@
 package org.protege.editor.owl.ui.view;
 
 import org.protege.editor.core.HasUpdateState;
+import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.view.View;
 import org.protege.editor.core.ui.view.ViewMode;
 import org.protege.editor.core.util.HandlerRegistration;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.OWLObjectComparatorAdapter;
+import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
 import org.protege.editor.owl.ui.action.OWLObjectHierarchyDeleter;
+import org.protege.editor.owl.ui.action.ProtegeOWLAction;
 import org.protege.editor.owl.ui.breadcrumb.Breadcrumb;
 import org.protege.editor.owl.ui.breadcrumb.BreadcrumbTrailChangedHandler;
 import org.protege.editor.owl.ui.breadcrumb.BreadcrumbTrailProvider;
-import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
-import org.protege.editor.owl.ui.renderer.ProtegeTreeNodeRenderer;
+import org.protege.editor.owl.ui.renderer.*;
 import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.protege.editor.owl.ui.tree.OWLObjectTree;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -28,7 +30,9 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreePath;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
@@ -83,6 +87,23 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
 
         performExtraInitialisation();
+
+        AbstractOWLTreeAction<OWLEntity> scrollToSelection = new AbstractOWLTreeAction<OWLEntity>("Scroll to selection",
+                                                                               new ScrollToEntityIcon(),
+                                                                               getAssertedTree().getSelectionModel()) {
+            @Override
+            protected boolean canPerform(OWLEntity selEntity) {
+                return true;
+            }
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                scrollSelectedPathToVisibleRect();
+            }
+        };
+
+        addAction(scrollToSelection, "Z", "A");
+
         E entity = getSelectedEntity();
         if (entity != null) {
             setGlobalSelection(entity);
@@ -151,6 +172,14 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
         // Don't show deprecated entities by default
         getHierarchyProvider().setFilter(this::isNotDeprecated);
+    }
+
+    private void scrollSelectedPathToVisibleRect() {
+        TreePath selectedPath = getTree().getSelectionPath();
+        if(selectedPath == null) {
+            return;
+        }
+        getTree().scrollPathToVisible(selectedPath);
     }
 
     protected boolean isInAssertedMode() {
