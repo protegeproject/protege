@@ -72,7 +72,7 @@ public class MergeEntitiesChangeListGenerator_TestCase {
         rdfsLabel = dataFactory.getRDFSLabel();
         skosPrefLabel = dataFactory.getOWLAnnotationProperty(SKOSVocabulary.PREFLABEL.getIRI());
         skosAltLabel = dataFactory.getOWLAnnotationProperty(SKOSVocabulary.ALTLABEL.getIRI());
-        oboSynonym = dataFactory.getOWLAnnotationProperty(Obo2OWLConstants.Obo2OWLVocabulary.IRI_OIO_hasExactSynonym.getIRI());
+        oboSynonym = dataFactory.getOWLAnnotationProperty(Obo2OWLConstants.Obo2OWLVocabulary.IRI_OIO_hasRelatedSynonym.getIRI());
         rdfsComment = dataFactory.getRDFSComment();
         hello = Literal("Hello", "en");
         bonjour = Literal("Bonjour", "fr");
