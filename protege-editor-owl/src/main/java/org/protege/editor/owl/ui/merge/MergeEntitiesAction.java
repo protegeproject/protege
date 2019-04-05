@@ -31,7 +31,8 @@ public class MergeEntitiesAction extends SelectedOWLEntityAction {
         MergeEntitiesChangeListGenerator gen = new MergeEntitiesChangeListGenerator(rootOntology,
                                                                                     dataFactory,
                                                                                     ImmutableSet.of(sourceEntity),
-                                                                                    targetEntity);
+                                                                                    targetEntity,
+                                                                                    MergeStrategy.DELETE_SOURCE_ENTITY);
         List<OWLOntologyChange> changes = gen.generateChanges();
         getOWLModelManager().applyChanges(changes);
         getOWLWorkspace().getOWLSelectionModel().setSelectedEntity(targetEntity);

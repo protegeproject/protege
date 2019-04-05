@@ -3,6 +3,7 @@ package org.protege.editor.owl.model.merge;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import org.protege.editor.owl.model.util.OboUtilities;
+import org.protege.editor.owl.ui.merge.MergeStrategy;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.util.OWLEntityRenamer;
@@ -35,15 +36,20 @@ public class MergeEntitiesChangeListGenerator {
     @Nonnull
     private final OWLEntity targetEntity;
 
+    @Nonnull
+    private final MergeStrategy mergeStrategy;
+
 
     public MergeEntitiesChangeListGenerator(@Nonnull OWLOntology rootOntology,
                                             @Nonnull OWLDataFactory dataFactory,
                                             @Nonnull ImmutableSet<OWLEntity> sourceEntities,
-                                            @Nonnull OWLEntity targetEntity) {
+                                            @Nonnull OWLEntity targetEntity,
+                                            @Nonnull MergeStrategy mergeStrategy) {
         this.rootOntology = checkNotNull(rootOntology);
         this.dataFactory = checkNotNull(dataFactory);
         this.sourceEntities = checkNotNull(sourceEntities);
         this.targetEntity = checkNotNull(targetEntity);
+        this.mergeStrategy = checkNotNull(mergeStrategy);
     }
 
     public List<OWLOntologyChange> generateChanges() {
@@ -61,22 +67,20 @@ public class MergeEntitiesChangeListGenerator {
         replaceLabels(builder);
 
         // Deprecated, if necessary
-//        deprecateSourceEntities(builder);
+        deprecateSourceEntities(builder);
 
         return builder.build();
 
     }
 
     private void deprecateSourceEntities(ImmutableList.Builder<OWLOntologyChange> builder) {
+        if(mergeStrategy == MergeStrategy.DELETE_SOURCE_ENTITY) {
+            return;
+        }
         sourceEntities.forEach(sourceEntity -> {
             // Add an annotation assertion to deprecate the source entity
             OWLAnnotationAssertionAxiom depAx = dataFactory.getDeprecatedOWLAnnotationAssertionAxiom(sourceEntity.getIRI());
             builder.add(new AddAxiom(rootOntology, depAx));
-
-            // Preserve labels and other annotations on the source entity
-            ontologyStream(rootOntology, Imports.INCLUDED)
-                    .forEach(ont -> ont.getAnnotationAssertionAxioms(sourceEntity.getIRI())
-                            .forEach(ax -> builder.add(new AddAxiom(ont, ax))));
         });
     }
 
