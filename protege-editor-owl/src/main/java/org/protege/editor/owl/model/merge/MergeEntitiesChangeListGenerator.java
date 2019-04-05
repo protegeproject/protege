@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.obolibrary.obo2owl.Obo2OWLConstants.Obo2OWLVocabulary.IRI_OIO_hasExactSynonym;
+import static org.obolibrary.obo2owl.Obo2OWLConstants.Obo2OWLVocabulary.IRI_OIO_hasRelatedSynonym;
 import static org.semanticweb.owlapi.vocab.SKOSVocabulary.ALTLABEL;
 import static org.semanticweb.owlapi.vocab.SKOSVocabulary.PREFLABEL;
 
@@ -163,9 +164,10 @@ public class MergeEntitiesChangeListGenerator {
      */
     @Nonnull
     private OWLAnnotationProperty getLabelReplacementProperty() {
-        // For OBO IRIs return the exact synonym property
+        // For OBO IRIs return the related synonym property
+        // This is based on http://wiki.geneontology.org/index.php/Merging_Ontology_Terms
         if(OboUtilities.isOboIri(targetEntity.getIRI())) {
-            return dataFactory.getOWLAnnotationProperty(IRI_OIO_hasExactSynonym.getIRI());
+            return dataFactory.getOWLAnnotationProperty(IRI_OIO_hasRelatedSynonym.getIRI());
         }
         else {
             // For non-OBO IRIs return skos:altLabel
