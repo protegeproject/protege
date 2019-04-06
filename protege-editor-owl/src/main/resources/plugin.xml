@@ -1177,7 +1177,7 @@
 
     <extension id="mergeentity"
                point="org.protege.editor.core.application.EditorKitMenuAction">
-        <name value="Merge entity..."/>
+        <name value="Merge into entity..."/>
         <class value="org.protege.editor.owl.ui.merge.MergeEntitiesAction"/>
         <toolTip value="Merges the selected entity into another entity"/>
         <path value="org.protege.editor.core.application.menu.EditMenu/SlotP-B"/>
