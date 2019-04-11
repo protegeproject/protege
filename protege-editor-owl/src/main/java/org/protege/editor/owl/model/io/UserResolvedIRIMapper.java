@@ -1,5 +1,6 @@
 package org.protege.editor.owl.model.io;
 
+import org.protege.editor.core.ui.util.Resettable;
 import org.protege.editor.owl.model.MissingImportHandler;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
@@ -31,7 +32,7 @@ import java.util.Map;
  * try to obtain the physical URI (usually by adding a library or
  * by specifying a file etc.)
  */
-public class UserResolvedIRIMapper implements OWLOntologyIRIMapper {
+public class UserResolvedIRIMapper implements OWLOntologyIRIMapper, Resettable {
 
     private final Map<IRI, URI> resolvedMissingImports = new HashMap<>();
 
@@ -42,6 +43,10 @@ public class UserResolvedIRIMapper implements OWLOntologyIRIMapper {
         this.missingImportHandler = missingImportHandler;
     }
 
+    @Override
+    public void reset() {
+        ((Resettable) missingImportHandler).reset();
+    }
 
     public IRI getDocumentIRI(IRI ontologyIRI) {
         if (resolvedMissingImports.containsKey(ontologyIRI)) {
