@@ -1,5 +1,6 @@
 package org.protege.editor.owl.model;
 
+import org.protege.editor.core.ui.util.Resettable;
 import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
 
 
@@ -16,6 +17,9 @@ import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
  * it cannot obtain a physical URI of an ontology (and hence cannot load
  * the ontology).
  */
-public interface MissingImportHandler extends OWLOntologyIRIMapper {
+public interface MissingImportHandler extends OWLOntologyIRIMapper, Resettable {
 
+    @Override
+    default void reset() {
+    }
 }

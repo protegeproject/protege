@@ -4,6 +4,7 @@ import com.google.common.base.Stopwatch;
 import org.protege.editor.core.AbstractModelManager;
 import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
+import org.protege.editor.core.ui.util.Resettable;
 import org.protege.editor.owl.model.cache.DeprecationCache;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCacheImpl;
@@ -328,6 +329,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         try {
             logger.info(LogBanner.start("Loading Ontology"));
             logger.info("Loading ontology from {}", uri);
+            userResolvedIRIMapper.reset();
             stopwatch.start();
             OntologyLoader loader = new OntologyLoader(this, userResolvedIRIMapper);
             Optional<OWLOntology> loadedOntology = loader.loadOntology(uri);
