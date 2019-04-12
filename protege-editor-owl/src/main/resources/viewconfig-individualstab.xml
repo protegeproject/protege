@@ -11,6 +11,9 @@
                 <Component label="Individuals">
                     <Property id="pluginId" value="org.protege.editor.owl.OWLMembersList"/>
                 </Component>
+                <Component label="Individuals (Inferred)">
+                    <Property id="pluginId" value="org.protege.editor.owl.OWLInferredMembersList"/>
+                </Component>
             </CNode>
         </HSNode>
         <HSNode splits="0.375 0.625">
