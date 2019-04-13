@@ -333,8 +333,8 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             stopwatch.start();
             OntologyLoader loader = new OntologyLoader(this, userResolvedIRIMapper);
             Optional<OWLOntology> loadedOntology = loader.loadOntology(uri);
-            logger.info("Loading for ontology and imports closure successfully completed in {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
             loadedOntology.ifPresent(ontology -> {
+                logger.info("Loading for ontology and imports closure successfully completed in {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
                 DocumentFormatUpdater formatUpdater = new DocumentFormatUpdater(new DocumentFormatMapper());
                 formatUpdater.updateFormat(ontology);
             });
