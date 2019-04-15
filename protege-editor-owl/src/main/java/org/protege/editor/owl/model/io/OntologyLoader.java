@@ -5,24 +5,33 @@ import org.protege.editor.owl.model.IOListenerManager;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OntologyManagerFactory;
 import org.protege.editor.owl.model.event.EventType;
+import org.protege.editor.owl.model.util.LowMemoryNotificationView;
+import org.protege.editor.owl.model.util.MemoryMonitor;
+import org.protege.editor.owl.ui.util.LowMemoryNotificationViewImpl;
 import org.protege.editor.owl.ui.util.ProgressDialog;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.IRIDocumentSource;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.parameters.ChangeApplied;
 import org.semanticweb.owlapi.model.parameters.OntologyCopy;
 import org.semanticweb.owlapi.util.PriorityCollection;
 import org.semanticweb.owlapi.util.SimpleIRIMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.ac.manchester.cs.owl.owlapi.OWLDataFactoryImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLOntologyFactoryImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl;
+import uk.ac.manchester.cs.owl.owlapi.concurrent.ConcurrentOWLOntologyBuilder;
+import uk.ac.manchester.cs.owl.owlapi.concurrent.NonConcurrentOWLOntologyBuilder;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.io.File;
 import java.net.URI;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Matthew Horridge
@@ -86,9 +95,11 @@ public class OntologyLoader {
 
     private Optional<OWLOntology> loadOntologyInternal(URI documentURI) throws OWLOntologyCreationException {
 
+        MemoryMonitor memoryMonitor = new MemoryMonitor(new LowMemoryNotificationViewImpl());
+        OWLOntology ontology;
         // I think the loading manager needs to be a concurrent manager because we
         // copy over the ontologies and the ontologies have to be concurrent ontology implementations
-        OWLOntologyManager loadingManager = OntologyManagerFactory.createManager();
+        OWLOntologyManager loadingManager = createInterceptingManager(memoryMonitor::checkMemory);
 
         PriorityCollection<OWLOntologyIRIMapper> iriMappers = loadingManager.getIRIMappers();
         iriMappers.clear();
@@ -98,10 +109,11 @@ public class OntologyLoader {
                 modelManager.getOntologyCatalogManager(), documentURI));
 
         loadingManager.addOntologyLoaderListener(new ProgressDialogOntologyLoaderListener(dlg, logger));
+
         OWLOntologyLoaderConfiguration configuration = new OWLOntologyLoaderConfiguration();
         configuration = configuration.setMissingImportHandlingStrategy(MissingImportHandlingStrategy.SILENT);
         IRIDocumentSource documentSource = new IRIDocumentSource(IRI.create(documentURI));
-        OWLOntology ontology = loadingManager.loadOntologyFromOntologyDocument(documentSource, configuration);
+        ontology = loadingManager.loadOntologyFromOntologyDocument(documentSource, configuration);
         Set<OWLOntology> alreadyLoadedOntologies = new HashSet<>();
         for (OWLOntology loadedOntology : loadingManager.getOntologies()) {
             if (!modelManager.getOntologies().contains(loadedOntology)) {
@@ -163,4 +175,27 @@ public class OntologyLoader {
         }
     }
 
+    /**
+     * Creates an ontology manager that is suitable for loading ontology and that
+     * intercepts the add axiom changes.
+     * @param intercept A runnable that will be called when an axiom is added to an ontology
+     *                  that is being loaded
+     */
+    public static OWLOntologyManager createInterceptingManager(Runnable intercept) {
+        OWLOntologyManager m = OWLManager.createConcurrentOWLOntologyManager();
+        ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+        OWLOntologyManager manager = new OWLOntologyManagerImpl(new OWLDataFactoryImpl(), lock) {
+            @Override
+            public ChangeApplied addAxiom(@Nonnull OWLOntology ont,
+                                          @Nonnull OWLAxiom axiom) {
+                intercept.run();
+                return super.addAxiom(ont, axiom);
+            }
+        };
+        OWLOntologyFactory factory = new OWLOntologyFactoryImpl(new ConcurrentOWLOntologyBuilder(new NonConcurrentOWLOntologyBuilder(), lock));
+        manager.setOntologyFactories(Collections.singleton(factory));
+        manager.getOntologyParsers().add(m.getOntologyParsers());
+        manager.getOntologyFactories().set(m.getOntologyFactories());
+        return manager;
+    }
 }
