@@ -236,7 +236,7 @@
 				<artifactId>commons-io</artifactId>
 				<version>2.4</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>edu.stanford.protege</groupId>
 				<artifactId>org.protege.xmlcatalog</artifactId>
