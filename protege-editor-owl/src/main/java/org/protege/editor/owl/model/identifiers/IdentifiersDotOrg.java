@@ -121,7 +121,7 @@ public class IdentifiersDotOrg {
                 return ImmutableList.of();
             }
         } catch(IOException e) {
-            logger.warn("Error retrieving identifiers.org collections", e);
+            logger.warn("Error retrieving identifiers.org collections: {}", e.getMessage());
             return ImmutableList.of();
         }
     }
