@@ -578,7 +578,7 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
             tagParagraph.append(literal.getLang(), tagValueColor);
             tagParagraph.append("]", tagColor);
         }
-        else if (datatypeRendering == RENDER_DATATYPE_INLINE && !literal.isRDFPlainLiteral()) {
+        else if (datatypeRendering == RENDER_DATATYPE_INLINE && !literal.isRDFPlainLiteral() && !literal.getDatatype().isString()) {
             tagParagraph.append("[type: ", tagColor);
             tagParagraph.append(editorKit.getOWLModelManager().getRendering(literal.getDatatype()), tagValueColor);
             tagParagraph.append("]", tagColor);
