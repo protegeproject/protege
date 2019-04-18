@@ -2,6 +2,8 @@ package org.protege.editor.core.ui.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +22,8 @@ import java.util.Optional;
  * and a toolbar that holds actions.
  */
 public class ViewBar extends JPanel {
+
+    private static final Color BUTTON_ROLLOVER_BACKGROUND_COLOR = new Color(220, 220, 220);
 
     private final ViewBanner viewBanner;
 
@@ -63,7 +67,24 @@ public class ViewBar extends JPanel {
 
     public void addAction(Action action) {
         JButton button = toolBar.add(action);
+        button.setBorderPainted(false);
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        button.setBackground(null);
         button.setRequestFocusEnabled(false);
+        button.setOpaque(true);
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                if(button.isEnabled()) {
+                    button.setBackground(BUTTON_ROLLOVER_BACKGROUND_COLOR);
+                }
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(null);
+            }
+        });
     }
 
 

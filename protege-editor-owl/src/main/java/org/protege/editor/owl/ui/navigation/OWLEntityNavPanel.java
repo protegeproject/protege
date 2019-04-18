@@ -33,13 +33,13 @@ public class OWLEntityNavPanel extends JPanel {
         this.editorKit = owlEditorKit;
         createActions();
         setLayout(new GridLayout(1, 2, 5, 0));
-        add(styleButton(new JButton(backAction)));
+        JButton backButton = new JButton(backAction);
+        add(styleButton(backButton));
         add(styleButton(new JButton(forwardAction)));
         mediator = new OWLEntityNavigationMediator(editorKit, backAction, forwardAction);
     }
 
     private static JButton styleButton(JButton button) {
-        button.setBorder(null);
         button.setBackground(null);
         button.setBorderPainted(false);
         button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
