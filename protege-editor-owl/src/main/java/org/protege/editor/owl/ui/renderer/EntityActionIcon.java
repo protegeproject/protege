@@ -9,11 +9,9 @@ import java.awt.*;
  */
 public interface EntityActionIcon {
 
-    static final BasicStroke ACTION_STROKE = new BasicStroke(2);
+    BasicStroke ACTION_STROKE = new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER);
 
-    static void setupAlpha(Component c, Graphics2D g2) {
-        if(!c.isEnabled()) {
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-        }
+    static void setupState(Component c, Graphics2D g2, OWLEntityIcon icon) {
+        icon.setEnabled(c.isEnabled());
     }
 }

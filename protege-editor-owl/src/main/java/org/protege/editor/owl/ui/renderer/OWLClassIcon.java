@@ -56,12 +56,12 @@ public class OWLClassIcon extends OWLEntityIcon {
             int dH = getIconHeight() / 2 - clsSize / 2;
             int yC = y + dH;
             if(getFillType() == FillType.FILLED) {
-                g2.setColor(Color.LIGHT_GRAY);
+                g2.setColor(getBorderColor());
                 g2.fillOval(xC,
                             yC,
                             clsSize,
                             clsSize);
-                g2.setColor(COLOR);
+                g2.setColor(getColor());
                 g2.fillOval(xC + 1,
                             yC + 1,
                             clsSize - 2,
@@ -69,7 +69,7 @@ public class OWLClassIcon extends OWLEntityIcon {
             }
             else {
                 g2.setStroke(HOLLOW_STROKE);
-                g2.setColor(getEntityColor());
+                g2.setColor(getColor());
                 g2.drawOval(xC + 1,
                             yC + 1,
                             clsSize - 2,
@@ -82,7 +82,7 @@ public class OWLClassIcon extends OWLEntityIcon {
                     g2.setColor(Color.WHITE);
                 }
                 else {
-                    g2.setColor(getEntityColor());
+                    g2.setColor(getColor());
                 }
                 int centreSize = (int) Math.sqrt(clsSize / 2 * clsSize / 2);
                 int boxWidth = (centreSize / 2) * 2;
@@ -91,7 +91,7 @@ public class OWLClassIcon extends OWLEntityIcon {
                 int boxY = (getIconHeight() - boxHeight) / 2;
                 g2.fillRect(x + boxX, y + boxY, boxWidth, boxHeight);
                 int stripeHeight = boxHeight / 5;
-                g2.setColor(COLOR);
+                g2.setColor(getColor());
                 g2.fillRect(x + boxX, y + boxY + stripeHeight, boxWidth, stripeHeight);
                 g2.fillRect(x + boxX, y + boxY + stripeHeight * 3, boxWidth, stripeHeight);
             }

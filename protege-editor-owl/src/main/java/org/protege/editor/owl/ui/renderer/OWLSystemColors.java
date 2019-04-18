@@ -17,6 +17,10 @@ import java.awt.*;
  */
 public class OWLSystemColors {
 
+    private static final Color FOREGROUND_COLOR = new Color(110, 110, 110);
+
+    private static final Color ROLLOVER_FOREGROUND_COLOR = new Color(50, 50, 50);
+
     public static Color getOWLClassColor() {
         return PropertyUtil.getColor(ProtegeProperties.getInstance().getProperty(ProtegeProperties.CLASS_COLOR_KEY),
                                      Color.GRAY);
@@ -57,10 +61,10 @@ public class OWLSystemColors {
     }
 
     public static Color getForegroundColor() {
-        return Color.GRAY;
+        return FOREGROUND_COLOR;
     }
 
     public static Color getRolloverForegroundColor() {
-        return Color.DARK_GRAY;
+        return ROLLOVER_FOREGROUND_COLOR;
     }
 }

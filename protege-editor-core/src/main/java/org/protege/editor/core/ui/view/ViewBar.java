@@ -1,5 +1,7 @@
 package org.protege.editor.core.ui.view;
 
+import org.protege.editor.owl.ui.renderer.HasUseSystemForeground;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -85,6 +87,14 @@ public class ViewBar extends JPanel {
                 button.setBackground(null);
             }
         });
+        Object largeIcon = action.getValue(Action.LARGE_ICON_KEY);
+        if(largeIcon instanceof HasUseSystemForeground) {
+            ((HasUseSystemForeground) largeIcon).useSystemForeground();
+        }
+        Object smallIcon = action.getValue(Action.SMALL_ICON);
+        if(smallIcon instanceof HasUseSystemForeground) {
+            ((HasUseSystemForeground) smallIcon).useSystemForeground();
+        }
     }
 
 

@@ -26,7 +26,7 @@ public class ScrollToEntityIcon implements Icon {
         g.translate(x, y);
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(STROKE);
-        g2.setColor(Color.GRAY);
+        g2.setColor(OWLSystemColors.getForegroundColor());
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.drawOval(3, 3, BASE_SIZE - 6, BASE_SIZE - 6);
 

@@ -45,14 +45,14 @@ public class OWLIndividualIcon extends OWLEntityIcon {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.rotate(Math.PI / 4, x + getIconWidth() / 2, y + getIconHeight() / 2);
             if(getFillType() == FillType.FILLED) {
-                g2.setColor(Color.GRAY);
+                g2.setColor(getBorderColor());
                 g2.fillRoundRect(xOffset, yOffset, width, height, 4, 4);
-                g2.setColor(COLOR);
+                g2.setColor(getColor());
                 g2.fillRoundRect(xOffset + 1, yOffset + 1, width - 2, height - 2, 4, 4);
             }
             else {
                 g2.setStroke(HOLLOW_STROKE);
-                g2.setColor(COLOR);
+                g2.setColor(getColor());
                 g2.drawRoundRect(xOffset + 1, yOffset + 1, width - 2, height - 2, 4, 4);
 
             }
