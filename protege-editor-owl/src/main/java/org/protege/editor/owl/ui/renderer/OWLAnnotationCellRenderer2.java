@@ -279,7 +279,8 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
      */
     private Paragraph renderAnnotationProperty(Page page, OWLAnnotation annotation, Color defaultForeground, Color defaultBackground, boolean isSelected) {
         OWLAnnotationProperty property = annotation.getProperty();
-        String rendering = editorKit.getOWLModelManager().getRendering(property);
+        String escapedRendering = editorKit.getOWLModelManager().getRendering(property);
+        String rendering = RenderingEscapeUtils.unescape(escapedRendering);
         Paragraph paragraph = page.addParagraph(rendering);
         Color foreground = getAnnotationPropertyForeground(defaultForeground, isSelected);
         paragraph.setForeground(foreground);
