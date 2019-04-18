@@ -32,10 +32,18 @@ public class OWLEntityNavPanel extends JPanel {
     public OWLEntityNavPanel(OWLEditorKit owlEditorKit) {
         this.editorKit = owlEditorKit;
         createActions();
-        setLayout(new GridLayout(1, 2, 0, 0));
-        add(new JButton(backAction));
-        add(new JButton(forwardAction));
+        setLayout(new GridLayout(1, 2, 5, 0));
+        add(styleButton(new JButton(backAction)));
+        add(styleButton(new JButton(forwardAction)));
         mediator = new OWLEntityNavigationMediator(editorKit, backAction, forwardAction);
+    }
+
+    private static JButton styleButton(JButton button) {
+        button.setBorder(null);
+        button.setBackground(null);
+        button.setBorderPainted(false);
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        return button;
     }
 
 
@@ -46,7 +54,7 @@ public class OWLEntityNavPanel extends JPanel {
 
     private void createActions() {
 
-        backAction = new AbstractAction("<") {
+        backAction = new AbstractAction("", new NavIcon(NavIcon.Direction.BACK)) {
             public void actionPerformed(ActionEvent e) {
                 editorKit.getWorkspace().getOWLSelectionHistoryManager().goBack();
                 editorKit.getWorkspace().displayOWLEntity(editorKit.getWorkspace().getOWLSelectionModel().getSelectedEntity());
@@ -62,7 +70,7 @@ public class OWLEntityNavPanel extends JPanel {
         actionMap.put("nav-back", backAction);
 
 
-        forwardAction = new AbstractAction(">") {
+        forwardAction = new AbstractAction("", new NavIcon(NavIcon.Direction.FORWARD)) {
             public void actionPerformed(ActionEvent e) {
                 editorKit.getWorkspace().getOWLSelectionHistoryManager().goForward();
                 editorKit.getWorkspace().displayOWLEntity(editorKit.getWorkspace().getOWLSelectionModel().getSelectedEntity());

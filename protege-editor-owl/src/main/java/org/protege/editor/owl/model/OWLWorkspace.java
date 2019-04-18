@@ -659,7 +659,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
                         0, 0,
                         1, 1,
                         0, 0,
-                        GridBagConstraints.BASELINE, GridBagConstraints.NONE,
+                        GridBagConstraints.CENTER, GridBagConstraints.NONE,
                         new Insets(0, 0, 0, 2),
                         0, 0));
 
@@ -722,7 +722,6 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
                                 0, 0
                         ));
         add(topBarPanel, BorderLayout.NORTH);
-
         updateTitleBar();
     }
 

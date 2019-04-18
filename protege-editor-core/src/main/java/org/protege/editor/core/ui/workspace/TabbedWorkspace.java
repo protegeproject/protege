@@ -31,7 +31,9 @@ public abstract class TabbedWorkspace extends Workspace {
     private final Set<WorkspaceTab> workspaceTabs = new HashSet<>();
 
     public TabbedWorkspace() {
-        tabbedPane.setUI(new CloseableTabbedPaneUI(CloseableTabbedPaneUI.TabClosability.CLOSABLE, new WorkspaceTabCloseHandler()));
+        CloseableTabbedPaneUI ui = new CloseableTabbedPaneUI(CloseableTabbedPaneUI.TabClosability.CLOSABLE, new WorkspaceTabCloseHandler());
+        ui.setDrawTopBorder(true);
+        tabbedPane.setUI(ui);
         JPanel tabHolder = new JPanel(new BorderLayout());
         tabHolder.add(tabbedPane);
         setContent(tabbedPane);
