@@ -28,6 +28,7 @@ public class SearchIcon implements Icon {
         Stroke s = g2.getStroke();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+        g2.scale(scaleFactor, scaleFactor);
 
         g2.setStroke(HANDLE_STROKE);
         g.drawLine(6, 6, 12, 12);
@@ -41,16 +42,17 @@ public class SearchIcon implements Icon {
         g.setColor(color);
         g2.setStroke(s);
         g.translate(-x, -y);
+        g2.scale(1, 1);
     }
 
     @Override
     public int getIconWidth() {
-        return (int) (WIDTH * scaleFactor);
+        return (int) (WIDTH * scaleFactor + 0.5);
     }
 
     @Override
     public int getIconHeight() {
-        return (int) (HEIGHT * scaleFactor);
+        return (int) (HEIGHT * scaleFactor + 0.5);
     }
 
     /**
