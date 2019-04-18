@@ -3,7 +3,6 @@ package org.protege.editor.core.ui.util;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -36,7 +35,7 @@ public class AugmentedJTextField extends JTextField {
 
     private Optional<TextFieldSearchHandler> searchHandler = Optional.empty();
 
-    private static final SearchIcon searchIcon = new SearchIcon();
+    private static final InlineFieldSearchIcon searchIcon = new InlineFieldSearchIcon(SEARCH_ICON_COLOR);
 
 
     /**
