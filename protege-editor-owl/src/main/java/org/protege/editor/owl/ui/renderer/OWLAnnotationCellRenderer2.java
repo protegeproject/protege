@@ -111,6 +111,16 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
         return ontology != null && ontology.equals(editorKit.getOWLModelManager().getActiveOntology());
     }
 
+    private String getOntologyRendering() {
+        if(ontology == null) {
+            return "";
+        }
+        if(ontology.equals(editorKit.getOWLModelManager().getActiveOntology())) {
+            return "";
+        }
+        return editorKit.getOWLModelManager().getRendering(ontology);
+    }
+
     @Override
     protected Object getValueKey(Object value) {
         OWLAnnotation annotation = null;
@@ -286,13 +296,16 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
         paragraph.setForeground(foreground);
         paragraph.setBold(true);
         paragraph.setSize(12);
-//        if (isReferenceOntologyActive()) {
-//            paragraph.setBold(true);
-//        }
         if (annotation.getValue() instanceof OWLLiteral) {
             OWLLiteral literalValue = (OWLLiteral) annotation.getValue();
             paragraph.append("    ", foreground);
             appendTag(paragraph, literalValue, foreground, isSelected);
+        }
+        if (!isReferenceOntologyActive()) {
+            String ontologyRendering = getOntologyRendering();
+            if(!ontologyRendering.isEmpty()) {
+                paragraph.append("  [in " + ontologyRendering + "]", Color.LIGHT_GRAY);
+            }
         }
         switch (annotationRenderingStyle) {
             case COMFORTABLE:
@@ -557,8 +570,8 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
     }
 
     private void appendTag(Paragraph tagParagraph, OWLLiteral literal, Color foreground, boolean isSelected) {
-        Color tagColor = isSelected ? foreground : Color.GRAY;
-        Color tagValueColor = isSelected ? foreground : Color.GRAY;
+        Color tagColor = isSelected ? foreground : Color.LIGHT_GRAY;
+        Color tagValueColor = isSelected ? foreground : Color.LIGHT_GRAY;
 
         if (literal.hasLang()) {
             tagParagraph.append("[language: ", tagColor);
