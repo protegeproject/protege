@@ -16,7 +16,6 @@ import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.action.ProtegeActionPluginJPFImpl;
 import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.core.ui.error.SendErrorReportHandler;
-import org.protege.editor.core.ui.util.InlineFieldSearchIcon;
 import org.protege.editor.core.ui.util.SearchIcon;
 import org.protege.editor.core.util.HandlerRegistration;
 import org.protege.editor.owl.ui.breadcrumb.*;
@@ -695,6 +694,9 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         searchButton.setBorder(null);
         searchButton.setBackground(null);
         searchButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        searchButton.setRolloverEnabled(true);
+        searchButton.setToolTipText("Search");
+        searchButton.setRolloverIcon(new SearchIcon(OWLSystemColors.getRolloverForegroundColor()));
         searchButton.addActionListener(e -> showSearchDialog());
 
         topBarPanel.add(searchButton, new GridBagConstraints(
