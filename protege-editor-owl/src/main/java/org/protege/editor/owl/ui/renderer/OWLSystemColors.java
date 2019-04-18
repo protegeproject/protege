@@ -55,4 +55,8 @@ public class OWLSystemColors {
         return PropertyUtil.getColor(ProtegeProperties.getInstance().getProperty(ProtegeProperties.ONTOLOGY_COLOR_KEY),
                                      Color.GRAY);
     }
+
+    public static Color getForegroundColor() {
+        return Color.GRAY;
+    }
 }
