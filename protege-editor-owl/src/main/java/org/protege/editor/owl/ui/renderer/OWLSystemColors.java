@@ -59,4 +59,8 @@ public class OWLSystemColors {
     public static Color getForegroundColor() {
         return Color.GRAY;
     }
+
+    public static Color getRolloverForegroundColor() {
+        return Color.DARK_GRAY;
+    }
 }
