@@ -16,6 +16,7 @@ import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.action.ProtegeActionPluginJPFImpl;
 import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.core.ui.error.SendErrorReportHandler;
+import org.protege.editor.core.ui.util.SearchIcon;
 import org.protege.editor.core.util.HandlerRegistration;
 import org.protege.editor.owl.ui.breadcrumb.*;
 import org.protege.editor.core.ui.progress.BackgroundTaskLabel;
@@ -687,7 +688,13 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             }
         });
 
-        JButton searchButton = new JButton("Search...");
+        SearchIcon searchIcon = new SearchIcon();
+        searchIcon.setScaleFactor(1.4);
+        JButton searchButton = new JButton("", searchIcon);
+        searchButton.setBorderPainted(false);
+        searchButton.setBorder(null);
+        searchButton.setBackground(null);
+        searchButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         searchButton.addActionListener(e -> showSearchDialog());
 
         topBarPanel.add(searchButton, new GridBagConstraints(
@@ -711,7 +718,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
                         0, 0
                 ));
 
-        topBarPanel.add(breadcrumbTrailPresenter.getBreadcrumbTrailView().asJComponent(),
+        JComponent breadCrumbView = breadcrumbTrailPresenter.getBreadcrumbTrailView().asJComponent();
+        topBarPanel.add(breadCrumbView,
                         new GridBagConstraints(
                                 0, 1,
                                 4, 1,
