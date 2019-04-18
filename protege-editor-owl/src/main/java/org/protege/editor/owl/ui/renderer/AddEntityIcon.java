@@ -8,7 +8,7 @@ import java.awt.*;
  * Stanford Center for Biomedical Informatics Research
  * 9 Aug 16
  */
-public class AddEntityIcon implements Icon {
+public class AddEntityIcon implements Icon, HasUseSystemForeground {
 
     private final OWLEntityIcon entityIcon;
 
@@ -17,18 +17,24 @@ public class AddEntityIcon implements Icon {
     }
 
     @Override
+    public AddEntityIcon useSystemForeground() {
+        entityIcon.setOverriderColorToForegroundColor();
+        return this;
+    }
+
+    @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
         try {
-            EntityActionIcon.setupAlpha(c, g2);
+            EntityActionIcon.setupState(c, g2, entityIcon);
 
             entityIcon.paintIcon(c, g2, x + 1, y + 1);
-            int addCrossLegLength = 2;
+            int addCrossLegLength = 3;
             int xC = x + entityIcon.getIconWidth() + addCrossLegLength;
             int yC = y + 4;
             g2.setStroke(EntityActionIcon.ACTION_STROKE);
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-            g2.setColor(entityIcon.getEntityColor());
+            g2.setColor(entityIcon.getColor());
             g2.drawLine(xC - addCrossLegLength, yC, xC + addCrossLegLength, yC);
             g2.drawLine(xC, yC - addCrossLegLength, xC, yC + addCrossLegLength);
         } finally {

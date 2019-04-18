@@ -18,6 +18,11 @@ public class OWLDatatypeIcon extends OWLEntityIcon {
         this(FillType.FILLED);
     }
 
+    public static OWLDatatypeIcon getMonoChromeIcon() {
+        OWLDatatypeIcon owlDatatypeIcon = new OWLDatatypeIcon();
+        return owlDatatypeIcon;
+    }
+
     public OWLDatatypeIcon(FillType fillType) {
         super(fillType);
     }
@@ -38,18 +43,18 @@ public class OWLDatatypeIcon extends OWLEntityIcon {
         try {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            int size = getBaseSize();
+            int size = getBaseSize() - 2;
 
             if (getFillType() == FillType.FILLED) {
-                g2.setColor(Color.LIGHT_GRAY);
-                g2.fillOval(x, y, size, size);
-                g2.setColor(COLOR);
-                g2.fillOval(x + 1, y + 1, size - 2, size - 2);
+                g2.setColor(getBorderColor());
+                g2.fillOval(x + 1, y + 1, size, size);
+                g2.setColor(getColor());
+                g2.fillOval(x + 1, y + 1, size - 1, size - 1);
             }
             else {
-                g2.setColor(COLOR);
+                g2.setColor(getColor());
                 g2.setStroke(HOLLOW_STROKE);
-                g2.drawOval(x + 1, y + 1, size - 2, size - 2);
+                g2.drawOval(x + 1, y + 1, size, size);
             }
         } finally {
             g2.dispose();

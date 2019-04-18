@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.renderer;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
@@ -15,11 +16,44 @@ public abstract class OWLEntityIcon implements Icon {
 
     private final FillType fillType;
 
+    private Color overrideColor = null;
+
+    private boolean enabled = true;
+
     protected OWLEntityIcon(FillType fillType) {
         this.fillType = fillType;
     }
 
     public abstract Color getEntityColor();
+
+    public Color getColor() {
+        if(!enabled) {
+            return Color.LIGHT_GRAY;
+        }
+        if(overrideColor == null) {
+            return getEntityColor();
+        }
+        else {
+            return overrideColor;
+        }
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public OWLEntityIcon setOverrideColor(Color overrideColor) {
+        this.overrideColor = overrideColor;
+        return this;
+    }
+
+    public OWLEntityIcon setOverriderColorToForegroundColor() {
+        return setOverrideColor(OWLSystemColors.getForegroundColor());
+    }
+
+    public Color getBorderColor() {
+        return getColor();
+    }
 
     public FillType getFillType() {
         return fillType;

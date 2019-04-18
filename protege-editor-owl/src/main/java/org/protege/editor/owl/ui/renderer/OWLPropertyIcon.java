@@ -46,14 +46,14 @@ public abstract class OWLPropertyIcon extends OWLEntityIcon {
             int rY = y + yPadding;
 
             if(getFillType() == FillType.FILLED) {
-                g2.setColor(Color.GRAY);
+                g2.setColor(getBorderColor());
                 g2.fillRect(rX, rY, propWidth, propHeight);
-                g2.setColor(getEntityColor());
+                g2.setColor(getColor());
                 g2.fillRect(rX + 1, rY + 1, propWidth - 2, propHeight - 2);
             }
             else {
                 g2.setStroke(HOLLOW_STROKE);
-                g2.setColor(getEntityColor());
+                g2.setColor(getColor());
                 g2.drawRect(rX + 1, rY + 1, propWidth - 2, propHeight - 2);
             }
         } finally {

@@ -2,7 +2,6 @@ package org.protege.editor.owl.ui.renderer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 
 /**
  * Matthew Horridge
@@ -20,8 +19,9 @@ public class AddChildIcon implements Icon {
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g.create();
+
         try {
-            EntityActionIcon.setupAlpha(c, g2);
+            EntityActionIcon.setupState(c, g2, entityIcon);
             Color oldColor = g2.getColor();
             Stroke oldStroke = g2.getStroke();
 
@@ -34,16 +34,18 @@ public class AddChildIcon implements Icon {
             int childCX = x +  (iconWidth * 3) / 4;
             int childCY = y + (iconHeight * 3) / 4;
 
-            g2.setColor(entityIcon.getEntityColor());
+            g2.setStroke(EntityActionIcon.ACTION_STROKE);
+            g2.setColor(entityIcon.getColor());
 
-            g2.drawLine(parCX, parCY, parCX, childCY);
-            g2.drawLine(parCX, childCY, childCX, childCY);
+            int [] xPoints = {parCX, parCX, childCX};
+            int [] yPoints = {parCY, childCY, childCY};
+            g2.drawPolyline(xPoints, yPoints, 3);
 
             int addX = x + iconWidth - 4;
             int addY = y + 4;
-            int addLegLen = 2;
+            int addLegLen = 3;
 
-            g2.setStroke(EntityActionIcon.ACTION_STROKE);
+
             g2.drawLine(addX - addLegLen, addY, addX + addLegLen, addY);
             g2.drawLine(addX, addY - addLegLen, addX, addY + addLegLen);
 
