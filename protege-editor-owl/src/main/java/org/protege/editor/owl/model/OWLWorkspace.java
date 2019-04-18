@@ -726,7 +726,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
                                 100, 0,
                                 GridBagConstraints.BASELINE_LEADING,
                                 GridBagConstraints.HORIZONTAL,
-                                new Insets(1, 0, 0, 0),
+                                new Insets(3, 0, 0, 1),
                                 0, 0
                         ));
         add(topBarPanel, BorderLayout.NORTH);
