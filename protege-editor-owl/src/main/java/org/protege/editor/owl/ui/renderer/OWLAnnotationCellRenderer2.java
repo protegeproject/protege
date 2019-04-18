@@ -35,7 +35,7 @@ import static org.protege.editor.owl.ui.renderer.InlineDatatypeRendering.RENDER_
  */
 public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
 
-    public static final Color ANNOTATION_PROPERTY_FOREGROUND = new Color(65, 108, 226);
+    public static final Color ANNOTATION_PROPERTY_FOREGROUND = Color.BLACK;
 
     private OWLEditorKit editorKit;
 
@@ -47,7 +47,7 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
 
     private InlineDatatypeRendering datatypeRendering = RENDER_DATATYPE_INLINE;
 
-    private AnnotationRenderingStyle annotationRenderingStyle = AnnotationRenderingStyle.COMFORTABLE;
+    private AnnotationRenderingStyle annotationRenderingStyle = AnnotationRenderingStyle.COSY;
 
     private InlineThumbnailRendering thumbnailRendering = InlineThumbnailRendering.DISPLAY_THUMBNAILS_INLINE;
 
@@ -209,7 +209,7 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
                     renderCellValue(subAnnotationPage, anno, foreground, background, isSelected);
                 }
                 subAnnotationPage.setMarginLeft(40);
-                subAnnotationPage.setOpacity(0.6);
+//                subAnnotationPage.setOpacity(0.6);
                 page.add(subAnnotationPage);
             }
         }
@@ -283,6 +283,8 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
         Paragraph paragraph = page.addParagraph(rendering);
         Color foreground = getAnnotationPropertyForeground(defaultForeground, isSelected);
         paragraph.setForeground(foreground);
+        paragraph.setBold(true);
+        paragraph.setSize(12);
 //        if (isReferenceOntologyActive()) {
 //            paragraph.setBold(true);
 //        }
@@ -556,6 +558,7 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
     private void appendTag(Paragraph tagParagraph, OWLLiteral literal, Color foreground, boolean isSelected) {
         Color tagColor = isSelected ? foreground : Color.GRAY;
         Color tagValueColor = isSelected ? foreground : Color.GRAY;
+
         if (literal.hasLang()) {
             tagParagraph.append("[language: ", tagColor);
             tagParagraph.append(literal.getLang(), tagValueColor);
