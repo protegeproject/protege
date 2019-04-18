@@ -17,6 +17,7 @@ import org.protege.editor.core.ui.action.ProtegeActionPluginJPFImpl;
 import org.protege.editor.core.ui.error.ErrorLog;
 import org.protege.editor.core.ui.error.SendErrorReportHandler;
 import org.protege.editor.core.ui.util.InlineFieldSearchIcon;
+import org.protege.editor.core.ui.util.SearchIcon;
 import org.protege.editor.core.util.HandlerRegistration;
 import org.protege.editor.owl.ui.breadcrumb.*;
 import org.protege.editor.core.ui.progress.BackgroundTaskLabel;
@@ -688,9 +689,8 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             }
         });
 
-        InlineFieldSearchIcon inlineFieldSearchIcon = new InlineFieldSearchIcon(Color.DARK_GRAY);
-        inlineFieldSearchIcon.setScaleFactor(1.4);
-        JButton searchButton = new JButton("", inlineFieldSearchIcon);
+        SearchIcon searchIcon = new SearchIcon(OWLSystemColors.getForegroundColor());
+        JButton searchButton = new JButton("", searchIcon);
         searchButton.setBorderPainted(false);
         searchButton.setBorder(null);
         searchButton.setBackground(null);
