@@ -109,19 +109,34 @@ public class OWLAnnotationFrameSection extends AbstractOWLFrameSection<OWLAnnota
     }
 
 
-    private static class OWLAnnotationSectionRowComparator implements Comparator<OWLFrameSectionRow<OWLAnnotationSubject, OWLAnnotationAssertionAxiom, OWLAnnotation>> {
+    private class OWLAnnotationSectionRowComparator implements Comparator<OWLFrameSectionRow<OWLAnnotationSubject, OWLAnnotationAssertionAxiom, OWLAnnotation>> {
 
         private Comparator<OWLObject> owlObjectComparator;
 
+        private Comparator<OWLOntology> byActiveOntologyStatus;
+
+        private Comparator<OWLOntology> byOntologyRendering;
+
+        private Comparator<OWLOntology> comparingByOntology;
+
         public OWLAnnotationSectionRowComparator(OWLModelManager owlModelManager) {
             owlObjectComparator = owlModelManager.getOWLObjectComparator();
+            byActiveOntologyStatus = Comparator.<OWLOntology, Boolean>comparing(o -> getOWLModelManager().getActiveOntology().equals(o)).reversed();
+            byOntologyRendering = Comparator.comparing(o -> getOWLModelManager().getRendering(o));
+            comparingByOntology = Comparator.nullsLast(byActiveOntologyStatus.thenComparing(byOntologyRendering));
         }
 
         public int compare(OWLFrameSectionRow<OWLAnnotationSubject, OWLAnnotationAssertionAxiom, OWLAnnotation> o1,
                            OWLFrameSectionRow<OWLAnnotationSubject, OWLAnnotationAssertionAxiom, OWLAnnotation> o2) {
             OWLAnnotation annotation1 = o1.getAxiom().getAnnotation();
             OWLAnnotation annotation2 = o2.getAxiom().getAnnotation();
-            return getAnnotationDifference(annotation1, annotation2);
+            int annotationDifference = getAnnotationDifference(annotation1, annotation2);
+            if(annotationDifference != 0) {
+                return annotationDifference;
+            }
+            OWLOntology ont1 = o1.getOntology();
+            OWLOntology ont2 = o2.getOntology();
+            return comparingByOntology.compare(ont1, ont2);
         }
 
         private int getAnnotationDifference(OWLAnnotation annotation1, OWLAnnotation annotation2) {
