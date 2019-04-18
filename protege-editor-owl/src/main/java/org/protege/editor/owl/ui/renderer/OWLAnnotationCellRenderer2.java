@@ -570,8 +570,8 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
     }
 
     private void appendTag(Paragraph tagParagraph, OWLLiteral literal, Color foreground, boolean isSelected) {
-        Color tagColor = isSelected ? foreground : Color.LIGHT_GRAY;
-        Color tagValueColor = isSelected ? foreground : Color.LIGHT_GRAY;
+        Color tagColor = isSelected ? foreground : Color.GRAY;
+        Color tagValueColor = isSelected ? foreground : Color.GRAY;
 
         if (literal.hasLang()) {
             tagParagraph.append("[language: ", tagColor);
