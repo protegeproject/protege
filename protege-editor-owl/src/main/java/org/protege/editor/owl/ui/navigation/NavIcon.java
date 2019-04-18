@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.navigation;
 
+import org.protege.editor.owl.ui.renderer.OWLSystemColors;
+
 import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
@@ -47,7 +49,7 @@ public class NavIcon implements Icon {
                           int x,
                           int y) {
         if(c.isEnabled()) {
-            g.setColor(Color.DARK_GRAY);
+            g.setColor(OWLSystemColors.getForegroundColor());
         }
         else {
             g.setColor(Color.LIGHT_GRAY);
@@ -56,8 +58,8 @@ public class NavIcon implements Icon {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setStroke(STROKE);
         g2.translate(x, y);
-        int rightOffset = direction == Direction.BACK ? 5 : -5;
-        int leftOffset = direction == Direction.BACK ? -5 : 5;
+        int rightOffset = direction == Direction.BACK ? 3 : -3;
+        int leftOffset = direction == Direction.BACK ? -4 : 4;
         int xCentre = getIconWidth() / 2;
         int [] xPoints = new int[]{xCentre + rightOffset, xCentre + leftOffset, xCentre + rightOffset};
         int [] yPoints = new int[]{3, getIconHeight() / 2, getIconHeight() - 3};
