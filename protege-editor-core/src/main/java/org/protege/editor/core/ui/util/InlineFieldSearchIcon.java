@@ -8,11 +8,13 @@ import java.awt.*;
  * Stanford Center for Biomedical Informatics Research
  * 4 Aug 16
  */
-public class SearchIcon implements Icon {
+public class InlineFieldSearchIcon implements Icon {
 
     private static final int WIDTH = 12;
 
     private static final int HEIGHT = 12;
+
+    private final Color iconColor;
 
     private double scaleFactor = 1.0;
 
@@ -20,9 +22,13 @@ public class SearchIcon implements Icon {
 
     public static final BasicStroke HANDLE_STROKE = new BasicStroke(3f);
 
+    public InlineFieldSearchIcon(Color color) {
+        this.iconColor = color;
+    }
+
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
-        Color color = g.getColor();
+        g.setColor(iconColor);
         g.translate(x, y);
         Graphics2D g2 = (Graphics2D) g;
         Stroke s = g2.getStroke();
@@ -31,15 +37,15 @@ public class SearchIcon implements Icon {
         g2.scale(scaleFactor, scaleFactor);
 
         g2.setStroke(HANDLE_STROKE);
-        g.drawLine(6, 6, 12, 12);
+        g.drawLine(6, 6, 11, 11);
 
 
         g.setColor(c.getBackground());
         g2.setStroke(RIM_STROKE);
         g.fillOval(1, 1, 8, 8);
-        g.setColor(color);
+        g.setColor(iconColor);
         g.drawOval(1, 1, 8, 8);
-        g.setColor(color);
+        g.setColor(iconColor);
         g2.setStroke(s);
         g.translate(-x, -y);
         g2.scale(1, 1);
