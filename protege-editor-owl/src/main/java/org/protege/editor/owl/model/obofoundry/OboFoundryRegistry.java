@@ -37,6 +37,10 @@ public abstract class OboFoundryRegistry {
         return new AutoValue_OboFoundryRegistry(ontologies, byId);
     }
 
+    public static OboFoundryRegistry empty() {
+        return get(ImmutableList.of());
+    }
+
     @JsonProperty("ontologies")
     public abstract ImmutableList<OboFoundryEntry> getOntologies();
 
