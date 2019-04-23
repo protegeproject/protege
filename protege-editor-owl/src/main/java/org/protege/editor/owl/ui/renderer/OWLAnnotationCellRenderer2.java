@@ -56,8 +56,8 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
             PubMedLinkExtractor.createExtractor(),
             ISBN10LinkExtractor.createExtractor(),
             WikipediaLinkExtractor.createExtractor(),
-            OboFoundryLinkExtractor.createLinkExtractor(),
-            IdentifiersDotOrgLinkExtractor.createExtractor());
+            IdentifiersDotOrgLinkExtractor.createExtractor(),
+            OboFoundryLinkExtractor.createLinkExtractor());
 
     public OWLAnnotationCellRenderer2(OWLEditorKit editorKit) {
         super();
