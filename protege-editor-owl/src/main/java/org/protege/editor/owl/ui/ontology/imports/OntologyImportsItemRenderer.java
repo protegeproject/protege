@@ -47,7 +47,7 @@ public class OntologyImportsItemRenderer extends PageCellRenderer {
             OntologyIRIShortFormProvider sfp = new OntologyIRIShortFormProvider();
             Color declIRIColor = sel ? fg : Color.BLACK;
             IRI iri = item.getImportDeclaration().getIRI();
-            page.addParagraph(iri.toQuotedString(), declIRIColor);
+            page.addParagraph(iri.toQuotedString(), declIRIColor).setBold(true);
             page.setMarginBottom(5);
             if (ont != null) {
                 String shortForm = sfp.getShortForm(ont);
