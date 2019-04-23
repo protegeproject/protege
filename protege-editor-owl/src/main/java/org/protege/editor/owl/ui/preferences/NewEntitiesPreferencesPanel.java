@@ -73,6 +73,7 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel implements 
     private JSpinner autoIDDigitCount;
     private JTextField autoIDPrefix;
     private JTextField autoIDSuffix;
+    private JRadioButton ideIdButton;
 
     public void initialise() throws Exception {
     	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -283,20 +284,26 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel implements 
 
         iterativeButton = new JRadioButton("Numeric (iterative)");
         uniqueIdButton = new JRadioButton("Globally unique");
+	ideIdButton = new JRadioButton("Identitas");
+
         
         final Class<? extends AutoIDGenerator> autoIDGenCls = EntityCreationPreferences.getAutoIDGeneratorClass();
         iterativeButton.setSelected(autoIDGenCls.equals(IterativeAutoIDGenerator.class));
         uniqueIdButton.setSelected(autoIDGenCls.equals(UniqueIdGenerator.class));
-        
+        ideIdButton.setSelected(autoIDGenCls.equals(RandomProlong.class));
+	
         ButtonGroup group = new ButtonGroup();
         group.add(iterativeButton);
         group.add(uniqueIdButton);
+	group.add(ideIdButton);
         
         iterativeButton.addActionListener(this);
         uniqueIdButton.addActionListener(this);
+	ideIdButton.addActionListener(this);
         
         leftPanel.add(iterativeButton);
         leftPanel.add(uniqueIdButton);
+	leftPanel.add(ideIdButton);
         leftPanel.add(Box.createVerticalGlue());
         
     	// Center panel - random group of components
@@ -444,6 +451,7 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel implements 
 	    startLabel.setEnabled(b);
 	    suffixLabel.setEnabled(b);
 		uniqueIdButton.setEnabled(b);
+		ideIdButton.setEnabled(b);
 		
 		enableNumericIterativeOptions((iterativeButton.isSelected()) && (iterativeButton.isEnabled()));
 	}
@@ -470,6 +478,8 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel implements 
 		if (object == iterativeButton) { // "Numeric (iterative)"
 			enableNumericIterativeOptions(true);
 		} else if (object == uniqueIdButton) { // "Numeric (pseudo random)", "Unique and meaningless" 
+			enableNumericIterativeOptions(false);
+		} else if (object == ideIdButton) {
 			enableNumericIterativeOptions(false);
 		}
 	}
@@ -520,6 +530,9 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel implements 
         }
         if (uniqueIdButton.isSelected()) {
         	EntityCreationPreferences.setAutoIDGeneratorClass(UniqueIdGenerator.class);
+        }
+	if (ideIdButton.isSelected()) {
+        	EntityCreationPreferences.setAutoIDGeneratorClass(RandomProlong.class);
         }
 
         EntityCreationPreferences.setAutoIDStart((Integer)autoIDStart.getValue());
