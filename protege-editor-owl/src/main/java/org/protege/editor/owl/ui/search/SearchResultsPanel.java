@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.search;
 
 import com.google.common.base.Optional;
+import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLEditorKitOntologyShortFormProvider;
 import org.protege.editor.owl.model.OWLEditorKitShortFormProvider;
@@ -70,8 +71,8 @@ public class SearchResultsPanel extends JPanel {
         resultsTable = new JTable(model);
         resultsTable.setIntercellSpacing(new Dimension(0, 0));
 
-        scrollPane = new JScrollPane(resultsTable);
-        scrollPane.setBorder(null);
+        scrollPane = ComponentFactory.createScrollPane(resultsTable);
+        resultsTable.setBorder(null);
         resultsTable.setRowMargin(0);
         add(scrollPane);
 
