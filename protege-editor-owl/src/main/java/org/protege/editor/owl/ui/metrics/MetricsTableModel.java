@@ -55,7 +55,19 @@ public class MetricsTableModel extends AbstractTableModel {
     }
 
     private void rebuild() {
-        metricManager.getMetrics().forEach(m -> metricsValues.add(m.getValue()));
+        metricManager.getMetrics().forEach(this::addMetricValue);
+    }
+
+    private void addMetricValue(OWLMetric<?> m) {
+        String formattedMetric;
+        Object value = m.getValue();
+        if(value instanceof Integer) {
+            formattedMetric = String.format("%,d", value);
+        }
+        else {
+            formattedMetric = value.toString();
+        }
+        metricsValues.add(formattedMetric);
     }
 
     public void invalidate() {
