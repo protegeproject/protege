@@ -24,7 +24,7 @@ public class IdPolicyParser_MissingIdDigitCount_TestCase {
         ontology = manager.loadOntologyFromOntologyDocument(is);
     }
 
-    @Test(expected = IdPolicyParseException.class)
+    @Test(expected = IdRangesPolicyParseException.class)
     public void shouldFailParse() {
         IdRangesPolicyParser parser = IdRangesPolicyParser.get(ontology);
         parser.parse();
