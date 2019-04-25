@@ -19,12 +19,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class IdRangesPolicyParser {
 
+    @Nonnull
     private final OWLOntology ontology;
 
+    @Nonnull
     private final ImmutableMultimap<IRI, OWLAnnotation> ontologyAnnotationsByPropertyIri;
 
-    private IdRangesPolicyParser(OWLOntology ontology,
-                                 ImmutableMultimap<IRI, OWLAnnotation> ontologyAnnotationsByPropertyIri) {
+    private IdRangesPolicyParser(@Nonnull OWLOntology ontology,
+                                 @Nonnull ImmutableMultimap<IRI, OWLAnnotation> ontologyAnnotationsByPropertyIri) {
         this.ontology = checkNotNull(ontology);
         this.ontologyAnnotationsByPropertyIri = checkNotNull(ontologyAnnotationsByPropertyIri);
     }
@@ -59,8 +61,7 @@ public class IdRangesPolicyParser {
             throw new IdPolicyParseException(String.format("'Id digit count' (%s) ontology annotation not found", IdPolicyVocabulary.ID_DIGIT_COUNT.getIri()));
         }
         ImmutableList<UserIdRange> userIdRanges = parseUserIdRanges();
-        IdRangesPolicy policy = IdRangesPolicy.get(idPrefix.get(), digitCount.get(), idPolicyFor.get(), userIdRanges);
-        return policy;
+        return IdRangesPolicy.get(idPrefix.get(), digitCount.get(), idPolicyFor.get(), userIdRanges);
     }
 
     /**
@@ -96,27 +97,29 @@ public class IdRangesPolicyParser {
         int upperBound = 0;
         for(OWLFacetRestriction restriction : dtr.getFacetRestrictions()) {
             if(restriction.getFacet() == OWLFacet.MIN_INCLUSIVE) {
-                lowerBound = parseIntValue(restriction);
+                lowerBound = parseFacetValueAsInt(restriction);
             }
             else if(restriction.getFacet() == OWLFacet.MAX_INCLUSIVE) {
-                upperBound = parseIntValue(restriction);
+                upperBound = parseFacetValueAsInt(restriction);
             }
             else if(restriction.getFacet() == OWLFacet.MIN_EXCLUSIVE) {
-                lowerBound = parseIntValue(restriction) + 1;
+                lowerBound = parseFacetValueAsInt(restriction) + 1;
             }
             else if(restriction.getFacet() == OWLFacet.MAX_EXCLUSIVE) {
-                upperBound = parseIntValue(restriction) - 1;
+                upperBound = parseFacetValueAsInt(restriction) - 1;
             }
         }
         return IdRange.getIdRange(lowerBound, upperBound);
     }
 
-    private static int parseIntValue(OWLFacetRestriction restriction) {
+    private static int parseFacetValueAsInt(OWLFacetRestriction restriction) {
         try {
             String lexicalValue = restriction.getFacetValue().getLiteral().trim();
             return Integer.parseInt(lexicalValue);
         } catch(NumberFormatException e) {
-            return 0;
+            throw new RuntimeException(String.format("Invalid value for id range: %s %s",
+                                       restriction.getFacet().getShortForm(),
+                                       restriction.getFacetValue().toString()));
         }
     }
 
