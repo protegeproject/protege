@@ -10,7 +10,7 @@ import javax.annotation.Nonnull;
  * Stanford Center for Biomedical Informatics Research
  * 2019-04-23
  */
-public enum IdPolicyVocabulary {
+public enum IdRangesPolicyVocabulary {
 
     /**
      * Relates an ontology used to record id policy to the number of digits in the URI.
@@ -37,9 +37,9 @@ public enum IdPolicyVocabulary {
     ID_PREFIX(IRI.create("http://purl.obolibrary.org/obo/IAO_0000599"));
 
 
-    public static ImmutableMap<IRI, IdPolicyVocabulary> byIri() {
-        ImmutableMap.Builder<IRI, IdPolicyVocabulary> builder = ImmutableMap.builder();
-        for(IdPolicyVocabulary v : IdPolicyVocabulary.values()) {
+    public static ImmutableMap<IRI, IdRangesPolicyVocabulary> byIri() {
+        ImmutableMap.Builder<IRI, IdRangesPolicyVocabulary> builder = ImmutableMap.builder();
+        for(IdRangesPolicyVocabulary v : IdRangesPolicyVocabulary.values()) {
             builder.put(v.getIri(), v);
         }
         return builder.build();
@@ -47,7 +47,7 @@ public enum IdPolicyVocabulary {
 
     private final IRI iri;
 
-    IdPolicyVocabulary(IRI iri) {
+    IdRangesPolicyVocabulary(IRI iri) {
         this.iri = iri;
     }
 
