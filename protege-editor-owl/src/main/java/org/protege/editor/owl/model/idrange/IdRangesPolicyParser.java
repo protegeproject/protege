@@ -107,7 +107,7 @@ public class IdRangesPolicyParser {
             String lexicalValue = restriction.getFacetValue().getLiteral().trim();
             return Integer.parseInt(lexicalValue);
         } catch(NumberFormatException e) {
-            throw new RuntimeException(String.format("Invalid value for id range: %s %s", restriction
+            throw new IdRangesPolicyParseException(String.format("Invalid value for id range: %s %s", restriction
                     .getFacet()
                     .getShortForm(), restriction.getFacetValue().toString()));
         }
