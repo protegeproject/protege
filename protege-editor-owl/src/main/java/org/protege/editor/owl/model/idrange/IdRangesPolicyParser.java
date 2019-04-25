@@ -77,7 +77,7 @@ public class IdRangesPolicyParser {
 
     private static Optional<IdRange> parseIdRange(OWLDatatypeDefinitionAxiom axiom) {
         Optional<OWLDatatypeRestriction> datatypeRestriction = getDefinedDatatypeRestriction(axiom);
-        return datatypeRestriction.map(IdRangesPolicyParser::getIdRange);
+        return datatypeRestriction.map(IdRangesPolicyParser::parseIdRange);
     }
 
     private static Optional<OWLDatatypeRestriction> getDefinedDatatypeRestriction(OWLDatatypeDefinitionAxiom axiom) {
@@ -92,7 +92,7 @@ public class IdRangesPolicyParser {
                 });
     }
 
-    private static IdRange getIdRange(OWLDatatypeRestriction dtr) {
+    private static IdRange parseIdRange(OWLDatatypeRestriction dtr) {
         int lowerBound = 0;
         int upperBound = 0;
         for(OWLFacetRestriction restriction : dtr.getFacetRestrictions()) {
