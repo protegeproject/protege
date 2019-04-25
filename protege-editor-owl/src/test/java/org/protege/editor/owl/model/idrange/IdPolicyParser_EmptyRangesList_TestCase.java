@@ -30,7 +30,7 @@ public class IdPolicyParser_EmptyRangesList_TestCase {
 
     @Test
     public void shouldParseGOIdPolicy() {
-        IdRangePolicyParser policyParser = IdRangePolicyParser.get(ontology);
+        IdRangesPolicyParser policyParser = IdRangesPolicyParser.get(ontology);
         IdRangePolicy idRangePolicy = policyParser.parse();
         assertThat(idRangePolicy.getIdPolicyFor(), is("GO"));
         assertThat(idRangePolicy.getIdDigitCount(), is(7));

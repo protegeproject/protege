@@ -26,7 +26,7 @@ public class IdPolicyParser_MissingIdPrefix_TestCase {
 
     @Test(expected = IdPolicyParseException.class)
     public void shouldFailParse() {
-        IdRangePolicyParser parser = IdRangePolicyParser.get(ontology);
+        IdRangesPolicyParser parser = IdRangesPolicyParser.get(ontology);
         parser.parse();
     }
 }
