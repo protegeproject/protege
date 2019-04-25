@@ -1,0 +1,120 @@
+Prefix: rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+Prefix: idsfor: <http://purl.obolibrary.org/obo/IAO_0000598>
+Prefix: dc: <http://purl.org/dc/elements/1.1/>
+Prefix: xsd: <http://www.w3.org/2001/XMLSchema#>
+Prefix: allocatedto: <http://purl.obolibrary.org/obo/IAO_0000597>
+Prefix: xml: <http://www.w3.org/XML/1998/namespace>
+Prefix: idprefix: <http://purl.obolibrary.org/obo/IAO_0000599>
+Prefix: iddigits: <http://purl.obolibrary.org/obo/IAO_0000596>
+Prefix: rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+Prefix: idrange: <http://purl.obolibrary.org/obo/ro/idrange/>
+Prefix: owl: <http://www.w3.org/2002/07/owl#>
+
+Ontology: <http://purl.obolibrary.org/obo/go/go-idranges.owl>
+
+Annotations:
+    idsfor: "GO",
+    idprefix: "http://purl.obolibrary.org/obo/GO_",
+    iddigits: 7
+
+AnnotationProperty: idprefix:
+AnnotationProperty: iddigits:
+AnnotationProperty: idsfor:
+AnnotationProperty: allocatedto:
+
+Datatype: idrange:2
+Annotations: allocatedto: "David Hill"
+EquivalentTo: xsd:integer[>= 0060001 , <= 0065000]
+
+Datatype: idrange:3
+Annotations: allocatedto: "Midori Harris"
+EquivalentTo: xsd:integer[>= 0070001 , <= 0072315]
+
+Datatype: idrange:4
+Annotations: allocatedto: "Midori Harris"
+EquivalentTo: xsd:integer[>= 0072001 , <= 0072315]
+
+Datatype: idrange:5
+Annotations: allocatedto: "Donghui Li"
+EquivalentTo: xsd:integer[>= 0080001 , <= 0085000]
+
+Datatype: idrange:6
+Annotations: allocatedto: "Rebecca Foulger and Ruth Lovering and Varsha Khodiyar"
+EquivalentTo: xsd:integer[>= 0086001 , <= 0087000]
+
+Datatype: idrange:7
+Annotations: allocatedto: "Tanya Berardini"
+EquivalentTo: xsd:integer[>= 0090001 , <= 0095000]
+
+Datatype: idrange:8
+Annotations: allocatedto: "Paola Roncaglia"
+EquivalentTo: xsd:integer[>= 0097001 , <= 0098000]
+
+Datatype: idrange:9
+Annotations: allocatedto: "Brenley McIntosh"
+EquivalentTo: xsd:integer[>= 0098001 , <= 0098500]
+
+Datatype: idrange:10
+Annotations: allocatedto: "David Osumi-Sutherland"
+EquivalentTo: xsd:integer[>= 0098501 , <= 0100000]
+
+Datatype: idrange:11
+Annotations: allocatedto: "David Osumi-Sutherland"
+EquivalentTo: xsd:integer[>= 0099000 , <= 0099100]
+
+Datatype: idrange:12
+Annotations: allocatedto: "David Osumi-Sutherland"
+EquivalentTo: xsd:integer[>= 0099200 , <= 0099300]
+
+Datatype: idrange:13
+Annotations: allocatedto: "Chris Mungall"
+EquivalentTo: xsd:integer[>= 0100001 , <= 0101000]
+
+Datatype: idrange:14
+Annotations: allocatedto: "Melanie Courtot"
+EquivalentTo: xsd:integer[>= 0101001 , <= 0102000]
+
+Datatype: idrange:15
+Annotations: allocatedto: "Molecular Functions for Sue Rhee"
+EquivalentTo: xsd:integer[>= 0102001 , <= 0104000]
+
+Datatype: idrange:16
+Annotations: allocatedto: "Molecular Function refactoring"
+EquivalentTo: xsd:integer[>= 0104001 , <= 0106000]
+
+Datatype: idrange:17
+Annotations: allocatedto: "Harold Drabkin"
+EquivalentTo: xsd:integer[>= 0106001 , <= 0110000]
+
+Datatype: idrange:18
+Annotations: allocatedto: "Kimberly Van Auken"
+EquivalentTo: xsd:integer[>= 0110001 , <= 0120000]
+
+Datatype: idrange:19
+Annotations: allocatedto: "Karen Christie"
+EquivalentTo: xsd:integer[>= 0120001 , <= 0130000]
+
+Datatype: idrange:20
+Annotations: allocatedto: "Paul Thomas"
+EquivalentTo: xsd:integer[>= 0130001 , <= 0140000]
+
+Datatype: idrange:21
+Annotations: allocatedto: "Pascale Gaudet"
+EquivalentTo: xsd:integer[>= 0140001 , <= 0150000]
+
+Datatype: idrange:90
+Annotations: allocatedto: "Automatic Term Generation"
+EquivalentTo: xsd:integer[>= 1000001 , <= 1899999]
+
+Datatype: idrange:91
+Annotations: allocatedto: "TermGenie Templated"
+EquivalentTo: xsd:integer[>= 1900000 , <= 1989999]
+
+Datatype: idrange:92
+Annotations: allocatedto: "TermGenie FreeForm"
+EquivalentTo: xsd:integer[>= 1990000 , <= 1999999]
+
+Datatype: idrange:93
+Annotations: allocatedto: "TermGenie, historic"
+EquivalentTo: xsd:integer[>= 2000000 , <= 3000000]
+
