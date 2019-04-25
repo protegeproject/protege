@@ -73,7 +73,7 @@ public class IdRangesPolicyParser {
                         return Optional.of(node);
                     }
                 })
-                .orElseThrow(() -> new IdPolicyParseException(String.format("Expected datatype restriction definition, but not found (%s)", axiom)));
+                .orElseThrow(() -> new IdRangesPolicyParseException(String.format("Expected datatype restriction definition, but not found (%s)", axiom)));
     }
 
     private static IdRange parseIdRange(OWLDatatypeRestriction dtr) {
@@ -94,10 +94,10 @@ public class IdRangesPolicyParser {
             }
         }
         if(lowerBound == -1) {
-            throw new IdPolicyParseException(String.format("Expected min inclusive facet to specify lower bound of data range, but not found (%s)", dtr));
+            throw new IdRangesPolicyParseException(String.format("Expected min inclusive facet to specify lower bound of data range, but not found (%s)", dtr));
         }
         if(upperBound == -1) {
-            throw new IdPolicyParseException(String.format("Expected max inclusive facet to specify upper bound of data range, but not found (%s)", dtr));
+            throw new IdRangesPolicyParseException(String.format("Expected max inclusive facet to specify upper bound of data range, but not found (%s)", dtr));
         }
         return IdRange.getIdRange(lowerBound, upperBound);
     }
@@ -129,25 +129,25 @@ public class IdRangesPolicyParser {
         Optional<String> digitCountLexicalValue = parseOntologyAnnotationFirstLexicalValue(IdPolicyVocabulary.ID_DIGIT_COUNT
                                                                                                    .getIri());
         if(!digitCountLexicalValue.isPresent()) {
-            throw new IdPolicyParseException(String.format("'Id digit count' (%s) ontology annotation not found", IdPolicyVocabulary.ID_DIGIT_COUNT
+            throw new IdRangesPolicyParseException(String.format("'Id digit count' (%s) ontology annotation not found", IdPolicyVocabulary.ID_DIGIT_COUNT
                     .getIri()));
         }
         try {
             return digitCountLexicalValue.map(Integer::parseInt).orElse(0);
         } catch(NumberFormatException e) {
-            throw new IdPolicyParseException(String.format("Invalid value for digit count (%s).  Expected integer.", digitCountLexicalValue.get()));
+            throw new IdRangesPolicyParseException(String.format("Invalid value for digit count (%s).  Expected integer.", digitCountLexicalValue.get()));
         }
     }
 
     private String parseIdPrefix() {
         return parseOntologyAnnotationFirstLexicalValue(IdPolicyVocabulary.ID_PREFIX.getIri())
-                .orElseThrow(() -> new IdPolicyParseException(String.format("'Id prefix' (%s) ontology annotation not found", IdPolicyVocabulary.ID_PREFIX
+                .orElseThrow(() -> new IdRangesPolicyParseException(String.format("'Id prefix' (%s) ontology annotation not found", IdPolicyVocabulary.ID_PREFIX
                         .getIri())));
     }
 
     private String parseIdPolicyFor() {
         return parseOntologyAnnotationFirstLexicalValue(IdPolicyVocabulary.ID_POLICY_FOR.getIri())
-                .orElseThrow(() -> new IdPolicyParseException(String.format("'Id policy for' (%s) ontology annotation not found", IdPolicyVocabulary.ID_POLICY_FOR
+                .orElseThrow(() -> new IdRangesPolicyParseException(String.format("'Id policy for' (%s) ontology annotation not found", IdPolicyVocabulary.ID_POLICY_FOR
                 .getIri())));
     }
 
@@ -185,7 +185,7 @@ public class IdRangesPolicyParser {
 
     @Nonnull
     private String parseAllocatedTo(OWLDatatype datatype) {
-        return findFirstLexicalValue(datatype, getAllocatedToProperty()).orElseThrow(() -> new IdPolicyParseException(String.format("Expected 'allocated to' (%s) but not found on %s", IdPolicyVocabulary.ID_RANGE_ALLOCATED_TO
+        return findFirstLexicalValue(datatype, getAllocatedToProperty()).orElseThrow(() -> new IdRangesPolicyParseException(String.format("Expected 'allocated to' (%s) but not found on %s", IdPolicyVocabulary.ID_RANGE_ALLOCATED_TO
                 .getIri(), datatype.getIRI().toQuotedString())));
     }
 
@@ -216,7 +216,7 @@ public class IdRangesPolicyParser {
                 .sorted()
                 .findFirst()
                 .map(IdRangesPolicyParser::parseIdRange)
-                .orElseThrow(() -> new IdPolicyParseException("Id range datatype definition not found"));
+                .orElseThrow(() -> new IdRangesPolicyParseException("Id range datatype definition not found"));
 
     }
 }

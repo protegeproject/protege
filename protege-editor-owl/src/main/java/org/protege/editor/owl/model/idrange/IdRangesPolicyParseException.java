@@ -5,9 +5,9 @@ package org.protege.editor.owl.model.idrange;
  * Stanford Center for Biomedical Informatics Research
  * 2019-04-25
  */
-public class IdPolicyParseException extends RuntimeException {
+public class IdRangesPolicyParseException extends RuntimeException {
 
-    public IdPolicyParseException(String message) {
+    public IdRangesPolicyParseException(String message) {
         super(message);
     }
 }
