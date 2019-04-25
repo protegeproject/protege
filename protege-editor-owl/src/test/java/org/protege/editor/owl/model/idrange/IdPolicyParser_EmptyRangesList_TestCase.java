@@ -23,7 +23,7 @@ public class IdPolicyParser_EmptyRangesList_TestCase {
 
     @Before
     public void setUp() throws Exception {
-        InputStream is = IdPolicyParser_GO_IT.class.getResourceAsStream("/idpolicy/empty-idranges.owl");
+        InputStream is = IdPolicyParser_GO_TestCase.class.getResourceAsStream("/idpolicy/empty-idranges.owl");
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         ontology = manager.loadOntologyFromOntologyDocument(is);
     }
