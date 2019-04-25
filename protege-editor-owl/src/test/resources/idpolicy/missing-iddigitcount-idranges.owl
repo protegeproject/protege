@@ -1,0 +1,22 @@
+Prefix: rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+Prefix: idsfor: <http://purl.obolibrary.org/obo/IAO_0000598>
+Prefix: dc: <http://purl.org/dc/elements/1.1/>
+Prefix: xsd: <http://www.w3.org/2001/XMLSchema#>
+Prefix: allocatedto: <http://purl.obolibrary.org/obo/IAO_0000597>
+Prefix: xml: <http://www.w3.org/XML/1998/namespace>
+Prefix: idprefix: <http://purl.obolibrary.org/obo/IAO_0000599>
+Prefix: iddigits: <http://purl.obolibrary.org/obo/IAO_0000596>
+Prefix: rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+Prefix: idrange: <http://purl.obolibrary.org/obo/ro/idrange/>
+Prefix: owl: <http://www.w3.org/2002/07/owl#>
+
+Ontology: <http://purl.obolibrary.org/obo/go/go-idranges.owl>
+
+Annotations:
+    idsfor: "GO",
+    idprefix: "http://purl.obolibrary.org/obo/GO_"
+
+AnnotationProperty: idprefix:
+AnnotationProperty: iddigits:
+AnnotationProperty: idsfor:
+AnnotationProperty: allocatedto:
