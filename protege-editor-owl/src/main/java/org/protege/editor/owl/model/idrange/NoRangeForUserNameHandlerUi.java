@@ -1,6 +1,10 @@
 package org.protege.editor.owl.model.idrange;
 
 
+import org.protege.editor.core.ui.util.JOptionPaneEx;
+import org.protege.editor.core.ui.util.VerifyingOptionPane;
+import org.protege.editor.owl.model.entity.EntityCreationPreferences;
+
 import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
@@ -14,20 +18,34 @@ import java.util.stream.StreamSupport;
  */
 public class NoRangeForUserNameHandlerUi implements NoRangeForUserNameHandler {
 
+    private static final String UPDATE = "Use Selected User";
+
+    private static final String CANCEL = "Cancel";
+
     @Override
     public void handleNoRangeForUserName(@Nonnull String userName,
                                          @Nonnull IdRangesPolicy policy) {
         Frame owner = Arrays.stream(Frame.getFrames()).findFirst().orElse(null);
-        JOptionPane.showMessageDialog(owner,
-                                      String.format("<html><body>" +
-                                                            "<b>No id range found for %s</b><br><br>" +
-                                                            "An id ranges file was found but it does not contain an id range for <br>" +
-                                                            "the current user, <b>%s</b>.  You should either update the current user name to<br>" +
-                                                            "a name specified in the id file, or you should add an id range for the current<br>" +
-                                                            "user name to the id ranges file.</body><html>",
-                                                    userName,
-                                                    userName),
-                                      "No Id Range Found For Current User",
-                                      JOptionPane.WARNING_MESSAGE);
+        NoRangeFoundForUserNamePanel userNamePanel = new NoRangeFoundForUserNamePanel();
+        userNamePanel.setUserName(userName);
+        userNamePanel.setIdRangesPolicy(policy);
+
+        Object[] options = {UPDATE, CANCEL};
+        int ret = JOptionPaneEx.showConfirmDialog(owner,
+                                                  "No Id Range Found For Current User",
+                                                  userNamePanel,
+                                                  JOptionPane.PLAIN_MESSAGE,
+                                                  JOptionPane.OK_CANCEL_OPTION,
+                                                  userNamePanel, options,
+                                                  UPDATE);
+        if(ret != 0) {
+            return;
+        }
+        userNamePanel.getSelectedRange().ifPresent(this::updateIdRange);
+    }
+
+    private void updateIdRange(@Nonnull UserIdRange rng) {
+        EntityCreationPreferences.setAutoIDStart(rng.getIdRange().getLowerBound());
+        EntityCreationPreferences.setAutoIDEnd(rng.getIdRange().getUpperBound());
     }
 }
