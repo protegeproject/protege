@@ -126,10 +126,10 @@ public class IdRangesPolicyParser {
     }
 
     private Integer parseIdDigitCount() {
-        Optional<String> digitCountLexicalValue = parseOntologyAnnotationFirstLexicalValue(IdPolicyVocabulary.ID_DIGIT_COUNT
+        Optional<String> digitCountLexicalValue = parseOntologyAnnotationFirstLexicalValue(IdRangesPolicyVocabulary.ID_DIGIT_COUNT
                                                                                                    .getIri());
         if(!digitCountLexicalValue.isPresent()) {
-            throw new IdRangesPolicyParseException(String.format("'Id digit count' (%s) ontology annotation not found", IdPolicyVocabulary.ID_DIGIT_COUNT
+            throw new IdRangesPolicyParseException(String.format("'Id digit count' (%s) ontology annotation not found", IdRangesPolicyVocabulary.ID_DIGIT_COUNT
                     .getIri()));
         }
         try {
@@ -140,14 +140,14 @@ public class IdRangesPolicyParser {
     }
 
     private String parseIdPrefix() {
-        return parseOntologyAnnotationFirstLexicalValue(IdPolicyVocabulary.ID_PREFIX.getIri())
-                .orElseThrow(() -> new IdRangesPolicyParseException(String.format("'Id prefix' (%s) ontology annotation not found", IdPolicyVocabulary.ID_PREFIX
+        return parseOntologyAnnotationFirstLexicalValue(IdRangesPolicyVocabulary.ID_PREFIX.getIri())
+                .orElseThrow(() -> new IdRangesPolicyParseException(String.format("'Id prefix' (%s) ontology annotation not found", IdRangesPolicyVocabulary.ID_PREFIX
                         .getIri())));
     }
 
     private String parseIdPolicyFor() {
-        return parseOntologyAnnotationFirstLexicalValue(IdPolicyVocabulary.ID_POLICY_FOR.getIri())
-                .orElseThrow(() -> new IdRangesPolicyParseException(String.format("'Id policy for' (%s) ontology annotation not found", IdPolicyVocabulary.ID_POLICY_FOR
+        return parseOntologyAnnotationFirstLexicalValue(IdRangesPolicyVocabulary.ID_POLICY_FOR.getIri())
+                .orElseThrow(() -> new IdRangesPolicyParseException(String.format("'Id policy for' (%s) ontology annotation not found", IdRangesPolicyVocabulary.ID_POLICY_FOR
                 .getIri())));
     }
 
@@ -185,7 +185,7 @@ public class IdRangesPolicyParser {
 
     @Nonnull
     private String parseAllocatedTo(OWLDatatype datatype) {
-        return findFirstLexicalValue(datatype, getAllocatedToProperty()).orElseThrow(() -> new IdRangesPolicyParseException(String.format("Expected 'allocated to' (%s) but not found on %s", IdPolicyVocabulary.ID_RANGE_ALLOCATED_TO
+        return findFirstLexicalValue(datatype, getAllocatedToProperty()).orElseThrow(() -> new IdRangesPolicyParseException(String.format("Expected 'allocated to' (%s) but not found on %s", IdRangesPolicyVocabulary.ID_RANGE_ALLOCATED_TO
                 .getIri(), datatype.getIRI().toQuotedString())));
     }
 
@@ -205,7 +205,7 @@ public class IdRangesPolicyParser {
     @Nonnull
     private OWLAnnotationProperty getAllocatedToProperty() {
         OWLDataFactory dataFactory = ontology.getOWLOntologyManager().getOWLDataFactory();
-        return dataFactory.getOWLAnnotationProperty(IdPolicyVocabulary.ID_RANGE_ALLOCATED_TO.getIri());
+        return dataFactory.getOWLAnnotationProperty(IdRangesPolicyVocabulary.ID_RANGE_ALLOCATED_TO.getIri());
     }
 
     @Nonnull
