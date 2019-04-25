@@ -47,11 +47,11 @@ public class IdRange_TestCase {
 
     @Test
     public void shouldBeEmpty() {
-        assertThat(IdRange.getIdRange(2, 2).isEmpty(), is(false));
+        assertThat(IdRange.getIdRange(2, 2).isEmpty(), is(true));
     }
 
     @Test
     public void shouldNotBeWellformed() {
-        assertThat(IdRange.getIdRange(3, 2), is(false));
+        assertThat(IdRange.getIdRange(3, 2).isWellFormed(), is(false));
     }
 }

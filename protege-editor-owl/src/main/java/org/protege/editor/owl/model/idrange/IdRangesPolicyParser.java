@@ -1,6 +1,9 @@
 package org.protege.editor.owl.model.idrange;
 
-import com.google.common.collect.*;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableListMultimap;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimaps;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.util.OWLDataVisitorExAdapter;
@@ -39,33 +42,12 @@ public class IdRangesPolicyParser {
     private static ImmutableListMultimap<IRI, OWLAnnotation> getOntologyAnnotationsByPropertyIri(@Nonnull OWLOntology ontology) {
         List<OWLAnnotation> annotations = new ArrayList<>(ontology.getAnnotations());
         Collections.sort(annotations);
-        return Multimaps.index(annotations,
-                               anno -> anno == null ? null : anno.getProperty().getIRI());
-    }
-
-    /**
-     * Parse the ID policy from the ontology
-     */
-    @Nonnull
-    public IdRangesPolicy parse() {
-        Optional<String> idPolicyFor = parseIdPolicyFor();
-        if(!idPolicyFor.isPresent()) {
-            throw new IdPolicyParseException(String.format("'Id policy for' (%s) ontology annotation not found", IdPolicyVocabulary.ID_POLICY_FOR.getIri()));
-        }
-        Optional<String> idPrefix = parseIdPrefix();
-        if(!idPrefix.isPresent()) {
-            throw new IdPolicyParseException(String.format("'Id prefix' (%s) ontology annotation not found", IdPolicyVocabulary.ID_PREFIX.getIri()));
-        }
-        Optional<Integer> digitCount = parseIdDigitCount();
-        if(!digitCount.isPresent()) {
-            throw new IdPolicyParseException(String.format("'Id digit count' (%s) ontology annotation not found", IdPolicyVocabulary.ID_DIGIT_COUNT.getIri()));
-        }
-        ImmutableList<UserIdRange> userIdRanges = parseUserIdRanges();
-        return IdRangesPolicy.get(idPrefix.get(), digitCount.get(), idPolicyFor.get(), userIdRanges);
+        return Multimaps.index(annotations, anno -> anno == null ? null : anno.getProperty().getIRI());
     }
 
     /**
      * Retrieves the annotation value lexical value if it is a literal.
+     *
      * @param value The value.
      */
     private static Optional<String> toLexicalValueIfLiteral(@Nonnull OWLAnnotationValue value) {
@@ -75,12 +57,13 @@ public class IdRangesPolicyParser {
         return Optional.empty();
     }
 
-    private static Optional<IdRange> parseIdRange(OWLDatatypeDefinitionAxiom axiom) {
-        Optional<OWLDatatypeRestriction> datatypeRestriction = getDefinedDatatypeRestriction(axiom);
-        return datatypeRestriction.map(IdRangesPolicyParser::parseIdRange);
+    private static IdRange parseIdRange(OWLDatatypeDefinitionAxiom axiom) {
+        OWLDatatypeRestriction datatypeRestriction = parseIdRangeDatatypeRestriction(axiom);
+        return parseIdRange(datatypeRestriction);
     }
 
-    private static Optional<OWLDatatypeRestriction> getDefinedDatatypeRestriction(OWLDatatypeDefinitionAxiom axiom) {
+    @Nonnull
+    private static OWLDatatypeRestriction parseIdRangeDatatypeRestriction(OWLDatatypeDefinitionAxiom axiom) {
         return axiom
                 .getDataRange()
                 .accept(new OWLDataVisitorExAdapter<Optional<OWLDatatypeRestriction>>(Optional.empty()) {
@@ -89,12 +72,13 @@ public class IdRangesPolicyParser {
                     public Optional<OWLDatatypeRestriction> visit(OWLDatatypeRestriction node) {
                         return Optional.of(node);
                     }
-                });
+                })
+                .orElseThrow(() -> new IdPolicyParseException(String.format("Expected datatype restriction definition, but not found (%s)", axiom)));
     }
 
     private static IdRange parseIdRange(OWLDatatypeRestriction dtr) {
-        int lowerBound = 0;
-        int upperBound = 0;
+        int lowerBound = -1;
+        int upperBound = -1;
         for(OWLFacetRestriction restriction : dtr.getFacetRestrictions()) {
             if(restriction.getFacet() == OWLFacet.MIN_INCLUSIVE) {
                 lowerBound = parseFacetValueAsInt(restriction);
@@ -109,6 +93,12 @@ public class IdRangesPolicyParser {
                 upperBound = parseFacetValueAsInt(restriction) - 1;
             }
         }
+        if(lowerBound == -1) {
+            throw new IdPolicyParseException(String.format("Expected min inclusive facet to specify lower bound of data range, but not found (%s)", dtr));
+        }
+        if(upperBound == -1) {
+            throw new IdPolicyParseException(String.format("Expected max inclusive facet to specify upper bound of data range, but not found (%s)", dtr));
+        }
         return IdRange.getIdRange(lowerBound, upperBound);
     }
 
@@ -117,62 +107,90 @@ public class IdRangesPolicyParser {
             String lexicalValue = restriction.getFacetValue().getLiteral().trim();
             return Integer.parseInt(lexicalValue);
         } catch(NumberFormatException e) {
-            throw new RuntimeException(String.format("Invalid value for id range: %s %s",
-                                       restriction.getFacet().getShortForm(),
-                                       restriction.getFacetValue().toString()));
+            throw new RuntimeException(String.format("Invalid value for id range: %s %s", restriction
+                    .getFacet()
+                    .getShortForm(), restriction.getFacetValue().toString()));
         }
     }
 
-    private Optional<Integer> parseIdDigitCount() {
-        Optional<String> digitCountLexicalValue = parseOntologyAnnotationFirstLexicalValue(IdPolicyVocabulary.ID_DIGIT_COUNT.getIri());
+    /**
+     * Parse the ID policy from the ontology
+     */
+    @Nonnull
+    public IdRangesPolicy parse() {
+        String idPolicyFor = parseIdPolicyFor();
+        String idPrefix = parseIdPrefix();
+        int digitCount = parseIdDigitCount();
+        ImmutableList<UserIdRange> userIdRanges = parseUserIdRanges();
+        return IdRangesPolicy.get(idPrefix, digitCount, idPolicyFor, userIdRanges);
+    }
+
+    private Integer parseIdDigitCount() {
+        Optional<String> digitCountLexicalValue = parseOntologyAnnotationFirstLexicalValue(IdPolicyVocabulary.ID_DIGIT_COUNT
+                                                                                                   .getIri());
+        if(!digitCountLexicalValue.isPresent()) {
+            throw new IdPolicyParseException(String.format("'Id digit count' (%s) ontology annotation not found", IdPolicyVocabulary.ID_DIGIT_COUNT
+                    .getIri()));
+        }
         try {
-            return digitCountLexicalValue.map(Integer::parseInt);
+            return digitCountLexicalValue.map(Integer::parseInt).orElse(0);
         } catch(NumberFormatException e) {
-            return Optional.empty();
+            throw new IdPolicyParseException(String.format("Invalid value for digit count (%s).  Expected integer.", digitCountLexicalValue.get()));
         }
     }
 
-    private Optional<String> parseIdPrefix() {
-        return parseOntologyAnnotationFirstLexicalValue(IdPolicyVocabulary.ID_PREFIX.getIri());
+    private String parseIdPrefix() {
+        return parseOntologyAnnotationFirstLexicalValue(IdPolicyVocabulary.ID_PREFIX.getIri())
+                .orElseThrow(() -> new IdPolicyParseException(String.format("'Id prefix' (%s) ontology annotation not found", IdPolicyVocabulary.ID_PREFIX
+                        .getIri())));
     }
 
-    private Optional<String> parseIdPolicyFor() {
-        return parseOntologyAnnotationFirstLexicalValue(IdPolicyVocabulary.ID_POLICY_FOR.getIri());
+    private String parseIdPolicyFor() {
+        return parseOntologyAnnotationFirstLexicalValue(IdPolicyVocabulary.ID_POLICY_FOR.getIri())
+                .orElseThrow(() -> new IdPolicyParseException(String.format("'Id policy for' (%s) ontology annotation not found", IdPolicyVocabulary.ID_POLICY_FOR
+                .getIri())));
     }
 
     private Optional<String> parseOntologyAnnotationFirstLexicalValue(IRI propertyIRI) {
-        return ontologyAnnotationsByPropertyIri.
-                get(propertyIRI)
+        return ontologyAnnotationsByPropertyIri
+                .get(propertyIRI)
                 .stream()
                 .map(OWLAnnotation::getValue)
                 .findFirst()
                 .flatMap(IdRangesPolicyParser::toLexicalValueIfLiteral);
     }
 
+    @Nonnull
     private ImmutableList<UserIdRange> parseUserIdRanges() {
         List<UserIdRange> list = ontology
                 .getDatatypesInSignature()
                 .stream()
                 .filter(dt -> !dt.isBuiltIn())
+                .filter(this::hasAllocatedToAnnotation)
                 .map(this::parseUserIdRange)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
                 .collect(Collectors.toList());
         return ImmutableList.copyOf(list);
     }
 
-    private Optional<UserIdRange> parseUserIdRange(OWLDatatype datatype) {
-        Optional<String> allocatedTo = parseAllocatedTo(datatype);
-        Optional<IdRange> idRange = parseIdRange(datatype);
-        return allocatedTo.flatMap(userId -> idRange.map(rng -> UserIdRange.get(userId, rng)));
+    private boolean hasAllocatedToAnnotation(@Nonnull OWLDatatype datatype) {
+        return !EntitySearcher.getAnnotationObjects(datatype, ontology, getAllocatedToProperty()).isEmpty();
     }
 
-    private Optional<String> parseAllocatedTo(OWLDatatype datatype) {
-        return findFirstLexicalValue(datatype, getAllocatedToProperty());
+    @Nonnull
+    private UserIdRange parseUserIdRange(OWLDatatype datatype) {
+        String allocatedTo = parseAllocatedTo(datatype);
+        IdRange idRange = parseIdRange(datatype);
+        return UserIdRange.get(allocatedTo, idRange);
+    }
+
+    @Nonnull
+    private String parseAllocatedTo(OWLDatatype datatype) {
+        return findFirstLexicalValue(datatype, getAllocatedToProperty()).orElseThrow(() -> new IdPolicyParseException(String.format("Expected 'allocated to' (%s) but not found on %s", IdPolicyVocabulary.ID_RANGE_ALLOCATED_TO
+                .getIri(), datatype.getIRI().toQuotedString())));
     }
 
     private Optional<String> findFirstLexicalValue(OWLDatatype datatype,
-                                                          OWLAnnotationProperty property) {
+                                                   OWLAnnotationProperty property) {
         Collection<OWLAnnotation> allocatedToValues = EntitySearcher.getAnnotationObjects(datatype, ontology, property);
         return allocatedToValues
                 .stream()
@@ -184,17 +202,21 @@ public class IdRangesPolicyParser {
                 .findFirst();
     }
 
+    @Nonnull
     private OWLAnnotationProperty getAllocatedToProperty() {
         OWLDataFactory dataFactory = ontology.getOWLOntologyManager().getOWLDataFactory();
         return dataFactory.getOWLAnnotationProperty(IdPolicyVocabulary.ID_RANGE_ALLOCATED_TO.getIri());
     }
 
-    private Optional<IdRange> parseIdRange(OWLDatatype datatype) {
-        return ontology.getDatatypeDefinitions(datatype)
+    @Nonnull
+    private IdRange parseIdRange(@Nonnull OWLDatatype datatype) {
+        return ontology
+                .getDatatypeDefinitions(datatype)
                 .stream()
                 .sorted()
                 .findFirst()
-                .flatMap(IdRangesPolicyParser::parseIdRange);
+                .map(IdRangesPolicyParser::parseIdRange)
+                .orElseThrow(() -> new IdPolicyParseException("Id range datatype definition not found"));
 
     }
 }
