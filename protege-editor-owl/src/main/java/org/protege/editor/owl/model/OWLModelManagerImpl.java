@@ -21,6 +21,7 @@ import org.protege.editor.owl.model.hierarchy.OWLHierarchyManager;
 import org.protege.editor.owl.model.hierarchy.OWLHierarchyManagerImpl;
 import org.protege.editor.owl.model.history.HistoryManager;
 import org.protege.editor.owl.model.history.HistoryManagerImpl;
+import org.protege.editor.owl.model.idrange.ActiveOntologyIdRangesPolicyManager;
 import org.protege.editor.owl.model.inference.OWLReasonerManager;
 import org.protege.editor.owl.model.inference.OWLReasonerManagerImpl;
 import org.protege.editor.owl.model.inference.ReasonerPreferences;
@@ -113,6 +114,8 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     private final List<IOListener> ioListeners = new ArrayList<>();
 
+    private final ActiveOntologyIdRangesPolicyManager idRangesPolocyManager;
+
     private OWLModelManagerEntityRenderer entityRenderer;
 
     private OWLObjectRenderer objectRenderer;
@@ -171,6 +174,8 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
 
         deprecationCache = new DeprecationCache(manager.getOWLDataFactory().getOWLDeprecated());
+
+        idRangesPolocyManager = new ActiveOntologyIdRangesPolicyManager(this);
 
         // force the renderer to be created
         // to prevent double cache rebuild once ontologies loaded
@@ -493,6 +498,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         // Rebuild entity indices
         entityRenderer.ontologiesChanged();
         rebuildEntityIndices();
+        SwingUtilities.invokeLater(idRangesPolocyManager::reload);
         // Inform our listeners
         fireEvent(EventType.ACTIVE_ONTOLOGY_CHANGED);
     }
