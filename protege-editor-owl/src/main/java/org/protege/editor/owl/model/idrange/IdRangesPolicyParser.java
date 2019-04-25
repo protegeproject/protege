@@ -17,21 +17,21 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  * 2019-04-23
  */
-public class IdRangePolicyParser {
+public class IdRangesPolicyParser {
 
     private final OWLOntology ontology;
 
     private final ImmutableMultimap<IRI, OWLAnnotation> ontologyAnnotationsByPropertyIri;
 
-    private IdRangePolicyParser(OWLOntology ontology,
-                               ImmutableMultimap<IRI, OWLAnnotation> ontologyAnnotationsByPropertyIri) {
+    private IdRangesPolicyParser(OWLOntology ontology,
+                                 ImmutableMultimap<IRI, OWLAnnotation> ontologyAnnotationsByPropertyIri) {
         this.ontology = checkNotNull(ontology);
         this.ontologyAnnotationsByPropertyIri = checkNotNull(ontologyAnnotationsByPropertyIri);
     }
 
-    public static IdRangePolicyParser get(@Nonnull OWLOntology ontology) {
+    public static IdRangesPolicyParser get(@Nonnull OWLOntology ontology) {
         ImmutableMultimap<IRI, OWLAnnotation> annosByIri = getOntologyAnnotationsByPropertyIri(ontology);
-        return new IdRangePolicyParser(ontology, annosByIri);
+        return new IdRangesPolicyParser(ontology, annosByIri);
     }
 
     private static ImmutableListMultimap<IRI, OWLAnnotation> getOntologyAnnotationsByPropertyIri(@Nonnull OWLOntology ontology) {
@@ -76,7 +76,7 @@ public class IdRangePolicyParser {
 
     private static Optional<IdRange> parseIdRange(OWLDatatypeDefinitionAxiom axiom) {
         Optional<OWLDatatypeRestriction> datatypeRestriction = getDefinedDatatypeRestriction(axiom);
-        return datatypeRestriction.map(IdRangePolicyParser::getIdRange);
+        return datatypeRestriction.map(IdRangesPolicyParser::getIdRange);
     }
 
     private static Optional<OWLDatatypeRestriction> getDefinedDatatypeRestriction(OWLDatatypeDefinitionAxiom axiom) {
@@ -143,7 +143,7 @@ public class IdRangePolicyParser {
                 .stream()
                 .map(OWLAnnotation::getValue)
                 .findFirst()
-                .flatMap(IdRangePolicyParser::toLexicalValueIfLiteral);
+                .flatMap(IdRangesPolicyParser::toLexicalValueIfLiteral);
     }
 
     private ImmutableList<UserIdRange> parseUserIdRanges() {
@@ -174,7 +174,7 @@ public class IdRangePolicyParser {
         return allocatedToValues
                 .stream()
                 .map(OWLAnnotation::getValue)
-                .map(IdRangePolicyParser::toLexicalValueIfLiteral)
+                .map(IdRangesPolicyParser::toLexicalValueIfLiteral)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .sorted()
@@ -191,7 +191,7 @@ public class IdRangePolicyParser {
                 .stream()
                 .sorted()
                 .findFirst()
-                .flatMap(IdRangePolicyParser::parseIdRange);
+                .flatMap(IdRangesPolicyParser::parseIdRange);
 
     }
 }

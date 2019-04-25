@@ -40,7 +40,7 @@ public class IdPolicyParser_GO_TestCase {
         InputStream is = IdPolicyParser_GO_TestCase.class.getResourceAsStream("/idpolicy/go-idranges.owl");
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         OWLOntology ontology = manager.loadOntologyFromOntologyDocument(is);
-        IdRangePolicyParser policyParser = IdRangePolicyParser.get(ontology);
+        IdRangesPolicyParser policyParser = IdRangesPolicyParser.get(ontology);
         idRangePolicy = policyParser.parse();
     }
 
