@@ -33,7 +33,7 @@ public class IdPolicyParser_GO_TestCase {
 
     private static final String EXPECTED_OBO_NAMESPACE = "GO";
 
-    private IdRangePolicy idRangePolicy;
+    private IdRangesPolicy idRangesPolicy;
 
     @Before
     public void setUp() throws Exception {
@@ -41,27 +41,27 @@ public class IdPolicyParser_GO_TestCase {
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         OWLOntology ontology = manager.loadOntologyFromOntologyDocument(is);
         IdRangesPolicyParser policyParser = IdRangesPolicyParser.get(ontology);
-        idRangePolicy = policyParser.parse();
+        idRangesPolicy = policyParser.parse();
     }
 
     @Test
     public void shouldParsePolicyIdFor() {
-        assertThat(idRangePolicy.getIdPolicyFor(), is(EXPECTED_OBO_NAMESPACE));
+        assertThat(idRangesPolicy.getIdPolicyFor(), is(EXPECTED_OBO_NAMESPACE));
     }
 
     @Test
     public void shouldParseIdDigitCount() {
-        assertThat(idRangePolicy.getIdDigitCount(), is(EXPECTED_ID_DIGIT_COUNT));
+        assertThat(idRangesPolicy.getIdDigitCount(), is(EXPECTED_ID_DIGIT_COUNT));
     }
 
     @Test
     public void shouldParseIdPrefix() {
-        assertThat(idRangePolicy.getIdPrefix(), is(EXPECTED_ID_PREFIX));
+        assertThat(idRangesPolicy.getIdPrefix(), is(EXPECTED_ID_PREFIX));
     }
 
     @Test
     public void shouldParseUserRanges() {
-        assertThat(idRangePolicy.getUserIdRanges(), hasSize(EXPECTED_ID_RANGE_COUNT));
+        assertThat(idRangesPolicy.getUserIdRanges(), hasSize(EXPECTED_ID_RANGE_COUNT));
     }
 
     @Test
@@ -79,7 +79,7 @@ public class IdPolicyParser_GO_TestCase {
     }
 
     private UserIdRange getUserIdRangeForDavidHill() {
-        return idRangePolicy
+        return idRangesPolicy
                     .getUserIdRanges()
                     .stream()
                     .filter(idRange -> idRange.getUserId().equals("David Hill"))

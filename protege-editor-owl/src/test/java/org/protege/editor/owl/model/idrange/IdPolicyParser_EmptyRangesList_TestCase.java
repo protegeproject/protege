@@ -31,10 +31,10 @@ public class IdPolicyParser_EmptyRangesList_TestCase {
     @Test
     public void shouldParseGOIdPolicy() {
         IdRangesPolicyParser policyParser = IdRangesPolicyParser.get(ontology);
-        IdRangePolicy idRangePolicy = policyParser.parse();
-        assertThat(idRangePolicy.getIdPolicyFor(), is("GO"));
-        assertThat(idRangePolicy.getIdDigitCount(), is(7));
-        assertThat(idRangePolicy.getIdPrefix(), is("http://purl.obolibrary.org/obo/GO_"));
-        assertThat(idRangePolicy.getUserIdRanges(), hasSize(0));
+        IdRangesPolicy idRangesPolicy = policyParser.parse();
+        assertThat(idRangesPolicy.getIdPolicyFor(), is("GO"));
+        assertThat(idRangesPolicy.getIdDigitCount(), is(7));
+        assertThat(idRangesPolicy.getIdPrefix(), is("http://purl.obolibrary.org/obo/GO_"));
+        assertThat(idRangesPolicy.getUserIdRanges(), hasSize(0));
     }
 }
