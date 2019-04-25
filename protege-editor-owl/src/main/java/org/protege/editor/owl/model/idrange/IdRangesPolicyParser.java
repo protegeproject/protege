@@ -45,7 +45,7 @@ public class IdRangesPolicyParser {
      * Parse the ID policy from the ontology
      */
     @Nonnull
-    public IdRangePolicy parse() {
+    public IdRangesPolicy parse() {
         Optional<String> idPolicyFor = parseIdPolicyFor();
         if(!idPolicyFor.isPresent()) {
             throw new IdPolicyParseException(String.format("'Id policy for' (%s) ontology annotation not found", IdPolicyVocabulary.ID_POLICY_FOR.getIri()));
@@ -59,7 +59,7 @@ public class IdRangesPolicyParser {
             throw new IdPolicyParseException(String.format("'Id digit count' (%s) ontology annotation not found", IdPolicyVocabulary.ID_DIGIT_COUNT.getIri()));
         }
         ImmutableList<UserIdRange> userIdRanges = parseUserIdRanges();
-        IdRangePolicy policy = IdRangePolicy.get(idPrefix.get(), digitCount.get(), idPolicyFor.get(), userIdRanges);
+        IdRangesPolicy policy = IdRangesPolicy.get(idPrefix.get(), digitCount.get(), idPolicyFor.get(), userIdRanges);
         return policy;
     }
 

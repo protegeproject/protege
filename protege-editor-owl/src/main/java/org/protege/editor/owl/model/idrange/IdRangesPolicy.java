@@ -11,13 +11,13 @@ import javax.annotation.Nonnull;
  * 2019-04-23
  */
 @AutoValue
-public abstract class IdRangePolicy {
+public abstract class IdRangesPolicy {
 
-    public static IdRangePolicy get(@Nonnull String idPrefix,
-                                    int idDigitCount,
-                                    @Nonnull String idPolicyFor,
-                                    @Nonnull ImmutableList<UserIdRange> userIdRanges) {
-        return new AutoValue_IdRangePolicy(idPrefix, idDigitCount, idPolicyFor, userIdRanges);
+    public static IdRangesPolicy get(@Nonnull String idPrefix,
+                                     int idDigitCount,
+                                     @Nonnull String idPolicyFor,
+                                     @Nonnull ImmutableList<UserIdRange> userIdRanges) {
+        return new AutoValue_IdRangesPolicy(idPrefix, idDigitCount, idPolicyFor, userIdRanges);
     }
 
     /**
