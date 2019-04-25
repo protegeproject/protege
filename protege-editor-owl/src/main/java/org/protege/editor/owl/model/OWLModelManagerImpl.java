@@ -344,6 +344,7 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
                 formatUpdater.updateFormat(ontology);
             });
             logger.info(LogBanner.end());
+            SwingUtilities.invokeLater(idRangesPolocyManager::reload);
             return loadedOntology.isPresent();
         } catch(OWLOntologyCreationException e) {
             OWLOntologyID id = new OWLOntologyID(com.google.common.base.Optional.of(IRI.create(uri)), com.google.common.base.Optional.<IRI>absent());
@@ -498,7 +499,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         // Rebuild entity indices
         entityRenderer.ontologiesChanged();
         rebuildEntityIndices();
-        SwingUtilities.invokeLater(idRangesPolocyManager::reload);
         // Inform our listeners
         fireEvent(EventType.ACTIVE_ONTOLOGY_CHANGED);
     }

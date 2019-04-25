@@ -97,8 +97,7 @@ public class IdPolicyEntityCreationPreferencesUpdater {
                 .findFirst();
         userIdRange.ifPresent(this::updateNumericRange);
         if(!userIdRange.isPresent()) {
-            logger.info("[IdRanges] Could not find a matching user name.  Setting empty range.");
-            updateNumericRange(IdRange.getIdRange(0, 0));
+            logger.info("[IdRanges] Could not find a matching user name");
             noRangeForUserNameHandler.handleNoRangeForUserName(userName, policy);
         }
     }
