@@ -31,11 +31,13 @@ import java.util.Set;
  */
 public class WorkspaceFrame extends JFrame {
 
-    private static final long serialVersionUID = -8568184212386766789L;
-
     public static final int DEFAULT_WIDTH = 1024;
 
     public static final int DEFAULT_HEIGHT = 768;
+
+    private static final int MINIMUM_WIDTH = 400;
+
+    private static final int MINIMUM_HEIGHT = 300;
 
     private Workspace workspace;
 
@@ -92,6 +94,12 @@ public class WorkspaceFrame extends JFrame {
         Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(getClass().getName());
         int w = prefs.getInt(SIZE_X, DEFAULT_WIDTH);
         int h = prefs.getInt(SIZE_Y, DEFAULT_HEIGHT);
+        if(w < MINIMUM_WIDTH) {
+            w = MINIMUM_WIDTH;
+        }
+        if(h < MINIMUM_HEIGHT) {
+            h = MINIMUM_HEIGHT;
+        }
         setSize(w, h);
         Point defLoc = getDefaultLocation();
         int x = prefs.getInt(LOC_X, defLoc.x);
@@ -155,6 +163,7 @@ public class WorkspaceFrame extends JFrame {
 
         Optional<JComponent> statusArea = workspace.getStatusArea();
         statusArea.ifPresent(sa -> contentPane.add(sa, BorderLayout.SOUTH));
+        setMinimumSize(new Dimension(MINIMUM_WIDTH, MINIMUM_HEIGHT));
     }
 
 
