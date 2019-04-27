@@ -16,6 +16,8 @@ import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,7 +75,7 @@ public class LogManager {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton clearLogButton = new JButton("Clear log");
         clearLogButton.setToolTipText("Remove all log messages");
-        clearLogButton.addActionListener(e -> logView.clearView());
+        clearLogButton.addActionListener(e -> clearLogView());
         JButton showLogFile = new JButton("Show log file");
         showLogFile.setToolTipText("Show the log file in the system file browser");
         showLogFile.addActionListener(e -> FileUtils.showLogFile());        
@@ -93,6 +95,12 @@ public class LogManager {
         logViewDialog = op.createDialog(null, "Log");
         logViewDialog.setModal(false);
         logViewDialog.setResizable(true);
+        logViewDialog.addComponentListener(new ComponentAdapter() {
+        	@Override
+        	public void componentHidden(ComponentEvent e) {
+        		fireErrorsCleared();
+        	}
+		});
     }
 
     public synchronized void addErrorLogListener(LogStatusListener listener) {
@@ -125,7 +133,7 @@ public class LogManager {
         rootLogger.addAppender(appender);        
     }
 
-    public void unbind() {        
+    public void unbind() {
         getRootLogger().detachAppender(appender);
         appender.stop();
     }
@@ -134,7 +142,12 @@ public class LogManager {
         logViewDialog.setVisible(true);
         fireErrorsCleared();
     }
-    
+
+    public void clearLogView() {
+        logView.clearView();
+        fireErrorsCleared();
+    }
+
     private void showPreferences() {
 		LogPreferencesPanel panel = new LogPreferencesPanel();
 		panel.initialise();
