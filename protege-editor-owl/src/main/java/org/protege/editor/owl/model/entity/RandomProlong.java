@@ -1,53 +1,39 @@
 package org.protege.editor.owl.model.entity;
 
 import org.semanticweb.owlapi.model.OWLEntity;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.org.russet.identitas.*;
 
-public class RandomProlong extends AbstractIDGenerator implements AutoIDGenerator, Revertable {
+/**
+ * Author: Nizal Alshammry<br>
+ * Newcastle University<br>
+ * ICOS Group<br>
+ * Date: 29-April-2019<br><br>
+ * <p/>
+ * n.k.e.alshammry2@newcastle.ac.uk<br>
+ * https://github.com/Nizal-Shammry<br>
+ */
 
-	
+public class RandomProlong extends AbstractIDGenerator implements AutoIDGenerator {
+
+	private static final Logger logger = LoggerFactory.getLogger(RandomProlong.class);
+
 	private String nextId;
-    public RandomProlong () {
-    	try {
-			nextId = Util.randomProlong();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
-	
+
     public String getNextID(Class<? extends OWLEntity> type) throws AutoIDException {
-        String id = nextId;
         try {
 			nextId = Util.randomProlong();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("An error occurred whilst attempting to get the next ID", e);
 		}
-        
-        return getPrefix(type) + id.toString().replace("-", "_") + getSuffix(type);
-        
+
+        return getPrefix(type) + nextId.toString() + getSuffix(type);
     }
-    
-	@Override
+   
 	protected long getRawID(Class<? extends OWLEntity> type) throws AutoIDException {
-		// TODO Auto-generated method stub
-		return 0;
+		// When implement an interface (AbstractIDGenerator) you must implement all methods
+		throw new UnsupportedOperationException("Uenxpected Error");
 	}
-	
-	
-	@Override
-	public void checkpoint() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void revert() {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 }
