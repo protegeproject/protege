@@ -3,6 +3,7 @@ package org.protege.editor.owl.ui.ontology.wizard.move.common;
 import org.protege.editor.core.ui.list.RemovableObjectList;
 import org.protege.editor.core.ui.util.CheckList;
 import org.protege.editor.core.ui.util.ComponentFactory;
+import org.protege.editor.core.ui.util.FormLabel;
 import org.protege.editor.owl.ui.list.OWLObjectList;
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
@@ -11,6 +12,7 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
@@ -39,7 +41,7 @@ public class SignatureDependentSelectionPreviewPanel extends MoveAxiomsKitConfig
 
     private OWLObjectList<OWLAxiom> previewList;
 
-    private JLabel previewLabel;
+    private FormLabel previewLabel;
 
     private RemovableObjectList<OWLEntity> signatureList;
 
@@ -50,7 +52,7 @@ public class SignatureDependentSelectionPreviewPanel extends MoveAxiomsKitConfig
 
     public SignatureDependentSelectionPreviewPanel(SignatureSelection signatureSelection) {
         this.signatureSelection = signatureSelection;
-        previewLabel = new JLabel("Axioms: ");
+        previewLabel = new FormLabel("Axioms: ");
     }
 
 
@@ -59,11 +61,10 @@ public class SignatureDependentSelectionPreviewPanel extends MoveAxiomsKitConfig
 
 
         JPanel previewPanel = new JPanel(new BorderLayout(3, 3));
-        previewLabel = new JLabel("Axioms: Computing... ");
+        previewLabel = new FormLabel("Axioms: Computing... ");
         previewPanel.add(previewLabel, BorderLayout.NORTH);
         previewList = new OWLObjectList<>(getEditorKit());
         previewPanel.add(new JScrollPane(previewList));
-        previewPanel.setBorder(ComponentFactory.createTitledBorder("Preview"));
 
         add(previewPanel);
         OWLCellRenderer cellRenderer = new OWLCellRenderer(getEditorKit());
@@ -76,7 +77,7 @@ public class SignatureDependentSelectionPreviewPanel extends MoveAxiomsKitConfig
         signatureList.setCellRenderer(cellRenderer);
 
         signatureList.setPreferredSize(new Dimension(300, 300));
-        JPanel signatureListPanel = new JPanel(new BorderLayout());
+        JPanel signatureListPanel = new JPanel(new BorderLayout(3, 3));
         list = new CheckList(signatureList);
         list.addCheckListListener(new CheckList.CheckListListener() {
 
@@ -90,7 +91,7 @@ public class SignatureDependentSelectionPreviewPanel extends MoveAxiomsKitConfig
             }
         });
         signatureListPanel.add(new JScrollPane(list));
-        signatureListPanel.setBorder(ComponentFactory.createTitledBorder("Signature"));
+        signatureListPanel.add(new FormLabel("Signature"), BorderLayout.NORTH);
         add(signatureListPanel, BorderLayout.WEST);
 
         signatureList.addMouseListener(new MouseAdapter() {
