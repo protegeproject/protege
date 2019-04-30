@@ -33,7 +33,7 @@ public class RandomProlong extends AbstractIDGenerator implements AutoIDGenerato
    
 	protected long getRawID(Class<? extends OWLEntity> type) throws AutoIDException {
 		// When implement an interface (AbstractIDGenerator) you must implement all methods
-		throw new UnsupportedOperationException("Uenxpected Error");
+		throw new UnsupportedOperationException("Unexpected Error");
 	}
 
 }
