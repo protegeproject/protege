@@ -41,15 +41,11 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
 
     private final OWLEditorKit editorKit;
 
-    private final JTextArea literalValue = new JTextArea(8, 40);
+    private final JTextArea lexicalValueField = new JTextArea(8, 40);
 
     private final JComboBox<LangCode> langComboBox;
 
     private final JComboBox<OWLDatatype> datatypeComboBox;
-
-    private final JLabel valueLabel = new FormLabel("Value");
-
-    private final JLabel langLabel = new FormLabel("Language Tag");
 
     private final OWLDataFactory dataFactory;
 
@@ -66,22 +62,18 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
     public OWLConstantEditor(OWLEditorKit owlEditorKit) {
         this.editorKit = owlEditorKit;
         dataFactory = owlEditorKit.getModelManager().getOWLDataFactory();
-        literalValue.setWrapStyleWord(true);
-        literalValue.setLineWrap(true);
-        literalValue.setBorder(null);
+        lexicalValueField.setWrapStyleWord(true);
+        lexicalValueField.setLineWrap(true);
+        lexicalValueField.setBorder(null);
 
         final UIHelper uiHelper = new UIHelper(owlEditorKit);
         langComboBox = uiHelper.getLangCodeSelector();
+        langComboBox.addActionListener(e -> validateContent());
 
         datatypeComboBox = uiHelper.getDatatypeSelector();
-        datatypeComboBox.addActionListener(e -> {
-            OWLDatatype owlDatatype = getSelectedDatatype();
-            boolean langEnabled = owlDatatype == null || owlDatatype.isRDFPlainLiteral();
-            validateContent();
-            setLangEnabled(langEnabled);
-        });
+        datatypeComboBox.addActionListener(e -> validateContent());
 
-        literalValue.getDocument().addDocumentListener(new DocumentListener() {
+        lexicalValueField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 validateContent();
@@ -100,7 +92,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
 
         addHierarchyListener(e -> {
             if(isShowing()) {
-                literalValue.requestFocus();
+                lexicalValueField.requestFocus();
             }
         });
 
@@ -118,7 +110,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         Optional<OWLDatatype> datatype = Optional.ofNullable(getSelectedDatatype());
         datatype.ifPresent(d -> {
             if(!LiteralChecker.isLiteralIsInLexicalSpace(getEditedObject())) {
-                    literalValue.setForeground(Color.RED);
+                    lexicalValueField.setForeground(Color.RED);
                 String message = String.format(
                         "The entered value is not valid for the specified datatype (%s)",
                         editorKit.getOWLModelManager().getRendering(d));
@@ -130,14 +122,14 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
     private void displayErrorMessage(String message) {
         messageLabel.setText(message);
         messageLabel.setForeground(Color.RED);
-        literalValue.setToolTipText(message);
+        lexicalValueField.setToolTipText(message);
     }
 
     private void clearErrorMessage() {
         messageLabel.setText("");
         messageLabel.setForeground(null);
-        literalValue.setToolTipText(null);
-        literalValue.setForeground(null);
+        lexicalValueField.setToolTipText(null);
+        lexicalValueField.setForeground(null);
     }
 
     /**
@@ -159,11 +151,6 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         }
     }
 
-    private void setLangEnabled(boolean b) {
-        langLabel.setEnabled(b);
-        langComboBox.setEnabled(b);
-    }
-
     public boolean canEdit(Object object) {
         return object instanceof OWLLiteral;
     }
@@ -178,6 +165,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         lastDatatype = null;
         lastLanguage = null;
         String value = getLexicalValue();
+        // Specifying a language tag overrides the datatype
         if (isLangSelected()) {
             lastLanguage = getSelectedLang().orElse(null);
             return dataFactory.getOWLLiteral(value, getSelectedLang().map(LangCode::getLangCode).orElse(null));
@@ -204,22 +192,24 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
     }
 
     private String getLexicalValue() {
-        return literalValue.getText().trim();
+        return lexicalValueField.getText().trim();
     }
 
     public Set<OWLLiteral> getEditedObjects() {
         return Collections.singleton(getEditedObject());
     }
 
-    public boolean setEditedObject(OWLLiteral constant) {
+    public boolean setEditedObject(OWLLiteral literal) {
         clear();
-        if (constant != null) {
-            literalValue.setText(constant.getLiteral());
-            if (!constant.isRDFPlainLiteral()) {
-                datatypeComboBox.setSelectedItem(constant.getDatatype());
-            } else {
-                langCodeRegistry.getLangCode(constant.getLang()).ifPresent(langComboBox::setSelectedItem);
-            }
+        if(literal == null) {
+            return true;
+        }
+        lexicalValueField.setText(literal.getLiteral());
+        if(literal.isRDFPlainLiteral()) {
+            langCodeRegistry.getLangCode(literal.getLang()).ifPresent(langComboBox::setSelectedItem);
+        }
+        else {
+            datatypeComboBox.setSelectedItem(literal.getDatatype());
         }
         return true;
     }
@@ -234,7 +224,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
     }
 
     public void clear() {
-        literalValue.setText("");
+        lexicalValueField.setText("");
         datatypeComboBox.setSelectedItem(lastDatatype);
         langComboBox.setSelectedItem(lastLanguage);
     }
@@ -262,7 +252,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
     }
 
     private void setupAutoCompleter(OWLEditorKit owlEditorKit) {
-        new OWLAutoCompleter(owlEditorKit, literalValue, new OWLExpressionChecker() {
+        new OWLAutoCompleter(owlEditorKit, lexicalValueField, new OWLExpressionChecker() {
             public void check(String text) throws OWLExpressionParserException {
                 throw new OWLExpressionParserException(text, 0, text.length(), true, true, true, true, true, true, new HashSet<>());
             }
@@ -302,7 +292,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
                                    0, 0
             ));
 
-        add(new JScrollPane(literalValue),
+        add(new JScrollPane(lexicalValueField),
                 new GridBagConstraints(1, 2,
                         1,
                         1,
@@ -340,7 +330,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
                         40,
                         0));
 
-        add(langLabel,
+        add(new FormLabel("Language Tag"),
                 new GridBagConstraints(1, 5,
                         1,
                         1,
@@ -351,7 +341,6 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
                                        formLabelInsets,
                         0,
                         0));
-        langLabel.setEnabled(true);
 
         add(langComboBox,
                 new GridBagConstraints(1, 6,
