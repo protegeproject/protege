@@ -276,7 +276,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
                                    0.0,
                                    GridBagConstraints.NORTHWEST,
                                    GridBagConstraints.NONE,
-                                   new Insets(7, 7, 0, 7),
+                                   new Insets(0, 0, 0, 0),
                                    0,
                                    0));
 
