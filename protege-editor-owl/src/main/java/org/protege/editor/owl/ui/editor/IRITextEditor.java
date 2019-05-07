@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.editor;
 
+import org.protege.editor.core.ui.util.FormLabel;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
@@ -10,7 +11,9 @@ import org.semanticweb.owlapi.model.OWLOntologyID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -30,59 +33,36 @@ public class IRITextEditor implements OWLObjectEditor<IRI>, VerifiedInputEditor 
 
     public IRITextEditor(OWLEditorKit editorKit) {
         createGui();
-        setInitialIri(editorKit);
     }
 
     private void createGui() {
         editor = new JPanel();
-        editor.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
+        editor.setBorder(BorderFactory.createEmptyBorder(7, 0, 0, 0));
+        editor.setLayout(new BorderLayout());
 
-        c.gridx = 0;
-        c.gridy = 0;
-        c.fill = GridBagConstraints.NONE;
-        c.insets = new Insets(12, 12, 0, 12);
-        c.anchor = GridBagConstraints.FIRST_LINE_START;
-        c.weightx = 0;
-        c.weighty = 0;
-        editor.add(new JLabel("IRI:"), c);
+        JPanel holder = new JPanel(new BorderLayout());
+        editor.add(holder, BorderLayout.NORTH);
 
-        c.gridx = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(12, 0, 0, 12);
-        c.weightx = 1.0;
-        c.weighty = 1.0;
+        FormLabel iriLabel = new FormLabel("IRI");
+        iriLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 7, 0));
+        holder.add(iriLabel, BorderLayout.NORTH);
 
         iriTextField = new JTextField();
-        iriTextField.addKeyListener(new KeyListener() {
+        iriTextField.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
                 for(InputVerificationStatusChangedListener listener : inputVerificationListeners) {
                     listener.verifiedStatusChanged(getEditedObject() != null);
                 }
             }
-
-            public void keyPressed(KeyEvent e) {
-            }
-
-            public void keyReleased(KeyEvent e) {
-            }
         });
 
-        editor.add(iriTextField, c);
+        holder.add(iriTextField, BorderLayout.SOUTH);
 
         editor.addHierarchyListener(e -> {
             if(editor.isShowing()) {
                 iriTextField.requestFocus();
             }
         });
-    }
-
-    private void setInitialIri(OWLEditorKit editorKit) {
-        OWLOntology ontology = editorKit.getOWLModelManager().getActiveOntology();
-        OWLOntologyID ontologyId = ontology.getOntologyID();
-        if(!ontologyId.isAnonymous()) {
-            iriTextField.setText(ontologyId.getOntologyIRI().get().toString());
-        }
     }
 
     @Nullable
