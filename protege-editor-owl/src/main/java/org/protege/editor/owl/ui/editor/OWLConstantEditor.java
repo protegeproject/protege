@@ -267,21 +267,8 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         setLayout(new GridBagLayout());
         Insets formLabelInsets = new Insets(7, 0, 0, 0);
 
-
-        add(messageLabel,
-            new GridBagConstraints(1, 0,
-                                   1,
-                                   1,
-                                   0.0,
-                                   0.0,
-                                   GridBagConstraints.NORTHWEST,
-                                   GridBagConstraints.NONE,
-                                   new Insets(0, 0, 0, 0),
-                                   0,
-                                   0));
-
         add(new FormLabel("Value"),
-            new GridBagConstraints(1, 1,
+            new GridBagConstraints(1, 0,
                                    1,
                                    1,
                                    0.0,
@@ -293,7 +280,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
             ));
 
         add(new JScrollPane(lexicalValueField),
-                new GridBagConstraints(1, 2,
+                new GridBagConstraints(1, 1,
                         1,
                         1,
                         100.0,
@@ -304,6 +291,17 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
                         0,
                         0));
 
+        add(messageLabel,
+            new GridBagConstraints(1, 2,
+                                   1,
+                                   1,
+                                   0.0,
+                                   0.0,
+                                   GridBagConstraints.NORTHWEST,
+                                   GridBagConstraints.NONE,
+                                   new Insets(0, 0, 0, 0),
+                                   0,
+                                   0));
 
         add(new FormLabel("Datatype"),
                 new GridBagConstraints(1, 3,
