@@ -54,7 +54,7 @@ public class EntityFinderField extends AugmentedJTextField {
     public EntityFinderField(JComponent parent, OWLEditorKit editorKit) {
         super(20, "Search for entity");
         this.editorKit = editorKit;
-        putClientProperty("JTextField.variant", "search");
+//        putClientProperty("JTextField.variant", "search");
         this.parent = parent;
         searchPanel = new SearchPanel(editorKit);
         getInputMap(WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "ESC");
