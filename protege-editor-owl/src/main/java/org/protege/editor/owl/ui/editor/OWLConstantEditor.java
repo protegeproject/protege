@@ -44,7 +44,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
 
     private final JTextArea lexicalValueField = new JTextArea(8, 40);
 
-    private final LangTagEditor langComboBox;
+    private final LangTagEditor langTagField;
 
     private final JComboBox<OWLDatatype> datatypeField;
 
@@ -68,7 +68,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         lexicalValueField.setBorder(null);
 
         final UIHelper uiHelper = new UIHelper(owlEditorKit);
-        langComboBox = new LangTagEditor(LangCodeRegistry.get());
+        langTagField = new LangTagEditor(LangCodeRegistry.get());
 
         datatypeField = uiHelper.getDatatypeSelector();
         datatypeField.addActionListener(e -> validateContent());
@@ -206,7 +206,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         }
         lexicalValueField.setText(literal.getLiteral());
         if(literal.isRDFPlainLiteral()) {
-            langCodeRegistry.getLangCode(literal.getLang()).ifPresent(langComboBox::setLangCode);
+            langCodeRegistry.getLangCode(literal.getLang()).ifPresent(langTagField::setLangCode);
         }
         else {
             datatypeField.setSelectedItem(literal.getDatatype());
@@ -226,11 +226,11 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
     public void clear() {
         lexicalValueField.setText("");
         datatypeField.setSelectedItem(lastDatatype);
-        langComboBox.clear();
+        langTagField.clear();
     }
 
     private boolean isLangSelected() {
-        return langComboBox.getLangCode().isPresent();
+        return langTagField.getLangCode().isPresent();
     }
 
     private boolean isDatatypeSelected() {
@@ -238,7 +238,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
     }
 
     private Optional<LangCode> getSelectedLang() {
-        return langComboBox.getLangCode();
+        return langTagField.getLangCode();
     }
 
     /**
@@ -340,8 +340,8 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
                         0,
                         0));
 
-        add(langComboBox,
-                new GridBagConstraints(1, 6,
+        add(langTagField,
+            new GridBagConstraints(1, 6,
                         1,
                         1,
                         100.0,
