@@ -12,13 +12,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Optional;
 import java.util.Vector;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static java.util.stream.Collectors.toList;
 
 /**
  * Matthew Horridge
@@ -36,17 +33,17 @@ public class SuggestField<T> extends JComponent {
 
     private final JList<T> suggestList = new JList<>();
 
-    private final SuggestOracle<T> suggestOracle;
+    @Nonnull
+    private SuggestOracle<T> suggestOracle = query -> Stream.empty();
 
-    private final SuggestionToString<T> suggestionToString = Object::toString;
+    @Nonnull
+    private SuggestionToString<T> suggestionToString = Object::toString;
 
     private JWindow window;
 
     private boolean completing = false;
 
-    public SuggestField(@Nonnull String placeholderText,
-                        @Nonnull SuggestOracle<T> suggestOracle) {
-        this.suggestOracle = checkNotNull(suggestOracle);
+    public SuggestField(@Nonnull String placeholderText) {
         this.textField = new AugmentedJTextField(placeholderText);
         setLayout(new BorderLayout());
         add(textField, BorderLayout.NORTH);
@@ -88,6 +85,19 @@ public class SuggestField<T> extends JComponent {
         });
     }
 
+    @Nonnull
+    public String getText() {
+        return textField.getText();
+    }
+
+    public void setSuggestOracle(@Nonnull SuggestOracle<T> suggestOracle) {
+        this.suggestOracle = checkNotNull(suggestOracle);
+    }
+
+    public void setSuggestionToString(@Nonnull SuggestionToString<T> suggestionToString) {
+        this.suggestionToString = checkNotNull(suggestionToString);
+    }
+
     public void setRenderer(@Nonnull ListCellRenderer<T> renderer) {
         suggestList.setCellRenderer(checkNotNull(renderer));
     }
@@ -107,12 +117,6 @@ public class SuggestField<T> extends JComponent {
         if(!matchedLangCodes.isEmpty()) {
             showPopupWindow();
         }
-    }
-
-    private static boolean matches(String enteredText, LangCode lc) {
-        Pattern pattern = Pattern.compile(String.format("^.*\\b%s.*$", Pattern.quote(enteredText)), Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(lc.getLangCode() + " " + lc.getDescription());
-        return matcher.find();
     }
 
     private void hidePopupWindow() {
@@ -219,5 +223,9 @@ public class SuggestField<T> extends JComponent {
     public void clear() {
         textField.setText("");
         hidePopupWindow();
+    }
+
+    public void setText(@Nonnull String langCode) {
+        textField.setText(langCode);
     }
 }
