@@ -201,6 +201,7 @@ public class SuggestField<T> extends JComponent {
             selIndex = size - 1;
         }
         suggestList.setSelectedIndex(selIndex);
+        suggestList.scrollRectToVisible(suggestList.getCellBounds(selIndex, selIndex));
     }
 
     private void decrementSelection() {
@@ -213,6 +214,7 @@ public class SuggestField<T> extends JComponent {
             selIndex = 0;
         }
         suggestList.setSelectedIndex(selIndex);
+        suggestList.scrollRectToVisible(suggestList.getCellBounds(selIndex, selIndex));
     }
 
     public void clear() {
