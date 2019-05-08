@@ -10,10 +10,10 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Matthew Horridge
@@ -47,6 +47,12 @@ public class LangTagEditor extends JComponent {
                 processKeyPressed(e);
             }
         };
+        textField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                hidePopupWindow();
+            }
+        });
         textField.addKeyListener(keyListener);
         textField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -88,11 +94,9 @@ public class LangTagEditor extends JComponent {
     }
 
     private static boolean matches(String enteredText, LangCode lc) {
-        String lowerCaseEnteredText = enteredText.toLowerCase();
-        String langCode = lc.getLangCode().toLowerCase();
-        return langCode.startsWith(lowerCaseEnteredText)
-                || lc.getDescription().toLowerCase().contains(lowerCaseEnteredText)
-                || langCode.contains("-" + lowerCaseEnteredText);
+        Pattern pattern = Pattern.compile(String.format("^.*\\b%s.*$", Pattern.quote(enteredText)), Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(lc.getLangCode() + " " + lc.getDescription());
+        return matcher.find();
     }
 
     private void hidePopupWindow() {
