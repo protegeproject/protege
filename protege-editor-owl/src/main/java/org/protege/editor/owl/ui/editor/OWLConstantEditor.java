@@ -303,8 +303,32 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
                                    0,
                                    0));
 
+        add(new FormLabel("Language Tag"),
+            new GridBagConstraints(1, 3,
+                                   1,
+                                   1,
+                                   0.0,
+                                   0.0,
+                                   GridBagConstraints.BASELINE_LEADING,
+                                   GridBagConstraints.NONE,
+                                   formLabelInsets,
+                                   0,
+                                   0));
+
+        add(langTagField,
+            new GridBagConstraints(1, 4,
+                                   1,
+                                   1,
+                                   100.0,
+                                   0.0,
+                                   GridBagConstraints.BASELINE_LEADING,
+                                   GridBagConstraints.HORIZONTAL,
+                                   new Insets(0, 0, 0, 0),
+                                   40,
+                                   0));
+
         add(new FormLabel("Datatype"),
-                new GridBagConstraints(1, 3,
+                new GridBagConstraints(1, 5,
                         1,
                         1,
                         0.0,
@@ -317,7 +341,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
 
 
         add(datatypeField,
-            new GridBagConstraints(1, 4,
+            new GridBagConstraints(1, 6,
                         1,
                         1,
                         100.0,
@@ -328,29 +352,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
                         40,
                         0));
 
-        add(new FormLabel("Language Tag"),
-                new GridBagConstraints(1, 5,
-                        1,
-                        1,
-                        0.0,
-                        0.0,
-                        GridBagConstraints.BASELINE_LEADING,
-                        GridBagConstraints.NONE,
-                                       formLabelInsets,
-                        0,
-                        0));
 
-        add(langTagField,
-            new GridBagConstraints(1, 6,
-                        1,
-                        1,
-                        100.0,
-                        0.0,
-                        GridBagConstraints.BASELINE_LEADING,
-                        GridBagConstraints.HORIZONTAL,
-                        new Insets(0, 0, 0, 0),
-                        40,
-                        0));
     }
 
     public void dispose() {
