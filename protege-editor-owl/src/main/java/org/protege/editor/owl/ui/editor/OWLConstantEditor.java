@@ -16,6 +16,7 @@ import org.protege.editor.owl.model.util.LiteralChecker;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLAutoCompleter;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
+import org.protege.editor.owl.ui.lang.LangTagEditor;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLLiteral;
@@ -43,7 +44,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
 
     private final JTextArea lexicalValueField = new JTextArea(8, 40);
 
-    private final JComboBox<LangCode> langComboBox;
+    private final LangTagEditor langComboBox;
 
     private final JComboBox<OWLDatatype> datatypeField;
 
@@ -67,8 +68,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         lexicalValueField.setBorder(null);
 
         final UIHelper uiHelper = new UIHelper(owlEditorKit);
-        langComboBox = uiHelper.getLangCodeSelector();
-        langComboBox.addActionListener(e -> validateContent());
+        langComboBox = new LangTagEditor(LangCodeRegistry.get());
 
         datatypeField = uiHelper.getDatatypeSelector();
         datatypeField.addActionListener(e -> validateContent());
@@ -206,7 +206,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         }
         lexicalValueField.setText(literal.getLiteral());
         if(literal.isRDFPlainLiteral()) {
-            langCodeRegistry.getLangCode(literal.getLang()).ifPresent(langComboBox::setSelectedItem);
+            langCodeRegistry.getLangCode(literal.getLang()).ifPresent(langComboBox::setLangCode);
         }
         else {
             datatypeField.setSelectedItem(literal.getDatatype());
@@ -226,11 +226,11 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
     public void clear() {
         lexicalValueField.setText("");
         datatypeField.setSelectedItem(lastDatatype);
-        langComboBox.setSelectedItem(lastLanguage);
+        langComboBox.clear();
     }
 
     private boolean isLangSelected() {
-        return langComboBox.getSelectedItem() != null && !langComboBox.getSelectedItem().equals("");
+        return langComboBox.getLangCode().isPresent();
     }
 
     private boolean isDatatypeSelected() {
@@ -238,7 +238,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
     }
 
     private Optional<LangCode> getSelectedLang() {
-        return Optional.ofNullable((LangCode) langComboBox.getSelectedItem());
+        return langComboBox.getLangCode();
     }
 
     /**
