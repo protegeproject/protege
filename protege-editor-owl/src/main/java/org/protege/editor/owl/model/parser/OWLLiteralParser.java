@@ -35,7 +35,6 @@ public class OWLLiteralParser {
         String normalisedValue = value.trim();
         return parse(normalisedValue,
                 BOOLEAN_LITERAL_PARSER,
-                INTEGER_LITERAL_PARSER,
                 DECIMAL_LITERAL_PARSER,
                 FLOAT_LITERAL_PARSER);
 
@@ -49,7 +48,7 @@ public class OWLLiteralParser {
                 return lit.get();
             }
         }
-        return dataFactory.getOWLLiteral(value, "");
+        return dataFactory.getOWLLiteral(value, OWL2Datatype.XSD_STRING);
     }
 
     private static class LiteralParser {

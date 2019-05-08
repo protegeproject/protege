@@ -38,31 +38,31 @@ public class OWLLiteralParser_TestCase {
     }
 
     @Test
-    public void shouldParseZeroAsInteger() {
+    public void shouldParseZeroAsDecimal() {
         OWLLiteral literal = parser.parseLiteral("0");
-        assertThatLiteralHasDatatype(literal, OWL2Datatype.XSD_INTEGER);
+        assertThatLiteralHasDatatype(literal, OWL2Datatype.XSD_DECIMAL);
         assertThatLiteralValueIs(literal, "0");
     }
 
     @Test
-    public void shouldParseOneAsInteger() {
+    public void shouldParseOneAsDecimalDecimal() {
         OWLLiteral literal = parser.parseLiteral("1");
-        assertThatLiteralHasDatatype(literal, OWL2Datatype.XSD_INTEGER);
+        assertThatLiteralHasDatatype(literal, OWL2Datatype.XSD_DECIMAL);
         assertThatLiteralValueIs(literal, "1");
     }
 
 
     @Test
-    public void shouldParseAsInteger() {
+    public void shouldParseAsIntegerDecimal() {
         OWLLiteral literal = parser.parseLiteral("3");
-        assertThatLiteralHasDatatype(literal, OWL2Datatype.XSD_INTEGER);
+        assertThatLiteralHasDatatype(literal, OWL2Datatype.XSD_DECIMAL);
         assertThatLiteralValueIs(literal, "3");
     }
 
     @Test
-    public void shouldTrimAndParseAsInteger() {
+    public void shouldTrimAndParseWholeNumberAsDecimal() {
         OWLLiteral literal = parser.parseLiteral(" 3 ");
-        assertThatLiteralHasDatatype(literal, OWL2Datatype.XSD_INTEGER);
+        assertThatLiteralHasDatatype(literal, OWL2Datatype.XSD_DECIMAL);
         assertThatLiteralValueIs(literal, "3");
     }
 
@@ -136,9 +136,9 @@ public class OWLLiteralParser_TestCase {
     }
 
     @Test
-    public void shouldParseAsRDFPlainLiteral() {
+    public void shouldParseAsString() {
         OWLLiteral literal = parser.parseLiteral("Blah");
-        assertThatLiteralHasDatatype(literal, OWL2Datatype.RDF_PLAIN_LITERAL);
+        assertThatLiteralHasDatatype(literal, OWL2Datatype.XSD_STRING);
         assertThatLiteralValueIs(literal, "Blah");
     }
 
@@ -152,6 +152,6 @@ public class OWLLiteralParser_TestCase {
     public void shouldNotParseOutLang() {
         OWLLiteral literal = parser.parseLiteral("Hello@World");
         assertThat(literal.getLiteral(), is("Hello@World"));
-        assertThatLiteralHasDatatype(literal, OWL2Datatype.RDF_PLAIN_LITERAL);
+        assertThatLiteralHasDatatype(literal, OWL2Datatype.XSD_STRING);
     }
 }

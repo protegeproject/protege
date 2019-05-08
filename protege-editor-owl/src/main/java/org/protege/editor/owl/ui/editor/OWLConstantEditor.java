@@ -76,12 +76,12 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         lexicalValueField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                validateContent();
+                handleLexicalValueChanged();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                validateContent();
+                handleLexicalValueChanged();
             }
 
             @Override
@@ -100,6 +100,18 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
 
         setupAutoCompleter(owlEditorKit);
         layoutComponents();
+    }
+
+    private void handleLexicalValueChanged() {
+        if(isLangSelected()) {
+            datatypeField.setSelectedItem(null);
+        }
+        else {
+            OWLLiteralParser parser = new OWLLiteralParser(dataFactory);
+            OWLLiteral parsedLiteral = parser.parseLiteral(lexicalValueField.getText().trim());
+            datatypeField.setSelectedItem(parsedLiteral.getDatatype());
+        }
+        validateContent();
     }
 
     private void validateContent() {
