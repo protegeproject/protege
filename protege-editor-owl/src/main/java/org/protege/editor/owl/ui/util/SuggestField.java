@@ -191,11 +191,6 @@ public class SuggestField<T> extends JComponent {
         return Optional.of(window);
     }
 
-    public void setLangCode(LangCode langCode) {
-        textField.setText(langCode.getLangCode());
-        window.setVisible(false);
-    }
-
     private void incrementSelection() {
         int size = suggestList.getModel().getSize();
         if(size == 0) {
