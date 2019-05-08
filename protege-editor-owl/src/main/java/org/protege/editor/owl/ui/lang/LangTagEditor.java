@@ -53,6 +53,14 @@ public class LangTagEditor extends JComponent {
                 hidePopupWindow();
             }
         });
+        langCodeList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if(e.getClickCount() == 2) {
+                    completeWithPopupSelection();
+                }
+            }
+        });
         textField.addKeyListener(keyListener);
         textField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -121,10 +129,8 @@ public class LangTagEditor extends JComponent {
         }
         else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             getPopupWindow().ifPresent(w -> {
-                completing = true;
                 e.consume();
                 completeWithPopupSelection();
-                completing = false;
             });
         }
         else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
@@ -142,12 +148,17 @@ public class LangTagEditor extends JComponent {
     }
 
     private void completeWithPopupSelection() {
-        hidePopupWindow();
-        LangCode sel = langCodeList.getSelectedValue();
-        if(sel == null) {
-            return;
+        try {
+            completing = true;
+            hidePopupWindow();
+            LangCode sel = langCodeList.getSelectedValue();
+            if(sel == null) {
+                return;
+            }
+            textField.setText(sel.getLangCode());
+        } finally {
+            completing = false;
         }
-        textField.setText(sel.getLangCode());
     }
 
     @Nonnull
