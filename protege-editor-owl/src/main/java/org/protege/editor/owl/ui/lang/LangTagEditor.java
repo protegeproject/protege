@@ -28,11 +28,11 @@ public class LangTagEditor extends JComponent {
     public LangTagEditor(LangCodeRegistry registry) {
         this.registry = registry;
         this.suggestField = new SuggestField<>(PLACEHOLDER_TEXT);
+        setLayout(new BorderLayout());
+        add(suggestField, BorderLayout.NORTH);
         this.suggestField.setSuggestOracle(this::getLangCodesMatching);
         this.suggestField.setSuggestionToString(LangCode::getLangCode);
         this.suggestField.setRenderer(new LangCodeRenderer());
-        setLayout(new BorderLayout());
-        add(suggestField, BorderLayout.NORTH);
     }
 
     private Stream<LangCode> getLangCodesMatching(@Nonnull String query) {
