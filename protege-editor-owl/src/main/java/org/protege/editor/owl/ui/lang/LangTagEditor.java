@@ -6,6 +6,7 @@ import org.protege.editor.owl.ui.util.SuggestField;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -59,5 +60,9 @@ public class LangTagEditor extends JComponent {
 
     public void clear() {
         suggestField.clear();
+    }
+
+    public void setChangeListener(ChangeListener changeListener) {
+        suggestField.setChangeListener(changeListener);
     }
 }

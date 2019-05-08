@@ -50,8 +50,6 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
 
     private final OWLDataFactory dataFactory;
 
-    private LangCode lastLanguage;
-
     private OWLDatatype lastDatatype;
 
     private LangCodeRegistry langCodeRegistry = LangCodeRegistry.get();
@@ -69,7 +67,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
 
         final UIHelper uiHelper = new UIHelper(owlEditorKit);
         langTagField = new LangTagEditor(LangCodeRegistry.get());
-
+        langTagField.setChangeListener(e -> handleLangTagChanged());
         datatypeField = uiHelper.getDatatypeSelector();
         datatypeField.addActionListener(e -> validateContent());
 
@@ -102,17 +100,33 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         layoutComponents();
     }
 
+    private void handleLangTagChanged() {
+        updateDatatype();
+    }
+
     private void handleLexicalValueChanged() {
+        updateDatatype();
+    }
+
+    private void updateDatatype() {
         if(isLangSelected()) {
             datatypeField.setSelectedItem(null);
         }
         else {
-            OWLLiteralParser parser = new OWLLiteralParser(dataFactory);
-            OWLLiteral parsedLiteral = parser.parseLiteral(lexicalValueField.getText().trim());
-            datatypeField.setSelectedItem(parsedLiteral.getDatatype());
+            OWLDatatype selDatatype = (OWLDatatype) datatypeField.getSelectedItem();
+            if(isBuiltInParseableDatatpe(selDatatype) || selDatatype == null) {
+                OWLLiteralParser parser = new OWLLiteralParser(dataFactory);
+                OWLLiteral parsedLiteral = parser.parseLiteral(lexicalValueField.getText().trim());
+                datatypeField.setSelectedItem(parsedLiteral.getDatatype());
+            }
         }
         validateContent();
     }
+
+    private boolean isBuiltInParseableDatatpe(OWLDatatype selDatatype) {
+        return selDatatype != null && (selDatatype.isString() || selDatatype.isInteger() || selDatatype.isBoolean() || selDatatype.isFloat());
+    }
+
 
     private void validateContent() {
         clearErrorMessage();
@@ -175,11 +189,9 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
     @Nonnull
     public OWLLiteral getEditedObject() {
         lastDatatype = null;
-        lastLanguage = null;
         String value = getLexicalValue();
         // Specifying a language tag overrides the datatype
         if (isLangSelected()) {
-            lastLanguage = getSelectedLang().orElse(null);
             return dataFactory.getOWLLiteral(value, getSelectedLang().map(LangCode::getLangCode).orElse(null));
         }
         if (isDatatypeSelected()) {
@@ -219,6 +231,7 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         lexicalValueField.setText(literal.getLiteral());
         if(literal.isRDFPlainLiteral()) {
             langCodeRegistry.getLangCode(literal.getLang()).ifPresent(langTagField::setLangCode);
+            datatypeField.setSelectedItem(null);
         }
         else {
             datatypeField.setSelectedItem(literal.getDatatype());

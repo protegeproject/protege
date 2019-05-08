@@ -6,6 +6,8 @@ import org.protege.editor.owl.model.lang.LangCode;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
@@ -42,6 +44,8 @@ public class SuggestField<T> extends JComponent {
     private JWindow window;
 
     private boolean completing = false;
+
+    private ChangeListener changeListener = (event) -> {};
 
     public SuggestField(@Nonnull String placeholderText) {
         this.textField = new AugmentedJTextField(placeholderText);
@@ -90,6 +94,10 @@ public class SuggestField<T> extends JComponent {
         return textField.getText();
     }
 
+    public void setChangeListener(@Nonnull ChangeListener changeListener) {
+        this.changeListener = checkNotNull(changeListener);
+    }
+
     public void setSuggestOracle(@Nonnull SuggestOracle<T> suggestOracle) {
         this.suggestOracle = checkNotNull(suggestOracle);
     }
@@ -103,6 +111,7 @@ public class SuggestField<T> extends JComponent {
     }
 
     private void handleDocumentChanged(DocumentEvent e) {
+        changeListener.stateChanged(new ChangeEvent(this));
         if(completing) {
             return;
         }
