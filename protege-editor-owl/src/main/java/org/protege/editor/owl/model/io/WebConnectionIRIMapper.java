@@ -58,7 +58,8 @@ public class WebConnectionIRIMapper implements OWLOntologyIRIMapper {
                 int responseCode = httpURLConnection.getResponseCode();
                 if(responseCode == HttpURLConnection.HTTP_OK
                         || responseCode == HttpURLConnection.HTTP_MOVED_TEMP
-                        || responseCode == HttpURLConnection.HTTP_MOVED_PERM) {
+                        || responseCode == HttpURLConnection.HTTP_MOVED_PERM
+                        || responseCode == HttpURLConnection.HTTP_SEE_OTHER) {
                     return ontologyIRI;
                 }
             }
