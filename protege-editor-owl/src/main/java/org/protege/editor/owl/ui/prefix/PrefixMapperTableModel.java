@@ -48,7 +48,6 @@ public class PrefixMapperTableModel extends AbstractTableModel {
     }
 
     public void refill() {
-    	logger.debug("Clearing changed flag because of a refill operation");
     	changed = false;
     	// arguably here we should only delete the prefixNames that don't have an empty value
     	// it is a little weird when they disappear because they were not committed to the PrefixOWLOntologyFormat
@@ -67,9 +66,6 @@ public class PrefixMapperTableModel extends AbstractTableModel {
 
     public int addMapping(String prefix, String value) {
     	changed = changed || (value != null && value.length() != 0);
-    	if (logger.isDebugEnabled()) {
-    		logger.debug("adding mapping " + prefix + " -> " + value + " changed = " + changed);
-    	}
     	prefixNames.add(prefix);
         prefixName2PrefixMap.put(prefix, value);
 	    fireTableDataChanged();
@@ -81,17 +77,11 @@ public class PrefixMapperTableModel extends AbstractTableModel {
     	prefixNames.remove(prefix);
 	    String prefixValue = prefixName2PrefixMap.remove(prefix);
 	    changed = changed || (prefixValue != null & prefixValue.length() != 0);
-    	if (logger.isDebugEnabled()) {
-    		logger.debug("removing mapping " + prefix + " -> " + prefixValue + " changed = " + changed);
-    	}
 	    fireTableDataChanged();
 	}
 
 	public boolean commitPrefixes() {
     	if (changed) {
-    		if (logger.isDebugEnabled()) {
-    			logger.debug("committing prefix changes and clearing changed flag");
-    		}
     		prefixManager.setPrefixManager(new DefaultPrefixManager());
     		for (Map.Entry<String, String> prefixName2PrefixEntry : prefixName2PrefixMap.entrySet()) {
     			String prefixName = prefixName2PrefixEntry.getKey();
@@ -183,18 +173,11 @@ public class PrefixMapperTableModel extends AbstractTableModel {
 		String prefixValue = prefixName2PrefixMap.remove(currentPrefixName);
 		prefixName2PrefixMap.put(newPrefix, prefixValue);
 		changed = changed || (prefixValue != null && prefixValue.length() != 0);
-		if (logger.isDebugEnabled()) {
-			logger.debug("Changed the name associated with the prefix " + prefixValue + " from " + currentPrefixName + " to " + newPrefix + " changed = " + changed);
-		}
 		fireTableDataChanged();
 	}
 
 	private void setPrefixAt(Object aValue,
 							 String currentPrefixName) {
-		// Replacing value
-		if (logger.isDebugEnabled()) {
-			logger.debug("Changing the value associated with the prefix " + currentPrefixName + " with a delete and an add.");
-		}
 		removeMapping(currentPrefixName);
 		addMapping(currentPrefixName, aValue.toString());
 	}
