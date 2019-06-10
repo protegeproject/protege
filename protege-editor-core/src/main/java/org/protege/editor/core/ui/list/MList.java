@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Author: Matthew Horridge<br>
@@ -82,6 +83,8 @@ public class MList extends JList {
 
     private final MousePositionCache mousePositionCache;
 
+    private final DefaultListModel model = new DefaultListModel();
+
     public MList() {
         ListCellRenderer renderer = this.getCellRenderer();
         this.ren = new MListCellRenderer();
@@ -115,6 +118,9 @@ public class MList extends JList {
             }
         };
         this.addMouseListener(mouseButtonListener);
+        addListSelectionListener(e -> {
+            model.set(e.getFirstIndex(), model.getElementAt(e.getFirstIndex()));
+        });
         attachedListenersForCacheResetting();
     }
 
@@ -139,6 +145,14 @@ public class MList extends JList {
                 clearCellHeightCache();
             }
         });
+    }
+
+    @Override
+    public void setListData(Object[] listData) {
+        setModel(new DefaultListModel());
+        model.clear();
+        Stream.of(listData).forEach(o -> model.add(model.size(), o));
+        setModel(model);
     }
 
     /**

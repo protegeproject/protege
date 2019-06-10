@@ -28,7 +28,7 @@ public class GeneratePrefixFromOntologyAction extends AbstractAction {
 
     public GeneratePrefixFromOntologyAction(OWLEditorKit owlEditorKit, PrefixMapperTables tables) {
         super("Generate from ontology URI", OWLIcons.getIcon("prefix.generate.png"));
-        putValue(AbstractAction.SHORT_DESCRIPTION, "Generate prefix mappings from ontology URIs...");
+        putValue(Action.SHORT_DESCRIPTION, "Generate prefix mappings from ontology URIs...");
         this.owlEditorKit = owlEditorKit;
         this.tables = tables;
     }
