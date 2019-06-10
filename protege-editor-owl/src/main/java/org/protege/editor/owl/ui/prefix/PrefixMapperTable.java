@@ -18,8 +18,8 @@ import static org.protege.editor.owl.ui.prefix.PrefixMapperTableModel.Column;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class PrefixMapperTable extends BasicOWLTable {
-	private static final long serialVersionUID = 7960180034430124925L;
-	private PrefixDocumentFormat prefixManager;
+
+	private final PrefixDocumentFormat prefixManager;
 
     public PrefixMapperTable(PrefixDocumentFormat prefixManager) {
         super(new PrefixMapperTableModel(prefixManager));

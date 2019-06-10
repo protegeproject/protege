@@ -19,8 +19,7 @@ import java.util.*;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class PrefixMapperTableModel extends AbstractTableModel {
-	private static final long serialVersionUID = -5098097390890500539L;
-	
+
 	private final Logger logger = LoggerFactory.getLogger(PrefixMapperTableModel.class);
 	
 	public enum Column {
@@ -118,9 +117,9 @@ public class PrefixMapperTableModel extends AbstractTableModel {
 	public String getColumnName(int column) {
 		switch (Column.values()[column]) {
 		case PREFIX_NAME:
-			return "Prefix";
+			return "Prefix Name";
 		case PREFIX:
-			return "Value";
+			return "Prefix";
 		default:
 			throw new UnsupportedOperationException("Programmer error: missed a case");
 		}
