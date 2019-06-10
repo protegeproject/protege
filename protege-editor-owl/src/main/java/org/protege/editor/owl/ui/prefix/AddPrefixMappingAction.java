@@ -22,7 +22,7 @@ public class AddPrefixMappingAction extends AbstractAction {
 
     public AddPrefixMappingAction(PrefixMapperTables tables) {
         super("Add prefix", OWLIcons.getIcon("prefix.add.png"));
-        putValue(AbstractAction.SHORT_DESCRIPTION, "Add prefix mapping");
+        putValue(Action.SHORT_DESCRIPTION, "Add prefix mapping");
         this.tables = tables;
     }
 

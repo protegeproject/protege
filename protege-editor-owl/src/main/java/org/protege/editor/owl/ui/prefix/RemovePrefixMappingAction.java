@@ -21,7 +21,6 @@ import java.util.List;
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
 public class RemovePrefixMappingAction extends AbstractAction {
-	private static final long serialVersionUID = 5507854297099664212L;
 	
 	private PrefixMapperTables tables;
 	private PrefixMapperTable table;
@@ -44,6 +43,7 @@ public class RemovePrefixMappingAction extends AbstractAction {
 
     public RemovePrefixMappingAction(PrefixMapperTables tables) {
         super("Remove prefix", OWLIcons.getIcon("prefix.remove.png"));
+        putValue(Action.SHORT_DESCRIPTION, "Remove selected prefix");
         this.tables = tables;
         table = tables.getPrefixMapperTable();
         table.getSelectionModel().addListSelectionListener(tableSelectionListener);
