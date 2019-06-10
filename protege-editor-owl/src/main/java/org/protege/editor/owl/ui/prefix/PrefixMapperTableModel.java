@@ -10,6 +10,7 @@ import javax.swing.table.AbstractTableModel;
 import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Comparator.naturalOrder;
 
 
 /**
@@ -57,6 +58,7 @@ public class PrefixMapperTableModel extends AbstractTableModel {
 		prefixManager.getPrefixName2PrefixMap()
 				.forEach(prefixName2PrefixMap::put);
         prefixNames.addAll(prefixName2PrefixMap.keySet());
+        prefixNames.sort(naturalOrder());
         fireTableDataChanged();
     }
     
