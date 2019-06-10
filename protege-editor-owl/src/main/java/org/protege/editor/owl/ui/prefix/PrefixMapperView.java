@@ -41,6 +41,8 @@ public class PrefixMapperView extends AbstractActiveOntologyViewComponent {
 	
 	private JToolBar createButtons() {
 		JToolBar panel = new JToolBar();
+		panel.setFloatable(false);
+		panel.setBorderPainted(false);
 		panel.add(new AddPrefixMappingAction(tables));
 		panel.add(new GeneratePrefixFromOntologyAction(getOWLEditorKit(), tables));
 		panel.add(new RemovePrefixMappingAction(tables));
