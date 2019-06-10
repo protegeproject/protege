@@ -27,19 +27,17 @@ public class PrefixMapperTableModel extends AbstractTableModel {
 	}
 	
 	
-	private List<String> prefixes;
+	private final List<String> prefixes = new ArrayList<>();
 
-    private Map<String, String> prefixValueMap;
+    private final Map<String, String> prefixValueMap = new HashMap<>();
     
-    private PrefixDocumentFormat prefixManager;
+    private final PrefixDocumentFormat prefixManager;
     
     private boolean changed = false;
 
 
     public PrefixMapperTableModel(PrefixDocumentFormat prefixManager) {
     	this.prefixManager = prefixManager;
-        prefixValueMap = new HashMap<>();
-        prefixes = new ArrayList<>();
         refill();
     }
 
