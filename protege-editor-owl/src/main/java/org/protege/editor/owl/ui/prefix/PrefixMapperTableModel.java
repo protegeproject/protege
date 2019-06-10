@@ -176,20 +176,20 @@ public class PrefixMapperTableModel extends AbstractTableModel {
 
 	private void setPrefixNameAt(Object aValue,
 								 String currentPrefixName) {
-		// Replacing prefix name
 		String newPrefix = aValue.toString();
-		if (!prefixNames.contains(newPrefix)){
-			prefixNames.remove(currentPrefixName);
-			prefixNames.add(newPrefix);
-			Collections.sort(prefixNames);
-			String prefixValue = prefixName2PrefixMap.remove(currentPrefixName);
-			prefixName2PrefixMap.put(newPrefix, prefixValue);
-			changed = changed || (prefixValue != null && prefixValue.length() != 0);
-			if (logger.isDebugEnabled()) {
-				logger.debug("Changed the name associated with the prefix " + prefixValue + " from " + currentPrefixName + " to " + newPrefix + " changed = " + changed);
-			}
-			fireTableDataChanged();
+		if(prefixNames.contains(newPrefix)) {
+			return;
 		}
+		prefixNames.remove(currentPrefixName);
+		prefixNames.add(newPrefix);
+		Collections.sort(prefixNames);
+		String prefixValue = prefixName2PrefixMap.remove(currentPrefixName);
+		prefixName2PrefixMap.put(newPrefix, prefixValue);
+		changed = changed || (prefixValue != null && prefixValue.length() != 0);
+		if (logger.isDebugEnabled()) {
+			logger.debug("Changed the name associated with the prefix " + prefixValue + " from " + currentPrefixName + " to " + newPrefix + " changed = " + changed);
+		}
+		fireTableDataChanged();
 	}
 
 	private void setPrefixAt(Object aValue,
