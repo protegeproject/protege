@@ -81,20 +81,20 @@ public class PrefixMapperTableModel extends AbstractTableModel {
 	}
 
 	public boolean commitPrefixes() {
-    	if (changed) {
-    		prefixManager.setPrefixManager(new DefaultPrefixManager());
-    		for (Map.Entry<String, String> prefixName2PrefixEntry : prefixName2PrefixMap.entrySet()) {
-    			String prefixName = prefixName2PrefixEntry.getKey();
-    			String prefix     = prefixName2PrefixEntry.getValue();
-    			if (prefix != null && prefix.length() != 0) {
-    				prefixManager.setPrefix(prefixName, prefix);
-    			}
-    		}
-    		changed = false;
-    		return true;
-    	}
-    	return false;
-    }
+		if(!changed) {
+			return false;
+		}
+		prefixManager.setPrefixManager(new DefaultPrefixManager());
+		for (Map.Entry<String, String> prefixName2PrefixEntry : prefixName2PrefixMap.entrySet()) {
+			String prefixName = prefixName2PrefixEntry.getKey();
+			String prefix     = prefixName2PrefixEntry.getValue();
+			if (prefix != null && prefix.length() != 0) {
+				prefixManager.setPrefix(prefixName, prefix);
+			}
+		}
+		changed = false;
+		return true;
+	}
 
 
     public void sortTable() {
