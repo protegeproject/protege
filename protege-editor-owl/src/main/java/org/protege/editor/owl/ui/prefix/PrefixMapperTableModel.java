@@ -58,7 +58,6 @@ public class PrefixMapperTableModel extends AbstractTableModel {
 		prefixManager.getPrefixName2PrefixMap()
 				.forEach(prefixName2PrefixMap::put);
         prefixNames.addAll(prefixName2PrefixMap.keySet());
-        Collections.sort(prefixNames);
         fireTableDataChanged();
     }
     
@@ -72,7 +71,6 @@ public class PrefixMapperTableModel extends AbstractTableModel {
     		logger.debug("adding mapping " + prefix + " -> " + value + " changed = " + changed);
     	}
     	prefixNames.add(prefix);
-    	Collections.sort(prefixNames);
         prefixName2PrefixMap.put(prefix, value);
 	    fireTableDataChanged();
         return prefixNames.indexOf(prefix);
@@ -182,7 +180,6 @@ public class PrefixMapperTableModel extends AbstractTableModel {
 		}
 		prefixNames.remove(currentPrefixName);
 		prefixNames.add(newPrefix);
-		Collections.sort(prefixNames);
 		String prefixValue = prefixName2PrefixMap.remove(currentPrefixName);
 		prefixName2PrefixMap.put(newPrefix, prefixValue);
 		changed = changed || (prefixValue != null && prefixValue.length() != 0);
