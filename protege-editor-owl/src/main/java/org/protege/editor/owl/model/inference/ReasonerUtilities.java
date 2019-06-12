@@ -47,7 +47,7 @@ public class ReasonerUtilities {
             break;
 		case INITIALIZATION_IN_PROGRESS:
             JOptionPane.showMessageDialog(owner,
-                    "Reasoner still intializing.  Wait for initialization to complete.",
+                    "Reasoner still initializing.  Wait for initialization to complete.",
                     "Reasoner initializing",
                     JOptionPane.WARNING_MESSAGE);
             break;
