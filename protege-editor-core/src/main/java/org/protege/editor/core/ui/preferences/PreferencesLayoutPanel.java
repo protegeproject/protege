@@ -18,6 +18,8 @@ public class PreferencesLayoutPanel extends JComponent {
 
     private int currentRow = 0;
 
+    private int componentCol = 1;
+
     private List<JRadioButton> currentButtonRun = new ArrayList<>();
 
     public PreferencesLayoutPanel() {
@@ -25,6 +27,15 @@ public class PreferencesLayoutPanel extends JComponent {
         setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
         backingPanel = new JPanel(new GridBagLayout());
         add(backingPanel, BorderLayout.NORTH);
+    }
+
+    public void setUseVerticalLabelling(boolean useVerticalLabelling) {
+        if(useVerticalLabelling) {
+            componentCol = 0;
+        }
+        else {
+            componentCol = 1;
+        }
     }
 
     @Override
@@ -62,17 +73,25 @@ public class PreferencesLayoutPanel extends JComponent {
 
     public void addGroup(String groupLabel) {
         JLabel label = new JLabel(groupLabel);
+        int alignment = isUseVerticalLabelling() ? GridBagConstraints.ABOVE_BASELINE_LEADING : GridBagConstraints.ABOVE_BASELINE_TRAILING;
         label.setFont(label.getFont().deriveFont(Font.BOLD));
         backingPanel.add(label,
                 new GridBagConstraints(
                         0, currentRow,
                         1, 1,
                         0, 0,
-                        GridBagConstraints.BASELINE_TRAILING,
+                        alignment,
                         GridBagConstraints.NONE,
                         new Insets(0, 0, 0, 10),
                         0, 0
                 ));
+        if(isUseVerticalLabelling()) {
+            currentRow++;
+        }
+    }
+
+    private boolean isUseVerticalLabelling() {
+        return componentCol == 0;
     }
 
     public void addGroupComponent(JComponent component) {
@@ -92,7 +111,7 @@ public class PreferencesLayoutPanel extends JComponent {
         }
         backingPanel.add(component,
                 new GridBagConstraints(
-                        1, currentRow,
+                        componentCol, currentRow,
                         2, 1,
                         100, 0,
                         GridBagConstraints.BASELINE_LEADING,
@@ -122,7 +141,7 @@ public class PreferencesLayoutPanel extends JComponent {
         handleComponentAdded(component);
         backingPanel.add(component,
                 new GridBagConstraints(
-                        1, currentRow,
+                        componentCol, currentRow,
                         2, 1,
                         100, 0,
                         GridBagConstraints.BASELINE_LEADING,
@@ -163,10 +182,12 @@ public class PreferencesLayoutPanel extends JComponent {
                         INSETS,
                         0, 0
                 ));
-
+        if(isUseVerticalLabelling()) {
+            currentRow++;
+        }
         backingPanel.add(component,
                 new GridBagConstraints(
-                        2, currentRow,
+                        componentCol, currentRow,
                         1, 1,
                         100, 0,
                         GridBagConstraints.BASELINE_LEADING,
