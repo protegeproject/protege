@@ -3,6 +3,8 @@ package org.protege.editor.owl.ui.prefix;
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.util.EventObject;
 
@@ -23,6 +25,14 @@ public class PrefixTableCellEditor extends AbstractCellEditor implements TableCe
 
     public PrefixTableCellEditor() {
         textField = new JTextField();
+        textField.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                if(textField.getCaretPosition() == -1) {
+                    textField.selectAll();
+                }
+            }
+        });
         textField.setFont(new JLabel().getFont());
     }
 
@@ -49,6 +59,6 @@ public class PrefixTableCellEditor extends AbstractCellEditor implements TableCe
         if (e instanceof MouseEvent) {
             return ((MouseEvent) e).getClickCount() == 2;
         }
-        return false;
+        return true;
     }
 }

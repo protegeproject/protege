@@ -3,8 +3,6 @@ package org.protege.editor.core.ui.list;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.ui.util.MousePositionCache;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;

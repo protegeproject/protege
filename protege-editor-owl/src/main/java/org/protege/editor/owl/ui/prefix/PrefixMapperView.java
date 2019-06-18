@@ -4,16 +4,20 @@ import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.view.AbstractActiveOntologyViewComponent;
+import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PrefixMapperView extends AbstractActiveOntologyViewComponent {
 	private static final long serialVersionUID = 787248046135787437L;
 	private PrefixMapperTables tables;
 	private PrefixMapperTable currentTable;
 
+	private final PrefixList prefixList = new PrefixList();
 	
 	private OWLModelManagerListener entitiesChangedListener = new OWLModelManagerListener() {
 		
@@ -34,7 +38,7 @@ public class PrefixMapperView extends AbstractActiveOntologyViewComponent {
 		setLayout(new BorderLayout());
 		tables = new PrefixMapperTables(getOWLModelManager());
 		add(createButtons(), BorderLayout.NORTH);
-        add(tables, BorderLayout.CENTER);
+        add(prefixList, BorderLayout.CENTER);
 		updateView(getOWLModelManager().getActiveOntology());
 		getOWLModelManager().addListener(entitiesChangedListener);
 	}
@@ -60,6 +64,12 @@ public class PrefixMapperView extends AbstractActiveOntologyViewComponent {
 	protected void updateView(OWLOntology activeOntology) throws Exception {
 		tables.setOntology(activeOntology);
 		currentTable = tables.getPrefixMapperTable();
+		PrefixDocumentFormat prefixDocumentFormat = PrefixUtilities.getPrefixOWLOntologyFormat(activeOntology);
+		List<PrefixMapping> list = prefixDocumentFormat.getPrefixNames().stream().map(pn -> {
+			String p = prefixDocumentFormat.getPrefix(pn);
+			return PrefixMapping.get(pn, p);
+		}).collect(Collectors.toList());
+		prefixList.setPrefixMappings(list);
 	}
 	
 
