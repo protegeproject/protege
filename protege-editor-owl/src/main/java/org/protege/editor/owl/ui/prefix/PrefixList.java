@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -18,9 +19,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class PrefixList extends MList implements PrefixMappingsView {
 
+    private static final String TITLE = "Edit Prefix";
+
     private List<PrefixMapping> prefixMappings = new ArrayList<>();
 
     private PrefixMappingsChangedHandler changeHandler = () -> {};
+
+    private PrefixMappingEditor editor = new PrefixMappingEditor(new PrefixMappingEditorViewImpl());
 
     public PrefixList() {
         setCellRenderer(new PrefixMappingRenderer());
@@ -58,8 +63,34 @@ public class PrefixList extends MList implements PrefixMappingsView {
         }
     }
 
-    private void handleEdit(@Nonnull PrefixMapping prefixMapping) {
+    @Override
+    protected void handleAdd() {
+        editor.clear();
+        showEditorDialog().ifPresent(pm -> {
+            if(!prefixMappings.contains(pm)) {
+                prefixMappings.add(pm);
+                refill();
+            }
+        });
+    }
 
+    private Optional<PrefixMapping> showEditorDialog() {
+        int ret = JOptionPane.showConfirmDialog(this, editor.asJComponent(), TITLE, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if(ret == JOptionPane.OK_OPTION) {
+            return editor.getPrefixMapping();
+        }
+        else {
+            return Optional.empty();
+        }
+    }
+
+    private void handleEdit(@Nonnull PrefixMapping prefixMapping) {
+        editor.setPrefixMapping(prefixMapping);
+        int index = prefixMappings.indexOf(prefixMapping);
+        showEditorDialog().ifPresent(pm -> {
+            prefixMappings.set(index, pm);
+            refill();
+        });
     }
 
     @Nonnull
