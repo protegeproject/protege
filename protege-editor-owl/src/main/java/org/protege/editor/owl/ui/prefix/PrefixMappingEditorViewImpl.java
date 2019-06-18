@@ -45,6 +45,7 @@ public class PrefixMappingEditorViewImpl extends JPanel implements PrefixMapping
     @Override
     public void clear() {
         prefixNameField.setText("");
+        prefixField.setText("");
     }
 
     @Override
