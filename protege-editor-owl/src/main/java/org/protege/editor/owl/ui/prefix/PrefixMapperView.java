@@ -2,13 +2,17 @@ package org.protege.editor.owl.ui.prefix;
 
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
+import org.protege.editor.owl.ui.renderer.prefix.PrefixBasedRenderer;
 import org.protege.editor.owl.ui.view.AbstractActiveOntologyViewComponent;
 import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.util.DefaultPrefixManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class PrefixMapperView extends AbstractActiveOntologyViewComponent {
@@ -32,6 +36,7 @@ public class PrefixMapperView extends AbstractActiveOntologyViewComponent {
         add(new JScrollPane(prefixList), BorderLayout.CENTER);
 		updateView(getOWLModelManager().getActiveOntology());
 		getOWLModelManager().addListener(entitiesChangedListener);
+		prefixList.setPrefixMappingsChangedHandler(this::commitPrefixes);
 	}
 
 	@Override
@@ -47,6 +52,19 @@ public class PrefixMapperView extends AbstractActiveOntologyViewComponent {
 			return PrefixMapping.get(pn, p);
 		}).collect(Collectors.toList());
 		prefixList.setPrefixMappings(list);
+	}
+
+	public void commitPrefixes() {
+		OWLOntology activeOntology = getOWLModelManager().getActiveOntology();
+		PrefixDocumentFormat prefixDocumentFormat = PrefixUtilities.getPrefixOWLOntologyFormat(activeOntology);
+		prefixList.getPrefixMappings().forEach(pm -> {
+			prefixDocumentFormat.setPrefix(pm.getPrefixName(), pm.getPrefix());
+		});
+		getOWLModelManager().setDirty(getOWLModelManager().getActiveOntology());
+		OWLModelManagerEntityRenderer renderer = getOWLModelManager().getOWLEntityRenderer();
+		if (renderer instanceof PrefixBasedRenderer) {
+			getOWLModelManager().refreshRenderer();
+		}
 	}
 	
 

@@ -70,6 +70,7 @@ public class PrefixList extends MList implements PrefixMappingsView {
             if(!prefixMappings.contains(pm)) {
                 prefixMappings.add(pm);
                 refill();
+                changeHandler.handlePrefixMappingsChanged();
             }
         });
     }
@@ -90,6 +91,7 @@ public class PrefixList extends MList implements PrefixMappingsView {
         showEditorDialog().ifPresent(pm -> {
             prefixMappings.set(index, pm);
             refill();
+            changeHandler.handlePrefixMappingsChanged();
         });
     }
 
