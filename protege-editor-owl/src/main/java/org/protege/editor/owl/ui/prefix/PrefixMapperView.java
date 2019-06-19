@@ -11,6 +11,7 @@ import org.semanticweb.owlapi.util.DefaultPrefixManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -47,10 +48,14 @@ public class PrefixMapperView extends AbstractActiveOntologyViewComponent {
 	@Override
 	protected void updateView(OWLOntology activeOntology) {
 		PrefixDocumentFormat prefixDocumentFormat = PrefixUtilities.getPrefixOWLOntologyFormat(activeOntology);
-		List<PrefixMapping> list = prefixDocumentFormat.getPrefixNames().stream().map(pn -> {
-			String p = prefixDocumentFormat.getPrefix(pn);
-			return PrefixMapping.get(pn, p);
-		}).collect(Collectors.toList());
+		List<PrefixMapping> list = prefixDocumentFormat.getPrefixNames()
+				.stream()
+				.sorted()
+				.map(pn -> {
+					String p = prefixDocumentFormat.getPrefix(pn);
+					return PrefixMapping.get(pn, p);
+				})
+				.collect(Collectors.toList());
 		prefixList.setPrefixMappings(list);
 	}
 
