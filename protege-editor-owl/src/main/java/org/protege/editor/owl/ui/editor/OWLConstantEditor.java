@@ -32,6 +32,8 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Author: Matthew Horridge<br>
  * The University Of Manchester<br>
@@ -52,8 +54,9 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
 
     private OWLDatatype lastDatatype;
 
-    private LangCodeRegistry langCodeRegistry = LangCodeRegistry.get();
+    private OWLDatatype overridingDatatype;
 
+    private LangCodeRegistry langCodeRegistry = LangCodeRegistry.get();
 
     private final JLabel messageLabel = new JLabel();
 
@@ -100,6 +103,17 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         layoutComponents();
     }
 
+    public void setOverridingDatatype(@Nonnull OWLDatatype overridingDatatype) {
+        this.overridingDatatype = checkNotNull(overridingDatatype);
+        updateDatatype();
+    }
+
+    public void clearOverridingDatatype() {
+        this.overridingDatatype = null;
+        this.datatypeField.setSelectedItem(null);
+        updateDatatype();
+    }
+
     private void handleLangTagChanged() {
         updateDatatype();
     }
@@ -109,7 +123,11 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
     }
 
     private void updateDatatype() {
-        if(isLangSelected()) {
+        if(overridingDatatype != null) {
+            datatypeField.setSelectedItem(overridingDatatype);
+            langTagField.clear();
+        }
+        else if(isLangSelected()) {
             datatypeField.setSelectedItem(null);
         }
         else {

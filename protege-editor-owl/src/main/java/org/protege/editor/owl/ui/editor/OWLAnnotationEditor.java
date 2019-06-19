@@ -7,6 +7,8 @@ import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.hierarchy.OWLAnnotationPropertyHierarchyProvider;
 import org.protege.editor.owl.ui.selector.OWLAnnotationPropertySelectorPanel;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.search.EntitySearcher;
+import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import javax.annotation.Nonnull;
@@ -56,6 +58,7 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
 
     private boolean status = false;
 
+    private OWLConstantEditor constantEditor;
 
 
     public OWLAnnotationEditor(OWLEditorKit owlEditorKit) {
@@ -91,7 +94,11 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
         final OWLModelManager mngr = owlEditorKit.getOWLModelManager();
         final OWLAnnotationPropertyHierarchyProvider hp =
                 mngr.getOWLHierarchyManager().getOWLAnnotationPropertyHierarchyProvider();
-        return new OWLAnnotationPropertySelectorPanel(owlEditorKit, true, hp);
+        OWLAnnotationPropertySelectorPanel selectorPanel = new OWLAnnotationPropertySelectorPanel(owlEditorKit, true, hp);
+        selectorPanel.addSelectionListener(e -> {
+         updateOverridingDatatype(selectorPanel.getSelectedObject());
+        });
+        return selectorPanel;
 	}
 
 
@@ -113,7 +120,7 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
 
     protected List<OWLObjectEditor<? extends OWLAnnotationValue>> createEditors() {
 
-        final OWLConstantEditor constantEditor = new OWLConstantEditor(owlEditorKit);
+        constantEditor = new OWLConstantEditor(owlEditorKit);
 
         final IRITextEditor textEditor = new IRITextEditor(owlEditorKit);
         textEditor.addStatusChangedListener(mergedVerificationListener);
@@ -154,6 +161,7 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
                     editor.setEditedObject(null);
                 }
             }
+            updateOverridingDatatype(annotation.getProperty());
         }
         else {
             annotationPropertySelector.setSelection(lastSelectedProperty);
@@ -168,6 +176,21 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
         }
         tabbedPane.setSelectedIndex(tabIndex == -1 ? 0 : tabIndex);
         return true;
+    }
+
+    private void updateOverridingDatatype(@Nullable OWLAnnotationProperty property) {
+        constantEditor.clearOverridingDatatype();
+        if(property == null) {
+            return;
+        }
+        EntitySearcher.getRanges(property,
+                                 owlEditorKit.getOWLModelManager().getActiveOntology())
+                .stream()
+                .filter(OWL2Datatype::isBuiltIn)
+                .findFirst()
+                .map(OWL2Datatype::getDatatype)
+                .map(rng -> rng.getDatatype(owlEditorKit.getOWLModelManager().getOWLDataFactory()))
+                .ifPresent(rng -> constantEditor.setOverridingDatatype(rng));
     }
 
     @SuppressWarnings("unchecked")
