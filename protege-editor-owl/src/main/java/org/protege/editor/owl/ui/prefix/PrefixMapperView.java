@@ -57,6 +57,7 @@ public class PrefixMapperView extends AbstractActiveOntologyViewComponent {
 	public void commitPrefixes() {
 		OWLOntology activeOntology = getOWLModelManager().getActiveOntology();
 		PrefixDocumentFormat prefixDocumentFormat = PrefixUtilities.getPrefixOWLOntologyFormat(activeOntology);
+		prefixDocumentFormat.clear();
 		prefixList.getPrefixMappings().forEach(pm -> {
 			prefixDocumentFormat.setPrefix(pm.getPrefixName(), pm.getPrefix());
 		});
