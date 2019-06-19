@@ -22,13 +22,13 @@ public class UniqueIdGenerator extends AbstractIDGenerator implements AutoIDGene
 
     private UUID nextId = UUID.randomUUID();
 
-    
+
     public String getNextID(Class<? extends OWLEntity> type) throws AutoIDException {
         UUID id = nextId;
         nextId = UUID.randomUUID();
-        return getPrefix(type) + id.toString().replace("-", "_") + getSuffix(type);
+        return getPrefix(type) + id.toString() + getSuffix(type);
     }
-    
+
     protected long getRawID(Class<? extends OWLEntity> type) throws AutoIDException {
     	throw new UnsupportedOperationException("Shouldn't get here");
     }
