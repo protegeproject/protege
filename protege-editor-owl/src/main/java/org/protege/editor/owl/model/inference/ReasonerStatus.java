@@ -2,7 +2,7 @@ package org.protege.editor.owl.model.inference;
 
 public enum ReasonerStatus {
 	NO_REASONER_FACTORY_CHOSEN("No Reasoner set. Select a reasoner from the Reasoner menu",
-			"Choose a reasoner from the reasoner menu below.", "Choose a reasoner from the reasoner menu below.") {
+			"Choose a reasoner from the Reasoner menu below.", "Choose a reasoner from the Reasoner menu below.") {
 		@Override
 		public boolean isEnableInitialization() {
 			return false;
