@@ -79,11 +79,7 @@ public class IdentifiersDotOrg {
         String id = split[1];
         return byPrefix.get(prefix.toLowerCase())
                 .stream()
-                .filter(c ->
-                        {
-                            boolean match = id.matches(c.getPattern()) || compactId.matches(c.getPattern());
-                            return match;
-                        })
+                .filter(c -> id.matches(c.getPattern()) || compactId.matches(c.getPattern()))
                 .findFirst();
     }
 
