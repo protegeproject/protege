@@ -2,6 +2,7 @@ package org.protege.editor.owl.model.identifiers;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.google.common.collect.HashMultimap;
@@ -30,15 +31,13 @@ public class IdentifiersDotOrg {
 
     private static Logger logger = LoggerFactory.getLogger(IdentifiersDotOrg.class);
 
-    private static final String REST_BASE = "http://identifiers.org/rest";
-
     @Nonnull
     private final HttpClient client;
 
     @Nonnull
     private final ObjectMapper objectMapper;
 
-    private Multimap<String, IdoCollection> byPrefix = HashMultimap.create();
+    private Multimap<String, IdoNamespace> byPrefix = HashMultimap.create();
 
     private IdentifiersDotOrg(@Nonnull HttpClient client,
                               @Nonnull ObjectMapper objectMapper) {
@@ -66,13 +65,12 @@ public class IdentifiersDotOrg {
         getCollections().forEach(c -> {
             String lowerCasePrefix = c.getPrefix().toLowerCase();
             byPrefix.put(lowerCasePrefix, c);
-            c.getSynonyms().forEach(syn -> byPrefix.put(syn, c));
         });
     }
 
 
     @Nonnull
-    public Optional<IdoCollection> getCollection(@Nonnull String compactId) {
+    public Optional<IdoNamespace> getCollection(@Nonnull String compactId) {
         String[] split = compactId.split(":");
         if(split.length != 2) {
             return Optional.empty();
@@ -81,25 +79,26 @@ public class IdentifiersDotOrg {
         String id = split[1];
         return byPrefix.get(prefix.toLowerCase())
                 .stream()
-                .filter(c ->
-                        {
-                            boolean match = id.matches(c.getPattern()) || compactId.matches(c.getPattern());
-                            return match;
-                        })
+                .filter(c -> id.matches(c.getPattern()) || compactId.matches(c.getPattern()))
                 .findFirst();
     }
 
     @Nonnull
-    public Optional<IdoValidateResponse> resolveCompactId(@Nonnull String compactId) {
-        HttpGet httpGet = new HttpGet(REST_BASE + "/identifiers/validate/" + compactId);
+    public Optional<IdoResolvedResource> resolveCompactId(@Nonnull String compactId) {
+        String url = String.format("https://resolver.api.identifiers.org/%s", compactId);
+        HttpGet httpGet = new HttpGet(url);
         try {
             HttpResponse response = client.execute(httpGet);
             if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 InputStream contentInputStream = response.getEntity().getContent();
-                IdoValidateResponse idoResponse = objectMapper.readValue(contentInputStream, IdoValidateResponse.class);
-                return Optional.of(idoResponse);
+                IdoResponse idoResponse = objectMapper.readValue(contentInputStream, IdoResponse.class);
+                JsonNode payload = idoResponse.getPayload();
+                JsonNode resolvedResourcesNode = payload.path("resolvedResources");
+                List<IdoResolvedResource> resolvedResources = objectMapper.convertValue(resolvedResourcesNode, new TypeReference<List<IdoResolvedResource>>(){});
+                return resolvedResources.stream().findFirst();
             }
             else {
+                logger.debug("[IdentifiersDotOrg] Error code returned by identifiers.org {}", response.getStatusLine());
                 return Optional.empty();
             }
         } catch(IOException e) {
@@ -109,19 +108,32 @@ public class IdentifiersDotOrg {
     }
 
     @Nonnull
-    public List<IdoCollection> getCollections() {
+    public List<IdoNamespace> getCollections() {
         try {
-            HttpGet httpGet = new HttpGet(REST_BASE + "/collections");
-            HttpResponse response = client.execute(httpGet);
-            if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                InputStream contentInputStream = response.getEntity().getContent();
-                return objectMapper.readValue(contentInputStream, new TypeReference<List<IdoCollection>>(){});
+            ImmutableList.Builder<IdoNamespace> builder = ImmutableList.builder();
+            // Retrieve the first page
+            int pageSize = 1000;
+            String url = String.format("https://registry.api.identifiers.org/restApi/namespaces?page=0&size=%s", pageSize);
+            while(url != null) {
+                HttpGet httpGet = new HttpGet(url);
+                HttpResponse response = client.execute(httpGet);
+                if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                    InputStream contentInputStream = response.getEntity().getContent();
+                    JsonNode idoResponse = objectMapper.readValue(contentInputStream, JsonNode.class);
+                    // The namespaces list is an embedded resource that is paged
+                    JsonNode namespaces = idoResponse.path("_embedded").path("namespaces");
+                    List<IdoNamespace> collections = objectMapper.convertValue(namespaces, new TypeReference<List<IdoNamespace>>(){});
+                    builder.addAll(collections);
+                    // Get the next page, if there is one
+                    url = objectMapper.convertValue(idoResponse.path("_links").path("next").path("href"), String.class);
+                }
+                else {
+                    break;
+                }
             }
-            else {
-                return ImmutableList.of();
-            }
+            return builder.build();
         } catch(IOException e) {
-            logger.warn("Error retrieving identifiers.org collections: {}", e.getMessage());
+            logger.warn("[IdentifiersDotOrg] Error retrieving identifiers.org namespaces: {}", e.getMessage());
             return ImmutableList.of();
         }
     }
