@@ -161,7 +161,7 @@ public class OntologyLoader {
 
     private void fireBeforeLoad(OWLOntology loadedOntology, URI documentURI) {
         if(modelManager instanceof IOListenerManager) {
-            ((IOListenerManager) modelManager).fireAfterLoadEvent(
+            ((IOListenerManager) modelManager).fireBeforeLoadEvent(
                     loadedOntology.getOntologyID(),
                     documentURI);
         }
