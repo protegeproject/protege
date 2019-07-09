@@ -18,10 +18,10 @@ import java.util.UUID;
  * Bio Health Informatics Group<br>
  * Date: Jul 25, 2008<br><br>
  */
-public class UniqueIdGenerator extends AbstractIDGenerator implements AutoIDGenerator, Revertable {
+public class UUIDGenerator extends AbstractIDGenerator implements AutoIDGenerator, Revertable {
 
     public String getNextID(Class<? extends OWLEntity> type) throws AutoIDException {
-        final String id = UUID.randomUUID().toString().replaceAll("-", "_");
+        final String id = UUID.randomUUID().toString();
         return getPrefix(type) + id + getSuffix(type);
     }
 
