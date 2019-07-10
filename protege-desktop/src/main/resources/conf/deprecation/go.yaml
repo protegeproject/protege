@@ -7,7 +7,7 @@ removeAnnotationAssertions: false
 alternateEntityAnnotationPropertyIri: http://www.geneontology.org/formats/oboInOwl#consider
 replacedByAnnotationPropertyIri: IAO:0100001
 labelPrefix: obsolete
-annotationValuePrefix: OBSOLETE
+annotationValuePrefix: OBSOLETE.
 preservedAnnotationAssertionPropertyIris:
   - IAO:0000115
 textualReasonAnnotationPropertyIri: rdfs:comment
