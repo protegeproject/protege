@@ -37,7 +37,7 @@ public class GOProfile_TestCase {
 
     @Test
     public void shouldReadGOProfileYamlAnnotationValuePrefix() {
-        assertThat(profile.getPreservedAnnotationValuePrefix(), is("OBSOLETE"));
+        assertThat(profile.getPreservedAnnotationValuePrefix(), is("OBSOLETE."));
     }
 
     @Test
