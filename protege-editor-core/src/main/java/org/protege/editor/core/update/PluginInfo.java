@@ -30,13 +30,13 @@ public class PluginInfo {
 
     private final URL downloadURL;
 
-    private Optional<URL> readmeURI;
+    private Optional<URL> readmeURI = Optional.empty();
 
-    private Optional<String> author;
+    private Optional<String> author = Optional.empty();
 
-    private Optional<String> license;
+    private Optional<String> license = Optional.empty();
 
-    private Optional<String> label;
+    private Optional<String> label = Optional.empty();
 
 
     public PluginInfo(String id, Version availableVersion, URL downloadURL) {
@@ -118,10 +118,7 @@ public class PluginInfo {
      * @return The label.  Not {@code null}.
      */
     public String getLabel() {
-        if (!label.isPresent()){
-            return id;
-        }
-        return label.get();
+        return label.orElse(id);
     }
     
     public String toString() {
