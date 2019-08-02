@@ -3,7 +3,6 @@ package org.protege.editor.owl.ui.renderer;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.prefix.PrefixedNameRenderer;
-import org.protege.editor.owl.model.util.OboUtilities;
 import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.protege.editor.owl.ui.tree.OWLObjectTreeNode;
 import org.semanticweb.owlapi.model.*;
@@ -16,15 +15,11 @@ import javax.swing.*;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
-import java.awt.font.FontRenderContext;
-import java.awt.font.GlyphVector;
-import java.awt.font.TextLayout;
-import java.util.Optional;
-import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+import static java.util.stream.Collectors.joining;
 import static javax.swing.SwingConstants.CENTER;
 import static org.protege.editor.owl.ui.renderer.RenderingEscapeUtils.RenderingEscapeSetting.UNESCAPED_RENDERING;
 
@@ -38,6 +33,8 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
     private static final Color UNSAT_ENTITY_COLOR = Color.RED;
 
     private static final Color DEPRECATED_CLASS_COLOR = Color.GRAY;
+
+    private static final String EQUIV_SEPARATOR = " \u2261 ";
 
 
     @Nonnull
@@ -100,6 +97,11 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
                     satisfiable = isSatisfiable(object);
                 }
                 rendering = getNodeStringRendering(node);
+                String equivsRendering = node.getEquivalentObjects().stream()
+                        .map(this::getOwlObjectDisabmiguatedRendering)
+                        .map(this::prefixWithEquivalentSymbol)
+                        .collect(joining());
+                rendering += equivsRendering;
                 deprecated = isDeprecated(object);
                 active = isActive(object);
                 Icon entityIcon = editorKit.getOWLWorkspace().getOWLIconProvider().getIcon(object);
@@ -143,8 +145,16 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
         return renderingComponent;
     }
 
+    private String prefixWithEquivalentSymbol(String equivRendering) {
+        return EQUIV_SEPARATOR + equivRendering;
+    }
+
     private String getNodeStringRendering(OWLObjectTreeNode<?> node) {
         OWLObject object = node.getOWLObject();
+        return getOwlObjectDisabmiguatedRendering(object);
+    }
+
+    private String getOwlObjectDisabmiguatedRendering(OWLObject object) {
         return editorKit.getOWLModelManager().getDisabmiguatedRendering(object, UNESCAPED_RENDERING);
     }
 
