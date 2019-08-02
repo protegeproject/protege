@@ -87,17 +87,6 @@ The class hierarchy view may show some names in a bold font and others in a regu
 
 It is possible to edit some of the SubClassOf axioms in the ontology by dragging and dropping tree nodes in the asserted class hierarchy.  Drag and Drop only works for primitive classes - that is, classes that have a solid yellow icon.  Dropping a class on top of an other class will make it a SubClassOf that other class.
 
-## Cycles
-
-Classes that appear in a cycle of SubClassOf axioms, for example ```A SubClassOf B```, ```B SubClassOf C``` and ```C SubClassOf A``` will be collapsed and shown together, with one tree node for each class in the cycle so that each class may be selected.  An example is shown below.  
-
-<figure>
-<img src="{{site.baseurl}}/assets/views/class-hierarchy/class-hierarchy-cylces.png" style="max-width: 200px;"/>
-<figcaption>An example of a cycle in the class hierarchy.  Classes in the cycle are displayed as equivalences, with a node for each class.</figcaption>
-</figure>
-
-The reason for this notation is that a cycle in the class hierarchy between two or more classes states that the classes in the cycle are equivalent.  This is because ```A EquivalentTo B``` is an abbreviation for the two axioms ```A SubClassOf B``` and ```B SubClassOf A```.
-
 ## Display relationships
 
 As described in the introduction, by default, the class hierarchy tree is generated based on SubClassOf axioms. Starting with {{site.protege}} version 5.5, however, the class tree can also display other parent/child relationships besides SubClassOf. This feature can be activated and deactivated using the `View -> Display relationship in class hierarchy` menu. When display relationships is activated, the class hierarchy will show an additional arrow icon in the front of the solid yellow class icon. The arrow will be gray for the standard subclass-superclass relationship, and it will be blue for any other relationship that is based on an axiom involving an object property. An example is shown below.
