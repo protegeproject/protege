@@ -7,7 +7,7 @@ We have a [code of conduct](CODE_OF_CONDUCT.md) that contributors must abide to.
 
 ## Reporting Bugs
 
-We use GitHub Issues to manage bug reports.  Before creating a bug report please have a quick look at [our issue tracker](/issues) to see if someone else has already filed an issue.
+We use GitHub Issues to manage bug reports.  Before creating a bug report please have a quick look at [our issue tracker](https://github.com/protegeproject/protege/issues) to see if someone else has already filed an issue.
 
 ### How do I submit a Bug Report?
 
@@ -35,9 +35,9 @@ Once you have submitted a pull request we will review your code and test it.  We
 
 ### What can I work on?
 
-Our [issue tracker](/issues) has a list of feature requests and bugs that need fixing.  You can use this as an inspiration for something to work on.  
+Our [issue tracker](/https://github.com/protegeproject/protege/issues) has a list of feature requests and bugs that need fixing.  You can use this as an inspiration for something to work on.  
 
-A number of the issues are tagged as ["Easy first issue"](/issues?q=is%3Aissue+is%3Aopen+label%3A%22Note%3A+Easy+First+Issue%22).  These are some of the easier issues to tackle that you might want to start with.  
+A number of the issues are tagged as ["Easy first issue"](/https://github.com/protegeproject/protege/issues?q=is%3Aissue+is%3Aopen+label%3A%22Note%3A+Easy+First+Issue%22).  These are some of the easier issues to tackle that you might want to start with.  
 
 If you start working on an issue, please leave a comment in the issue discussion thread so that other people know you are working on the issue.  If you stop working on an issue please leave a comment in the thread so that we know.
 
