@@ -1,6 +1,6 @@
 package org.protege.editor.core.ui.view;
 
-import org.protege.editor.owl.ui.renderer.HasUseSystemForeground;
+import org.protege.editor.core.ui.renderer.HasUseSystemForeground;
 
 import javax.swing.*;
 import java.awt.*;

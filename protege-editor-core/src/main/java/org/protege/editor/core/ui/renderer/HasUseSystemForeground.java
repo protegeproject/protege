@@ -1,4 +1,4 @@
-package org.protege.editor.owl.ui.renderer;
+package org.protege.editor.core.ui.renderer;
 
 import javax.swing.*;
 

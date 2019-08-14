@@ -1,7 +1,7 @@
 package org.protege.editor.core.ui.list;
 
 import org.protege.editor.core.ui.util.UIUtil;
-import org.protege.editor.owl.ui.util.MousePositionCache;
+import org.protege.editor.core.ui.util.MousePositionCache;
 
 import javax.swing.*;
 import javax.swing.border.Border;
