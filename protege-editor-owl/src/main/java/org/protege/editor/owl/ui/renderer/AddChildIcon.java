@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.renderer;
 
+import org.protege.editor.core.ui.renderer.HasUseSystemForeground;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -8,12 +10,18 @@ import java.awt.*;
  * Stanford Center for Biomedical Informatics Research
  * 9 Aug 16
  */
-public class AddChildIcon implements Icon {
+public class AddChildIcon implements Icon, HasUseSystemForeground {
 
     private final OWLEntityIcon entityIcon;
 
     public AddChildIcon(OWLEntityIcon entityIcon) {
         this.entityIcon = entityIcon;
+    }
+
+    @Override
+    public Icon useSystemForeground() {
+        entityIcon.setOverriderColorToForegroundColor();
+        return this;
     }
 
     @Override
