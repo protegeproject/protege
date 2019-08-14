@@ -1,4 +1,4 @@
-package org.protege.editor.owl.ui.util;
+package org.protege.editor.core.ui.util;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
