@@ -15,6 +15,7 @@ import javax.swing.*;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
@@ -89,7 +90,7 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
         icon.clearRelationship();
         icon.setRelationshipsDisplayed(false);
         if(value instanceof OWLObjectTreeNode) {
-            OWLObjectTreeNode<?> node = (OWLObjectTreeNode<?>) value;
+            OWLObjectTreeNode<? extends OWLObject> node = (OWLObjectTreeNode<? extends OWLObject>) value;
             OWLObject object = node.getOWLObject();
             if (object != null) {
                 consistent = isConsistent();
