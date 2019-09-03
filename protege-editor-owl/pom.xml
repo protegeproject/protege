@@ -180,6 +180,13 @@
             <scope>test</scope>
         </dependency>
 
+	<dependency>
+	    <groupId>uk.org.russet</groupId>
+	    <artifactId>identitas-j</artifactId>
+	    <version>0.0.1</version>
+	    <scope>provided</scope>
+	</dependency>
+
     </dependencies>
 
     <build>
