@@ -1,9 +1,6 @@
 package org.protege.editor.owl.model.cache;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.SetMultimap;
+import com.google.common.collect.*;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
 import org.semanticweb.owlapi.model.*;
@@ -28,17 +25,17 @@ import java.util.*;
  */
 public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
 
-    private final SetMultimap<String, OWLClass> owlClassMap = HashMultimap.create();
+    private final Multimap<String, OWLClass> owlClassMap = ArrayListMultimap.create(16, 1);
 
-    private final SetMultimap<String, OWLObjectProperty> owlObjectPropertyMap = HashMultimap.create();
+    private final Multimap<String, OWLObjectProperty> owlObjectPropertyMap = ArrayListMultimap.create(16, 1);
 
-    private final SetMultimap<String, OWLDataProperty> owlDataPropertyMap = HashMultimap.create();
+    private final Multimap<String, OWLDataProperty> owlDataPropertyMap = ArrayListMultimap.create(16, 1);
 
-    private final SetMultimap<String, OWLAnnotationProperty> owlAnnotationPropertyMap = HashMultimap.create();
+    private final Multimap<String, OWLAnnotationProperty> owlAnnotationPropertyMap = ArrayListMultimap.create(16, 1);
 
-    private final SetMultimap<String, OWLNamedIndividual> owlIndividualMap = HashMultimap.create();
+    private final Multimap<String, OWLNamedIndividual> owlIndividualMap = ArrayListMultimap.create(16, 1);
 
-    private final SetMultimap<String, OWLDatatype> owlDatatypeMap = HashMultimap.create();
+    private final Multimap<String, OWLDatatype> owlDatatypeMap = ArrayListMultimap.create(16, 1);
 
     private final Map<OWLEntity, String> entityRenderingMap = new HashMap<>();
 
