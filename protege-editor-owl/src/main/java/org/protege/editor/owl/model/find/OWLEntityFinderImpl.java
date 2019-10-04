@@ -3,6 +3,7 @@ package org.protege.editor.owl.model.find;
 import org.protege.editor.owl.model.OWLModelManagerImpl;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
 import org.protege.editor.owl.model.util.OWLDataTypeUtils;
+import org.protege.editor.owl.ui.renderer.RenderingEscapeUtils;
 import org.semanticweb.owlapi.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,10 +44,22 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
 
     private static final String ESCAPE_CHAR = "'";
 
+
+    private String stripAndEscapeRendering(String rendering) {
+        String strippedRendering;
+        if(rendering.startsWith("'") && rendering.endsWith("'")) {
+            strippedRendering = rendering.substring(1, rendering.length() - 1);
+        }
+        else {
+            strippedRendering = rendering;
+        }
+        return RenderingEscapeUtils.getEscapedRendering(strippedRendering);
+    }
+
     public OWLClass getOWLClass(String rendering) {
-        OWLClass cls = renderingCache.getOWLClass(rendering);
-        if (cls == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
-            cls = renderingCache.getOWLClass(ESCAPE_CHAR + rendering + ESCAPE_CHAR);
+        OWLClass cls = renderingCache.getOWLClass(stripAndEscapeRendering(rendering));
+        if (cls == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)) {
+            cls = renderingCache.getOWLClass(RenderingEscapeUtils.getEscapedRendering(rendering));
         }
         return cls;
     }
@@ -59,7 +72,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
     public OWLObjectProperty getOWLObjectProperty(String rendering) {
         OWLObjectProperty prop = renderingCache.getOWLObjectProperty(rendering);
         if (prop == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
-            prop = renderingCache.getOWLObjectProperty(ESCAPE_CHAR + rendering + ESCAPE_CHAR);
+            prop = renderingCache.getOWLObjectProperty(RenderingEscapeUtils.getEscapedRendering(rendering));
         }
         return prop;
     }
@@ -68,7 +81,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
     public OWLDataProperty getOWLDataProperty(String rendering) {
         OWLDataProperty prop = renderingCache.getOWLDataProperty(rendering);
         if (prop == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
-            prop = renderingCache.getOWLDataProperty(ESCAPE_CHAR + rendering + ESCAPE_CHAR);
+            prop = renderingCache.getOWLDataProperty(RenderingEscapeUtils.getEscapedRendering(rendering));
         }
         return prop;
     }
@@ -77,7 +90,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
     public OWLAnnotationProperty getOWLAnnotationProperty(String rendering) {
         OWLAnnotationProperty prop = renderingCache.getOWLAnnotationProperty(rendering);
         if (prop == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
-            prop = renderingCache.getOWLAnnotationProperty(ESCAPE_CHAR + rendering + ESCAPE_CHAR);
+            prop = renderingCache.getOWLAnnotationProperty(RenderingEscapeUtils.getEscapedRendering(rendering));
         }
         return prop;
     }
@@ -86,7 +99,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
     public OWLNamedIndividual getOWLIndividual(String rendering) {
         OWLNamedIndividual individual = renderingCache.getOWLIndividual(rendering);
         if (individual == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
-            individual = renderingCache.getOWLIndividual(ESCAPE_CHAR + rendering + ESCAPE_CHAR);
+            individual = renderingCache.getOWLIndividual(RenderingEscapeUtils.getEscapedRendering(rendering));
         }
         return individual;
     }
@@ -95,7 +108,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
     public OWLDatatype getOWLDatatype(String rendering) {
         OWLDatatype dataType = renderingCache.getOWLDatatype(rendering);
         if (dataType == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
-            dataType = renderingCache.getOWLDatatype(ESCAPE_CHAR + rendering + ESCAPE_CHAR);
+            dataType = renderingCache.getOWLDatatype(RenderingEscapeUtils.getEscapedRendering(rendering));
         }
         return dataType;
     }
@@ -104,7 +117,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
     public OWLEntity getOWLEntity(String rendering) {
         OWLEntity entity = renderingCache.getOWLEntity(rendering);
         if (entity == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
-            entity = renderingCache.getOWLEntity(ESCAPE_CHAR + rendering + ESCAPE_CHAR);
+            entity = renderingCache.getOWLEntity(RenderingEscapeUtils.getEscapedRendering(rendering));
         }
         return entity;
     }
