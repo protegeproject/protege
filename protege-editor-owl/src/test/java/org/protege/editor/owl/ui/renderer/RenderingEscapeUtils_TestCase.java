@@ -96,4 +96,28 @@ public class RenderingEscapeUtils_TestCase {
         String rendering = RenderingEscapeUtils.getEscapedRendering("A=B");
         assertThat(rendering, is("'A=B'"));
     }
+
+    @Test
+    public void shouldEscapeSingleQuote() {
+        String rendering = RenderingEscapeUtils.getEscapedRendering("A's");
+        assertThat(rendering, is("A\\'s"));
+    }
+
+    @Test
+    public void shouldEscapeSingleQuoteWithSpaces() {
+        String rendering = RenderingEscapeUtils.getEscapedRendering("A's and B's");
+        assertThat(rendering, is("'A\\'s and B\\'s'"));
+    }
+
+    @Test
+    public void shouldUnescapeRendering() {
+        String rendering = RenderingEscapeUtils.unescape("'A'");
+        assertThat(rendering, is("A"));
+    }
+
+    @Test
+    public void shouldUnescapeRenderingWithEscapedQuote() {
+        String rendering = RenderingEscapeUtils.unescape("'A\\'s'");
+        assertThat(rendering, is("A's"));
+    }
 }

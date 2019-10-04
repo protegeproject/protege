@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.breadcrumb;
 
 import org.protege.editor.core.util.ClickHandler;
 import org.protege.editor.owl.model.OWLWorkspace;
+import org.protege.editor.owl.ui.renderer.RenderingEscapeUtils;
 import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.annotation.Nonnull;
@@ -63,14 +64,7 @@ public class BreadcrumbTrailViewImpl extends JPanel implements BreadcrumbTrailVi
 
     @Nonnull
     private static String stripSingleQuotes(@Nonnull String rendering) {
-        String displayText;
-        if(rendering.startsWith("'") && rendering.endsWith("'")) {
-            displayText = rendering.substring(1, rendering.length() - 1);
-        }
-        else {
-            displayText = rendering;
-        }
-        return displayText;
+        return RenderingEscapeUtils.unescape(rendering);
     }
 
     @Override
