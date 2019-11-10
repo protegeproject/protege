@@ -19,12 +19,6 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>edu.stanford.protege</groupId>
-			<artifactId>protege-launcher</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
-
-		<dependency>
 			<groupId>com.googlecode.mdock</groupId>
 			<artifactId>mdock</artifactId>
 			<scope>provided</scope>
