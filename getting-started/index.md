@@ -126,7 +126,7 @@ Many ontologies, in particular biomedical ontologies, use alpha-numeric codes as
 The current renderer selected will be preserved next time you open Protege to save this step in the future.
 
 <figure>
-  <img src="{{site.baseurl}}/assets/Preferences/renderer/renderer-preferences.png" alt="The Renderer preferences" style="max-width: 500px;">
+  <img src="{{site.baseurl}}/assets/preferences/renderer/renderer-preferences.png" alt="The Renderer preferences" style="max-width: 500px;">
   <figcaption>
   The renderer preferences.  The Entity rendering section specifies how the names of classes, properties and individuals should be derived and displayed in the user interface.  Here, "Render by annotation property" is selected, meaning that if an entity has an annotation, such as an rdfs:label, the value of this annotation will be used for the entity display name.
   </figcaption>
