@@ -134,7 +134,8 @@ public class MetricsPanel extends JPanel implements Disposable {
                     + fontMetrics.getMaxDescent()
                     + 4);
             table.setShowGrid(true);
-            table.getColumnModel().getColumn(1).setMaxWidth(150);
+            table.getColumnModel().getColumn(1).setMinWidth(200);
+            table.getColumnModel().getColumn(1).setMinWidth(300);
             table.addMouseListener(new MouseAdapter() {
 
                 public void mousePressed(MouseEvent e) {
@@ -277,12 +278,13 @@ public class MetricsPanel extends JPanel implements Disposable {
         metrics.add(new ReferencedIndividualCount(getOntology()));
         metrics.add(new ReferencedAnnotationPropertyCount(getOntology()));
         // Temporarily removed due to a problem with upgrading the OWL API
-//        metrics.add(new DLExpressivityMetric(getOntology()));
+        //metrics.add(new DLExpressivity(getOntology()));
+        metrics.add(new DLExpressivityMetric(getOntology()));
     	/*
     	 * Degenericized to be compatible with changing OWLAPI interfaces
     	 */
         OWLMetricManager metricManager = new OWLMetricManager((List) metrics);
-        metricManagerMap.put("Metrics", metricManager);
+        metricManagerMap.put("Basic Metrics", metricManager);
     }
 
 
