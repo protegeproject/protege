@@ -75,11 +75,20 @@ public class MetricsPanel extends JPanel implements Disposable {
 
     private void createPopupMenu() {
         JMenuItem showAxioms = new JMenuItem("Show axioms");
+        JMenuItem showDL = new JMenuItem("DL Expressivity");
         popupMenu.add(showAxioms);
+        popupMenu.add(showDL);
+        showDL.addActionListener(e -> showDLExpressivityDialog());
         showAxioms.addActionListener(e -> showAxiomTypeDialog());
     }
-
-
+    private void showDLExpressivityDialog() {
+        Set<? extends OWLAxiom> axioms = lastMetric.getAxioms();
+        final OWLAxiomTypeFramePanel panel = new OWLAxiomTypeFramePanel(owlEditorKit);
+        Set<OWLAxiom> axs = new HashSet<>(axioms);
+        panel.setRoot(axs);
+        panel.setPreferredSize(new Dimension(800, 300));
+        JOptionPane.showMessageDialog(panel, new DLExpressivityMetric(getOntology()).getValue(),"DL Expressivity",JOptionPane.OK_OPTION);
+    }
     private void showAxiomTypeDialog() {
         Set<? extends OWLAxiom> axioms = lastMetric.getAxioms();
         final OWLAxiomTypeFramePanel panel = new OWLAxiomTypeFramePanel(owlEditorKit);
@@ -99,8 +108,7 @@ public class MetricsPanel extends JPanel implements Disposable {
         dlg.setModal(false);
         dlg.setVisible(true);
     }
-
-
+    
     protected void initialiseOWLView() {
         createBasicMetrics();
         createClassAxiomMetrics();
@@ -279,7 +287,7 @@ public class MetricsPanel extends JPanel implements Disposable {
         metrics.add(new ReferencedAnnotationPropertyCount(getOntology()));
         // Temporarily removed due to a problem with upgrading the OWL API
         //metrics.add(new DLExpressivity(getOntology()));
-        metrics.add(new DLExpressivityMetric(getOntology()));
+        //metrics.add(new DLExpressivityMetric(getOntology()));
     	/*
     	 * Degenericized to be compatible with changing OWLAPI interfaces
     	 */
