@@ -61,7 +61,6 @@ public class DLExpressivityMetric extends AbstractOWLMetric<String> {
      */
     @Override
     protected void disposeMetric() {
-
     }
 
     /**
@@ -72,6 +71,6 @@ public class DLExpressivityMetric extends AbstractOWLMetric<String> {
     @Nonnull
     @Override
     public String getName() {
-        return "Expressivity";
+        return "DL Expressivity";
     }
 }
