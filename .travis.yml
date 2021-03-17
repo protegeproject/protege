@@ -1,7 +1,8 @@
 language: java
 
 jdk:
-  - openjdk8
+  - oraclejdk11
+  - openjdk11
 
 notifications:
   email:
