@@ -18,6 +18,7 @@ import org.protege.editor.owl.model.io.IOListenerPluginLoader;
 import org.protege.editor.owl.model.search.SearchManager;
 import org.protege.editor.owl.model.search.SearchManagerSelector;
 import org.protege.editor.owl.ui.OntologyFormatPanel;
+import org.protege.editor.owl.ui.Extensions;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandlerUI;
 import org.protege.editor.owl.ui.explanation.ExplanationManager;
@@ -364,7 +365,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
                 }
             }
         }
-        File file = getSaveAsOWLFile(ont);
+        File file = getSaveAsOWLFile(ont, format.get());
         if (file != null) {
             man.setOntologyFormat(ont, format.get());
             man.setOntologyDocumentIRI(ont, IRI.create(file));
@@ -378,16 +379,18 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     }
 
 
-    private File getSaveAsOWLFile(@Nonnull OWLOntology ont) {
+    private File getSaveAsOWLFile(@Nonnull OWLOntology ont, @Nonnull OWLDocumentFormat fmt) {
         UIHelper helper = new UIHelper(this);
-        File file = helper.saveOWLFile(String.format("Please select a location in which to save: %s", getModelManager().getRendering(ont)));
+        List<String> extensions = Extensions.getExtensions(fmt);
+        File file = helper.saveOWLFile(String.format("Please select a location in which to save: %s", getModelManager().getRendering(ont)),
+                                       new HashSet<>(extensions));
         if (file != null) {
             int extensionIndex = file.toString().lastIndexOf('.');
             if (extensionIndex == -1) {
-                file = new File(file.toString() + ".owl");
+                file = new File(file.toString() + extensions.get(0));
             }
-            else if (extensionIndex != file.toString().length() - 4) {
-                file = new File(file.toString() + ".owl");
+            else if (! extensions.contains(file.toString().substring(extensionIndex))) {
+                file = new File(file.toString() + extensions.get(0));
             }
         }
         return file;
