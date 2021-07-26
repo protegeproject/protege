@@ -40,7 +40,7 @@ public class Extensions {
         format_extensions.put(new RDFJsonLDDocumentFormat(),
                             Arrays.asList(".jsonld"));
         format_extensions.put(new NTriplesDocumentFormat(),
-                            Arrays.asList(".n3", ".nt"));
+                            Arrays.asList(".nt", ".n3" /** .n3 is not an official N-Triples extension, but easy to confuse **/));
     }
 
     public static List<String> getExtensions(OWLDocumentFormat fmt) {
