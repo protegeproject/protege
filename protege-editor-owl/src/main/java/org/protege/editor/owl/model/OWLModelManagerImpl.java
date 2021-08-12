@@ -341,7 +341,9 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             loadedOntology.ifPresent(ontology -> {
                 logger.info("Loading for ontology and imports closure successfully completed in {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
                 DocumentFormatUpdater formatUpdater = new DocumentFormatUpdater(new DocumentFormatMapper());
-                formatUpdater.updateFormat(ontology);
+                for (OWLOntology o : ontology.getImportsClosure()) {
+                    formatUpdater.updateFormat(o);
+                }
             });
             logger.info(LogBanner.end());
             SwingUtilities.invokeLater(idRangesPolocyManager::reload);
