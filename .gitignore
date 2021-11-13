@@ -7,7 +7,6 @@ target/
 .settings/
 META-INF/
 build.properties
-plugin.xml
 
 #intelliJ
 *.iws
@@ -15,6 +14,8 @@ plugin.xml
 .idea
 *.iml
 build/
+
+.DS_Store
 
 _site
 _views

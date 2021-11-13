@@ -134,17 +134,41 @@
 	
 	<dependencyManagement>
 		<dependencies>
+		
+			<dependency>	
+			  	<groupId>javax.xml.bind</groupId>	
+			  	<artifactId>jaxb-api</artifactId>	
+			  	<version>2.3.0</version>	
+			</dependency>	
+				
+			<dependency>	
+			  	<groupId>com.sun.xml.bind</groupId>	
+			  	<artifactId>jaxb-core</artifactId>	
+			  	<version>2.3.0</version>	
+			</dependency>	
+				
+			<dependency>	
+			  	<groupId>com.sun.xml.bind</groupId>	
+			  	<artifactId>jaxb-impl</artifactId>	
+			  	<version>2.3.0</version>	
+			</dependency>	
+				
+			<dependency>	
+			    	<groupId>com.sun.activation</groupId>	
+			    	<artifactId>javax.activation</artifactId>	
+			    	<version>1.2.0</version>	
+			</dependency>
 
 			<dependency>
 				<groupId>net.sourceforge.owlapi</groupId>
 				<artifactId>owlapi-osgidistribution</artifactId>
-				<version>4.5.19</version>
+				<version>4.5.20</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>org.apache.felix.main</artifactId>
-				<version>5.4.0</version>
+				<version>6.0.1</version>
 			</dependency>
 
 			<dependency>
@@ -325,8 +349,7 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.8.0</version>
 					<configuration>
-						<source>1.8</source>
-						<target>1.8</target>
+						<release>11</release>
 					</configuration>
 				</plugin>
 							
@@ -357,6 +380,11 @@
 						<tagNameFormat>v@{project.version}</tagNameFormat>
 						<releaseProfiles>release</releaseProfiles>
 					</configuration>
+				</plugin>
+				
+				<plugin>	
+				   	 <artifactId>maven-surefire-plugin</artifactId>	
+				   	 <version>3.0.0-M3</version>	
 				</plugin>
 
 				<plugin>

@@ -8,9 +8,8 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
 done
 cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-jre/bin/java \
+java -Dlogback.configurationFile=conf/logback.xml \
      -DentityExpansionLimit=100000000 \
-     -Dlogback.configurationFile=conf/logback.xml \
      -Dfile.encoding=UTF-8 \
      ${conf.extra.args} \
      -classpath bundles/guava.jar:bundles/logback-classic.jar:bundles/logback-core.jar:bundles/slf4j-api.jar:bin/org.apache.felix.main.jar:bin/maven-artifact.jar:bin/protege-launcher.jar \
