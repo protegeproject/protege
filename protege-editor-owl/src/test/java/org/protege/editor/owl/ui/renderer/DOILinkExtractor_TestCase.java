@@ -26,21 +26,21 @@ public class DOILinkExtractor_TestCase {
     public void shouldExtractId() {
         String id = "DOI:10.1101/2021.10.10.463703";
         Optional<String> extractedId = extractor.extractLinkLiteral(id);
-        assertThat(extractedId, is(Optional.of(PubMedLinkExtractor.PUBMED_URL_BASE + "10.1101/2021.10.10.463703")));
+        assertThat(extractedId, is(Optional.of(DOILinkExtractor.DOI_URL_BASE + "10.1101/2021.10.10.463703")));
     }
 
     @Test
     public void shouldIgnoreCase_AllLowerCase() {
         String id = "doi:10.1101/2021.10.10.463703";
         Optional<String> extractedId = extractor.extractLinkLiteral(id);
-        assertThat(extractedId, is(Optional.of(PubMedLinkExtractor.PUBMED_URL_BASE + "10.1101/2021.10.10.463703")));
+        assertThat(extractedId, is(Optional.of(DOILinkExtractor.DOI_URL_BASE + "10.1101/2021.10.10.463703")));
     }
 
     @Test
     public void shouldIgnoreCase_MixedCase() {
         String id = "DoI:10.1101/2021.10.10.463703";
         Optional<String> extractedId = extractor.extractLinkLiteral(id);
-        assertThat(extractedId, is(Optional.of(PubMedLinkExtractor.PUBMED_URL_BASE + "10.1101/2021.10.10.463703")));
+        assertThat(extractedId, is(Optional.of(DOILinkExtractor.DOI_URL_BASE + "10.1101/2021.10.10.463703")));
     }
 
     @Test
@@ -54,7 +54,7 @@ public class DOILinkExtractor_TestCase {
     public void shouldAllowWhiteSpaceAfterPrefix() {
         String id = "doi: 10.1101/2021.10.10.463703";
         Optional<String> extractedId = extractor.extractLinkLiteral(id);
-        assertThat(extractedId, is(Optional.of(PubMedLinkExtractor.PUBMED_URL_BASE + "10.1101/2021.10.10.463703")));
+        assertThat(extractedId, is(Optional.of(DOILinkExtractor.DOI_URL_BASE + "10.1101/2021.10.10.463703")));
     }
 
     @Test

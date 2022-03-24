@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  */
 public class DOILinkExtractor {
 
-    public static final Pattern DOI_ID_PATTERN = Pattern.compile("DOI:\\s*(\\d+)", Pattern.CASE_INSENSITIVE);
+    public static final Pattern DOI_ID_PATTERN = Pattern.compile("DOI:\\s*([^\\s]+)", Pattern.CASE_INSENSITIVE);
 
     public static final String DOI_URL_BASE = "https://doi.org/";
 

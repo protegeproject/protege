@@ -25,42 +25,42 @@ public class WikipediaVersionedLinkExtractor_TestCase {
     @Test
     public void shouldExtrackWikipediaVersionedLink() {
         Optional<String> extractedLink = extractor.extractLinkLiteral("WikipediaVersioned:Boeing_747&oldid=1078029055");
-        assertThat(extractedLink, is(Optional.of("https://wikipedia.org/wiki/index.php?Boeing_747&oldid=1078029055")));
+        assertThat(extractedLink, is(Optional.of("https://wikipedia.org/wiki/index.php?title=Boeing_747&oldid=1078029055")));
     }
 
     @Test
     public void shouldIgnoreCase_LowerCase() {
         Optional<String> extractedLink = extractor.extractLinkLiteral("wikipediaversioned:Boeing_747&oldid=1078029055");
-        assertThat(extractedLink, is(Optional.of("https://wikipedia.org/wiki/index.php?Boeing_747&oldid=1078029055")));
+        assertThat(extractedLink, is(Optional.of("https://wikipedia.org/wiki/index.php?title=Boeing_747&oldid=1078029055")));
     }
 
     @Test
     public void shouldIgnoreCase_UpperCase() {
         Optional<String> extractedLink = extractor.extractLinkLiteral("WIKIPEDIAVERSIONED:Boeing_747&oldid=1078029055");
-        assertThat(extractedLink, is(Optional.of("https://wikipedia.org/wiki/index.php?Boeing_747&oldid=1078029055")));
+        assertThat(extractedLink, is(Optional.of("https://wikipedia.org/wiki/index.php?title=Boeing_747&oldid=1078029055")));
     }
 
     @Test
     public void shouldExtractLinkWithBrackets() {
         Optional<String> extractedLink = extractor.extractLinkLiteral("WIKIPEDIAVERSIONED:Boeing_(747)&oldid=1078029055");
-        assertThat(extractedLink, is(Optional.of("https://wikipedia.org/wiki/Boeing_(747)&oldid=1078029055")));
+        assertThat(extractedLink, is(Optional.of("https://wikipedia.org/wiki/index.php?title=Boeing_(747)&oldid=1078029055")));
     }
 
     @Test
     public void shouldExtractLinkWithHyphens() {
-        Optional<String> extractedLink = extractor.extractLinkLiteral("WIKIPEDIA:Boeing-747&oldid=1078029055");
-        assertThat(extractedLink, is(Optional.of("https://wikipedia.org/wiki/index.php?Boeing-747&oldid=1078029055")));
+        Optional<String> extractedLink = extractor.extractLinkLiteral("WIKIPEDIAVERSIONED:Boeing-747&oldid=1078029055");
+        assertThat(extractedLink, is(Optional.of("https://wikipedia.org/wiki/index.php?title=Boeing-747&oldid=1078029055")));
     }
 
     @Test
     public void shouldNotExtractLinkWithSpaces() {
-        Optional<String> extractedLink = extractor.extractLinkLiteral("wikipedia:Boeing 747&oldid=1078029055");
+        Optional<String> extractedLink = extractor.extractLinkLiteral("WikipediaVersioned:Boeing 747&oldid=1078029055");
         assertThat(extractedLink.isPresent(), is(false));
     }
 
     @Test
     public void shouldNotExtractLinkWithTabs() {
-        Optional<String> extractedLink = extractor.extractLinkLiteral("wikipedia:Boeing\t747&oldid=1078029055");
+        Optional<String> extractedLink = extractor.extractLinkLiteral("WikipediaVersioned:Boeing\t747&oldid=1078029055");
         assertThat(extractedLink.isPresent(), is(false));
     }
 }
