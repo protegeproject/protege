@@ -9,9 +9,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 /**
- * Matthew Horridge
- * Stanford Center for Biomedical Informatics Research
- * 18 Aug 16
+ * Unit tests for the WikipediaVersioned link extraction.
+ * 25 Mar 2022
  */
 public class WikipediaVersionedLinkExtractor_TestCase {
 

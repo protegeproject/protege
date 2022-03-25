@@ -9,9 +9,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 /**
- * Matthew Horridge
- * Stanford Center for Biomedical Informatics Research
- * 18 Aug 16
+ * Unit tests for the orphanet link extraction.
+ * 25 Mar 2022
  */
 public class OrphanetLinkExtractor_TestCase {
 
