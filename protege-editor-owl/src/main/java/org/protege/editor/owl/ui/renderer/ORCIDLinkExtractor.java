@@ -3,9 +3,8 @@ package org.protege.editor.owl.ui.renderer;
 import java.util.regex.Pattern;
 
 /**
- * Matthew Horridge
- * Stanford Center for Biomedical Informatics Research
- * 18 Aug 16
+ * A RegEx based link extractor for the 'ORCID:' prefix. 
+ * 25 Mar 2022
  */
 public class ORCIDLinkExtractor {
 
