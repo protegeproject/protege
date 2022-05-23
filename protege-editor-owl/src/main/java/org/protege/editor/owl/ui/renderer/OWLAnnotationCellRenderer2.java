@@ -54,8 +54,14 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
 
     private final List<LinkExtractor> linkExtractors = Arrays.asList(
             PubMedLinkExtractor.createExtractor(),
+            OrphanetLinkExtractor.createExtractor(),
+            OMIMLinkExtractor.createExtractor(),
+            OMIMPSLinkExtractor.createExtractor(),
             ISBN10LinkExtractor.createExtractor(),
             WikipediaLinkExtractor.createExtractor(),
+            WikipediaVersionedLinkExtractor.createExtractor(),
+            DOILinkExtractor.createExtractor(),
+            ORCIDLinkExtractor.createExtractor(),
             IdentifiersDotOrgLinkExtractor.createExtractor(),
             OboFoundryLinkExtractor.createLinkExtractor());
 
