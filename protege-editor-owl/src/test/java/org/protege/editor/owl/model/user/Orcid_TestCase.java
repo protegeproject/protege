@@ -65,7 +65,7 @@ public class Orcid_TestCase {
     }
 
     public void shouldGetUri() {
-        assertThat(orcid.toUri(), is(URI.create("http://orcid.org/" + value)));
+        assertThat(orcid.toUri(), is(URI.create("https://orcid.org/" + value)));
     }
 
 }
