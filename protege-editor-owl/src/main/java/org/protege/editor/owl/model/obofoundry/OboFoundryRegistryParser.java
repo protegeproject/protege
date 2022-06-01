@@ -18,7 +18,7 @@ import java.net.URL;
  */
 public class OboFoundryRegistryParser {
 
-    private static final URI OBO_FOUNDRY_REGISTRY_LOCATION = URI.create("http://www.obofoundry.org/registry/ontologies.jsonld");
+    private static final URI OBO_FOUNDRY_REGISTRY_LOCATION = URI.create("https://obofoundry.org/registry/ontologies.jsonld");
 
     @Nonnull
     public static URI getStandardRegistryLocation() {
