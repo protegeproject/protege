@@ -8,7 +8,14 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
 done
 cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-java -Dlogback.configurationFile=conf/logback.xml \
+JAVA_CMD=java
+if [ -n "$JAVA_HOME" ]; then
+  if [ -x "$JAVA_HOME/bin/java" ]; then
+    JAVA_CMD="$JAVA_HOME/bin/java"
+  fi
+fi
+
+$JAVA_CMD -Dlogback.configurationFile=conf/logback.xml \
      -DentityExpansionLimit=100000000 \
      -Dfile.encoding=UTF-8 \
      ${conf.extra.args} \
