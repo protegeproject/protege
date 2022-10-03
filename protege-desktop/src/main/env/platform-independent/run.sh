@@ -16,6 +16,7 @@ if [ -n "$JAVA_HOME" ]; then
 fi
 
 $JAVA_CMD -Dlogback.configurationFile=conf/logback.xml \
+     --add-opens java.desktop/com.apple.laf=ALL-UNNAMED \
      -DentityExpansionLimit=100000000 \
      -Dfile.encoding=UTF-8 \
      ${conf.extra.args} \
