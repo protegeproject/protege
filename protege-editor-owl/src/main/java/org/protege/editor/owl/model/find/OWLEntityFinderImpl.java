@@ -47,7 +47,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
 
     private String stripAndEscapeRendering(String rendering) {
         String strippedRendering;
-        if(rendering.startsWith("'") && rendering.endsWith("'")) {
+        if(rendering.startsWith("'") && rendering.endsWith("'") && rendering.length() > 1) {
             strippedRendering = rendering.substring(1, rendering.length() - 1);
         }
         else {
