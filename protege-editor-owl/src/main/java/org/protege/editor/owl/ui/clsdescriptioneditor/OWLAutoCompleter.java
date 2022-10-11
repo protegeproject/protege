@@ -168,6 +168,10 @@ public class OWLAutoCompleter {
             // Show popup
             performAutoCompletion();
         }
+        else if (e.getKeyCode() == KeyEvent.VK_TAB) {
+            e.consume();
+            performAutoCompletion();
+        }
         else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             if (popupWindow.isVisible()) {
                 // Hide popup
