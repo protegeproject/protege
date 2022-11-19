@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -135,8 +136,7 @@ public class FileUtils {
         for (int i=filename.length(); i<3; i++){
             filename += "_";
         }
-        return File.createTempFile(filename,
-                                   targetName.substring(extensionIndex));
+        return Files.createTempFile(filename, targetName.substring(extensionIndex)).toFile();
     }
 
     public static void showLogFile() {

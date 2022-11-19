@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -90,7 +91,7 @@ public class OntologySaver {
                 if ("file".equals(documentIRI.getScheme())) {
                     File tempFile;
                     // Save temp file first and then copy over.
-                    tempFile = File.createTempFile("temp-ontology", "");
+                    tempFile = Files.createTempFile("temp-ontology", "").toFile();
                     try {
                         logger.info("Saving ontology to temp file: {}", tempFile);
                         ontology.saveOntology(descriptor.getDocumentFormat(), IRI.create(tempFile));
