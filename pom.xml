@@ -337,6 +337,13 @@
 			    	<artifactId>javax.activation</artifactId>	
 			    	<version>1.2.0</version>	
 			</dependency>
+			
+			<!-- swrltab plugin requires -->
+			<dependency>
+			    <groupId>org.glassfish.corba</groupId>
+			    <artifactId>glassfish-corba-orb</artifactId>
+			    <version>4.2.4</version>
+			</dependency>
 
 		</dependencies>
 	</dependencyManagement>

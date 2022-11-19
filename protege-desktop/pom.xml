@@ -163,7 +163,7 @@
 									<classPath>
 										<mainClass>org.protege.osgi.framework.Launcher</mainClass>
 										<addDependencies>false</addDependencies>
-										<preCp>bundles/guava.jar;bundles/logback-classic.jar;bundles/logback-core.jar;bundles/slf4j-api.jar;bin/org.apache.felix.main.jar;bin/maven-artifact.jar;bin/protege-launcher.jar</preCp>
+										<preCp>bundles/guava.jar;bundles/logback-classic.jar;bundles/logback-core.jar;bundles/slf4j-api.jar;bundles/glassfish-corba-orb.jar;bin/org.apache.felix.main.jar;bin/maven-artifact.jar;bin/protege-launcher.jar</preCp>
 									</classPath>
 									<jre>
 										<path>jre</path>

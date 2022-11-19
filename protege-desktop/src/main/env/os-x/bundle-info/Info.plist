@@ -83,6 +83,7 @@
             <string>bundles/logback-classic.jar</string>
             <string>bundles/logback-core.jar</string>
             <string>bundles/slf4j-api.jar</string>
+            <string>bundles/glassfish-corba-orb.jar</string>
             <string>bin/org.apache.felix.main.jar</string>
             <string>bin/protege-launcher.jar</string>
             <string>bin/maven-artifact.jar</string>
