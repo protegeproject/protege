@@ -11,5 +11,5 @@ cd "$(dirname "$0")/Java"
      -Dcom.apple.mrj.application.apple.menu.about.name=Protege \
      -Xdock:name=Protege \
      -Xdock:icon=app/Protege.icns \
-     -classpath bundles/guava.jar:bundles/logback-classic.jar:bundles/logback-core.jar:bundles/slf4j-api.jar:bin/org.apache.felix.main.jar:bin/maven-artifact.jar:bin/protege-launcher.jar \
+     -classpath bundles/guava.jar:bundles/logback-classic.jar:bundles/logback-core.jar:bundles/slf4j-api.jar:bundles/glassfish-corba-orb.jar:bin/org.apache.felix.main.jar:bin/maven-artifact.jar:bin/protege-launcher.jar \
      org.protege.osgi.framework.Launcher $1
