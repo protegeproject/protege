@@ -2,7 +2,10 @@ package org.protege.editor.owl.ui.usage;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.selection.OWLSelectionModelImpl;
 import org.semanticweb.owlapi.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -290,10 +293,18 @@ public class UsageByEntityTreeModel extends DefaultTreeModel implements UsageTre
 
 
         public void visit(OWLDifferentIndividualsAxiom axiom) {
-            for (OWLIndividual ind : axiom.getIndividuals()) {
-                if (!ind.isAnonymous()) {
-                    ind.asOWLNamedIndividual().accept(this);
+            boolean hasBeenIndexed = false;
+            if (!isFilterSet(UsageFilter.filterDifferent)) {
+                for (OWLIndividual ind : axiom.getIndividuals()) {
+                    if (!ind.isAnonymous()) {
+                        ind.asOWLNamedIndividual().accept(this);
+                        hasBeenIndexed = true;
+                    }
                 }
+            }
+            if (!hasBeenIndexed) {
+                additionalAxioms.add(axiom);
+                usageCount++;
             }
         }
 
