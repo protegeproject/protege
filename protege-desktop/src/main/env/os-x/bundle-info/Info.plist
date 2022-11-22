@@ -73,35 +73,7 @@
         <true/>
         <key>NSSupportsAutomaticGraphicsSwitching</key>
         <true/>
-        <key>JVMRuntime</key>
-        <string>JRE</string>
-        <key>JVMMainClassName</key>
-        <string>org.protege.osgi.framework.Launcher</string>
-        <key>JVMClassPaths</key>
-        <array>
-            <string>bundles/guava.jar</string>
-            <string>bundles/logback-classic.jar</string>
-            <string>bundles/logback-core.jar</string>
-            <string>bundles/slf4j-api.jar</string>
-            <string>bundles/glassfish-corba-orb.jar</string>
-            <string>bin/org.apache.felix.main.jar</string>
-            <string>bin/protege-launcher.jar</string>
-            <string>bin/maven-artifact.jar</string>
-        </array>
-        <key>JVMVersion</key>
-        <string>1.8+</string>
-        <key>JVMOptions</key>
-        <array>
-            <string>-Dapple.laf.useScreenMenuBar=true</string>
-            <string>-Xdock:name=Protégé</string>
-            <string>-DentityExpansionLimit=100000000</string>
-            <string>-Dlogback.configurationFile=conf/logback.xml</string>
-            <string>-Dfile.encoding=UTF-8</string>
-            <string>-XX:CompileCommand=exclude,javax/swing/text/GlyphView,getBreakSpot</string>
-        </array>
-        <key>JVMArguments</key>
-        <array/>
-        <key>LauncherWorkingDirectory</key>
-        <string>$APP_ROOT/Contents/Java</string>
+        <key>LSRequiresNativeExecution</key>
+        <true/>
     </dict>
 </plist>
