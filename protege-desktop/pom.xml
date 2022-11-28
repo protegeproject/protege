@@ -26,7 +26,7 @@
 				<enabled>true</enabled>
 			</releases>
 			<id>github</id>
-			<url>https://raw.github.com/hkir-dev/mvn-repo/master/releases</url>
+			<url>https://raw.github.com/protegeproject/mvn-repo/master/releases</url>
 		</repository>
 	</repositories>
 	
