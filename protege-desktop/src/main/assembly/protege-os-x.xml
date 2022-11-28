@@ -49,7 +49,7 @@
                 <include>com.sun.xml.bind:jaxb-core:jar</include>
                 <include>com.sun.xml.bind:jaxb-impl:jar</include>
                 <include>com.sun.activation:javax.activation</include>
-				<!-- CORBA dependencies -->
+                <!-- CORBA dependencies -->
                 <include>org.glassfish.corba:glassfish-corba-orb:jar</include>
                 <include>org.glassfish.corba:glassfish-corba-internal-api:jar</include>
                 <include>org.glassfish.corba:glassfish-corba-omgapi:jar</include>
