@@ -48,7 +48,7 @@
             </dict>
         </array>
         <key>CFBundleExecutable</key>
-        <string>JavaAppLauncher</string>
+        <string>protege</string>
         <key>CFBundleIconFile</key>
         <string>Protege.icns</string>
         <key>CFBundleIdentifier</key>

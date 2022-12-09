@@ -13,18 +13,7 @@
     <dependencySets>
 
         <dependencySet>
-            <outputDirectory>${osx.bundle.name}/Contents/Java/bin</outputDirectory>
-            <includes>
-                <include>edu.stanford.protege:protege-launcher:jar</include>
-                <include>org.apache.felix:org.apache.felix.main:jar</include>
-                <include>org.apache.maven:maven-artifact</include>
-            </includes>
-            <useStrictFiltering>true</useStrictFiltering>
-            <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
-        </dependencySet>
-
-        <dependencySet>
-            <outputDirectory>${osx.bundle.name}/Contents/Java/bundles</outputDirectory>
+            <outputDirectory>${osx.bundle.name}/Contents/bundles</outputDirectory>
             <includes>
                 <include>edu.stanford.protege:protege-common:jar</include>
                 <include>edu.stanford.protege:protege-editor-core:jar</include>
@@ -62,13 +51,16 @@
                 <include>org.ow2.asm:asm-util:jar</include>
                 <include>org.ow2.asm:asm-tree:jar</include>
                 <include>org.ow2.asm:asm-analysis:jar</include>
+                <include>edu.stanford.protege:protege-launcher:jar</include>
+                <include>org.apache.felix:org.apache.felix.main:jar</include>
+                <include>org.apache.maven:maven-artifact</include>
             </includes>
             <useStrictFiltering>true</useStrictFiltering>
             <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
         </dependencySet>
 
         <dependencySet>
-            <outputDirectory>${osx.bundle.name}/Contents/Plugins/JRE/Contents/Home</outputDirectory>
+            <outputDirectory>${osx.bundle.name}/Contents</outputDirectory>
             <includes>
                 <include>edu.stanford.protege:jre.os-x:jar</include>
             </includes>
@@ -89,7 +81,7 @@
 
         <fileSet>
             <directory>src/main/felix</directory>
-            <outputDirectory>${osx.bundle.name}/Contents/Java</outputDirectory>
+            <outputDirectory>${osx.bundle.name}/Contents</outputDirectory>
             <includes>
                 <include>**/*</include>
             </includes>
@@ -97,7 +89,7 @@
 
         <fileSet>
             <directory>src/main/logging</directory>
-            <outputDirectory>${osx.bundle.name}/Contents/Java</outputDirectory>
+            <outputDirectory>${osx.bundle.name}/Contents</outputDirectory>
             <includes>
                 <include>**/*</include>
             </includes>
@@ -105,9 +97,9 @@
 
         <fileSet>
             <directory>src/main/resources</directory>
-            <outputDirectory>${osx.bundle.name}/Contents/Java/</outputDirectory>
+            <outputDirectory>${osx.bundle.name}/Contents</outputDirectory>
             <includes>
-                <include>**/*</include>
+                <include>conf/*</include>
             </includes>
         </fileSet>
 
