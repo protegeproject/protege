@@ -8,12 +8,24 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
 done
 cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
+conf_file=
+if [ -f "$HOME/.protege/conf/jvm.conf" ]; then
+  conf_file="$HOME/.protege/conf/jvm.conf"
+elif [ -f conf/jvm.conf ]; then
+  conf_file=conf/jvm.conf
+fi
+
+EXTRA_JVM_OPTIONS=
+if [ -n "$conf_file" ]; then
+  EXTRA_JVM_OPTIONS=$(sed -n 's/^max_heap_size=/-Xmx/p; s/^min_heap_size=/-Xms/p; s/^stack_size=/-Xss/p; s/^append=//p;' "$conf_file" | tr '\n' ' ')
+fi
+
 java -Dlogback.configurationFile=conf/logback.xml \
      -DentityExpansionLimit=100000000 \
      -Dfile.encoding=UTF-8 \
      ${conf.extra.args} \
      -classpath bundles/guava.jar:bundles/logback-classic.jar:bundles/logback-core.jar:bundles/slf4j-api.jar:bundles/glassfish-corba-orb.jar:bin/org.apache.felix.main.jar:bin/maven-artifact.jar:bin/protege-launcher.jar \
-     $CMD_OPTIONS org.protege.osgi.framework.Launcher $1
+     $CMD_OPTIONS $EXTRA_JVM_OPTIONS org.protege.osgi.framework.Launcher $1
 
 
 
