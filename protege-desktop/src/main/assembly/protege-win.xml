@@ -25,15 +25,6 @@
             <filtered>true</filtered>
         </fileSet>
 
-        <fileSet>
-            <directory>target</directory>
-            <outputDirectory>.</outputDirectory>
-            <fileMode>0755</fileMode>
-            <includes>
-                <include>Protege.exe</include>
-            </includes>
-        </fileSet>
-
     </fileSets>
 
     <dependencySets>
