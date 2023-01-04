@@ -105,17 +105,21 @@
 
 
         <fileSet>
-            <directory>src/main/env/os-x/bundle-resources</directory>
+            <directory>src/main/env/os-x</directory>
             <outputDirectory>${osx.bundle.name}/Contents/</outputDirectory>
-        </fileSet>
-
-        <!-- This is done separately in order to use resource filtering to incorporate version info -->
-        <fileSet>
-            <directory>src/main/env/os-x/bundle-info</directory>
-            <outputDirectory>${osx.bundle.name}/Contents/</outputDirectory>
-            <filtered>true</filtered>
+            <excludes>
+                <exclude>Info.plist</exclude>
+            </excludes>
         </fileSet>
 
     </fileSets>
+
+    <files>
+        <file>
+            <source>src/main/env/os-x/Info.plist</source>
+            <outputDirectory>${osx.bundle.name}/Contents/</outputDirectory>
+            <filtered>true</filtered>
+        </file>
+    </files>
 
 </assembly>
