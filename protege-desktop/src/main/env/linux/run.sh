@@ -9,18 +9,24 @@ done
 cd "$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 conf_file=
-if [ -f "$HOME/.protege/conf/jvm.conf" ]; then
-  conf_file="$HOME/.protege/conf/jvm.conf"
+if [ -f "$HOME/.Protege/conf/jvm.conf" ]; then
+  conf_file="$HOME/.Protege/conf/jvm.conf"
 elif [ -f conf/jvm.conf ]; then
   conf_file=conf/jvm.conf
 fi
 
 EXTRA_JVM_OPTIONS=
+EFFECTIVE_JAVA_HOME=
 if [ -n "$conf_file" ]; then
   EXTRA_JVM_OPTIONS=$(sed -n 's/^max_heap_size=/-Xmx/p; s/^min_heap_size=/-Xms/p; s/^stack_size=/-Xss/p; s/^append=//p;' "$conf_file" | tr '\n' ' ')
+  EFFECTIVE_JAVA_HOME=$(sed -n 's/^java_home=//p' "$conf_file")
 fi
 
-jre/bin/java \
+[ -z "$EFFECTIVE_JAVA_HOME" ] && EFFECTIVE_JAVA_HOME="$PROTEGE_JAVA_HOME"
+[ -z "$EFFECTIVE_JAVA_HOME" -a ! -d jre ] && EFFECTIVE_JAVA_HOME="$JAVA_HOME"
+[ -z "$EFFECTIVE_JAVA_HOME" ] && EFFECTIVE_JAVA_HOME="jre"
+
+$EFFECTIVE_JAVA_HOME/bin/java \
      -DentityExpansionLimit=100000000 \
      -Dlogback.configurationFile=conf/logback.xml \
      -Dfile.encoding=UTF-8 \
