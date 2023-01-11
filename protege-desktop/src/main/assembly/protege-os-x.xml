@@ -99,7 +99,7 @@
             <directory>src/main/resources</directory>
             <outputDirectory>${osx.bundle.name}/Contents</outputDirectory>
             <includes>
-                <include>conf/*</include>
+                <include>conf/**</include>
             </includes>
         </fileSet>
 
