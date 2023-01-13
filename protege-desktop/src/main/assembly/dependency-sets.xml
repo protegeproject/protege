@@ -2,19 +2,11 @@
     <dependencySets>
 
         <dependencySet>
-            <outputDirectory>bin</outputDirectory>
+            <outputDirectory>bundles</outputDirectory>
             <includes>
                 <include>edu.stanford.protege:protege-launcher:jar</include>
                 <include>org.apache.felix:org.apache.felix.main:jar</include>
                 <include>org.apache.maven:maven-artifact</include>
-            </includes>
-            <useStrictFiltering>true</useStrictFiltering>
-            <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
-        </dependencySet>
-
-        <dependencySet>
-            <outputDirectory>bundles</outputDirectory>
-            <includes>
                 <include>edu.stanford.protege:protege-common:jar</include>
                 <include>edu.stanford.protege:protege-editor-core:jar</include>
                 <include>org.eclipse.equinox:org.eclipse.equinox.registry:jar</include>
