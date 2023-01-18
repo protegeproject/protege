@@ -112,6 +112,14 @@ public class OntologyLoader {
 
         OWLOntologyLoaderConfiguration configuration = new OWLOntologyLoaderConfiguration();
         configuration = configuration.setMissingImportHandlingStrategy(MissingImportHandlingStrategy.SILENT);
+
+        /*
+         * Forbid the use of the Rio TriX parser, which can spectacularly fail to parse a document
+         * and return an empty ontology, all the while reporting success without any shame.
+         * See https://github.com/protegeproject/protege/issues/1096.
+         */
+        configuration = configuration.setBannedParsers(configuration.getBannedParsers() + " org.semanticweb.owlapi.rio.RioTrixParserFactory");
+
         IRIDocumentSource documentSource = new IRIDocumentSource(IRI.create(documentURI));
         ontology = loadingManager.loadOntologyFromOntologyDocument(documentSource, configuration);
         Set<OWLOntology> alreadyLoadedOntologies = new HashSet<>();
