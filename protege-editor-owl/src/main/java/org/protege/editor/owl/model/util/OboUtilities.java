@@ -43,7 +43,7 @@ public class OboUtilities {
      * @return true if the value to be tested matches the OBO Id pattern.
      */
     public static boolean isOboId(@Nonnull String value) {
-        return OBO_ID_PATTERN.matcher(checkNotNull(value)).find();
+        return OBO_ID_PATTERN.matcher(checkNotNull(value)).matches();
     }
 
     /**
