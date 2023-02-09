@@ -110,6 +110,9 @@
 							</archiverConfig>
 							<descriptors>
 								<descriptor>src/main/assembly/protege-platform-independent.xml</descriptor>
+								<descriptor>src/main/assembly/protege-os-x.xml</descriptor>
+								<descriptor>src/main/assembly/protege-win.xml</descriptor>
+								<descriptor>src/main/assembly/protege-linux.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</execution>
