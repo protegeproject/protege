@@ -389,9 +389,6 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
             if (extensionIndex == -1) {
                 file = new File(file.toString() + extensions.get(0));
             }
-            else if (! extensions.contains(file.toString().substring(extensionIndex))) {
-                file = new File(file.toString() + extensions.get(0));
-            }
         }
         return file;
     }
