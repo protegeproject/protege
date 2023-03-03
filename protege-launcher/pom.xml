@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>edu.stanford.protege</groupId>
 		<artifactId>protege-parent</artifactId>
-		<version>5.6.0-beta-1-SNAPSHOT</version>
+		<version>5.6.1</version>
 		<relativePath>../</relativePath>
 	</parent>
 
@@ -109,6 +109,32 @@
 			<artifactId>mockito-all</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>	
+		  	<groupId>javax.xml.bind</groupId>	
+		  	<artifactId>jaxb-api</artifactId>	
+		</dependency>	
+
+		<dependency>	
+		  	<groupId>com.sun.xml.bind</groupId>	
+		 	 <artifactId>jaxb-core</artifactId>	
+		</dependency>	
+
+		<dependency>	
+		 	 <groupId>com.sun.xml.bind</groupId>	
+		 	 <artifactId>jaxb-impl</artifactId>	
+		</dependency>	
+
+		<dependency>	
+			<groupId>com.sun.activation</groupId>	
+		   	<artifactId>javax.activation</artifactId>		    	
+		</dependency>
+		
+		<!-- swrltab plugin requires -->
+		<dependency>
+		    <groupId>org.glassfish.corba</groupId>
+		    <artifactId>glassfish-corba-orb</artifactId>
+		</dependency>		
 
 	</dependencies>
 </project>

@@ -16,7 +16,7 @@ public class Orcid {
 
     private static final Pattern PATTERN = Pattern.compile("[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]");
 
-    public static final String ORCID_URI_PREFIX = "http://orcid.org/";
+    public static final String ORCID_URI_PREFIX = "https://orcid.org/";
 
     private final String value;
 

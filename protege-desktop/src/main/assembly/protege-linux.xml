@@ -22,10 +22,21 @@
             <outputDirectory>.</outputDirectory>
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
-            <filtered>true</filtered>
+            <excludes>
+                <exclude>run.sh</exclude>
+            </excludes>
         </fileSet>
 
     </fileSets>
+
+    <files>
+        <file>
+            <source>src/main/env/linux/run.sh</source>
+            <outputDirectory>.</outputDirectory>
+            <fileMode>0755</fileMode>
+            <filtered>true</filtered>
+        </file>
+    </files>
 
     <dependencySets>
 
