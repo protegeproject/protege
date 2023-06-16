@@ -1,14 +1,14 @@
 # Site settings
 title: Protégé 5 Documentation
-version: 5.5.0
+version: 5.6.1
 email: protege@protege.stanford.edu
-description: This is the documentation for Protégé 5.5.0.
+description: This is the documentation for Protégé 5.6.1.
 baseurl: "/protege" # the subpath of your site, e.g. /blog
 url: "http://protegeproject.github.io" # the base hostname & protocol for your site
 twitter_username: protegeproject
 github_username:  protegeproject
 protege: Protégé
-protver: Protégé 5.5.0
+protver: Protégé 5.6.1
 
 # Build settings
 markdown: kramdown
