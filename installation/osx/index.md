@@ -8,7 +8,7 @@ Installing Protégé on Mac OS X
 
 Protege {{site.version}} is distributed in the form of a Mac OS X Application.  This includes the 64-bit Java Runtime Environment (JRE).  The application is contained within a ZIP file.
 
-1. Go to the [download page](http://protege.stanford.edu/products.php#desktop-protege) and click the Download button.
+1. Go to the [download page](http://protege.stanford.edu/software.php#desktop-protege) and click the Download button.
 2. Once the download completes, navigate to the folder where Protég´ was downloaded to. This will typically be your "Downloads" folder.
     <figure>
 	  <img alt="Mac Download" src="safari-downloads.png" style="max-width: 400px;"/>
