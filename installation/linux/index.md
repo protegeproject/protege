@@ -9,7 +9,7 @@ Protégé {{site.version}} is distributed in the form of a ```tar.gz``` file fro
 
 To install Protégé:
 
-1. Go to the [Products page](http://protege.stanford.edu/products.php#desktop-protege) on the Protege website.
+1. Go to the [software page](http://protege.stanford.edu/software.php#desktop-protege) on the Protege website.
 2. Click the **Download for Linux** button to download the tar.gz file to your machine.
 3. Unpack the archive. To do this, either use your file explorer and double-click on the archive, and extract it to the desired location, or type in a terminal window:
 
