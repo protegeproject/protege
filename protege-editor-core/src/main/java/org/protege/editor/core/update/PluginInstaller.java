@@ -248,6 +248,9 @@ public class PluginInstaller {
                 continue;
             }
             File curFile = new File(tempDir, entry.getName());
+            if (!curFile.toPath().normalize().startsWith(tempDir.toPath().normalize())) {
+                throw new IOException("Bad zip entry");
+            }
             if (entry.isDirectory()) {
                 curFile.mkdirs();
             }
