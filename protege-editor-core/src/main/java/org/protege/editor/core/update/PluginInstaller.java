@@ -17,6 +17,7 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -121,7 +122,7 @@ public class PluginInstaller {
         URL downloadURL = info.getDownloadURL();
         logger.info("Downloading the {} plugin from: {}", info.getLabel(), downloadURL);
 
-        File tempPluginFile = File.createTempFile(info.getId(), ".jar");
+        File tempPluginFile = Files.createTempFile(info.getId(), ".jar").toFile();
         tempPluginFile.deleteOnExit();
 
         URLConnection conn = downloadURL.openConnection();
