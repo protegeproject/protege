@@ -3,7 +3,7 @@
 
     <groupId>edu.stanford.protege</groupId>
     <artifactId>protege-parent</artifactId>
-    <version>5.6.2</version>
+    <version>5.6.3</version>
     <packaging>pom</packaging>
 
     <name>protege-parent</name>
@@ -138,7 +138,7 @@
 			<dependency>
 				<groupId>net.sourceforge.owlapi</groupId>
 				<artifactId>owlapi-osgidistribution</artifactId>
-				<version>4.5.25</version>
+				<version>4.5.26</version>
 			</dependency>
 
 			<dependency>
