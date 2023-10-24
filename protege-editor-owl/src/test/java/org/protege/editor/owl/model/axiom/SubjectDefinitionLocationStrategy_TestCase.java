@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.protege.editor.owl.model.HasActiveOntology;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -18,7 +18,7 @@ import java.util.Collections;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 /**
@@ -75,7 +75,6 @@ public class SubjectDefinitionLocationStrategy_TestCase {
                 importsClosureProvider,
                 subjectProvider,
                 subjectDefinitionExtractor
-
         );
         when(subjectProvider.getAxiomSubject(any(OWLAxiom.class))).thenReturn(Optional.<OWLObject>absent());
         OWLOntology ontology = strategy.getFreshAxiomLocation(axiom, hasActiveOntology);

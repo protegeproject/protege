@@ -1,14 +1,12 @@
 
 package org.protege.editor.owl.ui.breadcrumb;
 
-import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.semanticweb.owlapi.model.OWLObject;
 
 import java.util.Optional;
@@ -32,7 +30,6 @@ public class Breadcrumb_TestCase {
         breadcrumb = new Breadcrumb(object, parentRelationship);
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Test(expected = NullPointerException.class)
     public void shouldThrowNullPointerExceptionIf_object_IsNull() {
         new Breadcrumb(null, parentRelationship);
@@ -54,7 +51,7 @@ public class Breadcrumb_TestCase {
     }
 
     @Test
-    @SuppressWarnings("ObjectEqualsNull")
+
     public void shouldNotBeEqualToNull() {
         assertThat(breadcrumb.equals(null), is(false));
     }

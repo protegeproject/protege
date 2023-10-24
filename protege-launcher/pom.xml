@@ -21,7 +21,11 @@
 			<groupId>net.sourceforge.owlapi</groupId>
 			<artifactId>owlapi-osgidistribution</artifactId>
 		</dependency>
-
+		<dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
 		<dependency>
 			<groupId>org.apache.felix</groupId>
 			<artifactId>org.apache.felix.main</artifactId>
@@ -58,8 +62,8 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>com.google.code.findbugs</groupId>
-			<artifactId>jsr305</artifactId>
+			<groupId>com.github.spotbugs</groupId>
+      			<artifactId>spotbugs</artifactId>
 		</dependency>
 
 		<dependency>
@@ -104,11 +108,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<scope>test</scope>
-		</dependency>
 		
 		<dependency>	
 		  	<groupId>javax.xml.bind</groupId>	

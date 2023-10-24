@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.protege.editor.core.util.HandlerRegistration;
 import org.semanticweb.owlapi.model.OWLObject;
 
@@ -14,7 +14,7 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.util.Optional;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 /**
@@ -150,7 +150,7 @@ public class SelectionPlaneImpl_TestCase {
         when(componentA.isShowing()).thenReturn(true);
         triggerHierarchyChangeEvent(componentA);
         triggerHierarchyChangeEvent(componentB);
-        verify(selectionModel, times(1)).setSelectedObject(anyObject());
+        verify(selectionModel, times(1)).setSelectedObject(any());
     }
 
 

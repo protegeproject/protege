@@ -4,15 +4,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.protege.editor.core.prefs.Preferences;
 
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 /**
@@ -44,7 +44,7 @@ public class OrcidPreferencesManager_TestCase {
     }
     @Test
     public void shouldReturnOrcid() {
-        when(preferences.getString(eq(USER_ORCID_KEY), anyObject())).thenReturn(ORCID_STRING);
+        when(preferences.getString(eq(USER_ORCID_KEY), any())).thenReturn(ORCID_STRING);
         Optional<Orcid> value = manager.getOrcid();
         assertThat(value.isPresent(), is(true));
         assertThat(value.get().getValue(), is(ORCID_STRING));
@@ -52,14 +52,14 @@ public class OrcidPreferencesManager_TestCase {
 
     @Test
     public void shouldReturnAbsentForNull() {
-        when(preferences.getString(eq(USER_ORCID_KEY), anyObject())).thenReturn(null);
+        when(preferences.getString(eq(USER_ORCID_KEY), any())).thenReturn(null);
         Optional<Orcid> value = manager.getOrcid();
         assertThat(value.isPresent(), is(false));
     }
 
     @Test
     public void shouldReturnAbsentForEmptyString() {
-        when(preferences.getString(eq(USER_ORCID_KEY), anyObject())).thenReturn("");
+        when(preferences.getString(eq(USER_ORCID_KEY), any())).thenReturn("");
         Optional<Orcid> value = manager.getOrcid();
         assertThat(value.isPresent(), is(false));
     }

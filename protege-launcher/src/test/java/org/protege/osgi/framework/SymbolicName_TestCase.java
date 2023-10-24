@@ -8,8 +8,7 @@ import org.junit.runner.RunWith;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-
-@RunWith(org.mockito.runners.MockitoJUnitRunner.class)
+@RunWith(org.mockito.junit.MockitoJUnitRunner.class)
 public class SymbolicName_TestCase {
 
     private SymbolicName symbolicName;

@@ -1,11 +1,10 @@
 package org.protege.editor.owl.model.merge;
 
 import com.google.common.collect.ImmutableSet;
-import org.coode.owlapi.obo12.parser.OBOVocabulary;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.obolibrary.obo2owl.Obo2OWLConstants;
 import org.protege.editor.owl.ui.merge.MergeStrategy;
 import org.semanticweb.owlapi.apibinding.OWLManager;

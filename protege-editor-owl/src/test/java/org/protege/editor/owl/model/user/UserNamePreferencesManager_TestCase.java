@@ -4,15 +4,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.protege.editor.core.prefs.Preferences;
 
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 /**
@@ -39,14 +39,14 @@ public class UserNamePreferencesManager_TestCase {
 
     @Test
     public void shouldReturnUserName() {
-        when(preferences.getString(eq(USER_NAME_KEY), anyObject())).thenReturn(USER_NAME);
+        when(preferences.getString(eq(USER_NAME_KEY), any())).thenReturn(USER_NAME);
         Optional<String> value = manager.getUserName();
         assertThat(value, is(Optional.of(USER_NAME)));
     }
 
     @Test
     public void shouldReturnAbsent() {
-        when(preferences.getString(eq(USER_NAME_KEY), anyObject())).thenReturn(null);
+        when(preferences.getString(eq(USER_NAME_KEY), any())).thenReturn(null);
         Optional<String> value = manager.getUserName();
         assertThat(value.isPresent(), is(false));
     }

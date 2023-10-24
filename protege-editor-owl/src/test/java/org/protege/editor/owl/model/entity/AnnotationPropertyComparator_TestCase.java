@@ -5,9 +5,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.mockito.quality.Strictness;
+import org.mockito.junit.jupiter.MockitoSettings;
 
 import java.util.Comparator;
 
@@ -21,6 +23,7 @@ import static org.mockito.Mockito.*;
  * @author Matthew Horridge, Stanford University, Bio-Medical Informatics Research Group, Date: 28/05/2014
  */
 @RunWith(MockitoJUnitRunner.class)
+@MockitoSettings(strictness = Strictness.STRICT_STUBS)
 public class AnnotationPropertyComparator_TestCase {
 
     @Mock

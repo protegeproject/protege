@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.protege.editor.owl.model.entity.HomeOntologySupplier;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
@@ -105,10 +105,10 @@ public class EntityDeprecator_TestCase {
         when(deprecationProfile.getPreservedAnnotationValuePrefix()).thenReturn(VALUE_PREFIX);
         when(deprecationProfile.getPreservedAnnotationValuePropertiesIris()).thenReturn(Collections.singleton(dataFactory.getRDFSSeeAlso().getIRI()));
         when(deprecationProfile.getDeprecatedClassParentIri()).thenReturn(Optional.empty());
-        when(deprecationProfile.getDeprecatedObjectPropertyParentIri()).thenReturn(Optional.empty());
-        when(deprecationProfile.getDeprecatedDataPropertyParentIri()).thenReturn(Optional.empty());
-        when(deprecationProfile.getDeprecatedAnnotationPropertyParentIri()).thenReturn(Optional.empty());
-        when(deprecationProfile.getDeprecatedIndividualParentClassIri()).thenReturn(Optional.empty());
+    //    when(deprecationProfile.getDeprecatedObjectPropertyParentIri()).thenReturn(Optional.empty());
+    //    when(deprecationProfile.getDeprecatedDataPropertyParentIri()).thenReturn(Optional.empty());
+    //    when(deprecationProfile.getDeprecatedAnnotationPropertyParentIri()).thenReturn(Optional.empty());
+    //    when(deprecationProfile.getDeprecatedIndividualParentClassIri()).thenReturn(Optional.empty());
         when(deprecationProfile.getDeprecationCode()).thenReturn(Optional.empty());
 
         DeprecateEntityInfo<OWLClass> info = new DeprecateEntityInfo<>(

@@ -1,6 +1,6 @@
-<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/2.2.0"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/2.2.0 http://maven.apache.org/xsd/assembly-2.2.0.xsd">
 
     <id>mac</id>
     <formats>
@@ -18,11 +18,11 @@
                 <include>edu.stanford.protege:protege-common:jar</include>
                 <include>edu.stanford.protege:protege-editor-core:jar</include>
                 <include>org.eclipse.equinox:org.eclipse.equinox.registry:jar</include>
-                <include>org.eclipse.equinox:org.eclipse.equinox.supplement:jar</include>
+                <include>org.eclipse.platform:org.eclipse.equinox.supplement:jar</include>
                 <include>org.eclipse.equinox:org.eclipse.equinox.common:jar</include>
                 <include>net.sourceforge.owlapi:owlapi-osgidistribution:jar</include>
                 <include>edu.stanford.protege:protege-editor-owl:jar</include>
-                <include>com.google.code.findbugs:jsr305</include>
+                <include>com.github.spotbugs:spotbugs</include>
                 <include>ch.qos.logback:logback-core:jar</include>
                 <include>ch.qos.logback:logback-classic:jar</include>
                 <include>com.google.guava:guava:jar</include>
