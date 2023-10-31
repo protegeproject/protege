@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
+import java.util.function.Consumer;
 import java.util.stream.StreamSupport;
 
 /**
@@ -24,7 +25,8 @@ public class NoRangeForUserNameHandlerUi implements NoRangeForUserNameHandler {
 
     @Override
     public void handleNoRangeForUserName(@Nonnull String userName,
-                                         @Nonnull IdRangesPolicy policy) {
+                                         @Nonnull IdRangesPolicy policy,
+                                         @Nonnull Consumer<? super UserIdRange> action) {
         Frame owner = Arrays.stream(Frame.getFrames()).findFirst().orElse(null);
         NoRangeFoundForUserNamePanel userNamePanel = new NoRangeFoundForUserNamePanel();
         userNamePanel.setUserName(userName);
@@ -41,11 +43,6 @@ public class NoRangeForUserNameHandlerUi implements NoRangeForUserNameHandler {
         if(ret != 0) {
             return;
         }
-        userNamePanel.getSelectedRange().ifPresent(this::updateIdRange);
-    }
-
-    private void updateIdRange(@Nonnull UserIdRange rng) {
-        EntityCreationPreferences.setAutoIDStart(rng.getIdRange().getLowerBound());
-        EntityCreationPreferences.setAutoIDEnd(rng.getIdRange().getUpperBound());
+        userNamePanel.getSelectedRange().ifPresent(action);
     }
 }
