@@ -60,6 +60,9 @@ public class ActiveOntologyIdRangesPolicyManager {
 
     public void reload() {
         EntityCreationPreferences.setPolicyRangeName(null);
+        if (EntityCreationPreferences.getIgnoreRangePolicy()) {
+            return;
+        }
         idRangesPolicies = ImmutableList.of();
         OWLOntology activeOntology = modelManager.getActiveOntology();
         URI activeOntologyLocation = modelManager.getOntologyPhysicalURI(activeOntology);
