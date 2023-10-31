@@ -59,6 +59,7 @@ public class ActiveOntologyIdRangesPolicyManager {
     }
 
     public void reload() {
+        EntityCreationPreferences.setPolicyRangeName(null);
         idRangesPolicies = ImmutableList.of();
         OWLOntology activeOntology = modelManager.getActiveOntology();
         URI activeOntologyLocation = modelManager.getOntologyPhysicalURI(activeOntology);
