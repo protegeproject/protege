@@ -67,10 +67,6 @@
 			<artifactId>org.eclipse.equinox.common</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.apache.servicemix.bundles</groupId>
-			<artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
-		</dependency>
 
 		<dependency>
 			<groupId>org.apache.maven</groupId>
