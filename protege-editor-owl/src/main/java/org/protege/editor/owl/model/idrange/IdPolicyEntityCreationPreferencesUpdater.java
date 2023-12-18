@@ -98,7 +98,7 @@ public class IdPolicyEntityCreationPreferencesUpdater {
         userIdRange.ifPresent(this::updateNumericRange);
         if(!userIdRange.isPresent()) {
             logger.info("[IdRanges] Could not find a matching user name");
-            noRangeForUserNameHandler.handleNoRangeForUserName(userName, policy);
+            noRangeForUserNameHandler.handleNoRangeForUserName(userName, policy, this::updateNumericRange);
         }
     }
 
@@ -115,6 +115,9 @@ public class IdPolicyEntityCreationPreferencesUpdater {
         int end = rng.getUpperBound();
         logger.info("[IdRanges] Setting id end to {}", end);
         EntityCreationPreferences.setAutoIDEnd(end);
+        String name = String.format("%s_%d", policy.getIdPolicyFor(), start);
+        logger.info("[IdRanges] Setting policy name to {}", name);
+        EntityCreationPreferences.setPolicyRangeName(name);
     }
 
 
