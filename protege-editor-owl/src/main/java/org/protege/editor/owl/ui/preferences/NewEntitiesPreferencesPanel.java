@@ -60,6 +60,7 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel implements 
 
     // Auto-generated ID panel
     private JCheckBox saveIterativeIds;
+    private JCheckBox ignorePolicy;
     private JLabel digitCountLabel;
     private JLabel endLabel;
     private JLabel prefixLabel;
@@ -419,6 +420,16 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel implements 
         saveIterativeIds.setEnabled(iterativeButton.isSelected());
         centerPanel.add(saveIterativeIds, c);
         
+        // Ignore auto ID range policies
+        c.gridx = 1;
+        c.gridy = 6;
+        c.gridwidth = 2;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weighty = 1.0;
+        ignorePolicy = new JCheckBox("Ignore ID range policies");
+        ignorePolicy.setSelected(EntityCreationPreferences.getIgnoreRangePolicy());
+        centerPanel.add(ignorePolicy, c);
+
         // Dummy label for spacing purposes
         c.gridx = 2;
         c.gridy = 0;
@@ -452,6 +463,7 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel implements 
 	    suffixLabel.setEnabled(b);
 		uniqueIdButton.setEnabled(b);
 		ideIdButton.setEnabled(b);
+		ignorePolicy.setEnabled(b);
 		
 		enableNumericIterativeOptions((iterativeButton.isSelected()) && (iterativeButton.isEnabled()));
 	}
@@ -542,6 +554,7 @@ public class NewEntitiesPreferencesPanel extends OWLPreferencesPanel implements 
         EntityCreationPreferences.setPrefix(autoIDPrefix.getText());
         EntityCreationPreferences.setSuffix(autoIDSuffix.getText());
         EntityCreationPreferences.setSaveAutoIDStart(saveIterativeIds.isSelected());
+        EntityCreationPreferences.setIgnoreRangePolicy(ignorePolicy.isSelected());
     }
     
     private void handleActionEndWithID() {
