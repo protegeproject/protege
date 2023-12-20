@@ -1,5 +1,7 @@
 package org.protege.editor.owl.model.idrange;
 
+import java.util.function.Consumer;
+
 import javax.annotation.Nonnull;
 
 /**
@@ -10,5 +12,6 @@ import javax.annotation.Nonnull;
 public interface NoRangeForUserNameHandler {
 
     void handleNoRangeForUserName(@Nonnull String userName,
-                                  @Nonnull IdRangesPolicy policy);
+                                  @Nonnull IdRangesPolicy policy,
+                                  @Nonnull Consumer<? super UserIdRange> action);
 }

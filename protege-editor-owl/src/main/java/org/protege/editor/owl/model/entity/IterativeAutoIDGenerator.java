@@ -30,15 +30,15 @@ public class IterativeAutoIDGenerator extends AbstractIDGenerator implements Rev
 
 
     public IterativeAutoIDGenerator() {
-        id = EntityCreationPreferences.getAutoIDStart();
+        id = EntityCreationPreferences.getPolicyAutoIDStart();
         previousStartId = id;      
     }
 
 
     protected long getRawID(Class<? extends OWLEntity> type) throws AutoIDException{
     	//check if start id prefs have changed meanwhile
-    	if (previousStartId != EntityCreationPreferences.getAutoIDStart()) {
-    		id = EntityCreationPreferences.getAutoIDStart();
+        if (previousStartId != EntityCreationPreferences.getPolicyAutoIDStart()) {
+        	id = EntityCreationPreferences.getPolicyAutoIDStart();
     		previousStartId = id;
     		checkpoints.removeAllElements();
     		checkpoints.push(id);
@@ -50,7 +50,7 @@ public class IterativeAutoIDGenerator extends AbstractIDGenerator implements Rev
         }
         if (EntityCreationPreferences.getSaveAutoIDStart()) {
         	previousStartId = id + 1;
-        	EntityCreationPreferences.setAutoIDStart((int) (previousStartId));
+        	EntityCreationPreferences.setPolicyAutoIDStart((int) (previousStartId));
         }
         return id++;
     }
