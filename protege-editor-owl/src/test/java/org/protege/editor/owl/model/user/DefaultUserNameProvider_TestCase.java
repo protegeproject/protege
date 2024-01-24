@@ -53,14 +53,14 @@ public class DefaultUserNameProvider_TestCase {
     public void shouldReturnPreferencesManagerUserName() {
         Optional<String> userName = Optional.of(USER_NAME);
         when(preferencesManager.getUserName()).thenReturn(userName);
-        when(gitRepoUserNameProvider.getUserName()).thenReturn(Optional.empty());
+        //when(gitRepoUserNameProvider.getUserName()).thenReturn(Optional.empty());
         assertThat(provider.getUserName(), is(userName));
         verify(properties, never()).getProperty(anyString());
     }
 
     @Test
     public void shouldReturnPropertiesUserName() {
-        when(gitRepoUserNameProvider.getUserName()).thenReturn(Optional.empty());
+        //when(gitRepoUserNameProvider.getUserName()).thenReturn(Optional.empty());
         when(preferencesManager.getUserName()).thenReturn(Optional.empty());
         when(properties.getProperty("user.name")).thenReturn(USER_NAME);
         assertThat(provider.getUserName(), is(Optional.of(USER_NAME)));
@@ -70,7 +70,7 @@ public class DefaultUserNameProvider_TestCase {
 
     @Test
     public void shouldReturnEmpty() {
-        when(gitRepoUserNameProvider.getUserName()).thenReturn(Optional.empty());
+        //when(gitRepoUserNameProvider.getUserName()).thenReturn(Optional.empty());
         Optional<String> empty = Optional.<String>empty();
         when(preferencesManager.getUserName()).thenReturn(empty);
         when(properties.getProperty(anyString())).thenReturn(null);

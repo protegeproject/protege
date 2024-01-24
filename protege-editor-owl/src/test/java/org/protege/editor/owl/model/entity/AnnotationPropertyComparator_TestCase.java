@@ -58,7 +58,7 @@ public class AnnotationPropertyComparator_TestCase {
         when(propertyB.getIRI()).thenReturn(iriB);
         // Always return propertyA before propertyB with the delegate
         when(delegate.compare(propertyA, propertyB)).thenReturn(-1);
-        when(delegate.compare(propertyB, propertyA)).thenReturn(1);
+        //when(delegate.compare(propertyB, propertyA)).thenReturn(1);
     }
 
     @Test

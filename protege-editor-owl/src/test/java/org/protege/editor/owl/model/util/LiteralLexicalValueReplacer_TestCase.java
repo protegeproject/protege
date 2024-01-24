@@ -71,7 +71,7 @@ public class LiteralLexicalValueReplacer_TestCase {
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void shouldThrowIndexOutOfBoundsExceptionOnInvalidPattern() {
-        when(literal.hasLang()).thenReturn(false);
+        //when(literal.hasLang()).thenReturn(false);
         replacer.replaceLexicalValue(literal, "$1");
     }
 }

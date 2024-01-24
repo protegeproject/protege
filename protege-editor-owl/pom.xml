@@ -206,7 +206,7 @@
                         </Export-Package>
 						<_exportcontents>
 							org.protege.xmlcatalog.*,
-							com.jcraft.zlib.*;version=${zlib.version},
+							
 							com.jcraft.jsch.*;version=${jsch.version},							
 						</_exportcontents>
                         <Import-Package>

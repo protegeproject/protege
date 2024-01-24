@@ -97,23 +97,15 @@
 		</dependency>
 		
 		<dependency>	
-		  	<groupId>javax.xml.bind</groupId>	
-		  	<artifactId>jaxb-api</artifactId>	
+		  	<groupId>jakarta.xml.bind</groupId>
+		  	<artifactId>jakarta.xml.bind-api</artifactId>	
 		</dependency>	
 
-		<dependency>	
-		  	<groupId>com.sun.xml.bind</groupId>	
-		 	 <artifactId>jaxb-core</artifactId>	
-		</dependency>	
 
-		<dependency>	
-		 	 <groupId>com.sun.xml.bind</groupId>	
-		 	 <artifactId>jaxb-impl</artifactId>	
-		</dependency>	
 
-		<dependency>	
-			<groupId>com.sun.activation</groupId>	
-		   	<artifactId>javax.activation</artifactId>		    	
+		<dependency>
+			<groupId>jakarta.activation</groupId>
+    			<artifactId>jakarta.activation-api</artifactId>
 		</dependency>
 		
 		<!-- swrltab plugin requires -->

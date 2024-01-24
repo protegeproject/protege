@@ -92,7 +92,7 @@ public class SubjectDefinitionLocationStrategy_TestCase {
         when(subjectDefinitionExtractor.getDefiningAxioms(subject, ontologyB))
                 .thenReturn(Collections.<OWLAxiom>emptySet());
 
-        // Ontology B defines subject
+        // OntologyC defines subject
         when(subjectDefinitionExtractor.getDefiningAxioms(subject, ontologyC))
                 .thenReturn(Collections.<OWLAxiom>emptySet());
 
@@ -117,7 +117,7 @@ public class SubjectDefinitionLocationStrategy_TestCase {
         when(subjectDefinitionExtractor.getDefiningAxioms(subject, ontologyB))
                 .thenReturn(Collections.<OWLAxiom>emptySet());
 
-        // Ontology B defines subject
+        // Ontology c defines subject
         when(subjectDefinitionExtractor.getDefiningAxioms(subject, ontologyC))
                 .thenReturn(Collections.singleton(axiom));
 
@@ -142,9 +142,9 @@ public class SubjectDefinitionLocationStrategy_TestCase {
         when(subjectDefinitionExtractor.getDefiningAxioms(subject, ontologyB))
                 .thenReturn(Collections.singleton(axiom));
 
-        // Ontology B defines subject
-        when(subjectDefinitionExtractor.getDefiningAxioms(subject, ontologyC))
-                .thenReturn(Collections.singleton(axiom));
+        // Ontology C defines subject
+        //when(subjectDefinitionExtractor.getDefiningAxioms(subject, ontologyC))
+        //        .thenReturn(Collections.singleton(axiom));
 
         SubjectDefinitionLocationStrategy strategy = new SubjectDefinitionLocationStrategy(
                 importsClosureProvider,
