@@ -40,21 +40,21 @@
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>protege-common</artifactId>
 			<version>${project.parent.version}</version>
-        </dependency>
+	        </dependency>
 
 		<dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>protege-editor-core</artifactId>
 			<version>${project.parent.version}</version>
-        </dependency>
+	        </dependency>
 
-        <dependency>
+	        <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>protege-editor-owl</artifactId>
 			<version>${project.parent.version}</version>
-        </dependency>
+	        </dependency>
 
-        <dependency>
+	        <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>protege-launcher</artifactId>
 			<version>${project.parent.version}</version>
@@ -129,7 +129,6 @@
 			</properties>
 			<build>
 				<plugins>
-
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-antrun-plugin</artifactId>
@@ -175,7 +174,6 @@
 							</execution>
 						</executions>
 					</plugin>
-
 				</plugins>
 			</build>
 		</profile>
