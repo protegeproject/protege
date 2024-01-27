@@ -1,13 +1,13 @@
 package org.protege.editor.owl.model;
 
-import org.protege.editor.owl.model.inference.OWLReasonerExceptionHandler;
-
-import javax.swing.*;
 /*
  * Copyright (C) 2007, University of Manchester
  *
  *
  */
+import javax.swing.JOptionPane;
+
+import org.protege.editor.owl.model.inference.OWLReasonerExceptionHandler;
 
 
 /**

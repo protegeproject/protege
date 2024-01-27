@@ -1,13 +1,5 @@
 package org.protege.editor.owl.model.repository;
 
-import org.protege.editor.core.OntologyRepository;
-import org.protege.editor.core.OntologyRepositoryEntry;
-import org.protege.editor.core.editorkit.EditorKit;
-import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
-import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,6 +9,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import org.protege.editor.core.OntologyRepository;
+import org.protege.editor.core.OntologyRepositoryEntry;
+import org.protege.editor.core.editorkit.EditorKit;
+import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
+import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
 
 
 /**

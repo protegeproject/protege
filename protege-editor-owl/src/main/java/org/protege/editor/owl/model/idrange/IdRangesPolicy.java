@@ -1,9 +1,9 @@
 package org.protege.editor.owl.model.idrange;
 
+import javax.annotation.Nonnull;
+
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.ImmutableList;
-
-import javax.annotation.Nonnull;
 
 /**
  * Matthew Horridge

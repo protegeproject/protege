@@ -1,6 +1,12 @@
 package org.protege.editor.core.ui.menu;
 
-import com.google.common.base.MoreObjects;
+import java.awt.Toolkit;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import javax.swing.AbstractAction;
+import javax.swing.KeyStroke;
+
 import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.PropertyUtil;
 import org.protege.editor.core.editorkit.EditorKit;
@@ -10,10 +16,7 @@ import org.protege.editor.core.ui.action.ProtegeActionPluginJPFImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
-import java.awt.*;
-import java.net.MalformedURLException;
-import java.net.URL;
+import com.google.common.base.MoreObjects;
 
 
 /**

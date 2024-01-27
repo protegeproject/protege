@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.renderer;
 
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * Author: Matthew Horridge<br>

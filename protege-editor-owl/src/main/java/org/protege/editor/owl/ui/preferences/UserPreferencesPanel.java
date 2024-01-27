@@ -1,5 +1,13 @@
 package org.protege.editor.owl.ui.preferences;
 
+import java.awt.BorderLayout;
+import java.util.Optional;
+
+import javax.swing.JCheckBox;
+import javax.swing.JRadioButton;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
 import org.protege.editor.core.ui.util.AugmentedJTextField;
@@ -8,12 +16,6 @@ import org.protege.editor.owl.model.user.Orcid;
 import org.protege.editor.owl.model.user.OrcidPreferencesManager;
 import org.protege.editor.owl.model.user.UserNamePreferencesManager;
 import org.protege.editor.owl.model.user.UserPreferences;
-
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import java.awt.*;
-import java.util.Optional;
 
 /**
  * Matthew Horridge

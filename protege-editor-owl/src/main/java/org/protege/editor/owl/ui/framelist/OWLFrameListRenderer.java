@@ -1,23 +1,32 @@
 package org.protege.editor.owl.ui.framelist;
 
+import static org.protege.editor.owl.ui.renderer.InlineAnnotationRendering.DO_NOT_RENDER_COMPOUND_ANNOTATIONS_INLINE;
+import static org.protege.editor.owl.ui.renderer.InlineAnnotationRendering.RENDER_COMPOUND_ANNOTATIONS_INLINE;
+
+import java.awt.Component;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
+
 import org.protege.editor.core.ui.list.RendererWithInsets;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.protege.editor.owl.ui.renderer.*;
+import org.protege.editor.owl.ui.renderer.InlineAnnotationRendering;
+import org.protege.editor.owl.ui.renderer.InlineDatatypeRendering;
+import org.protege.editor.owl.ui.renderer.InlineThumbnailRendering;
+import org.protege.editor.owl.ui.renderer.OWLAnnotationCellRenderer2;
+import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
+import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.HashSet;
-import java.util.Set;
-
-import static org.protege.editor.owl.ui.renderer.InlineAnnotationRendering.DO_NOT_RENDER_COMPOUND_ANNOTATIONS_INLINE;
-import static org.protege.editor.owl.ui.renderer.InlineAnnotationRendering.RENDER_COMPOUND_ANNOTATIONS_INLINE;
 
 
 /**

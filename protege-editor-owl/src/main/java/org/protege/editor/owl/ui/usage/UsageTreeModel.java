@@ -1,14 +1,15 @@
 package org.protege.editor.owl.ui.usage;
 
-import org.semanticweb.owlapi.model.OWLEntity;
-
-import javax.swing.tree.TreeModel;
 import java.util.Set;
 /*
 * Copyright (C) 2007, University of Manchester
 *
 *
 */
+
+import javax.swing.tree.TreeModel;
+
+import org.semanticweb.owlapi.model.OWLEntity;
 
 /**
  * Author: drummond<br>

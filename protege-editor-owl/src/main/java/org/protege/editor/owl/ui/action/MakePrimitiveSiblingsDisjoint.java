@@ -1,16 +1,16 @@
 package org.protege.editor.owl.ui.action;
 
+import java.awt.event.ActionEvent;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.search.EntitySearcher;
-
-import java.awt.event.ActionEvent;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 
 /**

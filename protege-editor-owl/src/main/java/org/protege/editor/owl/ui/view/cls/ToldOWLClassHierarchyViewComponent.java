@@ -1,5 +1,15 @@
 package org.protege.editor.owl.ui.view.cls;
 
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.swing.Icon;
+
 import org.protege.editor.core.ui.menu.PopupMenuId;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
@@ -7,21 +17,26 @@ import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.selection.SelectionDriver;
 import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
 import org.protege.editor.owl.ui.action.DeleteClassAction;
-import org.protege.editor.owl.ui.renderer.*;
+import org.protege.editor.owl.ui.renderer.AddChildIcon;
+import org.protege.editor.owl.ui.renderer.AddSiblingIcon;
+import org.protege.editor.owl.ui.renderer.OWLClassIcon;
+import org.protege.editor.owl.ui.renderer.OWLEntityIcon;
 import org.protege.editor.owl.ui.tree.OWLObjectTreeNode;
 import org.protege.editor.owl.ui.tree.OWLTreeDragAndDropHandler;
 import org.protege.editor.owl.ui.tree.OWLTreePreferences;
 import org.protege.editor.owl.ui.view.CreateNewChildTarget;
 import org.protege.editor.owl.ui.view.CreateNewSiblingTarget;
 import org.protege.editor.owl.ui.view.CreateNewTarget;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
+import org.semanticweb.owlapi.model.RemoveAxiom;
 import org.semanticweb.owlapi.model.parameters.Imports;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.util.*;
-import java.util.List;
 
 
 /**

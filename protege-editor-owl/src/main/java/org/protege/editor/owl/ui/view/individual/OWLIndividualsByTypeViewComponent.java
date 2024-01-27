@@ -1,6 +1,20 @@
 package org.protege.editor.owl.ui.view.individual;
 
-import com.google.common.collect.Sets;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.swing.JScrollPane;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.TreePath;
+
 import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.core.ui.view.DisposableAction;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
@@ -8,32 +22,31 @@ import org.protege.editor.owl.model.hierarchy.IndividualsByTypeHierarchyProvider
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProviderListener;
 import org.protege.editor.owl.model.selection.SelectionDriver;
-import org.protege.editor.owl.model.util.OWLUtilities;
-import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.action.DeleteIndividualAction;
 import org.protege.editor.owl.ui.renderer.AddEntityIcon;
 import org.protege.editor.owl.ui.renderer.OWLClassIcon;
 import org.protege.editor.owl.ui.renderer.OWLIndividualIcon;
-import org.protege.editor.owl.ui.tree.*;
+import org.protege.editor.owl.ui.tree.CountingOWLObjectTreeCellRenderer;
+import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
+import org.protege.editor.owl.ui.tree.OWLObjectTree;
+import org.protege.editor.owl.ui.tree.OWLObjectTreeNode;
+import org.protege.editor.owl.ui.tree.OWLTreeDragAndDropHandler;
 import org.protege.editor.owl.ui.view.AbstractOWLSelectionViewComponent;
 import org.protege.editor.owl.ui.view.ChangeListenerMediator;
 import org.protege.editor.owl.ui.view.CreateNewTarget;
 import org.protege.editor.owl.ui.view.Findable;
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLEntitySetProvider;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.RemoveAxiom;
 
-import javax.swing.*;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.TreePath;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.*;
-import java.util.List;
+import com.google.common.collect.Sets;
 
 
 /**

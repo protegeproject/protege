@@ -1,5 +1,22 @@
 package org.protege.editor.owl.ui.ontology;
 
+import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+/*
+* Copyright (C) 2007, University of Manchester
+*
+*
+*/
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+
 import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
@@ -11,21 +28,6 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
-import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-/*
-* Copyright (C) 2007, University of Manchester
-*
-*
-*/
 
 /**
  * Author: drummond<br>

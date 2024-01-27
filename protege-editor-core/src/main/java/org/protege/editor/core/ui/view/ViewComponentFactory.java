@@ -1,11 +1,15 @@
 package org.protege.editor.core.ui.view;
 
+import java.awt.BorderLayout;
+import java.util.Map;
+
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+
 import org.coode.mdock.ComponentFactory;
 import org.protege.editor.core.ui.workspace.Workspace;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.Map;
 
 
 /**

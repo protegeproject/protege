@@ -1,15 +1,15 @@
 package org.protege.editor.owl.model.util;
 
-import org.semanticweb.owlapi.model.IRI;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.Nonnull;
 import java.util.Optional;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static org.coode.owlapi.obo12.parser.OBOVocabulary.OBO_ID_PATTERN;
+import javax.annotation.Nonnull;
+
+import org.semanticweb.owlapi.model.IRI;
 
 /**
  * Matthew Horridge

@@ -1,13 +1,13 @@
 package org.protege.editor.owl.model.util;
 
-import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLLiteral;
-
-import javax.annotation.Nonnull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.regex.Pattern;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
+
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLLiteral;
 
 /**
  * Matthew Horridge

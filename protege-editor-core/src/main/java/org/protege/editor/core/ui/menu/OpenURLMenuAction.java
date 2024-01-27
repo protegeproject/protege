@@ -1,8 +1,5 @@
 package org.protege.editor.core.ui.menu;
 
-import org.protege.editor.core.ui.action.ProtegeAction;
-import org.protege.editor.core.ui.util.NativeBrowserLauncher;
-
 import java.awt.event.ActionEvent;
 import java.net.URL;
 /*
@@ -10,6 +7,9 @@ import java.net.URL;
 *
 *
 */
+
+import org.protege.editor.core.ui.action.ProtegeAction;
+import org.protege.editor.core.ui.util.NativeBrowserLauncher;
 
 /**
  * Author: drummond<br>

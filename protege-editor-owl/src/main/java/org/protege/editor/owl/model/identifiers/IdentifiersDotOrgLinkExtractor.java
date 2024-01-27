@@ -1,11 +1,11 @@
 package org.protege.editor.owl.model.identifiers;
 
+import java.net.URI;
+import java.util.Optional;
+
 import org.protege.editor.owl.ui.renderer.LinkExtractor;
 import org.protege.editor.owl.ui.renderer.layout.HTTPLink;
 import org.protege.editor.owl.ui.renderer.layout.Link;
-
-import java.net.URI;
-import java.util.Optional;
 
 /**
  * Matthew Horridge

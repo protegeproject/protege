@@ -1,10 +1,10 @@
 package org.protege.editor.owl.model.util;
 
+import java.util.Date;
+
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
-
-import java.util.Date;
 
 /**
  * Matthew Horridge

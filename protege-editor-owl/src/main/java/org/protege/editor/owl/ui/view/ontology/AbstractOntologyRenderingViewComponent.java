@@ -1,18 +1,8 @@
 package org.protege.editor.owl.ui.view.ontology;
 
-import org.protege.editor.owl.ui.view.AbstractActiveOntologyViewComponent;
-import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
-import javax.swing.text.GapContent;
-import javax.swing.text.PlainDocument;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.io.BufferedWriter;
@@ -20,6 +10,21 @@ import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
+
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.GapContent;
+import javax.swing.text.PlainDocument;
+
+import org.protege.editor.owl.ui.view.AbstractActiveOntologyViewComponent;
+import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**

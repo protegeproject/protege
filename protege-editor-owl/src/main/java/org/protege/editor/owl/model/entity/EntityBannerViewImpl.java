@@ -1,15 +1,21 @@
 package org.protege.editor.owl.model.entity;
 
-import org.protege.editor.core.ui.menu.MenuButton;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.awt.BorderLayout.WEST;
 
-import javax.annotation.Nonnull;
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.util.Optional;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static java.awt.BorderLayout.WEST;
+import javax.annotation.Nonnull;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingConstants;
+
+import org.protege.editor.core.ui.menu.MenuButton;
 
 /**
  * Matthew Horridge

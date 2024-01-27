@@ -1,16 +1,18 @@
 package org.protege.editor.core.ui.util;
 
-import javax.swing.*;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.util.Enumeration;
 /*
 * Copyright (C) 2007, University of Manchester
 *
 *
 */
+
+import javax.swing.JTable;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 /**
  * Author: drummond<br>

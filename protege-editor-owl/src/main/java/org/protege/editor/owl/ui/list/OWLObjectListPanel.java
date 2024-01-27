@@ -1,12 +1,14 @@
 package org.protege.editor.owl.ui.list;
 
+import java.awt.BorderLayout;
+import java.util.Set;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.model.OWLObject;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.Set;
 
 
 /**

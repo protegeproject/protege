@@ -1,16 +1,16 @@
 package org.protege.editor.core;
 
-import org.protege.editor.core.prefs.Preferences;
-import org.protege.editor.core.prefs.PreferencesManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.protege.editor.core.prefs.Preferences;
+import org.protege.editor.core.prefs.PreferencesManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**

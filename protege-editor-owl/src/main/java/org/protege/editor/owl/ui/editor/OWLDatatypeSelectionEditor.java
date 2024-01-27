@@ -1,12 +1,12 @@
 package org.protege.editor.owl.ui.editor;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.swing.JComponent;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.selector.OWLDataTypeSelectorPanel;
 import org.semanticweb.owlapi.model.OWLDatatype;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.swing.*;
 
 public class OWLDatatypeSelectionEditor extends AbstractOWLObjectEditor<OWLDatatype>{
     

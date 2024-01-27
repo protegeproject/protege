@@ -1,15 +1,15 @@
 package org.protege.editor.owl.model.cache;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.protege.editor.core.Disposable;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
-import org.semanticweb.owlapi.model.*;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 
 /**
  * Author: drummond<br>

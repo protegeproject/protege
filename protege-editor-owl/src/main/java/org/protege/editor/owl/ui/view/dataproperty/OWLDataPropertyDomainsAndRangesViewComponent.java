@@ -1,12 +1,13 @@
 package org.protege.editor.owl.ui.view.dataproperty;
 
+import java.awt.BorderLayout;
+
+import javax.swing.JScrollPane;
+
 import org.protege.editor.owl.ui.frame.dataproperty.OWLDataPropertyDomainsAndRangesFrame;
 import org.protege.editor.owl.ui.framelist.CreateNewEquivalentClassAction;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owlapi.model.OWLDataProperty;
-
-import javax.swing.*;
-import java.awt.*;
 
 
 /**

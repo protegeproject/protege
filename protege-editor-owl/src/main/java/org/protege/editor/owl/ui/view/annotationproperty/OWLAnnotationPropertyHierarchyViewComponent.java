@@ -1,27 +1,39 @@
 package org.protege.editor.owl.ui.view.annotationproperty;
 
-import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
-import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
-import org.protege.editor.owl.model.selection.SelectionDriver;
-import org.protege.editor.owl.ui.action.AbstractDeleteEntityAction;
-import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
-import org.protege.editor.owl.ui.renderer.*;
-import org.protege.editor.owl.ui.view.AbstractOWLEntityHierarchyViewComponent;
-import org.protege.editor.owl.ui.view.CreateNewChildTarget;
-import org.protege.editor.owl.ui.view.CreateNewSiblingTarget;
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLEntitySetProvider;
-
-import java.awt.*;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 /*
 * Copyright (C) 2007, University of Manchester
 *
 *
 */
+import java.util.Optional;
+import java.util.Set;
+
+import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
+import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
+import org.protege.editor.owl.model.selection.SelectionDriver;
+import org.protege.editor.owl.ui.action.AbstractDeleteEntityAction;
+import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
+import org.protege.editor.owl.ui.renderer.AddChildIcon;
+import org.protege.editor.owl.ui.renderer.AddSiblingIcon;
+import org.protege.editor.owl.ui.renderer.DeleteEntityIcon;
+import org.protege.editor.owl.ui.renderer.OWLAnnotationPropertyIcon;
+import org.protege.editor.owl.ui.renderer.OWLEntityIcon;
+import org.protege.editor.owl.ui.view.AbstractOWLEntityHierarchyViewComponent;
+import org.protege.editor.owl.ui.view.CreateNewChildTarget;
+import org.protege.editor.owl.ui.view.CreateNewSiblingTarget;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.util.OWLEntitySetProvider;
 
 /**
  * Author: drummond<br>

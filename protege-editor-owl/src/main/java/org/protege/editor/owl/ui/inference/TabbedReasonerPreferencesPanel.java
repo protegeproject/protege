@@ -1,14 +1,21 @@
 package org.protege.editor.owl.ui.inference;
 
+import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.swing.BoxLayout;
+import javax.swing.JComponent;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.border.EmptyBorder;
+
 import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.util.*;
-import java.util.List;
 
 /*
  * WARNING - This code was liberally stolen from PreferencesDialogPanel

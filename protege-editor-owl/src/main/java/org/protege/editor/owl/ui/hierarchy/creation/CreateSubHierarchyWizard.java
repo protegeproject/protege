@@ -1,13 +1,14 @@
 package org.protege.editor.owl.ui.hierarchy.creation;
 
+import java.util.Optional;
+
+import javax.annotation.Nonnull;
+
 import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.core.util.Recommendation;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.model.EntityType;
-
-import javax.annotation.Nonnull;
-import java.util.Optional;
 
 /**
  * Matthew Horridge

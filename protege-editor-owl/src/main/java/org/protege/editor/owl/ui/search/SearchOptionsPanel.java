@@ -1,16 +1,29 @@
 package org.protege.editor.owl.ui.search;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.Timer;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
 import org.protege.editor.owl.model.search.SearchCategory;
-
-import javax.swing.*;
-import javax.swing.Timer;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.*;
-import java.util.List;
 
 /**
  * Author: Matthew Horridge<br>

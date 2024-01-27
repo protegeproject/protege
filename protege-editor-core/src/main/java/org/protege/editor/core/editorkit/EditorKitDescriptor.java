@@ -1,12 +1,13 @@
 package org.protege.editor.core.editorkit;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.io.Serializable;
 import java.net.URI;
 import java.util.Properties;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 
 /**

@@ -1,18 +1,27 @@
 package org.protege.editor.owl.ui.preferences;
 
-import org.protege.editor.core.ui.util.ComponentFactory;
-import org.semanticweb.owlapi.model.OWLAnnotationProperty;
-import org.semanticweb.owlapi.model.OWLOntology;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.net.URI;
-import java.util.*;
 /*
  * Copyright (C) 2007, University of Manchester
  *
  *
  */
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import org.protege.editor.core.ui.util.ComponentFactory;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 
 /**

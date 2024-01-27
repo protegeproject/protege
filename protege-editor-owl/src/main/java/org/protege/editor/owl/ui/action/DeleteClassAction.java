@@ -1,11 +1,9 @@
 package org.protege.editor.owl.ui.action;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.renderer.DeleteEntityIcon;
 import org.protege.editor.owl.ui.renderer.OWLClassIcon;
 import org.protege.editor.owl.ui.renderer.OWLEntityIcon;
-import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.util.OWLEntitySetProvider;
 

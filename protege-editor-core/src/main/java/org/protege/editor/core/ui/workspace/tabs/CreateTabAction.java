@@ -1,12 +1,13 @@
 package org.protege.editor.core.ui.workspace.tabs;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.JOptionPane;
+
 import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.workspace.CustomWorkspaceTabsManager;
 import org.protege.editor.core.ui.workspace.TabbedWorkspace;
 import org.protege.editor.core.ui.workspace.WorkspaceTab;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
 
 public class CreateTabAction extends ProtegeAction {
 	private static final long serialVersionUID = -4344479361094912711L;

@@ -1,11 +1,12 @@
 package org.protege.editor.owl.ui.metrics;
 
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+
 import org.semanticweb.owlapi.metrics.ObjectCountMetric;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import javax.annotation.Nonnull;
-import java.util.Set;
 
 /**
  * Matthew Horridge

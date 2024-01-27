@@ -1,18 +1,22 @@
 package org.protege.editor.owl.ui.deprecation;
 
-import com.google.common.base.Optional;
-import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
+import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.swing.BorderFactory;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.deprecation.DeprecationProfile;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
 import org.semanticweb.owlapi.model.IRI;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
+import com.google.common.base.Optional;
 
 /**
  * Matthew Horridge

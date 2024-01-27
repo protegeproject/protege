@@ -1,9 +1,9 @@
 package org.protege.editor.core.log;
 
+import java.awt.event.ActionEvent;
+
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ui.action.ProtegeAction;
-
-import java.awt.event.ActionEvent;
 
 /**
  * Matthew Horridge

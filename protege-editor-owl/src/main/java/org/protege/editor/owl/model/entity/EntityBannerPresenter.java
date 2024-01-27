@@ -1,21 +1,20 @@
 package org.protege.editor.owl.model.entity;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import javax.annotation.Nonnull;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JPopupMenu;
+
 import org.protege.editor.core.ui.menu.MenuBuilder;
 import org.protege.editor.core.ui.menu.PopupMenuId;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.action.SelectedOWLEntityAction;
 import org.protege.editor.owl.ui.view.EntityBannerFormatter;
 import org.protege.editor.owl.ui.view.EntityBannerFormatterImpl;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
-import javax.swing.*;
-
-import java.awt.event.ActionEvent;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Matthew Horridge

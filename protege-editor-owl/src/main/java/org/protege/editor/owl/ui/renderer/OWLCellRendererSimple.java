@@ -1,17 +1,30 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owlapi.model.*;
-
-import javax.swing.*;
-import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.TreeCellRenderer;
-import java.awt.*;
 /*
  * Copyright (C) 2007, University of Manchester
  *
  *
  */
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.Icon;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JTree;
+import javax.swing.ListCellRenderer;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreeCellRenderer;
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
 
 
 /**

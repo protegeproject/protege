@@ -1,11 +1,11 @@
 package org.protege.editor.owl.model.annotation;
 
+import java.util.Date;
+import java.util.Optional;
+
 import org.protege.editor.owl.model.util.DateFormatter;
 import org.semanticweb.owlapi.model.OWLAnnotationValue;
 import org.semanticweb.owlapi.model.OWLDataFactory;
-
-import java.util.Date;
-import java.util.Optional;
 
 /**
  * Matthew Horridge

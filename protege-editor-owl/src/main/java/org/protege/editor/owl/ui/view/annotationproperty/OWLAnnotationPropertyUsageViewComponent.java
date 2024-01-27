@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.view.annotationproperty;
 
+import java.awt.BorderLayout;
+
 import org.protege.editor.owl.ui.usage.UsagePanel;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
-
-import java.awt.*;
 
 
 /**

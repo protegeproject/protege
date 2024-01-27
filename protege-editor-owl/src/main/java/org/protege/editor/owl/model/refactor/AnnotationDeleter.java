@@ -1,9 +1,9 @@
 package org.protege.editor.owl.model.refactor;
 
-import org.semanticweb.owlapi.model.OWLOntology;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import org.semanticweb.owlapi.model.OWLOntology;
 
 
 /**

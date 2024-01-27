@@ -1,14 +1,35 @@
 package org.protege.editor.core.ui.view;
 
-import org.coode.mdock.NodePanel;
-import org.protege.editor.core.ProtegeManager;
-import org.protege.editor.core.ui.action.ProtegeAction;
-import org.protege.editor.core.ui.workspace.WorkspaceFrame;
+import static java.awt.GridBagConstraints.BASELINE_LEADING;
+import static java.awt.GridBagConstraints.BASELINE_TRAILING;
+import static java.awt.GridBagConstraints.CENTER;
+import static java.awt.GridBagConstraints.HORIZONTAL;
+import static java.awt.GridBagConstraints.NONE;
+import static java.awt.RenderingHints.KEY_ALPHA_INTERPOLATION;
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.KEY_COLOR_RENDERING;
+import static java.awt.RenderingHints.KEY_DITHERING;
+import static java.awt.RenderingHints.KEY_FRACTIONALMETRICS;
+import static java.awt.RenderingHints.KEY_INTERPOLATION;
+import static java.awt.RenderingHints.KEY_RENDERING;
+import static java.awt.RenderingHints.KEY_STROKE_CONTROL;
+import static java.awt.RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+import static java.awt.RenderingHints.VALUE_COLOR_RENDER_QUALITY;
+import static java.awt.RenderingHints.VALUE_DITHER_ENABLE;
+import static java.awt.RenderingHints.VALUE_FRACTIONALMETRICS_ON;
+import static java.awt.RenderingHints.VALUE_INTERPOLATION_BILINEAR;
+import static java.awt.RenderingHints.VALUE_RENDER_QUALITY;
+import static java.awt.RenderingHints.VALUE_STROKE_PURE;
 
-import javax.annotation.Nullable;
-import javax.swing.*;
-import javax.swing.FocusManager;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -21,8 +42,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.awt.GridBagConstraints.*;
-import static java.awt.RenderingHints.*;
+import javax.annotation.Nullable;
+import javax.swing.ButtonGroup;
+import javax.swing.FocusManager;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JSeparator;
+import javax.swing.JSpinner;
+import javax.swing.JViewport;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
+
+import org.coode.mdock.NodePanel;
+import org.protege.editor.core.ProtegeManager;
+import org.protege.editor.core.ui.action.ProtegeAction;
+import org.protege.editor.core.ui.workspace.WorkspaceFrame;
 
 /**
  * Author: Matthew Horridge<br>

@@ -1,10 +1,11 @@
 package org.protege.editor.core.ui.tabbedpane;
 
+import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
+
 import org.protege.editor.core.ui.workspace.WorkspaceTab;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
 
 /**
  * Matthew Horridge

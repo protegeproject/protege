@@ -1,14 +1,15 @@
 package org.protege.editor.core.ui.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JComponent;
+
 import org.protege.editor.core.plugin.ProtegePluginInstance;
 import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.util.SelectionProvider;
 import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.core.util.HandlerRegistration;
-
-import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**

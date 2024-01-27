@@ -1,21 +1,26 @@
 package org.protege.editor.owl.ui.action;
 
-import org.protege.editor.owl.ui.transfer.TransferableOWLObject;
-import org.protege.editor.owl.ui.view.Copyable;
-import org.protege.editor.owl.ui.view.ViewClipboard;
-import org.semanticweb.owlapi.model.OWLObject;
-
-import javax.swing.FocusManager;
-import javax.swing.*;
-import javax.swing.event.ChangeListener;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.text.JTextComponent;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Optional;
+
+import javax.swing.FocusManager;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JTable;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeListener;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.text.JTextComponent;
+
+import org.protege.editor.owl.ui.transfer.TransferableOWLObject;
+import org.protege.editor.owl.ui.view.Copyable;
+import org.protege.editor.owl.ui.view.ViewClipboard;
+import org.semanticweb.owlapi.model.OWLObject;
 
 
 /**

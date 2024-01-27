@@ -1,17 +1,19 @@
 package org.protege.editor.owl.ui.list;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.renderer.LinkedObjectComponent;
-import org.protege.editor.owl.ui.renderer.LinkedObjectComponentMediator;
-import org.semanticweb.owlapi.model.OWLObject;
-
-import javax.swing.*;
-import java.awt.*;
 /*
  * Copyright (C) 2008, University of Manchester
  *
  *
  */
+import java.awt.Point;
+import java.awt.Rectangle;
+
+import javax.swing.JComponent;
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.renderer.LinkedObjectComponent;
+import org.protege.editor.owl.ui.renderer.LinkedObjectComponentMediator;
+import org.semanticweb.owlapi.model.OWLObject;
 
 
 /**

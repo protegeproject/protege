@@ -1,13 +1,13 @@
 package org.protege.editor.owl.model.util;
 
-import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLLiteral;
-import org.semanticweb.owlapi.vocab.OWL2Datatype;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
 /**
  * Matthew Horridge

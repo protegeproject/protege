@@ -1,12 +1,12 @@
 package org.protege.editor.owl.model.hierarchy.tabbed;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.ImmutableSetMultimap;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSetMultimap;
 
 /**
  * Matthew Horridge

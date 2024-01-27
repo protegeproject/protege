@@ -1,9 +1,9 @@
 package org.protege.editor.owl.model.entity;
 
-import org.semanticweb.owlapi.model.OWLEntity;
-
 import java.text.FieldPosition;
 import java.text.NumberFormat;
+
+import org.semanticweb.owlapi.model.OWLEntity;
 
 /*
 * Copyright (C) 2007, University of Manchester

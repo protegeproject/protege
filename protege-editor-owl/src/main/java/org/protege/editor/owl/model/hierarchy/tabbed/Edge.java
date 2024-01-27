@@ -6,15 +6,15 @@ package org.protege.editor.owl.model.hierarchy.tabbed;
  */
 
 
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import java.util.Optional;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 
 /**
  * Author: Matthew Horridge<br>

@@ -1,14 +1,5 @@
 package org.protege.editor.owl.ui.editor;
 
-import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
-import org.protege.editor.core.ui.util.VerifiedInputEditor;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
-import org.semanticweb.owlapi.model.OWLDataProperty;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.swing.*;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,6 +8,16 @@ import java.util.Set;
 *
 *
 */
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.swing.JComponent;
+
+import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
+import org.protege.editor.core.ui.util.VerifiedInputEditor;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
+import org.semanticweb.owlapi.model.OWLDataProperty;
 
 /**
  * Author: drummond<br>

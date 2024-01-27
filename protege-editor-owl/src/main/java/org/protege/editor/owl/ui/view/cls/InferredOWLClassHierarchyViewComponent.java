@@ -1,14 +1,14 @@
 package org.protege.editor.owl.ui.view.cls;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.protege.editor.owl.ui.view.AbstractOWLEntityHierarchyViewComponent;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLObject;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 
 /**

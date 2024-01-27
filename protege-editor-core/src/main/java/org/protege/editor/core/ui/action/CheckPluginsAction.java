@@ -1,8 +1,5 @@
 package org.protege.editor.core.ui.action;
 
-import org.protege.editor.core.update.PluginManager;
-
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -11,6 +8,10 @@ import java.net.UnknownHostException;
 *
 *
 */
+
+import javax.swing.JOptionPane;
+
+import org.protege.editor.core.update.PluginManager;
 
 /**
  * Author: drummond<br>

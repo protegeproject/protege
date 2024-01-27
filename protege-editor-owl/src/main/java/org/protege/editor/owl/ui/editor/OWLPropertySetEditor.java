@@ -1,5 +1,17 @@
 package org.protege.editor.owl.ui.editor;
 
+import java.awt.Dimension;
+import java.util.Set;
+/*
+* Copyright (C) 2007, University of Manchester
+*
+*
+*/
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.swing.JComponent;
+
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
@@ -8,17 +20,6 @@ import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
 import org.semanticweb.owlapi.model.OWLException;
 import org.semanticweb.owlapi.model.OWLPropertyExpression;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.swing.*;
-import java.awt.*;
-import java.util.Set;
-/*
-* Copyright (C) 2007, University of Manchester
-*
-*
-*/
 
 /**
  * Author: drummond<br>

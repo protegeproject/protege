@@ -1,9 +1,9 @@
 package org.protege.editor.owl.model.search;
 
 
-import com.google.common.collect.ImmutableList;
-
 import java.util.regex.Pattern;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * Author: Matthew Horridge<br>

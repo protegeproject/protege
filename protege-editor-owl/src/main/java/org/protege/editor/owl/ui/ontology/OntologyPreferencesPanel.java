@@ -1,16 +1,21 @@
 package org.protege.editor.owl.ui.ontology;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.text.JTextComponent;
+
 import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
-import javax.swing.text.JTextComponent;
-import java.awt.*;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 
 /**

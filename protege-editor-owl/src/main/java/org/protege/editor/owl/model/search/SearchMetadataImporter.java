@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model.search;
 
-import org.protege.editor.owl.OWLEditorKit;
-
 import java.util.Set;
+
+import org.protege.editor.owl.OWLEditorKit;
 
 /**
  * Author: Matthew Horridge<br>

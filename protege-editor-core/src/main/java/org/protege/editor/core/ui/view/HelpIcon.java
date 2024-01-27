@@ -1,11 +1,15 @@
 package org.protege.editor.core.ui.view;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.Rectangle2D;
-
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 
 /**
  * Matthew Horridge

@@ -1,12 +1,14 @@
 package org.protege.editor.owl.ui.util;
 
-import org.protege.editor.owl.model.util.LowMemoryNotificationView;
+import static javax.swing.JOptionPane.WARNING_MESSAGE;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Window;
 import java.util.stream.Stream;
 
-import static javax.swing.JOptionPane.WARNING_MESSAGE;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+import org.protege.editor.owl.model.util.LowMemoryNotificationView;
 
 /**
  * Matthew Horridge

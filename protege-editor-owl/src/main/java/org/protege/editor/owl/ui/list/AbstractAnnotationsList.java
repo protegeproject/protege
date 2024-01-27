@@ -1,5 +1,19 @@
 package org.protege.editor.owl.ui.list;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+/*
+* Copyright (C) 2007, University of Manchester
+*
+*
+*/
+
+import javax.swing.JOptionPane;
+
 import org.protege.editor.core.ui.list.MList;
 import org.protege.editor.core.ui.list.MListItem;
 import org.protege.editor.core.ui.list.MListSectionHeader;
@@ -9,21 +23,11 @@ import org.protege.editor.owl.model.entity.AnnotationPropertyComparator;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.editor.OWLAnnotationEditor;
 import org.protege.editor.owl.ui.renderer.OWLAnnotationCellRenderer2;
-import org.semanticweb.owlapi.model.*;
-
-import javax.swing.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-/*
-* Copyright (C) 2007, University of Manchester
-*
-*
-*/
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 
 /**
  * Author: drummond<br>

@@ -1,12 +1,5 @@
 package org.protege.editor.owl.model.util;
 
-import org.protege.editor.owl.model.AnnotationContainer;
-import org.semanticweb.owlapi.model.OWLAnnotation;
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLOntology;
-
-import java.util.Set;
-
 import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.Preconditions.checkNotNull;
 /*
@@ -14,6 +7,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 *
 *
 */
+
+import java.util.Set;
+
+import org.protege.editor.owl.model.AnnotationContainer;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
  * Author: drummond<br>

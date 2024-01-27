@@ -1,15 +1,15 @@
 package org.protege.editor.owl.ui.ontology.wizard.move.byreference;
 
-import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
-import org.protege.editor.owl.ui.ontology.wizard.move.common.SignatureSelection;
-import org.protege.editor.owl.ui.selector.OWLEntitySelectorPanel;
-
-import java.awt.*;
 /*
  * Copyright (C) 2008, University of Manchester
  *
  *
  */
+import java.awt.BorderLayout;
+
+import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
+import org.protege.editor.owl.ui.ontology.wizard.move.common.SignatureSelection;
+import org.protege.editor.owl.ui.selector.OWLEntitySelectorPanel;
 
 
 /**

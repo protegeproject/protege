@@ -1,12 +1,12 @@
 package org.protege.editor.core.prefs;
 
-import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 public class PreferencesTest {
 

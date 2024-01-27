@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model.event;
 
-import org.protege.editor.owl.model.OWLModelManager;
-
 import static com.google.common.base.MoreObjects.toStringHelper;
+
+import org.protege.editor.owl.model.OWLModelManager;
 
 /**
  * Author: Matthew Horridge<br>

@@ -1,6 +1,6 @@
 package org.protege.editor.core.ui.tabbedpane;
 
-import javax.swing.*;
+import javax.swing.JTabbedPane;
 
 /**
  * Matthew Horridge

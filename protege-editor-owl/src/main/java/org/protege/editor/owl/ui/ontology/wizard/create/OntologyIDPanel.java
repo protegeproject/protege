@@ -1,6 +1,21 @@
 package org.protege.editor.owl.ui.ontology.wizard.create;
 
-import com.google.common.base.Optional;
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import org.protege.editor.core.ui.util.AugmentedJTextField;
 import org.protege.editor.core.ui.wizard.AbstractWizardPanel;
 import org.protege.editor.owl.OWLEditorKit;
@@ -9,14 +24,7 @@ import org.protege.editor.owl.ui.ontology.OntologyPreferencesPanel;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.google.common.base.Optional;
 
 
 /**

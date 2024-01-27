@@ -1,12 +1,15 @@
 package org.protege.editor.owl.ui.framelist;
 
-import javax.swing.border.Border;
-import java.awt.*;
 /*
  * Copyright (C) 2007, University of Manchester
  *
  *
  */
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
+
+import javax.swing.border.Border;
 
 
 /**

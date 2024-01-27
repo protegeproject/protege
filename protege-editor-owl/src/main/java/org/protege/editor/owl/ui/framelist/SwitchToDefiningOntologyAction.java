@@ -1,14 +1,14 @@
 package org.protege.editor.owl.ui.framelist;
 
-import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owlapi.model.OWLOntology;
-
 import java.awt.event.ActionEvent;
 /*
  * Copyright (C) 2007, University of Manchester
  *
  *
  */
+
+import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 
 /**

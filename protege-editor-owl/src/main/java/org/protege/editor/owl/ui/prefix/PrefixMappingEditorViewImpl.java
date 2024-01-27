@@ -1,15 +1,15 @@
 package org.protege.editor.owl.ui.prefix;
 
-import com.google.common.collect.ImmutableList;
-import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
-import org.protege.editor.core.ui.util.FormLabel;
+import java.awt.BorderLayout;
 
 import javax.annotation.Nonnull;
-import javax.swing.*;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.*;
-import java.util.List;
+
+import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
 
 /**
  * Matthew Horridge

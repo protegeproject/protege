@@ -1,17 +1,30 @@
 package org.protege.editor.owl.ui.ontology.imports;
 
-import com.google.common.base.Optional;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Insets;
+import java.io.File;
+
+import javax.swing.JList;
+import javax.swing.JTable;
+import javax.swing.JViewport;
+import javax.swing.SwingUtilities;
+
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.renderer.layout.*;
+import org.protege.editor.owl.ui.renderer.layout.FileLink;
+import org.protege.editor.owl.ui.renderer.layout.HTTPLink;
+import org.protege.editor.owl.ui.renderer.layout.LinkSpan;
+import org.protege.editor.owl.ui.renderer.layout.Page;
+import org.protege.editor.owl.ui.renderer.layout.PageCellRenderer;
+import org.protege.editor.owl.ui.renderer.layout.Paragraph;
+import org.protege.editor.owl.ui.renderer.layout.Span;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
 
-import javax.swing.*;
-import java.awt.*;
-import java.io.File;
+import com.google.common.base.Optional;
 
 /**
  * @author Matthew Horridge, Stanford University, Bio-Medical Informatics Research Group, Date: 12/06/2014

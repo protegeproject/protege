@@ -1,16 +1,20 @@
 package org.protege.editor.core.ui;
 
-import org.protege.editor.core.OntologyRepository;
-import org.protege.editor.core.OntologyRepositoryEntry;
-import org.protege.editor.core.ui.util.JOptionPaneEx;
-
-import javax.swing.*;
-import java.awt.*;
 /*
  * Copyright (C) 2008, University of Manchester
  *
  *
  */
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import org.protege.editor.core.OntologyRepository;
+import org.protege.editor.core.OntologyRepositoryEntry;
+import org.protege.editor.core.ui.util.JOptionPaneEx;
 
 
 /**

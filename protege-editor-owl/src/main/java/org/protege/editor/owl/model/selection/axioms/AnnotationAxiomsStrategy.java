@@ -1,11 +1,11 @@
 package org.protege.editor.owl.model.selection.axioms;
 
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLOntology;
-
 import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
  * User: nickdrummond

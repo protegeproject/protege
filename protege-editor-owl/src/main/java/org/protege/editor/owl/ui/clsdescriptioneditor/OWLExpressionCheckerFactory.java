@@ -1,7 +1,5 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
-import org.semanticweb.owlapi.model.*;
-
 import java.util.List;
 import java.util.Set;
 /*
@@ -9,6 +7,12 @@ import java.util.Set;
 *
 *
 */
+
+import org.semanticweb.owlapi.model.OWLClassAxiom;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
+import org.semanticweb.owlapi.model.OWLPropertyExpression;
+import org.semanticweb.owlapi.model.SWRLRule;
 
 /**
  * Author: drummond<br>

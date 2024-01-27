@@ -1,8 +1,11 @@
 package org.protege.editor.owl.ui.renderer;
 
-import javax.annotation.Nullable;
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.FontMetrics;
+
+import javax.swing.Icon;
 
 /**
  * Author: Matthew Horridge<br>

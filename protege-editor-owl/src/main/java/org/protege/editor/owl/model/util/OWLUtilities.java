@@ -1,11 +1,17 @@
 package org.protege.editor.owl.model.util;
 
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owlapi.model.*;
-
-import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Set;
+
+import javax.annotation.Nonnull;
+
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 public class OWLUtilities {
 

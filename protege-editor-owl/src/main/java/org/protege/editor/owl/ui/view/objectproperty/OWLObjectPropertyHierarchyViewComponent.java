@@ -1,19 +1,23 @@
 package org.protege.editor.owl.ui.view.objectproperty;
 
+import java.awt.Component;
+import java.util.Optional;
+
+import javax.swing.Icon;
+
 import org.protege.editor.core.ui.menu.PopupMenuId;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.selection.SelectionDriver;
-import org.protege.editor.owl.ui.OWLIcons;
-import org.protege.editor.owl.ui.renderer.*;
+import org.protege.editor.owl.ui.renderer.AddChildIcon;
+import org.protege.editor.owl.ui.renderer.AddSiblingIcon;
+import org.protege.editor.owl.ui.renderer.DeleteEntityIcon;
+import org.protege.editor.owl.ui.renderer.OWLEntityIcon;
+import org.protege.editor.owl.ui.renderer.OWLObjectPropertyIcon;
 import org.protege.editor.owl.ui.view.AbstractOWLPropertyHierarchyViewComponent;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLSubPropertyAxiom;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.Optional;
 
 
 /**

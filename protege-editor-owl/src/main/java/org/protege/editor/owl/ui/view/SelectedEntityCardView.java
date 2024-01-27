@@ -1,7 +1,17 @@
 package org.protege.editor.owl.ui.view;
 
-import org.protege.editor.core.ui.menu.MenuButton;
-import org.protege.editor.core.ui.menu.MenuIcon;
+import static java.awt.BorderLayout.NORTH;
+
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+
 import org.protege.editor.core.ui.util.Resettable;
 import org.protege.editor.core.ui.view.ViewsPane;
 import org.protege.editor.core.ui.view.ViewsPaneMemento;
@@ -10,24 +20,18 @@ import org.protege.editor.owl.model.entity.EntityBannerPresenter;
 import org.protege.editor.owl.model.entity.EntityBannerViewImpl;
 import org.protege.editor.owl.model.selection.SelectionDriver;
 import org.protege.editor.owl.model.selection.SelectionPlane;
-import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.protege.editor.owl.ui.util.NothingSelectedPanel;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEntityVisitor;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
-import javax.swing.*;
-import java.awt.*;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static java.awt.BorderLayout.CENTER;
-import static java.awt.BorderLayout.NORTH;
-import static java.awt.BorderLayout.WEST;
 
 
 /**

@@ -1,14 +1,14 @@
 package org.protege.editor.owl.model.hierarchy.cls;
 
+import java.util.Collections;
+import java.util.Set;
+
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.hierarchy.AbstractSuperClassHierarchyProvider;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
-
-import java.util.Collections;
-import java.util.Set;
 
 
 /**

@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.usage;
 
-import org.protege.editor.core.prefs.Preferences;
-import org.protege.editor.core.prefs.PreferencesManager;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import org.protege.editor.core.prefs.Preferences;
+import org.protege.editor.core.prefs.PreferencesManager;
 
 /**
  * Author: drummond<br>

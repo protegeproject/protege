@@ -1,9 +1,10 @@
 package org.protege.editor.owl.ui.prefix;
 
-import javax.annotation.Nonnull;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Optional;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
 
 /**
  * Matthew Horridge

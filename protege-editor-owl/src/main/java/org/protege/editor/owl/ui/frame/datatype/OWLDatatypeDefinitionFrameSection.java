@@ -1,19 +1,23 @@
 package org.protege.editor.owl.ui.frame.datatype;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.editor.OWLDataRangeEditor;
-import org.protege.editor.owl.ui.editor.OWLObjectEditor;
-import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
-import org.protege.editor.owl.ui.frame.OWLFrame;
-import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owlapi.model.*;
-
 import java.util.Comparator;
 /*
 * Copyright (C) 2007, University of Manchester
 *
 *
 */
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.editor.OWLDataRangeEditor;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
+import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
+import org.protege.editor.owl.ui.frame.OWLFrame;
+import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
+import org.semanticweb.owlapi.model.OWLDataRange;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLDatatypeDefinitionAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 
 /**
  * Author: drummond<br>

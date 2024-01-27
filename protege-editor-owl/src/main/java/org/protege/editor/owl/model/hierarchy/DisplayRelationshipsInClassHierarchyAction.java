@@ -1,12 +1,12 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import org.protege.editor.owl.ui.action.ProtegeOWLRadioButtonAction;
-import org.semanticweb.owlapi.model.OWLObjectProperty;
-import org.semanticweb.owlapi.model.parameters.Imports;
-
 import java.awt.event.ActionEvent;
 import java.util.Collections;
 import java.util.Set;
+
+import org.protege.editor.owl.ui.action.ProtegeOWLRadioButtonAction;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.parameters.Imports;
 
 /**
  * Matthew Horridge

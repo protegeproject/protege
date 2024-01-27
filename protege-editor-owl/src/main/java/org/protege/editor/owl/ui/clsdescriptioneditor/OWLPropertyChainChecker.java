@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
+import java.util.List;
+
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.classexpression.OWLExpressionParserException;
 import org.protege.editor.owl.model.parser.ProtegeOWLEntityChecker;
@@ -8,8 +10,6 @@ import org.semanticweb.owlapi.manchestersyntax.renderer.ParserException;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
-
-import java.util.List;
 
 
 /**

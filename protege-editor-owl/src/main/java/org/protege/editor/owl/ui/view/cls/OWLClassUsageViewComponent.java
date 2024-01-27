@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.view.cls;
 
+import java.awt.BorderLayout;
+
 import org.protege.editor.owl.ui.usage.UsagePanel;
 import org.semanticweb.owlapi.model.OWLClass;
-
-import java.awt.*;
 
 
 /**

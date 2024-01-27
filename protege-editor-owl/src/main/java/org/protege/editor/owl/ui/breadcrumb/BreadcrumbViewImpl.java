@@ -1,19 +1,28 @@
 package org.protege.editor.owl.ui.breadcrumb;
 
-import org.protege.editor.core.Fonts;
-import org.protege.editor.owl.model.util.OboUtilities;
-import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLObject;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.Nonnull;
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.function.Consumer;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+
+import org.protege.editor.core.Fonts;
+import org.protege.editor.owl.model.util.OboUtilities;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLObject;
 
 
 /**

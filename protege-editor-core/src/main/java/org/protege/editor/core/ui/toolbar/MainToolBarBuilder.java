@@ -1,15 +1,16 @@
 package org.protege.editor.core.ui.toolbar;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.swing.JToolBar;
+
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.action.ToolBarActionComparator;
 import org.protege.editor.core.ui.action.ToolBarActionPluginJPFImpl;
 import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 
 /**

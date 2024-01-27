@@ -1,11 +1,12 @@
 package org.protege.editor.owl.model.axiom;
 
-import com.google.common.base.Optional;
-import org.junit.Test;
-
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+
+import org.junit.Test;
+
+import com.google.common.base.Optional;
 
 /**
  * @author Matthew Horridge, Stanford University, Bio-Medical Informatics Research Group, Date: 27/05/2014

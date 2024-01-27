@@ -1,9 +1,9 @@
 package org.protege.editor.owl.model.selection.ontologies;
 
+import java.util.Set;
+
 import org.protege.editor.owl.model.OntologyVisibilityManager;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import java.util.Set;
 
 /**
  * Author: drummond<br>

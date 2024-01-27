@@ -1,9 +1,9 @@
 package org.protege.editor.owl.model.entity;
 
-import org.semanticweb.owlapi.model.IRI;
-
 import javax.annotation.Nonnull;
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JPopupMenu;
 
 /**
  * Matthew Horridge

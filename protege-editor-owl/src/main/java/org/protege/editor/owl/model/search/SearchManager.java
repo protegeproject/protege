@@ -1,11 +1,10 @@
 package org.protege.editor.owl.model.search;
 
-import org.protege.editor.core.Disposable;
+import java.util.Collection;
+
 import org.protege.editor.core.plugin.ProtegePluginInstance;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.util.ProgressMonitor;
-
-import java.util.Collection;
 
 /**
  * Matthew Horridge

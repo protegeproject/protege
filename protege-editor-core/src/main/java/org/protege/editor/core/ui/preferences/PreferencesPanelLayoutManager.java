@@ -1,9 +1,18 @@
 package org.protege.editor.core.ui.preferences;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.LayoutManager2;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 
 
 /**

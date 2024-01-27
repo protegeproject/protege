@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owlapi.model.OWLObject;
-
 import java.util.Set;
 import java.util.TreeSet;
+
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owlapi.model.OWLObject;
 
 
 /**

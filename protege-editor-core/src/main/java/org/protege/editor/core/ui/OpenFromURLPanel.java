@@ -1,24 +1,38 @@
 package org.protege.editor.core.ui;
 
-import org.protege.editor.core.BookMarkedURIManager;
-import org.protege.editor.core.ui.list.MList;
-import org.protege.editor.core.ui.list.MListItem;
-import org.protege.editor.core.ui.list.MListSectionHeader;
-import org.protege.editor.core.ui.util.*;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
+import static javax.swing.JOptionPane.OK_CANCEL_OPTION;
+import static javax.swing.JOptionPane.PLAIN_MESSAGE;
 
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static javax.swing.JOptionPane.*;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import org.protege.editor.core.BookMarkedURIManager;
+import org.protege.editor.core.ui.list.MList;
+import org.protege.editor.core.ui.list.MListItem;
+import org.protege.editor.core.ui.list.MListSectionHeader;
+import org.protege.editor.core.ui.util.AugmentedJTextField;
+import org.protege.editor.core.ui.util.FormLabel;
+import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
+import org.protege.editor.core.ui.util.JOptionPaneEx;
+import org.protege.editor.core.ui.util.VerifiedInputEditor;
 
 
 /**

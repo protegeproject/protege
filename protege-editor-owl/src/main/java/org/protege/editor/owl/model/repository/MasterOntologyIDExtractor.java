@@ -1,14 +1,15 @@
 package org.protege.editor.owl.model.repository;
 
-import com.google.common.base.Optional;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.protege.editor.owl.model.repository.extractors.LastResortExtractor;
 import org.protege.editor.owl.model.repository.extractors.OntologyIdExtractor;
 import org.protege.editor.owl.model.repository.extractors.RdfXmlExtractor;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
+import com.google.common.base.Optional;
 
 public class MasterOntologyIDExtractor implements OntologyIdExtractor {
     

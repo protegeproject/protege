@@ -1,14 +1,15 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
-import org.protege.editor.core.ui.util.CheckTable;
-import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
-import org.semanticweb.owlapi.model.OWLAxiom;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.swing.JScrollPane;
+
+import org.protege.editor.core.ui.util.CheckTable;
+import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
+import org.semanticweb.owlapi.model.OWLAxiom;
 
 /**
  * Author: drummond<br>

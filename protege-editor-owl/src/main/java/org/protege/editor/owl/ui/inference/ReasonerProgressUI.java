@@ -1,13 +1,26 @@
 package org.protege.editor.owl.ui.inference;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
+
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ui.util.Resettable;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
 
 
 /**

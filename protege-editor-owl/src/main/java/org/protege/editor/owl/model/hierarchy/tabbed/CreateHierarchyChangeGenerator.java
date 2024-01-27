@@ -1,14 +1,22 @@
 package org.protege.editor.owl.model.hierarchy.tabbed;
 
-import com.google.common.collect.*;
-import org.semanticweb.owlapi.model.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
+
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableSetMultimap;
+import com.google.common.collect.Multimap;
 
 /**
  * Matthew Horridge

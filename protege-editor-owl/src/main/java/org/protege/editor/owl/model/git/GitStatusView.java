@@ -1,7 +1,7 @@
 package org.protege.editor.owl.model.git;
 
 import javax.annotation.Nonnull;
-import javax.swing.*;
+import javax.swing.JComponent;
 
 /**
  * Matthew Horridge

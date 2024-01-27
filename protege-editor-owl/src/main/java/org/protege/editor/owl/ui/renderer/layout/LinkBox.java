@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
-import java.awt.*;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.font.FontRenderContext;
 

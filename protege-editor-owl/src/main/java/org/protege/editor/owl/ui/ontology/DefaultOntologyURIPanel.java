@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.ontology;
 
-import javax.swing.*;
+import javax.swing.JPanel;
 
 
 /**

@@ -1,16 +1,19 @@
 package org.protege.editor.owl.ui.prefix;
 
-import com.google.common.collect.ImmutableList;
-import org.protege.editor.core.ui.list.MList;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.Nonnull;
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
+import javax.swing.JOptionPane;
+import javax.swing.ListModel;
+
+import org.protege.editor.core.ui.list.MList;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * Matthew Horridge

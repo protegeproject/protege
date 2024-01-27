@@ -1,19 +1,19 @@
 package org.protege.editor.core.ui.util;
 
-import com.jgoodies.looks.plastic.theme.ExperienceBlue;
+import java.awt.Color;
+import java.awt.Font;
+
+import javax.swing.BorderFactory;
+import javax.swing.UIDefaults;
+import javax.swing.border.Border;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.FontUIResource;
+
 import org.protege.editor.core.ui.laf.CheckBoxMenuItemIcon;
 import org.protege.editor.core.ui.laf.ProtegeScrollBarUI;
 import org.protege.editor.core.ui.laf.RadioButtonMenuItemIcon;
 
-import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.MatteBorder;
-import javax.swing.plaf.ColorUIResource;
-import javax.swing.plaf.FontUIResource;
-import javax.swing.plaf.basic.BasicScrollBarUI;
-import javax.swing.plaf.basic.BasicSeparatorUI;
-import javax.swing.plaf.metal.MetalIconFactory;
-import java.awt.*;
+import com.jgoodies.looks.plastic.theme.ExperienceBlue;
 
 
 /**

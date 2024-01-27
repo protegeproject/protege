@@ -1,11 +1,12 @@
 package org.protege.editor.owl.ui.view.cls;
 
+import java.awt.BorderLayout;
+
+import javax.swing.JScrollPane;
+
 import org.protege.editor.owl.ui.frame.cls.OWLClassDescriptionFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owlapi.model.OWLClass;
-
-import javax.swing.*;
-import java.awt.*;
 
 
 /**

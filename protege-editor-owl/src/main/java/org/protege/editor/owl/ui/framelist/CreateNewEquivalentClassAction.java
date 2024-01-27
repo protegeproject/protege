@@ -1,12 +1,5 @@
 package org.protege.editor.owl.ui.framelist;
 
-import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
-import org.protege.editor.owl.ui.CreateDefinedClassPanel;
-import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLClassExpression;
-import org.semanticweb.owlapi.model.OWLObject;
-
 import java.awt.event.ActionEvent;
 import java.util.List;
 /*
@@ -14,6 +7,13 @@ import java.util.List;
 *
 *
 */
+
+import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
+import org.protege.editor.owl.ui.CreateDefinedClassPanel;
+import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLObject;
 
 /**
  * Author: drummond<br>

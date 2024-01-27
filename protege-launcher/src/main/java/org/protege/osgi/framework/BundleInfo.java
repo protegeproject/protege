@@ -1,14 +1,15 @@
 package org.protege.osgi.framework;
 
-import com.google.common.base.Objects;
-import org.apache.maven.artifact.versioning.ComparableVersion;
-import org.osgi.framework.Version;
+import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.File;
 import java.util.Optional;
 
-import static com.google.common.base.MoreObjects.toStringHelper;
-import static com.google.common.base.Preconditions.checkNotNull;
+import org.apache.maven.artifact.versioning.ComparableVersion;
+import org.osgi.framework.Version;
+
+import com.google.common.base.Objects;
 
 /**
  * Matthew Horridge

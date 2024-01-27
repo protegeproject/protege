@@ -1,11 +1,16 @@
 package org.protege.editor.core.ui.view;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+
+import javax.swing.JComponent;
+import javax.swing.JSplitPane;
+
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ui.split.ViewSplitPane;
 import org.protege.editor.core.ui.util.UIUtil;
-
-import javax.swing.*;
-import java.awt.*;
 
 
 /**

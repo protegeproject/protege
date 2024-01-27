@@ -1,10 +1,11 @@
 package org.protege.editor.owl.ui.breadcrumb;
 
-import org.semanticweb.owlapi.model.OWLObject;
+import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
-import javax.swing.*;
-import java.util.function.Consumer;
+import javax.swing.JComponent;
+
+import org.semanticweb.owlapi.model.OWLObject;
 
 /**
  * Matthew Horridge

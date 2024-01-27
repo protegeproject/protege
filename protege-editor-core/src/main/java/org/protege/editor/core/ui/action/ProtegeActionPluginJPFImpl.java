@@ -1,12 +1,12 @@
 package org.protege.editor.core.ui.action;
 
 
+import javax.swing.Icon;
+
 import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.plugin.AbstractProtegePlugin;
 import org.protege.editor.core.plugin.PluginUtilities;
-
-import javax.swing.*;
 
 
 /**

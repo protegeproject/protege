@@ -1,7 +1,8 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Graphics2D;
+
+import javax.swing.Icon;
 
 /**
  * Author: Matthew Horridge<br>

@@ -1,10 +1,5 @@
 package org.protege.editor.owl.ui.axiom;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.util.OWLAxiomInstance;
-import org.protege.editor.owl.ui.list.AbstractAnnotationsList;
-import org.semanticweb.owlapi.model.*;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -14,6 +9,17 @@ import java.util.Set;
 *
 *
 */
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.util.OWLAxiomInstance;
+import org.protege.editor.owl.ui.list.AbstractAnnotationsList;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLAxiomChange;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.RemoveAxiom;
 
 /**
  * Author: drummond<br>

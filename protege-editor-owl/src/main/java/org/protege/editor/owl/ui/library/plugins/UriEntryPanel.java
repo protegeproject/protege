@@ -1,6 +1,20 @@
 package org.protege.editor.owl.ui.library.plugins;
 
-import com.google.common.base.Optional;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.model.repository.MasterOntologyIDExtractor;
 import org.protege.editor.owl.ui.UIHelper;
@@ -13,15 +27,7 @@ import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Set;
-import java.util.TreeSet;
+import com.google.common.base.Optional;
 
 public class UriEntryPanel extends NewEntryPanel {
 

@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.search;
 
-import org.protege.editor.owl.model.search.SearchResult;
-
 import java.awt.event.MouseEvent;
+
+import org.protege.editor.owl.model.search.SearchResult;
 
 /**
  * Matthew Horridge

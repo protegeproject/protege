@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
-import java.awt.*;
+import java.awt.Component;
 import java.awt.event.MouseEvent;
 
 /**

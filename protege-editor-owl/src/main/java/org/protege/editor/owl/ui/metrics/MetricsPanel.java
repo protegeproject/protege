@@ -1,27 +1,66 @@
 package org.protege.editor.owl.ui.metrics;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.WindowConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.Fonts;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.OWLAxiomTypeFramePanel;
-import org.semanticweb.owlapi.metrics.*;
+import org.semanticweb.owlapi.metrics.AxiomCount;
+import org.semanticweb.owlapi.metrics.AxiomCountMetric;
+import org.semanticweb.owlapi.metrics.AxiomTypeMetric;
+import org.semanticweb.owlapi.metrics.GCICount;
+import org.semanticweb.owlapi.metrics.HiddenGCICount;
+import org.semanticweb.owlapi.metrics.LogicalAxiomCount;
+import org.semanticweb.owlapi.metrics.OWLMetric;
+import org.semanticweb.owlapi.metrics.OWLMetricManager;
+import org.semanticweb.owlapi.metrics.ReferencedClassCount;
+import org.semanticweb.owlapi.metrics.ReferencedDataPropertyCount;
+import org.semanticweb.owlapi.metrics.ReferencedIndividualCount;
+import org.semanticweb.owlapi.metrics.ReferencedObjectPropertyCount;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
-
-import javax.annotation.Nonnull;
-import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.*;
-import java.util.*;
-import java.util.List;
 
 /*
  * Copyright (C) 2007, University of Manchester

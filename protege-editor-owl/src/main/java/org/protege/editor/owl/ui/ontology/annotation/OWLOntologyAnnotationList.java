@@ -1,13 +1,5 @@
 package org.protege.editor.owl.ui.ontology.annotation;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.OntologyAnnotationContainer;
-import org.protege.editor.owl.ui.list.AbstractAnnotationsList;
-import org.semanticweb.owlapi.model.AddOntologyAnnotation;
-import org.semanticweb.owlapi.model.OWLAnnotation;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
-import org.semanticweb.owlapi.model.RemoveOntologyAnnotation;
-
 import java.util.ArrayList;
 import java.util.List;
 /*
@@ -15,6 +7,14 @@ import java.util.List;
 *
 *
 */
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OntologyAnnotationContainer;
+import org.protege.editor.owl.ui.list.AbstractAnnotationsList;
+import org.semanticweb.owlapi.model.AddOntologyAnnotation;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.RemoveOntologyAnnotation;
 
 /**
  * Author: drummond<br>

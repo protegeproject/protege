@@ -1,21 +1,39 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import com.google.common.collect.ImmutableSet;
-import org.protege.owlapi.inference.cls.ChildClassExtractor;
-import org.protege.owlapi.inference.cls.ParentClassExtractor;
-import org.protege.owlapi.inference.orphan.TerminalElementFinder;
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.model.parameters.Imports;
-import org.semanticweb.owlapi.search.EntitySearcher;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 import java.util.stream.Collectors;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
+
+import org.protege.owlapi.inference.cls.ChildClassExtractor;
+import org.protege.owlapi.inference.cls.ParentClassExtractor;
+import org.protege.owlapi.inference.orphan.TerminalElementFinder;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLAxiomChange;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.RemoveAxiom;
+import org.semanticweb.owlapi.model.parameters.Imports;
+import org.semanticweb.owlapi.search.EntitySearcher;
+
+import com.google.common.collect.ImmutableSet;
 
 
 /**

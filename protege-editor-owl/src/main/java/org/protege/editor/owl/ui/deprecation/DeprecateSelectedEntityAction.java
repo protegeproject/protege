@@ -1,5 +1,13 @@
 package org.protege.editor.owl.ui.deprecation;
 
+import java.awt.Frame;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
+
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.model.deprecation.DeprecateEntityInfo;
 import org.protege.editor.owl.model.deprecation.DeprecationProfile;
@@ -12,12 +20,6 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.parameters.Imports;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.List;
-import javax.swing.*;
-import java.awt.*;
-import java.util.HashSet;
 
 /**
  * Matthew Horridge

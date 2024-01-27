@@ -1,19 +1,20 @@
 package org.protege.editor.owl.ui.editor;
 
-import org.protege.editor.core.Disposable;
-import org.protege.editor.core.plugin.ProtegePluginInstance;
-import org.protege.editor.core.ui.util.VerifiedInputEditor;
-import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owlapi.model.AxiomType;
-import org.semanticweb.owlapi.model.OWLClassExpression;
-
-import javax.swing.*;
 import java.util.Set;
 /*
 * Copyright (C) 2007, University of Manchester
 *
 *
 */
+
+import javax.swing.JComponent;
+
+import org.protege.editor.core.Disposable;
+import org.protege.editor.core.plugin.ProtegePluginInstance;
+import org.protege.editor.core.ui.util.VerifiedInputEditor;
+import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owlapi.model.AxiomType;
+import org.semanticweb.owlapi.model.OWLClassExpression;
 
 /**
  * Author: drummond<br>

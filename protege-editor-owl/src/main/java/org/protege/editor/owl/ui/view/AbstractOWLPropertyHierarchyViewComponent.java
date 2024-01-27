@@ -1,18 +1,25 @@
 package org.protege.editor.owl.ui.view;
 
-import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
-import org.protege.editor.owl.ui.action.AbstractDeleteEntityAction;
-import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
-import org.protege.editor.owl.ui.renderer.ProtegeTreeNodeRenderer;
-import org.protege.editor.owl.ui.tree.OWLTreePreferences;
-import org.semanticweb.owlapi.model.*;
-
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+
+import javax.swing.Icon;
+
+import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
+import org.protege.editor.owl.ui.action.AbstractDeleteEntityAction;
+import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
+import org.protege.editor.owl.ui.tree.OWLTreePreferences;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLProperty;
+import org.semanticweb.owlapi.model.OWLSubPropertyAxiom;
 
 /**
  * User: nickdrummond

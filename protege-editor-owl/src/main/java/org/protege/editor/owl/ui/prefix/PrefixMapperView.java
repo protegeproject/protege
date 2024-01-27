@@ -1,5 +1,11 @@
 package org.protege.editor.owl.ui.prefix;
 
+import java.awt.BorderLayout;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.swing.JScrollPane;
+
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
@@ -7,14 +13,6 @@ import org.protege.editor.owl.ui.renderer.prefix.PrefixBasedRenderer;
 import org.protege.editor.owl.ui.view.AbstractActiveOntologyViewComponent;
 import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.util.DefaultPrefixManager;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class PrefixMapperView extends AbstractActiveOntologyViewComponent {
 

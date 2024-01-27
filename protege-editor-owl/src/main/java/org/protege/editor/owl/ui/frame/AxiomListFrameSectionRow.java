@@ -1,10 +1,5 @@
 package org.protege.editor.owl.ui.frame;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.editor.OWLObjectEditor;
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLOntology;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -13,6 +8,11 @@ import java.util.Set;
  *
  *
  */
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.editor.OWLObjectEditor;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 
 /**

@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.view;
 
+import javax.annotation.Nonnull;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.model.OWLEntity;
-
-import javax.annotation.Nonnull;
 
 /**
  * Matthew Horridge

@@ -1,6 +1,6 @@
 package org.protege.editor.core.ui.renderer;
 
-import javax.swing.*;
+import javax.swing.Icon;
 
 /**
  * Matthew Horridge

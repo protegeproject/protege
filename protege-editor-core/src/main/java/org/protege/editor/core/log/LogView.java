@@ -1,6 +1,6 @@
 package org.protege.editor.core.log;
 
-import javax.swing.*;
+import javax.swing.JComponent;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;

@@ -1,15 +1,7 @@
 package org.protege.editor.owl.ui.inference;
 
-import org.protege.editor.owl.model.inference.ReasonerPreferences;
-import org.protege.editor.owl.ui.inference.PrecomputePreferencesTableModel.Column;
-import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
-import org.semanticweb.owlapi.reasoner.InferenceType;
-import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.EnumMap;
@@ -17,6 +9,21 @@ import java.util.EnumSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+
+import org.protege.editor.owl.model.inference.ReasonerPreferences;
+import org.protege.editor.owl.ui.inference.PrecomputePreferencesTableModel.Column;
+import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
+import org.semanticweb.owlapi.reasoner.InferenceType;
+import org.slf4j.LoggerFactory;
 
 public class PrecomputePreferencesPanel extends OWLPreferencesPanel {
     private static final long serialVersionUID = -8812068573828834020L;

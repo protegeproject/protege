@@ -1,14 +1,23 @@
 package org.protege.editor.core.ui.workspace.views;
 
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JMenu;
+
 import org.protege.editor.core.ui.action.ProtegeDynamicAction;
 import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.core.ui.view.ViewComponentPluginLoader;
 import org.protege.editor.core.ui.workspace.TabbedWorkspace;
 import org.protege.editor.core.ui.workspace.WorkspaceViewManager;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.util.*;
 
 public class ViewMenuAction extends ProtegeDynamicAction {
 	private static final long serialVersionUID = 7169780321512922057L;

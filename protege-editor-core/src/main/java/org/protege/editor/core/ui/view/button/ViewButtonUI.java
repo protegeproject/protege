@@ -1,8 +1,10 @@
 package org.protege.editor.core.ui.view.button;
 
-import javax.swing.*;
+import java.awt.Graphics;
+
+import javax.swing.AbstractButton;
+import javax.swing.JComponent;
 import javax.swing.plaf.basic.BasicButtonUI;
-import java.awt.*;
 
 
 /**

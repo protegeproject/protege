@@ -1,6 +1,31 @@
 package org.protege.editor.owl.ui.search;
 
-import com.google.common.base.Optional;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.border.Border;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLEditorKitOntologyShortFormProvider;
@@ -9,29 +34,20 @@ import org.protege.editor.owl.model.search.SearchCategory;
 import org.protege.editor.owl.model.search.SearchResult;
 import org.protege.editor.owl.model.search.SearchResultMatch;
 import org.protege.editor.owl.model.search.SearchResultSet;
-import org.protege.editor.owl.model.util.OWLUtilities;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.protege.editor.owl.ui.renderer.context.OWLObjectRenderingContext;
-import org.protege.editor.owl.ui.renderer.styledstring.*;
+import org.protege.editor.owl.ui.renderer.styledstring.FontWeightAttribute;
+import org.protege.editor.owl.ui.renderer.styledstring.ForegroundAttribute;
+import org.protege.editor.owl.ui.renderer.styledstring.OWLObjectStyledStringRenderer;
+import org.protege.editor.owl.ui.renderer.styledstring.ProtegeStyles;
+import org.protege.editor.owl.ui.renderer.styledstring.StrikeThroughAttribute;
+import org.protege.editor.owl.ui.renderer.styledstring.Style;
+import org.protege.editor.owl.ui.renderer.styledstring.StyledString;
+import org.protege.editor.owl.ui.renderer.styledstring.StyledStringPanel;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 
-import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Collection;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import com.google.common.base.Optional;
 
 /**
  * Author: Matthew Horridge<br>

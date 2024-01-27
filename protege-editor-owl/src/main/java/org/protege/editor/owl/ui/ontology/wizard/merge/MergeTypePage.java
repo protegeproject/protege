@@ -1,11 +1,16 @@
 package org.protege.editor.owl.ui.ontology.wizard.merge;
 
+import java.awt.BorderLayout;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JComponent;
+import javax.swing.JRadioButton;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
 import org.protege.editor.owl.ui.ontology.wizard.create.OntologyIDPanel;
-
-import javax.swing.*;
-import java.awt.*;
 
 
 /**

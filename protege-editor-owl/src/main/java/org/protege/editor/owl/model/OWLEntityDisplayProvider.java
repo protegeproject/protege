@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model;
 
-import org.semanticweb.owlapi.model.OWLEntity;
+import javax.swing.JComponent;
 
-import javax.swing.*;
+import org.semanticweb.owlapi.model.OWLEntity;
 
 
 /**

@@ -1,14 +1,15 @@
 package org.protege.editor.owl.model.inference;
 
+import java.awt.Component;
+
+import javax.swing.JOptionPane;
+
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.OWLReasonerConfiguration;
 import org.semanticweb.owlapi.reasoner.OWLReasonerFactory;
 import org.semanticweb.owlapi.reasoner.ReasonerProgressMonitor;
 import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
-import java.awt.*;
 
 public class ReasonerUtilities {
 	

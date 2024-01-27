@@ -1,11 +1,12 @@
 package org.protege.editor.owl.ui.action;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.JOptionPane;
+
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
 
 /**
  * Matthew Horridge

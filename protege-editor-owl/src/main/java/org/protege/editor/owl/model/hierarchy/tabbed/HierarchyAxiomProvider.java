@@ -1,10 +1,11 @@
 package org.protege.editor.owl.model.hierarchy.tabbed;
 
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLEntity;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
-import java.util.Optional;
+
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLEntity;
 
 /**
  * Matthew Horridge

@@ -1,15 +1,16 @@
 package org.protege.editor.owl.model.deprecation;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import javax.annotation.Nonnull;
+
 import org.protege.editor.owl.model.conf.IRIExpander;
 import org.protege.editor.owl.model.conf.valueset.ValueSet;
 import org.semanticweb.owlapi.model.IRI;
 
-import javax.annotation.Nonnull;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Matthew Horridge

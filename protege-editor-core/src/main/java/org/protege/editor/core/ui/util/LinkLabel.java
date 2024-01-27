@@ -1,16 +1,17 @@
 package org.protege.editor.core.ui.util;
 
-import org.protege.editor.core.Fonts;
-import org.protege.editor.core.PropertyUtil;
-import org.protege.editor.core.ProtegeProperties;
-import org.protege.editor.core.platform.OSUtils;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import javax.swing.JLabel;
+
+import org.protege.editor.core.Fonts;
 
 
 /**

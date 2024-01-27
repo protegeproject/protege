@@ -1,5 +1,10 @@
 package org.protege.editor.owl.ui.action;
 
+import static org.protege.editor.owl.model.event.EventType.ACTIVE_ONTOLOGY_CHANGED;
+
+import java.awt.event.ActionEvent;
+import java.util.List;
+
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.refactor.AllDifferentCreator;
@@ -7,12 +12,6 @@ import org.semanticweb.owlapi.model.HasIndividualsInSignature;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
-
-import java.awt.event.ActionEvent;
-import java.util.List;
-
-import static org.protege.editor.owl.model.event.EventType.ACTIVE_ONTOLOGY_CHANGED;
-import static org.semanticweb.owlapi.model.AxiomType.DIFFERENT_INDIVIDUALS;
 
 
 /**

@@ -1,9 +1,14 @@
 package org.protege.editor.owl.model.inference;
 
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
 import org.protege.editor.core.prefs.Preferences;
 import org.semanticweb.owlapi.reasoner.InferenceType;
-
-import java.util.*;
 
 public class PrecomputedInferencePreferences {
     private Set<InferenceType>             required   = EnumSet.noneOf(InferenceType.class);

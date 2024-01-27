@@ -1,23 +1,37 @@
 package org.protege.editor.owl.ui.util;
 
-import org.protege.editor.core.ui.util.AugmentedJTextField;
-import org.protege.editor.core.ui.util.ComponentFactory;
-import org.protege.editor.owl.model.lang.LangCode;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.Nonnull;
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Window;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Optional;
 import java.util.Vector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
+import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.JTextField;
+import javax.swing.JWindow;
+import javax.swing.ListCellRenderer;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import org.protege.editor.core.ui.util.AugmentedJTextField;
+import org.protege.editor.core.ui.util.ComponentFactory;
 
 /**
  * Matthew Horridge

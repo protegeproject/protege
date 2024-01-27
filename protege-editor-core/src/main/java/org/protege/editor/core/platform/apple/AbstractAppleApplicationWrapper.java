@@ -1,11 +1,11 @@
 package org.protege.editor.core.platform.apple;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
 * Copyright (C) 2007, University of Manchester

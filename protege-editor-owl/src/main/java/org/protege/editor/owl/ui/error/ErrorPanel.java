@@ -1,11 +1,6 @@
 package org.protege.editor.owl.ui.error;
 
-import org.protege.editor.core.ui.error.ErrorExplainer;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.text.JTextComponent;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URI;
@@ -14,6 +9,17 @@ import java.net.URI;
 *
 *
 */
+
+import javax.swing.JComponent;
+import javax.swing.JEditorPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
+import javax.swing.text.JTextComponent;
+
+import org.protege.editor.core.ui.error.ErrorExplainer;
 
 /**
  * Author: drummond<br>

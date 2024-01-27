@@ -1,11 +1,5 @@
 package org.protege.editor.owl.model.util;
 
-import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLDatatype;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.vocab.OWL2Datatype;
-
 import java.util.HashSet;
 import java.util.Set;
 /*
@@ -13,6 +7,12 @@ import java.util.Set;
 *
 *
 */
+
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
 /**
  * Author: drummond<br>

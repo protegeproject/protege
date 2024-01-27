@@ -1,16 +1,30 @@
 package org.protege.editor.owl.ui.search;
 
-import com.google.common.base.Optional;
-import org.protege.editor.core.ui.util.AugmentedJTextField;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.search.SearchResult;
-import org.semanticweb.owlapi.model.OWLEntity;
+import java.awt.BorderLayout;
+import java.awt.Dialog;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-import javax.swing.*;
+import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.*;
-import java.awt.event.*;
+
+import org.protege.editor.core.ui.util.AugmentedJTextField;
+import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owlapi.model.OWLEntity;
+
+import com.google.common.base.Optional;
 
 /**
  * Matthew Horridge

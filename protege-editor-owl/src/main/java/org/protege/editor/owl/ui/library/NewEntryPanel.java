@@ -1,10 +1,11 @@
 package org.protege.editor.owl.ui.library;
 
-import org.protege.xmlcatalog.entry.Entry;
-
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JPanel;
+
+import org.protege.xmlcatalog.entry.Entry;
 
 public abstract class NewEntryPanel extends JPanel {
 	private static final long serialVersionUID = -706694344158933046L;

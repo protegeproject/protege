@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.renderer.styledstring;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

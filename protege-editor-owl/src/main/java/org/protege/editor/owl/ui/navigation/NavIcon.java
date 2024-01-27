@@ -1,12 +1,18 @@
 package org.protege.editor.owl.ui.navigation;
 
-import org.protege.editor.owl.ui.renderer.OWLSystemColors;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 import javax.annotation.Nonnull;
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.Icon;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 
 /**
  * Matthew Horridge

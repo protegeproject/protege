@@ -1,10 +1,10 @@
 package org.protege.editor.owl.model.selection.ontologies;
 
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owlapi.model.OWLOntology;
-
 import java.util.Collections;
 import java.util.Set;
+
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
  * Author: drummond<br>

@@ -1,10 +1,10 @@
 package org.protege.editor.owl.model.search;
 
-import com.google.common.base.MoreObjects;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.regex.Pattern;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import com.google.common.base.MoreObjects;
 
 /**
  * @author Matthew Horridge, Stanford University, Bio-Medical Informatics Research Group, Date: 24/09/2014

@@ -1,15 +1,16 @@
 package org.protege.editor.owl.model.git;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.util.Optional;
+
+import javax.annotation.Nonnull;
+
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
-import java.util.Optional;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Matthew Horridge

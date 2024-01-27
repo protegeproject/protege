@@ -1,5 +1,8 @@
 package org.protege.editor.owl.ui.frame.annotationproperty;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLAnnotationPropertyRangeEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
@@ -8,9 +11,6 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLAnnotationPropertyRangeAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Author: drummond<br>

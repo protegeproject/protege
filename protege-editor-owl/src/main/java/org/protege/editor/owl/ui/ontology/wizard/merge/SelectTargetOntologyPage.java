@@ -1,14 +1,18 @@
 package org.protege.editor.owl.ui.ontology.wizard.merge;
 
+import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+
 import org.protege.editor.core.ui.wizard.WizardPanel;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
 
 
 /**

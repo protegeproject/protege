@@ -1,8 +1,10 @@
 package org.protege.editor.core.ui.preferences.node;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 
 
 /**

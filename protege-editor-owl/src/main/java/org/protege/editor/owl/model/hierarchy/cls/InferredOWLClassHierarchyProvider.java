@@ -1,18 +1,17 @@
 package org.protege.editor.owl.model.hierarchy.cls;
 
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Set;
+
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.hierarchy.AbstractOWLObjectHierarchyProvider;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
-
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Set;
 
 
 /**

@@ -1,7 +1,31 @@
 package org.protege.editor.core.ui.menu;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
+import java.awt.event.KeyEvent;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JSeparator;
+import javax.swing.KeyStroke;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.platform.OSUtils;
 import org.protege.editor.core.ui.action.ProtegeAction;
@@ -9,13 +33,8 @@ import org.protege.editor.core.ui.action.ProtegeDynamicAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
-import java.awt.event.KeyEvent;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.*;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 
 
 /**

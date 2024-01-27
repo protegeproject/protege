@@ -1,15 +1,15 @@
 package org.protege.editor.owl.ui.action;
 
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.swing.FocusManager;
+import javax.swing.SwingUtilities;
+
 import org.protege.editor.owl.ui.find.OWLEntityFindPanel;
 import org.protege.editor.owl.ui.view.Findable;
 import org.semanticweb.owlapi.model.OWLEntity;
-
-import javax.swing.FocusManager;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 
 /**

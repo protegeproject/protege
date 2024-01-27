@@ -1,12 +1,12 @@
 package org.protege.editor.owl.model.annotation;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Matthew Horridge

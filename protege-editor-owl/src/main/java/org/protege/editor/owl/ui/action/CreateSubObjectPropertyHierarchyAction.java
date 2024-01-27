@@ -1,16 +1,17 @@
 package org.protege.editor.owl.ui.action;
 
+import static org.semanticweb.owlapi.model.EntityType.OBJECT_PROPERTY;
+
+import java.awt.event.ActionEvent;
+import java.util.Optional;
+
 import org.protege.editor.core.util.Recommendation;
 import org.protege.editor.owl.model.hierarchy.tabbed.CreateHierarchyChangeGenerator;
 import org.protege.editor.owl.model.hierarchy.tabbed.HierarchyNodeCreator;
 import org.protege.editor.owl.model.hierarchy.tabbed.MakeSiblingsDisjointChangeGenerator;
 import org.protege.editor.owl.ui.hierarchy.creation.CreateHierarchyExecutor;
-import org.semanticweb.owlapi.model.*;
-
-import java.awt.event.ActionEvent;
-import java.util.Optional;
-
-import static org.semanticweb.owlapi.model.EntityType.OBJECT_PROPERTY;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
 
 /**
  * Matthew Horridge

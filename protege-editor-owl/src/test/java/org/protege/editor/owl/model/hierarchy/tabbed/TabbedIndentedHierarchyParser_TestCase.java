@@ -1,20 +1,22 @@
 package org.protege.editor.owl.model.hierarchy.tabbed;
 
-import com.google.common.base.Objects;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.protege.editor.owl.model.hierarchy.tabbed.TabbedIndentedHierarchyParser_TestCase.EdgeMatcher.edge;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.List;
-
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.protege.editor.owl.model.hierarchy.tabbed.TabbedIndentedHierarchyParser_TestCase.EdgeMatcher.edge;
+import com.google.common.base.Objects;
 
 /**
  * Matthew Horridge

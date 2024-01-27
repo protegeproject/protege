@@ -1,11 +1,6 @@
 package org.protege.editor.owl.ui.action;
 
-import org.protege.editor.core.HasUpdateState;
-import org.protege.editor.core.ui.view.DisposableAction;
-import org.protege.editor.owl.ui.tree.OWLObjectTreeNode;
-import org.semanticweb.owlapi.model.OWLEntity;
-
-import javax.swing.*;
+import javax.swing.Icon;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
@@ -14,6 +9,11 @@ import javax.swing.tree.TreeSelectionModel;
 *
 *
 */
+
+import org.protege.editor.core.HasUpdateState;
+import org.protege.editor.core.ui.view.DisposableAction;
+import org.protege.editor.owl.ui.tree.OWLObjectTreeNode;
+import org.semanticweb.owlapi.model.OWLEntity;
 
 /**
  * Author: drummond<br>

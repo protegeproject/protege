@@ -1,12 +1,19 @@
 package org.protege.editor.owl.model.selection;
 
-import org.semanticweb.owlapi.model.*;
-
-import javax.annotation.Nonnull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Optional;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
+
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
 
 /**
  * Matthew Horridge

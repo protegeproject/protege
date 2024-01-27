@@ -1,15 +1,19 @@
 package org.protege.editor.owl.ui.action.export.inferred;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
-
-import javax.swing.*;
-import java.awt.*;
 /*
  * Copyright (C) 2007, University of Manchester
  *
  *
  */
+import java.awt.BorderLayout;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
 
 
 /**

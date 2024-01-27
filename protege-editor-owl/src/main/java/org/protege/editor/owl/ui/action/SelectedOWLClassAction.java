@@ -1,13 +1,13 @@
 package org.protege.editor.owl.ui.action;
 
+import java.util.Optional;
+
+import javax.annotation.Nullable;
+
 import org.protege.editor.owl.model.selection.OWLEntitySelectionModel;
 import org.protege.editor.owl.model.selection.OWLSelectionModel;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLEntity;
-
-import javax.annotation.Nullable;
-import java.util.Optional;
 
 
 /**

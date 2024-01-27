@@ -1,7 +1,12 @@
 package org.protege.editor.core.ui.view;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
 import javax.annotation.Nonnull;
-import java.awt.*;
 
 /**
  * Matthew Horridge

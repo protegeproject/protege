@@ -1,12 +1,12 @@
 package org.protege.editor.owl.ui.list;
 
+import java.awt.Dimension;
+import java.util.Set;
+import java.util.TreeSet;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.OWLEntity;
-
-import java.awt.*;
-import java.util.Set;
-import java.util.TreeSet;
 
 
 /**

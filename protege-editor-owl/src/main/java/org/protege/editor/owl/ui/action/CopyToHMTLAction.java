@@ -1,17 +1,6 @@
 package org.protege.editor.owl.ui.action;
 
-import org.protege.editor.owl.model.OWLEditorKitOntologyShortFormProvider;
-import org.protege.editor.owl.model.OWLEditorKitShortFormProvider;
-import org.protege.editor.owl.ui.renderer.context.OWLObjectRenderingContext;
-import org.protege.editor.owl.ui.renderer.styledstring.OWLObjectStyledStringRenderer;
-import org.protege.editor.owl.ui.renderer.styledstring.StyledString;
-import org.protege.editor.owl.ui.renderer.styledstring.StyledStringSelection;
-import org.protege.editor.owl.ui.transfer.TransferableOWLObject;
-import org.protege.editor.owl.ui.view.Copyable;
-import org.protege.editor.owl.ui.view.ViewClipboard;
-import org.semanticweb.owlapi.model.OWLObject;
-
-import java.awt.*;
+import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -22,6 +11,17 @@ import java.io.StringBufferInputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.protege.editor.owl.model.OWLEditorKitOntologyShortFormProvider;
+import org.protege.editor.owl.model.OWLEditorKitShortFormProvider;
+import org.protege.editor.owl.ui.renderer.context.OWLObjectRenderingContext;
+import org.protege.editor.owl.ui.renderer.styledstring.OWLObjectStyledStringRenderer;
+import org.protege.editor.owl.ui.renderer.styledstring.StyledString;
+import org.protege.editor.owl.ui.renderer.styledstring.StyledStringSelection;
+import org.protege.editor.owl.ui.transfer.TransferableOWLObject;
+import org.protege.editor.owl.ui.view.Copyable;
+import org.protege.editor.owl.ui.view.ViewClipboard;
+import org.semanticweb.owlapi.model.OWLObject;
 
 /**
  * Author: Matthew Horridge<br>

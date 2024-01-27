@@ -1,13 +1,14 @@
 package org.protege.editor.owl.model.util;
 
-import org.semanticweb.owlapi.model.IRI;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.Nonnull;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Optional;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
+
+import org.semanticweb.owlapi.model.IRI;
 
 /**
  * Matthew Horridge

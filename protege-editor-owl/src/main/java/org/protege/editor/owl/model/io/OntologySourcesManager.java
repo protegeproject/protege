@@ -1,21 +1,26 @@
 package org.protege.editor.owl.model.io;
 
-import org.protege.editor.core.Disposable;
-import org.protege.editor.core.log.LogBanner;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.net.URI;
-import java.util.*;
 /*
 * Copyright (C) 2007, University of Manchester
 *
 *
 */
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
+import org.protege.editor.core.Disposable;
+import org.protege.editor.core.log.LogBanner;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Author: drummond<br>

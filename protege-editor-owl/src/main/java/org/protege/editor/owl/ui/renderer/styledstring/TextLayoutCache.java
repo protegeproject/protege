@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.renderer.styledstring;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.text.AttributedString;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Author: Matthew Horridge<br>

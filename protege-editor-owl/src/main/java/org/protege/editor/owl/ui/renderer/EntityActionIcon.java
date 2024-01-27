@@ -1,6 +1,8 @@
 package org.protege.editor.owl.ui.renderer;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Component;
+import java.awt.Graphics2D;
 
 /**
  * Matthew Horridge

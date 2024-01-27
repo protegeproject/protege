@@ -1,17 +1,18 @@
 package org.protege.editor.owl.model.library;
 
-import junit.framework.TestCase;
-import org.protege.editor.owl.model.library.folder.FolderGroupManager;
-import org.protege.xmlcatalog.CatalogUtilities;
-import org.protege.xmlcatalog.XMLCatalog;
-import org.protege.xmlcatalog.entry.GroupEntry;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
+
+import org.protege.editor.owl.model.library.folder.FolderGroupManager;
+import org.protege.xmlcatalog.CatalogUtilities;
+import org.protege.xmlcatalog.XMLCatalog;
+import org.protege.xmlcatalog.entry.GroupEntry;
+
+import junit.framework.TestCase;
 
 
 public class Folder_IT extends TestCase {

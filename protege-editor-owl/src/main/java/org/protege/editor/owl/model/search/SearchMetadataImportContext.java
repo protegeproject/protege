@@ -1,5 +1,7 @@
 package org.protege.editor.owl.model.search;
 
+import java.util.Set;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLEditorKitOntologyShortFormProvider;
 import org.protege.editor.owl.model.OWLEditorKitShortFormProvider;
@@ -10,8 +12,6 @@ import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
 import org.semanticweb.owlapi.util.ShortFormProvider;
-
-import java.util.Set;
 
 /**
  * Author: Matthew Horridge<br>

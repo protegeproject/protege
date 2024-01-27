@@ -1,19 +1,27 @@
 package org.protege.editor.core.ui.util;
 
 
-import org.eclipse.core.runtime.IExtension;
-
-import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.event.HyperlinkListener;
-import javax.swing.text.html.HTMLDocument;
-import javax.swing.text.html.HTMLEditorKit;
-import java.awt.*;
 /*
  * Copyright (C) 2007, University of Manchester
  *
  *
  */
+import java.awt.Color;
+import java.awt.Font;
+
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.JEditorPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JToolBar;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.event.HyperlinkListener;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
+
+import org.eclipse.core.runtime.IExtension;
 
 
 /**

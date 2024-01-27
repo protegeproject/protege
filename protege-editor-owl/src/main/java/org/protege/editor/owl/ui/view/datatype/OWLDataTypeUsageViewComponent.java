@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.view.datatype;
 
+import java.awt.BorderLayout;
+
 import org.protege.editor.owl.ui.usage.UsagePanel;
 import org.semanticweb.owlapi.model.OWLDatatype;
-
-import java.awt.*;
 
 
 /**

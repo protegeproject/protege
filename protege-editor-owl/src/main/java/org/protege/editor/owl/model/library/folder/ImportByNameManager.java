@@ -1,5 +1,8 @@
 package org.protege.editor.owl.model.library.folder;
 
+import java.io.IOException;
+import java.net.URI;
+
 import org.protege.editor.owl.model.library.LibraryUtilities;
 import org.protege.editor.owl.ui.library.NewEntryPanel;
 import org.protege.xmlcatalog.Prefer;
@@ -7,9 +10,6 @@ import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.XmlBaseContext;
 import org.protege.xmlcatalog.entry.Entry;
 import org.protege.xmlcatalog.entry.GroupEntry;
-
-import java.io.IOException;
-import java.net.URI;
 
 public class ImportByNameManager extends FolderGroupManager {
 	

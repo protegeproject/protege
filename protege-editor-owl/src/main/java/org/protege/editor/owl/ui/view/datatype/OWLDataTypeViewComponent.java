@@ -1,25 +1,7 @@
 package org.protege.editor.owl.ui.view.datatype;
 
-import org.protege.editor.core.ui.util.ComponentFactory;
-import org.protege.editor.core.ui.view.DisposableAction;
-import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
-import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
-import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.model.selection.SelectionDriver;
-import org.protege.editor.owl.model.util.OWLDataTypeUtils;
-import org.protege.editor.owl.model.util.OWLEntityDeleter;
-import org.protege.editor.owl.ui.OWLIcons;
-import org.protege.editor.owl.ui.list.OWLObjectList;
-import org.protege.editor.owl.ui.renderer.*;
-import org.protege.editor.owl.ui.view.ChangeListenerMediator;
-import org.protege.editor.owl.ui.view.Findable;
-import org.protege.editor.owl.ui.view.OWLSelectionViewAction;
-import org.semanticweb.owlapi.model.*;
-
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,6 +12,32 @@ import java.util.Optional;
 *
 *
 */
+
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import org.protege.editor.core.ui.util.ComponentFactory;
+import org.protege.editor.core.ui.view.DisposableAction;
+import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
+import org.protege.editor.owl.model.event.EventType;
+import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.model.selection.SelectionDriver;
+import org.protege.editor.owl.model.util.OWLDataTypeUtils;
+import org.protege.editor.owl.model.util.OWLEntityDeleter;
+import org.protege.editor.owl.ui.list.OWLObjectList;
+import org.protege.editor.owl.ui.renderer.AddEntityIcon;
+import org.protege.editor.owl.ui.renderer.DeleteEntityIcon;
+import org.protege.editor.owl.ui.renderer.OWLDatatypeIcon;
+import org.protege.editor.owl.ui.renderer.OWLEntityIcon;
+import org.protege.editor.owl.ui.view.ChangeListenerMediator;
+import org.protege.editor.owl.ui.view.Findable;
+import org.protege.editor.owl.ui.view.OWLSelectionViewAction;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 /**
  * Author: drummond<br>

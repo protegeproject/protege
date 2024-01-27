@@ -1,5 +1,9 @@
 package org.protege.editor.owl.model.util;
 
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.regex.Pattern;
+
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.util.SAXParsers;
@@ -7,10 +11,6 @@ import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.regex.Pattern;
 
 /**
  * Matthew Horridge

@@ -1,14 +1,14 @@
 package org.protege.editor.owl.ui.action.export.inferred;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.ontology.wizard.create.OntologyIDPanel;
-
-import javax.swing.*;
 /*
  * Copyright (C) 2007, University of Manchester
  *
  *
  */
+import javax.swing.JComponent;
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.ontology.wizard.create.OntologyIDPanel;
 
 
 /**

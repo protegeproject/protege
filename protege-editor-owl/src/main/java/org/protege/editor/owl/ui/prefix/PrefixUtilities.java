@@ -1,5 +1,12 @@
 package org.protege.editor.owl.ui.prefix;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.renderer.prefix.ActiveOntologyComparator;
 import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
@@ -11,9 +18,6 @@ import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.*;
-import java.util.Map.Entry;
 
 public class PrefixUtilities {
 

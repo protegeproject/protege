@@ -1,13 +1,14 @@
 package org.protege.editor.core.ui.view;
 
-import org.protege.editor.core.plugin.ProtegePlugin;
-import org.protege.editor.core.ui.workspace.Workspace;
-
-import javax.annotation.Nonnull;
-import java.awt.*;
+import java.awt.Color;
 import java.net.URI;
 import java.util.Optional;
 import java.util.Set;
+
+import javax.annotation.Nonnull;
+
+import org.protege.editor.core.plugin.ProtegePlugin;
+import org.protege.editor.core.ui.workspace.Workspace;
 
 
 /**

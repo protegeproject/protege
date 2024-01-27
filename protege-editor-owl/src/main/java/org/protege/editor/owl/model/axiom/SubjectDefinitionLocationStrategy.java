@@ -1,13 +1,14 @@
 package org.protege.editor.owl.model.axiom;
 
-import com.google.common.base.Optional;
+import java.util.List;
+import java.util.Set;
+
 import org.protege.editor.owl.model.HasActiveOntology;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
 
-import java.util.List;
-import java.util.Set;
+import com.google.common.base.Optional;
 
 /**
  * @author Matthew Horridge, Stanford University, Bio-Medical Informatics Research Group, Date: 27/05/2014

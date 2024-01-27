@@ -1,8 +1,9 @@
 package org.protege.editor.core.ui.util;
 
-import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.table.DefaultTableModel;
 /*
 * Copyright (C) 2007, University of Manchester
 *

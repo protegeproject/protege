@@ -1,5 +1,16 @@
 package org.protege.editor.core.platform.apple;
 
+//import javax.swing.*;
+//import java.awt.event.ActionEvent;
+//import java.awt.event.ActionListener;
+import java.awt.Desktop;
+import java.io.File;
+/*
+* Copyright (C) 2007, University of Manchester
+*
+*
+*/
+
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.editorkit.EditorKit;
@@ -7,17 +18,6 @@ import org.protege.editor.core.ui.about.AboutPanel;
 import org.protege.editor.core.ui.preferences.PreferencesDialogPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-//import javax.swing.*;
-//import java.awt.event.ActionEvent;
-//import java.awt.event.ActionListener;
-import java.awt.*;
-import java.io.File;
-/*
-* Copyright (C) 2007, University of Manchester
-*
-*
-*/
 
 /**
  * Author: drummond<br>

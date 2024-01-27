@@ -1,18 +1,20 @@
 package org.protege.editor.owl.ui;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.frame.AxiomListFrame;
-import org.protege.editor.owl.ui.framelist.OWLFrameList;
-import org.semanticweb.owlapi.model.OWLAxiom;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.util.Set;
 /*
  * Copyright (C) 2007, University of Manchester
  *
  *
  */
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.frame.AxiomListFrame;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
+import org.semanticweb.owlapi.model.OWLAxiom;
 
 
 /**

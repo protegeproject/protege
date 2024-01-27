@@ -1,9 +1,10 @@
 package org.protege.editor.owl.ui.editor;
 
+import java.util.Set;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.swing.*;
-import java.util.Set;
+import javax.swing.JComponent;
 
 
 /**

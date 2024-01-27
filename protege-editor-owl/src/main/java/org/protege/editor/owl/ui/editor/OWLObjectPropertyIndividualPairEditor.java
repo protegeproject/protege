@@ -1,5 +1,16 @@
 package org.protege.editor.owl.ui.editor;
 
+import java.awt.BorderLayout;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.ListSelectionModel;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.frame.OWLObjectPropertyIndividualPair;
 import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
@@ -8,13 +19,6 @@ import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLPropertyAssertionAxiom;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.swing.*;
-import java.awt.*;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Author: Matthew Horridge<br>

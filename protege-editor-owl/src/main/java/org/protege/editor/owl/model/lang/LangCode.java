@@ -1,10 +1,10 @@
 package org.protege.editor.owl.model.lang;
 
+import javax.annotation.Nonnull;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.auto.value.AutoValue;
-
-import javax.annotation.Nonnull;
 
 /**
  * Matthew Horridge

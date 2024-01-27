@@ -1,8 +1,5 @@
 package org.protege.editor.owl.ui.framelist;
 
-import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
-import org.semanticweb.owlapi.model.*;
-
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +8,13 @@ import java.util.List;
  *
  *
  */
+
+import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.RemoveAxiom;
 
 
 /**

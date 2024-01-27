@@ -1,20 +1,22 @@
 package org.protege.editor.owl.ui.renderer;
 
-import com.google.common.base.Objects;
-import org.protege.editor.owl.ui.renderer.layout.HTTPLink;
-import org.protege.editor.owl.ui.renderer.layout.Link;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.Nonnull;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.google.common.base.MoreObjects.toStringHelper;
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
+
+import org.protege.editor.owl.ui.renderer.layout.HTTPLink;
+import org.protege.editor.owl.ui.renderer.layout.Link;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Objects;
 
 /**
  * Matthew Horridge

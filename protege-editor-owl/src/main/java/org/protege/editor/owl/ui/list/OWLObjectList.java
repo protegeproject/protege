@@ -1,19 +1,21 @@
 package org.protege.editor.owl.ui.list;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.renderer.OWLCellRendererSimple;
-import org.protege.editor.owl.ui.transfer.OWLObjectListDragGestureListener;
-import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLObject;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Rectangle;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragSource;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import javax.swing.JList;
+import javax.swing.ListSelectionModel;
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.renderer.OWLCellRendererSimple;
+import org.protege.editor.owl.ui.transfer.OWLObjectListDragGestureListener;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLObject;
 
 
 /**

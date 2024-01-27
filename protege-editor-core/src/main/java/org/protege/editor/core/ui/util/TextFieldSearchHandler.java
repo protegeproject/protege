@@ -1,7 +1,8 @@
 package org.protege.editor.core.ui.util;
 
-import javax.swing.*;
 import java.util.Optional;
+
+import javax.swing.JTextField;
 
 /**
  * Matthew Horridge

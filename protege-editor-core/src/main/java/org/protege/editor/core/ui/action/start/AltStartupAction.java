@@ -1,8 +1,9 @@
 package org.protege.editor.core.ui.action.start;
 
-import org.protege.editor.core.plugin.ProtegePluginInstance;
+import javax.swing.AbstractAction;
+import javax.swing.JFrame;
 
-import javax.swing.*;
+import org.protege.editor.core.plugin.ProtegePluginInstance;
 
 public abstract class AltStartupAction extends AbstractAction implements ProtegePluginInstance {
 	private static final long serialVersionUID = -8693527745746711830L;

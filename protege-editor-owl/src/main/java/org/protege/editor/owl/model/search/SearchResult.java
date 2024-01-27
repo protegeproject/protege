@@ -1,9 +1,10 @@
 package org.protege.editor.owl.model.search;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Ordering;
 import org.protege.editor.owl.ui.renderer.styledstring.StyledString;
 import org.semanticweb.owlapi.model.OWLObject;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Ordering;
 
 /**
  * Author: Matthew Horridge<br>

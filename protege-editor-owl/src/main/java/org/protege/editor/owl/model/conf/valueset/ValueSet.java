@@ -1,12 +1,14 @@
 package org.protege.editor.owl.model.conf.valueset;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.protege.editor.owl.model.OWLModelManager;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.protege.editor.owl.model.OWLModelManager;
-
-import javax.annotation.Nonnull;
-import java.util.List;
 
 /**
  * Matthew Horridge

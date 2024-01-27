@@ -1,5 +1,19 @@
 package org.protege.editor.owl.ui.ontology.imports.missing;
 
+import static javax.swing.JOptionPane.WARNING_MESSAGE;
+import static javax.swing.JOptionPane.YES_NO_OPTION;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
+import javax.annotation.Nonnull;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.MissingImportHandler;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
@@ -9,16 +23,6 @@ import org.protege.xmlcatalog.entry.UriEntry;
 import org.semanticweb.owlapi.model.IRI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
-import javax.swing.*;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-
-import static javax.swing.JOptionPane.*;
 
 
 /**

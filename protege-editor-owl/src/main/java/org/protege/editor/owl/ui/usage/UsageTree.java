@@ -1,5 +1,22 @@
 package org.protege.editor.owl.ui.usage;
 
+import static java.util.stream.Collectors.toList;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.JTree;
+import javax.swing.event.ChangeListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.protege.editor.owl.ui.tree.OWLLinkedObjectTree;
@@ -8,18 +25,6 @@ import org.protege.editor.owl.ui.view.Copyable;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
-
-import javax.swing.*;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
-import java.awt.*;
-import java.util.*;
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 
 /**

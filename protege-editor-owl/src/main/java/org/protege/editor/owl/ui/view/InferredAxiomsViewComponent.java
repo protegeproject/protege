@@ -1,14 +1,15 @@
 package org.protege.editor.owl.ui.view;
 
+import java.awt.BorderLayout;
+
+import javax.swing.JComponent;
+import javax.swing.JScrollPane;
+
 import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.frame.InferredAxiomsFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import javax.swing.*;
-import java.awt.*;
 
 
 /*

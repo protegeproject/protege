@@ -1,11 +1,27 @@
 package org.protege.editor.owl;
 
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
+import java.io.File;
+import java.net.URI;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.swing.JOptionPane;
+
 import org.osgi.framework.ServiceRegistration;
 import org.protege.editor.core.BookMarkedURIManager;
 import org.protege.editor.core.Disposable;
-import org.protege.editor.core.editorkit.*;
+import org.protege.editor.core.editorkit.AbstractEditorKit;
+import org.protege.editor.core.editorkit.EditorKit;
+import org.protege.editor.core.editorkit.EditorKitDescriptor;
+import org.protege.editor.core.editorkit.Initializers;
+import org.protege.editor.core.editorkit.RecentEditorKitManager;
 import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.util.StringAbbreviator;
@@ -17,8 +33,8 @@ import org.protege.editor.owl.model.io.IOListenerPluginInstance;
 import org.protege.editor.owl.model.io.IOListenerPluginLoader;
 import org.protege.editor.owl.model.search.SearchManager;
 import org.protege.editor.owl.model.search.SearchManagerSelector;
-import org.protege.editor.owl.ui.OntologyFormatPanel;
 import org.protege.editor.owl.ui.Extensions;
+import org.protege.editor.owl.ui.OntologyFormatPanel;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandlerUI;
 import org.protege.editor.owl.ui.explanation.ExplanationManager;
@@ -26,17 +42,18 @@ import org.protege.editor.owl.ui.ontology.OntologyPreferences;
 import org.protege.editor.owl.ui.ontology.imports.missing.MissingImportHandlerUI;
 import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
 import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDocumentFormat;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
 import org.semanticweb.owlapi.util.VersionInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.swing.*;
-import java.io.File;
-import java.net.URI;
-import java.util.*;
+import com.google.common.base.Optional;
 
 
 /**

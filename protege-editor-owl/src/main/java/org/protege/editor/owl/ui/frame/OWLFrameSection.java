@@ -1,11 +1,11 @@
 package org.protege.editor.owl.ui.frame;
 
+import java.util.Comparator;
+import java.util.List;
+
 import org.protege.editor.core.ui.list.MListSectionHeader;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.semanticweb.owlapi.model.OWLAxiom;
-
-import java.util.Comparator;
-import java.util.List;
 
 
 /**

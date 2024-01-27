@@ -1,9 +1,10 @@
 package org.protege.editor.owl.model.search;
 
-import com.google.common.collect.ImmutableList;
+import java.util.Comparator;
+
 import org.protege.editor.owl.OWLEditorKit;
 
-import java.util.Comparator;
+import com.google.common.collect.ImmutableList;
 
 /**
  * Author: Matthew Horridge<br>

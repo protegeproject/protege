@@ -1,13 +1,18 @@
 package org.protege.editor.owl.model.library.folder;
 
-import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.model.*;
-
 import java.io.File;
 import java.net.URI;
 import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
+
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.MissingImportHandlingStrategy;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 public class OntologyNameAlgorithm implements Algorithm {
 

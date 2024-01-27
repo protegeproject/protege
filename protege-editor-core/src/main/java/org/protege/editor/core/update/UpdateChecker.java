@@ -1,12 +1,12 @@
 package org.protege.editor.core.update;
 
-import org.osgi.framework.Bundle;
-import org.protege.editor.core.plugin.PluginUtilities;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.net.URL;
 import java.util.Optional;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import org.osgi.framework.Bundle;
+import org.protege.editor.core.plugin.PluginUtilities;
 
 /**
  * Author: Matthew Horridge<br>

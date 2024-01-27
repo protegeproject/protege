@@ -1,5 +1,12 @@
 package org.protege.editor.owl.ui.frame.cls;
 
+import java.util.Set;
+/*
+* Copyright (C) 2007, University of Manchester
+*
+*
+*/
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.classexpression.anonymouscls.AnonymousDefinedClassManager;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
@@ -7,13 +14,6 @@ import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import java.util.Set;
-/*
-* Copyright (C) 2007, University of Manchester
-*
-*
-*/
 
 /**
  * Author: drummond<br>

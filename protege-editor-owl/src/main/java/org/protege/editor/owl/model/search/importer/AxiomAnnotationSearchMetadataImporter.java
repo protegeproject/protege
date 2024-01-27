@@ -1,13 +1,17 @@
 package org.protege.editor.owl.model.search.importer;
 
-import org.protege.editor.owl.model.search.*;
+import java.util.Set;
+
+import org.protege.editor.owl.model.search.AxiomBasedSearchMetadataImporter;
+import org.protege.editor.owl.model.search.SearchCategory;
+import org.protege.editor.owl.model.search.SearchMetadata;
+import org.protege.editor.owl.model.search.SearchMetadataDB;
+import org.protege.editor.owl.model.search.SearchMetadataImportContext;
 import org.protege.editor.owl.ui.renderer.styledstring.StyledString;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLEntity;
-
-import java.util.Set;
 
 /**
  * Author: Matthew Horridge<br>

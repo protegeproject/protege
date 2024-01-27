@@ -1,18 +1,20 @@
 package org.protege.editor.owl.ui.editor;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.swing.JComponent;
+import javax.swing.JTabbedPane;
+
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.swing.*;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Author: drummond<br>

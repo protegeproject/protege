@@ -1,14 +1,16 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
-import org.protege.editor.owl.OWLEditorKit;
-
-import javax.swing.*;
-import java.awt.*;
 /*
  * Copyright (C) 2008, University of Manchester
  *
  *
  */
+import java.awt.BorderLayout;
+
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+
+import org.protege.editor.owl.OWLEditorKit;
 
 
 /**

@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.renderer.styledstring;
 
+import java.awt.Color;
+
 import org.protege.editor.owl.ui.renderer.OWLAnnotationCellRenderer2;
 import org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntax;
-
-import java.awt.*;
 
 /**
  * Author: Matthew Horridge<br>

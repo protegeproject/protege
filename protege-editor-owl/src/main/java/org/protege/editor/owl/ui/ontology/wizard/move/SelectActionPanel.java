@@ -1,17 +1,21 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
-import org.protege.editor.core.ui.wizard.WizardPanel;
-import org.protege.editor.owl.OWLEditorKit;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 /*
  * Copyright (C) 2008, University of Manchester
  *
  *
  */
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JComponent;
+import javax.swing.JRadioButton;
+
+import org.protege.editor.core.ui.wizard.WizardPanel;
+import org.protege.editor.owl.OWLEditorKit;
 
 
 /**

@@ -1,13 +1,22 @@
 package org.protege.editor.owl.ui.action;
 
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLObjectDuplicator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDataMinCardinality;
+import org.semanticweb.owlapi.model.OWLDataSomeValuesFrom;
+import org.semanticweb.owlapi.model.OWLObjectMinCardinality;
+import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.RemoveAxiom;
+import org.semanticweb.owlapi.util.OWLObjectDuplicator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Author: Nick Drummond<br>

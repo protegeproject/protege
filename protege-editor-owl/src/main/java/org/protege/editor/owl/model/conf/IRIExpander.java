@@ -1,14 +1,15 @@
 package org.protege.editor.owl.model.conf;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import javax.annotation.Nullable;
+
 import org.protege.editor.owl.model.util.OboUtilities;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 import org.semanticweb.owlapi.vocab.SKOSVocabulary;
-
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 /**
  * Matthew Horridge

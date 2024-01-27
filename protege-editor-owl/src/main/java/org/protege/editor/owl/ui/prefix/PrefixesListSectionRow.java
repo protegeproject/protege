@@ -1,16 +1,21 @@
 package org.protege.editor.owl.ui.prefix;
 
-import com.google.common.collect.ImmutableSet;
-import org.protege.editor.core.ui.list.MListItem;
-import org.semanticweb.owlapi.vocab.Namespaces;
-
-import javax.annotation.Nonnull;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.collect.ImmutableSet.of;
+import static org.semanticweb.owlapi.vocab.Namespaces.OWL;
+import static org.semanticweb.owlapi.vocab.Namespaces.RDF;
+import static org.semanticweb.owlapi.vocab.Namespaces.RDFS;
+import static org.semanticweb.owlapi.vocab.Namespaces.XML;
+import static org.semanticweb.owlapi.vocab.Namespaces.XSD;
 
 import java.util.function.Consumer;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.collect.ImmutableSet.of;
-import static org.semanticweb.owlapi.vocab.Namespaces.*;
+import javax.annotation.Nonnull;
+
+import org.protege.editor.core.ui.list.MListItem;
+import org.semanticweb.owlapi.vocab.Namespaces;
+
+import com.google.common.collect.ImmutableSet;
 
 /**
  * Matthew Horridge

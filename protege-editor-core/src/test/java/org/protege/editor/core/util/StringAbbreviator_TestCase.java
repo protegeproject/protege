@@ -1,10 +1,10 @@
 package org.protege.editor.core.util;
 
-import org.junit.Test;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.protege.editor.core.util.StringAbbreviator.ELLIPSIS;
+
+import org.junit.Test;
 
 /**
  * Matthew Horridge

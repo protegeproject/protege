@@ -1,12 +1,12 @@
 package org.protege.editor.owl.model.entity;
 
+import java.awt.Desktop;
+import java.io.IOException;
+
 import org.protege.editor.owl.ui.action.SelectedOWLEntityAction;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.awt.*;
-import java.io.IOException;
 
 /**
  * Matthew Horridge

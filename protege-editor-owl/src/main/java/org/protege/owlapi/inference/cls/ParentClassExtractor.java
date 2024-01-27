@@ -1,12 +1,12 @@
 package org.protege.owlapi.inference.cls;
 
+import java.util.Set;
+
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
-
-import java.util.Set;
 
 
 public class ParentClassExtractor extends OWLAxiomVisitorAdapter {

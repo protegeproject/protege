@@ -1,5 +1,13 @@
 package org.protege.editor.owl.ui.frame.datatype;
 
+import java.util.Arrays;
+import java.util.List;
+/*
+* Copyright (C) 2007, University of Manchester
+*
+*
+*/
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLDataRangeEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
@@ -9,14 +17,6 @@ import org.semanticweb.owlapi.model.OWLDataRange;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLDatatypeDefinitionAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import java.util.Arrays;
-import java.util.List;
-/*
-* Copyright (C) 2007, University of Manchester
-*
-*
-*/
 
 /**
  * Author: drummond<br>

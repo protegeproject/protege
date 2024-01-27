@@ -1,8 +1,10 @@
 package org.protege.editor.owl.ui;
 
-import javax.swing.*;
 import java.net.URL;
 import java.util.HashMap;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 
 /**

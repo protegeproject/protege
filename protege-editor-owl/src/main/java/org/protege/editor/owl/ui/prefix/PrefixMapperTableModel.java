@@ -1,16 +1,21 @@
 package org.protege.editor.owl.ui.prefix;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Comparator.naturalOrder;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+import javax.swing.table.AbstractTableModel;
+
 import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
-import javax.swing.table.AbstractTableModel;
-import java.util.*;
-
-import static com.google.common.base.Preconditions.checkNotNull;
-import static java.util.Comparator.naturalOrder;
 
 
 /**

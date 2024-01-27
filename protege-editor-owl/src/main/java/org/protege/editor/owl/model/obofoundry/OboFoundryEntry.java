@@ -1,11 +1,11 @@
 package org.protege.editor.owl.model.obofoundry;
 
+import java.util.Comparator;
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.auto.value.AutoValue;
-
-import java.util.Comparator;
-import java.util.Objects;
 
 /**
  * Matthew Horridge

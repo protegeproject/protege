@@ -1,5 +1,13 @@
 package org.protege.editor.owl.ui.frame.annotationproperty;
 
+import java.util.Arrays;
+import java.util.List;
+/*
+* Copyright (C) 2007, University of Manchester
+*
+*
+*/
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLAnnotationPropertyDomainEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
@@ -8,14 +16,6 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLAnnotationPropertyDomainAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import java.util.Arrays;
-import java.util.List;
-/*
-* Copyright (C) 2007, University of Manchester
-*
-*
-*/
 
 /**
  * Author: drummond<br>

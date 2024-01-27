@@ -1,13 +1,14 @@
 package org.protege.editor.owl.ui.editor;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
-import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.swing.*;
-import java.util.Set;
+import javax.swing.JComponent;
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
 /**
  * Author: Matthew Horridge<br>

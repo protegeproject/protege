@@ -1,11 +1,14 @@
 package org.protege.editor.owl.model.hierarchy;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Predicate;
+
 import org.protege.editor.core.Disposable;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import java.util.*;
-import java.util.function.Predicate;
 
 
 /**

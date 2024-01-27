@@ -1,23 +1,25 @@
 package org.protege.editor.core.log;
 
 
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.PatternLayout;
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.AppenderBase;
-import ch.qos.logback.core.Context;
+import java.awt.Color;
+import java.awt.Font;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.swing.*;
+import javax.swing.JTextPane;
+import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
-import java.awt.*;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.PatternLayout;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.AppenderBase;
+import ch.qos.logback.core.Context;
 
 /**
  * Matthew Horridge

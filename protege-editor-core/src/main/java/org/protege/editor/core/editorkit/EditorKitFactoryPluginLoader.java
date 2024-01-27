@@ -1,11 +1,6 @@
 package org.protege.editor.core.editorkit;
 
 
-import org.eclipse.core.runtime.IExtension;
-import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.plugin.DefaultPluginExtensionMatcher;
-import org.protege.editor.core.plugin.PluginExtensionFilter;
-
 import java.util.HashSet;
 import java.util.Set;
 /*
@@ -13,6 +8,11 @@ import java.util.Set;
  *
  *
  */
+
+import org.eclipse.core.runtime.IExtension;
+import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.plugin.DefaultPluginExtensionMatcher;
+import org.protege.editor.core.plugin.PluginExtensionFilter;
 
 
 /**

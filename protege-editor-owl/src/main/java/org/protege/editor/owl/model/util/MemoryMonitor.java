@@ -1,9 +1,9 @@
 package org.protege.editor.owl.model.util;
 
-import javax.annotation.Nonnull;
-import javax.swing.*;
-
 import static com.google.common.base.Preconditions.checkNotNull;
+
+import javax.annotation.Nonnull;
+import javax.swing.SwingUtilities;
 
 /**
  * Matthew Horridge

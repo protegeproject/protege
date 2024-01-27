@@ -1,20 +1,28 @@
 package org.protege.editor.owl.ui.action;
 
-import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
-import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.ui.UIHelper;
-import org.semanticweb.owlapi.model.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static javax.swing.JOptionPane.NO_OPTION;
+import static javax.swing.JOptionPane.QUESTION_MESSAGE;
+import static javax.swing.JOptionPane.YES_NO_CANCEL_OPTION;
+import static javax.swing.JOptionPane.YES_OPTION;
+import static org.semanticweb.owlapi.model.AxiomType.DISJOINT_CLASSES;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import static javax.swing.JOptionPane.*;
-import static org.semanticweb.owlapi.model.AxiomType.DISJOINT_CLASSES;
+import org.protege.editor.owl.model.event.EventType;
+import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.ui.UIHelper;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.RemoveAxiom;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**

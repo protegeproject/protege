@@ -1,12 +1,12 @@
 package org.protege.editor.owl.model;
 
-import org.semanticweb.owlapi.formats.RioTurtleDocumentFormat;
-import org.semanticweb.owlapi.formats.TurtleDocumentFormat;
-import org.semanticweb.owlapi.model.OWLDocumentFormat;
+import static org.semanticweb.owlapi.util.OWLAPIPreconditions.checkNotNull;
 
 import javax.annotation.Nonnull;
 
-import static org.semanticweb.owlapi.util.OWLAPIPreconditions.checkNotNull;
+import org.semanticweb.owlapi.formats.RioTurtleDocumentFormat;
+import org.semanticweb.owlapi.formats.TurtleDocumentFormat;
+import org.semanticweb.owlapi.model.OWLDocumentFormat;
 
 /**
  * Matthew Horridge

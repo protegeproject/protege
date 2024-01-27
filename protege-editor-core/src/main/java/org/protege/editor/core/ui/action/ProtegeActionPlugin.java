@@ -1,9 +1,9 @@
 package org.protege.editor.core.ui.action;
 
+import javax.swing.Icon;
+
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.plugin.ProtegePlugin;
-
-import javax.swing.*;
 
 
 /**

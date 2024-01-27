@@ -1,15 +1,15 @@
 package org.protege.editor.owl.ui.ontology.wizard.move.common;
 
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLOntology;
-
 import java.util.Set;
 /*
  * Copyright (C) 2008, University of Manchester
  *
  *
  */
+
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 
 /**

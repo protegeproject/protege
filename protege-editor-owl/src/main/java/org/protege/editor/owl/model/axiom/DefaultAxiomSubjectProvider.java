@@ -1,8 +1,9 @@
 package org.protege.editor.owl.model.axiom;
 
-import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLObject;
+
+import com.google.common.base.Optional;
 
 /**
  * @author Matthew Horridge, Stanford University, Bio-Medical Informatics Research Group, Date: 27/05/2014

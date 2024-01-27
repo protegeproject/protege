@@ -1,9 +1,11 @@
 package org.protege.editor.owl.ui.prefix;
 
-import org.protege.editor.owl.ui.OWLIcons;
-
-import javax.swing.*;
 import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+
+import org.protege.editor.owl.ui.OWLIcons;
 
 
 /**

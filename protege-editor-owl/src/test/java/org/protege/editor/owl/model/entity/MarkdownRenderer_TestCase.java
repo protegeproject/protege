@@ -1,6 +1,9 @@
 package org.protege.editor.owl.model.entity;
 
-import org.eclipse.jgit.annotations.NonNull;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,10 +12,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.when;
 
 /**
  * Matthew Horridge

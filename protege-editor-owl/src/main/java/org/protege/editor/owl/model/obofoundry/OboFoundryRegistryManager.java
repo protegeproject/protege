@@ -1,11 +1,11 @@
 package org.protege.editor.owl.model.obofoundry;
 
-import com.google.common.collect.ImmutableList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.IOException;
 
 import javax.annotation.Nonnull;
-import java.io.IOException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Matthew Horridge

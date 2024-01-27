@@ -1,13 +1,18 @@
 package org.protege.editor.core.update;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+
 import org.protege.editor.core.ui.about.PluginInfoTable;
 import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
 import org.protege.editor.core.ui.preferences.PreferencesPanel;
-
-import javax.swing.*;
-import java.awt.*;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 
 /**

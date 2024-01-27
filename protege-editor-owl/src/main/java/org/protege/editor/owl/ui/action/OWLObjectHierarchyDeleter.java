@@ -1,6 +1,19 @@
 package org.protege.editor.owl.ui.action;
 
-import com.google.common.base.Stopwatch;
+import java.awt.Dimension;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+
 import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
@@ -12,12 +25,7 @@ import org.semanticweb.owlapi.util.OWLEntitySetProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
+import com.google.common.base.Stopwatch;
 
 
 /**

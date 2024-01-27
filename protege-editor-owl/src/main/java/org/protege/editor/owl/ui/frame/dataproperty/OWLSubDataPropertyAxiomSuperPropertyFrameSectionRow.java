@@ -1,5 +1,8 @@
 package org.protege.editor.owl.ui.frame.dataproperty;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLDataPropertyEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
@@ -9,9 +12,6 @@ import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLSubDataPropertyOfAxiom;
-
-import java.util.Arrays;
-import java.util.List;
 
 
 /**

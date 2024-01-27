@@ -1,23 +1,7 @@
 package org.protege.editor.owl.ui.ontology.wizard.move.common;
 
-import org.protege.editor.core.ui.list.RemovableObjectList;
-import org.protege.editor.core.ui.util.CheckList;
-import org.protege.editor.core.ui.util.ComponentFactory;
-import org.protege.editor.core.ui.util.FormLabel;
-import org.protege.editor.owl.ui.list.OWLObjectList;
-import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
-import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLOntology;
-
-import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -29,6 +13,21 @@ import java.util.TreeSet;
  *
  *
  */
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+
+import org.protege.editor.core.ui.list.RemovableObjectList;
+import org.protege.editor.core.ui.util.CheckList;
+import org.protege.editor.core.ui.util.FormLabel;
+import org.protege.editor.owl.ui.list.OWLObjectList;
+import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
+import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 
 /**

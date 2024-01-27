@@ -1,15 +1,19 @@
 package org.protege.editor.core.ui.util;
 
 
-import org.eclipse.core.runtime.IExtension;
-
-import javax.swing.*;
-import java.awt.*;
 /*
  * Copyright (C) 2007, University of Manchester
  *
  *
  */
+import java.awt.BorderLayout;
+import java.awt.Color;
+
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import org.eclipse.core.runtime.IExtension;
 
 
 /**

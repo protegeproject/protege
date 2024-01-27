@@ -1,14 +1,15 @@
 package org.protege.editor.owl.ui.action;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.JOptionPane;
+
 import org.protege.editor.owl.model.OntologyVisibilityManager;
 import org.protege.editor.owl.model.OntologyVisibilityManagerImpl;
 import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;
 import org.protege.editor.owl.model.selection.ontologies.VisibilityManagerSelectionStrategy;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.selector.OWLOntologySelectorPanel;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
 
 /**
  * Author: drummond<br>

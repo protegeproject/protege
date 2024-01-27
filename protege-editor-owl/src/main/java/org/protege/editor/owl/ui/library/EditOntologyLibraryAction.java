@@ -1,19 +1,15 @@
 package org.protege.editor.owl.ui.library;
 
-import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.ProtegeManager;
-import org.protege.editor.core.editorkit.EditorKitManager;
-import org.protege.editor.core.ui.util.UIUtil;
-import org.protege.editor.core.ui.workspace.WorkspaceFrame;
-import org.protege.editor.core.ui.workspace.WorkspaceManager;
-import org.protege.editor.owl.model.OWLWorkspace;
-import org.protege.editor.owl.ui.action.ProtegeOWLAction;
-import org.slf4j.LoggerFactory;
-
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
+
+import org.protege.editor.core.ProtegeManager;
+import org.protege.editor.core.ui.util.UIUtil;
+import org.protege.editor.core.ui.workspace.WorkspaceFrame;
+import org.protege.editor.owl.ui.action.ProtegeOWLAction;
+import org.slf4j.LoggerFactory;
 
 
 /**

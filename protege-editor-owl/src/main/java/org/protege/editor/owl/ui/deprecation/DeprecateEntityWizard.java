@@ -1,14 +1,15 @@
 package org.protege.editor.owl.ui.deprecation;
 
+import java.awt.Frame;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.deprecation.DeprecationProfile;
 import org.protege.editor.owl.model.util.OboUtilities;
 import org.semanticweb.owlapi.model.OWLEntity;
-
-import javax.annotation.Nonnull;
-import java.awt.*;
 
 /**
  * Matthew Horridge

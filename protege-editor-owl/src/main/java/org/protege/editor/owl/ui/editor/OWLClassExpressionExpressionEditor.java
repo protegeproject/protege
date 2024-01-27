@@ -1,17 +1,8 @@
 package org.protege.editor.owl.ui.editor;
 
-import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.cache.OWLExpressionUserCache;
-import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
-import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
-import org.semanticweb.owlapi.model.OWLClassExpression;
-import org.semanticweb.owlapi.model.OWLException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Desktop;
+import java.awt.FlowLayout;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
@@ -21,6 +12,21 @@ import java.util.Set;
 *
 *
 */
+
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.cache.OWLExpressionUserCache;
+import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditor;
+import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Author: drummond<br>

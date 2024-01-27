@@ -1,14 +1,16 @@
 package org.protege.editor.core.ui.workspace;
 
-import org.protege.editor.core.ProtegeManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
+
+import org.protege.editor.core.ProtegeManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**

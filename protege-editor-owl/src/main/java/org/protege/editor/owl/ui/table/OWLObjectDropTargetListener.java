@@ -1,24 +1,27 @@
 package org.protege.editor.owl.ui.table;
 
-import org.protege.editor.owl.ui.transfer.OWLObjectDataFlavor;
-import org.protege.editor.owl.ui.transfer.OWLObjectDropTarget;
-import org.protege.editor.owl.ui.tree.OWLObjectTree;
-import org.protege.editor.owl.ui.tree.OWLTreePreferences;
-import org.semanticweb.owlapi.model.OWLObject;
-import org.semanticweb.owlapi.util.OWLObjectDuplicator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Cursor;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.dnd.*;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.swing.JComponent;
+
+import org.protege.editor.owl.ui.transfer.OWLObjectDataFlavor;
+import org.protege.editor.owl.ui.transfer.OWLObjectDropTarget;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.util.OWLObjectDuplicator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**

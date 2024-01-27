@@ -1,16 +1,16 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.ontology.wizard.AbstractSelectOntologiesPage;
-import org.semanticweb.owlapi.model.OWLOntology;
-
-import java.awt.*;
+import java.awt.Dimension;
 import java.util.Set;
 /*
  * Copyright (C) 2008, University of Manchester
  *
  *
  */
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.ontology.wizard.AbstractSelectOntologiesPage;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 
 /**

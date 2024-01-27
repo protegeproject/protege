@@ -1,12 +1,12 @@
 package org.protege.editor.owl.ui.view.cls;
 
+import java.util.Optional;
+
 import org.protege.editor.owl.model.hierarchy.AbstractSuperClassHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.AssertedSuperClassHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.cls.InferredSuperClassHierarchyProvider;
 import org.semanticweb.owlapi.model.OWLClass;
-
-import java.util.Optional;
 
 
 /**

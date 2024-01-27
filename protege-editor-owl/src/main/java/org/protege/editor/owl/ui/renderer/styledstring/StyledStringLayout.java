@@ -1,12 +1,12 @@
 package org.protege.editor.owl.ui.renderer.styledstring;
 
-import com.google.common.collect.ImmutableList;
-
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * Author: Matthew Horridge<br>

@@ -1,11 +1,11 @@
 package org.protege.editor.owl.model.entity;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import org.eclipse.jgit.annotations.NonNull;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.renderer.RenderingEscapeUtils;
 import org.semanticweb.owlapi.model.OWLEntity;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Matthew Horridge

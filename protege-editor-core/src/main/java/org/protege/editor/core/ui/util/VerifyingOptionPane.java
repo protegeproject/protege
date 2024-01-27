@@ -1,15 +1,19 @@
 package org.protege.editor.core.ui.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
-import java.awt.*;
 /*
 * Copyright (C) 2007, University of Manchester
 *
 *
 */
+import java.awt.Component;
+
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Author: drummond<br>

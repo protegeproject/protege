@@ -1,5 +1,16 @@
 package org.protege.editor.owl.ui.annotation;
 
+import java.awt.BorderLayout;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Collections;
+import java.util.Optional;
+
+import javax.swing.JCheckBox;
+import javax.swing.JRadioButton;
+
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
 import org.protege.editor.core.ui.util.AugmentedJTextField;
@@ -17,26 +28,13 @@ import org.protege.editor.owl.model.util.TimestampFormatter;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLAutoCompleter;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
-import org.protege.editor.owl.ui.find.OWLEntityFindPanel;
 import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
-import org.protege.editor.owl.ui.selector.OWLAnnotationPropertySelectorPanel;
-import org.protege.editor.owl.ui.view.Findable;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
-import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.vocab.DublinCoreVocabulary;
 import org.semanticweb.owlapi.vocab.Namespaces;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
-import java.util.List;
 
 /**
  * Matthew Horridge

@@ -1,13 +1,19 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
-import org.protege.editor.core.ui.wizard.Wizard;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.ontology.imports.wizard.page.*;
-
-import java.awt.*;
+import java.awt.Frame;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.protege.editor.core.ui.wizard.Wizard;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.ontology.imports.wizard.page.AnticipateOntologyIdPage;
+import org.protege.editor.owl.ui.ontology.imports.wizard.page.ImportConfirmationPage;
+import org.protege.editor.owl.ui.ontology.imports.wizard.page.ImportTypePage;
+import org.protege.editor.owl.ui.ontology.imports.wizard.page.LoadedOntologyPage;
+import org.protege.editor.owl.ui.ontology.imports.wizard.page.LocalFilePage;
+import org.protege.editor.owl.ui.ontology.imports.wizard.page.SelectImportLocationPage;
+import org.protege.editor.owl.ui.ontology.imports.wizard.page.URLPage;
 
 
 /**

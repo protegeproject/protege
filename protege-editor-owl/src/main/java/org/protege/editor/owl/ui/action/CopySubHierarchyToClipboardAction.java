@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.action;
 
-import org.protege.editor.owl.ui.view.HasCopySubHierarchyToClipboard;
-
 import java.awt.event.ActionEvent;
+
+import org.protege.editor.owl.ui.view.HasCopySubHierarchyToClipboard;
 
 /**
  * Matthew Horridge

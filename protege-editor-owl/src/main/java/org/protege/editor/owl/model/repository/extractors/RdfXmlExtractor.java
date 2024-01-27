@@ -1,6 +1,8 @@
 package org.protege.editor.owl.model.repository.extractors;
 
-import com.google.common.base.Optional;
+import java.io.InputStream;
+import java.net.URI;
+
 import org.protege.editor.owl.model.io.IOUtils;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.rdf.rdfxml.parser.RDFParser;
@@ -8,8 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 
-import java.io.InputStream;
-import java.net.URI;
+import com.google.common.base.Optional;
 
 public class RdfXmlExtractor implements OntologyIdExtractor {
 

@@ -1,8 +1,9 @@
 package org.protege.editor.core.ui.tree;
 
+import java.awt.event.MouseEvent;
+
 import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.tree.TreePath;
-import java.awt.event.MouseEvent;
 
 
 /**

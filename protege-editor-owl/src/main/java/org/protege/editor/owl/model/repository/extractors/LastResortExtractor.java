@@ -1,6 +1,7 @@
 package org.protege.editor.owl.model.repository.extractors;
 
-import com.google.common.base.Optional;
+import java.net.URI;
+
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -9,7 +10,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.URI;
+import com.google.common.base.Optional;
 
 public class LastResortExtractor implements OntologyIdExtractor {
 

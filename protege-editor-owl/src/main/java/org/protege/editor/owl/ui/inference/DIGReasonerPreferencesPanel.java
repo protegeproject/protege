@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.inference;
 
-import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
+import javax.swing.JTextField;
 
-import javax.swing.*;
+import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
 
 
 /**

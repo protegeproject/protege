@@ -1,12 +1,14 @@
 package org.protege.editor.core.ui.action.start;
 
 
+import javax.swing.AbstractAction;
+import javax.swing.Icon;
+import javax.swing.JFrame;
+
 import org.eclipse.core.runtime.IExtension;
 import org.protege.editor.core.plugin.AbstractProtegePlugin;
 import org.protege.editor.core.plugin.PluginUtilities;
 import org.protege.editor.core.ui.action.ProtegeActionPluginJPFImpl;
-
-import javax.swing.*;
 
 
 public class AltStartupActionPlugin extends AbstractProtegePlugin<AltStartupAction> implements Comparable<AltStartupActionPlugin>{

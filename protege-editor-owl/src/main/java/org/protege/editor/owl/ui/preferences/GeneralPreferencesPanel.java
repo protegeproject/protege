@@ -1,5 +1,16 @@
 package org.protege.editor.owl.ui.preferences;
 
+import java.awt.BorderLayout;
+import java.util.Collection;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JRadioButton;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
@@ -12,10 +23,6 @@ import org.protege.editor.owl.model.search.SearchManagerPlugin;
 import org.protege.editor.owl.model.search.SearchManagerSelector;
 import org.protege.editor.owl.ui.clsdescriptioneditor.ExpressionEditorPreferences;
 import org.protege.editor.owl.ui.tree.OWLTreePreferences;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.Collection;
 
 
 /**

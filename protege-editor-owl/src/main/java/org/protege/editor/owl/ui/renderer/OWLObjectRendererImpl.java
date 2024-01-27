@@ -1,20 +1,32 @@
 package org.protege.editor.owl.ui.renderer;
 
-import com.google.common.base.Optional;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxObjectRenderer;
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
-import org.semanticweb.owlapi.util.ShortFormProvider;
-import org.semanticweb.owlapi.vocab.SWRLBuiltInsVocabulary;
+import static org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntax.SUB_PROPERTY_OF;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Iterator;
 
-import static org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntax.SUB_PROPERTY_OF;
+import javax.annotation.Nonnull;
+
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxObjectRenderer;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLPropertyExpression;
+import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
+import org.semanticweb.owlapi.model.OWLSubDataPropertyOfAxiom;
+import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
+import org.semanticweb.owlapi.model.SWRLBuiltInAtom;
+import org.semanticweb.owlapi.model.SWRLDArgument;
+import org.semanticweb.owlapi.model.SWRLVariable;
+import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
+import org.semanticweb.owlapi.util.ShortFormProvider;
+import org.semanticweb.owlapi.vocab.SWRLBuiltInsVocabulary;
+
+import com.google.common.base.Optional;
 
 
 /**

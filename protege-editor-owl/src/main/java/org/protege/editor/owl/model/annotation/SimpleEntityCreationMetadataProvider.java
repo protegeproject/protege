@@ -1,10 +1,15 @@
 package org.protege.editor.owl.model.annotation;
 
-import org.semanticweb.owlapi.model.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 
 /**
  * Matthew Horridge

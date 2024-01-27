@@ -1,13 +1,13 @@
 
 package org.protege.osgi.framework;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 
 @RunWith(org.mockito.runners.MockitoJUnitRunner.class)
 public class SymbolicName_TestCase {

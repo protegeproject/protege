@@ -1,7 +1,10 @@
 package org.protege.editor.owl.model.conf.valueset;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
+
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
 
 /**
  * Matthew Horridge

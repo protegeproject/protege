@@ -1,8 +1,8 @@
 package org.protege.editor.core.ui.action;
 
-import org.protege.editor.core.ProtegeManager;
-
 import java.awt.event.ActionEvent;
+
+import org.protege.editor.core.ProtegeManager;
 
 
 /**

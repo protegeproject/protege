@@ -1,17 +1,19 @@
 package org.protege.editor.owl.ui.ontology.wizard.move.byprofile;
 
-import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
-import org.semanticweb.owlapi.profiles.OWL2DLProfile;
-import org.semanticweb.owlapi.profiles.OWL2ELProfile;
-import org.semanticweb.owlapi.profiles.OWL2Profile;
-import org.semanticweb.owlapi.profiles.OWLProfile;
-
-import javax.swing.*;
 /*
 * Copyright (C) 2007, University of Manchester
 *
 *
 */
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JRadioButton;
+
+import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
+import org.semanticweb.owlapi.profiles.OWL2DLProfile;
+import org.semanticweb.owlapi.profiles.OWL2ELProfile;
+import org.semanticweb.owlapi.profiles.OWL2Profile;
+import org.semanticweb.owlapi.profiles.OWLProfile;
 
 /**
  * Author: drummond<br>

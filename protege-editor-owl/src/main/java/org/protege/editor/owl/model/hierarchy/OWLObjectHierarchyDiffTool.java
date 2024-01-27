@@ -1,9 +1,9 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import org.semanticweb.owlapi.model.OWLObject;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import org.semanticweb.owlapi.model.OWLObject;
 
 
 /**

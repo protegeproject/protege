@@ -1,15 +1,19 @@
 package org.protege.editor.owl.ui.framelist;
 
-import org.protege.editor.core.ui.list.MListButton;
-import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.ActionListener;
 /*
 * Copyright (C) 2007, University of Manchester
 *
 *
 */
+
+import org.protege.editor.core.ui.list.MListButton;
+import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 
 /**
  * Author: drummond<br>

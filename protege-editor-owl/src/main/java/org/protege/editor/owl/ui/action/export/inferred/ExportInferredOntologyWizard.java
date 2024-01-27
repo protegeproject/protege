@@ -1,5 +1,13 @@
 package org.protege.editor.owl.ui.action.export.inferred;
 
+import java.net.URI;
+import java.util.List;
+/*
+ * Copyright (C) 2007, University of Manchester
+ *
+ *
+ */
+
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.action.OntologyFormatPage;
@@ -9,14 +17,6 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDocumentFormat;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.util.InferredAxiomGenerator;
-
-import java.net.URI;
-import java.util.List;
-/*
- * Copyright (C) 2007, University of Manchester
- *
- *
- */
 
 
 /**

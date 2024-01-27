@@ -1,6 +1,14 @@
 package org.protege.editor.owl.model.history;
 
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.AddImport;
+import org.semanticweb.owlapi.model.AddOntologyAnnotation;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeVisitor;
+import org.semanticweb.owlapi.model.RemoveAxiom;
+import org.semanticweb.owlapi.model.RemoveImport;
+import org.semanticweb.owlapi.model.RemoveOntologyAnnotation;
+import org.semanticweb.owlapi.model.SetOntologyID;
 
 
 /**

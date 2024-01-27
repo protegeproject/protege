@@ -1,12 +1,13 @@
 package org.protege.editor.owl.ui.view;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.annotation.Nonnull;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.renderer.RenderingEscapeUtils;
 import org.semanticweb.owlapi.model.OWLEntity;
-
-import javax.annotation.Nonnull;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Matthew Horridge

@@ -1,16 +1,6 @@
 package org.protege.editor.owl.ui;
 
-import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
-import org.protege.editor.core.ui.util.JOptionPaneEx;
-import org.protege.editor.core.ui.util.VerifiedInputEditor;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.classexpression.anonymouscls.AnonymousDefinedClassManager;
-import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
-import org.semanticweb.owlapi.model.*;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +9,27 @@ import java.util.List;
 *
 *
 */
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.border.EmptyBorder;
+
+import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
+import org.protege.editor.core.ui.util.JOptionPaneEx;
+import org.protege.editor.core.ui.util.VerifiedInputEditor;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.classexpression.anonymouscls.AnonymousDefinedClassManager;
+import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 
 /**
  * Author: drummond<br>
