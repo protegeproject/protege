@@ -10,7 +10,7 @@ public class OrphanetLinkExtractor {
 
     public static final Pattern ORPHANET_ID_PATTERN = Pattern.compile("Orphanet:\\s*(\\d+)", Pattern.CASE_INSENSITIVE);
 
-    public static final String ORPHANET_URL_BASE = "https://www.orpha.net/consor/www/cgi-bin/OC_Exp.php?Expert=";
+    public static final String ORPHANET_URL_BASE = "https://www.orpha.net/consor/cgi-bin/OC_Exp.php?Expert=";
 
     public static final String replacementString = ORPHANET_URL_BASE + "$1";
 
