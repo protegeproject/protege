@@ -1,5 +1,30 @@
 package org.protege.editor.owl.ui.renderer;
 
+import static org.protege.editor.owl.ui.renderer.InlineAnnotationRendering.RENDER_COMPOUND_ANNOTATIONS_INLINE;
+import static org.protege.editor.owl.ui.renderer.InlineDatatypeRendering.RENDER_DATATYPE_INLINE;
+
+import java.awt.Color;
+import java.awt.Insets;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JList;
+import javax.swing.JTable;
+import javax.swing.JViewport;
+import javax.swing.SwingUtilities;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.entity.AnnotationPropertyComparator;
@@ -7,22 +32,28 @@ import org.protege.editor.owl.model.identifiers.IdentifiersDotOrgLinkExtractor;
 import org.protege.editor.owl.model.obofoundry.OboFoundryLinkExtractor;
 import org.protege.editor.owl.model.util.LiteralChecker;
 import org.protege.editor.owl.ui.list.AbstractAnnotationsList;
-import org.protege.editor.owl.ui.renderer.layout.*;
-import org.semanticweb.owlapi.model.*;
+import org.protege.editor.owl.ui.renderer.layout.HTTPLink;
+import org.protege.editor.owl.ui.renderer.layout.IconBox;
+import org.protege.editor.owl.ui.renderer.layout.Link;
+import org.protege.editor.owl.ui.renderer.layout.LinkSpan;
+import org.protege.editor.owl.ui.renderer.layout.OWLEntityLink;
+import org.protege.editor.owl.ui.renderer.layout.Page;
+import org.protege.editor.owl.ui.renderer.layout.PageCellRenderer;
+import org.protege.editor.owl.ui.renderer.layout.Paragraph;
+import org.protege.editor.owl.ui.renderer.layout.Span;
+import org.semanticweb.owlapi.model.HasAnnotations;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLAnnotationValue;
+import org.semanticweb.owlapi.model.OWLAnnotationValueVisitorEx;
+import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.util.EscapeUtils;
-
-import javax.swing.*;
-import java.awt.*;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static org.protege.editor.owl.ui.renderer.InlineAnnotationRendering.RENDER_COMPOUND_ANNOTATIONS_INLINE;
-import static org.protege.editor.owl.ui.renderer.InlineDatatypeRendering.RENDER_DATATYPE_INLINE;
 
 /**
  * Author: Matthew Horridge<br>

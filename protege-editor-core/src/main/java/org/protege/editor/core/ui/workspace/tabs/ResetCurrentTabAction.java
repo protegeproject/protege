@@ -1,14 +1,16 @@
 package org.protege.editor.core.ui.workspace.tabs;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.JComponent;
+import javax.swing.JMenu;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+
 import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.util.Resettable;
 import org.protege.editor.core.ui.workspace.TabbedWorkspace;
 import org.protege.editor.core.ui.workspace.WorkspaceTab;
-
-import javax.swing.*;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
-import java.awt.event.ActionEvent;
 
 public class ResetCurrentTabAction extends ProtegeAction {
 	private static final long serialVersionUID = 6192614623601181816L;

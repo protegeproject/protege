@@ -1,17 +1,18 @@
 package org.protege.editor.owl.ui.lang;
 
-import org.protege.editor.owl.model.lang.LangCode;
-import org.protege.editor.owl.model.lang.LangCodeRegistry;
-import org.protege.editor.owl.ui.util.SuggestField;
-
-import javax.annotation.Nonnull;
-import javax.swing.*;
-import javax.swing.event.ChangeListener;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
+
+import javax.annotation.Nonnull;
+import javax.swing.JComponent;
+import javax.swing.event.ChangeListener;
+
+import org.protege.editor.owl.model.lang.LangCode;
+import org.protege.editor.owl.model.lang.LangCodeRegistry;
+import org.protege.editor.owl.ui.util.SuggestField;
 
 /**
  * Matthew Horridge

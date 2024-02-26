@@ -1,15 +1,5 @@
 package org.protege.editor.owl.ui.frame;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
-import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.ui.frame.cls.*;
-import org.protege.editor.owl.ui.frame.dataproperty.*;
-import org.protege.editor.owl.ui.frame.individual.*;
-import org.protege.editor.owl.ui.frame.objectproperty.*;
-import org.semanticweb.owlapi.model.*;
-
 import java.util.ArrayList;
 import java.util.List;
 /*
@@ -17,6 +7,44 @@ import java.util.List;
  *
  *
  */
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.event.EventType;
+import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
+import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.ui.frame.cls.OWLClassAssertionAxiomMembersSection;
+import org.protege.editor.owl.ui.frame.cls.OWLDisjointClassesAxiomFrameSection;
+import org.protege.editor.owl.ui.frame.cls.OWLDisjointUnionAxiomFrameSection;
+import org.protege.editor.owl.ui.frame.cls.OWLEquivalentClassesAxiomFrameSection;
+import org.protege.editor.owl.ui.frame.cls.OWLSubClassAxiomFrameSection;
+import org.protege.editor.owl.ui.frame.dataproperty.OWLDataPropertyDomainFrameSection;
+import org.protege.editor.owl.ui.frame.dataproperty.OWLDataPropertyRangeFrameSection;
+import org.protege.editor.owl.ui.frame.dataproperty.OWLDisjointDataPropertiesFrameSection;
+import org.protege.editor.owl.ui.frame.dataproperty.OWLEquivalentDataPropertiesFrameSection;
+import org.protege.editor.owl.ui.frame.dataproperty.OWLSubDataPropertyAxiomSuperPropertyFrameSection;
+import org.protege.editor.owl.ui.frame.individual.OWLClassAssertionAxiomTypeFrameSection;
+import org.protege.editor.owl.ui.frame.individual.OWLDataPropertyAssertionAxiomFrameSection;
+import org.protege.editor.owl.ui.frame.individual.OWLDifferentIndividualsAxiomFrameSection;
+import org.protege.editor.owl.ui.frame.individual.OWLNegativeDataPropertyAssertionFrameSection;
+import org.protege.editor.owl.ui.frame.individual.OWLNegativeObjectPropertyAssertionFrameSection;
+import org.protege.editor.owl.ui.frame.individual.OWLObjectPropertyAssertionAxiomFrameSection;
+import org.protege.editor.owl.ui.frame.individual.OWLSameIndividualsAxiomFrameSection;
+import org.protege.editor.owl.ui.frame.objectproperty.OWLDisjointObjectPropertiesFrameSection;
+import org.protege.editor.owl.ui.frame.objectproperty.OWLEquivalentObjectPropertiesAxiomFrameSection;
+import org.protege.editor.owl.ui.frame.objectproperty.OWLObjectPropertyDomainFrameSection;
+import org.protege.editor.owl.ui.frame.objectproperty.OWLObjectPropertyRangeFrameSection;
+import org.protege.editor.owl.ui.frame.objectproperty.OWLPropertyChainAxiomFrameSection;
+import org.protege.editor.owl.ui.frame.objectproperty.OWLSubObjectPropertyAxiomSuperPropertyFrameSection;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEntityVisitor;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 
 /**

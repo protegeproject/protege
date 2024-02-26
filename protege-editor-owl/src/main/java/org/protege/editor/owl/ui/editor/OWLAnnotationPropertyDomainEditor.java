@@ -1,12 +1,22 @@
 package org.protege.editor.owl.ui.editor;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owlapi.model.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 public class OWLAnnotationPropertyDomainEditor extends AbstractOWLObjectEditor<IRI> {
 	

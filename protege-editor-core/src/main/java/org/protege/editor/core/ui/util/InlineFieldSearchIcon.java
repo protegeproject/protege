@@ -1,7 +1,14 @@
 package org.protege.editor.core.ui.util;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Stroke;
+
+import javax.swing.Icon;
 
 /**
  * Matthew Horridge

@@ -1,6 +1,8 @@
 package org.protege.editor.owl.ui.merge;
 
-import com.google.common.collect.ImmutableSet;
+import java.util.List;
+import java.util.Optional;
+
 import org.protege.editor.owl.model.merge.MergeEntitiesChangeListGenerator;
 import org.protege.editor.owl.ui.action.SelectedOWLEntityAction;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -8,9 +10,7 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 
-import javax.swing.*;
-import java.util.List;
-import java.util.Optional;
+import com.google.common.collect.ImmutableSet;
 
 /**
  * Matthew Horridge

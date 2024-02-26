@@ -1,18 +1,20 @@
 package org.protege.editor.owl.ui.action.export.inferred;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.util.InferredAxiomGenerator;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.util.List;
 /*
  * Copyright (C) 2007, University of Manchester
  *
  *
  */
+
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.util.InferredAxiomGenerator;
 
 
 /**

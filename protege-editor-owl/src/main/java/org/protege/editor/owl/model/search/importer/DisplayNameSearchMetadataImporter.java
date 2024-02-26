@@ -1,9 +1,13 @@
 package org.protege.editor.owl.model.search.importer;
 
-import org.protege.editor.owl.model.search.*;
-import org.semanticweb.owlapi.model.OWLEntity;
-
 import java.util.Set;
+
+import org.protege.editor.owl.model.search.EntityBasedSearchMDImporter;
+import org.protege.editor.owl.model.search.SearchCategory;
+import org.protege.editor.owl.model.search.SearchMetadata;
+import org.protege.editor.owl.model.search.SearchMetadataDB;
+import org.protege.editor.owl.model.search.SearchMetadataImportContext;
+import org.semanticweb.owlapi.model.OWLEntity;
 
 /**
  * Author: Matthew Horridge<br>

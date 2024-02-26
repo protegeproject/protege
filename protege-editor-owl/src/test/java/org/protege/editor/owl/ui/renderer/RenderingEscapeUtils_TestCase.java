@@ -1,10 +1,9 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.hamcrest.Matchers;
-import org.junit.Test;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+
+import org.junit.Test;
 
 /**
  * Matthew Horridge

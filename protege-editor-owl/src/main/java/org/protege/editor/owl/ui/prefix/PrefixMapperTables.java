@@ -1,17 +1,19 @@
 package org.protege.editor.owl.ui.prefix;
 
+import java.awt.BorderLayout;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.protege.editor.owl.ui.renderer.prefix.PrefixBasedRenderer;
 import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import javax.swing.*;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import java.awt.*;
-import java.util.HashSet;
-import java.util.Set;
 
 public class PrefixMapperTables extends JPanel {
 	private static final long serialVersionUID = -7430862544150495635L;

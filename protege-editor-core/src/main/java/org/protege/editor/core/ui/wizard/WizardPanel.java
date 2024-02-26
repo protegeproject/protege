@@ -1,10 +1,10 @@
 package org.protege.editor.core.ui.wizard;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.swing.*;
-
-import static com.google.common.base.MoreObjects.toStringHelper;
+import javax.swing.JPanel;
 
 
 /**

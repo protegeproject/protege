@@ -1,11 +1,20 @@
 package org.protege.editor.owl.ui.util;
 
-import org.protege.editor.core.ui.util.Icons;
-import org.semanticweb.owlapi.model.IRI;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 
-import javax.swing.*;
-import java.awt.*;
-import java.io.File;
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+
+import org.protege.editor.core.ui.util.Icons;
 
 /**
  * Matthew Horridge

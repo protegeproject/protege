@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.renderer.context;
 
-import org.semanticweb.owlapi.model.OWLClass;
-
 import javax.annotation.Nonnull;
+
+import org.semanticweb.owlapi.model.OWLClass;
 
 /**
  * Matthew Horridge

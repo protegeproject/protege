@@ -1,9 +1,9 @@
 package org.protege.editor.owl.model.hierarchy;
 
-import org.semanticweb.owlapi.model.OWLClass;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import org.semanticweb.owlapi.model.OWLClass;
 
 public class CollectingHierarchyListener implements OWLObjectHierarchyProviderListener<OWLClass> {
     

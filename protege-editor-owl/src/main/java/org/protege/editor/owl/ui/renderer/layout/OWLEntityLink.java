@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
+import java.awt.Component;
+import java.awt.event.MouseEvent;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.model.OWLEntity;
-
-import java.awt.*;
-import java.awt.event.MouseEvent;
 
 /**
  * Author: Matthew Horridge<br>

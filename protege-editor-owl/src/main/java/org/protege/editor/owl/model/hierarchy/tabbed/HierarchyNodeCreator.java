@@ -1,21 +1,21 @@
 package org.protege.editor.owl.model.hierarchy.tabbed;
 
-import org.protege.editor.owl.model.entity.OWLEntityCreationException;
-import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
-import org.protege.editor.owl.model.entity.OWLEntityFactory;
-import org.protege.editor.owl.model.find.OWLEntityFinder;
-import org.semanticweb.owlapi.model.EntityType;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
+
+import org.protege.editor.owl.model.entity.OWLEntityCreationException;
+import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
+import org.protege.editor.owl.model.entity.OWLEntityFactory;
+import org.protege.editor.owl.model.find.OWLEntityFinder;
+import org.semanticweb.owlapi.model.EntityType;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 
 /**
  * Matthew Horridge

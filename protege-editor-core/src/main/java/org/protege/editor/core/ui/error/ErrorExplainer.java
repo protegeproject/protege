@@ -1,7 +1,5 @@
 package org.protege.editor.core.ui.error;
 
-import org.xml.sax.SAXParseException;
-
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +9,8 @@ import java.util.Set;
 *
 *
 */
+
+import org.xml.sax.SAXParseException;
 
 /**
  * Author: drummond<br>

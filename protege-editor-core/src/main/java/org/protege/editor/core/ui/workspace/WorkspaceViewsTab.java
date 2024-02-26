@@ -1,14 +1,15 @@
 package org.protege.editor.core.ui.workspace;
 
+import java.awt.BorderLayout;
+
+import javax.swing.JComponent;
+
 import org.protege.editor.core.ui.util.Resettable;
 import org.protege.editor.core.ui.view.View;
 import org.protege.editor.core.ui.view.ViewsPane;
 import org.protege.editor.core.ui.view.ViewsPaneMemento;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
-import java.awt.*;
 
 
 /**

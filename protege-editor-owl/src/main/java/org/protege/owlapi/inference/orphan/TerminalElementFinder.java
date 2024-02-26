@@ -1,12 +1,12 @@
 package org.protege.owlapi.inference.orphan;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class encapsulates a relation, <i>r: X &rarr; X</i>.  Its purpose is to calculate the set of terminal 

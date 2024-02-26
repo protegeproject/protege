@@ -1,23 +1,21 @@
 
 package org.protege.editor.owl.ui.renderer;
 
-import java.net.URI;
-import java.util.Optional;
-import java.util.regex.Pattern;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.protege.editor.owl.ui.renderer.layout.HTTPLink;
-import org.protege.editor.owl.ui.renderer.layout.Link;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
+
+import java.net.URI;
+import java.util.Optional;
+import java.util.regex.Pattern;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.protege.editor.owl.ui.renderer.layout.HTTPLink;
+import org.protege.editor.owl.ui.renderer.layout.Link;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RegExBasedLinkExtractor_TestCase {

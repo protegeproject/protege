@@ -1,9 +1,10 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.swing.Action;
 
 /**
  * Author: Matthew Horridge<br>

@@ -1,10 +1,11 @@
 package org.protege.editor.owl.model.entity;
 
-import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLOntology;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
-import java.util.Set;
+
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
  * Matthew Horridge

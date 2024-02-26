@@ -1,12 +1,12 @@
 package org.protege.editor.owl.model.parser;
 
-import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLLiteral;
-import org.semanticweb.owlapi.vocab.OWL2Datatype;
-
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.regex.Pattern;
+
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
 
 /**

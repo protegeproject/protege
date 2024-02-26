@@ -1,6 +1,15 @@
 package org.protege.editor.owl.model.io;
 
-import com.google.common.util.concurrent.*;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+
 import org.apache.commons.io.FileUtils;
 import org.protege.editor.owl.ui.util.ProgressDialog;
 import org.semanticweb.owlapi.model.IRI;
@@ -11,15 +20,9 @@ import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
 
 
 /**

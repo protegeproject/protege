@@ -1,7 +1,6 @@
 package org.protege.editor.core.update;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.Version;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -9,7 +8,8 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.Properties;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
 
 /**
  * Author: Matthew Horridge<br>

@@ -1,5 +1,9 @@
 package org.protege.editor.owl.ui.frame.cls;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLClassExpressionSetEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
@@ -9,10 +13,6 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDisjointUnionAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 public class OWLDisjointUnionAxiomFrameSectionRow extends AbstractOWLFrameSectionRow<OWLClass, OWLDisjointUnionAxiom, Set<OWLClassExpression>> {
 

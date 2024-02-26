@@ -1,11 +1,13 @@
 package org.protege.editor.core;
 
+import java.awt.Font;
+
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
+
 import org.protege.editor.core.platform.OSUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
-import java.awt.*;
 
 /**
  * Matthew Horridge

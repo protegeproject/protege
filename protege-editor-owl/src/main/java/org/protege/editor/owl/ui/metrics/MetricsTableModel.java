@@ -1,9 +1,5 @@
 package org.protege.editor.owl.ui.metrics;
 
-import org.semanticweb.owlapi.metrics.OWLMetric;
-import org.semanticweb.owlapi.metrics.OWLMetricManager;
-
-import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
 /*
@@ -11,6 +7,11 @@ import java.util.List;
  *
  *
  */
+
+import javax.swing.table.AbstractTableModel;
+
+import org.semanticweb.owlapi.metrics.OWLMetric;
+import org.semanticweb.owlapi.metrics.OWLMetricManager;
 
 
 /**

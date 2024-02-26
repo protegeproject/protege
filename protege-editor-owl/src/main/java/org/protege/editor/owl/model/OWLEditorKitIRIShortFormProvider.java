@@ -1,16 +1,16 @@
 package org.protege.editor.owl.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.util.IRIShortFormProvider;
 import org.semanticweb.owlapi.util.SimpleIRIShortFormProvider;
-
-import javax.annotation.Nonnull;
-
-import java.util.Set;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Matthew Horridge

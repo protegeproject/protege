@@ -1,13 +1,5 @@
 package org.protege.editor.owl.ui.ontology.wizard.move.bytype;
 
-import org.protege.editor.owl.ui.ontology.wizard.move.FilteredAxiomsModel;
-import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKit;
-import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
-import org.protege.editor.owl.ui.ontology.wizard.move.SelectAxiomsPanel;
-import org.semanticweb.owlapi.model.AxiomType;
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLOntology;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -17,6 +9,14 @@ import java.util.Set;
 *
 *
 */
+
+import org.protege.editor.owl.ui.ontology.wizard.move.FilteredAxiomsModel;
+import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKit;
+import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
+import org.protege.editor.owl.ui.ontology.wizard.move.SelectAxiomsPanel;
+import org.semanticweb.owlapi.model.AxiomType;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
  * Author: drummond<br>

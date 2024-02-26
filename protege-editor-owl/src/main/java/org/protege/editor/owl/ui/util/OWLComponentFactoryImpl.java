@@ -1,5 +1,11 @@
 package org.protege.editor.owl.ui.util;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.TreeMap;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLClassDescriptionEditor;
 import org.protege.editor.owl.ui.editor.OWLClassExpressionEditor;
@@ -12,8 +18,6 @@ import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.slf4j.LoggerFactory;
-
-import java.util.*;
 
 
 /*

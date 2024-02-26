@@ -1,12 +1,12 @@
 package org.protege.editor.core.ui.error;
 
-import org.protege.editor.core.log.LogStatusListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import org.protege.editor.core.log.LogStatusListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**

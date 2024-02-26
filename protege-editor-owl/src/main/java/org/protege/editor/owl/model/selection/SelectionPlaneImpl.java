@@ -1,14 +1,17 @@
 package org.protege.editor.owl.model.selection;
 
-import org.protege.editor.core.util.HandlerRegistration;
-import org.semanticweb.owlapi.model.OWLObject;
-
-import javax.annotation.Nonnull;
-import java.awt.event.HierarchyListener;
-import java.util.*;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.stream.Collectors.toList;
+
+import java.awt.event.HierarchyListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import javax.annotation.Nonnull;
+
+import org.protege.editor.core.util.HandlerRegistration;
+import org.semanticweb.owlapi.model.OWLObject;
 
 /**
  * Matthew Horridge

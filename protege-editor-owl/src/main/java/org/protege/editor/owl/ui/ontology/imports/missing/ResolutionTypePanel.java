@@ -1,11 +1,16 @@
 package org.protege.editor.owl.ui.ontology.imports.missing;
 
+import java.awt.BorderLayout;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JComponent;
+import javax.swing.JRadioButton;
+
 import org.protege.editor.core.ui.wizard.WizardPanel;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
-
-import javax.swing.*;
-import java.awt.*;
 
 
 /**

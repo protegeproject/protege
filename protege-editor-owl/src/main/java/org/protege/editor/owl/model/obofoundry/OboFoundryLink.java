@@ -1,17 +1,19 @@
 package org.protege.editor.owl.model.obofoundry;
 
-import org.protege.editor.owl.ui.renderer.layout.Link;
-import org.semanticweb.owlapi.model.IRI;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.Nonnull;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URI;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
+
+import org.protege.editor.owl.ui.renderer.layout.Link;
+import org.semanticweb.owlapi.model.IRI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Matthew Horridge

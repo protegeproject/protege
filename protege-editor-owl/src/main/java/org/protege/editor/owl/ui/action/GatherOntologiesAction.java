@@ -1,16 +1,21 @@
 package org.protege.editor.owl.ui.action;
 
-import org.protege.editor.owl.model.io.OntologySaver;
-import org.protege.editor.owl.ui.GatherOntologiesPanel;
-import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
-import org.semanticweb.owlapi.model.*;
-import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.URI;
 import java.util.UUID;
+
+import javax.swing.JOptionPane;
+
+import org.protege.editor.owl.model.io.OntologySaver;
+import org.protege.editor.owl.ui.GatherOntologiesPanel;
+import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDocumentFormat;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.slf4j.LoggerFactory;
 
 
 /**

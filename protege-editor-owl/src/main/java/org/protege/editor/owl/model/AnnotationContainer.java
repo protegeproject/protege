@@ -1,13 +1,13 @@
 package org.protege.editor.owl.model;
 
-import org.semanticweb.owlapi.model.OWLAnnotation;
-
 import java.util.Set;
 /*
 * Copyright (C) 2007, University of Manchester
 *
 *
 */
+
+import org.semanticweb.owlapi.model.OWLAnnotation;
 
 /**
  * Author: drummond<br>

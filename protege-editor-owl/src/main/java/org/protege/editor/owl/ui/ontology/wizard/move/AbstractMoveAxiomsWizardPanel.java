@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
+import javax.annotation.Nonnull;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
-
-import javax.annotation.Nonnull;
 
 
 /**

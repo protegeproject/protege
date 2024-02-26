@@ -1,19 +1,28 @@
 package org.protege.editor.owl.model.find;
 
-import org.protege.editor.owl.model.OWLModelManagerImpl;
-import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
-import org.protege.editor.owl.model.util.OWLDataTypeUtils;
-import org.protege.editor.owl.ui.renderer.RenderingEscapeUtils;
-import org.semanticweb.owlapi.model.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+
+import org.protege.editor.owl.model.OWLModelManagerImpl;
+import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
+import org.protege.editor.owl.model.util.OWLDataTypeUtils;
+import org.protege.editor.owl.ui.renderer.RenderingEscapeUtils;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**

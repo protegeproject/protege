@@ -1,9 +1,5 @@
 package org.protege.editor.core.ui;
 
-import org.protege.editor.core.OntologyRepository;
-import org.protege.editor.core.OntologyRepositoryEntry;
-
-import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -13,6 +9,11 @@ import java.util.List;
  *
  *
  */
+
+import javax.swing.table.AbstractTableModel;
+
+import org.protege.editor.core.OntologyRepository;
+import org.protege.editor.core.OntologyRepositoryEntry;
 
 
 /**

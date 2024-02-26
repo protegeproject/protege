@@ -1,12 +1,20 @@
 package org.protege.editor.core.ui.progress;
 
-import javax.swing.*;
-import java.awt.*;
 /*
 * Copyright (C) 2007, University of Manchester
 *
 *
 */
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 /**
  * Author: drummond<br>

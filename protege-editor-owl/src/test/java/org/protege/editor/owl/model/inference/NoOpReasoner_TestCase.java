@@ -1,19 +1,25 @@
 package org.protege.editor.owl.model.inference;
 
+import static junit.framework.TestCase.fail;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.when;
+
+import java.util.Collections;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.Node;
-
-import java.util.Collections;
-
-import static junit.framework.TestCase.fail;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.when;
 
 /**
  * Matthew Horridge
@@ -46,8 +52,8 @@ public class NoOpReasoner_TestCase {
 
     @Before
     public void setUp() {
-        when(ontology.getOWLOntologyManager()).thenReturn(manager);
-        when(manager.getOWLDataFactory()).thenReturn(dataFactory);
+        //when(ontology.getOWLOntologyManager()).thenReturn(manager);
+        //when(manager.getOWLDataFactory()).thenReturn(dataFactory);
         when(dataFactory.getOWLThing()).thenReturn(owlThing);
         when(dataFactory.getOWLNothing()).thenReturn(owlNothing);
         when(dataFactory.getOWLTopObjectProperty()).thenReturn(owlTopObjectProperty);
@@ -97,7 +103,7 @@ public class NoOpReasoner_TestCase {
     @Test
     public void shouldHandleNullManager_For_GetTopClassNode() {
         try {
-            when(ontology.getOWLOntologyManager()).thenReturn(null);
+            //when(ontology.getOWLOntologyManager()).thenReturn(null);
             reasoner.getTopClassNode();
         } catch (NullPointerException e) {
             fail("NullPointerException");
@@ -106,7 +112,7 @@ public class NoOpReasoner_TestCase {
     @Test
     public void shouldHandleNullManager_For_GetBottomClassNode() {
         try {
-            when(ontology.getOWLOntologyManager()).thenReturn(null);
+            //when(ontology.getOWLOntologyManager()).thenReturn(null);
             reasoner.getBottomClassNode();
         } catch (NullPointerException e) {
             fail("NullPointerException");
@@ -115,7 +121,7 @@ public class NoOpReasoner_TestCase {
     @Test
     public void shouldHandleNullManager_For_GetTopObjectPropertyNode() {
         try {
-            when(ontology.getOWLOntologyManager()).thenReturn(null);
+            //when(ontology.getOWLOntologyManager()).thenReturn(null);
             reasoner.getTopObjectPropertyNode();
         } catch (NullPointerException e) {
             fail("NullPointerException");
@@ -124,7 +130,7 @@ public class NoOpReasoner_TestCase {
     @Test
     public void shouldHandleNullManager_For_GetTopBottomObjectPropertyNode() {
         try {
-            when(ontology.getOWLOntologyManager()).thenReturn(null);
+            //when(ontology.getOWLOntologyManager()).thenReturn(null);
             reasoner.getBottomObjectPropertyNode();
         } catch (NullPointerException e) {
             fail("NullPointerException");
@@ -133,7 +139,7 @@ public class NoOpReasoner_TestCase {
     @Test
     public void shouldHandleNullManager_For_GetTopDataPropertyNode() {
         try {
-            when(ontology.getOWLOntologyManager()).thenReturn(null);
+            //when(ontology.getOWLOntologyManager()).thenReturn(null);
             reasoner.getTopDataPropertyNode();
         } catch (NullPointerException e) {
             fail("NullPointerException");
@@ -142,7 +148,7 @@ public class NoOpReasoner_TestCase {
     @Test
     public void shouldHandleNullManager_For_GetBottomObjectPropertyNode() {
         try {
-            when(ontology.getOWLOntologyManager()).thenReturn(null);
+            //when(ontology.getOWLOntologyManager()).thenReturn(null);
             reasoner.getBottomDataPropertyNode();
         } catch (NullPointerException e) {
             fail("NullPointerException");

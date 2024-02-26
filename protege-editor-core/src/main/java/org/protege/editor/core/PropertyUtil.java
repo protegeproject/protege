@@ -1,6 +1,6 @@
 package org.protege.editor.core;
 
-import java.awt.*;
+import java.awt.Color;
 
 
 /**

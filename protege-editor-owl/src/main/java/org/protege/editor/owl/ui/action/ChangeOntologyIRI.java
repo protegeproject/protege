@@ -1,12 +1,21 @@
 package org.protege.editor.owl.ui.action;
 
-import com.google.common.base.Optional;
-import org.protege.editor.owl.ui.ontology.OntologyIDJDialog;
-import org.semanticweb.owlapi.model.*;
-
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.protege.editor.owl.ui.ontology.OntologyIDJDialog;
+import org.semanticweb.owlapi.model.AddImport;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLImportsDeclaration;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.RemoveImport;
+import org.semanticweb.owlapi.model.SetOntologyID;
+
+import com.google.common.base.Optional;
 
 
 /**

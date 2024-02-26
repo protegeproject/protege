@@ -1,5 +1,18 @@
 package org.protege.editor.owl.ui.renderer.conf;
 
+import java.awt.BorderLayout;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JList;
+import javax.swing.JRadioButton;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
+
 import org.protege.editor.core.Fonts;
 import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
 import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
@@ -9,11 +22,6 @@ import org.protege.editor.owl.ui.renderer.plugin.RendererPlugin;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * Author: Matthew Horridge<br>

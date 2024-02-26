@@ -1,8 +1,9 @@
 package org.protege.editor.owl.model.hierarchy;
 
+import java.util.Set;
+
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.hierarchy.cls.InferredOWLClassHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.property.InferredObjectPropertyHierarchyProvider;
@@ -10,8 +11,6 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import java.util.Set;
 
 /**
  * Author: drummond<br>

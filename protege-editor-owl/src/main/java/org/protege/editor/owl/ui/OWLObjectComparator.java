@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui;
 
+import java.util.Comparator;
+
 import org.protege.editor.core.Disposable;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.OWLObject;
-
-import java.util.Comparator;
 
 
 /**

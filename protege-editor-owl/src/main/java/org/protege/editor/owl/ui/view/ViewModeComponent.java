@@ -1,14 +1,17 @@
 package org.protege.editor.owl.ui.view;
 
-import org.protege.editor.core.Disposable;
-import org.protege.editor.core.ui.util.ComponentFactory;
-import org.protege.editor.core.ui.view.ViewMode;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.CardLayout;
+import java.awt.Component;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+
+import org.protege.editor.core.Disposable;
+import org.protege.editor.core.ui.util.ComponentFactory;
+import org.protege.editor.core.ui.view.ViewMode;
 
 /**
  * Matthew Horridge

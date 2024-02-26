@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.protege.editor.owl.ui.action.ProtegeOWLRadioButtonAction;
-
 import java.awt.event.ActionEvent;
+
+import org.protege.editor.owl.ui.action.ProtegeOWLRadioButtonAction;
 
 /**
  * @author Matthew Horridge, Stanford University, Bio-Medical Informatics Research Group, Date: 28/05/2014

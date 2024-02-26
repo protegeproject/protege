@@ -1,13 +1,5 @@
 package org.protege.editor.owl.ui.ontology.wizard.move.byprofile;
 
-import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKit;
-import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.profiles.OWLProfile;
-import org.semanticweb.owlapi.profiles.OWLProfileReport;
-import org.semanticweb.owlapi.profiles.OWLProfileViolation;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -17,6 +9,14 @@ import java.util.Set;
 *
 *
 */
+
+import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKit;
+import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.profiles.OWLProfile;
+import org.semanticweb.owlapi.profiles.OWLProfileReport;
+import org.semanticweb.owlapi.profiles.OWLProfileViolation;
 
 /**
  * Author: drummond<br>

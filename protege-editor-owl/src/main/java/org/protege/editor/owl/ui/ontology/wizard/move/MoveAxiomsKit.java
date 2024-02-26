@@ -1,11 +1,5 @@
 package org.protege.editor.owl.ui.ontology.wizard.move;
 
-import org.protege.editor.core.plugin.ProtegePluginInstance;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLOntology;
-
 import java.util.List;
 import java.util.Set;
 /*
@@ -13,6 +7,12 @@ import java.util.Set;
  *
  *
  */
+
+import org.protege.editor.core.plugin.ProtegePluginInstance;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 
 /**

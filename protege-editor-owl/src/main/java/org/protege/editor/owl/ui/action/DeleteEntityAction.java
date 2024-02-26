@@ -1,13 +1,24 @@
 package org.protege.editor.owl.ui.action;
 
+import java.util.Collections;
+import java.util.Set;
+
+import javax.swing.JOptionPane;
+
 import org.protege.editor.core.ui.view.View;
 import org.protege.editor.owl.model.OWLWorkspace;
 import org.protege.editor.owl.model.util.OWLEntityDeleter;
-import org.semanticweb.owlapi.model.*;
-
-import javax.swing.*;
-import java.util.Collections;
-import java.util.Set;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEntityVisitor;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 
 /**

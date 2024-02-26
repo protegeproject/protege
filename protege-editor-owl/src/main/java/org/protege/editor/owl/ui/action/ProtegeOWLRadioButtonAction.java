@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.action;
 
-import javax.swing.*;
+import javax.swing.JMenuItem;
 
 /**
  * @author Matthew Horridge, Stanford University, Bio-Medical Informatics Research Group, Date: 27/05/2014

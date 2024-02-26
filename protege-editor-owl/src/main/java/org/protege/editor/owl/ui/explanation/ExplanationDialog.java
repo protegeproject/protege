@@ -1,15 +1,16 @@
 package org.protege.editor.owl.ui.explanation;
 
+import java.awt.BorderLayout;
+import java.util.Collection;
+
+import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.owl.model.inference.ReasonerPreferences;
 import org.semanticweb.owlapi.model.OWLAxiom;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Collection;
 
 public class ExplanationDialog extends JPanel {
 

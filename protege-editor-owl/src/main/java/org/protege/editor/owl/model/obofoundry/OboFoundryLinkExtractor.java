@@ -1,14 +1,14 @@
 package org.protege.editor.owl.model.obofoundry;
 
-import org.protege.editor.owl.model.util.OboUtilities;
-import org.protege.editor.owl.ui.renderer.LinkExtractor;
-import org.protege.editor.owl.ui.renderer.layout.HTTPLink;
-import org.protege.editor.owl.ui.renderer.layout.Link;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.Nonnull;
 import java.util.Optional;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
+
+import org.protege.editor.owl.model.util.OboUtilities;
+import org.protege.editor.owl.ui.renderer.LinkExtractor;
+import org.protege.editor.owl.ui.renderer.layout.Link;
 
 /**
  * Matthew Horridge

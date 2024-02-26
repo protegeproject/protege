@@ -1,9 +1,12 @@
 package org.protege.editor.owl.ui.lang;
 
-import org.protege.editor.owl.model.lang.LangCode;
+import java.awt.Component;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
+
+import org.protege.editor.owl.model.lang.LangCode;
 
 /**
  * Matthew Horridge

@@ -1,9 +1,9 @@
 package org.protege.osgi.framework;
 
-import org.osgi.framework.BundleException;
-
 import java.io.File;
 import java.io.IOException;
+
+import org.osgi.framework.BundleException;
 
 public class Server {
 

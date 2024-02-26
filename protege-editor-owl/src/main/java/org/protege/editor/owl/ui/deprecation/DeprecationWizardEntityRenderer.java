@@ -1,12 +1,12 @@
 package org.protege.editor.owl.ui.deprecation;
 
-import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.util.OboUtilities;
-import org.semanticweb.owlapi.model.OWLEntity;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import javax.annotation.Nonnull;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.util.OboUtilities;
+import org.semanticweb.owlapi.model.OWLEntity;
 
 /**
  * Matthew Horridge

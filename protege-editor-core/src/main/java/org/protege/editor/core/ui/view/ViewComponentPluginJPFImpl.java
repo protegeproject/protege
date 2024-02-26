@@ -1,17 +1,7 @@
 package org.protege.editor.core.ui.view;
 
 
-import org.eclipse.core.runtime.IExtension;
-import org.protege.editor.core.PropertyUtil;
-import org.protege.editor.core.plugin.ExtensionInstantiator;
-import org.protege.editor.core.plugin.JPFUtil;
-import org.protege.editor.core.plugin.PluginProperties;
-import org.protege.editor.core.ui.workspace.Workspace;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
-import java.awt.*;
+import java.awt.Color;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Optional;
@@ -21,6 +11,17 @@ import java.util.Set;
  *
  *
  */
+
+import javax.annotation.Nonnull;
+
+import org.eclipse.core.runtime.IExtension;
+import org.protege.editor.core.PropertyUtil;
+import org.protege.editor.core.plugin.ExtensionInstantiator;
+import org.protege.editor.core.plugin.JPFUtil;
+import org.protege.editor.core.plugin.PluginProperties;
+import org.protege.editor.core.ui.workspace.Workspace;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**

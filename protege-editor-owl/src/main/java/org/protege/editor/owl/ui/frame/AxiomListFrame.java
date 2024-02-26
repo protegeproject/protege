@@ -1,14 +1,14 @@
 package org.protege.editor.owl.ui.frame;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.owlapi.model.OWLAxiom;
-
 import java.util.Set;
 /*
  * Copyright (C) 2007, University of Manchester
  *
  *
  */
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.semanticweb.owlapi.model.OWLAxiom;
 
 
 /**

@@ -1,16 +1,22 @@
 package org.protege.editor.core.ui.about;
 
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Version;
 import org.protege.editor.core.plugin.PluginUtilities;
 import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
-import org.protege.editor.core.ui.util.Icons;
-
-import javax.swing.*;
-import javax.swing.border.Border;
-import java.awt.*;
 
 
 /**

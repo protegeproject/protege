@@ -1,9 +1,17 @@
 package org.protege.editor.owl.ui.util;
 
-import javax.swing.*;
-import java.awt.*;
-
 import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
+import javax.swing.BorderFactory;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  * Matthew Horridge

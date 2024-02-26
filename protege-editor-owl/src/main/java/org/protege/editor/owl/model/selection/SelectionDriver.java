@@ -1,9 +1,9 @@
 package org.protege.editor.owl.model.selection;
 
-import org.semanticweb.owlapi.model.OWLObject;
-
-import java.awt.*;
+import java.awt.Component;
 import java.util.Optional;
+
+import org.semanticweb.owlapi.model.OWLObject;
 
 /**
  * Matthew Horridge

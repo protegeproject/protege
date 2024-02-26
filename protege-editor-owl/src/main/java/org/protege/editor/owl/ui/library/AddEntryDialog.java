@@ -1,16 +1,20 @@
 package org.protege.editor.owl.ui.library;
 
+import java.awt.BorderLayout;
+import java.io.IOException;
+import java.util.List;
+
+import javax.annotation.Nullable;
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.model.library.CatalogEntryManager;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.Entry;
 import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nullable;
-import javax.swing.*;
-import java.awt.*;
-import java.io.IOException;
-import java.util.List;
 
 public class AddEntryDialog extends JPanel {
 

@@ -2,8 +2,13 @@ package org.protege.editor.owl.ui.renderer;
 
 
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
+import javax.swing.Icon;
 
 /**
  * Matthew Horridge

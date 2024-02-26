@@ -1,29 +1,33 @@
 package org.protege.editor.owl.ui.view;
 
-import org.protege.editor.core.ProtegeProperties;
-import org.protege.editor.core.ui.RefreshableComponent;
-import org.protege.editor.core.ui.view.ViewComponentPlugin;
-import org.protege.editor.core.util.HandlerRegistration;
-import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
-import org.protege.editor.owl.model.event.OWLModelManagerListener;
-import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
-import org.protege.editor.owl.model.selection.SelectionDriver;
-import org.protege.editor.owl.model.selection.SelectionPlane;
-import org.protege.editor.owl.ui.renderer.OWLEntityRendererListener;
-import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
-import org.protege.editor.owl.ui.renderer.RenderingEscapeUtils;
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.EscapeUtils;
+import static org.protege.editor.owl.ui.renderer.RenderingEscapeUtils.RenderingEscapeSetting.UNESCAPED_RENDERING;
 
-import javax.swing.*;
-import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.protege.editor.owl.ui.renderer.RenderingEscapeUtils.RenderingEscapeSetting.UNESCAPED_RENDERING;
+import javax.swing.SwingUtilities;
+
+import org.protege.editor.core.ProtegeProperties;
+import org.protege.editor.core.ui.RefreshableComponent;
+import org.protege.editor.core.ui.view.ViewComponentPlugin;
+import org.protege.editor.core.util.HandlerRegistration;
+import org.protege.editor.owl.model.event.EventType;
+import org.protege.editor.owl.model.event.OWLModelManagerListener;
+import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
+import org.protege.editor.owl.model.selection.SelectionDriver;
+import org.protege.editor.owl.model.selection.SelectionPlane;
+import org.protege.editor.owl.ui.renderer.OWLEntityRendererListener;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLEntityVisitor;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
 
 
 /**

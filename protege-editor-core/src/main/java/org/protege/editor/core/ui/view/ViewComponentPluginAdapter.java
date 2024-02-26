@@ -1,6 +1,6 @@
 package org.protege.editor.core.ui.view;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Collections;
 import java.util.Set;
 

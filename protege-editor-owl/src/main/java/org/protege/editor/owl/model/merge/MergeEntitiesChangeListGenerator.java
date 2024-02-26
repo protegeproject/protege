@@ -1,24 +1,34 @@
 package org.protege.editor.owl.model.merge;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import org.coode.owlapi.obo12.parser.OBOVocabulary;
-import org.obolibrary.obo2owl.Obo2OWLConstants;
-import org.protege.editor.owl.model.util.OboUtilities;
-import org.protege.editor.owl.ui.merge.MergeStrategy;
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.model.parameters.Imports;
-import org.semanticweb.owlapi.util.OWLEntityRenamer;
-
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.stream.Stream;
-
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.obolibrary.obo2owl.Obo2OWLConstants.Obo2OWLVocabulary.IRI_OIO_hasExactSynonym;
 import static org.obolibrary.obo2owl.Obo2OWLConstants.Obo2OWLVocabulary.IRI_OIO_hasRelatedSynonym;
 import static org.semanticweb.owlapi.vocab.SKOSVocabulary.ALTLABEL;
 import static org.semanticweb.owlapi.vocab.SKOSVocabulary.PREFLABEL;
+
+import java.util.List;
+import java.util.stream.Stream;
+
+import javax.annotation.Nonnull;
+
+import org.obolibrary.obo2owl.Obo2OWLConstants;
+import org.protege.editor.owl.model.util.OboUtilities;
+import org.protege.editor.owl.ui.merge.MergeStrategy;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.RemoveAxiom;
+import org.semanticweb.owlapi.model.parameters.Imports;
+import org.semanticweb.owlapi.util.OWLEntityRenamer;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 /**
  * Matthew Horridge

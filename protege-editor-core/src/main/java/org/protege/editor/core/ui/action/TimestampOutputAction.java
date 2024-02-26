@@ -1,13 +1,13 @@
 package org.protege.editor.core.ui.action;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
-
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.text.DateFormat;
+
+import javax.swing.JOptionPane;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Author: drummond<br>

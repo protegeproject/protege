@@ -1,8 +1,13 @@
 package org.protege.editor.owl.model.idrange;
 
-import javax.swing.*;
+import java.awt.Component;
+
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
 import javax.swing.border.Border;
-import java.awt.*;
 
 /**
  * Matthew Horridge

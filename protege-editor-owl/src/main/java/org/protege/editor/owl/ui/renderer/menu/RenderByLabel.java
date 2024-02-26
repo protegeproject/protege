@@ -1,14 +1,14 @@
 package org.protege.editor.owl.ui.renderer.menu;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.protege.editor.owl.ui.renderer.OWLEntityAnnotationValueRenderer;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.protege.editor.owl.ui.renderer.plugin.RendererPlugin;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
-
-import java.util.Collections;
-import java.util.List;
 
 public class RenderByLabel extends AbstractByRendererMenu {
 	private static final long serialVersionUID = 7364664042805363135L;

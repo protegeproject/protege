@@ -1,12 +1,12 @@
 package org.protege.editor.owl.model.entity;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
+import java.util.Optional;
+
 import org.protege.editor.owl.model.util.OboUtilities;
 import org.protege.editor.owl.ui.action.SelectedOWLEntityAction;
 import org.semanticweb.owlapi.model.OWLEntity;
-
-import java.awt.*;
-import java.awt.datatransfer.StringSelection;
-import java.util.Optional;
 
 /**
  * Matthew Horridge

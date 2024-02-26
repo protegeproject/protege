@@ -1,9 +1,10 @@
 package org.protege.editor.owl.ui.prefix;
 
-import com.google.common.collect.ImmutableList;
+import java.util.List;
 
 import javax.annotation.Nonnull;
-import java.util.List;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * Matthew Horridge

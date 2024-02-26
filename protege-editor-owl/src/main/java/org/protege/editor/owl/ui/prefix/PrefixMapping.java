@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.prefix;
 
-import com.google.auto.value.AutoValue;
-
 import javax.annotation.Nonnull;
+
+import com.google.auto.value.AutoValue;
 
 /**
  * Matthew Horridge

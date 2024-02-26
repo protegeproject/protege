@@ -1,9 +1,10 @@
 package org.protege.editor.owl.ui.renderer.styledstring;
 
-import javax.swing.text.StyleConstants;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.font.TextAttribute;
 import java.text.AttributedCharacterIterator;
+
+import javax.swing.text.StyleConstants;
 
 /**
  * Author: Matthew Horridge<br>

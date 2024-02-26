@@ -6,10 +6,10 @@ package org.protege.editor.core.prefs;
  */
 
 
+import java.util.prefs.BackingStoreException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.prefs.BackingStoreException;
 
 /**
  * Author: Matthew Horridge<br> The University Of Manchester<br> Information Management Group<br> Date:

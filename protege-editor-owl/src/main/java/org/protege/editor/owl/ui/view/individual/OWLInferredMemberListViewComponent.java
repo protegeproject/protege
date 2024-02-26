@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.view.individual;
 
+import java.util.List;
+
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -8,8 +10,6 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
-
-import java.util.List;
 
 public class OWLInferredMemberListViewComponent extends OWLIndividualListViewComponent {
         private OWLSelectionModelListener refillOnClassSelectionListener = () -> {

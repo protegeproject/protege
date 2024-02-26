@@ -1,14 +1,14 @@
 package org.protege.editor.owl.ui.renderer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.vocab.DublinCoreVocabulary;
 import org.semanticweb.owlapi.vocab.Namespaces;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**

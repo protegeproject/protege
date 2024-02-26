@@ -1,19 +1,23 @@
 package org.protege.editor.owl.ui.renderer;
 
-import com.google.common.base.Optional;
+/*
+ * Copyright (C) 2007, University of Manchester
+ *
+ *
+ */
+import java.awt.Component;
+
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JLabel;
+import javax.swing.JList;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
 
-import javax.swing.*;
-import java.awt.*;
-/*
- * Copyright (C) 2007, University of Manchester
- *
- *
- */
+import com.google.common.base.Optional;
 
 
 /**

@@ -1,13 +1,14 @@
 package org.protege.editor.owl.ui.view.individual;
 
+import java.awt.BorderLayout;
+
+import javax.swing.JScrollPane;
+
 import org.protege.editor.owl.ui.frame.individual.OWLIndividualPropertyAssertionsFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.protege.editor.owl.ui.framelist.OWLFrameListRenderer;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
-
-import javax.swing.*;
-import java.awt.*;
 
 
 /**

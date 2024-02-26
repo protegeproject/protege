@@ -1,15 +1,19 @@
 package org.protege.editor.core.editorkit;
 
-import org.protege.editor.core.ProtegeManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
+
+import org.protege.editor.core.ProtegeManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**

@@ -1,17 +1,17 @@
 package org.protege.editor.owl.ui.editor;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.selector.OWLAnnotationPropertySelectorPanel;
-import org.semanticweb.owlapi.model.OWLAnnotationProperty;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.swing.*;
 /*
 * Copyright (C) 2007, University of Manchester
 *
 *
 */
+import javax.swing.JComponent;
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.selector.OWLAnnotationPropertySelectorPanel;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 
 /**
  * Author: drummond<br>

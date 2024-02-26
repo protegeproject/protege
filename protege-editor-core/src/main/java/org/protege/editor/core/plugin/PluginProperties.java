@@ -1,12 +1,7 @@
 package org.protege.editor.core.plugin;
 
 
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
-import org.protege.editor.core.PropertyUtil;
-import org.protege.editor.core.ProtegeProperties;
-
-import java.awt.*;
+import java.awt.Color;
 import java.util.HashSet;
 import java.util.Set;
 /*
@@ -14,6 +9,11 @@ import java.util.Set;
  *
  *
  */
+
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.protege.editor.core.PropertyUtil;
+import org.protege.editor.core.ProtegeProperties;
 
 
 /**

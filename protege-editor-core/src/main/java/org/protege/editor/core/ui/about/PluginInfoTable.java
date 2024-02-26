@@ -1,7 +1,8 @@
 package org.protege.editor.core.ui.about;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+
+import javax.swing.JTable;
 
 
 /**

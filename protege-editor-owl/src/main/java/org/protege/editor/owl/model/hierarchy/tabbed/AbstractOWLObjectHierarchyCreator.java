@@ -1,12 +1,5 @@
 package org.protege.editor.owl.model.hierarchy.tabbed;
 
-import com.google.common.base.Optional;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
-import org.slf4j.LoggerFactory;
-
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +9,14 @@ import java.util.List;
  *
  *
  */
+
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Optional;
 
 /**
  * Author: Matthew Horridge<br>

@@ -1,6 +1,6 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
-import java.awt.*;
+import java.awt.Graphics2D;
 
 /**
  * Author: Matthew Horridge<br>

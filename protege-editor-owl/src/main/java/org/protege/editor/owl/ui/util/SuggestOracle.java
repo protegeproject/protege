@@ -1,7 +1,8 @@
 package org.protege.editor.owl.ui.util;
 
-import javax.annotation.Nonnull;
 import java.util.stream.Stream;
+
+import javax.annotation.Nonnull;
 
 /**
  * Matthew Horridge

@@ -1,10 +1,15 @@
 package org.protege.editor.owl.model.idrange;
 
-import javax.annotation.Nonnull;
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.Comparator;
 import java.util.Optional;
+
+import javax.annotation.Nonnull;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 /**
  * Matthew Horridge

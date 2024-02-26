@@ -1,14 +1,15 @@
 package org.protege.editor.owl.ui.error;
 
-import org.protege.editor.core.ui.error.ErrorExplainer;
-
-import javax.swing.*;
 import java.net.URI;
 /*
 * Copyright (C) 2007, University of Manchester
 *
 *
 */
+
+import javax.swing.JComponent;
+
+import org.protege.editor.core.ui.error.ErrorExplainer;
 
 /**
  * Author: drummond<br>

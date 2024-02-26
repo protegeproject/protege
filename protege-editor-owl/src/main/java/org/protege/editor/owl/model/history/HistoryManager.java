@@ -1,9 +1,10 @@
 package org.protege.editor.owl.model.history;
 
-import org.semanticweb.owlapi.model.OWLOntologyChange;
+import java.util.List;
 
 import javax.annotation.Nonnull;
-import java.util.List;
+
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 
 
 /**

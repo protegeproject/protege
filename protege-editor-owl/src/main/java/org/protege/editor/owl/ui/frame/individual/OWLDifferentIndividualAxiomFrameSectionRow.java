@@ -1,5 +1,9 @@
 package org.protege.editor.owl.ui.frame.individual;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLIndividualSetEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
@@ -9,10 +13,6 @@ import org.semanticweb.owlapi.model.OWLDifferentIndividualsAxiom;
 import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 
 /**

@@ -1,8 +1,5 @@
 package org.protege.editor.owl.ui.preferences;
 
-import org.protege.editor.core.prefs.Preferences;
-import org.protege.editor.core.prefs.PreferencesManager;
-
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,6 +10,9 @@ import java.util.Set;
  *
  *
  */
+
+import org.protege.editor.core.prefs.Preferences;
+import org.protege.editor.core.prefs.PreferencesManager;
 
 
 /**

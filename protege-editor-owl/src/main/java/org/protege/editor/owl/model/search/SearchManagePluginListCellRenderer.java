@@ -1,7 +1,10 @@
 package org.protege.editor.owl.model.search;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
+
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JLabel;
+import javax.swing.JList;
 
 /**
  * Matthew Horridge

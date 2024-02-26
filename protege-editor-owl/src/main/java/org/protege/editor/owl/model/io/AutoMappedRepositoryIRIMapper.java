@@ -1,20 +1,19 @@
 package org.protege.editor.owl.model.io;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.io.File;
+import java.net.URI;
+import java.util.Optional;
+
+import javax.annotation.Nonnull;
+
 import org.eclipse.jgit.annotations.NonNull;
-import org.protege.editor.core.ui.util.UIUtil;
-import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
-import java.io.File;
-import java.net.URI;
-import java.util.Optional;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Author: drummond<br>

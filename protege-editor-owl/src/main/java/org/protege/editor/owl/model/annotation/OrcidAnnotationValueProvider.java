@@ -1,12 +1,12 @@
 package org.protege.editor.owl.model.annotation;
 
+import java.util.Optional;
+
 import org.protege.editor.owl.model.user.Orcid;
 import org.protege.editor.owl.model.user.OrcidProvider;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationValue;
 import org.semanticweb.owlapi.model.OWLDataFactory;
-
-import java.util.Optional;
 
 /**
  * Matthew Horridge

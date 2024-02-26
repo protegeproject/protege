@@ -1,6 +1,27 @@
 package org.protege.editor.core.ui.workspace;
 
-import com.google.common.base.Optional;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.util.Collections;
+import java.util.Set;
+
+import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.JComponent;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JSplitPane;
+import javax.swing.KeyStroke;
+import javax.swing.LookAndFeel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.ProtegeProperties;
@@ -11,16 +32,15 @@ import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.about.AboutPanel;
 import org.protege.editor.core.ui.preferences.PreferencesDialogPanel;
 import org.protege.editor.core.ui.split.ViewSplitPane;
-import org.protege.editor.core.ui.view.*;
+import org.protege.editor.core.ui.view.View;
+import org.protege.editor.core.ui.view.ViewComponent;
+import org.protege.editor.core.ui.view.ViewComponentPlugin;
+import org.protege.editor.core.ui.view.ViewComponentPluginLoader;
+import org.protege.editor.core.ui.view.ViewHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
-import javax.swing.border.Border;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.util.Collections;
-import java.util.Set;
+import com.google.common.base.Optional;
 
 /*
  * Copyright (C) 2007, University of Manchester

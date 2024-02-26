@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.renderer;
 
+import java.awt.Color;
+
 import org.protege.editor.core.PropertyUtil;
 import org.protege.editor.core.ProtegeProperties;
-
-import java.awt.*;
 
 
 /**

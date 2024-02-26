@@ -1,5 +1,13 @@
 package org.protege.editor.owl.ui.search;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Objects;
+
+import javax.annotation.Nullable;
+import javax.swing.table.AbstractTableModel;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.search.SearchResult;
 import org.protege.editor.owl.model.search.SearchResultComparator;
@@ -7,13 +15,6 @@ import org.protege.editor.owl.model.search.SearchResultSet;
 import org.protege.editor.owl.model.util.OboUtilities;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
-
-import javax.annotation.Nullable;
-import javax.swing.table.AbstractTableModel;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Objects;
 
 /**
  * Author: Matthew Horridge<br>

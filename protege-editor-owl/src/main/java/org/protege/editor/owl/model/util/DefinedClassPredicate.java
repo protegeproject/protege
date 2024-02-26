@@ -1,15 +1,16 @@
 package org.protege.editor.owl.model.util;
 
-import com.google.common.collect.ImmutableSet;
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.search.EntitySearcher;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.Nonnull;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
+
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLOntology;
+
+import com.google.common.collect.ImmutableSet;
 
 /**
  * Matthew Horridge

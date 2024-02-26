@@ -1,14 +1,18 @@
 package org.protege.editor.owl.ui.frame.property;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSectionRow;
 import org.protege.editor.owl.ui.frame.OWLFrameSection;
 import org.protege.editor.owl.ui.util.OWLComponentFactory;
-import org.semanticweb.owlapi.model.*;
-
-import java.util.Arrays;
-import java.util.List;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLProperty;
+import org.semanticweb.owlapi.model.OWLPropertyDomainAxiom;
 
 /*
 * Copyright (C) 2007, University of Manchester

@@ -1,14 +1,17 @@
 package org.protege.editor.core.ui.workspace.tabs;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JMenu;
+
 import org.protege.editor.core.ui.action.ProtegeDynamicAction;
 import org.protege.editor.core.ui.workspace.TabbedWorkspace;
 import org.protege.editor.core.ui.workspace.WorkspaceTab;
 import org.protege.editor.core.ui.workspace.WorkspaceTabPlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
 
 public class TabsMenuAction extends ProtegeDynamicAction {
 

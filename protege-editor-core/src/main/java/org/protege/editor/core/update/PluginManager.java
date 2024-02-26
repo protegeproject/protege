@@ -1,19 +1,20 @@
 package org.protege.editor.core.update;
 
-import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.prefs.Preferences;
-import org.protege.editor.core.prefs.PreferencesManager;
-import org.protege.editor.core.ui.progress.BackgroundTask;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
+
+import javax.swing.SwingUtilities;
+
+import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.prefs.Preferences;
+import org.protege.editor.core.prefs.PreferencesManager;
+import org.protege.editor.core.ui.progress.BackgroundTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**

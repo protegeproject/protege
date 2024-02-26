@@ -1,9 +1,9 @@
 package org.protege.editor.owl.model.util;
 
-import org.slf4j.Logger;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.slf4j.Logger;
 
 
 /**

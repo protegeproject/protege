@@ -1,16 +1,16 @@
 package org.protege.editor.owl.ui.metrics;
 
-import org.protege.editor.owl.ui.view.AbstractActiveOntologyViewComponent;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.awt.*;
 /*
  * Copyright (C) 2007, University of Manchester
  *
  *
  */
+import java.awt.BorderLayout;
+
+import org.protege.editor.owl.ui.view.AbstractActiveOntologyViewComponent;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**

@@ -1,20 +1,27 @@
 package org.protege.editor.owl.ui.editor;
 
-import org.protege.editor.core.ui.util.FormLabel;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.find.EntityFinderField;
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.model.parameters.Imports;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import org.protege.editor.core.ui.util.FormLabel;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.find.EntityFinderField;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLNamedObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.parameters.Imports;
 
 
 /**

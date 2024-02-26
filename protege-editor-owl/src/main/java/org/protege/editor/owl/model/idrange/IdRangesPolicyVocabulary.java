@@ -1,9 +1,10 @@
 package org.protege.editor.owl.model.idrange;
 
-import com.google.common.collect.ImmutableMap;
+import javax.annotation.Nonnull;
+
 import org.semanticweb.owlapi.model.IRI;
 
-import javax.annotation.Nonnull;
+import com.google.common.collect.ImmutableMap;
 
 /**
  * Matthew Horridge

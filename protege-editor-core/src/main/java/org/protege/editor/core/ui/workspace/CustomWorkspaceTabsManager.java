@@ -1,9 +1,5 @@
 package org.protege.editor.core.ui.workspace;
 
-import org.protege.editor.core.prefs.Preferences;
-import org.protege.editor.core.prefs.PreferencesManager;
-
-import javax.swing.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +9,11 @@ import java.util.List;
  *
  *
  */
+
+import javax.swing.Icon;
+
+import org.protege.editor.core.prefs.Preferences;
+import org.protege.editor.core.prefs.PreferencesManager;
 
 
 /**

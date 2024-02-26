@@ -1,10 +1,20 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
-import org.protege.editor.core.ui.list.RendererWithInsets;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.ListCellRenderer;
 import javax.swing.table.TableCellRenderer;
-import java.awt.*;
+
+import org.protege.editor.core.ui.list.RendererWithInsets;
 
 /**
  * Author: Matthew Horridge<br>

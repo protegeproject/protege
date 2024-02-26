@@ -1,18 +1,22 @@
 package org.protege.editor.owl.ui;
 
-import org.protege.editor.core.ui.util.JOptionPaneEx;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.ontology.location.PhysicalLocationPanel;
-import org.semanticweb.owlapi.model.OWLOntology;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.Set;
 /*
 * Copyright (C) 2007, University of Manchester
 *
 *
 */
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+import org.protege.editor.core.ui.util.JOptionPaneEx;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.ontology.location.PhysicalLocationPanel;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
  * Author: drummond<br>

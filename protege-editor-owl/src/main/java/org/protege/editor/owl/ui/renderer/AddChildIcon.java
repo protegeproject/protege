@@ -1,9 +1,14 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.protege.editor.core.ui.renderer.HasUseSystemForeground;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.Icon;
+
+import org.protege.editor.core.ui.renderer.HasUseSystemForeground;
 
 /**
  * Matthew Horridge

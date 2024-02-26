@@ -1,13 +1,16 @@
 package org.protege.editor.owl.ui.table;
 
+import java.awt.Cursor;
+import java.awt.Point;
+import java.awt.Rectangle;
+
+import javax.swing.JComponent;
+import javax.swing.table.TableModel;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.renderer.LinkedObjectComponent;
 import org.protege.editor.owl.ui.renderer.LinkedObjectComponentMediator;
 import org.semanticweb.owlapi.model.OWLObject;
-
-import javax.swing.*;
-import javax.swing.table.TableModel;
-import java.awt.*;
 
 
 /**

@@ -1,14 +1,16 @@
 package org.protege.editor.core.platform.apple;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.fail;
 
-import javax.swing.*;
-
-import java.awt.*;
+import java.awt.FileDialog;
+import java.awt.Window;
 import java.util.Collections;
 
-import static org.junit.Assert.fail;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Matthew Horridge

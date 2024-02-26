@@ -1,8 +1,9 @@
 package org.protege.editor.core.ui.tabbedpane;
 
-import org.protege.editor.core.ui.view.View;
+import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 
-import javax.swing.*;
+import org.protege.editor.core.ui.view.View;
 
 /**
  * Matthew Horridge

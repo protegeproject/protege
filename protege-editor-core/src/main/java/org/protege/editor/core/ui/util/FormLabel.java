@@ -1,9 +1,11 @@
 package org.protege.editor.core.ui.util;
 
-import org.protege.editor.core.Fonts;
+import java.awt.Font;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+
+import org.protege.editor.core.Fonts;
 
 /**
  * Matthew Horridge

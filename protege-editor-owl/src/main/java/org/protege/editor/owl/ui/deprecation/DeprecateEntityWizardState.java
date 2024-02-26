@@ -1,16 +1,17 @@
 package org.protege.editor.owl.ui.deprecation;
 
-import org.protege.editor.owl.model.deprecation.DeprecationProfile;
-import org.semanticweb.owlapi.model.OWLAnnotationValue;
-import org.semanticweb.owlapi.model.OWLEntity;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.protege.editor.owl.model.deprecation.DeprecationProfile;
+import org.semanticweb.owlapi.model.OWLAnnotationValue;
+import org.semanticweb.owlapi.model.OWLEntity;
 
 /**
  * Matthew Horridge

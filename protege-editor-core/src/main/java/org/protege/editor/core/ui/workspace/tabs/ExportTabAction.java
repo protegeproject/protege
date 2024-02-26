@@ -1,20 +1,22 @@
 package org.protege.editor.core.ui.workspace.tabs;
 
-import org.protege.editor.core.ui.action.ProtegeAction;
-import org.protege.editor.core.ui.util.UIUtil;
-import org.protege.editor.core.ui.workspace.TabbedWorkspace;
-import org.protege.editor.core.ui.workspace.WorkspaceViewsTab;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
+import org.protege.editor.core.ui.action.ProtegeAction;
+import org.protege.editor.core.ui.util.UIUtil;
+import org.protege.editor.core.ui.workspace.TabbedWorkspace;
+import org.protege.editor.core.ui.workspace.WorkspaceViewsTab;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ExportTabAction extends ProtegeAction {
 

@@ -1,14 +1,6 @@
 package org.protege.editor.owl.ui.selector;
 
-import org.protege.editor.core.ui.util.CheckTable;
-import org.protege.editor.core.ui.util.CheckTableModel;
-import org.protege.editor.core.ui.util.Icons;
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
-import org.semanticweb.owlapi.model.OWLOntology;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,6 +11,17 @@ import java.util.Set;
 *
 *
 */
+
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JScrollPane;
+
+import org.protege.editor.core.ui.util.CheckTable;
+import org.protege.editor.core.ui.util.CheckTableModel;
+import org.protege.editor.core.ui.util.Icons;
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
  * Author: drummond<br>

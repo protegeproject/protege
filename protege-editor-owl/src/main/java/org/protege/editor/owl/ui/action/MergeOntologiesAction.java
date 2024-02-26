@@ -1,12 +1,12 @@
 package org.protege.editor.owl.ui.action;
 
+import java.awt.event.ActionEvent;
+import java.util.Set;
+
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.model.refactor.ontology.OntologyMerger;
 import org.protege.editor.owl.ui.ontology.wizard.merge.MergeOntologiesWizard;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import java.awt.event.ActionEvent;
-import java.util.Set;
 
 
 /**

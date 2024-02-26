@@ -1,10 +1,10 @@
 package org.protege.editor.owl.model.refactor.ontology;
 
+import java.util.List;
+
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyID;
-
-import java.util.List;
 
 /**
  * Author: Matthew Horridge<br>

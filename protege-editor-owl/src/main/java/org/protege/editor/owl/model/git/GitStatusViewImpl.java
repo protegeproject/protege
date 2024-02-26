@@ -1,9 +1,10 @@
 package org.protege.editor.owl.model.git;
 
-import org.protege.editor.core.Fonts;
-
 import javax.annotation.Nonnull;
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+
+import org.protege.editor.core.Fonts;
 
 /**
  * Matthew Horridge

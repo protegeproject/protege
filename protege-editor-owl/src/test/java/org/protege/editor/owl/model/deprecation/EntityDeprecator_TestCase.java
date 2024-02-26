@@ -1,5 +1,19 @@
 package org.protege.editor.owl.model.deprecation;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.when;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.AnnotationAssertion;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.AnnotationProperty;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.Class;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.Literal;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.Ontology;
+import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.SubClassOf;
+
+import java.util.Collections;
+import java.util.Optional;
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,18 +21,18 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.protege.editor.owl.model.entity.HomeOntologySupplier;
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotationAxiom;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
+import org.semanticweb.owlapi.model.PrefixManager;
 import org.semanticweb.owlapi.util.DefaultPrefixManager;
+
 import uk.ac.manchester.cs.owl.owlapi.OWLDataFactoryImpl;
-
-import java.util.Collections;
-import java.util.Optional;
-import java.util.Set;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.when;
-import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.*;
 
 /**
  * Matthew Horridge
@@ -105,10 +119,10 @@ public class EntityDeprecator_TestCase {
         when(deprecationProfile.getPreservedAnnotationValuePrefix()).thenReturn(VALUE_PREFIX);
         when(deprecationProfile.getPreservedAnnotationValuePropertiesIris()).thenReturn(Collections.singleton(dataFactory.getRDFSSeeAlso().getIRI()));
         when(deprecationProfile.getDeprecatedClassParentIri()).thenReturn(Optional.empty());
-        when(deprecationProfile.getDeprecatedObjectPropertyParentIri()).thenReturn(Optional.empty());
-        when(deprecationProfile.getDeprecatedDataPropertyParentIri()).thenReturn(Optional.empty());
-        when(deprecationProfile.getDeprecatedAnnotationPropertyParentIri()).thenReturn(Optional.empty());
-        when(deprecationProfile.getDeprecatedIndividualParentClassIri()).thenReturn(Optional.empty());
+        //when(deprecationProfile.getDeprecatedObjectPropertyParentIri()).thenReturn(Optional.empty());
+        //when(deprecationProfile.getDeprecatedDataPropertyParentIri()).thenReturn(Optional.empty());
+        //when(deprecationProfile.getDeprecatedAnnotationPropertyParentIri()).thenReturn(Optional.empty());
+        //when(deprecationProfile.getDeprecatedIndividualParentClassIri()).thenReturn(Optional.empty());
         when(deprecationProfile.getDeprecationCode()).thenReturn(Optional.empty());
 
         DeprecateEntityInfo<OWLClass> info = new DeprecateEntityInfo<>(

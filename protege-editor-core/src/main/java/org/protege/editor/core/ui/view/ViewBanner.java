@@ -1,16 +1,23 @@
 package org.protege.editor.core.ui.view;
 
-import org.protege.editor.core.ui.view.button.ViewButtonUI;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 
 import javax.annotation.Nonnull;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JToolBar;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import org.protege.editor.core.ui.view.button.ViewButtonUI;
 
 
 /**

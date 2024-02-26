@@ -1,12 +1,12 @@
 package org.protege.editor.owl.model.idrange;
 
+import java.io.InputStream;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-
-import java.io.InputStream;
 
 /**
  * Matthew Horridge

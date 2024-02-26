@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.find;
 
-import org.semanticweb.owlapi.model.OWLEntity;
-
 import javax.annotation.Nonnull;
+
+import org.semanticweb.owlapi.model.OWLEntity;
 
 /**
  * Matthew Horridge

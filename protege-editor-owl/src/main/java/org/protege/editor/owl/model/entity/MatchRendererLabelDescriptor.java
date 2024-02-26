@@ -1,14 +1,14 @@
 package org.protege.editor.owl.model.entity;
 
-import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
-import org.semanticweb.owlapi.model.IRI;
-
 import java.util.List;
 /*
 * Copyright (C) 2007, University of Manchester
 *
 *
 */
+
+import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
+import org.semanticweb.owlapi.model.IRI;
 
 /**
  * Author: drummond<br>

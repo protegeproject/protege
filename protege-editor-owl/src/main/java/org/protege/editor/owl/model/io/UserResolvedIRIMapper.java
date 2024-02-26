@@ -1,10 +1,5 @@
 package org.protege.editor.owl.model.io;
 
-import org.protege.editor.core.ui.util.Resettable;
-import org.protege.editor.owl.model.MissingImportHandler;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
-
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +8,11 @@ import java.util.Map;
 *
 *
 */
+
+import org.protege.editor.core.ui.util.Resettable;
+import org.protege.editor.owl.model.MissingImportHandler;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
 
 /**
  * Author: drummond<br>

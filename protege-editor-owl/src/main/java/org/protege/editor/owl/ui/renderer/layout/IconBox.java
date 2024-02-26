@@ -1,10 +1,14 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
-import org.protege.editor.core.ui.util.Icons;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.MediaTracker;
 import java.awt.font.FontRenderContext;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 /**
  * Author: Matthew Horridge<br>

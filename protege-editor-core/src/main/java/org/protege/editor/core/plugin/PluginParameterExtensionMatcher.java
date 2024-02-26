@@ -1,10 +1,10 @@
 package org.protege.editor.core.plugin;
 
 
-import org.eclipse.core.runtime.IExtension;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.eclipse.core.runtime.IExtension;
 
 /*
  * Copyright (C) 2007, University of Manchester

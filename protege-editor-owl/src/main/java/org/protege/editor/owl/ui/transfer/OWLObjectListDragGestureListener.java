@@ -1,13 +1,15 @@
 package org.protege.editor.owl.ui.transfer;
 
+import java.awt.Dimension;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JComponent;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.list.OWLObjectList;
 import org.semanticweb.owlapi.model.OWLObject;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**

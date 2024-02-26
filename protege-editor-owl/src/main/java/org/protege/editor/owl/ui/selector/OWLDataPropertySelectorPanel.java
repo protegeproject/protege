@@ -1,5 +1,10 @@
 package org.protege.editor.owl.ui.selector;
 
+import java.awt.Color;
+import java.util.Set;
+
+import javax.swing.event.ChangeListener;
+
 import org.protege.editor.core.ui.view.ViewComponent;
 import org.protege.editor.core.ui.view.ViewComponentPlugin;
 import org.protege.editor.core.ui.view.ViewComponentPluginAdapter;
@@ -10,10 +15,6 @@ import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.protege.editor.owl.ui.view.AbstractOWLPropertyHierarchyViewComponent;
 import org.protege.editor.owl.ui.view.dataproperty.OWLDataPropertyHierarchyViewComponent;
 import org.semanticweb.owlapi.model.OWLDataProperty;
-
-import javax.swing.event.ChangeListener;
-import java.awt.*;
-import java.util.Set;
 
 
 /**

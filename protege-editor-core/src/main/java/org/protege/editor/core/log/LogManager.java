@@ -1,18 +1,5 @@
 package org.protege.editor.core.log;
 
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.Logger;
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.Appender;
-import ch.qos.logback.core.AppenderBase;
-import ch.qos.logback.core.Context;
-
-import org.protege.editor.core.FileUtils;
-import org.protege.editor.core.ui.action.TimestampOutputAction;
-import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -20,6 +7,24 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import org.protege.editor.core.FileUtils;
+import org.protege.editor.core.ui.action.TimestampOutputAction;
+import org.slf4j.LoggerFactory;
+
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.Appender;
+import ch.qos.logback.core.AppenderBase;
+import ch.qos.logback.core.Context;
 
 /**
  * Matthew Horridge

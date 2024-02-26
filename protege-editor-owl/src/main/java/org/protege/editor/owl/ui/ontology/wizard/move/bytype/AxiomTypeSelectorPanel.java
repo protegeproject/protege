@@ -1,14 +1,6 @@
 package org.protege.editor.owl.ui.ontology.wizard.move.bytype;
 
-import org.protege.editor.core.ui.list.MList;
-import org.protege.editor.core.ui.list.MListItem;
-import org.protege.editor.core.ui.list.MListSectionHeader;
-import org.protege.editor.core.ui.list.RemovableObjectList;
-import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
-import org.semanticweb.owlapi.model.AxiomType;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,6 +11,22 @@ import java.util.Set;
 *
 *
 */
+
+import javax.swing.AbstractAction;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+
+import org.protege.editor.core.ui.list.MList;
+import org.protege.editor.core.ui.list.MListItem;
+import org.protege.editor.core.ui.list.MListSectionHeader;
+import org.protege.editor.core.ui.list.RemovableObjectList;
+import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
+import org.semanticweb.owlapi.model.AxiomType;
 
 /**
  * Author: drummond<br>

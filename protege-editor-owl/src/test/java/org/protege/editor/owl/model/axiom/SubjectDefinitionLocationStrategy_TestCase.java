@@ -1,7 +1,13 @@
 package org.protege.editor.owl.model.axiom;
 
-import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
+import java.util.Collections;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,13 +19,8 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
 
-import java.util.Collections;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
+import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
 
 /**
  * @author Matthew Horridge, Stanford University, Bio-Medical Informatics Research Group, Date: 27/05/2014
@@ -92,7 +93,7 @@ public class SubjectDefinitionLocationStrategy_TestCase {
         when(subjectDefinitionExtractor.getDefiningAxioms(subject, ontologyB))
                 .thenReturn(Collections.<OWLAxiom>emptySet());
 
-        // Ontology B defines subject
+        // OntologyC defines subject
         when(subjectDefinitionExtractor.getDefiningAxioms(subject, ontologyC))
                 .thenReturn(Collections.<OWLAxiom>emptySet());
 
@@ -117,7 +118,7 @@ public class SubjectDefinitionLocationStrategy_TestCase {
         when(subjectDefinitionExtractor.getDefiningAxioms(subject, ontologyB))
                 .thenReturn(Collections.<OWLAxiom>emptySet());
 
-        // Ontology B defines subject
+        // Ontology c defines subject
         when(subjectDefinitionExtractor.getDefiningAxioms(subject, ontologyC))
                 .thenReturn(Collections.singleton(axiom));
 
@@ -142,9 +143,9 @@ public class SubjectDefinitionLocationStrategy_TestCase {
         when(subjectDefinitionExtractor.getDefiningAxioms(subject, ontologyB))
                 .thenReturn(Collections.singleton(axiom));
 
-        // Ontology B defines subject
-        when(subjectDefinitionExtractor.getDefiningAxioms(subject, ontologyC))
-                .thenReturn(Collections.singleton(axiom));
+        // Ontology C defines subject
+        //when(subjectDefinitionExtractor.getDefiningAxioms(subject, ontologyC))
+        //        .thenReturn(Collections.singleton(axiom));
 
         SubjectDefinitionLocationStrategy strategy = new SubjectDefinitionLocationStrategy(
                 importsClosureProvider,

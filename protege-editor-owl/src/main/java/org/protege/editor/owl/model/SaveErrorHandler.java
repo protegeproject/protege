@@ -1,9 +1,9 @@
 package org.protege.editor.owl.model;
 
+import java.net.URI;
+
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyStorageException;
-
-import java.net.URI;
 
 /**
  * Author: drummond<br>

@@ -1,13 +1,14 @@
 package org.protege.editor.owl.ui.action;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.Icon;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.view.OWLSelectionViewAction;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.util.OWLEntitySetProvider;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
 
 
 /**

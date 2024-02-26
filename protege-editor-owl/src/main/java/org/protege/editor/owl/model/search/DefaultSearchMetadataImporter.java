@@ -1,19 +1,28 @@
 package org.protege.editor.owl.model.search;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.OWLEditorKitOntologyShortFormProvider;
-import org.protege.editor.owl.model.OWLEditorKitShortFormProvider;
-import org.protege.editor.owl.model.search.importer.*;
-import org.protege.editor.owl.ui.renderer.context.OWLObjectRenderingContext;
-import org.protege.editor.owl.ui.renderer.styledstring.OWLObjectStyledStringRenderer;
-import org.protege.editor.owl.ui.renderer.styledstring.StyledString;
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.AxiomSubjectProvider;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OWLEditorKitOntologyShortFormProvider;
+import org.protege.editor.owl.model.OWLEditorKitShortFormProvider;
+import org.protege.editor.owl.model.search.importer.AxiomAnnotationSearchMetadataImporter;
+import org.protege.editor.owl.model.search.importer.DisplayNameSearchMetadataImporter;
+import org.protege.editor.owl.model.search.importer.EntityAnnotationValueSearchMetadataImporter;
+import org.protege.editor.owl.model.search.importer.EntityIRISearchMetadataImporter;
+import org.protege.editor.owl.model.search.importer.LogicalAxiomRenderingSearchMetadataImporter;
+import org.protege.editor.owl.model.search.importer.OntologyAnnotationSearchMetadataImporter;
+import org.protege.editor.owl.ui.renderer.context.OWLObjectRenderingContext;
+import org.protege.editor.owl.ui.renderer.styledstring.OWLObjectStyledStringRenderer;
+import org.protege.editor.owl.ui.renderer.styledstring.StyledString;
+import org.semanticweb.owlapi.model.AxiomType;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.util.AxiomSubjectProvider;
 
 /**
  * Author: Matthew Horridge<br>

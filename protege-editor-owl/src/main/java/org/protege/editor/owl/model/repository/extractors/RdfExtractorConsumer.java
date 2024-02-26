@@ -1,6 +1,10 @@
 package org.protege.editor.owl.model.repository.extractors;
 
-import com.google.common.base.Optional;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration;
@@ -8,10 +12,7 @@ import org.semanticweb.owlapi.rdf.rdfxml.parser.RDFConsumer;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 import org.xml.sax.SAXException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import com.google.common.base.Optional;
 
 public class RdfExtractorConsumer implements RDFConsumer {
 

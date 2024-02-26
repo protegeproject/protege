@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.renderer.context;
 
+import java.util.List;
+
 import org.protege.editor.owl.ui.renderer.layout.Link;
 import org.semanticweb.owlapi.model.OWLObject;
-
-import java.util.List;
 
 /**
  * Author: Matthew Horridge<br>

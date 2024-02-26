@@ -1,21 +1,38 @@
 package org.protege.editor.owl.model.deprecation;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Collections.singleton;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+
 import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.owl.model.entity.HomeOntologySupplier;
 import org.protege.editor.owl.model.util.DefinitionExtractor;
 import org.protege.editor.owl.model.util.LiteralLexicalValueReplacer;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.AddAxiom;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotationAxiom;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.RemoveAxiom;
 import org.semanticweb.owlapi.util.AxiomSubjectProvider;
 import org.semanticweb.owlapi.util.OWLObjectDuplicator;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
-import java.util.*;
-
-import static com.google.common.base.Preconditions.checkNotNull;
-import static java.util.Collections.singleton;
 
 /**
  * Matthew Horridge

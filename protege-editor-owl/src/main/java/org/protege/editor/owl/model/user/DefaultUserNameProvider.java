@@ -1,10 +1,11 @@
 package org.protege.editor.owl.model.user;
 
-import javax.annotation.Nonnull;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Optional;
 import java.util.Properties;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
 
 /**
  * Matthew Horridge

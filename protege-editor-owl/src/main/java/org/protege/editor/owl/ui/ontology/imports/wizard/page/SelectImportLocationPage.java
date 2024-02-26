@@ -1,18 +1,22 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard.page;
 
+import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Set;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JComponent;
+import javax.swing.border.Border;
+
 import org.protege.editor.core.ui.wizard.AbstractWizardPanel;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportInfo;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportLocationOptionsPanel;
 import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
 import org.semanticweb.owlapi.model.OWLOntologyID;
-
-import javax.swing.*;
-import javax.swing.border.Border;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Set;
 
 public class SelectImportLocationPage extends AbstractWizardPanel {
 	public static final String ID = "SelectImportLocationPage";

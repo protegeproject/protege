@@ -1,15 +1,13 @@
 package org.protege.editor.owl.ui.breadcrumb;
 
-import org.protege.editor.core.util.HandlerRegistration;
-import org.protege.editor.owl.model.OWLWorkspace;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.Nonnull;
-import javax.swing.*;
-
-import java.awt.*;
 import java.util.Optional;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
+
+import org.protege.editor.core.util.HandlerRegistration;
+import org.protege.editor.owl.model.OWLWorkspace;
 
 /**
  * Matthew Horridge

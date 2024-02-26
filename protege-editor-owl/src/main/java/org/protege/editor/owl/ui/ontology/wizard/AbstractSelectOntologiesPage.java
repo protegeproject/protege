@@ -1,14 +1,6 @@
 package org.protege.editor.owl.ui.ontology.wizard;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
-import org.protege.editor.owl.ui.ontology.wizard.merge.MergeTypePage;
-import org.semanticweb.owlapi.model.OWLOntology;
-
-import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -18,6 +10,16 @@ import java.util.Set;
  *
  *
  */
+
+import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
+import org.protege.editor.owl.ui.ontology.wizard.merge.MergeTypePage;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 
 /**

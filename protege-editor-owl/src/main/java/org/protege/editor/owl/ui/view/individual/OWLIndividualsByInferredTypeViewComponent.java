@@ -1,5 +1,12 @@
 package org.protege.editor.owl.ui.view.individual;
 
+import java.awt.BorderLayout;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.swing.JScrollPane;
+import javax.swing.event.TreeSelectionListener;
+
 import org.protege.editor.owl.model.event.EventType;
 import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
@@ -10,13 +17,6 @@ import org.protege.editor.owl.ui.tree.OWLObjectTree;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObject;
-
-import javax.swing.*;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import java.awt.*;
-import java.util.HashSet;
-import java.util.Set;
 
 
 /**

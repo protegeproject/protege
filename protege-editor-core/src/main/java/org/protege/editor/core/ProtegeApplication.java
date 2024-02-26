@@ -1,7 +1,29 @@
 package org.protege.editor.core;
 
-import com.jgoodies.looks.plastic.PlasticLookAndFeel;
-import org.osgi.framework.*;
+import java.awt.Color;
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import javax.swing.BorderFactory;
+import javax.swing.LookAndFeel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
+import javax.swing.border.MatteBorder;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.framework.FrameworkEvent;
+import org.osgi.framework.FrameworkListener;
+import org.osgi.framework.Version;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
 import org.protege.editor.core.editorkit.EditorKitManager;
@@ -17,7 +39,6 @@ import org.protege.editor.core.plugin.PluginUtilities;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
-import org.protege.editor.core.ui.laf.ProtegeScrollBarUI;
 import org.protege.editor.core.ui.progress.BackgroundTaskManager;
 import org.protege.editor.core.ui.tabbedpane.CloseableTabbedPaneUI;
 import org.protege.editor.core.ui.util.ErrorMessage;
@@ -27,15 +48,7 @@ import org.protege.editor.core.update.PluginManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
-import javax.swing.border.MatteBorder;
-import javax.swing.plaf.basic.BasicTreeUI;
-import java.awt.*;
-import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
-import java.util.List;
+import com.jgoodies.looks.plastic.PlasticLookAndFeel;
 
 /*
  * Copyright (C) 2007, University of Manchester

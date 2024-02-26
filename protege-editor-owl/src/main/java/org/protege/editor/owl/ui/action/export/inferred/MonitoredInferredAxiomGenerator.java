@@ -1,12 +1,13 @@
 package org.protege.editor.owl.ui.action.export.inferred;
 
+import java.util.Set;
+
+import javax.swing.ProgressMonitor;
+
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.util.InferredAxiomGenerator;
-
-import javax.swing.*;
-import java.util.Set;
 
 public class MonitoredInferredAxiomGenerator<A extends OWLAxiom> implements InferredAxiomGenerator<A> {
 

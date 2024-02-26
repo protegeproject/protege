@@ -1,17 +1,18 @@
 package org.protege.editor.owl.ui.action;
 
-import org.protege.editor.core.ProtegeManager;
-import org.protege.editor.core.ui.util.JOptionPaneEx;
-import org.protege.editor.owl.ui.selector.OWLOntologySelectorPanel2;
-import org.semanticweb.owlapi.model.OWLOntology;
-
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 /*
 * Copyright (C) 2007, University of Manchester
 *
 *
 */
+
+import javax.swing.JOptionPane;
+
+import org.protege.editor.core.ProtegeManager;
+import org.protege.editor.core.ui.util.JOptionPaneEx;
+import org.protege.editor.owl.ui.selector.OWLOntologySelectorPanel2;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
  * Author: drummond<br>

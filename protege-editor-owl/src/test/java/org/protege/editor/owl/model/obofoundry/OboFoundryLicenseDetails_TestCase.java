@@ -1,11 +1,10 @@
 package org.protege.editor.owl.model.obofoundry;
 
-import com.google.auto.value.AutoValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Matthew Horridge

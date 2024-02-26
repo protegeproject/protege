@@ -1,13 +1,15 @@
 package org.protege.editor.core.ui.util;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.awt.*;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.awt.Component;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.function.Supplier;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Matthew Horridge

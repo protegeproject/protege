@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.ontology.wizard.merge;
 
+import java.util.Set;
+
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
@@ -10,8 +12,6 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLRuntimeException;
-
-import java.util.Set;
 
 
 /**

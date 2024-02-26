@@ -1,13 +1,20 @@
 package org.protege.editor.owl.ui.tree;
 
-import com.google.common.collect.Sets;
-import org.semanticweb.owlapi.model.OWLObject;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
-import java.util.*;
+
+import org.semanticweb.owlapi.model.OWLObject;
+
+import com.google.common.collect.Sets;
 
 
 /**

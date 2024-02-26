@@ -1,9 +1,11 @@
 package org.protege.editor.owl.ui.action;
 
-import org.protege.editor.core.ProtegeManager;
-
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
+
+import org.protege.editor.core.ProtegeManager;
 
 /**
  * Matthew Horridge

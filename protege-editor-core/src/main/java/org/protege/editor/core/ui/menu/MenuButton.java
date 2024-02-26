@@ -1,10 +1,9 @@
 package org.protege.editor.core.ui.menu;
 
-import javax.swing.*;
-import java.awt.*;
-
 import static java.awt.Cursor.HAND_CURSOR;
 import static java.awt.Cursor.getPredefinedCursor;
+
+import javax.swing.JButton;
 
 /**
  * Matthew Horridge

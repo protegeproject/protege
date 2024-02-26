@@ -1,5 +1,21 @@
 package org.protege.editor.owl.ui.action;
 
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.util.Collections;
+import java.util.Set;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JComponent;
+import javax.swing.JEditorPane;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.HyperlinkEvent;
+
 import org.protege.editor.core.ui.preferences.PreferencesDialogPanel;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.model.refactor.ontology.ConvertEntityURIsToIdentifierPattern;
@@ -8,15 +24,6 @@ import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.selector.OWLOntologySelectorPanel;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.util.Collections;
-import java.util.Set;
 
 
 /**

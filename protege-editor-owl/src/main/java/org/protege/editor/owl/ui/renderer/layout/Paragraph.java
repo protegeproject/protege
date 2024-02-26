@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
-import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
 import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextAttribute;
@@ -11,8 +11,16 @@ import java.io.File;
 import java.net.URI;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import javax.swing.Icon;
+
+import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 
 /**
  * Author: Matthew Horridge<br>

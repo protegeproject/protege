@@ -1,11 +1,11 @@
 package org.protege.editor.core.ui.workspace;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.xml.sax.helpers.DefaultHandler;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**

@@ -1,13 +1,13 @@
 package org.protege.editor.owl.model.io;
 
-import org.semanticweb.owlapi.model.OWLOntologyID;
-
 import java.net.URI;
 /*
  * Copyright (C) 2008, University of Manchester
  *
  *
  */
+
+import org.semanticweb.owlapi.model.OWLOntologyID;
 
 
 /**

@@ -1,7 +1,30 @@
 package org.protege.editor.owl.ui.view;
 
+import static org.protege.editor.owl.ui.framelist.OWLFrameList.INFERRED_BG_COLOR;
+
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreePath;
+
 import org.protege.editor.core.HasUpdateState;
-import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.view.View;
 import org.protege.editor.core.ui.view.ViewMode;
 import org.protege.editor.core.util.HandlerRegistration;
@@ -10,35 +33,18 @@ import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.OWLObjectComparatorAdapter;
 import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
 import org.protege.editor.owl.ui.action.OWLObjectHierarchyDeleter;
-import org.protege.editor.owl.ui.action.ProtegeOWLAction;
 import org.protege.editor.owl.ui.breadcrumb.Breadcrumb;
 import org.protege.editor.owl.ui.breadcrumb.BreadcrumbTrailChangedHandler;
 import org.protege.editor.owl.ui.breadcrumb.BreadcrumbTrailProvider;
-import org.protege.editor.owl.ui.renderer.*;
+import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
+import org.protege.editor.owl.ui.renderer.ProtegeTreeNodeRenderer;
+import org.protege.editor.owl.ui.renderer.ScrollToEntityIcon;
 import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.protege.editor.owl.ui.tree.OWLObjectTree;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.swing.*;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.TreeCellRenderer;
-import javax.swing.tree.TreePath;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.*;
-import java.util.List;
-
-import static org.protege.editor.owl.ui.framelist.OWLFrameList.INFERRED_BG_COLOR;
 
 /**
  * Author: drummond<br>

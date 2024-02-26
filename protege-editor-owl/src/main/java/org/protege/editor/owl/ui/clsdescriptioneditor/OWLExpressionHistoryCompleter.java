@@ -1,20 +1,21 @@
 package org.protege.editor.owl.ui.clsdescriptioneditor;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.cache.OWLExpressionUserCache;
-
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
-import javax.swing.text.JTextComponent;
 import java.util.List;
 /*
 * Copyright (C) 2007, University of Manchester
 *
 *
 */
+
+import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.JTextComponent;
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.cache.OWLExpressionUserCache;
 
 /**
  * Author: drummond<br>

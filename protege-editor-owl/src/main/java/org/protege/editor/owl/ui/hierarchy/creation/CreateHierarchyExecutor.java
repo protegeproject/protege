@@ -1,27 +1,30 @@
 package org.protege.editor.owl.ui.hierarchy.creation;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.ImmutableSetMultimap;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import javax.annotation.Nonnull;
+
 import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.core.util.Recommendation;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.entity.OWLEntityFactory;
-import org.protege.editor.owl.model.find.OWLEntityFinder;
-import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
-import org.protege.editor.owl.model.hierarchy.tabbed.*;
-import org.semanticweb.owlapi.model.*;
+import org.protege.editor.owl.model.hierarchy.tabbed.CreateHierarchyChangeGenerator;
+import org.protege.editor.owl.model.hierarchy.tabbed.Edge;
+import org.protege.editor.owl.model.hierarchy.tabbed.MakeSiblingsDisjointChangeGenerator;
+import org.protege.editor.owl.model.hierarchy.tabbed.TabIndentedHierarchyParser;
+import org.semanticweb.owlapi.model.EntityType;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.*;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import com.google.common.collect.ImmutableSetMultimap;
 
 /**
  * Matthew Horridge

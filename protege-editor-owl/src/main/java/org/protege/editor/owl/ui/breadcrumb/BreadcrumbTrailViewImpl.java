@@ -1,20 +1,24 @@
 package org.protege.editor.owl.ui.breadcrumb;
 
-import org.protege.editor.core.util.ClickHandler;
-import org.protege.editor.owl.model.OWLWorkspace;
-import org.protege.editor.owl.ui.renderer.RenderingEscapeUtils;
-import org.semanticweb.owlapi.model.OWLObject;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.Nonnull;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.LayoutManager2;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+
+import org.protege.editor.core.util.ClickHandler;
+import org.protege.editor.owl.model.OWLWorkspace;
+import org.protege.editor.owl.ui.renderer.RenderingEscapeUtils;
+import org.semanticweb.owlapi.model.OWLObject;
 
 /**
  * Matthew Horridge

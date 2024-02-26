@@ -1,12 +1,5 @@
 package org.protege.editor.owl.ui.editor;
 
-import org.protege.editor.owl.ui.selector.AbstractHierarchySelectorPanel;
-import org.protege.editor.owl.ui.selector.AbstractSelectorPanel;
-import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
-import org.protege.editor.owl.ui.selector.OWLDataTypeSelectorPanel;
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +8,22 @@ import java.util.Set;
 *
 *
 */
+
+import org.protege.editor.owl.ui.selector.AbstractHierarchySelectorPanel;
+import org.protege.editor.owl.ui.selector.AbstractSelectorPanel;
+import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
+import org.protege.editor.owl.ui.selector.OWLDataTypeSelectorPanel;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDataAllValuesFrom;
+import org.semanticweb.owlapi.model.OWLDataExactCardinality;
+import org.semanticweb.owlapi.model.OWLDataMaxCardinality;
+import org.semanticweb.owlapi.model.OWLDataMinCardinality;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDataRange;
+import org.semanticweb.owlapi.model.OWLDataSomeValuesFrom;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLQuantifiedRestriction;
+import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 
 /**
  * Author: drummond<br>

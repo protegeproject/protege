@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model.selection.ontologies;
 
-import org.semanticweb.owlapi.model.OWLOntology;
-
 import java.util.Set;
+
+import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
  * Author: drummond<br>

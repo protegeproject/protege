@@ -1,13 +1,13 @@
 package org.protege.editor.owl.ui.action;
 
+import java.awt.event.ActionEvent;
+import java.util.Set;
+
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
-
-import java.awt.event.ActionEvent;
-import java.util.Set;
 
 
 /**

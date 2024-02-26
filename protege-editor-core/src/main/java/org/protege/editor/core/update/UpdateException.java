@@ -1,13 +1,13 @@
 package org.protege.editor.core.update;
 
-import com.google.common.base.Optional;
-
 import java.net.URL;
 /*
 * Copyright (C) 2007, University of Manchester
 *
 *
 */
+
+import com.google.common.base.Optional;
 
 /**
  * Author: drummond<br>

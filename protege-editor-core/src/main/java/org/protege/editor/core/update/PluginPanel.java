@@ -1,31 +1,46 @@
 package org.protege.editor.core.update;
 
 
-import com.google.common.collect.ListMultimap;
-import org.protege.editor.core.ui.util.LinkLabel;
-import org.protege.editor.core.ui.util.NativeBrowserLauncher;
-import org.protege.editor.core.ui.util.TableUtils;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.*;
-import javax.swing.text.Document;
-import javax.swing.text.html.HTMLDocument;
-import javax.swing.text.html.StyleSheet;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Point;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 /*
  * Copyright (C) 2007, University of Manchester
  *
  *
  */
+import java.util.Map;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
+import javax.swing.JDialog;
+import javax.swing.JEditorPane;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.text.Document;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.StyleSheet;
+
+import org.protege.editor.core.ui.util.LinkLabel;
+import org.protege.editor.core.ui.util.NativeBrowserLauncher;
 
 
 /**

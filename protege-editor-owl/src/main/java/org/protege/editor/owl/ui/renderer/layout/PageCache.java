@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
-import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
-
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 
 /**
  * Author: Matthew Horridge<br>

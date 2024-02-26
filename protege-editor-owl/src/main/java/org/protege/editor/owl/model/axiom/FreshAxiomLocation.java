@@ -1,9 +1,8 @@
 package org.protege.editor.owl.model.axiom;
 
-import com.google.common.base.Optional;
-import org.protege.editor.owl.OWLEditorKit;
-
 import static com.google.common.base.Preconditions.checkNotNull;
+
+import com.google.common.base.Optional;
 
 /**
  * @author Matthew Horridge, Stanford University, Bio-Medical Informatics Research Group, Date: 27/05/2014

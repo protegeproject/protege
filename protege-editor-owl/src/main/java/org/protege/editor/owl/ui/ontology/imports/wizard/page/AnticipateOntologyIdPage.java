@@ -1,6 +1,18 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard.page;
 
-import com.google.common.base.Optional;
+import java.awt.BorderLayout;
+import java.io.File;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.SwingUtilities;
+
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.library.folder.XmlBaseAlgorithm;
@@ -12,13 +24,7 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
-import java.awt.*;
-import java.io.File;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import com.google.common.base.Optional;
 
 /**
  * Author: Matthew Horridge<br>

@@ -1,16 +1,17 @@
 package org.protege.editor.owl.ui.metrics;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nonnull;
+
 import org.semanticweb.owlapi.metrics.AbstractOWLMetric;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.util.DLExpressivityChecker;
 import org.semanticweb.owlapi.util.Languages;
-
-import javax.annotation.Nonnull;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Matthew Horridge

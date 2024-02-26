@@ -1,15 +1,18 @@
 package org.protege.editor.core.ui.workspace.tabs;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.JComponent;
+import javax.swing.JMenu;
+import javax.swing.JOptionPane;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+
 import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.core.ui.workspace.TabbedWorkspace;
 import org.protege.editor.core.ui.workspace.WorkspaceTab;
 import org.protege.editor.core.ui.workspace.WorkspaceTabPlugin;
-
-import javax.swing.*;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
-import java.awt.event.ActionEvent;
 
 public class DeleteCustomTabsAction extends ProtegeAction {
 	private static final long serialVersionUID = 5921291642080458478L;

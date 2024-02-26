@@ -1,11 +1,14 @@
 package org.protege.editor.core.ui.preferences;
 
+import java.awt.Component;
+import java.awt.Dimension;
+
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+
 import org.protege.editor.core.ModelManager;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.plugin.ProtegePluginInstance;
-
-import javax.swing.*;
-import java.awt.*;
 
 
 /**

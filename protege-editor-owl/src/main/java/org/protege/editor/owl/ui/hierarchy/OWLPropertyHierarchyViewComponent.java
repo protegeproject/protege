@@ -1,5 +1,9 @@
 package org.protege.editor.owl.ui.hierarchy;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.hierarchy.OWLHierarchyManager;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
@@ -9,11 +13,6 @@ import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
-
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Matthew Horridge

@@ -1,12 +1,13 @@
 package org.protege.editor.core.editorkit;
 
-import org.protege.editor.core.Disposable;
-import org.protege.editor.core.ModelManager;
-import org.protege.editor.core.ui.workspace.Workspace;
+import java.net.URI;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.net.URI;
+
+import org.protege.editor.core.Disposable;
+import org.protege.editor.core.ModelManager;
+import org.protege.editor.core.ui.workspace.Workspace;
 
 
 /**

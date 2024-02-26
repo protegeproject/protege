@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model;
 
-import org.semanticweb.owlapi.model.OWLOntologyID;
-
 import java.net.URI;
+
+import org.semanticweb.owlapi.model.OWLOntologyID;
 
 /**
  * Matthew Horridge

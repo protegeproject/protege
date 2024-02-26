@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model.annotation;
 
-import org.semanticweb.owlapi.model.IRI;
-
 import javax.inject.Provider;
+
+import org.semanticweb.owlapi.model.IRI;
 
 /**
  * Matthew Horridge

@@ -1,11 +1,14 @@
 package org.protege.editor.core.ui.view;
 
-import javax.swing.*;
-import java.awt.*;
-
 import static java.awt.Color.WHITE;
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+import javax.swing.Icon;
 
 /**
  * Matthew Horridge

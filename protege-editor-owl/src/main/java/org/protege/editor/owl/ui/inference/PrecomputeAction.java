@@ -1,15 +1,15 @@
 package org.protege.editor.owl.ui.inference;
 
+import java.awt.event.ActionEvent;
+import java.util.Set;
+
+import javax.swing.JOptionPane;
+
 import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.inference.ReasonerPreferences;
 import org.protege.editor.owl.ui.action.ProtegeOWLAction;
 import org.semanticweb.owlapi.reasoner.InferenceType;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.util.Set;
 
 
 /**

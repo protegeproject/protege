@@ -1,10 +1,10 @@
 package org.protege.editor.owl.model.selection.axioms;
 
-import org.semanticweb.owlapi.model.OWLEntity;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.semanticweb.owlapi.model.OWLEntity;
 
 /**
  * User: nickdrummond

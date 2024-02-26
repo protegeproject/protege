@@ -1,14 +1,14 @@
 package org.protege.editor.owl.ui.view.ontology;
 
-import org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxRenderer;
-import org.semanticweb.owlapi.model.OWLOntology;
-
 import java.io.Writer;
 /*
  * Copyright (C) 2007, University of Manchester
  *
  *
  */
+
+import org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxRenderer;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 
 /**

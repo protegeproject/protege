@@ -1,15 +1,24 @@
 package org.protege.editor.core.ui.util;
 
-import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.text.BadLocationException;
-import java.awt.*;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.Optional;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.swing.BorderFactory;
+import javax.swing.JTextField;
+import javax.swing.border.Border;
+import javax.swing.text.BadLocationException;
 
 /**
  * Author: Matthew Horridge<br>

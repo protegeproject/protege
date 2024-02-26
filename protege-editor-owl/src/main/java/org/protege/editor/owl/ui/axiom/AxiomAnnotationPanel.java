@@ -1,27 +1,29 @@
 package org.protege.editor.owl.ui.axiom;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.OWLEditorKitIRIShortFormProvider;
-import org.protege.editor.owl.model.OWLEditorKitOntologyShortFormProvider;
-import org.protege.editor.owl.model.OWLEditorKitShortFormProvider;
-import org.protege.editor.owl.model.util.OWLAxiomInstance;
-import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
-import org.protege.editor.owl.ui.renderer.context.OWLObjectRenderingContext;
-import org.protege.editor.owl.ui.renderer.styledstring.OWLObjectStyledStringRenderer;
-import org.protege.editor.owl.ui.renderer.styledstring.StyledString;
-import org.protege.editor.owl.ui.renderer.styledstring.StyledStringPanel;
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.util.SimpleIRIShortFormProvider;
-
-import javax.swing.*;
-import java.awt.*;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 /*
 * Copyright (C) 2007, University of Manchester
 *
 *
 */
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
+import javax.swing.JComponent;
+import javax.swing.JScrollPane;
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.model.OWLEditorKitIRIShortFormProvider;
+import org.protege.editor.owl.model.OWLEditorKitOntologyShortFormProvider;
+import org.protege.editor.owl.model.OWLEditorKitShortFormProvider;
+import org.protege.editor.owl.model.util.OWLAxiomInstance;
+import org.protege.editor.owl.ui.renderer.context.OWLObjectRenderingContext;
+import org.protege.editor.owl.ui.renderer.styledstring.OWLObjectStyledStringRenderer;
+import org.protege.editor.owl.ui.renderer.styledstring.StyledString;
+import org.protege.editor.owl.ui.renderer.styledstring.StyledStringPanel;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.util.SimpleIRIShortFormProvider;
 
 /**
  * Author: drummond<br>

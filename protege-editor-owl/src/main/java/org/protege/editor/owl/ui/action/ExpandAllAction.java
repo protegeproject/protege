@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.action;
 
 
-import org.protege.editor.owl.ui.view.HasExpandAll;
-
 import java.awt.event.ActionEvent;
+
+import org.protege.editor.owl.ui.view.HasExpandAll;
 
 /**
  * Matthew Horridge

@@ -1,9 +1,10 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+
+import javax.swing.Action;
 
 /**
  * Author: Matthew Horridge<br>

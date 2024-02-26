@@ -1,11 +1,12 @@
 package org.protege.editor.core.ui.error;
 
-import org.protege.editor.core.ProtegeApplication;
-import org.protege.editor.core.ui.util.Icons;
-
-import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import javax.swing.JLabel;
+
+import org.protege.editor.core.ProtegeApplication;
+import org.protege.editor.core.ui.util.Icons;
 
 
 /**

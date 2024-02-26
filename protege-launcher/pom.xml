@@ -58,11 +58,6 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>com.google.code.findbugs</groupId>
-			<artifactId>jsr305</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>org.eclipse.equinox</groupId>
 			<artifactId>org.eclipse.equinox.registry</artifactId>
 		</dependency>
@@ -72,15 +67,6 @@
 			<artifactId>org.eclipse.equinox.common</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.apache.servicemix.bundles</groupId>
-			<artifactId>org.apache.servicemix.bundles.aopalliance</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.servicemix.bundles</groupId>
-			<artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
-		</dependency>
 
 		<dependency>
 			<groupId>org.apache.maven</groupId>
@@ -100,34 +86,24 @@
 
 		<dependency>
 			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-all</artifactId>
+			<artifactId>hamcrest</artifactId>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
+			<artifactId>mockito-core</artifactId>
 			<scope>test</scope>
 		</dependency>
 		
 		<dependency>	
-		  	<groupId>javax.xml.bind</groupId>	
-		  	<artifactId>jaxb-api</artifactId>	
+		  	<groupId>jakarta.xml.bind</groupId>
+		  	<artifactId>jakarta.xml.bind-api</artifactId>	
 		</dependency>	
 
-		<dependency>	
-		  	<groupId>com.sun.xml.bind</groupId>	
-		 	 <artifactId>jaxb-core</artifactId>	
-		</dependency>	
-
-		<dependency>	
-		 	 <groupId>com.sun.xml.bind</groupId>	
-		 	 <artifactId>jaxb-impl</artifactId>	
-		</dependency>	
-
-		<dependency>	
-			<groupId>com.sun.activation</groupId>	
-		   	<artifactId>javax.activation</artifactId>		    	
+		<dependency>
+			<groupId>jakarta.activation</groupId>
+    			<artifactId>jakarta.activation-api</artifactId>
 		</dependency>
 		
 		<!-- swrltab plugin requires -->

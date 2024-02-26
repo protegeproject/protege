@@ -1,6 +1,8 @@
 package org.protege.editor.core.ui.view;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
 
 /**
  * Author: Matthew Horridge<br>

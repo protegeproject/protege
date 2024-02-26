@@ -1,17 +1,15 @@
 package org.protege.editor.owl.ui.action;
 
+import java.awt.event.ActionEvent;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.util.OWLEntityDeleter;
-import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.renderer.DeleteEntityIcon;
 import org.protege.editor.owl.ui.renderer.OWLEntityIcon;
 import org.protege.editor.owl.ui.renderer.OWLIndividualIcon;
-import org.protege.editor.owl.ui.renderer.OWLSystemColors;
 import org.protege.editor.owl.ui.view.OWLSelectionViewAction;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.util.OWLEntitySetProvider;
-
-import java.awt.event.ActionEvent;
 
 
 /**

@@ -1,9 +1,10 @@
 package org.protege.editor.owl.model.repository.extractors;
 
-import com.google.common.base.Optional;
+import java.net.URI;
+
 import org.semanticweb.owlapi.model.OWLOntologyID;
 
-import java.net.URI;
+import com.google.common.base.Optional;
 
 public interface OntologyIdExtractor {
     

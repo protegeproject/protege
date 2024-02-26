@@ -1,6 +1,10 @@
 package org.protege.editor.owl.ui.renderer.context;
 
-import org.semanticweb.owlapi.util.*;
+import org.semanticweb.owlapi.util.IRIShortFormProvider;
+import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
+import org.semanticweb.owlapi.util.ShortFormProvider;
+import org.semanticweb.owlapi.util.SimpleIRIShortFormProvider;
+import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 /**
  * Author: Matthew Horridge<br>

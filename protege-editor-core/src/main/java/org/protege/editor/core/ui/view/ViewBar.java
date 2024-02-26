@@ -1,14 +1,23 @@
 package org.protege.editor.core.ui.view;
 
-import org.protege.editor.core.ui.renderer.HasUseSystemForeground;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import javax.swing.Action;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.JToolBar;
+
+import org.protege.editor.core.ui.renderer.HasUseSystemForeground;
 
 
 /**

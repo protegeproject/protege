@@ -1,17 +1,18 @@
 package org.protege.editor.owl.ui.view;
 
-import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
-import org.protege.editor.owl.ui.frame.OWLEntityFrame;
-import org.protege.editor.owl.ui.framelist.OWLFrameList;
-import org.semanticweb.owlapi.model.OWLEntity;
-
-import javax.swing.*;
-import java.awt.*;
 /*
  * Copyright (C) 2007, University of Manchester
  *
  *
  */
+import java.awt.BorderLayout;
+
+import javax.swing.JScrollPane;
+
+import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
+import org.protege.editor.owl.ui.frame.OWLEntityFrame;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
+import org.semanticweb.owlapi.model.OWLEntity;
 
 
 /**

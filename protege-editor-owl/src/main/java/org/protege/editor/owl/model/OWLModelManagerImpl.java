@@ -1,10 +1,22 @@
 package org.protege.editor.owl.model;
 
-import com.google.common.base.Stopwatch;
+import java.io.File;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import javax.annotation.Nonnull;
+import javax.swing.SwingUtilities;
+
 import org.protege.editor.core.AbstractModelManager;
 import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
-import org.protege.editor.core.ui.util.Resettable;
 import org.protege.editor.owl.model.cache.DeprecationCache;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCacheImpl;
@@ -25,7 +37,12 @@ import org.protege.editor.owl.model.idrange.ActiveOntologyIdRangesPolicyManager;
 import org.protege.editor.owl.model.inference.OWLReasonerManager;
 import org.protege.editor.owl.model.inference.OWLReasonerManagerImpl;
 import org.protege.editor.owl.model.inference.ReasonerPreferences;
-import org.protege.editor.owl.model.io.*;
+import org.protege.editor.owl.model.io.IOListener;
+import org.protege.editor.owl.model.io.IOListenerEvent;
+import org.protege.editor.owl.model.io.OntologyLoader;
+import org.protege.editor.owl.model.io.OntologySaver;
+import org.protege.editor.owl.model.io.OntologySourcesManager;
+import org.protege.editor.owl.model.io.UserResolvedIRIMapper;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
 import org.protege.editor.owl.model.prefix.PrefixedNameRenderer;
 import org.protege.editor.owl.model.selection.ontologies.ImportsClosureOntologySelectionStrategy;
@@ -38,23 +55,40 @@ import org.protege.editor.owl.ui.clsdescriptioneditor.ManchesterOWLExpressionChe
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactory;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandler;
 import org.protege.editor.owl.ui.explanation.ExplanationManager;
-import org.protege.editor.owl.ui.renderer.*;
+import org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl;
+import org.protege.editor.owl.ui.renderer.OWLEntityRendererListener;
+import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
+import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
+import org.protege.editor.owl.ui.renderer.OWLObjectRendererImpl;
+import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
+import org.protege.editor.owl.ui.renderer.RenderingEscapeUtils;
 import org.protege.editor.owl.ui.renderer.RenderingEscapeUtils.RenderingEscapeSetting;
 import org.protege.editor.owl.ui.renderer.plugin.RendererPlugin;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDocumentFormat;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyChangeException;
+import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.model.OWLOntologyLoaderListener;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLOntologyStorageException;
+import org.semanticweb.owlapi.model.OWLRuntimeException;
+import org.semanticweb.owlapi.model.SetOntologyID;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.util.SimpleIRIMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
-import javax.swing.*;
-import java.io.File;
-import java.net.URI;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
+import com.google.common.base.Stopwatch;
 
 
 /**

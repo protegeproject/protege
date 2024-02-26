@@ -1,7 +1,13 @@
 package org.protege.editor.owl.ui.renderer.styledstring;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+
+import javax.swing.Icon;
+import javax.swing.JPanel;
 
 /**
  * Author: Matthew Horridge<br>

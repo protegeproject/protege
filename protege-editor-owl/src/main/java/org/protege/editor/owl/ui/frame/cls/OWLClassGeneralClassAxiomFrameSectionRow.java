@@ -1,6 +1,8 @@
 package org.protege.editor.owl.ui.frame.cls;
 
-import com.google.common.collect.Lists;
+import java.util.List;
+import java.util.Set;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.editor.OWLGeneralAxiomEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
@@ -11,8 +13,7 @@ import org.semanticweb.owlapi.model.OWLClassAxiom;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
 
-import java.util.List;
-import java.util.Set;
+import com.google.common.collect.Lists;
 
 /**
  * @author Matthew Horridge, Stanford University, Bio-Medical Informatics Research Group, Date: 09/06/2014

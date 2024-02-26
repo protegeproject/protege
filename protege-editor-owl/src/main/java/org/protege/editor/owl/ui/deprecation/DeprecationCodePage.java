@@ -1,20 +1,21 @@
 package org.protege.editor.owl.ui.deprecation;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.awt.BorderLayout;
+import java.util.List;
+import java.util.Optional;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.swing.JPanel;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.conf.valueset.LabelledValue;
 import org.protege.editor.owl.model.conf.valueset.ValueSetComponent;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
 import org.semanticweb.owlapi.model.OWLAnnotationValue;
 import org.semanticweb.owlapi.model.OWLDataFactory;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.swing.*;
-import java.awt.*;
-import java.util.List;
-import java.util.Optional;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Matthew Horridge

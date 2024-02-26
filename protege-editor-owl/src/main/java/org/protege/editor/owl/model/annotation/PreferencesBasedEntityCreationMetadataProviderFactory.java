@@ -1,17 +1,17 @@
 package org.protege.editor.owl.model.annotation;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.git.GitRepositoryManager;
 import org.protege.editor.owl.model.user.DefaultUserNameProvider;
 import org.protege.editor.owl.model.user.OrcidPreferencesManager;
 import org.protege.editor.owl.model.user.UserNamePreferencesManager;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Matthew Horridge

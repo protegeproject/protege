@@ -1,14 +1,16 @@
 package org.protege.editor.owl.ui.breadcrumb;
 
-import com.google.common.base.Objects;
-import org.semanticweb.owlapi.model.OWLObject;
+import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Optional;
 
-import static com.google.common.base.MoreObjects.toStringHelper;
-import static com.google.common.base.Preconditions.checkNotNull;
+import org.semanticweb.owlapi.model.OWLObject;
+
+import com.google.common.base.Objects;
 
 /**
  * Matthew Horridge

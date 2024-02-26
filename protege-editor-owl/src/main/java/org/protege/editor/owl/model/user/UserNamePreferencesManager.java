@@ -1,10 +1,10 @@
 package org.protege.editor.owl.model.user;
 
-import org.protege.editor.core.prefs.Preferences;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Optional;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import org.protege.editor.core.prefs.Preferences;
 
 /**
  * Matthew Horridge

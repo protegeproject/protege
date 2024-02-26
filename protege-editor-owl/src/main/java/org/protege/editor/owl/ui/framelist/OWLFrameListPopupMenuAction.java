@@ -1,14 +1,15 @@
 package org.protege.editor.owl.ui.framelist;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.AbstractAction;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
-
-import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**

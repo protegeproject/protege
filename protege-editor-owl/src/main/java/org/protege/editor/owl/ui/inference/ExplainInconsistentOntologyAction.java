@@ -1,9 +1,9 @@
 package org.protege.editor.owl.ui.inference;
 
+import java.awt.event.ActionEvent;
+
 import org.protege.editor.owl.ui.action.ProtegeOWLAction;
 import org.protege.editor.owl.ui.explanation.io.InconsistentOntologyManager;
-
-import java.awt.event.ActionEvent;
 
 public class ExplainInconsistentOntologyAction extends ProtegeOWLAction {
 	private static final long serialVersionUID = -3932851787552935976L;

@@ -1,13 +1,14 @@
 package org.protege.editor.core.ui;
 
-import org.protege.editor.core.OntologyRepository;
-import org.protege.editor.core.OntologyRepositoryEntry;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URI;
+
+import javax.swing.JTable;
+
+import org.protege.editor.core.OntologyRepository;
+import org.protege.editor.core.OntologyRepositoryEntry;
 
 
 /**

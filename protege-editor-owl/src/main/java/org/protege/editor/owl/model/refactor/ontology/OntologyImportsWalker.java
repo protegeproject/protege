@@ -1,10 +1,5 @@
 package org.protege.editor.owl.model.refactor.ontology;
 
-import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.hierarchy.OWLOntologyHierarchyProvider;
-import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLOntology;
-
 import java.util.HashSet;
 import java.util.Set;
 /*
@@ -12,6 +7,11 @@ import java.util.Set;
 *
 *
 */
+
+import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.hierarchy.OWLOntologyHierarchyProvider;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 /**
  * Author: drummond<br>

@@ -1,15 +1,17 @@
 package org.protege.editor.owl.ui.lang;
 
-import org.protege.editor.owl.model.lang.LangCode;
-import org.protege.editor.owl.model.lang.LangCodeRegistry;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.Nonnull;
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.util.Optional;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nonnull;
+import javax.swing.ComboBoxEditor;
+import javax.swing.JTextField;
+
+import org.protege.editor.owl.model.lang.LangCode;
+import org.protege.editor.owl.model.lang.LangCodeRegistry;
 
 /**
  * Matthew Horridge

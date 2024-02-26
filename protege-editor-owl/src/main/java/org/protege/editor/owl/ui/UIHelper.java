@@ -1,6 +1,23 @@
 package org.protege.editor.owl.ui;
 
-import com.google.common.collect.ImmutableList;
+import java.awt.Dimension;
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.OWLEditorKit;
@@ -12,18 +29,27 @@ import org.protege.editor.owl.ui.lang.LangCodeEditor;
 import org.protege.editor.owl.ui.lang.LangCodeRenderer;
 import org.protege.editor.owl.ui.list.OWLEntityListPanel;
 import org.protege.editor.owl.ui.renderer.OWLCellRendererSimple;
-import org.protege.editor.owl.ui.selector.*;
-import org.semanticweb.owlapi.model.*;
+import org.protege.editor.owl.ui.selector.OWLAnnotationPropertySelectorPanel;
+import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
+import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
+import org.protege.editor.owl.ui.selector.OWLDataTypeSelectorPanel;
+import org.protege.editor.owl.ui.selector.OWLIndividualSelectorPanel;
+import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
+import org.protege.editor.owl.ui.selector.OWLOntologySelectorPanel;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
-import java.util.List;
+import com.google.common.collect.ImmutableList;
 
 
 /**

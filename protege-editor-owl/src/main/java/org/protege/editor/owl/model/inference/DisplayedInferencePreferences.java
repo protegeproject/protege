@@ -1,12 +1,12 @@
 package org.protege.editor.owl.model.inference;
 
-import org.protege.editor.core.prefs.Preferences;
-import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
-import org.semanticweb.owlapi.reasoner.InferenceType;
-
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.Set;
+
+import org.protege.editor.core.prefs.Preferences;
+import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
+import org.semanticweb.owlapi.reasoner.InferenceType;
 
 public class DisplayedInferencePreferences {
 	

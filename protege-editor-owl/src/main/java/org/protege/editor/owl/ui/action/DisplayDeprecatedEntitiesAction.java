@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.action;
 
-import org.protege.editor.owl.ui.view.HasDisplayDeprecatedEntities;
-
 import java.awt.event.ActionEvent;
+
+import org.protege.editor.owl.ui.view.HasDisplayDeprecatedEntities;
 
 /**
  * Matthew Horridge

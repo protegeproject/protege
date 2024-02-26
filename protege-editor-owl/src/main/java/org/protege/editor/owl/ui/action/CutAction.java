@@ -1,14 +1,14 @@
 package org.protege.editor.owl.ui.action;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
+import java.util.List;
+
 import org.protege.editor.owl.ui.transfer.TransferableOWLObject;
 import org.protege.editor.owl.ui.view.Cuttable;
 import org.protege.editor.owl.ui.view.ViewClipboard;
 import org.semanticweb.owlapi.model.OWLObject;
-
-import java.awt.*;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
-import java.util.List;
 
 
 /**

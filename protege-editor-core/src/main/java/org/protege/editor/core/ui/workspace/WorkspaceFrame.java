@@ -1,5 +1,22 @@
 package org.protege.editor.core.ui.workspace;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JPanel;
+
 import org.protege.editor.core.platform.OSUtils;
 import org.protege.editor.core.platform.apple.ProtegeAppleApplication;
 import org.protege.editor.core.prefs.Preferences;
@@ -8,14 +25,6 @@ import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.menu.MenuBuilder;
 import org.protege.editor.core.ui.util.Icons;
 import org.protege.editor.core.ui.util.UIUtil;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
 
 /**
  * Author: Matthew Horridge<br>

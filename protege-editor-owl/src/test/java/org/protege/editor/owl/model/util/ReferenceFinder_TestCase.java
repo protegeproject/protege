@@ -1,19 +1,25 @@
 package org.protege.editor.owl.model.util;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.Collections;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.AxiomType;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLAxiom;
+import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.parameters.Imports;
-
-import java.util.Collections;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Matthew Horridge
@@ -61,7 +67,7 @@ public class ReferenceFinder_TestCase {
     public void shouldRetrieveAnnotationAssertionAxiomBySubjectReference() {
         when(ontology.getAxioms(AxiomType.ANNOTATION_ASSERTION)).thenReturn(Collections.singleton(annotationAssertionAxiom));
         when(annotationAssertionAxiom.getSubject()).thenReturn(iri);
-        when(annotationAssertionAxiom.getValue()).thenReturn(mock(IRI.class));
+        //when(annotationAssertionAxiom.getValue()).thenReturn(mock(IRI.class));
 
         ReferenceFinder.ReferenceSet referenceSet = getReferenceSet();
         assertThat(referenceSet.getReferencingAxioms(), hasItem(annotationAssertionAxiom));
@@ -80,7 +86,7 @@ public class ReferenceFinder_TestCase {
     @Test
     public void shouldRetrieveOntologyAnnotationsByValue() {
         when(ontology.getAnnotations()).thenReturn(Collections.singleton(ontologyAnnotation));
-        when(ontologyAnnotation.getProperty()).thenReturn(mock(OWLAnnotationProperty.class));
+        //when(ontologyAnnotation.getProperty()).thenReturn(mock(OWLAnnotationProperty.class));
         when(ontologyAnnotation.getValue()).thenReturn(iri);
 
         ReferenceFinder.ReferenceSet referenceSet = getReferenceSet();

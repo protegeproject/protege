@@ -1,15 +1,26 @@
 package org.protege.editor.owl.ui.transfer;
 
+import java.awt.AlphaComposite;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.dnd.DragGestureEvent;
+import java.awt.dnd.DragGestureListener;
+import java.awt.dnd.DragSourceAdapter;
+import java.awt.dnd.DragSourceDropEvent;
+import java.awt.dnd.InvalidDnDOperationException;
+import java.awt.image.BufferedImage;
+import java.util.List;
+
+import javax.swing.JComponent;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.dnd.*;
-import java.awt.image.BufferedImage;
-import java.util.List;
 
 
 /**

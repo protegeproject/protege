@@ -1,23 +1,23 @@
 package org.protege.editor.owl.model.conf.valueset;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.conf.IRIExpander;
-import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
-import org.protege.editor.owl.model.util.OWLUtilities;
-import org.protege.editor.owl.ui.renderer.RenderingEscapeUtils;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLClass;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.stream.Collectors.toList;
+import static org.protege.editor.owl.ui.renderer.RenderingEscapeUtils.unescape;
 
-import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static java.util.stream.Collectors.toList;
-import static org.protege.editor.owl.ui.renderer.RenderingEscapeUtils.unescape;
+import javax.annotation.Nonnull;
+
+import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.conf.IRIExpander;
+import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLClass;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Matthew Horridge

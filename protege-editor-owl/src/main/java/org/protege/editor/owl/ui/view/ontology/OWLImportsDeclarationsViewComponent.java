@@ -1,13 +1,13 @@
 package org.protege.editor.owl.ui.view.ontology;
 
+import java.awt.BorderLayout;
+
+import javax.swing.JScrollPane;
+
 import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.ontology.imports.OntologyImportsList;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
-
-import javax.swing.*;
-import java.awt.*;
 
 
 /**

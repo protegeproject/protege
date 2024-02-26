@@ -1,8 +1,8 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.protege.editor.owl.ui.renderer.layout.Link;
-
 import java.util.Optional;
+
+import org.protege.editor.owl.ui.renderer.layout.Link;
 
 /**
  * Matthew Horridge

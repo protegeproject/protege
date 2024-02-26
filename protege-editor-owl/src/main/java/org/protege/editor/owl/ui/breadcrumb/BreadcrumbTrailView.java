@@ -1,10 +1,11 @@
 package org.protege.editor.owl.ui.breadcrumb;
 
-import org.protege.editor.core.util.ClickHandler;
+import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.swing.*;
-import java.util.List;
+import javax.swing.JComponent;
+
+import org.protege.editor.core.util.ClickHandler;
 
 /**
  * Matthew Horridge

@@ -1,9 +1,17 @@
 package org.protege.editor.owl.model.refactor.ontology;
 
-import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLEntityRenamer;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import java.util.*;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
+import org.semanticweb.owlapi.model.OWLOntologyID;
+import org.semanticweb.owlapi.util.OWLEntityRenamer;
 
 /**
  * Author: Matthew Horridge<br>

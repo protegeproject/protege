@@ -1,17 +1,24 @@
 package org.protege.editor.owl.model.prefix;
 
-import com.google.common.collect.ImmutableSortedMap;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.vocab.Namespaces;
-
-import javax.annotation.Nonnull;
-import java.util.*;
-
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.naturalOrder;
-import static org.semanticweb.owlapi.vocab.Namespaces.*;
+import static org.semanticweb.owlapi.vocab.Namespaces.OWL;
+import static org.semanticweb.owlapi.vocab.Namespaces.RDF;
+import static org.semanticweb.owlapi.vocab.Namespaces.RDFS;
+import static org.semanticweb.owlapi.vocab.Namespaces.XSD;
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.vocab.Namespaces;
+
+import com.google.common.collect.ImmutableSortedMap;
 
 /**
  * Matthew Horridge

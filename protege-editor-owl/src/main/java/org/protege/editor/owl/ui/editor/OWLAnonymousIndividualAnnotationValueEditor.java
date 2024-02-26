@@ -1,7 +1,19 @@
 package org.protege.editor.owl.ui.editor;
 
+import java.awt.BorderLayout;
+import java.util.Collections;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.frame.OWLAnnotationFrameSection;
 import org.protege.editor.owl.ui.frame.individual.OWLClassAssertionAxiomTypeFrameSection;
 import org.protege.editor.owl.ui.frame.individual.OWLIndividualPropertyAssertionsFrame;
@@ -9,15 +21,6 @@ import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.protege.editor.owl.ui.renderer.OWLIndividualIcon;
 import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
 import org.semanticweb.owlapi.model.OWLIndividual;
-import org.semanticweb.owlapi.model.OWLOntologyID;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.swing.*;
-import java.awt.*;
-import java.util.Collections;
-import java.util.Set;
-import java.util.UUID;
 
 /*
  * Copyright (C) 2007, University of Manchester

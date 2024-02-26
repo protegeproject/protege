@@ -1,17 +1,22 @@
 package org.protege.editor.core;
 
-import org.protege.editor.core.editorkit.*;
-import org.protege.editor.core.ui.workspace.Workspace;
-import org.protege.editor.core.ui.workspace.WorkspaceFrame;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.lang.ref.WeakReference;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.protege.editor.core.editorkit.EditorKit;
+import org.protege.editor.core.editorkit.EditorKitDescriptor;
+import org.protege.editor.core.editorkit.EditorKitFactory;
+import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
+import org.protege.editor.core.editorkit.EditorKitFactoryPluginLoader;
+import org.protege.editor.core.editorkit.EditorKitManager;
+import org.protege.editor.core.ui.workspace.Workspace;
+import org.protege.editor.core.ui.workspace.WorkspaceFrame;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**

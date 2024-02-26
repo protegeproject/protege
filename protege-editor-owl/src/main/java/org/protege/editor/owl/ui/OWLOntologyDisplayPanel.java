@@ -1,18 +1,22 @@
 package org.protege.editor.owl.ui;
 
-import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.frame.ontology.OWLOntologyFrame;
-import org.protege.editor.owl.ui.framelist.OWLFrameList;
-import org.protege.editor.owl.ui.metrics.MetricsPanel;
-import org.semanticweb.owlapi.model.OWLOntology;
-
-import javax.swing.*;
-import java.awt.*;
 /*
  * Copyright (C) 2007, University of Manchester
  *
  *
  */
+import java.awt.BorderLayout;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+
+import org.protege.editor.owl.OWLEditorKit;
+import org.protege.editor.owl.ui.frame.ontology.OWLOntologyFrame;
+import org.protege.editor.owl.ui.framelist.OWLFrameList;
+import org.protege.editor.owl.ui.metrics.MetricsPanel;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 
 /**

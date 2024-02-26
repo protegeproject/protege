@@ -1,12 +1,12 @@
 package org.protege.editor.owl.model.io;
 
+import java.io.File;
+import java.util.Stack;
+
 import org.protege.editor.owl.ui.util.ProgressDialog;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyLoaderListener;
 import org.slf4j.Logger;
-
-import java.io.File;
-import java.util.Stack;
 
 /**
 * Matthew Horridge

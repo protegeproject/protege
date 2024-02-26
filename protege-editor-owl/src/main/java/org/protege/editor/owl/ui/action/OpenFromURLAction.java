@@ -1,5 +1,8 @@
 package org.protege.editor.owl.ui.action;
 
+import java.awt.event.ActionEvent;
+import java.net.URI;
+
 import org.protege.editor.core.ProtegeManager;
 import org.protege.editor.core.editorkit.EditorKitFactoryPlugin;
 import org.protege.editor.core.ui.OpenFromURLPanel;
@@ -7,9 +10,6 @@ import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.ui.util.OpenRequestHandler;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.core.ui.workspace.Workspace;
-
-import java.awt.event.ActionEvent;
-import java.net.URI;
 
 
 /**

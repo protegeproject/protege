@@ -1,10 +1,10 @@
 package org.protege.editor.owl.model.entity;
 
-import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 
 
 /**

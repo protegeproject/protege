@@ -1,14 +1,15 @@
 package org.protege.editor.owl.ui.inference;
 
+import java.awt.BorderLayout;
+import java.util.EnumMap;
+import java.util.Map.Entry;
+
+import javax.swing.JCheckBox;
+
 import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
 import org.protege.editor.owl.model.inference.ReasonerPreferences;
 import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
 import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.EnumMap;
-import java.util.Map.Entry;
 
 public class DisplayedInferencesPreferencePanel extends OWLPreferencesPanel {
     private static final long serialVersionUID = 8356095374634408957L;
