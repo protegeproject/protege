@@ -15,6 +15,15 @@
               value="onFirstInit"/>
     <property name="org.osgi.service.http.port" value="8081"/>
   </frameworkProperties>
+  <!-- Try initialising the logging providers early on -->
+  <bundles>
+    <search path="bundles"/>
+    <search path="${user.home}/.Protege/bundles"/>
+    <bundle name="logback-classic.jar"/>
+    <bundle name="logback-core.jar"/>
+    <bundle name="slf4j-api.jar"/>
+    <bundle name="org.apache.aries.spifly.dynamic.bundle.jar"/>
+  </bundles>
   <!--
   We need to start things at different levels.
   Protege common needs starting first because it sets up the required XML parsing machinery.  Without this

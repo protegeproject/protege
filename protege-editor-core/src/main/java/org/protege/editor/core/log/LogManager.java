@@ -2,6 +2,7 @@ package org.protege.editor.core.log;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.AppenderBase;
@@ -121,9 +122,17 @@ public class LogManager {
 		listenerList.stream().forEach(LogStatusListener::statusCleared);
 	}
 
-    private Logger getRootLogger() {
-        return (Logger) LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
-    }
+	private Logger getRootLogger() {
+		org.slf4j.Logger l = LoggerFactory.getILoggerFactory().getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
+		if (!(l instanceof Logger)) {
+			/* This could (and does!) happen if the SLF4J api could not find any backend
+			 * service provider. We get a dummy logger in that case; it won't log
+			 * anything but that's still better than crashing on an invalid cast. */
+			return new LoggerContext().getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
+		} else {
+			return (Logger)l;
+		}
+	}
 
     public void bind() {
     	    applyPreferences();

@@ -21,6 +21,7 @@
                 <include>org.slf4j:slf4j-api:jar</include>
                 <include>org.slf4j:log4j-over-slf4j:jar</include>
                 <include>org.slf4j:jul-to-slf4j:jar</include>
+                <include>org.apache.aries.spifly:org.apache.aries.spifly.dynamic.bundle:jar</include>
                 <include>commons-io:commons-io:jar</include>
                 <include>org.apache.servicemix.bundles:org.apache.servicemix.bundles.javax-inject:jar</include>
                 <include>org.apache.servicemix.bundles:org.apache.servicemix.bundles.aopalliance:jar</include>
@@ -40,6 +41,7 @@
                 <include>org.glassfish.pfl:pfl-tf:jar</include>
                 <include>org.glassfish.pfl:pfl-dynamic:jar</include>
                 <include>org.ow2.asm:asm:jar</include>
+                <include>org.ow2.asm:asm-commons:jar</include>
                 <include>org.ow2.asm:asm-util:jar</include>
                 <include>org.ow2.asm:asm-tree:jar</include>
                 <include>org.ow2.asm:asm-analysis:jar</include>
