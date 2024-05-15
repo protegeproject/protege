@@ -522,7 +522,9 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
             // Rebuild the cache in case the imports closure has changed
             rebuildActiveOntologiesCache();
             refreshRenderer();
-            idRangesPolocyManager.reload();
+            if (this.activeOntology != null && this.activeOntology.equals(ont)) {
+                idRangesPolocyManager.reload();
+            }
         } finally {
             setClean(ont);
             fireEvent(EventType.ONTOLOGY_RELOADED);
