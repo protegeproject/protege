@@ -1,0 +1,31 @@
+name: Publish packages to the Maven Central Repository
+
+on:
+  release:
+    types: [released]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Maven Central Repository
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+          server-id: ossrh
+          server-username: OSSRH_USERNAME
+          server-password: OSSRH_TOKEN
+          gpg-private-key: ${{secrets.GPG_PRIVATE_KEY}}
+          gpg-passphrase: GPG_PASSPHRASE
+      - if: github.event.release
+        name: Update version in pom.xml (Release only)
+        run: mvn -B versions:set -DnewVersion=${{ github.event.release.tag_name }} -DgenerateBackupPoms=false
+      - name: Publish packages
+        run: mvn --batch-mode -Prelease deploy
+env:
+  GPG_PASSPHRASE: ${{secrets.GPG_PASSPHRASE}}
+  OSSRH_USERNAME: ${{secrets.OSSRH_USERNAME}}
+  OSSRH_TOKEN: ${{secrets.OSSRH_TOKEN}}
