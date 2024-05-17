@@ -526,6 +526,9 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
+						<configuration>
+							<skip>${release.signing.disabled}</skip>
+						</configuration>
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>
