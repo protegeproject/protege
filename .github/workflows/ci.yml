@@ -8,7 +8,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  publish:
+  test:
+    strategy:
+      matrix:
+        profile: [ default, ide, release ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,4 +21,4 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
       - name: Run test suite
-        run: mvn --batch-mode test
+        run: mvn --batch-mode verify --activate-profiles ${{ matrix.profile }} --define release.signing.disabled=true clean verify
