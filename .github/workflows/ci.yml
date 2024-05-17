@@ -21,4 +21,4 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
       - name: Run test suite
-        run: mvn --batch-mode verify --activate-profiles ${{ matrix.profile }} --define release.signing.disabled=true clean verify
+        run: mvn --batch-mode --activate-profiles ${{ matrix.profile }} --define release.signing.disabled=true clean verify
