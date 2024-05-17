@@ -558,7 +558,7 @@
 							OSGi Framework launcher). -->
 						<plugin>
 							<artifactId>maven-resources-plugin</artifactId>
-							<version>3.9.6</version>
+							<version>3.3.1</version>
 							<executions>
 								<execution>
 									<id>copy-resources</id>
