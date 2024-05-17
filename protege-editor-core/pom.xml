@@ -105,6 +105,8 @@
 						</_exportcontents>
 						<Import-Package>
 							!com.sun.*,
+							!com.apple.*,
+							!sun.swing,
 							org.eclipse.core.runtime;registry="split",
 							*
 						</Import-Package>
