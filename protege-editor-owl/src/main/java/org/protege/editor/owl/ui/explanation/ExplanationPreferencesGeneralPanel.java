@@ -6,13 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 
 import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
 import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
@@ -21,7 +15,7 @@ public class ExplanationPreferencesGeneralPanel extends OWLPreferencesPanel {
 
 	private static final long serialVersionUID = -3354987384223578780L;
 
-	private JRadioButton buttonLast, buttonFirst;
+	private JCheckBox checkRecentlyUsed;
 	private SortedPluginsTableModel tableModel;
 
 	@Override
@@ -29,8 +23,8 @@ public class ExplanationPreferencesGeneralPanel extends OWLPreferencesPanel {
 		setLayout(new BorderLayout());
 		PreferencesLayoutPanel panel = new PreferencesLayoutPanel();
 		add(panel, BorderLayout.NORTH);
-		addDefaultExplanationServiceComponent(panel);
 		addInstalledExplanationServicesComponent(panel);
+		addDefaultExplanationServiceComponent(panel);
 		loadFrom(ExplanationPreferences.create().load());
 	}
 
@@ -47,34 +41,21 @@ public class ExplanationPreferencesGeneralPanel extends OWLPreferencesPanel {
 	}
 
 	private void loadFrom(ExplanationPreferences prefs) {
-		if (prefs.useLastExplanationService) {
-			buttonLast.setSelected(true);
-		} else {
-			buttonFirst.setSelected(true);
-		}
+		checkRecentlyUsed.setSelected(prefs.useLastExplanationService);
 		tableModel.setPluginIds(prefs.explanationServicesList);
 		tableModel.setDisabledIds(prefs.disabledExplanationServices);
 	}
 
 	private void saveTo(ExplanationPreferences prefs) {
-		prefs.useLastExplanationService = buttonLast.isSelected();
+		prefs.useLastExplanationService = checkRecentlyUsed.isSelected();
 		prefs.explanationServicesList = tableModel.getPluginIds();
 		prefs.disabledExplanationServices = tableModel.getDisabledIds();
 	}
 
 	private void addDefaultExplanationServiceComponent(PreferencesLayoutPanel panel) {
-		panel.addGroup("Default explanation service");
-		buttonLast = new JRadioButton("Most recently used explanation service");
-		buttonLast.setToolTipText(
-				"Always use the most recently used explanation service, if it can provide an explanation for the chosen axiom");
-		buttonFirst = new JRadioButton("First available explanation service from the list below");
-		buttonFirst.setToolTipText(
-				"Always use the first explanation service from the list below that can provide an explanation for the chosen axiom");
-		ButtonGroup group = new ButtonGroup();
-		group.add(buttonLast);
-		group.add(buttonFirst);
-		panel.addGroupComponent(buttonLast);
-		panel.addGroupComponent(buttonFirst);
+		checkRecentlyUsed = new JCheckBox("Try using the most recently used explanation service first");
+		checkRecentlyUsed.setToolTipText("Use the most recently used explanation service, if it can provide an explanation for the chosen axiom; otherwise, use the first available service from the list above");
+		panel.addGroupComponent(checkRecentlyUsed);
 	}
 
 	private void addInstalledExplanationServicesComponent(PreferencesLayoutPanel panel) {
@@ -88,7 +69,7 @@ public class ExplanationPreferencesGeneralPanel extends OWLPreferencesPanel {
 		tableModel = new SortedPluginsTableModel(nameMap);
 		JTable pluginTable = new JTable(tableModel);
 		pluginTable.setToolTipText(
-				"Plugins that provide explanation facilities. You can disable and enable plugins and change their order using the buttons below.");
+				"Plugins that provide explanation facilities. Protégé will use the first enabled service on the list that can provide an explanation for the chosen axiom.");
 		pluginTable.setRowSelectionAllowed(true);
 		pluginTable.setColumnSelectionAllowed(false);
 		pluginTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
