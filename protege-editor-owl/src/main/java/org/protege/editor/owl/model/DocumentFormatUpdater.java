@@ -36,7 +36,8 @@ public class DocumentFormatUpdater {
         OWLDocumentFormat mappedFormat = formatMapper.mapFormat(format);
         man.setOntologyFormat(ontology, mappedFormat);
         if(mappedFormat != format) {
-            logger.info("Updated document format class from: {} to: {}",
+            logger.info("Updated ontology {} document format class from: {} to: {}",
+                        ontology.getOntologyID().getOntologyIRI(),
                         format.getClass().getName(),
                         mappedFormat.getClass().getName());
         }

@@ -128,9 +128,11 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
             langTagField.clear();
         }
         else if(isLangSelected()) {
-            datatypeField.setSelectedItem(null);
+            datatypeField.setSelectedItem(OWL2Datatype.RDF_PLAIN_LITERAL.getDatatype(this.dataFactory));
+            datatypeField.setEnabled(false);
         }
         else {
+            datatypeField.setEnabled(true);
             OWLDatatype selDatatype = (OWLDatatype) datatypeField.getSelectedItem();
             if(isBuiltInParseableDatatpe(selDatatype) || selDatatype == null) {
                 OWLLiteralParser parser = new OWLLiteralParser(dataFactory);
