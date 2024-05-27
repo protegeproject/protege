@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 import javax.swing.JDialog;
@@ -122,6 +121,7 @@ public class ExplanationManager implements Disposable {
 	}
 	
 	public void handleExplain(Frame owner, OWLAxiom axiom) {
+		reload();
 		final ExplanationDialog explanation = new ExplanationDialog(this, axiom);
 		openedExplanations.add(explanation);
 		JOptionPane op = new JOptionPane(explanation, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION);

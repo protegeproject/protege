@@ -31,6 +31,7 @@ public class ExplanationPreferencesGeneralPanel extends OWLPreferencesPanel {
 		add(panel, BorderLayout.NORTH);
 		addDefaultExplanationServiceComponent(panel);
 		addInstalledExplanationServicesComponent(panel);
+		getOWLEditorKit().getModelManager().getExplanationManager().reload();
 		loadFrom(ExplanationPreferences.create().load());
 	}
 
