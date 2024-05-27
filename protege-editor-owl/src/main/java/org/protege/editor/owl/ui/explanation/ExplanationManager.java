@@ -121,7 +121,6 @@ public class ExplanationManager implements Disposable {
 	}
 	
 	public void handleExplain(Frame owner, OWLAxiom axiom) {
-		reload();
 		final ExplanationDialog explanation = new ExplanationDialog(this, axiom);
 		openedExplanations.add(explanation);
 		JOptionPane op = new JOptionPane(explanation, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION);
