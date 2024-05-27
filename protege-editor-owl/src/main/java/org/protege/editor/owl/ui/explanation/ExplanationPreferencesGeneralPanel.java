@@ -31,12 +31,12 @@ public class ExplanationPreferencesGeneralPanel extends OWLPreferencesPanel {
 		add(panel, BorderLayout.NORTH);
 		addDefaultExplanationServiceComponent(panel);
 		addInstalledExplanationServicesComponent(panel);
-		getOWLEditorKit().getModelManager().getExplanationManager().reload();
 		loadFrom(ExplanationPreferences.create().load());
 	}
 
 	@Override
 	public void dispose() throws Exception {
+		getOWLEditorKit().getModelManager().getExplanationManager().reload();
 	}
 
 	@Override
@@ -44,7 +44,6 @@ public class ExplanationPreferencesGeneralPanel extends OWLPreferencesPanel {
 		ExplanationPreferences prefs = ExplanationPreferences.create();
 		saveTo(prefs);
 		prefs.save();
-		getOWLEditorKit().getModelManager().getExplanationManager().reload();
 	}
 
 	private void loadFrom(ExplanationPreferences prefs) {
