@@ -152,7 +152,15 @@ public class UIUtil {
             parentWindow = SwingUtilities.getWindowAncestor(parent);
         }
         if(OSUtils.isOSX() && parentWindow != null) {
-            return MacUIUtil.saveFile(parentWindow, title, extensions, initialName);
+            File f = MacUIUtil.saveFile(parentWindow, title, extensions, initialName);
+            if (f != null)
+                return f;
+            // Proceed with the OS-independent path below. This is a workaround for
+            // a bug on some Macs where the native file-choosing dialog in MacUIUtil
+            // is never shown to the user. On Macs where the dialog is actually
+            // shown as expected, if the user clicked "cancel" then they will
+            // be shown a second dialog that they will have to cancel again. :(
+            // See https://github.com/protegeproject/protege/issues/1106
         }
         JFileChooser fileDialog = new JFileChooser(getCurrentFileDirectory());
         fileDialog.setDialogTitle(title);

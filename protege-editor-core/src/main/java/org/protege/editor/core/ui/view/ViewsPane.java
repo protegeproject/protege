@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 import java.awt.*;
 import java.io.*;
 import java.util.Collections;
@@ -121,7 +122,7 @@ public class ViewsPane extends JPanel {
             nodeSerialiser.serialise();
             writer.flush();
         }
-        catch (ParserConfigurationException | IOException e) {
+        catch (ParserConfigurationException | IOException | TransformerFactoryConfigurationError e) {
             logger.error("An error occurred whilst saving a views configuration file: {}", e);
         }
     }

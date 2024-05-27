@@ -9,6 +9,7 @@ import java.awt.*;
 import java.util.Collections;
 
 import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeFalse;
 
 /**
  * Matthew Horridge
@@ -17,17 +18,19 @@ import static org.junit.Assert.fail;
  */
 public class MacUIUtil_TestCase {
 
-    public static final Window PARENT = new JFrame();
+    private Window parent;
 
     @Before
     public void setUp() throws Exception {
+        assumeFalse(GraphicsEnvironment.isHeadless());
+        parent = new JFrame();
     }
 
 
     @Test
     public void shouldAcceptNullExtensionsArg() {
         try {
-            showDialog(() -> MacUIUtil.saveFile(PARENT, "Title", null, "Initial name"));
+            showDialog(() -> MacUIUtil.saveFile(parent, "Title", null, "Initial name"));
 
         } catch (Exception e) {
             fail(e.getMessage());
@@ -37,7 +40,7 @@ public class MacUIUtil_TestCase {
     @Test
     public void shouldAcceptNullInitialName() {
         try {
-            showDialog(() -> MacUIUtil.saveFile(PARENT, "Title", Collections.emptySet(), null));
+            showDialog(() -> MacUIUtil.saveFile(parent, "Title", Collections.emptySet(), null));
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -46,7 +49,7 @@ public class MacUIUtil_TestCase {
     @Test
     public void shouldAcceptNullTitle() {
         try {
-            showDialog(() -> MacUIUtil.saveFile(PARENT, null, Collections.emptySet(), "Initial name"));
+            showDialog(() -> MacUIUtil.saveFile(parent, null, Collections.emptySet(), "Initial name"));
         } catch (Exception e) {
             fail(e.getMessage());
         }
