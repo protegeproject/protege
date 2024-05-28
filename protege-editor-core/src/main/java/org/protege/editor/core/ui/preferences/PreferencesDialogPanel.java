@@ -26,7 +26,7 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
 
     public static final String RESET_PREFERENCES_CONFIRMATION_DIALOG_TITLE = "Reset preferences?";
 
-    public static final String RESET_PREFERENCES_CONFIRMATION_DIALOG_MESSAGE = "Are you sure you want to reset all preferences to their default settings";
+    public static final String RESET_PREFERENCES_CONFIRMATION_DIALOG_MESSAGE = "Are you sure you want to reset ALL preferences to their default settings?";
 
     public static final int DIALOG_DEFAULT_WIDTH = 850;
 
@@ -40,15 +40,26 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
 
     private static final String PREFS_HISTORY_PANEL_KEY = "prefs.history.panel";
 
-    // A bit messy
-    private boolean wasReset = false;
-
     private final Logger logger = LoggerFactory.getLogger(PreferencesDialogPanel.class);
+    
+    private final EditorKit editorKit;
 
     public PreferencesDialogPanel(EditorKit editorKit) {
+    	this.editorKit = editorKit;
         setLayout(new BorderLayout());
-
-        PreferencesPanelPluginLoader loader = new PreferencesPanelPluginLoader(editorKit);
+        add(tabbedPane);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int margin = 300;
+        int prefWidth = Math.min(screenSize.width - margin, DIALOG_DEFAULT_WIDTH);
+        int prefHeight = Math.min(screenSize.height - margin, DIALOG_DEFAULT_HEIGHT);
+        setPreferredSize(new Dimension(prefWidth, prefHeight));
+        reload();
+    }
+    
+    private void reload() {
+    	dispose();
+    	tabbedPane.removeAll();
+    	PreferencesPanelPluginLoader loader = new PreferencesPanelPluginLoader(editorKit);
         Set<PreferencesPanelPlugin> plugins = new TreeSet<>((o1, o2) -> {
                 String s1 = o1.getLabel();
                 String s2 = o2.getLabel();
@@ -70,13 +81,6 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
                 logger.warn("An error occurred whilst trying to instantiate the preferences panel plugin '{}': {}", plugin.getLabel(), e);
             }
         }
-        add(tabbedPane);
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int margin = 300;
-        int prefWidth = Math.min(screenSize.width - margin, DIALOG_DEFAULT_WIDTH);
-        int prefHeight = Math.min(screenSize.height - margin, DIALOG_DEFAULT_HEIGHT);
-        setPreferredSize(new Dimension(prefWidth, prefHeight));
-
     }
 
     public void dispose() {
@@ -114,21 +118,25 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
         }
         return null;
     }
+    
+    protected void setSelectedPanel(String tabName) {
+    	Component c = componentMap.get(tabName);
+        if (c != null) {
+            tabbedPane.setSelectedComponent(c);
+        }
+    }
 
     public static void showPreferencesDialog(String selectedPanel, EditorKit editorKit) {
         final PreferencesDialogPanel preferencesPanel = new PreferencesDialogPanel(editorKit);
         
         JPanel holder = new JPanel(new BorderLayout(4, 4));
         holder.add(preferencesPanel);
-        
-        final Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(PreferencesDialogPanel.class);
+                
         if (selectedPanel == null){
+        	Preferences prefs = PreferencesManager.getInstance().getApplicationPreferences(PreferencesDialogPanel.class);
             selectedPanel = prefs.getString(PREFS_HISTORY_PANEL_KEY, null);
         }
-        Component c = preferencesPanel.componentMap.get(selectedPanel);
-        if (c != null) {
-            preferencesPanel.tabbedPane.setSelectedComponent(c);
-        }
+        preferencesPanel.setSelectedPanel(selectedPanel);
 
         JPanel resetPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton resetPreferencesButton = new JButton(new AbstractAction("Reset preferences...") {
@@ -143,25 +151,28 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
         JDialog dlg = op.createDialog(editorKit.getWorkspace(), "Preferences");
         dlg.setResizable(true);
         dlg.setVisible(true);
-        if (!preferencesPanel.wasReset) {
-            Object o = op.getValue();
-            if (o != null){
-                int ret = (Integer)o;
-                if (ret == JOptionPane.OK_OPTION) {
-                    preferencesPanel.applyPreferences();
-                }
+        Object o = op.getValue();
+        if (o != null){
+            int ret = (Integer)o;
+            if (ret == JOptionPane.OK_OPTION) {
+                preferencesPanel.applyPreferences();
             }
-            prefs.putString(PREFS_HISTORY_PANEL_KEY, preferencesPanel.getSelectedPanel());
         }
+        
+		PreferencesManager.getInstance()
+				.getApplicationPreferences(PreferencesDialogPanel.class)
+				.putString(PREFS_HISTORY_PANEL_KEY, preferencesPanel.getSelectedPanel());
 
         preferencesPanel.dispose();
     }
     
     private static void handleResetPreferences(PreferencesDialogPanel panel) {
+    	String selectedPanel = panel.getSelectedPanel();
         int ret = JOptionPane.showConfirmDialog(panel, RESET_PREFERENCES_CONFIRMATION_DIALOG_MESSAGE, RESET_PREFERENCES_CONFIRMATION_DIALOG_TITLE, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if(ret == JOptionPane.OK_OPTION) {
             PreferencesManager.getInstance().resetPreferencesToFactorySettings();
-            panel.wasReset = true;
-        }
+        }        
+        panel.reload();
+        panel.setSelectedPanel(selectedPanel);
     }
 }
