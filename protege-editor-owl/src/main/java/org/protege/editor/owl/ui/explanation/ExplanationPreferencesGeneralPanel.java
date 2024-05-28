@@ -17,6 +17,7 @@ public class ExplanationPreferencesGeneralPanel extends OWLPreferencesPanel {
 
 	private JCheckBox checkRecentlyUsed;
 	private SortedPluginsTableModel tableModel;
+	private ExplanationPreferences preferences;
 
 	@Override
 	public void initialise() throws Exception {
@@ -25,7 +26,8 @@ public class ExplanationPreferencesGeneralPanel extends OWLPreferencesPanel {
 		add(panel, BorderLayout.NORTH);
 		addInstalledExplanationServicesComponent(panel);
 		addDefaultExplanationServiceComponent(panel);
-		loadFrom(ExplanationPreferences.create().load());
+		preferences = ExplanationPreferences.create().load();
+		loadFrom(preferences);
 	}
 
 	@Override
@@ -35,9 +37,8 @@ public class ExplanationPreferencesGeneralPanel extends OWLPreferencesPanel {
 
 	@Override
 	public void applyChanges() {
-		ExplanationPreferences prefs = ExplanationPreferences.create();
-		saveTo(prefs);
-		prefs.save();
+		saveTo(preferences);
+		preferences.save();
 	}
 
 	private void loadFrom(ExplanationPreferences prefs) {
