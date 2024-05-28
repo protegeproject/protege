@@ -94,6 +94,7 @@ public class ExplanationPreferencesGeneralPanel extends OWLPreferencesPanel {
 			}
 			pluginTable.setRowSelectionInterval(rowIndex - 1, rowIndex - 1);
 		});
+		buttonUp.setEnabled(pluginTable.getSelectedRow() != -1);
 
 		JButton buttonDown = new JButton("↓ Move down︎");
 		buttonDown.setToolTipText("Move the selected explanation service towards the bottom of the list");
@@ -104,6 +105,7 @@ public class ExplanationPreferencesGeneralPanel extends OWLPreferencesPanel {
 			}
 			pluginTable.setRowSelectionInterval(rowIndex + 1, rowIndex + 1);
 		});
+		buttonDown.setEnabled(pluginTable.getSelectedRow() != -1);
 
 		JPanel buttonsUpDown = new JPanel();
 		buttonsUpDown.add(buttonUp);
