@@ -108,6 +108,7 @@ public class ExplanationPreferencesGeneralPanel extends OWLPreferencesPanel {
 		buttonDown.setEnabled(pluginTable.getSelectedRow() != -1);
 
 		JPanel buttonsUpDown = new JPanel();
+		buttonsUpDown.add(new JLabel("Change priority"));
 		buttonsUpDown.add(buttonUp);
 		buttonsUpDown.add(buttonDown);
 		panel.addGroupComponent(buttonsUpDown);
