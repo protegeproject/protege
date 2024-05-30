@@ -5,9 +5,11 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -26,8 +28,10 @@ public class ExplanationManager implements Disposable {
 
 	private final OWLEditorKit editorKit;
 
-	private final Collection<ExplanationService> explanationServices = new HashSet<>();
-	
+	private final Collection<ExplanationService> explanationServices = new ArrayList<>();
+
+	private final Collection<ExplanationService> enabledServices = new ArrayList<>();
+
 	private final Collection<ExplanationDialog> openedExplanations = new HashSet<>();
 	
 	public ExplanationManager(OWLEditorKit editorKit) {
@@ -37,16 +41,50 @@ public class ExplanationManager implements Disposable {
 
 	public void reload() {
 		ExplanationPluginLoader loader = new ExplanationPluginLoader(editorKit);
-		explanationServices.clear();
+		// use TreeMap for alphabetical ordering
+		Map<String, ExplanationService> sortedExplanationServices = new TreeMap<>();
 		for (ExplanationPlugin plugin : loader.getPlugins()) {
 			ExplanationService teacher = null;
 			try {
 				teacher = plugin.newInstance();
 				teacher.initialise();
+				sortedExplanationServices.put(teacher.getPluginId(), teacher);
+			} catch (Exception e) {
+				logger.error("An error occurred whilst initialising an explanation service {}.", plugin.getName(), e);
+			}
+		}
+
+		// add ExplanationServices in the order defined in the preferences
+		final ExplanationPreferences prefs = ExplanationPreferences.create().load();
+		explanationServices.clear();
+		for (String id : prefs.explanationServicesList) {
+			ExplanationService teacher = sortedExplanationServices.get(id);
+			if (teacher != null) {
+				explanationServices.add(teacher);
+				sortedExplanationServices.remove(id);
+			}
+		}
+
+		if (!sortedExplanationServices.isEmpty()) {
+			// add new ExplanationServices (which do not occur in the preferences yet) in
+			// alphabetical order at the end
+			for (ExplanationService teacher : sortedExplanationServices.values()) {
 				explanationServices.add(teacher);
 			}
-			catch (Exception e) {
-				logger.error("An error occurred whilst initialising an explanation service {}.", plugin.getName(), e);
+		}
+
+		// update preferences according to current list (adding new and removing old
+		// ExplanationServices)
+		prefs.explanationServicesList = new ArrayList<>();
+		for (ExplanationService teacher : explanationServices) {
+			prefs.explanationServicesList.add(teacher.getPluginId());
+		}
+		prefs.save();
+
+		enabledServices.clear();
+		for (ExplanationService teacher : explanationServices) {
+			if (!prefs.disabledExplanationServices.contains(teacher.getPluginId())) {
+				enabledServices.add(teacher);
 			}
 		}
 	}
@@ -64,8 +102,8 @@ public class ExplanationManager implements Disposable {
 	}
 	
 	public Collection<ExplanationService> getTeachers(OWLAxiom axiom) {
-		Set<ExplanationService> smartTeachers = new HashSet<>();
-		for (ExplanationService teacher : explanationServices) {
+		Collection<ExplanationService> smartTeachers = new ArrayList<>();
+		for (ExplanationService teacher : enabledServices) {
 			if (teacher.hasExplanation(axiom)) {
 				smartTeachers.add(teacher);
 			}
@@ -74,7 +112,7 @@ public class ExplanationManager implements Disposable {
 	}
 	
 	public boolean hasExplanation(OWLAxiom axiom) {
-		for (ExplanationService explanationService : explanationServices) {
+		for (ExplanationService explanationService : enabledServices) {
 			if (explanationService.hasExplanation(axiom)) {
 				return true;
 			}
