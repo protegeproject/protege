@@ -215,12 +215,6 @@
 
 			<dependency>
 				<groupId>org.apache.servicemix.bundles</groupId>
-				<artifactId>org.apache.servicemix.bundles.aopalliance</artifactId>
-				<version>1.0_6</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.apache.servicemix.bundles</groupId>
 				<artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
 				<version>1_3</version>
 			</dependency>
@@ -572,7 +566,7 @@
 			<build>
 				<pluginManagement>
 					<plugins>
-						<plugin>
+							<plugin>
 							<groupId>org.apache.felix</groupId>
 							<artifactId>maven-bundle-plugin</artifactId>
 							<extensions>true</extensions>
@@ -632,6 +626,7 @@
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-clean-plugin</artifactId>
+							<version>2.5</version>
 							<configuration>
 								<filesets>
 									<fileset>
