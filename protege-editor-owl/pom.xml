@@ -67,7 +67,7 @@
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
-            <version>1.31</version>
+            <version>1.33</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -121,7 +121,7 @@
 
         <dependency>
             <groupId>commons-logging</groupId>
-            <artifactId>commons-logging-api</artifactId>
+            <artifactId>commons-logging</artifactId>
             <version>1.1</version>
             <scope>provided</scope>
         </dependency>
@@ -211,7 +211,7 @@
 						</_exportcontents>
                         <Import-Package>
                             org.eclipse.core.runtime;registry=split,
-                            javax.inject.*;version=1.0,
+                            javax.inject.*;version=2.0,
                             *
                         </Import-Package>
                     </instructions>
