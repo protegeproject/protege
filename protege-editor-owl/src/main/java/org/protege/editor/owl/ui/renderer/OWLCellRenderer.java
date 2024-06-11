@@ -255,6 +255,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
 		tmp.crossedOutEntities.addAll(crossedOutEntities);
 		tmp.unsatisfiableNames.clear();
 		tmp.unsatisfiableNames.addAll(unsatisfiableNames);
+		tmp.equivalentObjects.clear();
+		tmp.equivalentObjects.addAll(equivalentObjects);
 		tmp.boxedNames.clear();
 		tmp.boxedNames.addAll(boxedNames);
 		unlock();
