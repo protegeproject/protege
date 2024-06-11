@@ -57,7 +57,8 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
     }
 
     public OWLClass getOWLClass(String rendering) {
-        OWLClass cls = renderingCache.getOWLClass(stripAndEscapeRendering(rendering));
+    	rendering = stripAndEscapeRendering(rendering);
+        OWLClass cls = renderingCache.getOWLClass(rendering);
         if (cls == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)) {
             cls = renderingCache.getOWLClass(RenderingEscapeUtils.getEscapedRendering(rendering));
         }
@@ -70,6 +71,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
     }
 
     public OWLObjectProperty getOWLObjectProperty(String rendering) {
+    	rendering = stripAndEscapeRendering(rendering);
         OWLObjectProperty prop = renderingCache.getOWLObjectProperty(rendering);
         if (prop == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
             prop = renderingCache.getOWLObjectProperty(RenderingEscapeUtils.getEscapedRendering(rendering));
@@ -79,6 +81,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
 
 
     public OWLDataProperty getOWLDataProperty(String rendering) {
+    	rendering = stripAndEscapeRendering(rendering);
         OWLDataProperty prop = renderingCache.getOWLDataProperty(rendering);
         if (prop == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
             prop = renderingCache.getOWLDataProperty(RenderingEscapeUtils.getEscapedRendering(rendering));
@@ -88,6 +91,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
 
 
     public OWLAnnotationProperty getOWLAnnotationProperty(String rendering) {
+    	rendering = stripAndEscapeRendering(rendering);
         OWLAnnotationProperty prop = renderingCache.getOWLAnnotationProperty(rendering);
         if (prop == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
             prop = renderingCache.getOWLAnnotationProperty(RenderingEscapeUtils.getEscapedRendering(rendering));
@@ -97,6 +101,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
 
 
     public OWLNamedIndividual getOWLIndividual(String rendering) {
+    	rendering = stripAndEscapeRendering(rendering);
         OWLNamedIndividual individual = renderingCache.getOWLIndividual(rendering);
         if (individual == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
             individual = renderingCache.getOWLIndividual(RenderingEscapeUtils.getEscapedRendering(rendering));
@@ -106,6 +111,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
 
 
     public OWLDatatype getOWLDatatype(String rendering) {
+    	rendering = stripAndEscapeRendering(rendering);
         OWLDatatype dataType = renderingCache.getOWLDatatype(rendering);
         if (dataType == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
             dataType = renderingCache.getOWLDatatype(RenderingEscapeUtils.getEscapedRendering(rendering));
@@ -115,6 +121,7 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
 
 
     public OWLEntity getOWLEntity(String rendering) {
+    	rendering = stripAndEscapeRendering(rendering);
         OWLEntity entity = renderingCache.getOWLEntity(rendering);
         if (entity == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
             entity = renderingCache.getOWLEntity(RenderingEscapeUtils.getEscapedRendering(rendering));
