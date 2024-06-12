@@ -125,7 +125,12 @@ public class OWLModelManagerTree<N extends OWLObject> extends OWLObjectTree<N> i
         try {
             for (OWLObjectTreeNode<N> node : getNodes(entity)) {
                 DefaultTreeModel model = (DefaultTreeModel) getModel();
-                model.nodeStructureChanged(node);
+                model.nodeChanged(node);
+                for (N equivalentEntity: node.getEquivalentObjects()) {
+                	for (OWLObjectTreeNode<N> equivalentNode : getNodes(equivalentEntity)) {
+                		model.nodeChanged(equivalentNode);
+                	}
+                }
             }
         }
         catch (ClassCastException e) {
