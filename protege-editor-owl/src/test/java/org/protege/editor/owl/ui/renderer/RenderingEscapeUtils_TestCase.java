@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.renderer;
 
-import org.hamcrest.Matchers;
-import org.junit.Test;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
  * Matthew Horridge
@@ -13,100 +13,101 @@ import static org.hamcrest.Matchers.is;
  */
 public class RenderingEscapeUtils_TestCase {
 
+	private static void assertEscaped(String original, String escaped) {
+		String actualEscaped = RenderingEscapeUtils.getEscapedRendering(original);
+		assertThat(actualEscaped, Matchers.is(escaped));
+		String actualUnescaped = RenderingEscapeUtils.unescape(escaped);
+		assertThat(actualUnescaped, Matchers.is(original));
+	}
+	
     @Test
     public void shouldNotEscapeRendering() {
-        String rendering = RenderingEscapeUtils.getEscapedRendering("AB");
-        assertThat(rendering, is("AB"));
+    	assertEscaped("AB", "AB");
     }
 
     @Test
-    public void shouldEscapeRenderingContainingSpace() {
-        String rendering = RenderingEscapeUtils.getEscapedRendering("A B");
-        assertThat(rendering, is("'A B'"));
-    }
+	public void shouldEscapeRenderingContainingSpace() {
+		assertEscaped("A B", "'A B'");
+	}
 
     @Test
     public void shouldEscapeRenderingContainingComma() {
-        String rendering = RenderingEscapeUtils.getEscapedRendering("A,B");
-        assertThat(rendering, is("'A,B'"));
+    	assertEscaped("A,B", "'A,B'");
     }
 
     @Test
     public void shouldEscapeRenderingContainingLeftBracket() {
-        String rendering = RenderingEscapeUtils.getEscapedRendering("A(B");
-        assertThat(rendering, is("'A(B'"));
+    	assertEscaped("A(B", "'A(B'");
     }
 
     @Test
     public void shouldEscapeRenderingContainingRightBracket() {
-        String rendering = RenderingEscapeUtils.getEscapedRendering("A)B");
-        assertThat(rendering, is("'A)B'"));
+    	assertEscaped("A)B", "'A)B'");
     }
 
     @Test
     public void shouldEscapeRenderingContainingLeftSquareBracket() {
-        String rendering = RenderingEscapeUtils.getEscapedRendering("A[B");
-        assertThat(rendering, is("'A[B'"));
+    	assertEscaped("A[B", "'A[B'");
     }
 
     @Test
     public void shouldEscapeRenderingContainingRightSquareBracket() {
-        String rendering = RenderingEscapeUtils.getEscapedRendering("A]B");
-        assertThat(rendering, is("'A]B'"));
+    	assertEscaped("A]B", "'A]B'");
     }
 
     @Test
     public void shouldEscapeRenderingContainingLeftBrace() {
-        String rendering = RenderingEscapeUtils.getEscapedRendering("A{B");
-        assertThat(rendering, is("'A{B'"));
+    	assertEscaped("A{B", "'A{B'");
     }
 
     @Test
     public void shouldEscapeRenderingContainingRightBrace() {
-        String rendering = RenderingEscapeUtils.getEscapedRendering("A}B");
-        assertThat(rendering, is("'A}B'"));
+    	assertEscaped("A}B", "'A}B'");
     }
 
     @Test
     public void shouldEscapeRenderingContainingHat() {
-        String rendering = RenderingEscapeUtils.getEscapedRendering("A^B");
-        assertThat(rendering, is("'A^B'"));
+    	assertEscaped("A^B", "'A^B'");
     }
 
     @Test
     public void shouldEscapeRenderingContainingAt() {
-        String rendering = RenderingEscapeUtils.getEscapedRendering("A@B");
-        assertThat(rendering, is("'A@B'"));
+    	assertEscaped("A@B", "'A@B'");
     }
 
     @Test
     public void shouldEscapeRenderingContainingLessThan() {
-        String rendering = RenderingEscapeUtils.getEscapedRendering("A<B");
-        assertThat(rendering, is("'A<B'"));
+    	assertEscaped("A<B", "'A<B'");
     }
 
     @Test
     public void shouldEscapeRenderingContainingGreaterThan() {
-        String rendering = RenderingEscapeUtils.getEscapedRendering("A>B");
-        assertThat(rendering, is("'A>B'"));
+    	assertEscaped("A>B", "'A>B'");
     }
 
     @Test
     public void shouldEscapeRenderingContainingEquals() {
-        String rendering = RenderingEscapeUtils.getEscapedRendering("A=B");
-        assertThat(rendering, is("'A=B'"));
+    	assertEscaped("A=B", "'A=B'");
     }
 
     @Test
     public void shouldEscapeSingleQuote() {
-        String rendering = RenderingEscapeUtils.getEscapedRendering("A's");
-        assertThat(rendering, is("A\\'s"));
+    	assertEscaped("A'B", "A\\'B");
+    }
+    
+    @Test
+    public void shouldEscapeDoubleQuote() {
+    	assertEscaped("A\"B", "A\\\"B");
+    }
+    
+    @Test
+    public void shouldEscapeBackslash() {
+    	assertEscaped("A\\B", "'A\\\\B'");
     }
 
     @Test
     public void shouldEscapeSingleQuoteWithSpaces() {
-        String rendering = RenderingEscapeUtils.getEscapedRendering("A's and B's");
-        assertThat(rendering, is("'A\\'s and B\\'s'"));
+    	assertEscaped("A's and B's", "'A\\'s and B\\'s'");    	
     }
 
     @Test

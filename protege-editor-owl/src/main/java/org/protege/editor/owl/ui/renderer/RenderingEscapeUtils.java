@@ -33,8 +33,12 @@ public class RenderingEscapeUtils {
      * @return The escaped rendering.
      */
     public static String getEscapedRendering(String originalRendering) {
-        originalRendering = originalRendering.replace("'", "\\'");
+    	String rendering = originalRendering;
+    	rendering = rendering.replace("\\", "\\\\");
+    	rendering = rendering.replace("'", "\\'");
+    	rendering = rendering.replace("\"", "\\\"");
         if (originalRendering.indexOf(' ') != -1
+        		|| originalRendering.indexOf('\\') != -1
                 || originalRendering.indexOf(',') != -1
                 || originalRendering.indexOf('<') != -1
                 || originalRendering.indexOf('>') != -1
@@ -47,22 +51,20 @@ public class RenderingEscapeUtils {
                 || originalRendering.indexOf(']') != -1
                 || originalRendering.indexOf('(') != -1
                 || originalRendering.indexOf(')') != -1) {
-            return "'" + originalRendering + "'";
+        	rendering = "'" + rendering + "'";
         }
-        else {
-            return originalRendering;
-        }
+        return rendering;
     }
 
     @Nonnull
     public static String unescape(@Nonnull String rendering) {
-        rendering = rendering.replace("\\'", "'");
         if(rendering.startsWith("'") && rendering.endsWith("'")) {
-            return rendering.substring(1, rendering.length() - 1);
+        	rendering = rendering.substring(1, rendering.length() - 1);
         }
-        else {
-            return rendering;
-        }
+        rendering = rendering.replace("\\\"", "\"");
+    	rendering = rendering.replace("\\'", "'");
+    	rendering = rendering.replace("\\\\", "\\");
+        return rendering;
     }
 
 }
