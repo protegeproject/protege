@@ -283,8 +283,8 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
     @SuppressWarnings("unchecked")
     private void updateNode(N node) {
-        // This method is called when the parents or children of
-        // a node might have changed.  We handle the following possibilities
+        // This method is called when the node, its parents or children
+        // might have changed.  We handle the following possibilities
         // 1) The node had a child added
         // 2) The node had a child removed
         // If we are displaying the node which had the child added or removed
@@ -292,8 +292,12 @@ public class OWLObjectTree<N extends OWLObject> extends JTree implements OWLObje
 
         final Set<OWLObjectTreeNode<N>> treeNodes = nodeMap.get(node);
 
-        // The parents/children might have changed
+        // The node/parents/children might have changed
         if (treeNodes != null && !treeNodes.isEmpty()) {
+        	// The node equivalent objects might have changed
+        	// @@TODO: use provider to check if this were the case
+        	treeNodes.forEach(((DefaultTreeModel) getModel())::nodeChanged);
+        	
             // Remove children that aren't there any more
             Set<N> children = provider.getChildren(node);
 
