@@ -15,8 +15,8 @@ import org.semanticweb.owlapi.model.OWLObject;
 public interface OWLObjectHierarchyProviderListener<N extends OWLObject> {
 
     /**
-     * Notifies the listener that the parents and or children
-     * of the specified node might have changed.  This is usually
+     * Notifies the listener that the equivalent objects, parents and or
+     * children of the specified node might have changed.  This is usually
      * called in response to an add/remove axiom change.
      */
     public void nodeChanged(N node);

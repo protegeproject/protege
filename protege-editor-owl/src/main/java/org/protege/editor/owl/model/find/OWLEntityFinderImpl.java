@@ -41,27 +41,15 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
         this.renderingCache = renderingCache;
     }
 
-
-    private static final String ESCAPE_CHAR = "'";
-
-
     private String stripAndEscapeRendering(String rendering) {
-        String strippedRendering;
-        if(rendering.startsWith("'") && rendering.endsWith("'") && rendering.length() > 1) {
-            strippedRendering = rendering.substring(1, rendering.length() - 1);
+        if (rendering.startsWith("'") && rendering.endsWith("'") && rendering.length() > 1) {
+        	rendering = rendering.substring(1, rendering.length() - 1);
         }
-        else {
-            strippedRendering = rendering;
-        }
-        return RenderingEscapeUtils.getEscapedRendering(strippedRendering);
+        return RenderingEscapeUtils.getEscapedRendering(rendering);
     }
 
     public OWLClass getOWLClass(String rendering) {
-        OWLClass cls = renderingCache.getOWLClass(stripAndEscapeRendering(rendering));
-        if (cls == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)) {
-            cls = renderingCache.getOWLClass(RenderingEscapeUtils.getEscapedRendering(rendering));
-        }
-        return cls;
+    	return renderingCache.getOWLClass(stripAndEscapeRendering(rendering));
     }
 
     @Override
@@ -70,56 +58,32 @@ public class OWLEntityFinderImpl implements OWLEntityFinder {
     }
 
     public OWLObjectProperty getOWLObjectProperty(String rendering) {
-        OWLObjectProperty prop = renderingCache.getOWLObjectProperty(rendering);
-        if (prop == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
-            prop = renderingCache.getOWLObjectProperty(RenderingEscapeUtils.getEscapedRendering(rendering));
-        }
-        return prop;
+    	return renderingCache.getOWLObjectProperty(stripAndEscapeRendering(rendering));
     }
 
 
     public OWLDataProperty getOWLDataProperty(String rendering) {
-        OWLDataProperty prop = renderingCache.getOWLDataProperty(rendering);
-        if (prop == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
-            prop = renderingCache.getOWLDataProperty(RenderingEscapeUtils.getEscapedRendering(rendering));
-        }
-        return prop;
+    	return renderingCache.getOWLDataProperty(stripAndEscapeRendering(rendering));
     }
 
 
     public OWLAnnotationProperty getOWLAnnotationProperty(String rendering) {
-        OWLAnnotationProperty prop = renderingCache.getOWLAnnotationProperty(rendering);
-        if (prop == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
-            prop = renderingCache.getOWLAnnotationProperty(RenderingEscapeUtils.getEscapedRendering(rendering));
-        }
-        return prop;
+    	return renderingCache.getOWLAnnotationProperty(stripAndEscapeRendering(rendering));
     }
 
 
     public OWLNamedIndividual getOWLIndividual(String rendering) {
-        OWLNamedIndividual individual = renderingCache.getOWLIndividual(rendering);
-        if (individual == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
-            individual = renderingCache.getOWLIndividual(RenderingEscapeUtils.getEscapedRendering(rendering));
-        }
-        return individual;
+    	return renderingCache.getOWLIndividual(stripAndEscapeRendering(rendering));
     }
 
 
     public OWLDatatype getOWLDatatype(String rendering) {
-        OWLDatatype dataType = renderingCache.getOWLDatatype(rendering);
-        if (dataType == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
-            dataType = renderingCache.getOWLDatatype(RenderingEscapeUtils.getEscapedRendering(rendering));
-        }
-        return dataType;
+    	return renderingCache.getOWLDatatype(stripAndEscapeRendering(rendering));
     }
 
 
     public OWLEntity getOWLEntity(String rendering) {
-        OWLEntity entity = renderingCache.getOWLEntity(rendering);
-        if (entity == null && !rendering.startsWith(ESCAPE_CHAR) && !rendering.endsWith(ESCAPE_CHAR)){
-            entity = renderingCache.getOWLEntity(RenderingEscapeUtils.getEscapedRendering(rendering));
-        }
-        return entity;
+    	return renderingCache.getOWLEntity(stripAndEscapeRendering(rendering));
     }
 
 
