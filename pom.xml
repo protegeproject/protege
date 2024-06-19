@@ -126,7 +126,7 @@
 	<properties>
 	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.javadoc.failOnError>false</maven.javadoc.failOnError>
-		<slf4j.version>1.7.32</slf4j.version>
+		<slf4j.version>1.7.36</slf4j.version>
 		<logback.version>1.2.13</logback.version>
 		<lib.location>target/lib</lib.location>
 		<jackson.version>2.9.8</jackson.version>
@@ -204,7 +204,7 @@
 			<dependency>
 				<groupId>org.eclipse.equinox</groupId>
 				<artifactId>org.eclipse.equinox.registry</artifactId>
-				<version>3.5.0.v20100503</version>
+				<version>3.5.101</version>
 			</dependency>
 			
 			<dependency>
@@ -262,7 +262,7 @@
 			<dependency>
 				<groupId>com.googlecode.javaewah</groupId>
 				<artifactId>JavaEWAH</artifactId>
-				<version>1.1.13</version>
+				<version>1.2.3</version>
 			</dependency>
 			
 			<dependency>
@@ -297,33 +297,33 @@
 			<dependency>
 				<groupId>com.google.auto.value</groupId>
 				<artifactId>auto-value-annotations</artifactId>
-				<version>1.6.3</version>
+				<version>1.11.0</version>
 				<scope>provided</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>com.google.auto.value</groupId>
 				<artifactId>auto-value</artifactId>
-				<version>1.6.3</version>
+				<version>1.6.5</version>
 				<scope>provided</scope>
 			</dependency>
 			
 			<dependency>	
 			  	<groupId>jakarta.xml.bind</groupId>
     				<artifactId>jakarta.xml.bind-api</artifactId>	
-			  	<version>2.3.3</version>	
+			  	<version>4.0.2</version>	
 			</dependency>	
 
 			<dependency>	
 			  	<groupId>com.sun.xml.bind</groupId>	
 			  	<artifactId>jaxb-core</artifactId>	
-			  	<version>2.3.0</version>	
+			  	<version>2.3.0.1</version>	
 			</dependency>	
 
 			<dependency>	
 			  	<groupId>com.sun.xml.bind</groupId>	
 			  	<artifactId>jaxb-impl</artifactId>	
-			  	<version>2.3.0</version>	
+			  	<version>2.3.9</version>	
 			</dependency>	
 
 			<dependency>	
