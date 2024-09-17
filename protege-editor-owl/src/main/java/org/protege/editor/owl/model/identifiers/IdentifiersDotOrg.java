@@ -140,8 +140,6 @@ public class IdentifiersDotOrg {
 
     @Nonnull
     private static HttpClient createClient() {
-        return HttpClientBuilder.create().build();
-
-
+        return HttpClientBuilder.create().useSystemProperties().build();
     }
 }
