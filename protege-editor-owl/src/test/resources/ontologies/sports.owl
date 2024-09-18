@@ -1,0 +1,1116 @@
+<?xml version="1.0"?>
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://www.semanticweb.org/prakh/ontologies/2020/3/SWebA3Q2.2"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     ontologyIRI="http://www.semanticweb.org/prakh/ontologies/2020/3/SWebA3Q2.2">
+    <Prefix name="" IRI="http://www.semanticweb.org/prakh/ontologies/2020/3/SWebA3Q2.2"/>
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace"/>
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Declaration>
+        <Class IRI="#BasketballTeam"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ChampionshipTour"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#DebutTeam"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Domain_entity"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#FootballTeam"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Footballer"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Independent_entity"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#InterestingTournament"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Master"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MultiSportTeam"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Person"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#PopularSport"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#RugbyTeam"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#SmallSportEvent"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#SportGame"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Sportsman"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#StrongAthlete"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Team"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#TeamMember"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#TeamSport"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Tournament"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Trainer"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#VolleyballTeam"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#OWLObjectProperty_17222bbb_c3f7_44e0_b596_36b8c267f22b"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#OWLObjectProperty_33a3b8c5_35f3_40d4_93d0_5093e3339c86"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#belongsTo"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#consistsOf"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasWinner"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#includes"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#isPlayedAt"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#isPlayedBy"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#isWinnerOf"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#organizedBy"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#organizes"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#participatesIn"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#plays"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#playsFor"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#responsibleFor"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#takesPartIn"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#B"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#BOct"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#BOct1"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#BOct2"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#BV"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#BVNov"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#BVNov1"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#BVOct"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#BVOct1"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#BVOct2"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#Bob"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#FR"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#FROct"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#FROct1"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#Kate"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#Mary"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#SportGame1"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#SportGame2"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#SportGame3"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#SportGame4"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#SportGame5"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#SportGame6"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#Tim"/>
+    </Declaration>
+    <EquivalentClasses>
+        <Class IRI="#ChampionshipTour"/>
+        <ObjectIntersectionOf>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#organizedBy"/>
+                <Class IRI="#Team"/>
+            </ObjectSomeValuesFrom>
+            <ObjectMinCardinality cardinality="1">
+                <ObjectProperty IRI="#consistsOf"/>
+                <Class IRI="#Tournament"/>
+            </ObjectMinCardinality>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#Footballer"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Person"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#playsFor"/>
+                <Class IRI="#FootballTeam"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#InterestingTournament"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Tournament"/>
+            <ObjectAllValuesFrom>
+                <ObjectProperty IRI="#hasWinner"/>
+                <Class IRI="#DebutTeam"/>
+            </ObjectAllValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#Master"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Sportsman"/>
+            <Class IRI="#Trainer"/>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#MultiSportTeam"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Team"/>
+            <ObjectMinCardinality cardinality="2">
+                <ObjectProperty IRI="#plays"/>
+                <Class IRI="#SportGame"/>
+            </ObjectMinCardinality>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#PopularSport"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#SportGame"/>
+            <ObjectMinCardinality cardinality="2">
+                <ObjectProperty IRI="#isPlayedAt"/>
+                <Class IRI="#Tournament"/>
+            </ObjectMinCardinality>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#SmallSportEvent"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Tournament"/>
+            <ObjectMaxCardinality cardinality="2">
+                <ObjectProperty IRI="#includes"/>
+                <Class IRI="#SportGame"/>
+            </ObjectMaxCardinality>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#SportGame"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#isPlayedAt"/>
+            <Class IRI="#Tournament"/>
+        </ObjectSomeValuesFrom>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#Sportsman"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Person"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#plays"/>
+                <Class IRI="#SportGame"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#StrongAthlete"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Sportsman"/>
+            <ObjectUnionOf>
+                <Class IRI="#TeamMember"/>
+                <ObjectMinCardinality cardinality="3">
+                    <ObjectProperty IRI="#plays"/>
+                    <Class IRI="#SportGame"/>
+                </ObjectMinCardinality>
+            </ObjectUnionOf>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#Team"/>
+        <ObjectMinCardinality cardinality="1">
+            <ObjectProperty IRI="#takesPartIn"/>
+            <Class IRI="#ChampionshipTour"/>
+        </ObjectMinCardinality>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#TeamMember"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Sportsman"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#playsFor"/>
+                <Class IRI="#Team"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#TeamSport"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#SportGame"/>
+            <ObjectMinCardinality cardinality="1">
+                <ObjectProperty IRI="#hasWinner"/>
+            </ObjectMinCardinality>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#Tournament"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#belongsTo"/>
+            <Class IRI="#ChampionshipTour"/>
+        </ObjectSomeValuesFrom>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#Trainer"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Person"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#responsibleFor"/>
+                <Class IRI="#Team"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <SubClassOf>
+        <Class IRI="#BasketballTeam"/>
+        <Class IRI="#Team"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ChampionshipTour"/>
+        <Class IRI="#Independent_entity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#DebutTeam"/>
+        <Class IRI="#Team"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#FootballTeam"/>
+        <Class IRI="#Team"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Footballer"/>
+        <Class IRI="#Independent_entity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Independent_entity"/>
+        <Class IRI="#Domain_entity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#InterestingTournament"/>
+        <Class IRI="#Independent_entity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Master"/>
+        <Class IRI="#Independent_entity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MultiSportTeam"/>
+        <Class IRI="#Independent_entity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Person"/>
+        <Class IRI="#Independent_entity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#RugbyTeam"/>
+        <Class IRI="#Team"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#SmallSportEvent"/>
+        <Class IRI="#Independent_entity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#SportGame"/>
+        <Class IRI="#Independent_entity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Sportsman"/>
+        <Class IRI="#Independent_entity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#StrongAthlete"/>
+        <Class IRI="#Independent_entity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Team"/>
+        <Class IRI="#Independent_entity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#TeamMember"/>
+        <Class IRI="#Independent_entity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Tournament"/>
+        <Class IRI="#Independent_entity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Tournament"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#belongsTo"/>
+            <Class IRI="#ChampionshipTour"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Trainer"/>
+        <Class IRI="#Independent_entity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#VolleyballTeam"/>
+        <Class IRI="#Team"/>
+    </SubClassOf>
+    <DisjointClasses>
+        <Class IRI="#ChampionshipTour"/>
+        <Class IRI="#SportGame"/>
+        <Class IRI="#Sportsman"/>
+        <Class IRI="#Team"/>
+        <Class IRI="#Tournament"/>
+    </DisjointClasses>
+    <ClassAssertion>
+        <Class IRI="#BasketballTeam"/>
+        <NamedIndividual IRI="#B"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#DebutTeam"/>
+        <NamedIndividual IRI="#B"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ChampionshipTour"/>
+        <NamedIndividual IRI="#BOct"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Tournament"/>
+        <NamedIndividual IRI="#BOct1"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Tournament"/>
+        <NamedIndividual IRI="#BOct2"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#BasketballTeam"/>
+        <NamedIndividual IRI="#BV"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#VolleyballTeam"/>
+        <NamedIndividual IRI="#BV"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ChampionshipTour"/>
+        <NamedIndividual IRI="#BVNov"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Tournament"/>
+        <NamedIndividual IRI="#BVNov1"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ChampionshipTour"/>
+        <NamedIndividual IRI="#BVOct"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Tournament"/>
+        <NamedIndividual IRI="#BVOct1"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Tournament"/>
+        <NamedIndividual IRI="#BVOct2"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Sportsman"/>
+        <NamedIndividual IRI="#Bob"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#FootballTeam"/>
+        <NamedIndividual IRI="#FR"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#RugbyTeam"/>
+        <NamedIndividual IRI="#FR"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#ChampionshipTour"/>
+        <NamedIndividual IRI="#FROct"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Tournament"/>
+        <NamedIndividual IRI="#FROct1"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Sportsman"/>
+        <NamedIndividual IRI="#Kate"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Person"/>
+        <NamedIndividual IRI="#Mary"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#SportGame"/>
+        <NamedIndividual IRI="#SportGame1"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#SportGame"/>
+        <NamedIndividual IRI="#SportGame2"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#SportGame"/>
+        <NamedIndividual IRI="#SportGame3"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#SportGame"/>
+        <NamedIndividual IRI="#SportGame4"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#SportGame"/>
+        <NamedIndividual IRI="#SportGame5"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#SportGame"/>
+        <NamedIndividual IRI="#SportGame6"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Sportsman"/>
+        <NamedIndividual IRI="#Tim"/>
+    </ClassAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#participatesIn"/>
+        <NamedIndividual IRI="#B"/>
+        <NamedIndividual IRI="#BOct"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#consistsOf"/>
+        <NamedIndividual IRI="#BOct"/>
+        <NamedIndividual IRI="#BOct1"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#consistsOf"/>
+        <NamedIndividual IRI="#BOct"/>
+        <NamedIndividual IRI="#BOct2"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasWinner"/>
+        <NamedIndividual IRI="#BOct1"/>
+        <NamedIndividual IRI="#B"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#participatesIn"/>
+        <NamedIndividual IRI="#BV"/>
+        <NamedIndividual IRI="#BVNov"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#participatesIn"/>
+        <NamedIndividual IRI="#BV"/>
+        <NamedIndividual IRI="#BVOct"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#consistsOf"/>
+        <NamedIndividual IRI="#BVNov"/>
+        <NamedIndividual IRI="#BVNov1"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#consistsOf"/>
+        <NamedIndividual IRI="#BVOct"/>
+        <NamedIndividual IRI="#BVOct1"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#consistsOf"/>
+        <NamedIndividual IRI="#BVOct"/>
+        <NamedIndividual IRI="#BVOct2"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#hasWinner"/>
+        <NamedIndividual IRI="#BVOct1"/>
+        <NamedIndividual IRI="#BV"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#plays"/>
+        <NamedIndividual IRI="#Bob"/>
+        <NamedIndividual IRI="#SportGame1"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#takesPartIn"/>
+        <NamedIndividual IRI="#FR"/>
+        <NamedIndividual IRI="#FROct"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#consistsOf"/>
+        <NamedIndividual IRI="#FROct"/>
+        <NamedIndividual IRI="#FROct1"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#plays"/>
+        <NamedIndividual IRI="#Kate"/>
+        <NamedIndividual IRI="#SportGame2"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#plays"/>
+        <NamedIndividual IRI="#Kate"/>
+        <NamedIndividual IRI="#SportGame3"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#plays"/>
+        <NamedIndividual IRI="#Kate"/>
+        <NamedIndividual IRI="#SportGame4"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#responsibleFor"/>
+        <NamedIndividual IRI="#Kate"/>
+        <NamedIndividual IRI="#FR"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#responsibleFor"/>
+        <NamedIndividual IRI="#Mary"/>
+        <NamedIndividual IRI="#BV"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#isPlayedAt"/>
+        <NamedIndividual IRI="#SportGame1"/>
+        <NamedIndividual IRI="#BVNov1"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#isPlayedAt"/>
+        <NamedIndividual IRI="#SportGame1"/>
+        <NamedIndividual IRI="#BVOct1"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#isPlayedAt"/>
+        <NamedIndividual IRI="#SportGame1"/>
+        <NamedIndividual IRI="#BVOct2"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#isPlayedAt"/>
+        <NamedIndividual IRI="#SportGame2"/>
+        <NamedIndividual IRI="#BVNov1"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#isPlayedAt"/>
+        <NamedIndividual IRI="#SportGame2"/>
+        <NamedIndividual IRI="#BVOct2"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#isPlayedAt"/>
+        <NamedIndividual IRI="#SportGame3"/>
+        <NamedIndividual IRI="#FROct1"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#isPlayedAt"/>
+        <NamedIndividual IRI="#SportGame4"/>
+        <NamedIndividual IRI="#BOct2"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#isPlayedAt"/>
+        <NamedIndividual IRI="#SportGame5"/>
+        <NamedIndividual IRI="#BOct1"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#isPlayedAt"/>
+        <NamedIndividual IRI="#SportGame5"/>
+        <NamedIndividual IRI="#BOct2"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#isPlayedAt"/>
+        <NamedIndividual IRI="#SportGame6"/>
+        <NamedIndividual IRI="#FROct1"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#plays"/>
+        <NamedIndividual IRI="#Tim"/>
+        <NamedIndividual IRI="#SportGame5"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#plays"/>
+        <NamedIndividual IRI="#Tim"/>
+        <NamedIndividual IRI="#SportGame6"/>
+    </ObjectPropertyAssertion>
+    <EquivalentObjectProperties>
+        <ObjectProperty IRI="#participatesIn"/>
+        <ObjectProperty IRI="#takesPartIn"/>
+    </EquivalentObjectProperties>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#OWLObjectProperty_17222bbb_c3f7_44e0_b596_36b8c267f22b"/>
+        <ObjectProperty abbreviatedIRI="owl:topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#OWLObjectProperty_33a3b8c5_35f3_40d4_93d0_5093e3339c86"/>
+        <ObjectProperty abbreviatedIRI="owl:topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#belongsTo"/>
+        <ObjectProperty IRI="#OWLObjectProperty_33a3b8c5_35f3_40d4_93d0_5093e3339c86"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#consistsOf"/>
+        <ObjectProperty IRI="#OWLObjectProperty_33a3b8c5_35f3_40d4_93d0_5093e3339c86"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#hasWinner"/>
+        <ObjectProperty IRI="#OWLObjectProperty_33a3b8c5_35f3_40d4_93d0_5093e3339c86"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#includes"/>
+        <ObjectProperty IRI="#OWLObjectProperty_33a3b8c5_35f3_40d4_93d0_5093e3339c86"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#isPlayedAt"/>
+        <ObjectProperty IRI="#OWLObjectProperty_33a3b8c5_35f3_40d4_93d0_5093e3339c86"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#isPlayedBy"/>
+        <ObjectProperty IRI="#OWLObjectProperty_33a3b8c5_35f3_40d4_93d0_5093e3339c86"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#isWinnerOf"/>
+        <ObjectProperty IRI="#OWLObjectProperty_33a3b8c5_35f3_40d4_93d0_5093e3339c86"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#organizedBy"/>
+        <ObjectProperty IRI="#OWLObjectProperty_33a3b8c5_35f3_40d4_93d0_5093e3339c86"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#organizes"/>
+        <ObjectProperty IRI="#OWLObjectProperty_33a3b8c5_35f3_40d4_93d0_5093e3339c86"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#participatesIn"/>
+        <ObjectProperty IRI="#OWLObjectProperty_33a3b8c5_35f3_40d4_93d0_5093e3339c86"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#plays"/>
+        <ObjectProperty IRI="#OWLObjectProperty_33a3b8c5_35f3_40d4_93d0_5093e3339c86"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#playsFor"/>
+        <ObjectProperty IRI="#OWLObjectProperty_33a3b8c5_35f3_40d4_93d0_5093e3339c86"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#responsibleFor"/>
+        <ObjectProperty IRI="#OWLObjectProperty_33a3b8c5_35f3_40d4_93d0_5093e3339c86"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#takesPartIn"/>
+        <ObjectProperty IRI="#OWLObjectProperty_33a3b8c5_35f3_40d4_93d0_5093e3339c86"/>
+    </SubObjectPropertyOf>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#belongsTo"/>
+        <ObjectProperty IRI="#consistsOf"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#hasWinner"/>
+        <ObjectProperty IRI="#isWinnerOf"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#includes"/>
+        <ObjectProperty IRI="#isPlayedAt"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#isPlayedBy"/>
+        <ObjectProperty IRI="#plays"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#organizedBy"/>
+        <ObjectProperty IRI="#organizes"/>
+    </InverseObjectProperties>
+    <FunctionalObjectProperty>
+        <ObjectProperty IRI="#hasWinner"/>
+    </FunctionalObjectProperty>
+    <TransitiveObjectProperty>
+        <ObjectProperty IRI="#consistsOf"/>
+    </TransitiveObjectProperty>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#belongsTo"/>
+        <Class IRI="#Tournament"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#consistsOf"/>
+        <Class IRI="#ChampionshipTour"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#hasWinner"/>
+        <ObjectUnionOf>
+            <Class IRI="#SportGame"/>
+            <Class IRI="#Tournament"/>
+        </ObjectUnionOf>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#includes"/>
+        <Class IRI="#Tournament"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#isPlayedAt"/>
+        <Class IRI="#SportGame"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#isPlayedBy"/>
+        <Class IRI="#SportGame"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#isWinnerOf"/>
+        <ObjectUnionOf>
+            <Class IRI="#Sportsman"/>
+            <Class IRI="#Team"/>
+        </ObjectUnionOf>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#organizedBy"/>
+        <Class IRI="#ChampionshipTour"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#organizes"/>
+        <Class IRI="#Team"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#participatesIn"/>
+        <Class IRI="#Team"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#plays"/>
+        <ObjectUnionOf>
+            <Class IRI="#Sportsman"/>
+            <Class IRI="#Team"/>
+        </ObjectUnionOf>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#playsFor"/>
+        <Class IRI="#Sportsman"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#responsibleFor"/>
+        <Class IRI="#Person"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#takesPartIn"/>
+        <Class IRI="#Team"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#belongsTo"/>
+        <Class IRI="#ChampionshipTour"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#consistsOf"/>
+        <Class IRI="#Tournament"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#hasWinner"/>
+        <ObjectUnionOf>
+            <Class IRI="#Sportsman"/>
+            <Class IRI="#Team"/>
+        </ObjectUnionOf>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#includes"/>
+        <Class IRI="#SportGame"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#isPlayedAt"/>
+        <Class IRI="#Tournament"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#isPlayedBy"/>
+        <ObjectUnionOf>
+            <Class IRI="#Sportsman"/>
+            <Class IRI="#Team"/>
+        </ObjectUnionOf>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#isWinnerOf"/>
+        <ObjectUnionOf>
+            <Class IRI="#SportGame"/>
+            <Class IRI="#Tournament"/>
+        </ObjectUnionOf>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#organizedBy"/>
+        <Class IRI="#Team"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#organizes"/>
+        <Class IRI="#ChampionshipTour"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#participatesIn"/>
+        <Class IRI="#ChampionshipTour"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#plays"/>
+        <Class IRI="#SportGame"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#playsFor"/>
+        <Class IRI="#Team"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#responsibleFor"/>
+        <Class IRI="#Team"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#takesPartIn"/>
+        <Class IRI="#ChampionshipTour"/>
+    </ObjectPropertyRange>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#BasketballTeam</IRI>
+        <Literal xml:lang="en">BasketballTeam</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#ChampionshipTour</IRI>
+        <Literal xml:lang="en">ChampionshipTour</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#DebutTeam</IRI>
+        <Literal xml:lang="en">DebutTeam</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Domain_entity</IRI>
+        <Literal xml:lang="en">Domain_entity</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#FootballTeam</IRI>
+        <Literal xml:lang="en">FootballTeam</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Footballer</IRI>
+        <Literal xml:lang="en">Footballer</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Independent_entity</IRI>
+        <Literal xml:lang="en">Independent_entity</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#InterestingTournament</IRI>
+        <Literal xml:lang="en">InterestingTournament</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Master</IRI>
+        <Literal xml:lang="en">Master</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#MultiSportTeam</IRI>
+        <Literal xml:lang="en">MultisportTeam</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#OWLObjectProperty_17222bbb_c3f7_44e0_b596_36b8c267f22b</IRI>
+        <Literal xml:lang="en">modifier_property</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#OWLObjectProperty_33a3b8c5_35f3_40d4_93d0_5093e3339c86</IRI>
+        <Literal xml:lang="en">relational_property</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Person</IRI>
+        <Literal xml:lang="en">Person</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#PopularSport</IRI>
+        <Literal xml:lang="en">PopularSport</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#RugbyTeam</IRI>
+        <Literal xml:lang="en">RugbyTeam</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#SmallSportEvent</IRI>
+        <Literal xml:lang="en">SmallSportEvent</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#SportGame</IRI>
+        <Literal xml:lang="en">SportGame</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Sportsman</IRI>
+        <Literal xml:lang="en">Sportsman</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#StrongAthlete</IRI>
+        <Literal xml:lang="en">StrongAthlete</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Team</IRI>
+        <Literal xml:lang="en">Team</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#TeamMember</IRI>
+        <Literal xml:lang="en">TeamMember</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#TeamSport</IRI>
+        <Literal xml:lang="en">TeamSport</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Tournament</IRI>
+        <Literal xml:lang="en">Tournament</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Trainer</IRI>
+        <Literal xml:lang="en">Trainer</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#VolleyballTeam</IRI>
+        <Literal xml:lang="en">VolleyballTeam</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#belongsTo</IRI>
+        <Literal xml:lang="en">belongsTo</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#consistsOf</IRI>
+        <Literal xml:lang="en">consistsOf</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#hasWinner</IRI>
+        <Literal xml:lang="en">hasWinner</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#includes</IRI>
+        <Literal xml:lang="en">includes</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#isPlayedAt</IRI>
+        <Literal xml:lang="en">isPlayedAt</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#isPlayedBy</IRI>
+        <Literal xml:lang="en">isPlayedBy</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#isWinnerOf</IRI>
+        <Literal xml:lang="en">isWinnerOf</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#organizedBy</IRI>
+        <Literal xml:lang="en">organizedBy</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#organizes</IRI>
+        <Literal xml:lang="en">organizes</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#participatesIn</IRI>
+        <Literal xml:lang="en">participatesIn</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#plays</IRI>
+        <Literal xml:lang="en">plays</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#playsFor</IRI>
+        <Literal xml:lang="en">playsFor</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#responsibleFor</IRI>
+        <Literal xml:lang="en">responsibleFor</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#takesPartIn</IRI>
+        <Literal xml:lang="en">takesPartIn</Literal>
+    </AnnotationAssertion>
+</Ontology>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+
