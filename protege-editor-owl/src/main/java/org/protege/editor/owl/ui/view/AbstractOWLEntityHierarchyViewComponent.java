@@ -6,6 +6,7 @@ import org.protege.editor.core.ui.view.View;
 import org.protege.editor.core.ui.view.ViewMode;
 import org.protege.editor.core.util.HandlerRegistration;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.hierarchy.ClassHierarchyPreferences;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.OWLObjectComparatorAdapter;
 import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
@@ -170,8 +171,9 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
         breadCrumbTrailProviderRegistration = getOWLWorkspace().registerBreadcrumbTrailProvider(this);
 
-        // Don't show deprecated entities by default
-        getHierarchyProvider().setFilter(this::isNotDeprecated);
+        if (!ClassHierarchyPreferences.get().isDisplayDeprecatedEntities()) {
+             getHierarchyProvider().setFilter(this::isNotDeprecated);
+        }
     }
 
     private void scrollSelectedPathToVisibleRect() {
