@@ -16,6 +16,8 @@ public class ClassHierarchyPreferences {
 
     private static final String DISPLAY_RELATIONSHIPS_KEY = "DISPLAY_RELATIONSHIPS";
 
+    private static final String DISPLAY_DEPRECATED_ENTITIES_KEY = "DISPLAY_DEPRECATED_ENTITIES";
+
     private static Preferences getPreferences() {
         return PreferencesManager.getInstance().getApplicationPreferences(CLASS_HIERARCHY_PREFERENCES);
     }
@@ -30,5 +32,13 @@ public class ClassHierarchyPreferences {
 
     public void setDisplayRelationships(boolean displayRelationships) {
         getPreferences().putBoolean(DISPLAY_RELATIONSHIPS_KEY, displayRelationships);
+    }
+
+    public boolean isDisplayDeprecatedEntities() {
+        return getPreferences().getBoolean(DISPLAY_DEPRECATED_ENTITIES_KEY, false);
+    }
+
+    public void setDisplayDeprecatedEntities(boolean displayDeprecatedEntities) {
+        getPreferences().putBoolean(DISPLAY_DEPRECATED_ENTITIES_KEY, displayDeprecatedEntities);
     }
 }

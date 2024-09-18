@@ -19,6 +19,6 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '11'
-          distribution: 'adopt'
+          distribution: 'temurin'
       - name: Run test suite
         run: mvn --batch-mode --activate-profiles ${{ matrix.profile }} --define release.signing.disabled=true clean verify
