@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.frame.individual;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.inference.ReasonerPreferences.OptionalInferenceTask;
+import org.protege.editor.owl.ui.OWLPropertyAssertionRowComparator;
 import org.protege.editor.owl.ui.editor.OWLObjectEditor;
 import org.protege.editor.owl.ui.editor.OWLObjectPropertyIndividualPairEditor2;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
@@ -106,7 +107,7 @@ public class OWLObjectPropertyAssertionAxiomFrameSection extends AbstractOWLFram
      *         or <code>null</code> if the rows shouldn't be sorted.
      */
     public Comparator<OWLFrameSectionRow<OWLIndividual, OWLObjectPropertyAssertionAxiom, OWLObjectPropertyIndividualPair>> getRowComparator() {
-        return null;
+        return new OWLPropertyAssertionRowComparator<>(getOWLModelManager().getOWLObjectComparator());
     }
     
     @Override
