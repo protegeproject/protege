@@ -137,12 +137,7 @@
             <artifactId>auto-value</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.google.auto.value</groupId>
-            <artifactId>auto-value-annotations</artifactId>
-        </dependency>
-
-		<dependency>
+	    <dependency>
             <groupId>com.jcraft</groupId>
             <artifactId>jzlib</artifactId>
             <version>${jzlib.version}</version>

@@ -23,7 +23,6 @@
                 <include>org.slf4j:jul-to-slf4j:jar</include>
                 <include>commons-io:commons-io:jar</include>
                 <include>org.apache.servicemix.bundles:org.apache.servicemix.bundles.javax-inject:jar</include>
-                <include>org.apache.servicemix.bundles:org.apache.servicemix.bundles.aopalliance:jar</include>
                 <include>org.eclipse.jgit:org.eclipse.jgit:jar</include>
                 <include>com.googlecode.javaewah:JavaEWAH:jar</include>
                 <include>javax.xml.bind:jaxb-api:jar</include>	
