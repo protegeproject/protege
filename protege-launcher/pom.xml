@@ -73,18 +73,13 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.servicemix.bundles</groupId>
-			<artifactId>org.apache.servicemix.bundles.aopalliance</artifactId>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-artifact</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.servicemix.bundles</groupId>
 			<artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.maven</groupId>
-			<artifactId>maven-artifact</artifactId>
 		</dependency>
 
 		<dependency>
