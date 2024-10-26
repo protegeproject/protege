@@ -14,8 +14,8 @@
 	<packaging>bundle</packaging>
 
 	<name>protege-editor-core</name>
-    <description>Core ontology editing infrastructure used by the Protege desktop application.</description>
-    
+	<description>Core ontology editing infrastructure used by the Protege desktop application.</description>
+
 	<dependencies>
 
 		<dependency>
@@ -44,7 +44,6 @@
 			<scope>provided</scope>
 		</dependency>
 
-
 		<dependency>
 			<groupId>com.google.auto.value</groupId>
 			<artifactId>auto-value-annotations</artifactId>
@@ -54,7 +53,6 @@
 			<groupId>com.google.auto.value</groupId>
 			<artifactId>auto-value</artifactId>
 		</dependency>
-
 
 		<dependency>
 			<groupId>net.sf.trove4j</groupId>
@@ -85,13 +83,13 @@
 
 	<build>
 		<plugins>
-            <plugin>
+			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Bundle-Activator>org.protege.editor.core.ProtegeApplication</Bundle-Activator>						
+						<Bundle-Activator>org.protege.editor.core.ProtegeApplication</Bundle-Activator>
 						<Bundle-SymbolicName>org.protege.editor.core.application;singleton:=true</Bundle-SymbolicName>
 						<Embed-Dependency>*;scope=provided;inline=true</Embed-Dependency>
 						<Export-Package>

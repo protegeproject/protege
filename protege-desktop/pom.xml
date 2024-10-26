@@ -1,14 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    
+	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
 		<groupId>edu.stanford.protege</groupId>
 		<artifactId>protege-parent</artifactId>
 		<version>5.6.4</version>
 		<relativePath>../</relativePath>
 	</parent>
-	
-	<!-- groupId and version are inherited from the parent -->	
+
+	<!-- groupId and version are inherited from the parent -->
 	<artifactId>protege-desktop</artifactId>
 	<packaging>jar</packaging>
 
@@ -29,9 +29,9 @@
 			<url>https://raw.github.com/protegeproject/mvn-repo/master/releases</url>
 		</repository>
 	</repositories>
-	
+
 	<dependencies>
-	
+
 		<!-- NOTE: These dependency declarations are required to sort this project to the end of the line in the multimodule build. -->
 		
 		<!-- edu.stanford.protege dependency list -->
@@ -40,21 +40,21 @@
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>protege-common</artifactId>
 			<version>${project.parent.version}</version>
-        </dependency>
+	        </dependency>
 
 		<dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>protege-editor-core</artifactId>
 			<version>${project.parent.version}</version>
-        </dependency>
+		</dependency>
 
-        <dependency>
+		<dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>protege-editor-owl</artifactId>
 			<version>${project.parent.version}</version>
-        </dependency>
+		</dependency>
 
-        <dependency>
+		<dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>protege-launcher</artifactId>
 			<version>${project.parent.version}</version>
@@ -90,9 +90,11 @@
 	
 	<build>
 		<plugins>
+
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 			</plugin>
+
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>
@@ -118,6 +120,7 @@
 					</execution>
 				</executions>
 			</plugin>
+
 		</plugins>
 	</build>
 

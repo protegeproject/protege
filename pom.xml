@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>edu.stanford.protege</groupId>
-    <artifactId>protege-parent</artifactId>
-    <version>5.6.4</version>
-    <packaging>pom</packaging>
+	<groupId>edu.stanford.protege</groupId>
+	<artifactId>protege-parent</artifactId>
+	<version>5.6.4</version>
+	<packaging>pom</packaging>
 
-    <name>protege-parent</name>
+	<name>protege-parent</name>
 	<description>Protege is a free, open source ontology editor that supports the full OWL 2 standard.</description>
 	<url>http://protege.stanford.edu</url>
 	<inceptionYear>1987</inceptionYear>
@@ -20,7 +20,7 @@
 			<url>http://opensource.org/licenses/BSD-2-Clause</url>
 		</license>
 	</licenses>
-	
+
 	<!-- Alphabetical by last name -->
 	<developers>
 		<developer>
@@ -56,7 +56,7 @@
 			<email>nickdrummond@yahoo.com</email>
 		</contributor>
 	</contributors>
-	
+
 	<mailingLists>
 		<!-- For end users of Protege Desktop. -->
 		<mailingList>
@@ -69,7 +69,7 @@
 				<otherArchive>https://mailman.stanford.edu/pipermail/protege-user/</otherArchive>
 			</otherArchives>
 		</mailingList>
-		
+
 		<!-- For developers with questions about source code, developing Protege Desktop plug-ins, and/or programmatic access of ontologies.  -->
 		<mailingList>
 			<name>protege-dev</name>
@@ -95,8 +95,9 @@
 		<connection>scm:git:git@github.com:protegeproject/protege.git</connection>
 		<developerConnection>scm:git:git@github.com:protegeproject/protege.git</developerConnection>
 		<url>https://github.com/protegeproject/protege</url>
-	  <tag>HEAD</tag>
+		<tag>HEAD</tag>
 	</scm>
+
 	<issueManagement>
 		<system>GitHub</system>
 		<url>https://github.com/protegeproject/protege/issues</url>
@@ -110,7 +111,7 @@
 			<snapshots><enabled>true</enabled></snapshots>
 		</repository>
 	</repositories>
-	
+
 	<!-- Protege libraries are hosted on Sonatype OSSRH (OSS Repository Hosting Service). -->
 	<distributionManagement>
 		<snapshotRepository>
@@ -122,16 +123,16 @@
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
-	
+
 	<properties>
-	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.javadoc.failOnError>false</maven.javadoc.failOnError>
 		<slf4j.version>1.7.36</slf4j.version>
 		<logback.version>1.2.13</logback.version>
 		<lib.location>target/lib</lib.location>
 		<jackson.version>2.9.8</jackson.version>
 	</properties>
-	
+
 	<dependencyManagement>
 		<dependencies>
 
@@ -178,9 +179,9 @@
 			</dependency>
 
 			<dependency>
-    			<groupId>com.github.spotbugs</groupId>
-    			<artifactId>spotbugs-annotations</artifactId>
-    			<version>4.8.6</version>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-annotations</artifactId>
+				<version>4.8.6</version>
 			</dependency>
 
 			<dependency>
@@ -302,30 +303,30 @@
 				<scope>provided</scope>
 			</dependency>
 			
-			<dependency>	
-			  	<groupId>jakarta.xml.bind</groupId>
-    				<artifactId>jakarta.xml.bind-api</artifactId>	
-			  	<version>4.0.2</version>	
-			</dependency>	
-
-			<dependency>	
-			  	<groupId>com.sun.xml.bind</groupId>	
-			  	<artifactId>jaxb-core</artifactId>	
-			  	<version>2.3.0.1</version>	
-			</dependency>	
-
-			<dependency>	
-			  	<groupId>com.sun.xml.bind</groupId>	
-			  	<artifactId>jaxb-impl</artifactId>	
-			  	<version>2.3.9</version>	
-			</dependency>	
-
-			<dependency>	
-			    	<groupId>com.sun.activation</groupId>	
-			    	<artifactId>javax.activation</artifactId>	
-			    	<version>1.2.0</version>	
+			<dependency>
+				<groupId>jakarta.xml.bind</groupId>
+				<artifactId>jakarta.xml.bind-api</artifactId>
+				<version>4.0.2</version>
 			</dependency>
-			
+
+			<dependency>
+				<groupId>com.sun.xml.bind</groupId>
+				<artifactId>jaxb-core</artifactId>
+				<version>2.3.0.1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.sun.xml.bind</groupId>
+				<artifactId>jaxb-impl</artifactId>
+				<version>2.3.9</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.sun.activation</groupId>
+				<artifactId>javax.activation</artifactId>
+				<version>1.2.0</version>
+			</dependency>
+
 			<!-- swrltab plugin requires -->
 			<dependency>
 			    <groupId>org.glassfish.corba</groupId>
@@ -335,15 +336,16 @@
 
 		</dependencies>
 	</dependencyManagement>
-				
+
 	<build>
 		<pluginManagement>
 			<plugins>
+
 				<plugin>
 					<artifactId>maven-enforcer-plugin</artifactId>
 					<version>3.4.1</version>
 				</plugin>
-				
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
@@ -352,7 +354,7 @@
 						<release>11</release>
 					</configuration>
 				</plugin>
-							
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
@@ -364,7 +366,7 @@
 						</descriptors>
 					</configuration>
 				</plugin>
-				
+
 				<plugin>
 					<artifactId>maven-release-plugin</artifactId>
 					<version>3.0.1</version>
@@ -388,53 +390,53 @@
 					<version>5.1.9</version>
 					<extensions>true</extensions>
 					<configuration>
-						<instructions>							
+						<instructions>
 							<Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
-							<Embed-Directory>${lib.location}</Embed-Directory>							
+							<Embed-Directory>${lib.location}</Embed-Directory>
 						</instructions>
 					</configuration>
 				</plugin>
-				
-				<plugin>	
-				   	 <artifactId>maven-surefire-plugin</artifactId>	
-				   	 <version>3.2.5</version>	
+
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>3.2.5</version>
 				</plugin>
-				
+
 				<plugin>
 					<artifactId>maven-resources-plugin</artifactId>
 					<version>3.3.1</version>
 				</plugin>
-				
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
 					<version>3.3.1</version>
-				</plugin>	
-				
+				</plugin>
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-dependency-plugin</artifactId>
 					<version>3.6.1</version>
-				</plugin>				
-				
+				</plugin>
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
 					<version>3.6.3</version>
-				</plugin>			
-				
+				</plugin>
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-gpg-plugin</artifactId>
 					<version>3.2.4</version>
 				</plugin>
-				
+
 				<plugin>
 					<groupId>org.sonatype.plugins</groupId>
 					<artifactId>nexus-staging-maven-plugin</artifactId>
 					<version>1.6.13</version>
 				</plugin>
-				
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
@@ -446,12 +448,12 @@
 					<artifactId>maven-antrun-plugin</artifactId>
 					<version>3.1.0</version>
 				</plugin>
-				
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-	                <artifactId>maven-failsafe-plugin</artifactId>
-	                <version>3.2.5</version>
-                </plugin>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>3.2.5</version>
+				</plugin>
 
 			</plugins>
 		</pluginManagement>
@@ -477,9 +479,9 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<!-- Generate source and Javadoc JAR files, and sign artifacts.  Required by Sonatype OSSRH for deployment. -->
-    <profiles>
+	<profiles>
 		<profile>
 			<id>release</id>
 			<activation>
@@ -487,6 +489,7 @@
 			</activation>
 			<build>
 				<plugins>
+
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-source-plugin</artifactId>
@@ -499,7 +502,7 @@
 							</execution>
 						</executions>
 					</plugin>
-		
+
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
@@ -536,7 +539,7 @@
 
 					<plugin>
 						<groupId>org.sonatype.plugins</groupId>
-						<artifactId>nexus-staging-maven-plugin</artifactId>						
+						<artifactId>nexus-staging-maven-plugin</artifactId>
 						<extensions>true</extensions>
 						<executions>
 							<execution>
@@ -566,6 +569,7 @@
 			<build>
 				<pluginManagement>
 					<plugins>
+
 						<plugin>
 							<groupId>org.apache.felix</groupId>
 							<artifactId>maven-bundle-plugin</artifactId>
@@ -577,11 +581,12 @@
 								</instructions>
 							</configuration>
 						</plugin>
+
 						<!-- Copy all Maven dependencies so that it is possible to run Protege 
 							in Eclipse (PDE + m2e + OSGi Framework launcher). -->
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-dependency-plugin</artifactId>							
+							<artifactId>maven-dependency-plugin</artifactId>
 							<executions>
 								<execution>
 									<id>copy-provided-dependencies</id>
@@ -596,6 +601,7 @@
 								<outputDirectory>${project.build.directory}/dependency</outputDirectory>
 							</configuration>
 						</plugin>
+
 						<!-- Copy plugin.xml where PDE in Eclipse can find it (PDE + m2e + 
 							OSGi Framework launcher). -->
 						<plugin>
@@ -621,6 +627,7 @@
 								</execution>
 							</executions>
 						</plugin>
+
 						<!-- Remove META-INF and plugin.xml from project root, placed there 
 							when this profile is active. -->
 						<plugin>
@@ -642,6 +649,7 @@
 							</configuration>
 						</plugin>
 					</plugins>
+
 				</pluginManagement>
 			</build>
 		</profile>
