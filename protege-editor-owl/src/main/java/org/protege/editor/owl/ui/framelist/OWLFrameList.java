@@ -105,6 +105,10 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
 
 
     public OWLFrameList(OWLEditorKit editorKit, OWLFrame<R> frame) {
+		this(editorKit, frame, true, true);
+	}
+
+	public OWLFrameList(OWLEditorKit editorKit, OWLFrame<R> frame, boolean showExplainBtn, boolean showAnnotBtn) {
         this.editorKit = editorKit;
         this.frame = frame;
 
@@ -134,9 +138,11 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
         createPopupMenu();
 
         inferredRowButtons = new ArrayList<>();
-        inferredRowButtons.add(new ExplainButton(e -> invokeExplanationHandler()));
+        if (showExplainBtn)
+			inferredRowButtons.add(new ExplainButton(e -> invokeExplanationHandler()));
 
-        axiomAnnotationButton = new AxiomAnnotationButton(event -> invokeAxiomAnnotationHandler());
+		if (showAnnotBtn)
+			axiomAnnotationButton = new AxiomAnnotationButton(event -> invokeAxiomAnnotationHandler());
 
         changeListenerMediator = new ChangeListenerMediator();
         addListSelectionListener(selListener);
