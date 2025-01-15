@@ -419,7 +419,11 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
             try {
                 if (isImageAddress(iri) && isDisplayThumbnails()) {
                     IconBox iconBox = getImageBox(iri);
-                    page.add(iconBox);
+                    if (iconBox != null) {
+                        page.add(iconBox);
+                    } else {
+                        paragraphs.add(page.addParagraph(iriString, new HTTPLink(iri.toURI())));
+                    }
                 }
                 else {
                     paragraphs.add(page.addParagraph(iriString, new HTTPLink(iri.toURI())));
@@ -469,7 +473,9 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
      */
     private IconBox getImageBox(IRI iri) throws MalformedURLException, IllegalArgumentException {
         ImageIcon imageIcon = new ImageIcon(iri.toURI().toURL());
-        imageIcon.getImageLoadStatus();
+        if ( imageIcon.getImageLoadStatus() != MediaTracker.COMPLETE ) {
+            return null;
+        }
         IconBox iconBox = new IconBox(imageIcon, new HTTPLink(iri.toURI()));
         iconBox.setMaxHeight(50);
         return iconBox;
