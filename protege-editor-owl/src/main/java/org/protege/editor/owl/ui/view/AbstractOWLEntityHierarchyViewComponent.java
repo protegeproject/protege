@@ -38,6 +38,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
+import java.util.function.Predicate;
 
 import static org.protege.editor.owl.ui.framelist.OWLFrameList.INFERRED_BG_COLOR;
 
@@ -171,9 +172,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
         breadCrumbTrailProviderRegistration = getOWLWorkspace().registerBreadcrumbTrailProvider(this);
 
-        if (!ClassHierarchyPreferences.get().isDisplayDeprecatedEntities()) {
-             getHierarchyProvider().setFilter(this::isNotDeprecated);
-        }
+        setShowDeprecatedEntities(ClassHierarchyPreferences.get().isDisplayDeprecatedEntities());
     }
 
     private void scrollSelectedPathToVisibleRect() {
@@ -392,12 +391,9 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
     @Override
     public void setShowDeprecatedEntities(boolean showDeprecatedEntities) {
-        if (showDeprecatedEntities) {
-            getHierarchyProvider().setFilter(e -> true);
-        }
-        else {
-            getHierarchyProvider().setFilter(this::isNotDeprecated);
-        }
+        Predicate<E> filter = showDeprecatedEntities ? e -> true : this::isNotDeprecated;
+        getHierarchyProvider().setFilter(filter);
+        getInferredHierarchyProvider().ifPresent(p -> p.setFilter(filter));
     }
 
     private boolean isNotDeprecated(E e) {
