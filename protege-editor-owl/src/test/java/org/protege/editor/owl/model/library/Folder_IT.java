@@ -1,6 +1,7 @@
 package org.protege.editor.owl.model.library;
 
 import junit.framework.TestCase;
+
 import org.protege.editor.owl.model.library.folder.FolderGroupManager;
 import org.protege.xmlcatalog.CatalogUtilities;
 import org.protege.xmlcatalog.XMLCatalog;
