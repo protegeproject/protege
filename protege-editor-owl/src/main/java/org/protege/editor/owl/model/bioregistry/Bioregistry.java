@@ -33,12 +33,14 @@ public class Bioregistry {
     private static final Logger logger = LoggerFactory.getLogger(Bioregistry.class);
 
     private static final String API_ENDPOINT = "http://bioregistry.io/api/registry/%s?format=json";
+    private static final int MAX_ERRORS = 6;
 
     private static Bioregistry instance;
 
     private Map<String,Resource> cache = new HashMap<>();
     private final HttpClient client;
     private final ObjectMapper objectMapper;
+    private int errors = 0;
 
     public static synchronized Bioregistry getInstance() {
         if (instance == null) {
@@ -70,7 +72,7 @@ public class Bioregistry {
     }
 
     private Resource getResource(@Nonnull String prefix) {
-        if ( !cache.containsKey(prefix)) {
+        if (!cache.containsKey(prefix) && errors < MAX_ERRORS) {
             Resource resource = null;
             HttpGet request = new HttpGet(String.format(API_ENDPOINT, prefix));
             request.addHeader("Accept", "application/json");
@@ -82,6 +84,7 @@ public class Bioregistry {
                 }
             } catch (IOException e ) {
                 logger.warn("Error when querying the bioregistry for '{}': {}", prefix, e.getMessage());
+                errors += 1;
             }
             cache.put(prefix, resource);
         }
