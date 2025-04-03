@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.renderer;
 
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
+import org.protege.editor.owl.model.bioregistry.BioregistryLinkExtractor;
 import org.protege.editor.owl.model.entity.AnnotationPropertyComparator;
 import org.protege.editor.owl.model.identifiers.IdentifiersDotOrgLinkExtractor;
 import org.protege.editor.owl.model.obofoundry.OboFoundryLinkExtractor;
@@ -62,8 +63,9 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
             WikipediaVersionedLinkExtractor.createExtractor(),
             DOILinkExtractor.createExtractor(),
             ORCIDLinkExtractor.createExtractor(),
-            IdentifiersDotOrgLinkExtractor.createExtractor(),
-            OboFoundryLinkExtractor.createLinkExtractor());
+            OboFoundryLinkExtractor.createLinkExtractor(),
+            BioregistryLinkExtractor.createExtractor(),
+            IdentifiersDotOrgLinkExtractor.createExtractor());
 
     public OWLAnnotationCellRenderer2(OWLEditorKit editorKit) {
         super();
