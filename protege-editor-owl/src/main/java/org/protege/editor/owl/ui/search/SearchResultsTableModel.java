@@ -10,6 +10,7 @@ import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.annotation.Nullable;
 import javax.swing.table.AbstractTableModel;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -36,6 +37,8 @@ public class SearchResultsTableModel extends AbstractTableModel {
     private OWLEditorKit editorKit;
 
     private int categorySizeLimit = DEFAULT_CATEGORY_SIZE_LIMIT;
+
+    private boolean showDeprecated = SearchOptions.DEFAULT_SHOW_DEPRECATED_ENTITIES;
 
     private java.util.List<ResultsTableModelRow> rows = new ArrayList<>();
 
@@ -101,6 +104,13 @@ public class SearchResultsTableModel extends AbstractTableModel {
         }
     }
 
+    public void setShowDeprecated(boolean showDeprecated) {
+        if (showDeprecated != this.showDeprecated) {
+            this.showDeprecated = showDeprecated;
+            fireTableDataChanged();
+        }
+    }
+
     public void clearCategorySizeLimit() {
         if (categorySizeLimit != Integer.MAX_VALUE) {
             categorySizeLimit = Integer.MAX_VALUE;
@@ -117,6 +127,10 @@ public class SearchResultsTableModel extends AbstractTableModel {
             int count = 0;
             int categoryResultsCount = resultSet.getCategoryResultsCount(category);
             for (SearchResult searchResult : categoryResult) {
+                if (!showDeprecated
+                    && editorKit.getModelManager().isDeprecated(searchResult.getSubject())) {
+                    continue;
+                }
                 rows.add(new ResultsTableModelRow(searchResult, count, categoryResultsCount));
                 count++;
                 if (count == categorySizeLimit) {
