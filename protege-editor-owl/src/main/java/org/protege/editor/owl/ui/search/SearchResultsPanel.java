@@ -145,6 +145,11 @@ public class SearchResultsPanel extends JPanel {
         refill();
     }
 
+    public void setShowDeprecated(boolean showDeprecated) {
+        this.model.setShowDeprecated(showDeprecated);
+        refill();
+    }
+
 
     public Optional<SearchResult> getSelectedSearchResult() {
         int selRow = resultsTable.getSelectedRow();

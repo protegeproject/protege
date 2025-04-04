@@ -71,6 +71,8 @@ public class SearchPanel extends JPanel {
             }
         }));
         add(searchActionsPanel, BorderLayout.SOUTH);
+
+        updateSearchResultsPresentation();
     }
 
     private String getSearchString() {
@@ -161,6 +163,7 @@ public class SearchPanel extends JPanel {
     private void updateSearchResultsPresentation() {
         int categorySizeLimit = getCategoryLimit();
         searchResultsPanel.setCategorySizeLimit(categorySizeLimit);
+        searchResultsPanel.setShowDeprecated(searchOptionsPanel.isShowDeprecated());
     }
 
 

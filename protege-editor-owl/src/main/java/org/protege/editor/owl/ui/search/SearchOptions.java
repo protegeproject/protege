@@ -25,6 +25,8 @@ public class SearchOptions {
 
     public static final boolean DEFAULT_SEARCH_IN_IRIS_SETTING = true;
 
+    public static final boolean DEFAULT_SHOW_DEPRECATED_ENTITIES = true;
+
 
     private final boolean useRegex;
 
@@ -44,6 +46,8 @@ public class SearchOptions {
 
     private final boolean searchInIRIs;
 
+    private final boolean showDeprecatedEntities;
+
 
     public SearchOptions() {
         useRegex = USE_REGEX_DEFAULT_SETTING;
@@ -54,6 +58,7 @@ public class SearchOptions {
         searchInAnnotationValues = DEFAULT_SEARCH_IN_ANNOTATION_VALUES_SETTING;
         searchInLogicalAxioms = DEFAULT_SEARCH_IN_LOGICAL_AXIOM_SETTING;
         searchInIRIs = DEFAULT_SEARCH_IN_IRIS_SETTING;
+        showDeprecatedEntities = DEFAULT_SHOW_DEPRECATED_ENTITIES;
     }
 
     private SearchOptions(Builder builder) {
@@ -65,6 +70,7 @@ public class SearchOptions {
         searchInAnnotationValues = builder.isSearchInAnnotationValues();
         searchInLogicalAxioms = builder.isSearchInLogicalAxioms();
         searchInIRIs = builder.isSearchInIRIs();
+        showDeprecatedEntities = builder.isShowDeprecatedEntities();
     }
 
     public boolean isUseRegex() {
@@ -99,6 +105,10 @@ public class SearchOptions {
         return searchInIRIs;
     }
 
+    public boolean isShowDeprecatedEntities() {
+        return showDeprecatedEntities;
+    }
+
     public static class Builder {
 
 
@@ -119,6 +129,8 @@ public class SearchOptions {
         private boolean searchInLogicalAxioms;
 
         private boolean searchInIRIs;
+
+        private boolean showDeprecatedEntities;
 
         public SearchOptions build() {
             return new SearchOptions(this);
@@ -156,6 +168,10 @@ public class SearchOptions {
             this.searchInIRIs = searchInIRIs;
         }
 
+        public void setShowDeprecatedEntities(boolean showDeprecatedEntities) {
+            this.showDeprecatedEntities = showDeprecatedEntities;
+        }
+
         public boolean isUseRegex() {
             return useRegex;
         }
@@ -186,6 +202,10 @@ public class SearchOptions {
 
         public boolean isSearchInIRIs() {
             return searchInIRIs;
+        }
+
+        public boolean isShowDeprecatedEntities() {
+            return showDeprecatedEntities;
         }
     }
 }
