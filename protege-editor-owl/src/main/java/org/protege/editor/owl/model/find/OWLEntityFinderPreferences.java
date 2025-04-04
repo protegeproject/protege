@@ -27,6 +27,8 @@ public class OWLEntityFinderPreferences {
 
     public static final String IGNORE_WHITE_SPACE_KEY = "IGNORE_WHITE_SPACE_KEY";
 
+    public static final String SHOW_DEPRECATED_KEY = "SHOW_DEPRECATED";
+
 
     private static final boolean DEFAULT_CASE_SENSITIVE_VALUE = false;
 
@@ -42,6 +44,8 @@ public class OWLEntityFinderPreferences {
     private boolean wholeWords;
 
     private boolean ignoreWhiteSpace;
+
+    private boolean showDeprecated;
 
 
     private OWLEntityFinderPreferences() {
@@ -64,6 +68,7 @@ public class OWLEntityFinderPreferences {
         caseSensitive = prefs.getBoolean(CASE_SENSITIVE_KEY, DEFAULT_CASE_SENSITIVE_VALUE);
         wholeWords = prefs.getBoolean(WHOLE_WORDS_KEY, false);
         ignoreWhiteSpace = prefs.getBoolean(IGNORE_WHITE_SPACE_KEY, true);
+        showDeprecated = prefs.getBoolean(SHOW_DEPRECATED_KEY, true);
     }
 
 
@@ -102,6 +107,15 @@ public class OWLEntityFinderPreferences {
     public void setIgnoreWhiteSpace(boolean ignoreWhiteSpace) {
         this.ignoreWhiteSpace = ignoreWhiteSpace;
         getPreferences().putBoolean(IGNORE_WHITE_SPACE_KEY, ignoreWhiteSpace);
+    }
+
+    public boolean isShowDeprecated() {
+        return showDeprecated;
+    }
+
+    public void setShowDeprecated(boolean showDeprecated) {
+        this.showDeprecated = showDeprecated;
+        getPreferences().putBoolean(SHOW_DEPRECATED_KEY, showDeprecated);
     }
 
     public long getSearchDelay() {

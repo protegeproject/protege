@@ -42,6 +42,8 @@ public class SearchOptionsPanel extends JPanel {
 
     private final JCheckBox searchInIRIs;
 
+    private final JCheckBox showDeprecatedCheckbox;
+
     private final JProgressBar searchProgressBar;
 
     private final JLabel searchProgressLabel = new JLabel();
@@ -89,7 +91,6 @@ public class SearchOptionsPanel extends JPanel {
         });
         topPanel.add(ignoreWhiteSpaceCheckbox);
 
-
         useRegexCheckBox = new JCheckBox(new AbstractAction("Regular expression") {
             public void actionPerformed(ActionEvent e) {
                 OWLEntityFinderPreferences.getInstance().setUseRegularExpressions(useRegexCheckBox.isSelected());
@@ -98,7 +99,6 @@ public class SearchOptionsPanel extends JPanel {
         });
         topPanel.add(useRegexCheckBox);
 
-
         showAllResultsCheckBox = new JCheckBox(new AbstractAction("Show all results") {
             public void actionPerformed(ActionEvent e) {
                 fireSearchResultsPresentationOptionChanged();
@@ -106,8 +106,16 @@ public class SearchOptionsPanel extends JPanel {
         });
         topPanel.add(showAllResultsCheckBox);
 
-        box.add(Box.createVerticalStrut(5));
+        showDeprecatedCheckbox = new JCheckBox(new AbstractAction("Show deprecated") {
+            public void actionPerformed(ActionEvent e) {
+                OWLEntityFinderPreferences.getInstance()
+                    .setShowDeprecated(showDeprecatedCheckbox.isSelected());
+                fireSearchResultsPresentationOptionChanged();
+            }
+        });
+        topPanel.add(showDeprecatedCheckbox);
 
+        box.add(Box.createVerticalStrut(5));
 
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 0));
         box.add(bottomPanel);
@@ -213,6 +221,10 @@ public class SearchOptionsPanel extends JPanel {
         return showAllResultsCheckBox.isSelected();
     }
 
+    public boolean isShowDeprecated() {
+        return showDeprecatedCheckbox.isSelected();
+    }
+
     private void fireSearchRequestOptionChanged() {
         for (SearchOptionsChangedListener listener : new ArrayList<>(listeners)) {
             listener.searchRequestOptionChanged();
@@ -233,6 +245,7 @@ public class SearchOptionsPanel extends JPanel {
         useRegexCheckBox.setSelected(prefs.isUseRegularExpressions());
         wholeWordsCheckbox.setSelected(prefs.isWholeWords());
         ignoreWhiteSpaceCheckbox.setSelected(prefs.isIgnoreWhiteSpace());
+        showDeprecatedCheckbox.setSelected(prefs.isShowDeprecated());
 
     }
 }
