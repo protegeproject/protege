@@ -36,6 +36,7 @@ public class DeprecationReasonPage extends AbstractOWLWizardPanel {
                                 "Please specify a reason that explains why this entity is to be deprecated.\n\n" +
                                 "The deprecated entity will be annotated with this reason so that consumers of this " +
                                 "ontology understand why the entity was deprecated.");
+        reasonTextArea.setLineWrap(true);
         contentPanel.add(reasonTextArea, BorderLayout.CENTER);
     }
 
