@@ -1768,8 +1768,6 @@
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
-
-
     <extension id="context.class.CreateSubHierarchy"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Add subclasses..."/>
@@ -1797,5 +1795,49 @@
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
+    <extension id="context.class.DeprecateEntity"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Deprecate..."/>
+        <class value="org.protege.editor.owl.ui.deprecation.DeprecateSelectedEntityAction"/>
+        <toolTip value="Deprecates the selected class"/>
+        <path value="[AssertedClassHierarchy]/SlotM-H"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="context.objectproperty.DeprecateEntity"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Deprecate..."/>
+        <class value="org.protege.editor.owl.ui.deprecation.DeprecateSelectedEntityAction"/>
+        <toolTip value="Deprecates the selected object property"/>
+        <path value="[AssertedObjectPropertyHierarchy]/SlotE-A"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="context.annotationproperty.DeprecateEntity"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Deprecate..."/>
+        <class value="org.protege.editor.owl.ui.deprecation.DeprecateSelectedEntityAction"/>
+        <toolTip value="Deprecates the selected class"/>
+        <path value="[AnnotationPropertyHierarchy]/SlotA-C"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="context.dataproperty.DeprecateEntity"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Deprecate..."/>
+        <class value="org.protege.editor.owl.ui.deprecation.DeprecateSelectedEntityAction"/>
+        <toolTip value="Deprecate the selected data property"/>
+        <path value="[AssertedDataPropertyHierarchy]/SlotE-A"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="context.individual.DeprecateEntity"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Deprecate..."/>
+        <class value="org.protege.editor.owl.ui.deprecation.DeprecateSelectedEntityAction"/>
+        <toolTip value="Deprecates the selected individual"/>
+        <path value="[IndividualHierarchy]/SlotA-A"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
 
 </plugin>

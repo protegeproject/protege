@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.view.annotationproperty;
 
+import org.protege.editor.core.ui.menu.PopupMenuId;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
@@ -59,6 +60,7 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
         }, "A", "B");
 
         addAction(new DeleteAnnotationPropertyAction(), "B", "A");
+        getTree().setPopupMenuId(new PopupMenuId("[AnnotationPropertyHierarchy]"));
     }
 
 
