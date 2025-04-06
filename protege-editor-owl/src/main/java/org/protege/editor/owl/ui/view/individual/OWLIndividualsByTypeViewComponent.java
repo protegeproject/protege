@@ -1,7 +1,9 @@
 package org.protege.editor.owl.ui.view.individual;
 
 import com.google.common.collect.Sets;
+
 import org.protege.editor.core.ui.RefreshableComponent;
+import org.protege.editor.core.ui.menu.PopupMenuId;
 import org.protege.editor.core.ui.view.DisposableAction;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.protege.editor.owl.model.hierarchy.IndividualsByTypeHierarchyProvider;
@@ -85,6 +87,7 @@ public class OWLIndividualsByTypeViewComponent extends AbstractOWLSelectionViewC
             }
         });
         setupActions();
+        tree.setPopupMenuId(new PopupMenuId("[IndividualHierarchy]"));
     }
 
 
