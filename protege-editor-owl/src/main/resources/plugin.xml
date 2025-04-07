@@ -1840,4 +1840,49 @@
         <editorKitId value="OWLEditorKit"/>
     </extension>
 
+    <extension id="context.class.MergeEntity"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Merge into..."/>
+        <class value="org.protege.editor.owl.ui.merge.MergeEntitiesAction"/>
+        <toolTip value="Merges the selected class into another class"/>
+        <path value="[AssertedClassHierarchy]/SlotM-I"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="context.objectproperty.MergeEntity"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Merge into..."/>
+        <class value="org.protege.editor.owl.ui.merge.MergeEntitiesAction"/>
+        <toolTip value="Merges the selected property into another property"/>
+        <path value="[AssertedObjectPropertyHierarchy]/SlotE-B"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="context.annotationproperty.MergeEntity"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Merge into..."/>
+        <class value="org.protege.editor.owl.ui.merge.MergeEntitiesAction"/>
+        <toolTip value="Merges the selected property into another property"/>
+        <path value="[AnnotationPropertyHierarchy]/SlotA-D"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="context.dataproperty.MergeEntity"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Merge into..."/>
+        <class value="org.protege.editor.owl.ui.merge.MergeEntitiesAction"/>
+        <toolTip value="Merges the selected property into another property"/>
+        <path value="[AssertedDataPropertyHierarchy]/SlotE-B"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
+    <extension id="context.individual.MergeEntity"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Merge into..."/>
+        <class value="org.protege.editor.owl.ui.merge.MergeEntitiesAction"/>
+        <toolTip value="Merges the selected indivdual into another individual"/>
+        <path value="[IndividualHierarchy]/SlotA-B"/>
+        <editorKitId value="OWLEditorKit"/>
+    </extension>
+
 </plugin>
