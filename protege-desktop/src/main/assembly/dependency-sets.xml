@@ -27,7 +27,6 @@
                 <include>com.googlecode.javaewah:JavaEWAH:jar</include>
                 <include>javax.xml.bind:jaxb-api:jar</include>	
                 <include>com.sun.xml.bind:jaxb-core:jar</include>	
-                <include>com.sun.xml.bind:jaxb-impl:jar</include>	
                 <include>com.sun.activation:javax.activation</include>
                 <!-- CORBA dependencies -->
                 <include>org.glassfish.corba:glassfish-corba-orb:jar</include>
