@@ -1,14 +1,21 @@
 package org.protege.editor.owl.ui.renderer;
 
 import com.google.common.base.Optional;
+
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
+import org.semanticweb.owlapi.vocab.DublinCoreVocabulary;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JLabel;
+import javax.swing.JList;
+
+import java.awt.Component;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -53,26 +60,45 @@ public class OWLOntologyCellRenderer extends DefaultListCellRenderer {
         }
 
         final Optional<IRI> iri = ont.getOntologyID().getDefaultDocumentIRI();
-
-        return getOntologyLabelText(iri, mngr);
+        String name = getOntologyDisplayName(ont);
+        return formatOntologyLabelText(iri, name);
+    }
+    public static String getOntologyLabelText(Optional<IRI> iri, OWLModelManager mngr) {
+        return formatOntologyLabelText(iri, null);
     }
 
-    public static String getOntologyLabelText(Optional<IRI> iri, OWLModelManager mngr) {
-
+    private static String formatOntologyLabelText(Optional<IRI> iri, String name) {
         StringBuilder sb = new StringBuilder();
         sb.append("<html><body>");
-        if (iri.isPresent()) {
-            String shortForm = new OntologyIRIShortFormProvider().getShortForm(iri.get());
-            sb.append(shortForm);
-        }
-        else {
+        if (name != null) {
+            sb.append(name);
+        } else if (iri.isPresent()) {
+            sb.append(new OntologyIRIShortFormProvider().getShortForm(iri.get()));
+        } else {
             sb.append("Anonymous ontology");
         }
-        sb.append(" <font color=\"gray\">(");
         if (iri.isPresent()) {
+            sb.append(" <font color=\"gray\">(");
             sb.append(iri.get().toString());
+            sb.append(")</font>");
         }
-        sb.append(")</font></body></html>");
+        sb.append("</body></html>");
         return sb.toString();
+    }
+
+    private static String getOntologyDisplayName(OWLOntology ont) {
+        String label = null;
+        String title = null;
+        for (OWLAnnotation annot : ont.getAnnotations()) {
+            if (annot.getValue().isLiteral()) {
+                IRI property = annot.getProperty().getIRI();
+                if (property.equals(OWLRDFVocabulary.RDFS_LABEL.getIRI())) {
+                    label = annot.getValue().asLiteral().get().getLiteral();
+                } else if (property.equals(DublinCoreVocabulary.TITLE.getIRI())) {
+                    title = annot.getValue().asLiteral().get().getLiteral();
+                }
+            }
+        }
+        return label != null ? label : title;
     }
 }
