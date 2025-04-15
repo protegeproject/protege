@@ -31,6 +31,8 @@ import java.awt.Component;
  */
 public class OWLOntologyCellRenderer extends DefaultListCellRenderer {
 
+    private static final IRI DCTERM_TITLE = IRI.create("http://purl.org/dc/terms/title");
+
     private OWLEditorKit editorKit;
 
 
@@ -95,6 +97,8 @@ public class OWLOntologyCellRenderer extends DefaultListCellRenderer {
                 if (property.equals(OWLRDFVocabulary.RDFS_LABEL.getIRI())) {
                     label = annot.getValue().asLiteral().get().getLiteral();
                 } else if (property.equals(DublinCoreVocabulary.TITLE.getIRI())) {
+                    title = annot.getValue().asLiteral().get().getLiteral();
+                } else if (property.equals(DCTERM_TITLE)) {
                     title = annot.getValue().asLiteral().get().getLiteral();
                 }
             }
