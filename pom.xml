@@ -322,11 +322,11 @@
 			</dependency>
 
 			<dependency>
-				<groupId>com.sun.activation</groupId>
-				<artifactId>javax.activation</artifactId>
-				<version>1.2.0</version>
+				<groupId>jakarta.activation</groupId>
+				<artifactId>jakarta.activation-api</artifactId>
+				<version>1.2.2</version>
 			</dependency>
-
+			
 			<!-- swrltab plugin requires -->
 			<dependency>
 			    <groupId>org.glassfish.corba</groupId>
