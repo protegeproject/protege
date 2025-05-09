@@ -3,8 +3,11 @@ package org.protege.editor.owl.model.identifiers;
 import org.protege.editor.owl.ui.renderer.LinkExtractor;
 import org.protege.editor.owl.ui.renderer.layout.HTTPLink;
 import org.protege.editor.owl.ui.renderer.layout.Link;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Optional;
 
 /**
@@ -14,6 +17,8 @@ import java.util.Optional;
  */
 public class IdentifiersDotOrgLinkExtractor implements LinkExtractor {
 
+    private static final Logger logger = LoggerFactory.getLogger(IdentifiersDotOrgLinkExtractor.class);
+
     public static IdentifiersDotOrgLinkExtractor createExtractor() {
         return new IdentifiersDotOrgLinkExtractor();
     }
@@ -22,6 +27,13 @@ public class IdentifiersDotOrgLinkExtractor implements LinkExtractor {
     public Optional<Link> extractLink(String s) {
         IdentifiersDotOrg identifiersDotOrg = IdentifiersDotOrgManager.get();
         return identifiersDotOrg.getCollection(s)
-                .map(collection -> new HTTPLink(URI.create("http://identifiers.org/" + s)));
+                .flatMap(collection -> {
+                    try {
+                        return Optional.of(new HTTPLink(new URI("http://identifiers.org/" + s)));
+                    } catch (URISyntaxException e) {
+                        logger.warn("Link extractor (Identifiers.org) returned invalid URI: {}", e.getMessage());
+                        return Optional.empty();
+                    }
+                });
     }
 }
