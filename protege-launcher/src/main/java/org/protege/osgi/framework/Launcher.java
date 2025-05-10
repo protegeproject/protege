@@ -201,19 +201,30 @@ public class Launcher {
         delete(frameworkDir);
     }
 
-    private void delete(File f) {
-        if (f.isDirectory()) {
-            File[] files = f.listFiles();
-            if (files != null) {
-                for (File child : files) {
-                    delete(child);
-                }
+    private void delete(File f, File base) throws IOException {
+    if (!f.exists()) {
+        return;
+    }
+    
+    // Security check to prevent path traversal attacks
+    if (!(f.getCanonicalFile().toPath().startsWith(base.getCanonicalFile().toPath()))) {
+        throw new IOException("Trying to delete a file outside the base directory: " 
+                + f.getCanonicalPath());
+    }
+    
+    if (f.isDirectory()) {
+        File[] files = f.listFiles();
+        if (files != null) {
+            for (File child : files) {
+                delete(child, base);
             }
         }
-        if (!f.delete()) {
-            logger.warn("File could not be deleted ({})", f.getAbsolutePath());
-        }
     }
+    
+    if (!f.delete()) {
+        throw new IOException("Unable to delete file: " + f);
+    }
+}
 
     public static void setArguments(String... args) {
         if (args != null) {
