@@ -229,7 +229,7 @@
 			<dependency>
 				<groupId>commons-io</groupId>
 				<artifactId>commons-io</artifactId>
-				<version>2.14.0</version>
+				<version>2.16.1</version>
 			</dependency>
 
 			<dependency>
@@ -336,13 +336,13 @@
 
 				<plugin>
 					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>3.4.1</version>
+					<version>3.5.0</version>
 				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.13.0</version>
+					<version>3.14.0</version>
 					<configuration>
 						<release>11</release>
 					</configuration>
@@ -433,7 +433,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
-					<version>3.3.2</version>
+					<version>3.5.0</version>
 				</plugin>
 
 				<plugin>
