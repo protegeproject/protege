@@ -3,7 +3,7 @@
 
 	<groupId>edu.stanford.protege</groupId>
 	<artifactId>protege-parent</artifactId>
-	<version>5.6.5</version>
+	<version>5.6.6</version>
 	<packaging>pom</packaging>
 
 	<name>protege-parent</name>
@@ -264,13 +264,6 @@
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>4.13.2</version>
-				<scope>test</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit-dep</artifactId>
-				<version>4.11</version>
 				<scope>test</scope>
 			</dependency>
 
