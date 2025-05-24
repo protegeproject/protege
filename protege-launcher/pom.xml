@@ -121,10 +121,10 @@
 			 <artifactId>jaxb-impl</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>com.sun.activation</groupId>
-			<artifactId>javax.activation</artifactId>
-		</dependency>
+<dependency>
+    <groupId>jakarta.activation</groupId>
+    <artifactId>jakarta.activation-api</artifactId>
+</dependency>
 
 		<!-- swrltab plugin requires -->
 		<dependency>
