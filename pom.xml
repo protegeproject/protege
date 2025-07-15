@@ -130,7 +130,7 @@
 		<slf4j.version>1.7.36</slf4j.version>
 		<logback.version>1.2.13</logback.version>
 		<lib.location>target/lib</lib.location>
-		<jackson.version>2.9.8</jackson.version>
+		<jackson.version>2.15.4</jackson.version>
 	</properties>
 
 	<dependencyManagement>
