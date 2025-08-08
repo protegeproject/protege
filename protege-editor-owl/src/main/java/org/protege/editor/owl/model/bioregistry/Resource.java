@@ -23,6 +23,12 @@ public class Resource {
 
     public Resource(@Nonnull @JsonProperty("pattern") String pattern,
                     @Nonnull @JsonProperty("uri_format") String uriFormat) {
+        if (pattern == null) {
+            throw new IllegalArgumentException("Missing pattern");
+        }
+        if (uriFormat == null) {
+            throw new IllegalArgumentException("Missing URI format");
+        }
         idPattern = Pattern.compile(pattern);
         this.uriFormat = uriFormat;
     }
