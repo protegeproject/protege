@@ -3,7 +3,7 @@
 
 	<groupId>edu.stanford.protege</groupId>
 	<artifactId>protege-parent</artifactId>
-	<version>5.6.6</version>
+	<version>5.6.7</version>
 	<packaging>pom</packaging>
 
 	<name>protege-parent</name>
@@ -105,22 +105,22 @@
 
 	<repositories>
 		<repository>
-			<id>oss</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<id>central-portal-snapshots</id>
+			<url>https://central.sonatype.com/repository/maven-snapshots/</url>
 			<releases><enabled>false</enabled></releases>
 			<snapshots><enabled>true</enabled></snapshots>
 		</repository>
 	</repositories>
 
-	<!-- Protege libraries are hosted on Sonatype OSSRH (OSS Repository Hosting Service). -->
+	<!-- Protege libraries are hosted on Sonatype Central Repository. -->
 	<distributionManagement>
 		<snapshotRepository>
 			<id>ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<url>https://central.sonatype.com/repository/maven-snapshots/</url>
 		</snapshotRepository>
 		<repository>
 			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+			<url>https://central.sonatype.com</url>
 		</repository>
 	</distributionManagement>
 
@@ -425,9 +425,9 @@
 				</plugin>
 
 				<plugin>
-					<groupId>org.sonatype.plugins</groupId>
-					<artifactId>nexus-staging-maven-plugin</artifactId>
-					<version>1.6.13</version>
+					<groupId>org.sonatype.central</groupId>
+					<artifactId>central-publishing-maven-plugin</artifactId>
+					<version>0.8.0</version>
 				</plugin>
 
 				<plugin>
@@ -531,8 +531,8 @@
 					</plugin>
 
 					<plugin>
-						<groupId>org.sonatype.plugins</groupId>
-						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<groupId>org.sonatype.central</groupId>
+						<artifactId>central-publishing-maven-plugin</artifactId>
 						<extensions>true</extensions>
 						<executions>
 							<execution>
@@ -544,9 +544,9 @@
 							</execution>
 						</executions>
 						<configuration>
-							<serverId>ossrh</serverId>
-							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-							<autoReleaseAfterClose>true</autoReleaseAfterClose>
+							<publishingServerId>ossrh</publishingServerId>
+							<autoPublish>true</autoPublish>
+							<waitUntil>published</waitUntil>
 						</configuration>
 					</plugin>
 
