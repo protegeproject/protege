@@ -2,7 +2,6 @@ package org.protege.editor.core.update;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.Version;
 import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.core.plugin.PluginUtilities;
 import org.slf4j.Logger;

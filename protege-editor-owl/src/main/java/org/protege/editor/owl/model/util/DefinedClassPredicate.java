@@ -3,7 +3,6 @@ package org.protege.editor.owl.model.util;
 import com.google.common.collect.ImmutableSet;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.search.EntitySearcher;
 
 import javax.annotation.Nonnull;
 import java.util.Set;

@@ -18,7 +18,6 @@ import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;

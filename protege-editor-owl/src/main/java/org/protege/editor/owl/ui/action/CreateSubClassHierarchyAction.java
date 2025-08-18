@@ -1,29 +1,15 @@
 package org.protege.editor.owl.ui.action;
 
-import org.protege.editor.core.ui.wizard.Wizard;
 import org.protege.editor.core.util.Recommendation;
-import org.protege.editor.owl.model.entity.OWLEntityFactory;
-import org.protege.editor.owl.model.find.OWLEntityFinder;
-import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.tabbed.*;
 import org.protege.editor.owl.ui.hierarchy.creation.CreateHierarchyExecutor;
-import org.protege.editor.owl.ui.hierarchy.creation.CreateSubHierarchyWizard;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.search.EntitySearcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.awt.event.ActionEvent;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.BiFunction;
 
 import static java.util.stream.Collectors.toSet;
-import static org.protege.editor.owl.model.util.DefinedClassPredicate.isDefinedIn;
 import static org.protege.editor.owl.model.util.DefinedClassPredicate.isNotDefinedIn;
 import static org.semanticweb.owlapi.model.EntityType.CLASS;
 

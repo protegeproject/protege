@@ -7,7 +7,6 @@ import org.semanticweb.owlapi.vocab.Namespaces;
 import javax.annotation.Nonnull;
 import java.util.*;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.naturalOrder;

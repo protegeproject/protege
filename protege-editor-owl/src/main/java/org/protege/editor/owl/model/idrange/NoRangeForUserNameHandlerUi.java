@@ -2,15 +2,12 @@ package org.protege.editor.owl.model.idrange;
 
 
 import org.protege.editor.core.ui.util.JOptionPaneEx;
-import org.protege.editor.core.ui.util.VerifyingOptionPane;
-import org.protege.editor.owl.model.entity.EntityCreationPreferences;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.function.Consumer;
-import java.util.stream.StreamSupport;
 
 /**
  * Matthew Horridge

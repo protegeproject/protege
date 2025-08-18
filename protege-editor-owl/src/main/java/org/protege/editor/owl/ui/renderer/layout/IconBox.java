@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
-import org.protege.editor.core.ui.util.Icons;
 
 import javax.swing.*;
 import java.awt.*;
