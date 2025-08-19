@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.prefix;
 
 import org.hamcrest.Matchers;
+
 import org.junit.Before;
 import org.junit.Test;
 

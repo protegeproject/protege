@@ -75,11 +75,20 @@ public class MetricsPanel extends JPanel implements Disposable {
 
     private void createPopupMenu() {
         JMenuItem showAxioms = new JMenuItem("Show axioms");
+        JMenuItem showDL = new JMenuItem("DL Expressivity");
         popupMenu.add(showAxioms);
+        popupMenu.add(showDL);
+        showDL.addActionListener(e -> showDLExpressivityDialog());
         showAxioms.addActionListener(e -> showAxiomTypeDialog());
     }
-
-
+    private void showDLExpressivityDialog() {
+        Set<? extends OWLAxiom> axioms = lastMetric.getAxioms();
+        final OWLAxiomTypeFramePanel panel = new OWLAxiomTypeFramePanel(owlEditorKit);
+        Set<OWLAxiom> axs = new HashSet<>(axioms);
+        panel.setRoot(axs);
+        panel.setPreferredSize(new Dimension(800, 300));
+        JOptionPane.showMessageDialog(panel, new DLExpressivityMetric(getOntology()).getValue(),"DL Expressivity",JOptionPane.OK_OPTION);
+    }
     private void showAxiomTypeDialog() {
         Set<? extends OWLAxiom> axioms = lastMetric.getAxioms();
         final OWLAxiomTypeFramePanel panel = new OWLAxiomTypeFramePanel(owlEditorKit);
@@ -99,8 +108,7 @@ public class MetricsPanel extends JPanel implements Disposable {
         dlg.setModal(false);
         dlg.setVisible(true);
     }
-
-
+    
     protected void initialiseOWLView() {
         createBasicMetrics();
         createClassAxiomMetrics();
@@ -134,7 +142,8 @@ public class MetricsPanel extends JPanel implements Disposable {
                     + fontMetrics.getMaxDescent()
                     + 4);
             table.setShowGrid(true);
-            table.getColumnModel().getColumn(1).setMaxWidth(150);
+            table.getColumnModel().getColumn(1).setMinWidth(200);
+            table.getColumnModel().getColumn(1).setMinWidth(300);
             table.addMouseListener(new MouseAdapter() {
 
                 public void mousePressed(MouseEvent e) {
@@ -277,12 +286,13 @@ public class MetricsPanel extends JPanel implements Disposable {
         metrics.add(new ReferencedIndividualCount(getOntology()));
         metrics.add(new ReferencedAnnotationPropertyCount(getOntology()));
         // Temporarily removed due to a problem with upgrading the OWL API
-//        metrics.add(new DLExpressivityMetric(getOntology()));
+        //metrics.add(new DLExpressivity(getOntology()));
+        //metrics.add(new DLExpressivityMetric(getOntology()));
     	/*
     	 * Degenericized to be compatible with changing OWLAPI interfaces
     	 */
         OWLMetricManager metricManager = new OWLMetricManager((List) metrics);
-        metricManagerMap.put("Metrics", metricManager);
+        metricManagerMap.put("Basic Metrics", metricManager);
     }
 
 
