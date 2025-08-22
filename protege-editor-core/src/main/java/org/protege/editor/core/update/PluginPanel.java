@@ -1,10 +1,8 @@
 package org.protege.editor.core.update;
 
 
-import com.google.common.collect.ListMultimap;
 import org.protege.editor.core.ui.util.LinkLabel;
 import org.protege.editor.core.ui.util.NativeBrowserLauncher;
-import org.protege.editor.core.ui.util.TableUtils;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

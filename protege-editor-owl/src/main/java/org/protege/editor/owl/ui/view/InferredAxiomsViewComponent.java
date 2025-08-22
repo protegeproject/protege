@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.view;
 
 import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.frame.InferredAxiomsFrame;
 import org.protege.editor.owl.ui.framelist.OWLFrameList;

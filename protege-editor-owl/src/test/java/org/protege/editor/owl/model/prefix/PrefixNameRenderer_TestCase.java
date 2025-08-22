@@ -1,6 +1,5 @@
 package org.protege.editor.owl.model.prefix;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;

@@ -1,7 +1,6 @@
 package org.protege.editor.owl.model.axiom;
 
 import com.google.common.base.Optional;
-import org.protege.editor.owl.OWLEditorKit;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

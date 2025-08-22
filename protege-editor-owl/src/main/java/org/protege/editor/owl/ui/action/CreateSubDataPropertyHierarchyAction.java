@@ -5,8 +5,6 @@ import org.protege.editor.owl.model.hierarchy.tabbed.CreateHierarchyChangeGenera
 import org.protege.editor.owl.model.hierarchy.tabbed.HierarchyNodeCreator;
 import org.protege.editor.owl.model.hierarchy.tabbed.MakeSiblingsDisjointChangeGenerator;
 import org.protege.editor.owl.ui.hierarchy.creation.CreateHierarchyExecutor;
-import org.semanticweb.owlapi.model.EntityType;
-import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 

@@ -6,8 +6,6 @@ import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public abstract class OntologyImportPage extends AbstractOWLWizardPanel {
     private static final long serialVersionUID = 489018744916640111L;

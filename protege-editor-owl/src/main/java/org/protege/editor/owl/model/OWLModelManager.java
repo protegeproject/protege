@@ -12,13 +12,11 @@ import org.protege.editor.owl.model.inference.ReasonerPreferences;
 import org.protege.editor.owl.model.io.IOListener;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
 import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;
-import org.protege.editor.owl.model.util.OboUtilities;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionCheckerFactory;
 import org.protege.editor.owl.ui.error.OntologyLoadErrorHandler;
 import org.protege.editor.owl.ui.explanation.ExplanationManager;
 import org.protege.editor.owl.ui.renderer.OWLModelManagerEntityRenderer;
 import org.protege.editor.owl.ui.renderer.OWLObjectRenderer;
-import org.protege.editor.owl.ui.renderer.RenderingEscapeUtils;
 import org.protege.editor.owl.ui.renderer.RenderingEscapeUtils.RenderingEscapeSetting;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.semanticweb.owlapi.model.*;
@@ -29,7 +27,6 @@ import java.io.File;
 import java.net.URI;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 

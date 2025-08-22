@@ -3,7 +3,6 @@ package org.protege.editor.owl.model.io;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.core.log.LogBanner;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

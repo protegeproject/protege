@@ -4,7 +4,6 @@ import org.protege.editor.core.ui.view.ViewComponent;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.OWLWorkspace;
-import org.protege.editor.owl.model.selection.SelectionPlane;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLObject;
 
@@ -12,7 +11,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
-import java.util.Optional;
 
 
 /**

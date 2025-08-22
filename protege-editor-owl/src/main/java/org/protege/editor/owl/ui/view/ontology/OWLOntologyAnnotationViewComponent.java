@@ -10,7 +10,6 @@ import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.refactor.ontology.EntityIRIUpdaterOntologyChangeStrategy;
 import org.protege.editor.owl.ui.ontology.annotation.OWLOntologyAnnotationList;
-import org.protege.editor.owl.ui.prefix.PrefixUtilities;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
 import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
 import org.semanticweb.owlapi.model.*;

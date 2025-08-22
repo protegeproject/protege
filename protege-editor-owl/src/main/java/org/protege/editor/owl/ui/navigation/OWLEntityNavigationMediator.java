@@ -4,7 +4,6 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.selection.OWLSelectionHistoryManager;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 

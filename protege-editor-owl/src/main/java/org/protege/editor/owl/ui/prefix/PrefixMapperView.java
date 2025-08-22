@@ -7,13 +7,10 @@ import org.protege.editor.owl.ui.renderer.prefix.PrefixBasedRenderer;
 import org.protege.editor.owl.ui.view.AbstractActiveOntologyViewComponent;
 import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.util.DefaultPrefixManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class PrefixMapperView extends AbstractActiveOntologyViewComponent {

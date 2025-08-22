@@ -3,7 +3,6 @@ package org.protege.editor.owl.model.cache;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.ShortFormProvider;

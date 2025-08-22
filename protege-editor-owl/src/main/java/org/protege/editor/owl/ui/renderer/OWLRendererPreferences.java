@@ -10,8 +10,6 @@ import org.protege.editor.owl.ui.renderer.plugin.RendererPluginLoader;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
-import javax.swing.*;
-import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;

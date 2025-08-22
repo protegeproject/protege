@@ -1,6 +1,5 @@
 package org.protege.editor.owl.model.idrange;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 

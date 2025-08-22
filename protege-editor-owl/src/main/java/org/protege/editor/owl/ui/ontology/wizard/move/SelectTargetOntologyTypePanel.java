@@ -5,13 +5,7 @@ import org.protege.editor.owl.OWLEditorKit;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-/*
- * Copyright (C) 2008, University of Manchester
- *
- *
- */
+
 
 
 /**

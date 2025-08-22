@@ -2,7 +2,6 @@ package org.protege.editor.owl.model.merge;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import org.coode.owlapi.obo12.parser.OBOVocabulary;
 import org.obolibrary.obo2owl.Obo2OWLConstants;
 import org.protege.editor.owl.model.util.OboUtilities;
 import org.protege.editor.owl.ui.merge.MergeStrategy;
@@ -15,7 +14,6 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.obolibrary.obo2owl.Obo2OWLConstants.Obo2OWLVocabulary.IRI_OIO_hasExactSynonym;
 import static org.obolibrary.obo2owl.Obo2OWLConstants.Obo2OWLVocabulary.IRI_OIO_hasRelatedSynonym;
 import static org.semanticweb.owlapi.vocab.SKOSVocabulary.ALTLABEL;
 import static org.semanticweb.owlapi.vocab.SKOSVocabulary.PREFLABEL;

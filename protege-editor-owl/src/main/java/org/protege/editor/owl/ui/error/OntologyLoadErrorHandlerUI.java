@@ -1,24 +1,17 @@
 package org.protege.editor.owl.ui.error;
 
-import org.obolibrary.oboformat.parser.OBOFormatParser;
 import org.obolibrary.oboformat.parser.OBOFormatParserException;
 import org.protege.editor.core.ui.error.ErrorExplainer;
 import org.protege.editor.core.ui.util.JOptionPaneEx;
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.expression.ParserException;
-import org.semanticweb.owlapi.formats.*;
-import org.semanticweb.owlapi.functional.parser.OWLFunctionalSyntaxOWLParser;
 import org.semanticweb.owlapi.io.OWLParser;
 import org.semanticweb.owlapi.io.OWLParserException;
 import org.semanticweb.owlapi.io.UnparsableOntologyException;
 import org.semanticweb.owlapi.model.OWLDocumentFormat;
 import org.semanticweb.owlapi.model.OWLDocumentFormatFactory;
 import org.semanticweb.owlapi.model.OWLOntologyID;
-import org.semanticweb.owlapi.owlxml.parser.OWLXMLParser;
 import org.semanticweb.owlapi.rdf.rdfxml.parser.RDFParserException;
-import org.semanticweb.owlapi.rdf.rdfxml.parser.RDFXMLParser;
-import org.semanticweb.owlapi.rdf.turtle.parser.TurtleOntologyParser;
-import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,8 +19,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Author: drummond<br>

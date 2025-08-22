@@ -12,8 +12,6 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.util.*;
 import java.util.List;

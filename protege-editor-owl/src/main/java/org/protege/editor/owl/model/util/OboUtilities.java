@@ -9,7 +9,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.coode.owlapi.obo12.parser.OBOVocabulary.OBO_ID_PATTERN;
 
 /**
  * Matthew Horridge

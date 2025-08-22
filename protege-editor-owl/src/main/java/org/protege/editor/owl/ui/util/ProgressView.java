@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.util;
 
-import org.semanticweb.owlapi.model.IRI;
 
 import javax.swing.*;
 

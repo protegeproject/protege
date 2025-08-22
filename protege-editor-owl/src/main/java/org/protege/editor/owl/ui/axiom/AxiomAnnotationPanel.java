@@ -5,7 +5,6 @@ import org.protege.editor.owl.model.OWLEditorKitIRIShortFormProvider;
 import org.protege.editor.owl.model.OWLEditorKitOntologyShortFormProvider;
 import org.protege.editor.owl.model.OWLEditorKitShortFormProvider;
 import org.protege.editor.owl.model.util.OWLAxiomInstance;
-import org.protege.editor.owl.ui.renderer.OWLCellRenderer;
 import org.protege.editor.owl.ui.renderer.context.OWLObjectRenderingContext;
 import org.protege.editor.owl.ui.renderer.styledstring.OWLObjectStyledStringRenderer;
 import org.protege.editor.owl.ui.renderer.styledstring.StyledString;

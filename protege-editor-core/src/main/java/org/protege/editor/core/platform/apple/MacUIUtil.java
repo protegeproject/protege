@@ -5,7 +5,6 @@ import org.protege.editor.core.ui.util.UIUtil;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.Collections;
 import java.util.Set;
 
