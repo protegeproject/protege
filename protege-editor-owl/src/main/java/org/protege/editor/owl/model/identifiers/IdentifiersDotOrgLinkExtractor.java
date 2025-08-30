@@ -1,6 +1,7 @@
 package org.protege.editor.owl.model.identifiers;
 
 import org.protege.editor.owl.ui.renderer.LinkExtractor;
+import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.protege.editor.owl.ui.renderer.layout.HTTPLink;
 import org.protege.editor.owl.ui.renderer.layout.Link;
 import org.slf4j.Logger;
@@ -25,6 +26,9 @@ public class IdentifiersDotOrgLinkExtractor implements LinkExtractor {
 
     @Override
     public Optional<Link> extractLink(String s) {
+        if (!OWLRendererPreferences.getInstance().isUseOnlineLinkExtractors()) {
+            return Optional.empty();
+        }
         IdentifiersDotOrg identifiersDotOrg = IdentifiersDotOrgManager.get();
         return identifiersDotOrg.getCollection(s)
                 .flatMap(collection -> {
