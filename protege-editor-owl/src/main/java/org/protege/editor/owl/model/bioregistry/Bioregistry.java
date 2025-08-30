@@ -56,7 +56,7 @@ public class Bioregistry {
     }
 
     public String resolve(@Nonnull String id) {
-        String items[] = id.split(":", 2);
+        String items[] = id.split(":");
         if (items.length == 2) {
             return resolve(items[0], items[1]);
         }
@@ -86,6 +86,7 @@ public class Bioregistry {
                 logger.warn("Error when querying the bioregistry for '{}': {}", prefix, e.getMessage());
                 errors += 1;
             }
+            request.releaseConnection();
             cache.put(prefix, resource);
         }
         return cache.get(prefix);
