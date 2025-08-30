@@ -10,8 +10,16 @@ import org.semanticweb.owlapi.model.OWLRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JList;
+import javax.swing.JRadioButton;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
+
+import java.awt.BorderLayout;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -37,6 +45,8 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
 
     private JCheckBox highlightKeyWordsCheckBox;
 
+    private JCheckBox useOnlineLinkExtractorsCheckBox;
+
     private JSpinner fontSizeSpinner;
 
     private JButton configureButton;
@@ -51,6 +61,7 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
         prefs.setHighlightActiveOntologyStatements(highlightAOStatementsCheckBox.isSelected());
         prefs.setRenderHyperlinks(showHyperlinksCheckBox.isSelected());
         prefs.setHighlightKeyWords(highlightKeyWordsCheckBox.isSelected());
+        prefs.setUseOnlineLinkExtractors(useOnlineLinkExtractorsCheckBox.isSelected());
         Integer fontSize = (Integer) fontSizeSpinner.getValue();
         prefs.setFontSize(fontSize);
         if (isDirty()){
@@ -89,10 +100,13 @@ public class RendererPreferencesPanel extends OWLPreferencesPanel {
         showHyperlinksCheckBox = new JCheckBox("Show hyperlinks in components that support them",
                                                prefs.isRenderHyperlinks());
         highlightKeyWordsCheckBox = new JCheckBox("Highlight keywords", prefs.isHighlightKeyWords());
+        useOnlineLinkExtractorsCheckBox = new JCheckBox("Use online link extractors",
+            prefs.isUseOnlineLinkExtractors());
 
         layoutPanel.addGroupComponent(highlightAOStatementsCheckBox);
         layoutPanel.addGroupComponent(showHyperlinksCheckBox);
         layoutPanel.addGroupComponent(highlightKeyWordsCheckBox);
+        layoutPanel.addGroupComponent(useOnlineLinkExtractorsCheckBox);
 
         layoutPanel.addSeparator();
 
