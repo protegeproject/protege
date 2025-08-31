@@ -1,6 +1,7 @@
 package org.protege.editor.owl.model.bioregistry;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.http.HttpResponse;
@@ -8,6 +9,7 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,6 +55,7 @@ public class Bioregistry {
         client = HttpClientBuilder.create().useSystemProperties().build();
         objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        loadBundledBioregistry();
     }
 
     public String resolve(@Nonnull String id) {
@@ -72,7 +75,9 @@ public class Bioregistry {
     }
 
     private Resource getResource(@Nonnull String prefix) {
-        if (!cache.containsKey(prefix) && errors < MAX_ERRORS) {
+        if (!cache.containsKey(prefix)
+            && OWLRendererPreferences.getInstance().isUseOnlineLinkExtractors()
+            && errors < MAX_ERRORS) {
             Resource resource = null;
             HttpGet request = new HttpGet(String.format(API_ENDPOINT, prefix));
             request.addHeader("Accept", "application/json");
@@ -95,5 +100,30 @@ public class Bioregistry {
             }
         }
         return cache.get(prefix);
+    }
+
+    private void loadBundledBioregistry() {
+        InputStream is = Bioregistry.class.getResourceAsStream("/bioregistry/bioregistry.json");
+        if (is == null) {
+            logger.warn("Cannot find bundled Bioregistry data");
+            return;
+        }
+
+        try {
+            MappingIterator<Resource> it = objectMapper.readerFor(Resource.class).readValues(is);
+            int nResources = 0;
+            int nPrefixes = 0;
+            while (it.hasNext()) {
+                Resource res = it.next();
+                nResources += 1;
+                for (String pfx : res.getPrefixes()) {
+                    cache.put(pfx, res);
+                    nPrefixes += 1;
+                }
+            }
+            logger.info("Cached {} Bioregistry resources ({} prefixes)", nResources, nPrefixes);
+        } catch (IOException e) {
+            logger.warn("Cannot parse bundled Bioregistry data: {}", e.getMessage());
+        }
     }
 }

@@ -1,7 +1,6 @@
 package org.protege.editor.owl.model.bioregistry;
 
 import org.protege.editor.owl.ui.renderer.LinkExtractor;
-import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.protege.editor.owl.ui.renderer.layout.HTTPLink;
 import org.protege.editor.owl.ui.renderer.layout.Link;
 import org.slf4j.Logger;
@@ -27,7 +26,7 @@ public class BioregistryLinkExtractor implements LinkExtractor {
 
     @Override
     public Optional<Link> extractLink(String s) {
-        if (s != null && OWLRendererPreferences.getInstance().isUseOnlineLinkExtractors()) {
+        if (s != null) {
             String uri = Bioregistry.getInstance().resolve(s);
             if (uri != null) {
                 try {
