@@ -1,11 +1,7 @@
 package org.protege.editor.owl.model.bioregistry;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -15,8 +11,12 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.annotation.Nonnull;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Author: Damien Goutte-Gattat<br>
@@ -88,6 +88,11 @@ public class Bioregistry {
             }
             request.releaseConnection();
             cache.put(prefix, resource);
+            if (resource != null) {
+                for (String pfx : resource.getPrefixes()) {
+                    cache.put(pfx, resource);
+                }
+            }
         }
         return cache.get(prefix);
     }
