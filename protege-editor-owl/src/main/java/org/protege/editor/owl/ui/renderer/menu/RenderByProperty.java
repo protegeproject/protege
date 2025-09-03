@@ -4,7 +4,6 @@ import org.protege.editor.core.ui.action.ProtegeDynamicAction;
 import org.protege.editor.core.ui.util.Icons;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.ui.renderer.OWLEntityAnnotationValueRenderer;
 import org.protege.editor.owl.ui.renderer.OWLEntityRendererImpl;
@@ -17,7 +16,6 @@ import org.semanticweb.owlapi.model.OWLOntology;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.*;
 
 public class RenderByProperty extends ProtegeDynamicAction {

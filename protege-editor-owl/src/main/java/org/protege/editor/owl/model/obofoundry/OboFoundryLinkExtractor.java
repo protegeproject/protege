@@ -2,7 +2,6 @@ package org.protege.editor.owl.model.obofoundry;
 
 import org.protege.editor.owl.model.util.OboUtilities;
 import org.protege.editor.owl.ui.renderer.LinkExtractor;
-import org.protege.editor.owl.ui.renderer.layout.HTTPLink;
 import org.protege.editor.owl.ui.renderer.layout.Link;
 
 import javax.annotation.Nonnull;

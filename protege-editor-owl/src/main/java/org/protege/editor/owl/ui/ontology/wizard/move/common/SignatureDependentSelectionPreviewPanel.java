@@ -2,7 +2,6 @@ package org.protege.editor.owl.ui.ontology.wizard.move.common;
 
 import org.protege.editor.core.ui.list.RemovableObjectList;
 import org.protege.editor.core.ui.util.CheckList;
-import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.core.ui.util.FormLabel;
 import org.protege.editor.owl.ui.list.OWLObjectList;
 import org.protege.editor.owl.ui.ontology.wizard.move.MoveAxiomsKitConfigurationPanel;
@@ -12,12 +11,7 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;

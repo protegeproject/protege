@@ -12,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 
 import static org.protege.editor.owl.model.event.EventType.ACTIVE_ONTOLOGY_CHANGED;
-import static org.semanticweb.owlapi.model.AxiomType.DIFFERENT_INDIVIDUALS;
 
 
 /**

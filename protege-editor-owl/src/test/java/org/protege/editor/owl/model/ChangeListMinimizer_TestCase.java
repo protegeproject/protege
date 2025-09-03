@@ -1,6 +1,5 @@
 package org.protege.editor.owl.model;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

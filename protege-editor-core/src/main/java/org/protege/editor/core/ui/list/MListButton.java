@@ -1,7 +1,6 @@
 package org.protege.editor.core.ui.list;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 

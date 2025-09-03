@@ -2,7 +2,6 @@ package org.protege.editor.owl.ui.util;
 
 import org.protege.editor.core.ui.util.AugmentedJTextField;
 import org.protege.editor.core.ui.util.ComponentFactory;
-import org.protege.editor.owl.model.lang.LangCode;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;

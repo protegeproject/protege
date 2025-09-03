@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard.page;
 
 import org.protege.editor.core.ui.OpenFromURLPanel;
-import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.ontology.imports.wizard.ImportInfo;
 import org.protege.editor.owl.ui.ontology.imports.wizard.OntologyImportWizard;
