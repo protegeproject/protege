@@ -5,8 +5,6 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.util.HashSet;
 

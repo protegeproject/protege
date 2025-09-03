@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.editor;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.frame.OWLAnnotationFrameSection;
 import org.protege.editor.owl.ui.frame.individual.OWLClassAssertionAxiomTypeFrameSection;
 import org.protege.editor.owl.ui.frame.individual.OWLIndividualPropertyAssertionsFrame;
@@ -9,7 +8,6 @@ import org.protege.editor.owl.ui.framelist.OWLFrameList;
 import org.protege.editor.owl.ui.renderer.OWLIndividualIcon;
 import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
 import org.semanticweb.owlapi.model.OWLIndividual;
-import org.semanticweb.owlapi.model.OWLOntologyID;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

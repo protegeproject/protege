@@ -1,11 +1,9 @@
 package org.protege.editor.owl.ui.util;
 
 import org.protege.editor.core.ui.util.Icons;
-import org.semanticweb.owlapi.model.IRI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 
 /**
  * Matthew Horridge

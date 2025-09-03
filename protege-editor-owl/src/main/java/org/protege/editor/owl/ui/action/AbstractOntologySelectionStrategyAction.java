@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.action;
 
 import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.protege.editor.owl.model.selection.ontologies.OntologySelectionStrategy;
 

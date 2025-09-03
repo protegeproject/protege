@@ -1,15 +1,12 @@
 package org.protege.editor.owl.ui.view;
 
 import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.event.OWLModelManagerChangeEvent;
 import org.protege.editor.owl.model.event.OWLModelManagerListener;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyChangeListener;
 
-import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
-import java.util.List;
 
 
 /**

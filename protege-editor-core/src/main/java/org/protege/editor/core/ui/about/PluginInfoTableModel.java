@@ -8,12 +8,10 @@ import org.protege.editor.core.ProtegeApplication;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 import static java.lang.String.*;
 import static java.util.Comparator.comparing;
-import static java.util.Comparator.nullsFirst;
 import static java.util.Comparator.nullsLast;
 import static java.util.stream.Collectors.toList;
 

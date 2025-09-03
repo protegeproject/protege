@@ -1,9 +1,6 @@
 package org.protege.editor.core.editorkit;
 
 import org.protege.editor.core.Disposable;
-import org.protege.editor.core.editorkit.plugin.EditorKitHook;
-import org.protege.editor.core.editorkit.plugin.EditorKitHookPlugin;
-import org.protege.editor.core.editorkit.plugin.EditorKitHookPluginLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

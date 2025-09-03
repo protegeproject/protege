@@ -5,7 +5,6 @@ import org.semanticweb.owlapi.model.*;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Optional;
 
 
 /**

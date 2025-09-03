@@ -1,22 +1,10 @@
 package org.protege.editor.owl.model.lang;
 
-import com.fasterxml.jackson.databind.MappingIterator;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvParser;
-import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import org.osgi.framework.Bundle;
-import org.protege.editor.core.plugin.PluginUtilities;
 
 import javax.annotation.Nonnull;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

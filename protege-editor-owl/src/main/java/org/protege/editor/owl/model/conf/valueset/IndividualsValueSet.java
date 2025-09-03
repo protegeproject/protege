@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.conf.IRIExpander;
-import org.protege.editor.owl.model.util.OWLUtilities;
 import org.protege.editor.owl.ui.renderer.RenderingEscapeUtils;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;

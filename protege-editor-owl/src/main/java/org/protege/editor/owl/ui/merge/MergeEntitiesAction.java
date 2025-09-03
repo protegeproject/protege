@@ -8,7 +8,6 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyChange;
 
-import javax.swing.*;
 import java.util.List;
 import java.util.Optional;
 

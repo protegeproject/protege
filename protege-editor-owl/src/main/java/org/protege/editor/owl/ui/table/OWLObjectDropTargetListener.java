@@ -2,8 +2,6 @@ package org.protege.editor.owl.ui.table;
 
 import org.protege.editor.owl.ui.transfer.OWLObjectDataFlavor;
 import org.protege.editor.owl.ui.transfer.OWLObjectDropTarget;
-import org.protege.editor.owl.ui.tree.OWLObjectTree;
-import org.protege.editor.owl.ui.tree.OWLTreePreferences;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.util.OWLObjectDuplicator;
 import org.slf4j.Logger;

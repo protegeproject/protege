@@ -3,8 +3,6 @@ package org.protege.editor.core.ui.view;
 import org.protege.editor.core.HasUpdateState;
 
 import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 
 /**

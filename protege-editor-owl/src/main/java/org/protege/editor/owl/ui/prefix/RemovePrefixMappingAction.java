@@ -4,7 +4,6 @@ import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.prefix.PrefixMapperTables.SelectedOntologyListener;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;

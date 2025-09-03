@@ -1,7 +1,6 @@
 package org.protege.editor.owl.model.merge;
 
 import com.google.common.collect.ImmutableSet;
-import org.coode.owlapi.obo12.parser.OBOVocabulary;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

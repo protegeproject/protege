@@ -3,9 +3,7 @@ package org.protege.editor.owl.model.io;
 import com.google.common.util.concurrent.*;
 import org.protege.editor.owl.model.IOListenerManager;
 import org.protege.editor.owl.model.OWLModelManager;
-import org.protege.editor.owl.model.OntologyManagerFactory;
 import org.protege.editor.owl.model.event.EventType;
-import org.protege.editor.owl.model.util.LowMemoryNotificationView;
 import org.protege.editor.owl.model.util.MemoryMonitor;
 import org.protege.editor.owl.ui.util.LowMemoryNotificationViewImpl;
 import org.protege.editor.owl.ui.util.ProgressDialog;
@@ -26,7 +24,6 @@ import uk.ac.manchester.cs.owl.owlapi.concurrent.NonConcurrentOWLOntologyBuilder
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
-import java.io.File;
 import java.net.URI;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
