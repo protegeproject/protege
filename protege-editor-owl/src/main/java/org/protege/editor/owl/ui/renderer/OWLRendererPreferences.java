@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.renderer;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
+
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
@@ -10,7 +11,7 @@ import org.protege.editor.owl.ui.renderer.plugin.RendererPluginLoader;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
-import java.awt.*;
+import java.awt.Font;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -58,6 +59,8 @@ public class OWLRendererPreferences {
 
     public static final String DISPLAY_THUMBNAILS_INLINE = "DISPLAY_THUMBNAILS_INLINE";
 
+    public static final String USE_ONLINE_LINK_EXTRACTORS = "USE_ONLINE_LINK_EXTRACTORS";
+
     public static final int DEFAULT_FONT_SIZE = getDefaultFontSize();
 
     public static final String DEFAULT_FONT_NAME = getDefaultFontName();
@@ -102,6 +105,8 @@ public class OWLRendererPreferences {
     private boolean displayLiteralDatatypesInline;
 
     private boolean displayThumbnailsInline;
+
+    private boolean useOnlineLinkExtractors;
 
     
     public Font getFont() {
@@ -171,6 +176,15 @@ public class OWLRendererPreferences {
         getPreferences().putBoolean(DISPLAY_THUMBNAILS_INLINE, displayThumbnailsInline);
     }
 
+    public boolean isUseOnlineLinkExtractors() {
+        return useOnlineLinkExtractors;
+    }
+
+    public void setUseOnlineLinkExtractors(boolean useOnlineLinkExtractors) {
+        this.useOnlineLinkExtractors = useOnlineLinkExtractors;
+        getPreferences().putBoolean(USE_ONLINE_LINK_EXTRACTORS, useOnlineLinkExtractors);
+    }
+
     public void setAnnotations(List<IRI> iris){
         annotationIRIS = iris;
         writeAnnotations();
@@ -232,6 +246,7 @@ public class OWLRendererPreferences {
         displayAnnotationAnnotationsInline = p.getBoolean(DISPLAY_ANNOTATION_ANNOTATIONS_INLINE, true);
         displayLiteralDatatypesInline = p.getBoolean(DISPLAY_LITERAL_DATATYPES_INLINE, true);
         displayThumbnailsInline = p.getBoolean(DISPLAY_THUMBNAILS_INLINE, true);
+        useOnlineLinkExtractors = p.getBoolean(USE_ONLINE_LINK_EXTRACTORS, true);
         loadAnnotations();
         resetFont();
     }
@@ -323,6 +338,7 @@ public class OWLRendererPreferences {
         useThatKeyword = false;
         displayAnnotationAnnotationsInline = true;
         displayLiteralDatatypesInline = true;
+        useOnlineLinkExtractors = true;
         fontSize = DEFAULT_FONT_SIZE;
     }
 
