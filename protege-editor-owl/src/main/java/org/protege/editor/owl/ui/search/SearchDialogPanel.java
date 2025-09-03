@@ -3,7 +3,6 @@ package org.protege.editor.owl.ui.search;
 import com.google.common.base.Optional;
 import org.protege.editor.core.ui.util.AugmentedJTextField;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.search.SearchResult;
 import org.semanticweb.owlapi.model.OWLEntity;
 
 import javax.swing.*;

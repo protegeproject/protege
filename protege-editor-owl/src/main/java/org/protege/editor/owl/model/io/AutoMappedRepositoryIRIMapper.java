@@ -1,8 +1,6 @@
 package org.protege.editor.owl.model.io;
 
 import org.eclipse.jgit.annotations.NonNull;
-import org.protege.editor.core.ui.util.UIUtil;
-import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;

@@ -1,9 +1,6 @@
 package org.protege.editor.core.ui.util;
 
 import org.protege.editor.core.Fonts;
-import org.protege.editor.core.PropertyUtil;
-import org.protege.editor.core.ProtegeProperties;
-import org.protege.editor.core.platform.OSUtils;
 
 import javax.swing.*;
 import java.awt.*;

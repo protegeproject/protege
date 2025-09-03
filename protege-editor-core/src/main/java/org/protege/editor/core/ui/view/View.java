@@ -13,7 +13,6 @@ import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.action.ToolBarActionComparator;
 import org.protege.editor.core.ui.util.ComponentFactory;
-import org.protege.editor.core.ui.util.Icons;
 import org.protege.editor.core.ui.workspace.Workspace;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

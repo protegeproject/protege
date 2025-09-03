@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.deprecation;
 
 import com.google.common.base.Optional;
-import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.deprecation.DeprecationProfile;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;

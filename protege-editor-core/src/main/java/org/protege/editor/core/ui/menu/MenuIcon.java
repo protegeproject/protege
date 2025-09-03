@@ -6,7 +6,6 @@ import java.awt.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.awt.BorderLayout.NORTH;
-import static java.awt.Color.DARK_GRAY;
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;

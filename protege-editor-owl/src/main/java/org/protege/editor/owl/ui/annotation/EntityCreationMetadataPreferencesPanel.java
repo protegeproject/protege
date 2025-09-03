@@ -17,13 +17,9 @@ import org.protege.editor.owl.model.util.TimestampFormatter;
 import org.protege.editor.owl.ui.UIHelper;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLAutoCompleter;
 import org.protege.editor.owl.ui.clsdescriptioneditor.OWLExpressionChecker;
-import org.protege.editor.owl.ui.find.OWLEntityFindPanel;
 import org.protege.editor.owl.ui.preferences.OWLPreferencesPanel;
-import org.protege.editor.owl.ui.selector.OWLAnnotationPropertySelectorPanel;
-import org.protege.editor.owl.ui.view.Findable;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
-import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.vocab.DublinCoreVocabulary;
 import org.semanticweb.owlapi.vocab.Namespaces;
 import org.slf4j.Logger;
@@ -36,7 +32,6 @@ import java.awt.event.ComponentEvent;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
-import java.util.List;
 
 /**
  * Matthew Horridge

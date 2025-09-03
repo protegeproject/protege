@@ -1,6 +1,5 @@
 package org.protege.editor.owl.model.obofoundry;
 
-import com.google.auto.value.AutoValue;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;

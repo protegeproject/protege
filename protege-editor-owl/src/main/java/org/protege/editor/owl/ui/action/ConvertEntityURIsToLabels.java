@@ -12,7 +12,6 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Collections;

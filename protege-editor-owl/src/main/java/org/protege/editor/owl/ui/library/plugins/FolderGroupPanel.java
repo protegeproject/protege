@@ -4,15 +4,12 @@ import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.model.library.folder.FolderGroupManager;
 import org.protege.editor.owl.model.library.folder.ImportByNameManager;
 import org.protege.editor.owl.ui.library.NewEntryPanel;
-import org.protege.xmlcatalog.CatalogUtilities;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.GroupEntry;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;

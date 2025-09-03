@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.renderer;
 
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 

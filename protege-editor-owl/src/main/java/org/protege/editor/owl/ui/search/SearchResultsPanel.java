@@ -9,7 +9,6 @@ import org.protege.editor.owl.model.search.SearchCategory;
 import org.protege.editor.owl.model.search.SearchResult;
 import org.protege.editor.owl.model.search.SearchResultMatch;
 import org.protege.editor.owl.model.search.SearchResultSet;
-import org.protege.editor.owl.model.util.OWLUtilities;
 import org.protege.editor.owl.ui.renderer.OWLRendererPreferences;
 import org.protege.editor.owl.ui.renderer.context.OWLObjectRenderingContext;
 import org.protege.editor.owl.ui.renderer.styledstring.*;
@@ -18,9 +17,6 @@ import org.semanticweb.owlapi.model.OWLObject;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;

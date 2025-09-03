@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.view;
 
 import org.protege.editor.core.HasUpdateState;
-import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.view.View;
 import org.protege.editor.core.ui.view.ViewMode;
 import org.protege.editor.core.util.HandlerRegistration;
@@ -11,7 +10,6 @@ import org.protege.editor.owl.model.hierarchy.OWLObjectHierarchyProvider;
 import org.protege.editor.owl.ui.OWLObjectComparatorAdapter;
 import org.protege.editor.owl.ui.action.AbstractOWLTreeAction;
 import org.protege.editor.owl.ui.action.OWLObjectHierarchyDeleter;
-import org.protege.editor.owl.ui.action.ProtegeOWLAction;
 import org.protege.editor.owl.ui.breadcrumb.Breadcrumb;
 import org.protege.editor.owl.ui.breadcrumb.BreadcrumbTrailChangedHandler;
 import org.protege.editor.owl.ui.breadcrumb.BreadcrumbTrailProvider;

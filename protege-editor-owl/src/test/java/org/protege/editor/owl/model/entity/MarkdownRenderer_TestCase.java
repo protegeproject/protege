@@ -1,6 +1,5 @@
 package org.protege.editor.owl.model.entity;
 
-import org.eclipse.jgit.annotations.NonNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

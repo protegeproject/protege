@@ -7,12 +7,8 @@ import org.protege.editor.core.ui.laf.RadioButtonMenuItemIcon;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.border.MatteBorder;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.FontUIResource;
-import javax.swing.plaf.basic.BasicScrollBarUI;
-import javax.swing.plaf.basic.BasicSeparatorUI;
-import javax.swing.plaf.metal.MetalIconFactory;
 import java.awt.*;
 
 

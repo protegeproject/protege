@@ -6,8 +6,6 @@ import org.protege.editor.owl.OWLEditorKit;
 import javax.swing.*;
 import javax.swing.text.html.HTMLDocument;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Set;

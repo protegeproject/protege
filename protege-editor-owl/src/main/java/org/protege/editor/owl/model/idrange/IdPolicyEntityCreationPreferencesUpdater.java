@@ -1,11 +1,7 @@
 package org.protege.editor.owl.model.idrange;
 
 import org.protege.editor.owl.model.entity.EntityCreationPreferences;
-import org.protege.editor.owl.model.git.GitRepositoryManager;
-import org.protege.editor.owl.model.user.DefaultUserNameProvider;
-import org.protege.editor.owl.model.user.UserNamePreferencesManager;
 import org.protege.editor.owl.model.user.UserNameProvider;
-import org.protege.editor.owl.model.user.UserPreferences;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 import org.slf4j.Logger;

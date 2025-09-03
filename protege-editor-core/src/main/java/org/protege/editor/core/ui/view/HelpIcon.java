@@ -1,6 +1,5 @@
 package org.protege.editor.core.ui.view;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 

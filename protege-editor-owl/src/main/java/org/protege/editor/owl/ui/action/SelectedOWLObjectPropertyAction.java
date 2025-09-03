@@ -9,7 +9,6 @@ package org.protege.editor.owl.ui.action;
 
 import org.protege.editor.owl.model.selection.OWLEntitySelectionModel;
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
-import org.semanticweb.owlapi.model.OWLObjectProperty;
 
 /**
  * Author: Matthew Horridge<br>

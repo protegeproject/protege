@@ -1,6 +1,5 @@
 package org.protege.editor.owl.model.annotation;
 
-import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.user.UserNameProvider;
 import org.semanticweb.owlapi.model.OWLAnnotationValue;
 import org.semanticweb.owlapi.model.OWLDataFactory;

@@ -5,7 +5,6 @@ import org.protege.editor.owl.model.git.GitRepositoryManager;
 import org.protege.editor.owl.model.user.DefaultUserNameProvider;
 import org.protege.editor.owl.model.user.OrcidPreferencesManager;
 import org.protege.editor.owl.model.user.UserNamePreferencesManager;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
