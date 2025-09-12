@@ -25,7 +25,7 @@ import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.*;
  * Stanford Center for Biomedical Informatics Research
  * 28 Aug 2017
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class EntityDeprecator_TestCase {
 
     private static final String LABEL_PREFIX = "!label prefix!";
@@ -105,10 +105,6 @@ public class EntityDeprecator_TestCase {
         when(deprecationProfile.getPreservedAnnotationValuePrefix()).thenReturn(VALUE_PREFIX);
         when(deprecationProfile.getPreservedAnnotationValuePropertiesIris()).thenReturn(Collections.singleton(dataFactory.getRDFSSeeAlso().getIRI()));
         when(deprecationProfile.getDeprecatedClassParentIri()).thenReturn(Optional.empty());
-        when(deprecationProfile.getDeprecatedObjectPropertyParentIri()).thenReturn(Optional.empty());
-        when(deprecationProfile.getDeprecatedDataPropertyParentIri()).thenReturn(Optional.empty());
-        when(deprecationProfile.getDeprecatedAnnotationPropertyParentIri()).thenReturn(Optional.empty());
-        when(deprecationProfile.getDeprecatedIndividualParentClassIri()).thenReturn(Optional.empty());
         when(deprecationProfile.getDeprecationCode()).thenReturn(Optional.empty());
 
         DeprecateEntityInfo<OWLClass> info = new DeprecateEntityInfo<>(

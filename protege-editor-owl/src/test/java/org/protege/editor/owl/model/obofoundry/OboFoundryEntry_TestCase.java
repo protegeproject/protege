@@ -14,7 +14,7 @@ import static org.hamcrest.Matchers.is;
  * Stanford Center for Biomedical Informatics Research
  * 2019-04-22
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class OboFoundryEntry_TestCase {
 
     private static final String THE_ID = "The Id";

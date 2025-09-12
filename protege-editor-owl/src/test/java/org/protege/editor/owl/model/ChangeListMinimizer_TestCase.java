@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
  * Stanford Center for Biomedical Informatics Research
  * 8 Jul 16
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class ChangeListMinimizer_TestCase {
 
     private ChangeListMinimizer minimizer;

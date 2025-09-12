@@ -24,7 +24,7 @@ import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.Class
  * Stanford Center for Biomedical Informatics Research
  * 12 Mar 2018
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class MergeEntitiesChangeListGenerator_TestCase {
 
 

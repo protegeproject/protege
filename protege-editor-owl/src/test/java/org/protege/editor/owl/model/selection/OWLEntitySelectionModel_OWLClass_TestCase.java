@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
  * Stanford Center for Biomedical Informatics Research
  * 10 Oct 2016
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class OWLEntitySelectionModel_OWLClass_TestCase {
 
     private OWLEntitySelectionModel selectionModel;
@@ -40,14 +40,12 @@ public class OWLEntitySelectionModel_OWLClass_TestCase {
     @Test
     public void shouldReturnOptionalEmptyForNullObjectAndNullEntity() {
         when(delegate.getSelectedObject()).thenReturn(null);
-        when(delegate.getSelectedEntity()).thenReturn(null);
         assertThat(selectionModel.getSelectedClass(), is(Optional.empty()));
     }
 
     @Test
     public void shouldReturnOptionalEmptyForNullObjectAndOtherEntity() {
         when(delegate.getSelectedObject()).thenReturn(null);
-        when(delegate.getSelectedEntity()).thenReturn(mock(OWLEntity.class));
         assertThat(selectionModel.getSelectedClass(), is(Optional.empty()));
     }
 
@@ -68,14 +66,12 @@ public class OWLEntitySelectionModel_OWLClass_TestCase {
     @Test
     public void shouldReturnOptionalEmptyForNullEntityAndClass() {
         when(delegate.getSelectedObject()).thenReturn(null);
-        when(delegate.getSelectedEntity()).thenReturn(cls);
         assertThat(selectionModel.getSelectedClass(), is(Optional.empty()));
     }
 
     @Test
     public void shouldReturnOptionalOfClassForClassAndNullEntity() {
         when(delegate.getSelectedObject()).thenReturn(cls);
-        when(delegate.getSelectedEntity()).thenReturn(null);
         assertThat(selectionModel.getSelectedClass(), is(Optional.of(cls)));
     }
 
@@ -90,21 +86,18 @@ public class OWLEntitySelectionModel_OWLClass_TestCase {
     public void shouldReturnOptionalEmptyForOtherEntity() {
         OWLEntity otherEntity = mock(OWLEntity.class);
         when(delegate.getSelectedObject()).thenReturn(otherEntity);
-        when(delegate.getSelectedEntity()).thenReturn(otherEntity);
         assertThat(selectionModel.getSelectedClass(), is(Optional.empty()));
     }
 
     @Test
     public void shouldReturnOptionalOfClassForClassAndOtherEntity() {
         when(delegate.getSelectedObject()).thenReturn(cls);
-        when(delegate.getSelectedEntity()).thenReturn(mock(OWLEntity.class));
         assertThat(selectionModel.getSelectedClass(), is(Optional.of(cls)));
     }
 
     @Test
     public void shouldReturnOptionalOfClassForClassAndClass() {
         when(delegate.getSelectedObject()).thenReturn(cls);
-        when(delegate.getSelectedEntity()).thenReturn(cls);
         assertThat(selectionModel.getSelectedClass(), is(Optional.of(cls)));
     }
 
