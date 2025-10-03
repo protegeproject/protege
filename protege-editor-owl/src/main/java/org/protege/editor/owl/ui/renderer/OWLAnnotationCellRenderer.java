@@ -6,6 +6,7 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLOntology;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
@@ -27,8 +28,6 @@ public class OWLAnnotationCellRenderer extends JPanel implements ListCellRendere
 
     private OWLEditorKit owlEditorKit;
 
-    private static final Color LABEL_COLOR = Color.BLUE.darker();
-
     private OWLOntology ontology;
 
     private Font normalFont;
@@ -40,8 +39,8 @@ public class OWLAnnotationCellRenderer extends JPanel implements ListCellRendere
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(1, 2, 1, 2));
 
-        annotationURILabel = new JLabel();
-        annotationURILabel.setForeground(LABEL_COLOR);
+    annotationURILabel = new JLabel();
+    annotationURILabel.setForeground(getLabelColor(null));
 
         normalFont = annotationURILabel.getFont();
         activeOntologyFont = normalFont.deriveFont(Font.BOLD);
@@ -89,8 +88,8 @@ public class OWLAnnotationCellRenderer extends JPanel implements ListCellRendere
                 annotationURILabel.setForeground(list.getSelectionForeground());
             }
             else {
-                annotationContentArea.setForeground(list.getForeground());
-                annotationURILabel.setForeground(LABEL_COLOR);
+                annotationContentArea.setForeground(getContentColor(list));
+                annotationURILabel.setForeground(getLabelColor(list));
             }
             iconLabel.setVisible(anno.getValue() instanceof IRI);
         }
@@ -111,5 +110,36 @@ public class OWLAnnotationCellRenderer extends JPanel implements ListCellRendere
 
     public void setOntology(OWLOntology ontology) {
         this.ontology = ontology;
+    }
+
+    private Color getLabelColor(@Nullable JList<?> list) {
+        Color color = UIManager.getColor("Annotation.labelForeground");
+        if (color == null) {
+            color = UIManager.getColor("Label.foreground");
+        }
+        if (color == null) {
+            color = UIManager.getColor("List.foreground");
+        }
+        if (color == null && list != null) {
+            color = list.getForeground();
+        }
+        if (color == null) {
+            color = Color.WHITE;
+        }
+        return color;
+    }
+
+    private Color getContentColor(@Nullable JList<?> list) {
+        Color color = UIManager.getColor("Annotation.contentForeground");
+        if (color == null) {
+            color = UIManager.getColor("List.foreground");
+        }
+        if (color == null && list != null) {
+            color = list.getForeground();
+        }
+        if (color == null) {
+            color = Color.WHITE;
+        }
+        return color;
     }
 }

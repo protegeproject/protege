@@ -321,11 +321,38 @@ public class Paragraph extends PageObject {
     private void highlightLinks(AttributedString as) {
         for (LinkSpan linkSpan : linkSpans) {
             if (highlightedLinkSpan.contains(linkSpan) || !linkSpan.getLink().isRollOverLink()) {
-                as.addAttribute(TextAttribute.FOREGROUND, Color.BLUE, linkSpan.getSpan().getStartIndex(), linkSpan.getSpan().getEndIndex());
-                as.addAttribute(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_ONE_PIXEL, linkSpan.getSpan().getStartIndex(), linkSpan.getSpan().getEndIndex());
+                int start = linkSpan.getSpan().getStartIndex();
+                int end = linkSpan.getSpan().getEndIndex();
+                Color color = getForegroundForRange(start);
+                if (color == null) {
+                    color = getDefaultLinkColor();
+                }
+                as.addAttribute(TextAttribute.FOREGROUND, color, start, end);
+                as.addAttribute(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_ONE_PIXEL, start, end);
             }
 
         }
+    }
+
+    private Color getForegroundForRange(int index) {
+        AttributedCharacterIterator iterator = paragraphText.getIterator();
+        if (index < iterator.getBeginIndex() || index >= iterator.getEndIndex()) {
+            return null;
+        }
+        iterator.setIndex(index);
+        Object attr = iterator.getAttribute(TextAttribute.FOREGROUND);
+        if (attr instanceof Color) {
+            return (Color) attr;
+        }
+        return null;
+    }
+
+    private Color getDefaultLinkColor() {
+        Color color = UIManager.getColor("Link.foreground");
+        if (color == null) {
+            color = new Color(190, 170, 255);
+        }
+        return color;
     }
 
     /**
