@@ -15,6 +15,11 @@
     ]
   },
   {
+    "prefix": "aacdb",
+    "uri_format": "https://i.uestc.edu.cn/AACDB/details.php?id=$1",
+    "pattern": "^\\d+$"
+  },
+  {
     "prefix": "abcam",
     "uri_format": "https://www.abcam.com/$1.html"
   },
@@ -69,7 +74,7 @@
   {
     "prefix": "agricola",
     "uri_format": "https://europepmc.org/article/AGR/$1",
-    "pattern": "^IND\\d+$",
+    "pattern": "^(IND|GUA)\\d+$",
     "synonyms": [
       "AGR",
       "AGRICOLA_ID"
@@ -1017,20 +1022,36 @@
     "pattern": "^\\d+$"
   },
   {
-    "prefix": "cog",
-    "uri_format": "https://www.ncbi.nlm.nih.gov/research/cog/cog/$1",
-    "pattern": "^COG\\d+$",
-    "synonyms": [
-      "COG_Cluster"
-    ]
-  },
-  {
     "prefix": "cog.category",
     "uri_format": "https://www.ncbi.nlm.nih.gov/research/cog/cogcategory/$1"
   },
   {
+    "prefix": "cog.cluster",
+    "uri_format": "https://www.ncbi.nlm.nih.gov/research/cog/cog/$1",
+    "pattern": "^COG\\d+$",
+    "synonyms": [
+      "COG_Cluster",
+      "cog"
+    ]
+  },
+  {
     "prefix": "cog.pathway",
     "uri_format": "https://www.ncbi.nlm.nih.gov/research/cog/pathway/$1"
+  },
+  {
+    "prefix": "cohesindb.binding",
+    "uri_format": "https://cohesindb.iqb.u-tokyo.ac.jp/browsepeak/eachpeak/$1",
+    "pattern": "^CDBP00\\d{6}$"
+  },
+  {
+    "prefix": "cohesindb.gene",
+    "uri_format": "https://cohesindb.iqb.u-tokyo.ac.jp/browsegene/eachgene/$1",
+    "pattern": "^CDBG000\\d{5}$"
+  },
+  {
+    "prefix": "cohesindb.loops",
+    "uri_format": "https://cohesindb.iqb.u-tokyo.ac.jp/browseloop/eachloop/$1",
+    "pattern": "^CDBL00\\d{6}$"
   },
   {
     "prefix": "coi",
@@ -1126,6 +1147,10 @@
     "pattern": "^\\d{7}$"
   },
   {
+    "prefix": "croissant",
+    "uri_format": "http://mlcommons.org/croissant/$1"
+  },
+  {
     "prefix": "cryoem",
     "uri_format": "http://scipion.i2pc.es/ontology/CRYOEM_$1",
     "pattern": "^\\d{7}$"
@@ -1175,10 +1200,6 @@
     "uri_format": "http://thesauri.dainst.org/en/concepts/$1"
   },
   {
-    "prefix": "dalia",
-    "uri_format": "https://purl.org/ontology/modalia#$1"
-  },
-  {
     "prefix": "dalia.community",
     "uri_format": "https://search.dalia.education/communities/$1",
     "pattern": "^[A-Za-z0-9]{8}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{12}$"
@@ -1204,16 +1225,25 @@
     ]
   },
   {
+    "prefix": "dbamp",
+    "uri_format": "https://awi.cuhk.edu.cn/dbAMP/information.php?db=dbamp_$1",
+    "pattern": "^\\d{5}$"
+  },
+  {
     "prefix": "dbo",
     "uri_format": "https://dbpedia.org/ontology/$1"
   },
   {
-    "prefix": "dbpedia",
-    "uri_format": "http://dbpedia.org/resource/$1"
-  },
-  {
     "prefix": "dbpedia.property",
     "uri_format": "http://dbpedia.org/property/$1"
+  },
+  {
+    "prefix": "dbpedia.resource",
+    "uri_format": "http://dbpedia.org/resource/$1",
+    "synonyms": [
+      "dbpedia",
+      "dbr"
+    ]
   },
   {
     "prefix": "dbvar.study",
@@ -1239,6 +1269,10 @@
       "dcelem",
       "elements"
     ]
+  },
+  {
+    "prefix": "dcam",
+    "uri_format": "http://purl.org/dc/dcam/$1"
   },
   {
     "prefix": "dcat",
@@ -1413,6 +1447,13 @@
     "uri_format": "http://usefulinc.com/ns/doap#$1"
   },
   {
+    "prefix": "docid",
+    "uri_format": "https://docid.africapidalliance.org/docid/$1",
+    "synonyms": [
+      "DOCiD"
+    ]
+  },
+  {
     "prefix": "dockerhub.user",
     "uri_format": "https://hub.docker.com/u/$1"
   },
@@ -1446,6 +1487,11 @@
   {
     "prefix": "dpvocab",
     "uri_format": "https://w3id.org/dpv#$1"
+  },
+  {
+    "prefix": "dramp",
+    "uri_format": "http://dramp.cpu-bioinfor.org/browse/All_Information.php?id=$1",
+    "pattern": "^DRAMP\\d{5}$"
   },
   {
     "prefix": "drao",
@@ -1754,9 +1800,39 @@
     ]
   },
   {
+    "prefix": "endlessforms.collection",
+    "uri_format": "https://images.endlessforms.info/collection/$1",
+    "pattern": "^\\d+$"
+  },
+  {
+    "prefix": "endlessforms.element",
+    "uri_format": "https://graphics.endlessforms.info/element?id=$1"
+  },
+  {
+    "prefix": "endlessforms.graphic",
+    "uri_format": "https://endlessforms.info/graphics/$1"
+  },
+  {
+    "prefix": "endlessforms.image",
+    "uri_format": "https://images.endlessforms.info/image/$1",
+    "pattern": "^\\d+$"
+  },
+  {
+    "prefix": "endlessforms.library",
+    "uri_format": "https://graphics.endlessforms.info/library?id=$1"
+  },
+  {
+    "prefix": "endlessforms.unit",
+    "uri_format": "https://graphics.endlessforms.info/unit?id=$1"
+  },
+  {
     "prefix": "enm",
     "uri_format": "http://purl.enanomapper.org/onto/ENM_$1",
     "pattern": "^\\d+$"
+  },
+  {
+    "prefix": "ensembl.fungi",
+    "uri_format": "https://fungi.ensembl.org/id/$1"
   },
   {
     "prefix": "ensemblglossary",
@@ -1825,6 +1901,10 @@
     "pattern": "^\\d{3}$"
   },
   {
+    "prefix": "eu.publication",
+    "uri_format": "http://publications.europa.eu/resource/dataset/$1"
+  },
+  {
     "prefix": "eubopen",
     "uri_format": "https://gateway.eubopen.org/compound/$1",
     "pattern": "^EUB\\d{7}$"
@@ -1838,6 +1918,10 @@
     "prefix": "europe.pic",
     "uri_format": "https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/how-to-participate/org-details/$1",
     "pattern": "^\\d{9}$"
+  },
+  {
+    "prefix": "euroscivoc",
+    "uri_format": "http://data.europa.eu/8mn/euroscivoc/$1"
   },
   {
     "prefix": "evorao",
@@ -2053,6 +2137,11 @@
     "pattern": "^\\d+$"
   },
   {
+    "prefix": "funggrowth",
+    "uri_format": "https://www.fung-growth.org/page/Display%20page%20FG/$1",
+    "pattern": "^\\d+$"
+  },
+  {
     "prefix": "fungorum",
     "uri_format": "http://www.indexfungorum.org/names/NamesRecord.asp?RecordID=$1",
     "pattern": "^[1-9]\\d{0,5}$"
@@ -2060,6 +2149,11 @@
   {
     "prefix": "fypo",
     "uri_format": "http://purl.obolibrary.org/obo/FYPO_$1",
+    "pattern": "^\\d{7}$"
+  },
+  {
+    "prefix": "gaidet",
+    "uri_format": "https://w3id.org/gaidet/$1",
     "pattern": "^\\d{7}$"
   },
   {
@@ -2083,6 +2177,10 @@
     "prefix": "gbif",
     "uri_format": "https://www.gbif.org/species/$1",
     "pattern": "^\\d+$"
+  },
+  {
+    "prefix": "gdo",
+    "uri_format": "https://gdo.endlessforms.info/view/classes?uuid=GDO_$1"
   },
   {
     "prefix": "gear",
@@ -2251,7 +2349,8 @@
   },
   {
     "prefix": "goldbook",
-    "uri_format": "https://goldbook.iupac.org/terms/view/$1"
+    "uri_format": "https://goldbook.iupac.org/terms/view/$1",
+    "pattern": "^(\\wT?)?\\d{5}$"
   },
   {
     "prefix": "google.book",
@@ -2302,8 +2401,15 @@
     "pattern": "^(imp|gen)\\d{5}$"
   },
   {
+    "prefix": "grddl",
+    "uri_format": "http://www.w3.org/2003/g/data-view#$1"
+  },
+  {
     "prefix": "gro",
-    "uri_format": "http://www.bootstrep.eu/ontology/GRO#$1"
+    "uri_format": "http://www.bootstrep.eu/ontology/GRO#$1",
+    "synonyms": [
+      "bootstrep"
+    ]
   },
   {
     "prefix": "gsfa",
@@ -2324,11 +2430,16 @@
     "pattern": "^[cdfgops]__\\w+\\S+$"
   },
   {
-    "prefix": "gtr",
+    "prefix": "gtr.condition",
     "uri_format": "https://www.ncbi.nlm.nih.gov/gtr/conditions/$1",
     "synonyms": [
+      "gtr",
       "medgen.gtr"
     ]
+  },
+  {
+    "prefix": "gufo",
+    "uri_format": "http://purl.org/nemo/gufo#$1"
   },
   {
     "prefix": "hancestro",
@@ -2537,7 +2648,8 @@
   },
   {
     "prefix": "iana.mediatype",
-    "uri_format": "https://www.iana.org/assignments/media-types/$1"
+    "uri_format": "https://www.iana.org/assignments/media-types/$1",
+    "pattern": "^(application|audio|font|haptics|image|message|model|multipart|text|video)(/.*)?$"
   },
   {
     "prefix": "iao",
@@ -2658,8 +2770,7 @@
   },
   {
     "prefix": "iconclass",
-    "uri_format": "https://iconclass.org/$1",
-    "pattern": "^\\d+$"
+    "uri_format": "https://iconclass.org/$1"
   },
   {
     "prefix": "icpd.study",
@@ -2828,7 +2939,7 @@
   },
   {
     "prefix": "isbn",
-    "uri_format": "https://isbnsearch.org/isbn/$1",
+    "uri_format": "https://www.worldcat.org/isbn/$1",
     "synonyms": [
       "ISBN-10",
       "ISBN-13"
@@ -2906,6 +3017,23 @@
     "uri_format": "https://cellbank.snu.ac.kr/english/sub/catalog.php?s_cellid=464&page=detail_info&CatNo=59&strQ=$1"
   },
   {
+    "prefix": "kdbirp",
+    "uri_format": "http://www.kdbirp.aiddlab.com/detail/$1",
+    "pattern": "^\\d+$"
+  },
+  {
+    "prefix": "kegg.brite",
+    "uri_format": "https://www.kegg.jp/brite/$1"
+  },
+  {
+    "prefix": "kegg.pathway",
+    "uri_format": "https://www.kegg.jp/pathway/$1",
+    "synonyms": [
+      "KEGG-path",
+      "KEGG_PATHWAY"
+    ]
+  },
+  {
     "prefix": "kestrelo",
     "uri_format": "http://purl.obolibrary.org/obo/kestrelo_$1",
     "pattern": "^\\d{7}$"
@@ -2978,6 +3106,10 @@
     "pattern": "^\\d{7}$"
   },
   {
+    "prefix": "lexvo.ontology",
+    "uri_format": "http://lexvo.org/ontology#$1"
+  },
+  {
     "prefix": "lifestylefactors",
     "uri_format": "http://purl.obolibrary.org/obo/LFID_$1"
   },
@@ -2997,6 +3129,19 @@
   {
     "prefix": "linkml",
     "uri_format": "https://w3id.org/linkml/$1"
+  },
+  {
+    "prefix": "loc.fdd",
+    "uri_format": "https://www.loc.gov/preservation/digital/formats/fdd/$1",
+    "pattern": "^fdd\\d+$"
+  },
+  {
+    "prefix": "loc.relator",
+    "uri_format": "https://id.loc.gov/vocabulary/relators/$1"
+  },
+  {
+    "prefix": "loc.resourcetype",
+    "uri_format": "http://id.loc.gov/vocabulary/resourceTypes/$1"
   },
   {
     "prefix": "loinc",
@@ -3022,6 +3167,10 @@
     "pattern": "^\\d+$"
   },
   {
+    "prefix": "lrmi",
+    "uri_format": "http://purl.org/dcx/lrmi-terms/$1"
+  },
+  {
     "prefix": "lspci",
     "uri_format": "https://labsyspharm.github.io/lspci/$1",
     "pattern": "^\\d+$"
@@ -3033,8 +3182,7 @@
   },
   {
     "prefix": "m4i",
-    "uri_format": "http://w3id.org/nfdi4ing/metadata4ing#$1",
-    "pattern": "^\\w+$"
+    "uri_format": "http://w3id.org/nfdi4ing/metadata4ing#$1"
   },
   {
     "prefix": "ma",
@@ -3287,6 +3435,14 @@
     ]
   },
   {
+    "prefix": "modalia",
+    "uri_format": "https://purl.org/ontology/modalia#$1"
+  },
+  {
+    "prefix": "modeldb.concept",
+    "uri_format": "https://modeldb.science/modellist/$1"
+  },
+  {
     "prefix": "molbic.cellline",
     "uri_format": "https://molbic.idrblab.net/data/cellline/details/$1",
     "pattern": "^CL\\d+$"
@@ -3537,6 +3693,10 @@
     ]
   },
   {
+    "prefix": "nemo.competence",
+    "uri_format": "http://purl.org/nemo/competence#$1"
+  },
+  {
     "prefix": "nemo2",
     "uri_format": "http://purl.bioontology.org/NEMO/ontology/NEMO.owl#NEMO_$1"
   },
@@ -3583,6 +3743,11 @@
     "pattern": "^\\d+$"
   },
   {
+    "prefix": "nfdi.kgi",
+    "uri_format": "http://kgi.services.base4nfdi.de/entity/$1",
+    "pattern": "^KGR\\d+$"
+  },
+  {
     "prefix": "nfdi4culture.cto",
     "uri_format": "https://nfdi4culture.de/ontology/CTO_$1",
     "pattern": "^\\d{7}$"
@@ -3594,6 +3759,11 @@
   {
     "prefix": "nfdi4dso",
     "uri_format": "https://nfdi.fiz-karlsruhe.de/nfdi4dso/$1"
+  },
+  {
+    "prefix": "nfportal.tool",
+    "uri_format": "https://nf.synapse.org/Explore/Tools/DetailsPage?resourceId=$1",
+    "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
   },
   {
     "prefix": "ngbo",
@@ -3739,9 +3909,26 @@
     "pattern": "^.{2,}$"
   },
   {
-    "prefix": "noaa",
+    "prefix": "nmrxiv.compound",
+    "uri_format": "https://nmrxiv.org/spectra?compound=$1"
+  },
+  {
+    "prefix": "nmrxiv.project",
+    "uri_format": "https://nmrxiv.org/project/$1",
+    "pattern": "^P\\d+$"
+  },
+  {
+    "prefix": "nmrxiv.sample",
+    "uri_format": "https://nmrxiv.org/sample/$1",
+    "pattern": "^S\\d+$"
+  },
+  {
+    "prefix": "noaa.species",
     "uri_format": "https://www.fisheries.noaa.gov/species/$1",
-    "pattern": "^[a-z]+(\\-[a-z]+)*$"
+    "pattern": "^[a-z]+(\\-[a-z]+)*$",
+    "synonyms": [
+      "noaa"
+    ]
   },
   {
     "prefix": "nomen",
@@ -4030,6 +4217,11 @@
     "pattern": "^\\d{8}$"
   },
   {
+    "prefix": "ontodm",
+    "uri_format": "http://www.ontodm.com/OntoDM-core/OntoDM_$1",
+    "pattern": "^\\d+$"
+  },
+  {
     "prefix": "ontoneo",
     "uri_format": "http://purl.obolibrary.org/obo/ONTONEO_$1",
     "pattern": "^\\d{8}$"
@@ -4075,12 +4267,12 @@
     "pattern": "^\\d{7}$"
   },
   {
-    "prefix": "orphanet",
+    "prefix": "orpha",
     "uri_format": "http://www.orpha.net/ORDO/Orphanet_$1",
     "pattern": "^C?\\d+$",
     "synonyms": [
-      "ORPHA",
-      "Orphanet"
+      "Orphanet",
+      "orphanet"
     ]
   },
   {
@@ -4525,10 +4717,6 @@
     "uri_format": "https://proteininformationresource.org/cgi-bin/resid?id=$1"
   },
   {
-    "prefix": "rgap",
-    "uri_format": "https://rice.uga.edu/cgi-bin/ORF_infopage.cgi?orf=$1"
-  },
-  {
     "prefix": "rhea",
     "uri_format": "https://www.rhea-db.org/rhea/$1",
     "synonyms": [
@@ -4663,7 +4851,8 @@
     "prefix": "schema",
     "uri_format": "https://schema.org/$1",
     "synonyms": [
-      "schemaorg"
+      "schemaorg",
+      "sdo"
     ]
   },
   {
@@ -4910,6 +5099,11 @@
     ]
   },
   {
+    "prefix": "snodb",
+    "uri_format": "https://bioinfo-scottgroup.med.usherbrooke.ca/snoDB/detailed_view/$1",
+    "pattern": "^snoDB\\d{4}$"
+  },
+  {
     "prefix": "snomedct",
     "uri_format": "http://snomed.info/id/$1",
     "synonyms": [
@@ -5051,6 +5245,30 @@
     "uri_format": "https://w3id.org/sulo/$1"
   },
   {
+    "prefix": "suprabank.additive",
+    "uri_format": "https://suprabank.org/additives/$1"
+  },
+  {
+    "prefix": "suprabank.buffer",
+    "uri_format": "https://suprabank.org/buffers/$1",
+    "pattern": "^\\d+$"
+  },
+  {
+    "prefix": "suprabank.interaction",
+    "uri_format": "https://suprabank.org/interactions/$1",
+    "pattern": "^\\d+$"
+  },
+  {
+    "prefix": "suprabank.molecule",
+    "uri_format": "https://suprabank.org/molecules/$1",
+    "pattern": "^\\d+$"
+  },
+  {
+    "prefix": "suprabank.solvent",
+    "uri_format": "https://suprabank.org/solvents/$1",
+    "pattern": "^\\d+$"
+  },
+  {
     "prefix": "sweetrealm",
     "uri_format": "http://sweetontology.net/matrMineral/$1",
     "synonyms": [
@@ -5141,7 +5359,7 @@
   },
   {
     "prefix": "theiler",
-    "uri_format": "http://php.med.unsw.edu.au/embryology/index.php?title=Mouse_Stages#Theiler_Stage_$1",
+    "uri_format": "https://www.emouseatlas.org/emap/ema/DAOAnatomyJSP/anatomy.html?stage=TS$1",
     "pattern": "^\\d+[a-d]?$",
     "synonyms": [
       "thielerstage"
@@ -5188,6 +5406,11 @@
     "prefix": "tsc",
     "uri_format": "https://tetrahymena.vet.cornell.edu/display.php?stockid=$1",
     "pattern": "^SD\\d+$"
+  },
+  {
+    "prefix": "tsrnadisease",
+    "uri_format": "http://118.178.132.53/tsRNADisease/detail.php?entry_ID=$1",
+    "pattern": "^TRD\\d{5}$"
   },
   {
     "prefix": "tto",
@@ -5479,6 +5702,10 @@
   {
     "prefix": "void",
     "uri_format": "http://rdfs.org/ns/void#$1"
+  },
+  {
+    "prefix": "vs",
+    "uri_format": "http://www.w3.org/2003/06/sw-vocab-status/ns#$1"
   },
   {
     "prefix": "vsdb",
