@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
  * Stanford Center for Biomedical Informatics Research
  * 23 Aug 2017
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class LiteralLexicalValueReplacer_TestCase {
 
     private static final String THE_LANG = "TheLang";
@@ -71,7 +71,6 @@ public class LiteralLexicalValueReplacer_TestCase {
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void shouldThrowIndexOutOfBoundsExceptionOnInvalidPattern() {
-        when(literal.hasLang()).thenReturn(false);
         replacer.replaceLexicalValue(literal, "$1");
     }
 }

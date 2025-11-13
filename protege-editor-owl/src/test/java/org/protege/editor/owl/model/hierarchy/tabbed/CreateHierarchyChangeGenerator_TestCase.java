@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
  * Stanford Center for Biomedical Informatics Research
  * 20 Sep 16
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class CreateHierarchyChangeGenerator_TestCase<E extends OWLEntity> {
 
     @Mock

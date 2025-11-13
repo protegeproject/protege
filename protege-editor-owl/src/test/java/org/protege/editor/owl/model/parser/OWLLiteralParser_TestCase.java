@@ -16,7 +16,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 /**
  * @author Matthew Horridge, Stanford University, Bio-Medical Informatics Research Group, Date: 27/05/2014
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class OWLLiteralParser_TestCase {
 
     private OWLDataFactory dataFactory;

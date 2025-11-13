@@ -18,7 +18,7 @@ import static org.mockito.Mockito.verify;
  * Stanford Center for Biomedical Informatics Research
  * 31/01/16
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class ISO8601Formatter_TestCase {
 
 

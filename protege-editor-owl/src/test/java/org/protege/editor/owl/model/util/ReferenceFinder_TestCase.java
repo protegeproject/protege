@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
  * Stanford Center for Biomedical Informatics Research
  * 20 May 16
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class ReferenceFinder_TestCase {
 
     private ReferenceFinder referenceFinder;
@@ -61,7 +61,6 @@ public class ReferenceFinder_TestCase {
     public void shouldRetrieveAnnotationAssertionAxiomBySubjectReference() {
         when(ontology.getAxioms(AxiomType.ANNOTATION_ASSERTION)).thenReturn(Collections.singleton(annotationAssertionAxiom));
         when(annotationAssertionAxiom.getSubject()).thenReturn(iri);
-        when(annotationAssertionAxiom.getValue()).thenReturn(mock(IRI.class));
 
         ReferenceFinder.ReferenceSet referenceSet = getReferenceSet();
         assertThat(referenceSet.getReferencingAxioms(), hasItem(annotationAssertionAxiom));
@@ -80,7 +79,6 @@ public class ReferenceFinder_TestCase {
     @Test
     public void shouldRetrieveOntologyAnnotationsByValue() {
         when(ontology.getAnnotations()).thenReturn(Collections.singleton(ontologyAnnotation));
-        when(ontologyAnnotation.getProperty()).thenReturn(mock(OWLAnnotationProperty.class));
         when(ontologyAnnotation.getValue()).thenReturn(iri);
 
         ReferenceFinder.ReferenceSet referenceSet = getReferenceSet();

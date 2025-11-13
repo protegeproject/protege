@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
  * Stanford Center for Biomedical Informatics Research
  * 31/01/16
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class UserNamePreferencesManager_TestCase {
 
     public static final String USER_NAME = "MatthewHorridge";

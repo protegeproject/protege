@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author Matthew Horridge, Stanford University, Bio-Medical Informatics Research Group, Date: 27/05/2014
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class SubjectDefinitionLocationStrategy_TestCase {
 
     @Mock
@@ -140,10 +140,6 @@ public class SubjectDefinitionLocationStrategy_TestCase {
 
         // OntologyB defines subject
         when(subjectDefinitionExtractor.getDefiningAxioms(subject, ontologyB))
-                .thenReturn(Collections.singleton(axiom));
-
-        // Ontology B defines subject
-        when(subjectDefinitionExtractor.getDefiningAxioms(subject, ontologyC))
                 .thenReturn(Collections.singleton(axiom));
 
         SubjectDefinitionLocationStrategy strategy = new SubjectDefinitionLocationStrategy(

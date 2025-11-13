@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
  * Stanford Center for Biomedical Informatics Research
  * 2019-01-25
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class BundleSearchPath_TestCase {
 
     private BundleInfo t0BundleInfo, t1BundleInfo;

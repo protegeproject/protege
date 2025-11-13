@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
  * Stanford Center for Biomedical Informatics Research
  * 5 Aug 16
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class OWLSelectionModelImpl_TestCase {
 
     private OWLSelectionModelImpl selectionModel;

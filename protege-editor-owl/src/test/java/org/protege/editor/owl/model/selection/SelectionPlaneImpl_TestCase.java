@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
  * Stanford Center for Biomedical Informatics Research
  * 8 Aug 16
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class SelectionPlaneImpl_TestCase {
 
     private SelectionPlaneImpl selectionPlane;

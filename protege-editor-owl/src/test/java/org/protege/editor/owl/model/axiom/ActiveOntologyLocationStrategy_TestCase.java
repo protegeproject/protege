@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author Matthew Horridge, Stanford University, Bio-Medical Informatics Research Group, Date: 27/05/2014
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class ActiveOntologyLocationStrategy_TestCase {
 
     @Mock

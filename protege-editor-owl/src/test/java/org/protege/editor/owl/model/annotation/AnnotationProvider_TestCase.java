@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
  * Stanford Center for Biomedical Informatics Research
  * 14 Jun 16
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class AnnotationProvider_TestCase {
 
     private AnnotationProvider provider;

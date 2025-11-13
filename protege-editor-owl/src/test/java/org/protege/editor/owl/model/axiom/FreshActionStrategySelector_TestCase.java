@@ -14,7 +14,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author Matthew Horridge, Stanford University, Bio-Medical Informatics Research Group, Date: 28/05/2014
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class FreshActionStrategySelector_TestCase {
 
     @Mock
