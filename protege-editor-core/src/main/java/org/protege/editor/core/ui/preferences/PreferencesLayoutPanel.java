@@ -25,7 +25,14 @@ public class PreferencesLayoutPanel extends JComponent {
     public PreferencesLayoutPanel() {
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
+        Color panelBg = UIManager.getColor("Panel.background");
+        if (panelBg == null) {
+            panelBg = Color.WHITE;
+        }
+        setBackground(panelBg);
         backingPanel = new JPanel(new GridBagLayout());
+        backingPanel.setBackground(panelBg);
+        backingPanel.setOpaque(true);
         add(backingPanel, BorderLayout.NORTH);
     }
 
@@ -165,7 +172,11 @@ public class PreferencesLayoutPanel extends JComponent {
     public void addHelpText(String helpText) {
         JLabel label = new JLabel(helpText);
         label.setFont(label.getFont().deriveFont(Font.PLAIN, 10f));
-        label.setForeground(Color.GRAY);
+        Color helpFg = UIManager.getColor("Label.disabledForeground");
+        if (helpFg == null) {
+            helpFg = Color.GRAY;
+        }
+        label.setForeground(helpFg);
         label.setBorder(BorderFactory.createEmptyBorder(3, 20, 7, 0));
         addGroupComponent(label);
 

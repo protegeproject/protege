@@ -62,7 +62,90 @@ public class ProtegePlasticTheme extends ExperienceBlue {
                 "ScrollBar.track", Color.WHITE,
                 "ToolTip.background", new Color(250, 250, 250),
                 "ToolTip.border", lineBorder,
-                "TitledBorder.titleColor", getMenuForeground()
+                "TitledBorder.titleColor", getMenuForeground(),
+                
+                // Add comprehensive light theme color definitions to match original Protégé appearance
+                
+                // Annotation-specific colors for light theme (matching original)
+                "Annotation.propertyForeground", new ColorUIResource(0, 80, 160),     // Dark blue for properties
+                "Annotation.labelForeground", new ColorUIResource(80, 80, 80),        // Dark grey for labels
+                "Annotation.contentForeground", new ColorUIResource(0, 0, 0),         // Black for content
+                
+                // Import dialog colors (matching original)
+                "Imports.valueForeground", new ColorUIResource(0, 0, 0),              // Black text
+                "Imports.iriForeground", new ColorUIResource(0, 0, 0),                // Black for IRIs (original style)
+                "Imports.labelForeground", new ColorUIResource(128, 128, 128),        // Grey for labels
+                
+                // Ontology URI colors - black in light theme for readability
+                "OntologyURI.foreground", new ColorUIResource(0, 0, 0),               // Black for ontology URIs in light theme
+                
+                // Link colors for light theme
+                "Link.foreground", new ColorUIResource(0, 100, 200),                  // Standard blue links
+                "Link.hoverForeground", new ColorUIResource(0, 80, 160),              // Darker blue on hover
+                
+                // Metrics panel colors (matching original light theme)
+                "Metrics.titleForeground", new ColorUIResource(0, 0, 0),              // Black titles
+                "Metrics.labelForeground", new ColorUIResource(0, 0, 0),              // Black labels (original)
+                "Metrics.valueForeground", new ColorUIResource(0, 0, 0),              // Black values (original)
+                "Metrics.zeroValueForeground", new ColorUIResource(160, 160, 160),    // Light grey for zero values
+                "Metrics.gridColor", new ColorUIResource(220, 220, 220),              // Light grey grid lines (original)
+                
+                // Standard Swing component colors for light theme
+                "Panel.background", Color.WHITE,
+                "Panel.foreground", Color.BLACK,
+                "Label.foreground", Color.BLACK,
+                "List.background", Color.WHITE,
+                "List.foreground", Color.BLACK,
+                "Table.background", Color.WHITE,
+                "Table.foreground", Color.BLACK,
+                "Table.gridColor", new ColorUIResource(220, 220, 220),                // Light grey grid
+                "Tree.background", Color.WHITE,
+                "Tree.foreground", Color.BLACK,
+                "Tree.textForeground", Color.BLACK,
+                "TextPane.background", Color.WHITE,
+                "TextPane.foreground", Color.BLACK,
+                "TextField.background", Color.WHITE,
+                "TextField.foreground", Color.BLACK,
+                "TextArea.background", Color.WHITE,
+                "TextArea.foreground", Color.BLACK,
+                
+                // Container backgrounds - important for avoiding black rectangles
+                "Container.background", Color.WHITE,
+                "Container.foreground", Color.BLACK,
+                "JComponent.background", Color.WHITE,
+                "JComponent.foreground", Color.BLACK,
+                "Component.background", Color.WHITE,
+                "Component.foreground", Color.BLACK,
+                "Viewport.background", Color.WHITE,
+                "Viewport.foreground", Color.BLACK,
+                "ScrollPane.background", Color.WHITE,
+                "ScrollPane.foreground", Color.BLACK,
+                
+                // Ensure text color consistency
+                "textText", Color.BLACK,
+                "controlText", Color.BLACK,
+                "text", Color.BLACK,
+                
+                // Force override any potential dark backgrounds
+                "background", Color.WHITE,
+                "Background", Color.WHITE,
+                "BACKGROUND", Color.WHITE,
+                
+                // OptionPane colors - critical for preferences dialog background
+                "OptionPane.background", Color.WHITE,
+                "OptionPane.foreground", Color.BLACK,
+                "OptionPane.messageForeground", Color.BLACK,
+                "OptionPane.border", lineBorder,
+                "OptionPane.buttonAreaBorder", BorderFactory.createEmptyBorder(),
+                "OptionPane.messageAreaBorder", BorderFactory.createEmptyBorder(),
+                
+                // Dialog colors
+                "Dialog.background", Color.WHITE,
+                "Dialog.foreground", Color.BLACK,
+                
+                // Root pane and content pane
+                "RootPane.background", Color.WHITE,
+                "RootPane.foreground", Color.BLACK
         };
         table.putDefaults(uiDefaults);
     }

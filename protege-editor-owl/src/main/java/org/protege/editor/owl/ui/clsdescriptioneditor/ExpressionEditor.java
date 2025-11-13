@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.clsdescriptioneditor;
 
 import org.protege.editor.core.ui.RefreshableComponent;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
+import org.protege.editor.core.ui.util.ThemeManager;
 import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -116,6 +118,7 @@ public class ExpressionEditor<O> extends JTextPane
 
         new OWLExpressionHistoryCompleter(owlEditorKit, this);
 
+        applyThemeAwareColors();
         createStyles();
     }
 
@@ -301,7 +304,7 @@ public class ExpressionEditor<O> extends JTextPane
                     if (!inEscapedName) {
                         Color color = owlEditorKit.getWorkspace().getKeyWordColorMap().get(curToken);
                         if (color == null) {
-                            color = Color.BLACK;
+                            color = getDefaultTextColor();
                         }
                         getStyledDocument().setCharacterAttributes(index,
                                                                    curToken.length(),
@@ -335,7 +338,30 @@ public class ExpressionEditor<O> extends JTextPane
             StyleConstants.setForeground(style, color);
             StyleConstants.setBold(style, true);
         }
-        StyleConstants.setForeground(getStyledDocument().addStyle(Color.BLACK.toString(), null), Color.BLACK);
+        Color defaultColor = getDefaultTextColor();
+        StyleConstants.setForeground(getStyledDocument().addStyle(defaultColor.toString(), null), defaultColor);
+        if (!Color.BLACK.equals(defaultColor)) {
+            StyleConstants.setForeground(getStyledDocument().addStyle(Color.BLACK.toString(), null), Color.BLACK);
+        }
+    }
+
+    private void applyThemeAwareColors() {
+        Color defaultTextColor = getDefaultTextColor();
+        setForeground(defaultTextColor);
+        setCaretColor(defaultTextColor);
+        if (ThemeManager.isDarkTheme()) {
+            setSelectedTextColor(defaultTextColor);
+        }
+        else {
+            Color selectionFg = UIManager.getColor("TextPane.selectionForeground");
+            if (selectionFg != null) {
+                setSelectedTextColor(selectionFg);
+            }
+        }
+    }
+
+    private Color getDefaultTextColor() {
+        return ThemeManager.isDarkTheme() ? Color.WHITE : Color.BLACK;
     }
 
 

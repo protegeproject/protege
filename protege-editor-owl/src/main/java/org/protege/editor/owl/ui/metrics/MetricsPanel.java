@@ -53,7 +53,7 @@ public class MetricsPanel extends JPanel implements Disposable {
 
     public MetricsPanel(OWLEditorKit editorKit) {
         this.owlEditorKit = editorKit;
-        setBackground(Color.WHITE);
+        setBackground(getPanelBackground());
         setOpaque(true);
         initialiseOWLView();
         createPopupMenu();
@@ -121,12 +121,12 @@ public class MetricsPanel extends JPanel implements Disposable {
     private void createUI() {
         setLayout(new BorderLayout());
         Box box = new Box(BoxLayout.Y_AXIS);
-        box.setBackground(Color.WHITE);
+        box.setBackground(getPanelBackground());
         for (String metricsSet : metricManagerMap.keySet()) {
             MetricsTableModel tableModel = new MetricsTableModel(metricManagerMap.get(metricsSet));
             tableModelMap.put(metricManagerMap.get(metricsSet), tableModel);
             final JTable table = new JTable(tableModel);
-            table.setGridColor(new Color(240, 240, 240));
+            table.setGridColor(getMetricsGridColor());
             FontMetrics fontMetrics = table.getFontMetrics(table.getFont());
             table.setRowHeight((fontMetrics.getLeading() * 2)
                     + fontMetrics.getMaxAscent()
@@ -175,6 +175,9 @@ public class MetricsPanel extends JPanel implements Disposable {
                 public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                     JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                     label.setBorder(null);
+                    if (!isSelected) {
+                        label.setForeground(column == 0 ? getMetricsLabelColor() : getMetricsValueColor());
+                    }
                     Object metricValue = table.getModel().getValueAt(row, 1);
                     if (metricValue instanceof Integer) {
                         Integer number = (Integer) metricValue;
@@ -186,17 +189,19 @@ public class MetricsPanel extends JPanel implements Disposable {
                                 label.setFont(label.getFont().deriveFont(Font.PLAIN));
                             }
                             if (!isSelected) {
-                                label.setForeground(Color.BLACK);
+                                label.setForeground(getMetricsValueColor());
                             }
                         }
                         else {
                             label.setFont(label.getFont().deriveFont(Font.PLAIN));
-                            label.setForeground(Color.LIGHT_GRAY);
+                            if (!isSelected) {
+                                label.setForeground(getMetricsZeroValueColor());
+                            }
                         }
                     }
                     else {
                         if (!isSelected) {
-                            label.setForeground(Color.BLACK);
+                            label.setForeground(getMetricsValueColor());
                         }
                     }
                     return label;
@@ -235,6 +240,7 @@ public class MetricsPanel extends JPanel implements Disposable {
             JLabel titleLabel = new JLabel(metricsSet);
             titleLabel.setOpaque(false);
             titleLabel.setFont(Fonts.getMediumDialogFont().deriveFont(Font.BOLD, 14f));
+            titleLabel.setForeground(getMetricsTitleColor());
             tablePanel.add(titleLabel, BorderLayout.NORTH);
             tablePanel.setOpaque(false);
             JPanel tableHolder = new JPanel(new BorderLayout());
@@ -244,7 +250,8 @@ public class MetricsPanel extends JPanel implements Disposable {
             tablePanel.add(tableHolder);
             table.setShowVerticalLines(false);
             table.setShowHorizontalLines(true);
-            table.setBackground(Color.WHITE);
+            table.setBackground(getTableBackgroundColor());
+            table.setForeground(getMetricsLabelColor());
             tablePanel.setBorder(BorderFactory.createEmptyBorder(2, 7, 14, 7));
             tablePanel.setOpaque(false);
             box.add(tablePanel);
@@ -252,7 +259,7 @@ public class MetricsPanel extends JPanel implements Disposable {
         }
         JScrollPane sp = new JScrollPane(box);
         sp.getViewport().setOpaque(true);
-        sp.getViewport().setBackground(Color.WHITE);
+        sp.getViewport().setBackground(getPanelBackground());
         JScrollBar verticalScrollBar = sp.getVerticalScrollBar();
         verticalScrollBar.setBlockIncrement(50);
         verticalScrollBar.setUnitIncrement(50);
@@ -262,7 +269,6 @@ public class MetricsPanel extends JPanel implements Disposable {
     private OWLOntology getOntology() {
         return owlEditorKit.getModelManager().getActiveOntology();
     }
-
 
 
     private void createBasicMetrics() {
@@ -283,6 +289,7 @@ public class MetricsPanel extends JPanel implements Disposable {
         OWLMetricManager metricManager = new OWLMetricManager((List) metrics);
         metricManagerMap.put("Metrics", metricManager);
     }
+
 
 
     private void createClassAxiomMetrics() {
@@ -379,6 +386,7 @@ public class MetricsPanel extends JPanel implements Disposable {
     }
 
 
+
     private void createAnnotationAxiomMetrics() {
         List<OWLMetric<?>> metrics = new ArrayList<>();
         metrics.add(new AxiomTypeMetricWrapper(getOntology(), AxiomType.ANNOTATION_ASSERTION));
@@ -397,6 +405,72 @@ public class MetricsPanel extends JPanel implements Disposable {
             man.setOntology(activeOntology);
         }
         repaint();
+    }
+
+    private Color getPanelBackground() {
+        Color color = UIManager.getColor("Panel.background");
+        if (color == null) {
+            color = Color.WHITE;
+        }
+        return color;
+    }
+
+    private Color getTableBackgroundColor() {
+        Color color = UIManager.getColor("Table.background");
+        if (color == null) {
+            color = getPanelBackground();
+        }
+        return color;
+    }
+
+    private Color getMetricsGridColor() {
+        Color color = UIManager.getColor("Metrics.gridColor");
+        if (color == null) {
+            // Theme-aware fallback
+            color = org.protege.editor.core.ui.util.ThemeManager.isDarkTheme() ? 
+                new Color(70, 70, 70) : new Color(220, 220, 220);
+        }
+        return color;
+    }
+
+    private Color getMetricsLabelColor() {
+        Color color = UIManager.getColor("Metrics.labelForeground");
+        if (color == null) {
+            // Theme-aware fallback
+            color = org.protege.editor.core.ui.util.ThemeManager.isDarkTheme() ? 
+                new Color(200, 200, 200) : Color.BLACK;
+        }
+        return color;
+    }
+
+    private Color getMetricsValueColor() {
+        Color color = UIManager.getColor("Metrics.valueForeground");
+        if (color == null) {
+            // Theme-aware fallback
+            color = org.protege.editor.core.ui.util.ThemeManager.isDarkTheme() ? 
+                new Color(230, 230, 230) : Color.BLACK;
+        }
+        return color;
+    }
+
+    private Color getMetricsZeroValueColor() {
+        Color color = UIManager.getColor("Metrics.zeroValueForeground");
+        if (color == null) {
+            // Theme-aware fallback
+            color = org.protege.editor.core.ui.util.ThemeManager.isDarkTheme() ? 
+                new Color(140, 140, 140) : new Color(160, 160, 160);
+        }
+        return color;
+    }
+
+    private Color getMetricsTitleColor() {
+        Color color = UIManager.getColor("Metrics.titleForeground");
+        if (color == null) {
+            // Theme-aware fallback
+            color = org.protege.editor.core.ui.util.ThemeManager.isDarkTheme() ? 
+                new Color(210, 210, 210) : Color.BLACK;
+        }
+        return color;
     }
 
     private OWLModelManager getOWLModelManager() {
