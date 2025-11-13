@@ -30,10 +30,7 @@
                 <include>com.sun.xml.bind:jaxb-impl:jar</include>	
                 <include>com.sun.activation:javax.activation</include>
                 <!-- CORBA dependencies -->
-                <include>org.glassfish.corba:glassfish-corba-orb:jar</include>
-                <include>org.glassfish.corba:glassfish-corba-internal-api:jar</include>
                 <include>org.glassfish.corba:glassfish-corba-omgapi:jar</include>
-                <include>org.glassfish.gmbal:gmbal:jar</include>
                 <include>org.glassfish.external:management-api:jar</include>
                 <include>org.glassfish.pfl:pfl-basic:jar</include>
                 <include>org.glassfish.pfl:pfl-tf:jar</include>
