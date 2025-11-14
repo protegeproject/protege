@@ -922,7 +922,12 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
 
     private void rebuildOntologyDropDown() {
         try {
-            TreeSet<OWLOntology> ts = new TreeSet<>(getOWLModelManager().getOWLObjectComparator());
+            Comparator<OWLOntology> comp = (o1, o2) -> {
+                String s1 = OWLOntologyCellRenderer.getOntologyLabelText(o1, getOWLModelManager());
+                String s2 = OWLOntologyCellRenderer.getOntologyLabelText(o2, getOWLModelManager());
+                return s1.compareTo(s2);
+            };
+            TreeSet<OWLOntology> ts = new TreeSet<>(comp);
             ts.addAll(getOWLModelManager().getOntologies());
             ontologiesList.setModel(new DefaultComboBoxModel<>(ts.toArray(new OWLOntology[ts.size()])));
             ontologiesList.setSelectedItem(getOWLModelManager().getActiveOntology());

@@ -6,6 +6,7 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.util.OntologyIRIShortFormProvider;
 import org.semanticweb.owlapi.vocab.DublinCoreVocabulary;
@@ -16,6 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 
 import java.awt.Component;
+import java.util.HashMap;
+import java.util.Map;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -89,20 +92,48 @@ public class OWLOntologyCellRenderer extends DefaultListCellRenderer {
     }
 
     private static String getOntologyDisplayName(OWLOntology ont) {
-        String label = null;
-        String title = null;
+        Map<String, String> namesByLang = new HashMap<String, String>();
         for (OWLAnnotation annot : ont.getAnnotations()) {
             if (annot.getValue().isLiteral()) {
                 IRI property = annot.getProperty().getIRI();
-                if (property.equals(OWLRDFVocabulary.RDFS_LABEL.getIRI())) {
-                    label = annot.getValue().asLiteral().get().getLiteral();
-                } else if (property.equals(DublinCoreVocabulary.TITLE.getIRI())) {
-                    title = annot.getValue().asLiteral().get().getLiteral();
-                } else if (property.equals(DCTERM_TITLE)) {
-                    title = annot.getValue().asLiteral().get().getLiteral();
+                if (property.equals(OWLRDFVocabulary.RDFS_LABEL.getIRI())
+                    || property.equals(DublinCoreVocabulary.TITLE.getIRI())
+                    || property.equals(DCTERM_TITLE)) {
+                    OWLLiteral value = annot.getValue().asLiteral().get();
+                    String lang = value.getLang().toLowerCase();
+                    if (lang == null || lang.isEmpty()) {
+                        namesByLang.put("", value.getLiteral());
+                    } else {
+                        namesByLang.put(lang, value.getLiteral());
+                        int sep = lang.indexOf('-');
+                        if (sep != -1) {
+                            // This is a language dialect (e.g. "en-GB"); we also store it under the
+                            // corresponding language family ("en"), unless we already a title for
+                            // that family.
+                            String langFamily = lang.substring(0, sep);
+                            if (!namesByLang.containsKey(langFamily)) {
+                                namesByLang.put(langFamily, value.getLiteral());
+                            }
+                        }
+                    }
                 }
             }
         }
-        return label != null ? label : title;
+
+        String name = null;
+        for (String langPref : OWLRendererPreferences.getInstance().getAnnotationLangs()) {
+            name = namesByLang.get(langPref.toLowerCase());
+            if (name != null) {
+                return name;
+            }
+        }
+
+        // No lang match, look for a language-neutral title
+        name = namesByLang.get("");
+        if (name == null && !namesByLang.isEmpty()) {
+            // No lang match and no lang-neutral value, pick whatever we have
+            name = namesByLang.entrySet().iterator().next().getValue();
+        }
+        return name;
     }
 }
