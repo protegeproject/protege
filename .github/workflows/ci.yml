@@ -14,11 +14,24 @@ jobs:
         profile: [ default, ide, release ]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
       - name: Set up JDK/Maven
         uses: actions/setup-java@v4
         with:
-          java-version: '11'
+          java-version: '21'
           distribution: 'temurin'
+      - name: Checkout mdock
+        uses: actions/checkout@v4
+        with:
+          repository: mosfet80/mdock
+          ref: 1a7f0c3f4492296b01f26f3d5c91defebc80ed53
+          path: mdock
+      - name: Build and install mdock
+        working-directory: mdock
+        run: mvn --batch-mode --define gpg.skip=true clean install
+      - name: Checkout Protégé
+        uses: actions/checkout@v4
+        with:
+          path: protege
       - name: Run test suite
+        working-directory: protege
         run: mvn --batch-mode --activate-profiles ${{ matrix.profile }} --define release.signing.disabled=true clean verify
