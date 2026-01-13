@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+    <id>edu.stanford.protege.ProtegeDesktop</id>
+    <developer id="edu.stanford.protege">
+        <name>Protégé Project</name>
+    </developer>
+    <name>Protégé</name>
+    <summary>Ontology editing environment</summary>
+    <description>
+        <p>
+            Protégé Desktop is a feature rich ontology editing environment with
+            full support for the OWL 2 Web Ontology Language, and direct
+            in-memory connections to description logic reasoners like HermiT and
+            Pellet.
+        </p>
+        <p>
+            Protégé Desktop supports creation and editing of one or more
+            ontologies in a single workspace via a completely customizable user
+            interface. Visualization tools allow for interactive navigation of
+            ontology relationships. Advanced explanation support aids in
+            tracking down inconsistencies. Refactor operations available
+            including ontology merging, moving axioms between ontologies, rename
+            of multiple entities, and more.
+        </p>
+    </description>
+    <url type="homepage">https://protege.stanford.edu/</url>
+    <url type="bugtracker">https://github.com/protegeproject/protege/issues</url>
+    <url type="faq">https://protegewiki.stanford.edu/wiki/ProtegeProject_FAQ</url>
+    <url type="vcs-browser">https://github.com/protegeproject/protege</url>
+    <metadata_license>CC0-1.0</metadata_license>
+    <project_license>BSD-3-Clause</project_license>
+    <launchable type="desktop-id">edu.stanford.protege.ProtegeDesktop.desktop</launchable>
+    <provides>
+        <id>edu.stanford.protege</id>
+    </provides>
+    <replaces>
+        <id>edu.stanford.protege</id>
+    </replaces>
+    <screenshots>
+        <screenshot type="default">
+            <image>https://protege.stanford.edu/assets/img/screenshots/desktopprotege-screenshot-1.jpg</image>
+            <caption>Overview of an ontology</caption>
+        </screenshot>
+        <screenshot type="default">
+            <image>https://protege.stanford.edu/assets/img/screenshots/desktopprotege-screenshot-2.jpg</image>
+            <caption>Example of DL query</caption>
+        </screenshot>
+        <screenshot type="default">
+            <image>https://protege.stanford.edu/assets/img/screenshots/desktopprotege-screenshot-3.jpg</image>
+            <caption>Interface for browsing ontology entities</caption>
+        </screenshot>
+        <screenshot type="default">
+            <image>https://protege.stanford.edu/assets/img/screenshots/desktopprotege-screenshot-4.jpg</image>
+            <caption>Interface for browsing ontology individuals</caption>
+        </screenshot>
+        <screenshot type="default">
+            <image>https://protege.stanford.edu/assets/img/screenshots/desktopprotege-screenshot-5.jpg</image>
+            <caption>Graph visualization</caption>
+        </screenshot>
+    </screenshots>
+    <content_rating type="oars-1.1"/>
+</component>
