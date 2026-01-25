@@ -20,16 +20,6 @@
 		<osx.bundle.name>Protégé.app</osx.bundle.name>
 	</properties>
 
-	<repositories>
-		<repository>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<id>github</id>
-			<url>https://raw.github.com/protegeproject/mvn-repo/master/releases</url>
-		</repository>
-	</repositories>
-
 	<dependencies>
 
 		<!-- NOTE: These dependency declarations are required to sort this project to the end of the line in the multimodule build. -->
