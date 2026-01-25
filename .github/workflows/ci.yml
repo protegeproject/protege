@@ -12,13 +12,14 @@ jobs:
     strategy:
       matrix:
         profile: [ default, ide, release ]
+        java_version: [ '11', '21' ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK/Maven
         uses: actions/setup-java@v4
         with:
-          java-version: '11'
+          java-version: ${{ matrix.java_version }}
           distribution: 'temurin'
       - name: Run test suite
         run: mvn --batch-mode --activate-profiles ${{ matrix.profile }} --define release.signing.disabled=true clean verify

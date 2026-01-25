@@ -24,7 +24,7 @@ import static org.semanticweb.owlapi.apibinding.OWLFunctionalSyntaxFactory.*;
  * Stanford Center for Biomedical Informatics Research
  * 25/01/16
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class ObjectPropertyHierarchyProvider_TestCase {
 
     private OWLObjectProperty superProperty;
