@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-    <id>edu.stanford.protege.ProtegeDesktop</id>
+    <id>edu.stanford.protege</id>
     <developer id="edu.stanford.protege">
         <name>Protégé Project</name>
     </developer>
@@ -29,13 +29,7 @@
     <url type="vcs-browser">https://github.com/protegeproject/protege</url>
     <metadata_license>CC0-1.0</metadata_license>
     <project_license>BSD-3-Clause</project_license>
-    <launchable type="desktop-id">edu.stanford.protege.ProtegeDesktop.desktop</launchable>
-    <provides>
-        <id>edu.stanford.protege</id>
-    </provides>
-    <replaces>
-        <id>edu.stanford.protege</id>
-    </replaces>
+    <launchable type="desktop-id">edu.stanford.protege.desktop</launchable>
     <screenshots>
         <screenshot type="default">
             <image>https://protege.stanford.edu/assets/img/screenshots/desktopprotege-screenshot-1.jpg</image>
