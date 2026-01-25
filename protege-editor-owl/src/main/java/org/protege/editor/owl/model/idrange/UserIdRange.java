@@ -1,7 +1,6 @@
 package org.protege.editor.owl.model.idrange;
 
 import com.google.auto.value.AutoValue;
-
 import javax.annotation.Nonnull;
 
 /**
