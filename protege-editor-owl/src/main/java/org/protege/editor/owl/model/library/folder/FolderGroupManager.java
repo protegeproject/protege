@@ -76,7 +76,8 @@ public class FolderGroupManager extends CatalogEntryManager {
                                               boolean recursive,
                                               boolean autoUpdate,
                                               XmlBaseContext context) throws IOException {
-        return new GroupEntry(getIdString(ID_PREFIX, folder, recursive, autoUpdate), context, Prefer.PUBLIC, folder);
+        return new GroupEntry(getIdString(ID_PREFIX, folder, recursive, autoUpdate), context, Prefer.PUBLIC,
+                              folder.toString().length() > 0 ? folder : null);
     }
 
     protected static String getIdString(String idPrefix,
