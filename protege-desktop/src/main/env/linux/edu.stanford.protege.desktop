@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Protégé
+GenericName=Ontology Editor
+Exec=protege %u
+Icon=edu.stanford.protege
+Type=Application
+MimeType=application/rdf+xml;application/xml;application/ld+json;text/turtle;
+Categories=Office;
