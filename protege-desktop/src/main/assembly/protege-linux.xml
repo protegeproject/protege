@@ -20,9 +20,10 @@
         <fileSet>
             <directory>src/main/env/linux</directory>
             <outputDirectory>.</outputDirectory>
-            <fileMode>0755</fileMode>
+            <fileMode>0644</fileMode>
             <directoryMode>0755</directoryMode>
             <excludes>
+                <exclude>protege</exclude>
                 <exclude>run.sh</exclude>
             </excludes>
         </fileSet>
@@ -35,6 +36,11 @@
             <outputDirectory>.</outputDirectory>
             <fileMode>0755</fileMode>
             <filtered>true</filtered>
+        </file>
+        <file>
+            <source>src/main/env/linux/protege</source>
+            <outputDirectory>.</outputDirectory>
+            <fileMode>0755</fileMode>
         </file>
     </files>
 
