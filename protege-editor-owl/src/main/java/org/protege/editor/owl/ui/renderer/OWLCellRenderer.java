@@ -580,13 +580,47 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         }
         else {
             renderingComponent.setBackground(componentBeingRendered.getBackground());
-            textPane.setForeground(componentBeingRendered.getForeground());
+            textPane.setForeground(getComponentForeground(componentBeingRendered));
         }
 
         final Icon icon = getIcon(value);
         iconComponent.setIcon(icon);
         renderingComponent.revalidate();
         return renderingComponent;
+    }
+
+    private Color getComponentForeground(@Nullable JComponent component) {
+        Color color = null;
+        if (component instanceof JTree) {
+            color = UIManager.getColor("Tree.textForeground");
+            if (color == null) {
+                color = UIManager.getColor("Tree.foreground");
+            }
+        }
+        else if (component instanceof JTable) {
+            color = UIManager.getColor("Table.foreground");
+        }
+        else if (component instanceof JList) {
+            color = UIManager.getColor("List.foreground");
+        }
+
+        if (color == null && component instanceof JComboBox) {
+            color = UIManager.getColor("ComboBox.foreground");
+        }
+
+        if (color == null && component != null) {
+            color = component.getForeground();
+        }
+        if (color == null) {
+            color = FOREGROUND;
+        }
+        if (color == null) {
+            color = UIManager.getColor("textText");
+        }
+        if (color == null) {
+            color = Color.WHITE;
+        }
+        return color;
     }
 
 
@@ -719,7 +753,11 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         StyleConstants.setBackground(focusedEntityStyle, new Color(220, 220, 250));
 
         ontologyURIStyle = doc.addStyle("ONTOLOGY_URI_STYLE", null);
-        StyleConstants.setForeground(ontologyURIStyle, Color.GRAY);
+        Color ontologyURIColor = UIManager.getColor("OntologyURI.foreground");
+        if (ontologyURIColor == null) {
+            ontologyURIColor = Color.GRAY; // fallback
+        }
+        StyleConstants.setForeground(ontologyURIStyle, ontologyURIColor);
 
         commentedOutStyle = doc.addStyle("COMMENTED_OUT_STYLE", null);
         StyleConstants.setForeground(commentedOutStyle, Color.GRAY);

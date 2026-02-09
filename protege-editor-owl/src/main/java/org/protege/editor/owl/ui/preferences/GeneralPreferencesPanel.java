@@ -4,6 +4,7 @@ import org.protege.editor.core.ProtegeApplication;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.preferences.PreferencesLayoutPanel;
+import org.protege.editor.core.ui.util.ThemeManager;
 import org.protege.editor.core.ui.view.View;
 import org.protege.editor.owl.model.axiom.FreshAxiomLocation;
 import org.protege.editor.owl.model.axiom.FreshAxiomLocationPreferences;
@@ -56,6 +57,8 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
 
 
     private JComboBox<SearchManagerPlugin> searchManagerPluginComboBox = new JComboBox<>();
+    
+    private JComboBox<String> themeComboBox = new JComboBox<>();
 
 
     public void applyChanges() {
@@ -64,6 +67,31 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
         Preferences appPrefs = PreferencesManager.getInstance().getApplicationPreferences(ProtegeApplication.ID);
         appPrefs.putBoolean(DIALOGS_ALWAYS_CENTRED, alwaysCentreDialogsCheckbox.isSelected());
         appPrefs.putBoolean(View.DETACHED_WINDOWS_FLOAT, detachedWindowsFloat.isSelected());
+        
+        // Save theme preference and apply immediately
+        String selectedTheme = "Dark".equals(themeComboBox.getSelectedItem()) ? ThemeManager.DARK_THEME : ThemeManager.LIGHT_THEME;
+        String currentTheme = appPrefs.getString(ThemeManager.THEME_KEY, ThemeManager.LIGHT_THEME);
+        
+        // If theme changed, apply it immediately
+        if (!selectedTheme.equals(currentTheme)) {
+            boolean success = ThemeManager.switchToTheme(selectedTheme);
+            
+            if (success) {
+                JOptionPane.showMessageDialog(this,
+                        "<html><body><div style=\"font-weight: bold;\">Theme changed successfully!</div>" +
+                                "<div>The new theme has been applied to all components.</div></body></html>",
+                        "Theme Changed",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "<html><body><div style=\"font-weight: bold;\">Failed to change theme.</div>" +
+                                "<div>Please try restarting Protégé to apply the theme change.</div></body></html>",
+                        "Theme Change Failed",
+                        JOptionPane.WARNING_MESSAGE);
+                // Revert the combo box selection
+                themeComboBox.setSelectedItem(ThemeManager.DARK_THEME.equals(currentTheme) ? "Dark" : "Light");
+            }
+        }
 
         FreshAxiomLocationPreferences axiomPrefs = FreshAxiomLocationPreferences.getPreferences();
         if(addFreshAxiomsToActiveOntologyRadioButton.isSelected()) {
@@ -95,7 +123,17 @@ public class GeneralPreferencesPanel extends OWLPreferencesPanel {
         checkDelaySpinner.setToolTipText(SECOND_TOOL_TIP);
         panel.addGroupComponent(checkDelaySpinner);
 
+        // Theme selection
+        panel.addSeparator();
+        panel.addGroup("Theme");
+        themeComboBox.addItem("Light");
+        themeComboBox.addItem("Dark");
+        
         Preferences appPrefs = PreferencesManager.getInstance().getApplicationPreferences(ProtegeApplication.ID);
+        String currentTheme = appPrefs.getString(ThemeManager.THEME_KEY, ThemeManager.LIGHT_THEME);
+        themeComboBox.setSelectedItem(ThemeManager.DARK_THEME.equals(currentTheme) ? "Dark" : "Light");
+        panel.addGroupComponent(themeComboBox);
+
         alwaysCentreDialogsCheckbox = new JCheckBox("Centre dialogs on workspace");
         alwaysCentreDialogsCheckbox.setSelected(appPrefs.getBoolean(DIALOGS_ALWAYS_CENTRED, false));
         detachedWindowsFloat = new JCheckBox("Detached windows float");

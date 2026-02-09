@@ -40,12 +40,14 @@ public class OntologyImportsItemRenderer extends PageCellRenderer {
         if (!(value instanceof OntologyImportItem)) {
             page.addParagraph(value.toString());
         } else {
-            Color foreground = sel ? fg : Color.DARK_GRAY;
+            Color valueColor = sel ? fg : getImportsValueColor();
             OntologyImportItem item = (OntologyImportItem) value;
             OWLOntologyManager man = editorKit.getOWLModelManager().getOWLOntologyManager();
             OWLOntology ont = man.getImportedOntology(item.getImportDeclaration());
             OntologyIRIShortFormProvider sfp = new OntologyIRIShortFormProvider();
-            Color declIRIColor = sel ? fg : Color.BLACK;
+            Color declIRIColor = sel ? fg : getImportsIriColor();
+            Color labelColor = sel ? fg : getImportsLabelColor();
+            Color linkColor = sel ? fg : getLinkColor();
             IRI iri = item.getImportDeclaration().getIRI();
             page.addParagraph(iri.toQuotedString(), declIRIColor).setBold(true);
             page.setMarginBottom(5);
@@ -53,36 +55,36 @@ public class OntologyImportsItemRenderer extends PageCellRenderer {
                 String shortForm = sfp.getShortForm(ont);
                 int axiomsCount = ont.getAxiomCount();
                 int logicalAxiomsCount = ont.getLogicalAxiomCount();
-                Paragraph ontPara = page.addParagraph(shortForm, declIRIColor);
+                Paragraph ontPara = page.addParagraph(shortForm, valueColor);
                 ontPara.setMarginTop(5);
                 ontPara.setMarginLeft(40);
-                ontPara.append(String.format("    (%,d axioms, %,d logical axioms)", axiomsCount, logicalAxiomsCount), foreground);
+                ontPara.append(String.format("    (%,d axioms, %,d logical axioms)", axiomsCount, logicalAxiomsCount), valueColor);
                 OWLOntologyID ontologyID = ont.getOntologyID();
                 if (!ontologyID.isAnonymous()) {
-                    Paragraph ontologyIriPara = page.addParagraph("Ontology IRI: ", Color.GRAY);
+                    Paragraph ontologyIriPara = page.addParagraph("Ontology IRI: ", labelColor);
                     ontologyIriPara.setMarginLeft(40);
                     IRI ontologyIRI = ontologyID.getOntologyIRI().get();
-                    ontologyIriPara.append(ontologyIRI.toQuotedString(), foreground);
+                    ontologyIriPara.append(ontologyIRI.toQuotedString(), valueColor);
                     ontologyIriPara.setMarginTop(2);
                     Optional<IRI> versionIRI = ontologyID.getVersionIRI();
                     if (versionIRI.isPresent()) {
-                        Paragraph versionIriPara = page.addParagraph("Version IRI: ", Color.GRAY);
+                        Paragraph versionIriPara = page.addParagraph("Version IRI: ", labelColor);
                         versionIriPara.setMarginLeft(40);
                         versionIriPara.setMarginTop(2);
-                        versionIriPara.append(versionIRI.get().toQuotedString(), foreground);
+                        versionIriPara.append(versionIRI.get().toQuotedString(), valueColor);
                     }
                 }
-                Paragraph locPara = page.addParagraph("Location: ", Color.GRAY);
+                Paragraph locPara = page.addParagraph("Location: ", labelColor);
                 locPara.setMarginLeft(40);
                 locPara.setMarginTop(2);
                 IRI documentIRI = man.getOntologyDocumentIRI(ont);
                 final int pos = locPara.getLength();
                 if ("file".equalsIgnoreCase(documentIRI.getScheme())) {
                     File file = new File(documentIRI.toURI());
-                    locPara.append(file.getAbsolutePath(), foreground);
+                    locPara.append(file.getAbsolutePath(), linkColor);
                     locPara.addLink(new LinkSpan(new FileLink(file), new Span(pos, locPara.getLength())));
                 } else {
-                    locPara.append(documentIRI.toString(), foreground);
+                    locPara.append(documentIRI.toString(), linkColor);
                     locPara.addLink(new LinkSpan(new HTTPLink(documentIRI.toURI()), new Span(pos, locPara.getLength())));
                 }
             }
@@ -110,4 +112,37 @@ public class OntologyImportsItemRenderer extends PageCellRenderer {
     protected int getMaxAvailablePageWidth(Page page, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         return table.getColumnModel().getColumn(column).getWidth() - 5;
     }
+    
+    private Color getImportsValueColor() {
+        Color color = UIManager.getColor("Imports.valueForeground");
+        if (color == null) {
+            color = new Color(220, 220, 220);
+        }
+        return color;
+    }
+
+    private Color getImportsIriColor() {
+        Color color = UIManager.getColor("Imports.iriForeground");
+        if (color == null) {
+            color = new Color(200, 180, 255);
+        }
+        return color;
+    }
+
+    private Color getImportsLabelColor() {
+        Color color = UIManager.getColor("Imports.labelForeground");
+        if (color == null) {
+            color = new Color(180, 180, 180);
+        }
+        return color;
+    }
+
+    private Color getLinkColor() {
+        Color color = UIManager.getColor("Link.foreground");
+        if (color == null) {
+            color = new Color(200, 180, 255);
+        }
+        return color;
+    }
+
 }
