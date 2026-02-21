@@ -42,7 +42,7 @@ public class OWLEntityAnnotationValueRenderer extends AbstractOWLEntityRenderer 
         }
         provider = new AnnotationValueShortFormProvider(
                 () -> getOWLModelManager().getActiveOntologies(),
-                new OWLEntityRendererImpl(),
+                new PrefixAwareShortFormProvider(getOWLModelManager(), new OWLEntityRendererImpl()),
                 new SimpleIRIShortFormProvider(),
                 properties,
                 toMap(propLangMap));
