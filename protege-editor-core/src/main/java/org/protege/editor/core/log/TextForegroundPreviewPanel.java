@@ -29,7 +29,11 @@ public class TextForegroundPreviewPanel extends JPanel
 	public TextForegroundPreviewPanel(JColorChooser chooser) {
 		chooser.getSelectionModel().addChangeListener(this);
 		setForeground(color);
-		setBackground(Color.WHITE);
+		Color panelBg = javax.swing.UIManager.getColor("Panel.background");
+		if (panelBg == null) {
+			panelBg = Color.WHITE;
+		}
+		setBackground(panelBg);
 		setOpaque(true);
 		setFont(new Font("monospaced", Font.PLAIN, 12));
 		text.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));

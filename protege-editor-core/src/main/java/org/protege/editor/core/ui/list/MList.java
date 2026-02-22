@@ -33,8 +33,39 @@ public class MList extends JList {
 
     private Font sectionHeaderFont = new Font("Lucida Grande", Font.PLAIN, 10);
     
-    private static final Color itemBackgroundColor = Color.WHITE;
+    private static final Color DEFAULT_LIST_DIVIDER_COLOR = new Color(240, 240, 240);
 
+    private Color getListBackgroundColor() {
+        Color bg = getBackground();
+        if (bg == null) {
+            bg = UIManager.getColor("MList.background");
+        }
+        if (bg == null) {
+            bg = UIManager.getColor("List.background");
+        }
+        if (bg == null) {
+            bg = UIManager.getColor("Panel.background");
+        }
+        if (bg == null) {
+            bg = UIManager.getColor("control");
+        }
+        return bg != null ? bg : Color.WHITE;
+    }
+
+    private Color resolveBackground(Color candidate) {
+        return candidate != null ? candidate : getListBackgroundColor();
+    }
+
+    private Color getListDividerColor() {
+        Color divider = UIManager.getColor("Separator.foreground");
+        if (divider == null) {
+            divider = UIManager.getColor("controlShadow");
+        }
+        if (divider == null) {
+            divider = DEFAULT_LIST_DIVIDER_COLOR;
+        }
+        return divider;
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -266,7 +297,7 @@ public class MList extends JList {
     }
 
     protected Color getItemBackgroundColor(MListItem item) {
-        return itemBackgroundColor;
+        return getListBackgroundColor();
     }
 
     public class MListCellRenderer implements ListCellRenderer {
@@ -336,7 +367,7 @@ public class MList extends JList {
                 bottomMargin = getRowHeightPadding(index);
             }
         }
-        return BorderFactory.createMatteBorder(0, 0, bottomMargin, 0, Color.WHITE);
+        return BorderFactory.createMatteBorder(0, 0, bottomMargin, 0, resolveBackground(list.getBackground()));
     }
 
     private int getRowHeightPadding(int index) {
@@ -349,8 +380,8 @@ public class MList extends JList {
 
     protected Border createListItemBorder(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         Border internalPadding = BorderFactory.createEmptyBorder(1, 1, 1, 1);
-        Border line = BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(240, 240, 240));
-        Border externalBorder = BorderFactory.createMatteBorder(0, 20, 0, 0, list.getBackground());
+        Border line = BorderFactory.createMatteBorder(0, 0, 1, 0, getListDividerColor());
+        Border externalBorder = BorderFactory.createMatteBorder(0, 20, 0, 0, resolveBackground(list.getBackground()));
         return BorderFactory.createCompoundBorder(
                 externalBorder,
                 BorderFactory.createCompoundBorder(line, internalPadding)

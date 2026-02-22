@@ -36,6 +36,41 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
 
     private static final String EQUIV_SEPARATOR = " \u2261 ";
 
+    private Color getDefaultTextColor(@Nullable JTree tree) {
+        Color textColor = UIManager.getColor("Tree.textForeground");
+        if (textColor == null) {
+            textColor = UIManager.getColor("Tree.foreground");
+        }
+        if (textColor == null && tree != null) {
+            textColor = tree.getForeground();
+        }
+        if (textColor == null) {
+            textColor = UIManager.getColor("textText");
+        }
+        if (textColor == null) {
+            textColor = UIManager.getColor("controlText");
+        }
+        if (textColor == null) {
+            textColor = Color.WHITE;
+        }
+        return textColor;
+    }
+
+    private Color getSelectionTextColor() {
+        Color selectionColor = UIManager.getColor("Tree.selectionForeground");
+        if (selectionColor == null) {
+            selectionColor = UIManager.getColor("Tree.textForeground");
+        }
+        if (selectionColor == null) {
+            selectionColor = UIManager.getColor("textHighlightText");
+        }
+        if (selectionColor == null) {
+            selectionColor = Color.WHITE;
+        }
+        return selectionColor;
+    }
+
+
 
     @Nonnull
     private final OWLEditorKit editorKit;
@@ -112,16 +147,19 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
             }
         }
         delegateTreeCellRenderer.setDeprecated(deprecated);
+        Color defaultTextColor = getDefaultTextColor(tree);
+        Color selectionTextColor = getSelectionTextColor();
         if(!consistent || !satisfiable) {
             delegateTreeCellRenderer.setTextNonSelectionColor(UNSAT_ENTITY_COLOR);
+            delegateTreeCellRenderer.setTextSelectionColor(UNSAT_ENTITY_COLOR);
+        }
+        else if(deprecated) {
+            delegateTreeCellRenderer.setTextNonSelectionColor(DEPRECATED_CLASS_COLOR);
+            delegateTreeCellRenderer.setTextSelectionColor(DEPRECATED_CLASS_COLOR);
         }
         else {
-            if(deprecated) {
-                delegateTreeCellRenderer.setTextNonSelectionColor(DEPRECATED_CLASS_COLOR);
-            }
-            else {
-                delegateTreeCellRenderer.setTextNonSelectionColor(Color.BLACK);
-            }
+            delegateTreeCellRenderer.setTextNonSelectionColor(defaultTextColor);
+            delegateTreeCellRenderer.setTextSelectionColor(selectionTextColor);
         }
         JLabel renderingComponent = (JLabel) delegateTreeCellRenderer.getTreeCellRendererComponent(tree,
                                                                                                    rendering,
