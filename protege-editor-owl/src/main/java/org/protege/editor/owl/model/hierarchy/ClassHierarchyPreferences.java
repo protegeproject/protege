@@ -18,6 +18,8 @@ public class ClassHierarchyPreferences {
 
     private static final String DISPLAY_DEPRECATED_ENTITIES_KEY = "DISPLAY_DEPRECATED_ENTITIES";
 
+    private static final String DISPLAY_FROM_ONTOLOGY_ROOTS = "DISPLAY_FROM_ONTOLOGY_ROOTS";
+
     private static Preferences getPreferences() {
         return PreferencesManager.getInstance().getApplicationPreferences(CLASS_HIERARCHY_PREFERENCES);
     }
@@ -40,5 +42,13 @@ public class ClassHierarchyPreferences {
 
     public void setDisplayDeprecatedEntities(boolean displayDeprecatedEntities) {
         getPreferences().putBoolean(DISPLAY_DEPRECATED_ENTITIES_KEY, displayDeprecatedEntities);
+    }
+
+    public boolean isDisplayFromOntologyRoots() {
+        return getPreferences().getBoolean(DISPLAY_FROM_ONTOLOGY_ROOTS, false);
+    }
+
+    public void setDisplayFromOntologyRoots(boolean displayFromOntologyRoots) {
+        getPreferences().putBoolean(DISPLAY_FROM_ONTOLOGY_ROOTS, displayFromOntologyRoots);
     }
 }
