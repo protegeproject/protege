@@ -208,6 +208,16 @@
         <checkbox value="true"/>
     </extension>
 
+    <extension id="tree.displayfromontologyroots"
+               point="org.protege.editor.core.application.EditorKitMenuAction">
+        <name value="Display from ontology roots"/>
+        <class value="org.protege.editor.owl.ui.action.DisplayHierarchyFromOntologyRootsAction"/>
+        <toolTip value="Only display classes that are below the ontology root(s)"/>
+        <path value="org.protege.editor.owl.ui.view.menu/SlotAAA-AF"/>
+        <editorKitId value="OWLEditorKit"/>
+        <checkbox value="true"/>
+    </extension>
+
     <extension id="showbreadcrumbtrail"
                point="org.protege.editor.core.application.EditorKitMenuAction">
         <name value="Show breadcrumb trail"/>
