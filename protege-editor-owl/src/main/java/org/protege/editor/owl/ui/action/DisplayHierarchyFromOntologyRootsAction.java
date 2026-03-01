@@ -2,6 +2,7 @@ package org.protege.editor.owl.ui.action;
 
 import java.awt.event.ActionEvent;
 
+import org.protege.editor.owl.model.hierarchy.AssertedClassHierarchyProvider;
 import org.protege.editor.owl.model.hierarchy.ClassHierarchyPreferences;
 
 /**
@@ -39,6 +40,7 @@ public class DisplayHierarchyFromOntologyRootsAction extends ProtegeOWLRadioButt
 
     private void setDisplayFromOntologyRoots() {
         boolean displayFromRoots = ClassHierarchyPreferences.get().isDisplayFromOntologyRoots();
-        // TODO
+        AssertedClassHierarchyProvider provider = (AssertedClassHierarchyProvider) getOWLModelManager().getOWLHierarchyManager().getOWLClassHierarchyProvider();
+        provider.setDislayFromOntologyRoots(displayFromRoots);
     }
 }

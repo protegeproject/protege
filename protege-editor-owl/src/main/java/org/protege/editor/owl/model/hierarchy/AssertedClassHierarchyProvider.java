@@ -26,6 +26,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyProvider<OWLClass> {
 
+    private final static IRI HAS_ONTOLOGY_ROOT = IRI.create("http://purl.obolibrary.org/obo/IAO_0000700");
+
     private final OWLOntologyManager owlOntologyManager;
 
     private final ReadLock ontologySetReadLock;
@@ -57,6 +59,8 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
     private final TerminalElementFinder<OWLClass> rootFinder;
 
     private final Set<OWLClass> nodesToUpdate = new HashSet<>();
+
+    private boolean displayFromOntologyRoots;
 
     public AssertedClassHierarchyProvider(@Nonnull OWLOntologyManager owlOntologyManager) {
         super(owlOntologyManager);
@@ -225,7 +229,9 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
         try {
             if (roots.contains(object)) {
                 Set<OWLClass> result = new HashSet<>();
-                result.addAll(rootFinder.getTerminalElements());
+                if (!displayFromOntologyRoots) {
+                    result.addAll(rootFinder.getTerminalElements());
+                }
                 result.addAll(extractChildren(object));
                 result.remove(object);
                 return result;
@@ -291,7 +297,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
             }
             Set<OWLClass> result = new HashSet<>();
             // Thing if the object is a root class
-            if (rootFinder.getTerminalElements().contains(object)) {
+            if (rootFinder.getTerminalElements().contains(object) && !displayFromOntologyRoots) {
                 result.addAll(roots);
                 return result;
             }
@@ -350,5 +356,34 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
             extractChildren(parent);
         }
         return childClassExtractor.getRelationship(child);
+    }
+
+    public void setDislayFromOntologyRoots(boolean fromRoots) {
+        roots.clear();
+        if (fromRoots && getOntologyRoots(roots)) {
+            displayFromOntologyRoots = true;
+        } else {
+            roots.add(owlOntologyManager.getOWLDataFactory().getOWLThing());
+            displayFromOntologyRoots = false;
+        }
+    }
+
+    private boolean getOntologyRoots(Set<OWLClass> roots) {
+        boolean found = false;
+        for (OWLOntology ont : ontologies) {
+            for (OWLAnnotation annot : ont.getAnnotations()) {
+                if (annot.getProperty().getIRI().equals(HAS_ONTOLOGY_ROOT)) {
+                    if (annot.getValue().isIRI()) {
+                        IRI root = annot.getValue().asIRI().get();
+                        if (ont.containsClassInSignature(root)) {
+                            roots.add(owlOntologyManager.getOWLDataFactory().getOWLClass(root));
+                            found = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return found;
     }
 }
