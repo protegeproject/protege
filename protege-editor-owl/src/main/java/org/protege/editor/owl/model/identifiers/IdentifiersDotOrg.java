@@ -37,6 +37,8 @@ public class IdentifiersDotOrg {
     @Nonnull
     private final ObjectMapper objectMapper;
 
+    private int lastHttpCode;
+
     private Multimap<String, IdoNamespace> byPrefix = HashMultimap.create();
 
     private IdentifiersDotOrg(@Nonnull HttpClient client,
@@ -68,6 +70,9 @@ public class IdentifiersDotOrg {
         });
     }
 
+    public int getLastStatus() {
+        return lastHttpCode;
+    }
 
     @Nonnull
     public Optional<IdoNamespace> getCollection(@Nonnull String compactId) {
@@ -89,7 +94,8 @@ public class IdentifiersDotOrg {
         HttpGet httpGet = new HttpGet(url);
         try {
             HttpResponse response = client.execute(httpGet);
-            if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+            lastHttpCode = response.getStatusLine().getStatusCode();
+            if(lastHttpCode == HttpStatus.SC_OK) {
                 InputStream contentInputStream = response.getEntity().getContent();
                 IdoResponse idoResponse = objectMapper.readValue(contentInputStream, IdoResponse.class);
                 JsonNode payload = idoResponse.getPayload();
@@ -117,7 +123,8 @@ public class IdentifiersDotOrg {
             while(url != null) {
                 HttpGet httpGet = new HttpGet(url);
                 HttpResponse response = client.execute(httpGet);
-                if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                lastHttpCode = response.getStatusLine().getStatusCode();
+                if(lastHttpCode == HttpStatus.SC_OK) {
                     InputStream contentInputStream = response.getEntity().getContent();
                     JsonNode idoResponse = objectMapper.readValue(contentInputStream, JsonNode.class);
                     // The namespaces list is an embedded resource that is paged
