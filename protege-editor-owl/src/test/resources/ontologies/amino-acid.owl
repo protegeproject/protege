@@ -11,14 +11,14 @@
     <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
     <!ENTITY protege "http://protege.stanford.edu/plugins/owl/protege#" >
     <!ENTITY xsp "http://www.owl-ontologies.com/2005/08/07/xsp.owl#" >
-    <!ENTITY amino-acid "http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#" >
+    <!ENTITY amino-acid "http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#" >
 ]>
 
 
-<rdf:RDF xmlns="http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#"
-     xml:base="http://www.co-ode.org/ontologies/amino-acid/2009/02/16/amino-acid.owl"
+<rdf:RDF xmlns="http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#"
+     xml:base="http://example.invalid/ontologies/amino-acid/2009/02/16/amino-acid.owl"
      xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
-     xmlns:amino-acid="http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#"
+     xmlns:amino-acid="http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:xsp="http://www.owl-ontologies.com/2005/08/07/xsp.owl#"
      xmlns:swrl="http://www.w3.org/2003/11/swrl#"
@@ -64,7 +64,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#hasCharge -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#hasCharge -->
 
     <owl:ObjectProperty rdf:about="&amino-acid;hasCharge">
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
@@ -80,7 +80,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#hasHydrophobicity -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#hasHydrophobicity -->
 
     <owl:ObjectProperty rdf:about="&amino-acid;hasHydrophobicity">
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
@@ -97,7 +97,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#hasPolarity -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#hasPolarity -->
 
     <owl:ObjectProperty rdf:about="&amino-acid;hasPolarity">
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
@@ -112,7 +112,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#hasSideChainStructure -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#hasSideChainStructure -->
 
     <owl:ObjectProperty rdf:about="&amino-acid;hasSideChainStructure">
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
@@ -129,7 +129,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#hasSize -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#hasSize -->
 
     <owl:ObjectProperty rdf:about="&amino-acid;hasSize">
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
@@ -154,7 +154,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#preferredName -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#preferredName -->
 
     <owl:DatatypeProperty rdf:about="&amino-acid;preferredName">
         <rdf:type rdf:resource="&owl;AnnotationProperty"/>
@@ -168,7 +168,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#shortName -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#shortName -->
 
     <owl:DatatypeProperty rdf:about="&amino-acid;shortName">
         <rdf:type rdf:resource="&owl;AnnotationProperty"/>
@@ -183,7 +183,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#singleLetterName -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#singleLetterName -->
 
     <owl:DatatypeProperty rdf:about="&amino-acid;singleLetterName">
         <rdf:type rdf:resource="&owl;AnnotationProperty"/>
@@ -209,7 +209,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#A -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#A -->
 
     <owl:Class rdf:about="&amino-acid;A">
         <rdfs:label xml:lang="en">Alanine</rdfs:label>
@@ -304,7 +304,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#Aliphatic -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#Aliphatic -->
 
     <owl:Class rdf:about="&amino-acid;Aliphatic">
         <rdfs:label xml:lang="zh">&#33026;&#32938;&#26063;&#22411;</rdfs:label>
@@ -316,7 +316,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#AliphaticAminoAcid -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#AliphaticAminoAcid -->
 
     <owl:Class rdf:about="&amino-acid;AliphaticAminoAcid">
         <rdfs:label xml:lang="en"
@@ -339,7 +339,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#AminoAcid -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#AminoAcid -->
 
     <owl:Class rdf:about="&amino-acid;AminoAcid">
         <rdfs:label xml:lang="en">Amino Acids</rdfs:label>
@@ -381,7 +381,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#Aromatic -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#Aromatic -->
 
     <owl:Class rdf:about="&amino-acid;Aromatic">
         <rdfs:label xml:lang="zh">&#33459;&#39321;&#26063;&#22411;</rdfs:label>
@@ -392,7 +392,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#AromaticAminoAcid -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#AromaticAminoAcid -->
 
     <owl:Class rdf:about="&amino-acid;AromaticAminoAcid">
         <rdfs:label xml:lang="en"
@@ -415,7 +415,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#C -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#C -->
 
     <owl:Class rdf:about="&amino-acid;C">
         <rdfs:label xml:lang="en">Cysteine</rdfs:label>
@@ -509,7 +509,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#Charge -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#Charge -->
 
     <owl:Class rdf:about="&amino-acid;Charge">
         <rdfs:label xml:lang="zh">&#30005;&#33655;</rdfs:label>
@@ -530,7 +530,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#D -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#D -->
 
     <owl:Class rdf:about="&amino-acid;D">
         <rdfs:label xml:lang="en">Aspartate</rdfs:label>
@@ -629,7 +629,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#E -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#E -->
 
     <owl:Class rdf:about="&amino-acid;E">
         <rdfs:label xml:lang="en">Glutamate</rdfs:label>
@@ -720,7 +720,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#F -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#F -->
 
     <owl:Class rdf:about="&amino-acid;F">
         <rdfs:label xml:lang="en">Phenylalanine</rdfs:label>
@@ -811,7 +811,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#G -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#G -->
 
     <owl:Class rdf:about="&amino-acid;G">
         <rdfs:label xml:lang="en">Glycine</rdfs:label>
@@ -904,7 +904,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#H -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#H -->
 
     <owl:Class rdf:about="&amino-acid;H">
         <rdfs:label xml:lang="en">Histidine</rdfs:label>
@@ -993,7 +993,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#Hydrophilic -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#Hydrophilic -->
 
     <owl:Class rdf:about="&amino-acid;Hydrophilic">
         <rdfs:label xml:lang="zh">&#20146;&#27700;</rdfs:label>
@@ -1006,7 +1006,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#Hydrophobic -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#Hydrophobic -->
 
     <owl:Class rdf:about="&amino-acid;Hydrophobic">
         <rdfs:label xml:lang="zh">&#30095;&#27700;</rdfs:label>
@@ -1018,7 +1018,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#Hydrophobicity -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#Hydrophobicity -->
 
     <owl:Class rdf:about="&amino-acid;Hydrophobicity">
         <rdfs:label xml:lang="zh">&#30095;&#27700;&#24615;</rdfs:label>
@@ -1038,7 +1038,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#I -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#I -->
 
     <owl:Class rdf:about="&amino-acid;I">
         <rdfs:label xml:lang="en">Isoleucine</rdfs:label>
@@ -1126,7 +1126,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#K -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#K -->
 
     <owl:Class rdf:about="&amino-acid;K">
         <rdfs:label xml:lang="en">Lysine</rdfs:label>
@@ -1215,7 +1215,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#L -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#L -->
 
     <owl:Class rdf:about="&amino-acid;L">
         <rdfs:label xml:lang="en">Leucine</rdfs:label>
@@ -1302,7 +1302,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#Large -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#Large -->
 
     <owl:Class rdf:about="&amino-acid;Large">
         <rdfs:label xml:lang="zh">&#22823;</rdfs:label>
@@ -1315,7 +1315,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#LargeAliphaticAminoAcid -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#LargeAliphaticAminoAcid -->
 
     <owl:Class rdf:about="&amino-acid;LargeAliphaticAminoAcid">
         <rdfs:label xml:lang="en"
@@ -1342,7 +1342,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#M -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#M -->
 
     <owl:Class rdf:about="&amino-acid;M">
         <rdfs:label xml:lang="en">Methionine</rdfs:label>
@@ -1428,7 +1428,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#N -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#N -->
 
     <owl:Class rdf:about="&amino-acid;N">
         <rdfs:label xml:lang="en">Asparagine</rdfs:label>
@@ -1519,7 +1519,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#Negative -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#Negative -->
 
     <owl:Class rdf:about="&amino-acid;Negative">
         <rdfs:label xml:lang="zh">&#36127;&#30005;</rdfs:label>
@@ -1533,7 +1533,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#NegativeChargedAminoAcid -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#NegativeChargedAminoAcid -->
 
     <owl:Class rdf:about="&amino-acid;NegativeChargedAminoAcid">
         <rdfs:label xml:lang="en"
@@ -1558,7 +1558,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#Neutral -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#Neutral -->
 
     <owl:Class rdf:about="&amino-acid;Neutral">
         <rdfs:label xml:lang="zh">&#30005;&#20013;&#24615;</rdfs:label>
@@ -1570,7 +1570,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#Non-Polar -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#Non-Polar -->
 
     <owl:Class rdf:about="&amino-acid;Non-Polar">
         <rdfs:subClassOf rdf:resource="&amino-acid;Polarity"/>
@@ -1581,7 +1581,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#P -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#P -->
 
     <owl:Class rdf:about="&amino-acid;P">
         <rdfs:label xml:lang="en">Proline</rdfs:label>
@@ -1663,7 +1663,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#Polar -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#Polar -->
 
     <owl:Class rdf:about="&amino-acid;Polar">
         <rdfs:subClassOf rdf:resource="&amino-acid;Polarity"/>
@@ -1673,7 +1673,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#Polarity -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#Polarity -->
 
     <owl:Class rdf:about="&amino-acid;Polarity">
         <rdfs:label xml:lang="zh">&#26497;&#24615;</rdfs:label>
@@ -1693,7 +1693,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#Positive -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#Positive -->
 
     <owl:Class rdf:about="&amino-acid;Positive">
         <rdfs:label xml:lang="zh">&#27491;&#30005;</rdfs:label>
@@ -1705,7 +1705,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#PositiveChargedAminoAcid -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#PositiveChargedAminoAcid -->
 
     <owl:Class rdf:about="&amino-acid;PositiveChargedAminoAcid">
         <rdfs:label xml:lang="en"
@@ -1728,7 +1728,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#Q -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#Q -->
 
     <owl:Class rdf:about="&amino-acid;Q">
         <rdfs:label xml:lang="en">Glutamine</rdfs:label>
@@ -1811,7 +1811,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#R -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#R -->
 
     <owl:Class rdf:about="&amino-acid;R">
         <rdfs:label xml:lang="en">Arginine</rdfs:label>
@@ -1893,7 +1893,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#RefiningFeature -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#RefiningFeature -->
 
     <owl:Class rdf:about="&amino-acid;RefiningFeature">
         <rdfs:label xml:lang="en"
@@ -1907,7 +1907,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#S -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#S -->
 
     <owl:Class rdf:about="&amino-acid;S">
         <rdfs:label xml:lang="en">Serine</rdfs:label>
@@ -1987,7 +1987,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#SideChainStructure -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#SideChainStructure -->
 
     <owl:Class rdf:about="&amino-acid;SideChainStructure">
         <rdfs:label xml:lang="en"
@@ -2011,7 +2011,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#Size -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#Size -->
 
     <owl:Class rdf:about="&amino-acid;Size">
         <rdfs:label xml:lang="zh">&#22823;&#23567;</rdfs:label>
@@ -2031,7 +2031,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#Small -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#Small -->
 
     <owl:Class rdf:about="&amino-acid;Small">
         <rdfs:label xml:lang="zh">&#23567;</rdfs:label>
@@ -2043,7 +2043,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#SpecificAminoAcid -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#SpecificAminoAcid -->
 
     <owl:Class rdf:about="&amino-acid;SpecificAminoAcid">
         <rdfs:label xml:lang="zh">&#27688;&#22522;&#37240;</rdfs:label>
@@ -2055,7 +2055,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#T -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#T -->
 
     <owl:Class rdf:about="&amino-acid;T">
         <rdfs:label xml:lang="en">Threonine</rdfs:label>
@@ -2137,7 +2137,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#Tiny -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#Tiny -->
 
     <owl:Class rdf:about="&amino-acid;Tiny">
         <rdfs:label xml:lang="zh">&#24494;</rdfs:label>
@@ -2149,7 +2149,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#TinyPolarAminoAcid -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#TinyPolarAminoAcid -->
 
     <owl:Class rdf:about="&amino-acid;TinyPolarAminoAcid">
         <rdfs:label xml:lang="en"
@@ -2176,7 +2176,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#V -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#V -->
 
     <owl:Class rdf:about="&amino-acid;V">
         <rdfs:label xml:lang="en">Valine</rdfs:label>
@@ -2254,7 +2254,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#W -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#W -->
 
     <owl:Class rdf:about="&amino-acid;W">
         <rdfs:label xml:lang="en">Tryptophan</rdfs:label>
@@ -2331,7 +2331,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/amino-acid/2006/05/18/amino-acid.owl#Y -->
+    <!-- http://example.invalid/ontologies/amino-acid/2006/05/18/amino-acid.owl#Y -->
 
     <owl:Class rdf:about="&amino-acid;Y">
         <rdfs:label xml:lang="en">Tyrosine</rdfs:label>

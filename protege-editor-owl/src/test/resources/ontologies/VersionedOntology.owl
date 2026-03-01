@@ -9,14 +9,14 @@
 ]>
 
 
-<rdf:RDF xmlns="http://www.tigraworld.com/protege/VersionedOntology.owl#"
-     xml:base="http://www.tigraworld.com/protege/VersionedOntology.owl"
+<rdf:RDF xmlns="http://example.invalid/protege/VersionedOntology.owl#"
+     xml:base="http://example.invalid/protege/VersionedOntology.owl"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:owl="http://www.w3.org/2002/07/owl#">
-    <owl:Ontology rdf:about="http://www.tigraworld.com/protege/VersionedOntology.owl">
-        <owl:versionIRI rdf:resource="http://www.tigraworld.com/protege/Version1.owl"/>
+    <owl:Ontology rdf:about="http://example.invalid/protege/VersionedOntology.owl">
+        <owl:versionIRI rdf:resource="http://example.invalid/protege/Version1.owl"/>
     </owl:Ontology>
 </rdf:RDF>
 

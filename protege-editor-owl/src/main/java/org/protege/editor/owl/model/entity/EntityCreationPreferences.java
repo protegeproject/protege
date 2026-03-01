@@ -66,7 +66,7 @@ public class EntityCreationPreferences {
 
     public static IRI getDefaultBaseIRI() {
         Preferences prefs = getPrefs();
-        String baseIRIStr = prefs.getString(DEFAULT_BASE_URI, "http://www.co-ode.org/ontologies/ont.owl#");
+        String baseIRIStr = prefs.getString(DEFAULT_BASE_URI, "http://example.invalid/ontologies/ont.owl#");
         return IRI.create(baseIRIStr);
     }
 

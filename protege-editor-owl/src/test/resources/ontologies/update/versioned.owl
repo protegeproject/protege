@@ -9,14 +9,14 @@
 ]>
 
 
-<rdf:RDF xmlns="http://www.tigraworld.com/protege/determinant.owl#"
-     xml:base="http://www.tigraworld.com/protege/determinant.owl"
+<rdf:RDF xmlns="http://example.invalid/protege/determinant.owl#"
+     xml:base="http://example.invalid/protege/determinant.owl"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-    <owl:Ontology rdf:about="http://www.tigraworld.com/protege/determinant.owl">
-        <owl:versionIRI rdf:resource="http://www.tigraworld.com/protege/determinant-2007-08-01.owl"/>
+    <owl:Ontology rdf:about="http://example.invalid/protege/determinant.owl">
+        <owl:versionIRI rdf:resource="http://example.invalid/protege/determinant-2007-08-01.owl"/>
     </owl:Ontology>
 </rdf:RDF>
 
