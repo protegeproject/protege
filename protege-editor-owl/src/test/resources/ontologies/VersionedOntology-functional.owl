@@ -6,6 +6,6 @@ Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
 Prefix(owl:=<http://www.w3.org/2002/07/owl#>)
 
 
-Ontology(<http://www.tigraworld.com/protege/VersionedOntology.owl>
-<http://www.tigraworld.com/protege/Version1.owl>
+Ontology(<http://example.invalid/protege/VersionedOntology.owl>
+<http://example.invalid/protege/Version1.owl>
 )

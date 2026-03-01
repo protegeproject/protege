@@ -7,22 +7,22 @@
     <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
     <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
     <!ENTITY protege "http://protege.stanford.edu/plugins/owl/protege#" >
-    <!ENTITY pizza "http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#" >
+    <!ENTITY pizza "http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#" >
 ]>
 
 
-<rdf:RDF xmlns="http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#"
-     xml:base="http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl"
+<rdf:RDF xmlns="http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#"
+     xml:base="http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
      xmlns:protege="http://protege.stanford.edu/plugins/owl/protege#"
-     xmlns:pizza="http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#"
+     xmlns:pizza="http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-    <owl:Ontology rdf:about="http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl">
+    <owl:Ontology rdf:about="http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl">
         <protege:defaultLanguage rdf:datatype="&xsd;string">en</protege:defaultLanguage>
         <owl:versionInfo rdf:datatype="&xsd;string">version 1.3</owl:versionInfo>
-        <rdfs:comment xml:lang="en">An example ontology that contains all constructs required for the various versions of the Pizza Tutorial run by Manchester University (see http://www.co-ode.org/resources/tutorials/)</rdfs:comment>
+        <rdfs:comment xml:lang="en">An example ontology that contains all constructs required for the various versions of the Pizza Tutorial run by Manchester University (see http://example.invalid/resources/tutorials/)</rdfs:comment>
         <owl:imports rdf:resource="http://protege.stanford.edu/plugins/owl/protege"/>
     </owl:Ontology>
     
@@ -54,7 +54,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#hasBase -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#hasBase -->
 
     <owl:ObjectProperty rdf:about="&pizza;hasBase">
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
@@ -66,13 +66,13 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#hasCountryOfOrigin -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#hasCountryOfOrigin -->
 
     <owl:ObjectProperty rdf:about="&pizza;hasCountryOfOrigin"/>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#hasIngredient -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#hasIngredient -->
 
     <owl:ObjectProperty rdf:about="&pizza;hasIngredient">
         <rdf:type rdf:resource="&owl;TransitiveProperty"/>
@@ -82,7 +82,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#hasSpiciness -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#hasSpiciness -->
 
     <owl:ObjectProperty rdf:about="&pizza;hasSpiciness">
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
@@ -92,7 +92,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#hasTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#hasTopping -->
 
     <owl:ObjectProperty rdf:about="&pizza;hasTopping">
         <rdfs:domain rdf:resource="&pizza;Pizza"/>
@@ -102,7 +102,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#isBaseOf -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#isBaseOf -->
 
     <owl:ObjectProperty rdf:about="&pizza;isBaseOf">
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
@@ -115,7 +115,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#isIngredientOf -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#isIngredientOf -->
 
     <owl:ObjectProperty rdf:about="&pizza;isIngredientOf">
         <rdf:type rdf:resource="&owl;TransitiveProperty"/>
@@ -124,7 +124,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#isToppingOf -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#isToppingOf -->
 
     <owl:ObjectProperty rdf:about="&pizza;isToppingOf">
         <rdfs:range rdf:resource="&pizza;Pizza"/>
@@ -146,7 +146,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#American -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#American -->
 
     <owl:Class rdf:about="&pizza;American">
         <rdfs:label xml:lang="pt">Americana</rdfs:label>
@@ -209,7 +209,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#AmericanHot -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#AmericanHot -->
 
     <owl:Class rdf:about="&pizza;AmericanHot">
         <rdfs:label xml:lang="pt">AmericanaPicante</rdfs:label>
@@ -285,7 +285,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#AnchoviesTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#AnchoviesTopping -->
 
     <owl:Class rdf:about="&pizza;AnchoviesTopping">
         <rdfs:label xml:lang="pt">CoberturaDeAnchovies</rdfs:label>
@@ -296,7 +296,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#ArtichokeTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#ArtichokeTopping -->
 
     <owl:Class rdf:about="&pizza;ArtichokeTopping">
         <rdfs:label xml:lang="pt">CoberturaDeArtichoke</rdfs:label>
@@ -323,7 +323,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#AsparagusTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#AsparagusTopping -->
 
     <owl:Class rdf:about="&pizza;AsparagusTopping">
         <rdfs:label xml:lang="pt">CoberturaDeAspargos</rdfs:label>
@@ -349,7 +349,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#Cajun -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#Cajun -->
 
     <owl:Class rdf:about="&pizza;Cajun">
         <rdfs:label xml:lang="pt">Cajun</rdfs:label>
@@ -431,7 +431,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#CajunSpiceTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#CajunSpiceTopping -->
 
     <owl:Class rdf:about="&pizza;CajunSpiceTopping">
         <rdfs:label xml:lang="pt">CoberturaDeCajun</rdfs:label>
@@ -447,7 +447,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#CaperTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#CaperTopping -->
 
     <owl:Class rdf:about="&pizza;CaperTopping">
         <rdfs:label xml:lang="pt">CoberturaDeCaper</rdfs:label>
@@ -472,7 +472,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#Capricciosa -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#Capricciosa -->
 
     <owl:Class rdf:about="&pizza;Capricciosa">
         <rdfs:label xml:lang="pt">Capricciosa</rdfs:label>
@@ -560,7 +560,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#Caprina -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#Caprina -->
 
     <owl:Class rdf:about="&pizza;Caprina">
         <rdfs:label xml:lang="pt">Caprina</rdfs:label>
@@ -626,7 +626,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#CheeseTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#CheeseTopping -->
 
     <owl:Class rdf:about="&pizza;CheeseTopping">
         <rdfs:label xml:lang="pt">CoberturaDeQueijo</rdfs:label>
@@ -642,7 +642,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#CheeseyPizza -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#CheeseyPizza -->
 
     <owl:Class rdf:about="&pizza;CheeseyPizza">
         <rdfs:label xml:lang="pt">PizzaComQueijo</rdfs:label>
@@ -662,7 +662,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#CheeseyVegetableTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#CheeseyVegetableTopping -->
 
     <owl:Class rdf:about="&pizza;CheeseyVegetableTopping">
         <rdfs:label xml:lang="pt">CoberturaDeQueijoComVegetais</rdfs:label>
@@ -673,7 +673,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#ChickenTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#ChickenTopping -->
 
     <owl:Class rdf:about="&pizza;ChickenTopping">
         <rdfs:label xml:lang="pt">CoberturaDeFrango</rdfs:label>
@@ -691,7 +691,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#Country -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#Country -->
 
     <owl:Class rdf:about="&pizza;Country">
         <rdfs:label xml:lang="pt">Pais</rdfs:label>
@@ -716,7 +716,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#DeepPanBase -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#DeepPanBase -->
 
     <owl:Class rdf:about="&pizza;DeepPanBase">
         <rdfs:label xml:lang="pt">BaseEspessa</rdfs:label>
@@ -726,7 +726,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#DomainConcept -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#DomainConcept -->
 
     <owl:Class rdf:about="&pizza;DomainConcept">
         <owl:disjointWith rdf:resource="&pizza;ValuePartition"/>
@@ -734,7 +734,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#Fiorentina -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#Fiorentina -->
 
     <owl:Class rdf:about="&pizza;Fiorentina">
         <rdfs:label xml:lang="pt">Fiorentina</rdfs:label>
@@ -813,7 +813,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#FishTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#FishTopping -->
 
     <owl:Class rdf:about="&pizza;FishTopping">
         <rdfs:label xml:lang="pt">CoberturaDePeixe</rdfs:label>
@@ -834,7 +834,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#FourCheesesTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#FourCheesesTopping -->
 
     <owl:Class rdf:about="&pizza;FourCheesesTopping">
         <rdfs:label xml:lang="pt">CoberturaQuatroQueijos</rdfs:label>
@@ -853,7 +853,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#FourSeasons -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#FourSeasons -->
 
     <owl:Class rdf:about="&pizza;FourSeasons">
         <rdfs:label xml:lang="pt">QuatroQueijos</rdfs:label>
@@ -938,7 +938,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#FruitTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#FruitTopping -->
 
     <owl:Class rdf:about="&pizza;FruitTopping">
         <rdfs:label xml:lang="pt">CoberturaDeFrutas</rdfs:label>
@@ -952,7 +952,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#FruttiDiMare -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#FruttiDiMare -->
 
     <owl:Class rdf:about="&pizza;FruttiDiMare">
         <rdfs:label xml:lang="pt">FrutosDoMar</rdfs:label>
@@ -1008,7 +1008,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#GarlicTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#GarlicTopping -->
 
     <owl:Class rdf:about="&pizza;GarlicTopping">
         <rdfs:label xml:lang="pt">CoberturaDeAlho</rdfs:label>
@@ -1032,7 +1032,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#Giardiniera -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#Giardiniera -->
 
     <owl:Class rdf:about="&pizza;Giardiniera">
         <rdfs:label xml:lang="pt">Giardiniera</rdfs:label>
@@ -1122,7 +1122,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#GoatsCheeseTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#GoatsCheeseTopping -->
 
     <owl:Class rdf:about="&pizza;GoatsCheeseTopping">
         <rdfs:label xml:lang="pt">CoberturaDeQueijoDeCabra</rdfs:label>
@@ -1140,7 +1140,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#GorgonzolaTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#GorgonzolaTopping -->
 
     <owl:Class rdf:about="&pizza;GorgonzolaTopping">
         <rdfs:label xml:lang="pt">CoberturaDeGorgonzola</rdfs:label>
@@ -1157,7 +1157,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#GreenPepperTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#GreenPepperTopping -->
 
     <owl:Class rdf:about="&pizza;GreenPepperTopping">
         <rdfs:label xml:lang="pt">CoberturaDePimentaoVerde</rdfs:label>
@@ -1169,7 +1169,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#HamTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#HamTopping -->
 
     <owl:Class rdf:about="&pizza;HamTopping">
         <rdfs:label xml:lang="pt">CoberturaDePresunto</rdfs:label>
@@ -1180,7 +1180,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#HerbSpiceTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#HerbSpiceTopping -->
 
     <owl:Class rdf:about="&pizza;HerbSpiceTopping">
         <rdfs:label xml:lang="pt">CoberturaDeErvas</rdfs:label>
@@ -1193,7 +1193,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#Hot -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#Hot -->
 
     <owl:Class rdf:about="&pizza;Hot">
         <rdfs:label xml:lang="pt">Picante</rdfs:label>
@@ -1204,7 +1204,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#HotGreenPepperTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#HotGreenPepperTopping -->
 
     <owl:Class rdf:about="&pizza;HotGreenPepperTopping">
         <rdfs:label xml:lang="pt">CoberturaDePimentaoVerdePicante</rdfs:label>
@@ -1219,7 +1219,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#HotSpicedBeefTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#HotSpicedBeefTopping -->
 
     <owl:Class rdf:about="&pizza;HotSpicedBeefTopping">
         <rdfs:label xml:lang="pt">CoberturaDeBifePicante</rdfs:label>
@@ -1235,7 +1235,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#IceCream -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#IceCream -->
 
     <owl:Class rdf:about="&pizza;IceCream">
         <rdfs:label xml:lang="pt">Sorvete</rdfs:label>
@@ -1254,7 +1254,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#InterestingPizza -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#InterestingPizza -->
 
     <owl:Class rdf:about="&pizza;InterestingPizza">
         <rdfs:label xml:lang="pt">PizzaInteressante</rdfs:label>
@@ -1274,7 +1274,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#JalapenoPepperTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#JalapenoPepperTopping -->
 
     <owl:Class rdf:about="&pizza;JalapenoPepperTopping">
         <rdfs:label xml:lang="pt">CoberturaDeJalapeno</rdfs:label>
@@ -1291,7 +1291,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#LaReine -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#LaReine -->
 
     <owl:Class rdf:about="&pizza;LaReine">
         <rdfs:label xml:lang="pt">LaReine</rdfs:label>
@@ -1359,7 +1359,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#LeekTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#LeekTopping -->
 
     <owl:Class rdf:about="&pizza;LeekTopping">
         <rdfs:label xml:lang="pt">CoberturaDeLeek</rdfs:label>
@@ -1382,7 +1382,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#Margherita -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#Margherita -->
 
     <owl:Class rdf:about="&pizza;Margherita">
         <rdfs:label xml:lang="pt">Margherita</rdfs:label>
@@ -1428,7 +1428,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#MeatTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#MeatTopping -->
 
     <owl:Class rdf:about="&pizza;MeatTopping">
         <rdfs:label xml:lang="pt">CoberturaDeCarne</rdfs:label>
@@ -1440,7 +1440,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#MeatyPizza -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#MeatyPizza -->
 
     <owl:Class rdf:about="&pizza;MeatyPizza">
         <rdfs:label xml:lang="pt">PizzaDeCarne</rdfs:label>
@@ -1460,7 +1460,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#Medium -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#Medium -->
 
     <owl:Class rdf:about="&pizza;Medium">
         <rdfs:label xml:lang="pt">Media</rdfs:label>
@@ -1470,7 +1470,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#Mild -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#Mild -->
 
     <owl:Class rdf:about="&pizza;Mild">
         <rdfs:label xml:lang="pt">NaoPicante</rdfs:label>
@@ -1479,7 +1479,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#MixedSeafoodTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#MixedSeafoodTopping -->
 
     <owl:Class rdf:about="&pizza;MixedSeafoodTopping">
         <rdfs:label xml:lang="pt">CoberturaDeFrutosDoMarMistos</rdfs:label>
@@ -1489,7 +1489,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#MozzarellaTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#MozzarellaTopping -->
 
     <owl:Class rdf:about="&pizza;MozzarellaTopping">
         <rdfs:label xml:lang="pt">CoberturaDeMozzarella</rdfs:label>
@@ -1511,7 +1511,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#Mushroom -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#Mushroom -->
 
     <owl:Class rdf:about="&pizza;Mushroom">
         <rdfs:label xml:lang="pt">Cogumelo</rdfs:label>
@@ -1563,7 +1563,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#MushroomTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#MushroomTopping -->
 
     <owl:Class rdf:about="&pizza;MushroomTopping">
         <rdfs:label xml:lang="pt">CoberturaDeCogumelo</rdfs:label>
@@ -1585,7 +1585,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#NamedPizza -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#NamedPizza -->
 
     <owl:Class rdf:about="&pizza;NamedPizza">
         <rdfs:label xml:lang="pt">PizzaComUmNome</rdfs:label>
@@ -1595,7 +1595,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#Napoletana -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#Napoletana -->
 
     <owl:Class rdf:about="&pizza;Napoletana">
         <rdfs:label xml:lang="pt">Napoletana</rdfs:label>
@@ -1660,7 +1660,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#NonVegetarianPizza -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#NonVegetarianPizza -->
 
     <owl:Class rdf:about="&pizza;NonVegetarianPizza">
         <rdfs:label xml:lang="pt">PizzaNaoVegetariana</rdfs:label>
@@ -1680,7 +1680,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#NutTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#NutTopping -->
 
     <owl:Class rdf:about="&pizza;NutTopping">
         <rdfs:label xml:lang="pt">CoberturaDeCastanha</rdfs:label>
@@ -1697,7 +1697,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#OliveTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#OliveTopping -->
 
     <owl:Class rdf:about="&pizza;OliveTopping">
         <rdfs:label xml:lang="pt">CoberturaDeAzeitona</rdfs:label>
@@ -1718,7 +1718,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#OnionTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#OnionTopping -->
 
     <owl:Class rdf:about="&pizza;OnionTopping">
         <rdfs:label xml:lang="pt">CoberturaDeCebola</rdfs:label>
@@ -1738,7 +1738,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#ParmaHamTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#ParmaHamTopping -->
 
     <owl:Class rdf:about="&pizza;ParmaHamTopping">
         <rdfs:label xml:lang="pt">CoberturaDePrezuntoParma</rdfs:label>
@@ -1753,7 +1753,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#Parmense -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#Parmense -->
 
     <owl:Class rdf:about="&pizza;Parmense">
         <rdfs:label xml:lang="pt">Parmense</rdfs:label>
@@ -1817,7 +1817,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#ParmesanTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#ParmesanTopping -->
 
     <owl:Class rdf:about="&pizza;ParmesanTopping">
         <rdfs:label xml:lang="pt">CoberturaDeParmesao</rdfs:label>
@@ -1832,7 +1832,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#PeperonataTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#PeperonataTopping -->
 
     <owl:Class rdf:about="&pizza;PeperonataTopping">
         <rdfs:label xml:lang="pt">CoberturaPeperonata</rdfs:label>
@@ -1848,7 +1848,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#PeperoniSausageTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#PeperoniSausageTopping -->
 
     <owl:Class rdf:about="&pizza;PeperoniSausageTopping">
         <rdfs:label xml:lang="pt">CoberturaDeCalabreza</rdfs:label>
@@ -1863,7 +1863,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#PepperTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#PepperTopping -->
 
     <owl:Class rdf:about="&pizza;PepperTopping">
         <rdfs:label xml:lang="pt">CoberturaDePimentao</rdfs:label>
@@ -1876,7 +1876,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#PetitPoisTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#PetitPoisTopping -->
 
     <owl:Class rdf:about="&pizza;PetitPoisTopping">
         <rdfs:label xml:lang="pt">CoberturaPetitPois</rdfs:label>
@@ -1894,7 +1894,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#PineKernels -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#PineKernels -->
 
     <owl:Class rdf:about="&pizza;PineKernels">
         <rdfs:label xml:lang="pt">CoberturaPineKernels</rdfs:label>
@@ -1903,7 +1903,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#Pizza -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#Pizza -->
 
     <owl:Class rdf:about="&pizza;Pizza">
         <rdfs:label xml:lang="en">Pizza</rdfs:label>
@@ -1920,7 +1920,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#PizzaBase -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#PizzaBase -->
 
     <owl:Class rdf:about="&pizza;PizzaBase">
         <rdfs:label xml:lang="pt">BaseDaPizza</rdfs:label>
@@ -1930,7 +1930,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#PizzaTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#PizzaTopping -->
 
     <owl:Class rdf:about="&pizza;PizzaTopping">
         <rdfs:label xml:lang="pt">CoberturaDaPizza</rdfs:label>
@@ -1939,7 +1939,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#PolloAdAstra -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#PolloAdAstra -->
 
     <owl:Class rdf:about="&pizza;PolloAdAstra">
         <rdfs:label xml:lang="pt">PolloAdAstra</rdfs:label>
@@ -2016,7 +2016,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#PrawnsTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#PrawnsTopping -->
 
     <owl:Class rdf:about="&pizza;PrawnsTopping">
         <rdfs:label xml:lang="pt">CoberturaDeCamarao</rdfs:label>
@@ -2025,7 +2025,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#PrinceCarlo -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#PrinceCarlo -->
 
     <owl:Class rdf:about="&pizza;PrinceCarlo">
         <rdfs:label xml:lang="pt">CoberturaPrinceCarlo</rdfs:label>
@@ -2087,7 +2087,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#QuattroFormaggi -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#QuattroFormaggi -->
 
     <owl:Class rdf:about="&pizza;QuattroFormaggi">
         <rdfs:label xml:lang="pt">QuatroQueijos</rdfs:label>
@@ -2127,7 +2127,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#RealItalianPizza -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#RealItalianPizza -->
 
     <owl:Class rdf:about="&pizza;RealItalianPizza">
         <rdfs:label xml:lang="pt">PizzaItalianaReal</rdfs:label>
@@ -2153,7 +2153,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#RedOnionTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#RedOnionTopping -->
 
     <owl:Class rdf:about="&pizza;RedOnionTopping">
         <rdfs:label xml:lang="pt">CoberturaDeCebolaVermelha</rdfs:label>
@@ -2162,7 +2162,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#RocketTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#RocketTopping -->
 
     <owl:Class rdf:about="&pizza;RocketTopping">
         <rdfs:label xml:lang="pt">CoberturaRocket</rdfs:label>
@@ -2179,7 +2179,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#Rosa -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#Rosa -->
 
     <owl:Class rdf:about="&pizza;Rosa">
         <rdfs:label xml:lang="pt">Rosa</rdfs:label>
@@ -2225,7 +2225,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#RosemaryTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#RosemaryTopping -->
 
     <owl:Class rdf:about="&pizza;RosemaryTopping">
         <rdfs:label xml:lang="pt">CoberturaRosemary</rdfs:label>
@@ -2240,7 +2240,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#SauceTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#SauceTopping -->
 
     <owl:Class rdf:about="&pizza;SauceTopping">
         <rdfs:label xml:lang="pt">CoberturaEmMolho</rdfs:label>
@@ -2250,7 +2250,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#Siciliana -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#Siciliana -->
 
     <owl:Class rdf:about="&pizza;Siciliana">
         <rdfs:label xml:lang="pt">Siciliana</rdfs:label>
@@ -2323,7 +2323,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#SlicedTomatoTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#SlicedTomatoTopping -->
 
     <owl:Class rdf:about="&pizza;SlicedTomatoTopping">
         <rdfs:label xml:lang="pt">CoberturaDeTomateFatiado</rdfs:label>
@@ -2339,7 +2339,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#SloppyGiuseppe -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#SloppyGiuseppe -->
 
     <owl:Class rdf:about="&pizza;SloppyGiuseppe">
         <rdfs:label xml:lang="pt">SloppyGiuseppe</rdfs:label>
@@ -2397,7 +2397,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#Soho -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#Soho -->
 
     <owl:Class rdf:about="&pizza;Soho">
         <rdfs:label xml:lang="pt">Soho</rdfs:label>
@@ -2461,7 +2461,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#Spiciness -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#Spiciness -->
 
     <owl:Class rdf:about="&pizza;Spiciness">
         <rdfs:label xml:lang="pt">Tempero</rdfs:label>
@@ -2480,7 +2480,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#SpicyPizza -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#SpicyPizza -->
 
     <owl:Class rdf:about="&pizza;SpicyPizza">
         <rdfs:label xml:lang="pt">PizzaTemperada</rdfs:label>
@@ -2500,7 +2500,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#SpicyPizzaEquivalent -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#SpicyPizzaEquivalent -->
 
     <owl:Class rdf:about="&pizza;SpicyPizzaEquivalent">
         <rdfs:label xml:lang="pt">PizzaTemperadaEquivalente</rdfs:label>
@@ -2530,7 +2530,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#SpicyTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#SpicyTopping -->
 
     <owl:Class rdf:about="&pizza;SpicyTopping">
         <rdfs:label xml:lang="pt">CoberturaTemperada</rdfs:label>
@@ -2550,7 +2550,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#SpinachTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#SpinachTopping -->
 
     <owl:Class rdf:about="&pizza;SpinachTopping">
         <rdfs:label xml:lang="pt">CoberturaDeEspinafre</rdfs:label>
@@ -2566,7 +2566,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#SultanaTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#SultanaTopping -->
 
     <owl:Class rdf:about="&pizza;SultanaTopping">
         <rdfs:label xml:lang="pt">CoberturaSultana</rdfs:label>
@@ -2581,7 +2581,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#SundriedTomatoTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#SundriedTomatoTopping -->
 
     <owl:Class rdf:about="&pizza;SundriedTomatoTopping">
         <rdfs:label xml:lang="pt">CoberturaDeTomateRessecadoAoSol</rdfs:label>
@@ -2596,7 +2596,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#SweetPepperTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#SweetPepperTopping -->
 
     <owl:Class rdf:about="&pizza;SweetPepperTopping">
         <rdfs:label xml:lang="pt">CoberturaDePimentaoDoce</rdfs:label>
@@ -2611,7 +2611,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#ThinAndCrispyBase -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#ThinAndCrispyBase -->
 
     <owl:Class rdf:about="&pizza;ThinAndCrispyBase">
         <rdfs:label xml:lang="pt">BaseFinaEQuebradica</rdfs:label>
@@ -2620,7 +2620,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#TobascoPepperSauce -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#TobascoPepperSauce -->
 
     <owl:Class rdf:about="&pizza;TobascoPepperSauce">
         <rdfs:label xml:lang="pt">MolhoTobascoPepper</rdfs:label>
@@ -2635,7 +2635,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#TomatoTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#TomatoTopping -->
 
     <owl:Class rdf:about="&pizza;TomatoTopping">
         <rdfs:label xml:lang="pt">CoberturaDeTomate</rdfs:label>
@@ -2650,7 +2650,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#UnclosedPizza -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#UnclosedPizza -->
 
     <owl:Class rdf:about="&pizza;UnclosedPizza">
         <rdfs:label xml:lang="pt">PizzaAberta</rdfs:label>
@@ -2667,7 +2667,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#ValuePartition -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#ValuePartition -->
 
     <owl:Class rdf:about="&pizza;ValuePartition">
         <rdfs:label xml:lang="pt">ValorDaParticao</rdfs:label>
@@ -2676,7 +2676,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#VegetableTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#VegetableTopping -->
 
     <owl:Class rdf:about="&pizza;VegetableTopping">
         <rdfs:label xml:lang="pt">CoberturaDeVegetais</rdfs:label>
@@ -2685,7 +2685,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#VegetarianPizza -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#VegetarianPizza -->
 
     <owl:Class rdf:about="&pizza;VegetarianPizza">
         <rdfs:label xml:lang="pt">PizzaVegetariana</rdfs:label>
@@ -2717,7 +2717,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#VegetarianPizzaEquivalent1 -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#VegetarianPizzaEquivalent1 -->
 
     <owl:Class rdf:about="&pizza;VegetarianPizzaEquivalent1">
         <rdfs:label xml:lang="pt">PizzaVegetarianaEquivalente1</rdfs:label>
@@ -2737,7 +2737,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#VegetarianPizzaEquivalent2 -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#VegetarianPizzaEquivalent2 -->
 
     <owl:Class rdf:about="&pizza;VegetarianPizzaEquivalent2">
         <rdfs:label xml:lang="pt">PizzaVegetarianaEquivalente2</rdfs:label>
@@ -2768,7 +2768,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#VegetarianTopping -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#VegetarianTopping -->
 
     <owl:Class rdf:about="&pizza;VegetarianTopping">
         <rdfs:label xml:lang="pt">CoberturaVegetariana</rdfs:label>
@@ -2794,7 +2794,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#Veneziana -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#Veneziana -->
 
     <owl:Class rdf:about="&pizza;Veneziana">
         <rdfs:label xml:lang="pt">Veneziana</rdfs:label>
@@ -2880,7 +2880,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#America -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#America -->
 
     <owl:NamedIndividual rdf:about="&pizza;America">
         <rdf:type rdf:resource="&pizza;Country"/>
@@ -2888,7 +2888,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#England -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#England -->
 
     <owl:NamedIndividual rdf:about="&pizza;England">
         <rdf:type rdf:resource="&pizza;Country"/>
@@ -2896,7 +2896,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#France -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#France -->
 
     <owl:NamedIndividual rdf:about="&pizza;France">
         <rdf:type rdf:resource="&pizza;Country"/>
@@ -2904,7 +2904,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#Germany -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#Germany -->
 
     <owl:NamedIndividual rdf:about="&pizza;Germany">
         <rdf:type rdf:resource="&pizza;Country"/>
@@ -2912,7 +2912,7 @@
     
 
 
-    <!-- http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl#Italy -->
+    <!-- http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl#Italy -->
 
     <owl:NamedIndividual rdf:about="&pizza;Italy">
         <rdf:type rdf:resource="&pizza;Country"/>
