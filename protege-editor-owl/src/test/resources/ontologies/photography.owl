@@ -8,20 +8,20 @@
     <!ENTITY owl2xml "http://www.w3.org/2006/12/owl2-xml#" >
     <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
     <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
-    <!ENTITY photography "http://www.co-ode.org/ontologies/photography/photography.owl#" >
-    <!ENTITY photography4 "http://www.co-ode.org/ontologies/photography/photography.owl#4" >
-    <!ENTITY photography5 "http://www.co-ode.org/ontologies/photography/photography.owl#35" >
-    <!ENTITY photography9 "http://www.co-ode.org/ontologies/photography/photography.owl#80" >
-    <!ENTITY photography8 "http://www.co-ode.org/ontologies/photography/photography.owl#18" >
-    <!ENTITY photography2 "http://www.co-ode.org/ontologies/photography/photography.owl#120" >
-    <!ENTITY photography3 "http://www.co-ode.org/ontologies/photography/photography.owl#135" >
-    <!ENTITY photography7 "http://www.co-ode.org/ontologies/photography/photography.owl#35-55" >
-    <!ENTITY photography6 "http://www.co-ode.org/ontologies/photography/photography.owl#20-100" >
+    <!ENTITY photography "http://example.invalid/ontologies/photography/photography.owl#" >
+    <!ENTITY photography4 "http://example.invalid/ontologies/photography/photography.owl#4" >
+    <!ENTITY photography5 "http://example.invalid/ontologies/photography/photography.owl#35" >
+    <!ENTITY photography9 "http://example.invalid/ontologies/photography/photography.owl#80" >
+    <!ENTITY photography8 "http://example.invalid/ontologies/photography/photography.owl#18" >
+    <!ENTITY photography2 "http://example.invalid/ontologies/photography/photography.owl#120" >
+    <!ENTITY photography3 "http://example.invalid/ontologies/photography/photography.owl#135" >
+    <!ENTITY photography7 "http://example.invalid/ontologies/photography/photography.owl#35-55" >
+    <!ENTITY photography6 "http://example.invalid/ontologies/photography/photography.owl#20-100" >
 ]>
 
 
-<rdf:RDF xmlns="http://www.co-ode.org/ontologies/photography/photography.owl#"
-     xml:base="http://www.co-ode.org/ontologies/photography/photography.owl"
+<rdf:RDF xmlns="http://example.invalid/ontologies/photography/photography.owl#"
+     xml:base="http://example.invalid/ontologies/photography/photography.owl"
      xmlns:owl2xml="http://www.w3.org/2006/12/owl2-xml#"
      xmlns:photography4="&photography;4"
      xmlns:photography5="&photography;35"
@@ -32,7 +32,7 @@
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:photography6="&photography;20-100"
-     xmlns:photography="http://www.co-ode.org/ontologies/photography/photography.owl#"
+     xmlns:photography="http://example.invalid/ontologies/photography/photography.owl#"
      xmlns:photography9="&photography;80"
      xmlns:dc="http://purl.org/dc/elements/1.1/"
      xmlns:photography2="&photography;120"
@@ -108,19 +108,19 @@ Lens and (hasMinEffectiveFocalLength value 35) and (hasMaxEffectiveFocalLength v
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#affects -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#affects -->
 
     <owl:ObjectProperty rdf:about="#affects"/>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#allows -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#allows -->
 
     <owl:ObjectProperty rdf:about="#allows"/>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#compresses -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#compresses -->
 
     <owl:ObjectProperty rdf:about="#compresses">
         <rdfs:subPropertyOf rdf:resource="#reduces"/>
@@ -128,7 +128,7 @@ Lens and (hasMinEffectiveFocalLength value 35) and (hasMaxEffectiveFocalLength v
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#corrects -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#corrects -->
 
     <owl:ObjectProperty rdf:about="#corrects">
         <rdfs:subPropertyOf rdf:resource="#affects"/>
@@ -136,7 +136,7 @@ Lens and (hasMinEffectiveFocalLength value 35) and (hasMaxEffectiveFocalLength v
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#exagerates -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#exagerates -->
 
     <owl:ObjectProperty rdf:about="#exagerates">
         <rdfs:subPropertyOf rdf:resource="#increases"/>
@@ -144,25 +144,25 @@ Lens and (hasMinEffectiveFocalLength value 35) and (hasMaxEffectiveFocalLength v
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasAperture -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#hasAperture -->
 
     <owl:ObjectProperty rdf:about="#hasAperture"/>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasFeature -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#hasFeature -->
 
     <owl:ObjectProperty rdf:about="#hasFeature"/>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasFormat -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#hasFormat -->
 
     <owl:ObjectProperty rdf:about="#hasFormat"/>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasLens -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#hasLens -->
 
     <owl:ObjectProperty rdf:about="#hasLens">
         <rdfs:subPropertyOf rdf:resource="#hasPart"/>
@@ -170,19 +170,19 @@ Lens and (hasMinEffectiveFocalLength value 35) and (hasMaxEffectiveFocalLength v
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasLevel -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#hasLevel -->
 
     <owl:ObjectProperty rdf:about="#hasLevel"/>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasParameter -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#hasParameter -->
 
     <owl:ObjectProperty rdf:about="#hasParameter"/>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasPart -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#hasPart -->
 
     <owl:ObjectProperty rdf:about="#hasPart">
         <rdf:type rdf:resource="&owl;TransitiveProperty"/>
@@ -190,31 +190,31 @@ Lens and (hasMinEffectiveFocalLength value 35) and (hasMaxEffectiveFocalLength v
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasSensitiveMedia -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#hasSensitiveMedia -->
 
     <owl:ObjectProperty rdf:about="#hasSensitiveMedia"/>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasShape -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#hasShape -->
 
     <owl:ObjectProperty rdf:about="#hasShape"/>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasShutterSpeed -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#hasShutterSpeed -->
 
     <owl:ObjectProperty rdf:about="#hasShutterSpeed"/>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasSubject -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#hasSubject -->
 
     <owl:ObjectProperty rdf:about="#hasSubject"/>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#increases -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#increases -->
 
     <owl:ObjectProperty rdf:about="#increases">
         <rdfs:comment
@@ -224,31 +224,31 @@ Lens and (hasMinEffectiveFocalLength value 35) and (hasMaxEffectiveFocalLength v
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#isSuitableFor -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#isSuitableFor -->
 
     <owl:ObjectProperty rdf:about="#isSuitableFor"/>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#isUsedToTake -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#isUsedToTake -->
 
     <owl:ObjectProperty rdf:about="#isUsedToTake"/>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#producesImage -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#producesImage -->
 
     <owl:ObjectProperty rdf:about="#producesImage"/>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#producesLightType -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#producesLightType -->
 
     <owl:ObjectProperty rdf:about="#producesLightType"/>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#reduces -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#reduces -->
 
     <owl:ObjectProperty rdf:about="#reduces">
         <rdfs:subPropertyOf rdf:resource="#affects"/>
@@ -256,7 +256,7 @@ Lens and (hasMinEffectiveFocalLength value 35) and (hasMaxEffectiveFocalLength v
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#requires -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#requires -->
 
     <owl:ObjectProperty rdf:about="#requires">
         <owl:inverseOf rdf:resource="#isSuitableFor"/>
@@ -264,7 +264,7 @@ Lens and (hasMinEffectiveFocalLength value 35) and (hasMaxEffectiveFocalLength v
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#uses -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#uses -->
 
     <owl:ObjectProperty rdf:about="#uses"/>
     
@@ -281,7 +281,7 @@ Lens and (hasMinEffectiveFocalLength value 35) and (hasMaxEffectiveFocalLength v
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasColourTemperature -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#hasColourTemperature -->
 
     <owl:DatatypeProperty rdf:about="#hasColourTemperature">
         <rdfs:comment
@@ -291,13 +291,13 @@ Low temperatures are warmer.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasDepthOfField -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#hasDepthOfField -->
 
     <owl:DatatypeProperty rdf:about="#hasDepthOfField"/>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasDuration -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#hasDuration -->
 
     <owl:DatatypeProperty rdf:about="#hasDuration">
         <rdfs:comment
@@ -306,7 +306,7 @@ Low temperatures are warmer.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasExposure -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#hasExposure -->
 
     <owl:DatatypeProperty rdf:about="#hasExposure">
         <rdfs:comment
@@ -315,13 +315,13 @@ Low temperatures are warmer.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasFStop -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#hasFStop -->
 
     <owl:DatatypeProperty rdf:about="#hasFStop"/>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasFixedEffectiveFocalLength -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#hasFixedEffectiveFocalLength -->
 
     <owl:DatatypeProperty rdf:about="#hasFixedEffectiveFocalLength">
         <rdfs:comment
@@ -331,19 +331,19 @@ Normalise to mm.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasMaxEffectiveFocalLength -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#hasMaxEffectiveFocalLength -->
 
     <owl:DatatypeProperty rdf:about="#hasMaxEffectiveFocalLength"/>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasMinEffectiveFocalLength -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#hasMinEffectiveFocalLength -->
 
     <owl:DatatypeProperty rdf:about="#hasMinEffectiveFocalLength"/>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasMinimumFocalDistance -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#hasMinimumFocalDistance -->
 
     <owl:DatatypeProperty rdf:about="#hasMinimumFocalDistance">
         <rdfs:comment>Normalise to mm</rdfs:comment>
@@ -351,7 +351,7 @@ Normalise to mm.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#hasSensitivity -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#hasSensitivity -->
 
     <owl:DatatypeProperty rdf:about="#hasSensitivity">
         <rdfs:comment
@@ -360,7 +360,7 @@ Normalise to mm.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#height -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#height -->
 
     <owl:DatatypeProperty rdf:about="#height">
         <rdfs:comment>normalise to mm</rdfs:comment>
@@ -370,7 +370,7 @@ Normalise to mm.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#width -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#width -->
 
     <owl:DatatypeProperty rdf:about="#width">
         <rdfs:comment>normalise to mm</rdfs:comment>
@@ -391,7 +391,7 @@ Normalise to mm.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#120RollFilm -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#120RollFilm -->
 
     <owl:Class rdf:about="#120RollFilm">
         <rdfs:subClassOf rdf:resource="#Film"/>
@@ -419,7 +419,7 @@ Normalise to mm.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#135Film -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#135Film -->
 
     <owl:Class rdf:about="#135Film">
         <owl:equivalentClass>
@@ -437,7 +437,7 @@ Normalise to mm.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#18mm -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#18mm -->
 
     <owl:Class rdf:about="#18mm">
         <rdfs:subClassOf rdf:resource="#TestLens"/>
@@ -454,7 +454,7 @@ Normalise to mm.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#20-100mm -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#20-100mm -->
 
     <owl:Class rdf:about="#20-100mm">
         <rdfs:subClassOf rdf:resource="#TestLens"/>
@@ -477,7 +477,7 @@ Normalise to mm.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#35-55mm -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#35-55mm -->
 
     <owl:Class rdf:about="#35-55mm">
         <rdfs:subClassOf rdf:resource="#TestLens"/>
@@ -500,7 +500,7 @@ Normalise to mm.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#35mm -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#35mm -->
 
     <owl:Class rdf:about="#35mm">
         <owl:equivalentClass>
@@ -522,7 +522,7 @@ Normalise to mm.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#4x5inFilm -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#4x5inFilm -->
 
     <owl:Class rdf:about="#4x5inFilm">
         <rdfs:subClassOf rdf:resource="#Film"/>
@@ -550,7 +550,7 @@ Normalise to mm.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#80a -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#80a -->
 
     <owl:Class rdf:about="#80a">
         <rdfs:subClassOf rdf:resource="#CorrectionFilter"/>
@@ -568,7 +568,7 @@ There should possibly be an axiom somewhere to state that and increase in cool i
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#APS -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#APS -->
 
     <owl:Class rdf:about="#APS">
         <rdfs:subClassOf rdf:resource="#Film"/>
@@ -600,7 +600,7 @@ There should possibly be an axiom somewhere to state that and increase in cool i
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Action -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Action -->
 
     <owl:Class rdf:about="#Action">
         <rdfs:subClassOf rdf:resource="#PhotographicSubject"/>
@@ -608,7 +608,7 @@ There should possibly be an axiom somewhere to state that and increase in cool i
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Adjustment -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Adjustment -->
 
     <owl:Class rdf:about="#Adjustment">
         <rdfs:subClassOf rdf:resource="&owl;Thing"/>
@@ -616,7 +616,7 @@ There should possibly be an axiom somewhere to state that and increase in cool i
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#AntiShake -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#AntiShake -->
 
     <owl:Class rdf:about="#AntiShake">
         <rdfs:subClassOf rdf:resource="#CameraFeature"/>
@@ -630,7 +630,7 @@ There should possibly be an axiom somewhere to state that and increase in cool i
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#AntiShakeCamera -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#AntiShakeCamera -->
 
     <owl:Class rdf:about="#AntiShakeCamera">
         <owl:equivalentClass>
@@ -668,7 +668,7 @@ There should possibly be an axiom somewhere to state that and increase in cool i
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Aperture -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Aperture -->
 
     <owl:Class rdf:about="#Aperture">
         <rdfs:subClassOf rdf:resource="#ExposureParameter"/>
@@ -681,7 +681,7 @@ We could say something about optimal aperture for clarity, but this really depen
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#AutoFocus -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#AutoFocus -->
 
     <owl:Class rdf:about="#AutoFocus">
         <rdfs:subClassOf rdf:resource="#FocusMode"/>
@@ -689,7 +689,7 @@ We could say something about optimal aperture for clarity, but this really depen
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#AverageMetering -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#AverageMetering -->
 
     <owl:Class rdf:about="#AverageMetering">
         <rdfs:subClassOf rdf:resource="#MeteringMode"/>
@@ -697,7 +697,7 @@ We could say something about optimal aperture for clarity, but this really depen
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#BadBoca -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#BadBoca -->
 
     <owl:Class rdf:about="#BadBoca">
         <owl:equivalentClass>
@@ -715,7 +715,7 @@ We could say something about optimal aperture for clarity, but this really depen
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Barrelling -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Barrelling -->
 
     <owl:Class rdf:about="#Barrelling">
         <rdfs:subClassOf rdf:resource="#Distortion"/>
@@ -724,7 +724,7 @@ We could say something about optimal aperture for clarity, but this really depen
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#BlackAndWhiteFilm -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#BlackAndWhiteFilm -->
 
     <owl:Class rdf:about="#BlackAndWhiteFilm">
         <rdfs:subClassOf rdf:resource="#Film"/>
@@ -732,7 +732,7 @@ We could say something about optimal aperture for clarity, but this really depen
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Blur -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Blur -->
 
     <owl:Class rdf:about="#Blur">
         <rdfs:subClassOf rdf:resource="#ImageFeature"/>
@@ -742,7 +742,7 @@ We could say something about optimal aperture for clarity, but this really depen
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Boca -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Boca -->
 
     <owl:Class rdf:about="#Boca">
         <rdfs:subClassOf rdf:resource="#ImageFeature"/>
@@ -758,7 +758,7 @@ We could say something about optimal aperture for clarity, but this really depen
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#CCD -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#CCD -->
 
     <owl:Class rdf:about="#CCD">
         <rdfs:subClassOf rdf:resource="#ElectronicSensor"/>
@@ -766,7 +766,7 @@ We could say something about optimal aperture for clarity, but this really depen
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#CMOS -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#CMOS -->
 
     <owl:Class rdf:about="#CMOS">
         <rdfs:subClassOf rdf:resource="#ElectronicSensor"/>
@@ -774,7 +774,7 @@ We could say something about optimal aperture for clarity, but this really depen
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Camera -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Camera -->
 
     <owl:Class rdf:about="#Camera">
         <rdfs:subClassOf rdf:resource="#Equipment"/>
@@ -806,7 +806,7 @@ We could say something about optimal aperture for clarity, but this really depen
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#CameraFeature -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#CameraFeature -->
 
     <owl:Class rdf:about="#CameraFeature">
         <rdfs:subClassOf rdf:resource="&owl;Thing"/>
@@ -814,7 +814,7 @@ We could say something about optimal aperture for clarity, but this really depen
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#CameraShake -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#CameraShake -->
 
     <owl:Class rdf:about="#CameraShake">
         <rdfs:subClassOf rdf:resource="#MotionBlur"/>
@@ -824,7 +824,7 @@ We could say something about optimal aperture for clarity, but this really depen
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#CameraWithMirrorLockup -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#CameraWithMirrorLockup -->
 
     <owl:Class rdf:about="#CameraWithMirrorLockup">
         <owl:equivalentClass>
@@ -843,7 +843,7 @@ We could say something about optimal aperture for clarity, but this really depen
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#CentreWeightedMetering -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#CentreWeightedMetering -->
 
     <owl:Class rdf:about="#CentreWeightedMetering">
         <rdfs:subClassOf rdf:resource="#MeteringMode"/>
@@ -851,7 +851,7 @@ We could say something about optimal aperture for clarity, but this really depen
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ChromaticAberration -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#ChromaticAberration -->
 
     <owl:Class rdf:about="#ChromaticAberration">
         <rdfs:subClassOf rdf:resource="#ImageFeature"/>
@@ -861,7 +861,7 @@ We could say something about optimal aperture for clarity, but this really depen
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Circle -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Circle -->
 
     <owl:Class rdf:about="#Circle">
         <rdfs:subClassOf rdf:resource="#Shape"/>
@@ -869,7 +869,7 @@ We could say something about optimal aperture for clarity, but this really depen
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#CloseDownAperture -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#CloseDownAperture -->
 
     <owl:Class rdf:about="#CloseDownAperture">
         <owl:equivalentClass>
@@ -932,7 +932,7 @@ We could say something about optimal aperture for clarity, but this really depen
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ClosestSubject -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#ClosestSubject -->
 
     <owl:Class rdf:about="#ClosestSubject">
         <rdfs:subClassOf rdf:resource="#AutoFocus"/>
@@ -940,7 +940,7 @@ We could say something about optimal aperture for clarity, but this really depen
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ColourBalance -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#ColourBalance -->
 
     <owl:Class rdf:about="#ColourBalance">
         <rdfs:subClassOf rdf:resource="#ColourCast"/>
@@ -948,7 +948,7 @@ We could say something about optimal aperture for clarity, but this really depen
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ColourCast -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#ColourCast -->
 
     <owl:Class rdf:about="#ColourCast">
         <rdfs:subClassOf rdf:resource="#ImageFeature"/>
@@ -956,7 +956,7 @@ We could say something about optimal aperture for clarity, but this really depen
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ColourFilm -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#ColourFilm -->
 
     <owl:Class rdf:about="#ColourFilm">
         <rdfs:subClassOf rdf:resource="#Film"/>
@@ -964,7 +964,7 @@ We could say something about optimal aperture for clarity, but this really depen
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Composition -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Composition -->
 
     <owl:Class rdf:about="#Composition">
         <rdfs:subClassOf rdf:resource="#ImageFeature"/>
@@ -972,7 +972,7 @@ We could say something about optimal aperture for clarity, but this really depen
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#CompositionalAdjustment -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#CompositionalAdjustment -->
 
     <owl:Class rdf:about="#CompositionalAdjustment">
         <owl:equivalentClass>
@@ -996,7 +996,7 @@ We could say something about optimal aperture for clarity, but this really depen
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#CompositionalParameter -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#CompositionalParameter -->
 
     <owl:Class rdf:about="#CompositionalParameter">
         <rdfs:subClassOf rdf:resource="#Parameter"/>
@@ -1006,7 +1006,7 @@ We could say something about optimal aperture for clarity, but this really depen
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Conditions -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Conditions -->
 
     <owl:Class rdf:about="#Conditions">
         <rdfs:subClassOf rdf:resource="&owl;Thing"/>
@@ -1020,7 +1020,7 @@ Unfortunately, we end up with the common problem of wanting to ask the question 
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ContinuousAF -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#ContinuousAF -->
 
     <owl:Class rdf:about="#ContinuousAF">
         <rdfs:subClassOf rdf:resource="#AutoFocus"/>
@@ -1028,7 +1028,7 @@ Unfortunately, we end up with the common problem of wanting to ask the question 
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Contrast -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Contrast -->
 
     <owl:Class rdf:about="#Contrast">
         <rdfs:subClassOf rdf:resource="#ImageFeature"/>
@@ -1036,7 +1036,7 @@ Unfortunately, we end up with the common problem of wanting to ask the question 
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ConversionFilter -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#ConversionFilter -->
 
     <owl:Class rdf:about="#ConversionFilter">
         <rdfs:subClassOf rdf:resource="#Filter"/>
@@ -1053,7 +1053,7 @@ eg a yellow filter is used to darken a blue sky.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Cool -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Cool -->
 
     <owl:Class rdf:about="#Cool">
         <rdfs:subClassOf rdf:resource="#ColourBalance"/>
@@ -1062,7 +1062,7 @@ eg a yellow filter is used to darken a blue sky.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#CorrectionFilter -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#CorrectionFilter -->
 
     <owl:Class rdf:about="#CorrectionFilter">
         <rdfs:subClassOf rdf:resource="#Filter"/>
@@ -1081,7 +1081,7 @@ The higher the letter, the stronger the effect (each letter double the strength 
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#DarkLocation -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#DarkLocation -->
 
     <owl:Class rdf:about="#DarkLocation">
         <owl:equivalentClass>
@@ -1125,7 +1125,7 @@ The higher the letter, the stronger the effect (each letter double the strength 
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Daylight -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Daylight -->
 
     <owl:Class rdf:about="#Daylight">
         <rdfs:subClassOf rdf:resource="#LightType"/>
@@ -1148,7 +1148,7 @@ The higher the letter, the stronger the effect (each letter double the strength 
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#DecreaseShutterSpeed -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#DecreaseShutterSpeed -->
 
     <owl:Class rdf:about="#DecreaseShutterSpeed">
         <owl:equivalentClass>
@@ -1211,7 +1211,7 @@ The higher the letter, the stronger the effect (each letter double the strength 
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#DepthOfField -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#DepthOfField -->
 
     <owl:Class rdf:about="#DepthOfField">
         <rdfs:subClassOf rdf:resource="#ImageFeature"/>
@@ -1219,7 +1219,7 @@ The higher the letter, the stronger the effect (each letter double the strength 
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#DistanceToSubject -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#DistanceToSubject -->
 
     <owl:Class rdf:about="#DistanceToSubject">
         <rdfs:subClassOf rdf:resource="#CompositionalParameter"/>
@@ -1227,7 +1227,7 @@ The higher the letter, the stronger the effect (each letter double the strength 
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Distortion -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Distortion -->
 
     <owl:Class rdf:about="#Distortion">
         <rdfs:subClassOf rdf:resource="#ImageFeature"/>
@@ -1235,7 +1235,7 @@ The higher the letter, the stronger the effect (each letter double the strength 
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Documentary -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Documentary -->
 
     <owl:Class rdf:about="#Documentary">
         <rdfs:subClassOf rdf:resource="#PhotographicSubject"/>
@@ -1243,7 +1243,7 @@ The higher the letter, the stronger the effect (each letter double the strength 
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Donut -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Donut -->
 
     <owl:Class rdf:about="#Donut">
         <rdfs:subClassOf rdf:resource="#Shape"/>
@@ -1251,7 +1251,7 @@ The higher the letter, the stronger the effect (each letter double the strength 
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ElectronicSensor -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#ElectronicSensor -->
 
     <owl:Class rdf:about="#ElectronicSensor">
         <rdfs:subClassOf rdf:resource="#LightSensitiveMedia"/>
@@ -1260,7 +1260,7 @@ The higher the letter, the stronger the effect (each letter double the strength 
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Equipment -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Equipment -->
 
     <owl:Class rdf:about="#Equipment">
         <rdfs:subClassOf rdf:resource="#PhysicalThing"/>
@@ -1268,7 +1268,7 @@ The higher the letter, the stronger the effect (each letter double the strength 
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ExposureAdjustment -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#ExposureAdjustment -->
 
     <owl:Class rdf:about="#ExposureAdjustment">
         <owl:equivalentClass>
@@ -1294,7 +1294,7 @@ The higher the letter, the stronger the effect (each letter double the strength 
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ExposureDecreasingAdjustment -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#ExposureDecreasingAdjustment -->
 
     <owl:Class rdf:about="#ExposureDecreasingAdjustment">
         <owl:equivalentClass>
@@ -1336,7 +1336,7 @@ The higher the letter, the stronger the effect (each letter double the strength 
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ExposureIncreasingAdjustment -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#ExposureIncreasingAdjustment -->
 
     <owl:Class rdf:about="#ExposureIncreasingAdjustment">
         <owl:equivalentClass>
@@ -1374,7 +1374,7 @@ The higher the letter, the stronger the effect (each letter double the strength 
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ExposureLevel -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#ExposureLevel -->
 
     <owl:Class rdf:about="#ExposureLevel">
         <rdfs:subClassOf rdf:resource="#ImageFeature"/>
@@ -1382,7 +1382,7 @@ The higher the letter, the stronger the effect (each letter double the strength 
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ExposureParameter -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#ExposureParameter -->
 
     <owl:Class rdf:about="#ExposureParameter">
         <rdfs:subClassOf rdf:resource="#Parameter"/>
@@ -1392,7 +1392,7 @@ The higher the letter, the stronger the effect (each letter double the strength 
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#FastExposure -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#FastExposure -->
 
     <owl:Class rdf:about="#FastExposure">
         <owl:equivalentClass>
@@ -1431,7 +1431,7 @@ This should really be relative to the focal length.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#FieldCamera -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#FieldCamera -->
 
     <owl:Class rdf:about="#FieldCamera">
         <rdfs:subClassOf rdf:resource="#Camera"/>
@@ -1461,7 +1461,7 @@ This should really be relative to the focal length.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Film -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Film -->
 
     <owl:Class rdf:about="#Film">
         <rdfs:subClassOf rdf:resource="#LightSensitiveMedia"/>
@@ -1469,7 +1469,7 @@ This should really be relative to the focal length.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Filter -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Filter -->
 
     <owl:Class rdf:about="#Filter">
         <rdfs:subClassOf rdf:resource="#Equipment"/>
@@ -1489,7 +1489,7 @@ This should really be relative to the focal length.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Fisheye -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Fisheye -->
 
     <owl:Class rdf:about="#Fisheye">
         <owl:equivalentClass>
@@ -1527,7 +1527,7 @@ This should really be relative to the focal length.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#FixedAF -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#FixedAF -->
 
     <owl:Class rdf:about="#FixedAF">
         <rdfs:subClassOf rdf:resource="#AutoFocus"/>
@@ -1535,7 +1535,7 @@ This should really be relative to the focal length.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#FixedFocus -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#FixedFocus -->
 
     <owl:Class rdf:about="#FixedFocus">
         <rdfs:subClassOf rdf:resource="#FocusMode"/>
@@ -1543,7 +1543,7 @@ This should really be relative to the focal length.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Flash -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Flash -->
 
     <owl:Class rdf:about="#Flash">
         <rdfs:subClassOf rdf:resource="#Light"/>
@@ -1564,7 +1564,7 @@ This should really be relative to the focal length.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#FlashLight -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#FlashLight -->
 
     <owl:Class rdf:about="#FlashLight">
         <rdfs:subClassOf rdf:resource="#LightType"/>
@@ -1585,7 +1585,7 @@ This should really be relative to the focal length.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Fluorescent -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Fluorescent -->
 
     <owl:Class rdf:about="#Fluorescent">
         <rdfs:subClassOf rdf:resource="#LightType"/>
@@ -1593,7 +1593,7 @@ This should really be relative to the focal length.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#FocalLength -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#FocalLength -->
 
     <owl:Class rdf:about="#FocalLength">
         <rdfs:subClassOf rdf:resource="#CompositionalParameter"/>
@@ -1604,7 +1604,7 @@ This should really be relative to the focal length.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#FocusMode -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#FocusMode -->
 
     <owl:Class rdf:about="#FocusMode">
         <rdfs:subClassOf rdf:resource="#CameraFeature"/>
@@ -1612,7 +1612,7 @@ This should really be relative to the focal length.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Format -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Format -->
 
     <owl:Class rdf:about="#Format">
         <rdfs:subClassOf rdf:resource="&owl;Thing"/>
@@ -1632,7 +1632,7 @@ This should really be relative to the focal length.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#FreezingMovement -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#FreezingMovement -->
 
     <owl:Class rdf:about="#FreezingMovement">
         <rdfs:subClassOf rdf:resource="#Action"/>
@@ -1640,7 +1640,7 @@ This should really be relative to the focal length.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#GoodBoca -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#GoodBoca -->
 
     <owl:Class rdf:about="#GoodBoca">
         <owl:equivalentClass>
@@ -1658,7 +1658,7 @@ This should really be relative to the focal length.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#GradFilter -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#GradFilter -->
 
     <owl:Class rdf:about="#GradFilter">
         <rdfs:subClassOf rdf:resource="#Filter"/>
@@ -1668,7 +1668,7 @@ This should really be relative to the focal length.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#High -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#High -->
 
     <owl:Class rdf:about="#High">
         <rdfs:subClassOf rdf:resource="#Level"/>
@@ -1676,7 +1676,7 @@ This should really be relative to the focal length.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#HighContrastSituation -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#HighContrastSituation -->
 
     <owl:Class rdf:about="#HighContrastSituation">
         <owl:equivalentClass>
@@ -1736,7 +1736,7 @@ This should really be relative to the focal length.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#IRFilter -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#IRFilter -->
 
     <owl:Class rdf:about="#IRFilter">
         <rdfs:subClassOf rdf:resource="#Filter"/>
@@ -1744,7 +1744,7 @@ This should really be relative to the focal length.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Image -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Image -->
 
     <owl:Class rdf:about="#Image">
         <rdfs:subClassOf rdf:resource="&owl;Thing"/>
@@ -1752,7 +1752,7 @@ This should really be relative to the focal length.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ImageFeature -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#ImageFeature -->
 
     <owl:Class rdf:about="#ImageFeature">
         <rdfs:subClassOf rdf:resource="&owl;Thing"/>
@@ -1763,7 +1763,7 @@ None of these features can be controlled directly, but wil be a product of the e
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#IncreaseShutterSpeed -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#IncreaseShutterSpeed -->
 
     <owl:Class rdf:about="#IncreaseShutterSpeed">
         <owl:equivalentClass>
@@ -1826,7 +1826,7 @@ None of these features can be controlled directly, but wil be a product of the e
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#InfraRedFilm -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#InfraRedFilm -->
 
     <owl:Class rdf:about="#InfraRedFilm">
         <rdfs:subClassOf rdf:resource="#Film"/>
@@ -1834,7 +1834,7 @@ None of these features can be controlled directly, but wil be a product of the e
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Landscape -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Landscape -->
 
     <owl:Class rdf:about="#Landscape">
         <rdfs:subClassOf rdf:resource="#PhotographicSubject"/>
@@ -1842,7 +1842,7 @@ None of these features can be controlled directly, but wil be a product of the e
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#LargeFormat -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#LargeFormat -->
 
     <owl:Class rdf:about="#LargeFormat">
         <owl:equivalentClass>
@@ -1876,7 +1876,7 @@ None of these features can be controlled directly, but wil be a product of the e
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#LargeFormatFilm -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#LargeFormatFilm -->
 
     <owl:Class rdf:about="#LargeFormatFilm">
         <owl:equivalentClass>
@@ -1894,7 +1894,7 @@ None of these features can be controlled directly, but wil be a product of the e
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Lens -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Lens -->
 
     <owl:Class rdf:about="#Lens">
         <rdfs:subClassOf rdf:resource="#Equipment"/>
@@ -1917,7 +1917,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#LensFlare -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#LensFlare -->
 
     <owl:Class rdf:about="#LensFlare">
         <rdfs:subClassOf rdf:resource="#ImageFeature"/>
@@ -1925,7 +1925,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Level -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Level -->
 
     <owl:Class rdf:about="#Level">
         <rdfs:subClassOf rdf:resource="&owl;Thing"/>
@@ -1933,7 +1933,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Light -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Light -->
 
     <owl:Class rdf:about="#Light">
         <rdfs:subClassOf rdf:resource="#Equipment"/>
@@ -1953,7 +1953,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#LightIntensity -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#LightIntensity -->
 
     <owl:Class rdf:about="#LightIntensity">
         <rdfs:subClassOf rdf:resource="#ExposureParameter"/>
@@ -1963,7 +1963,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#LightSensitiveMedia -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#LightSensitiveMedia -->
 
     <owl:Class rdf:about="#LightSensitiveMedia">
         <rdfs:subClassOf rdf:resource="#PhysicalThing"/>
@@ -1983,7 +1983,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#LightType -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#LightType -->
 
     <owl:Class rdf:about="#LightType">
         <rdfs:subClassOf rdf:resource="&owl;Thing"/>
@@ -1997,7 +1997,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#LithFilm -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#LithFilm -->
 
     <owl:Class rdf:about="#LithFilm">
         <rdfs:subClassOf rdf:resource="#Film"/>
@@ -2007,7 +2007,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#LongExposure -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#LongExposure -->
 
     <owl:Class rdf:about="#LongExposure">
         <owl:equivalentClass>
@@ -2045,7 +2045,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Low -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Low -->
 
     <owl:Class rdf:about="#Low">
         <rdfs:subClassOf rdf:resource="#Level"/>
@@ -2053,7 +2053,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#LowerISO -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#LowerISO -->
 
     <owl:Class rdf:about="#LowerISO">
         <owl:equivalentClass>
@@ -2107,7 +2107,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Macro -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Macro -->
 
     <owl:Class rdf:about="#Macro">
         <rdfs:subClassOf rdf:resource="#Lens"/>
@@ -2115,7 +2115,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ManualFocus -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#ManualFocus -->
 
     <owl:Class rdf:about="#ManualFocus">
         <rdfs:subClassOf rdf:resource="#FocusMode"/>
@@ -2123,7 +2123,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Medium -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Medium -->
 
     <owl:Class rdf:about="#Medium">
         <rdfs:subClassOf rdf:resource="#Level"/>
@@ -2131,7 +2131,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#MediumFormat -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#MediumFormat -->
 
     <owl:Class rdf:about="#MediumFormat">
         <owl:equivalentClass>
@@ -2167,7 +2167,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#MediumFormatFilm -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#MediumFormatFilm -->
 
     <owl:Class rdf:about="#MediumFormatFilm">
         <owl:equivalentClass>
@@ -2185,7 +2185,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#MeteringMode -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#MeteringMode -->
 
     <owl:Class rdf:about="#MeteringMode">
         <rdfs:subClassOf rdf:resource="#CameraFeature"/>
@@ -2193,7 +2193,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#MirrorLockup -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#MirrorLockup -->
 
     <owl:Class rdf:about="#MirrorLockup">
         <rdfs:subClassOf rdf:resource="#CameraFeature"/>
@@ -2207,7 +2207,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#MotionBlur -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#MotionBlur -->
 
     <owl:Class rdf:about="#MotionBlur">
         <rdfs:subClassOf rdf:resource="#Blur"/>
@@ -2217,7 +2217,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#MotionReducingAdjustment -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#MotionReducingAdjustment -->
 
     <owl:Class rdf:about="#MotionReducingAdjustment">
         <owl:equivalentClass>
@@ -2247,7 +2247,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#MoveCloserToSubject -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#MoveCloserToSubject -->
 
     <owl:Class rdf:about="#MoveCloserToSubject">
         <owl:equivalentClass>
@@ -2311,7 +2311,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#MoveFurtherFromSubject -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#MoveFurtherFromSubject -->
 
     <owl:Class rdf:about="#MoveFurtherFromSubject">
         <owl:equivalentClass>
@@ -2375,7 +2375,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Movements -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Movements -->
 
     <owl:Class rdf:about="#Movements">
         <rdfs:subClassOf rdf:resource="#CameraFeature"/>
@@ -2383,7 +2383,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#MultiArea -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#MultiArea -->
 
     <owl:Class rdf:about="#MultiArea">
         <rdfs:subClassOf rdf:resource="#AutoFocus"/>
@@ -2391,7 +2391,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#NegativeImage -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#NegativeImage -->
 
     <owl:Class rdf:about="#NegativeImage">
         <rdfs:subClassOf rdf:resource="#Image"/>
@@ -2400,7 +2400,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#NeutralDensityFilter -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#NeutralDensityFilter -->
 
     <owl:Class rdf:about="#NeutralDensityFilter">
         <rdfs:subClassOf rdf:resource="#Filter"/>
@@ -2414,7 +2414,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#NeutralDensityGrad -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#NeutralDensityGrad -->
 
     <owl:Class rdf:about="#NeutralDensityGrad">
         <rdfs:subClassOf rdf:resource="#GradFilter"/>
@@ -2428,7 +2428,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Night_LowLight -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Night_LowLight -->
 
     <owl:Class rdf:about="#Night_LowLight">
         <rdfs:subClassOf rdf:resource="#PhotographicSubject"/>
@@ -2436,7 +2436,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Noise -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Noise -->
 
     <owl:Class rdf:about="#Noise">
         <rdfs:subClassOf rdf:resource="#ImageFeature"/>
@@ -2446,7 +2446,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#NormalLens -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#NormalLens -->
 
     <owl:Class rdf:about="#NormalLens">
         <owl:equivalentClass>
@@ -2547,7 +2547,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#OpenUpAperture -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#OpenUpAperture -->
 
     <owl:Class rdf:about="#OpenUpAperture">
         <owl:equivalentClass>
@@ -2610,7 +2610,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Orientation -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Orientation -->
 
     <owl:Class rdf:about="#Orientation">
         <rdfs:subClassOf rdf:resource="#CompositionalParameter"/>
@@ -2618,7 +2618,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#OverExposed -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#OverExposed -->
 
     <owl:Class rdf:about="#OverExposed">
         <rdfs:subClassOf rdf:resource="#ExposureLevel"/>
@@ -2627,7 +2627,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#PanoramicCamera -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#PanoramicCamera -->
 
     <owl:Class rdf:about="#PanoramicCamera">
         <rdfs:subClassOf rdf:resource="#Camera"/>
@@ -2635,7 +2635,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Parameter -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Parameter -->
 
     <owl:Class rdf:about="#Parameter">
         <rdfs:subClassOf rdf:resource="&owl;Thing"/>
@@ -2645,7 +2645,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Perspective -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Perspective -->
 
     <owl:Class rdf:about="#Perspective">
         <rdfs:subClassOf rdf:resource="#ImageFeature"/>
@@ -2655,7 +2655,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Photograph -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Photograph -->
 
     <owl:Class rdf:about="#Photograph">
         <rdfs:subClassOf rdf:resource="&owl;Thing"/>
@@ -2664,7 +2664,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#PhotographicSubject -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#PhotographicSubject -->
 
     <owl:Class rdf:about="#PhotographicSubject">
         <rdfs:subClassOf rdf:resource="&owl;Thing"/>
@@ -2674,7 +2674,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#PhysicalThing -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#PhysicalThing -->
 
     <owl:Class rdf:about="#PhysicalThing">
         <rdfs:subClassOf rdf:resource="&owl;Thing"/>
@@ -2682,7 +2682,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Pincushioning -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Pincushioning -->
 
     <owl:Class rdf:about="#Pincushioning">
         <rdfs:subClassOf rdf:resource="#Distortion"/>
@@ -2690,7 +2690,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#PinholeCamera -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#PinholeCamera -->
 
     <owl:Class rdf:about="#PinholeCamera">
         <owl:equivalentClass>
@@ -2712,7 +2712,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#PolarisingFilter -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#PolarisingFilter -->
 
     <owl:Class rdf:about="#PolarisingFilter">
         <rdfs:subClassOf rdf:resource="#Filter"/>
@@ -2734,7 +2734,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Polygon -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Polygon -->
 
     <owl:Class rdf:about="#Polygon">
         <rdfs:subClassOf rdf:resource="#Shape"/>
@@ -2742,7 +2742,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Portrait -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Portrait -->
 
     <owl:Class rdf:about="#Portrait">
         <rdfs:subClassOf rdf:resource="#PhotographicSubject"/>
@@ -2750,7 +2750,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#PositiveImage -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#PositiveImage -->
 
     <owl:Class rdf:about="#PositiveImage">
         <rdfs:subClassOf rdf:resource="#Image"/>
@@ -2758,7 +2758,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Prime -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Prime -->
 
     <owl:Class rdf:about="#Prime">
         <owl:equivalentClass>
@@ -2776,7 +2776,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#PrintFilm -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#PrintFilm -->
 
     <owl:Class rdf:about="#PrintFilm">
         <owl:equivalentClass>
@@ -2794,7 +2794,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#RaiseISO -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#RaiseISO -->
 
     <owl:Class rdf:about="#RaiseISO">
         <owl:equivalentClass>
@@ -2848,7 +2848,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#RangeFinder -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#RangeFinder -->
 
     <owl:Class rdf:about="#RangeFinder">
         <rdfs:subClassOf rdf:resource="#Camera"/>
@@ -2856,7 +2856,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Reflector -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Reflector -->
 
     <owl:Class rdf:about="#Reflector">
         <rdfs:subClassOf rdf:resource="#Equipment"/>
@@ -2870,7 +2870,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#RemoteRelease -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#RemoteRelease -->
 
     <owl:Class rdf:about="#RemoteRelease">
         <rdfs:subClassOf rdf:resource="#Equipment"/>
@@ -2884,7 +2884,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Resolution -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Resolution -->
 
     <owl:Class rdf:about="#Resolution">
         <rdfs:subClassOf rdf:resource="#ImageFeature"/>
@@ -2894,7 +2894,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#SLR -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#SLR -->
 
     <owl:Class rdf:about="#SLR">
         <rdfs:subClassOf rdf:resource="#Camera"/>
@@ -2911,7 +2911,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Sensitivity -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Sensitivity -->
 
     <owl:Class rdf:about="#Sensitivity">
         <rdfs:subClassOf rdf:resource="#ExposureParameter"/>
@@ -2921,7 +2921,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Shape -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Shape -->
 
     <owl:Class rdf:about="#Shape">
         <rdfs:subClassOf rdf:resource="&owl;Thing"/>
@@ -2929,7 +2929,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Shift -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Shift -->
 
     <owl:Class rdf:about="#Shift">
         <rdfs:subClassOf rdf:resource="#Movements"/>
@@ -2937,7 +2937,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ShutterSpeed -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#ShutterSpeed -->
 
     <owl:Class rdf:about="#ShutterSpeed">
         <rdfs:subClassOf rdf:resource="#ExposureParameter"/>
@@ -2947,7 +2947,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#SingleArea -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#SingleArea -->
 
     <owl:Class rdf:about="#SingleArea">
         <rdfs:subClassOf rdf:resource="#AutoFocus"/>
@@ -2955,7 +2955,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#SlideFilm -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#SlideFilm -->
 
     <owl:Class rdf:about="#SlideFilm">
         <owl:equivalentClass>
@@ -2973,7 +2973,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#SlowExposure -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#SlowExposure -->
 
     <owl:Class rdf:about="#SlowExposure">
         <owl:equivalentClass>
@@ -3011,7 +3011,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#SmallFormat -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#SmallFormat -->
 
     <owl:Class rdf:about="#SmallFormat">
         <owl:equivalentClass>
@@ -3045,7 +3045,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#SmallFormatFilm -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#SmallFormatFilm -->
 
     <owl:Class rdf:about="#SmallFormatFilm">
         <owl:equivalentClass>
@@ -3063,7 +3063,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#SpecialEffectsFilter -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#SpecialEffectsFilter -->
 
     <owl:Class rdf:about="#SpecialEffectsFilter">
         <rdfs:subClassOf rdf:resource="#Filter"/>
@@ -3071,7 +3071,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#SpotMetering -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#SpotMetering -->
 
     <owl:Class rdf:about="#SpotMetering">
         <rdfs:subClassOf rdf:resource="#MeteringMode"/>
@@ -3079,7 +3079,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#StillLife -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#StillLife -->
 
     <owl:Class rdf:about="#StillLife">
         <rdfs:subClassOf rdf:resource="#PhotographicSubject"/>
@@ -3087,7 +3087,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#StreetPhotography -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#StreetPhotography -->
 
     <owl:Class rdf:about="#StreetPhotography">
         <rdfs:subClassOf rdf:resource="#Documentary"/>
@@ -3095,7 +3095,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#StudioLight -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#StudioLight -->
 
     <owl:Class rdf:about="#StudioLight">
         <rdfs:subClassOf rdf:resource="#Light"/>
@@ -3109,7 +3109,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Subject -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Subject -->
 
     <owl:Class rdf:about="#Subject">
         <rdfs:subClassOf rdf:resource="#PhysicalThing"/>
@@ -3119,7 +3119,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Sunshine -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Sunshine -->
 
     <owl:Class rdf:about="#Sunshine">
         <rdfs:subClassOf rdf:resource="#LightType"/>
@@ -3127,7 +3127,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#TLR -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#TLR -->
 
     <owl:Class rdf:about="#TLR">
         <rdfs:subClassOf rdf:resource="#Camera"/>
@@ -3144,7 +3144,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#TTL -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#TTL -->
 
     <owl:Class rdf:about="#TTL">
         <rdfs:subClassOf rdf:resource="#MeteringMode"/>
@@ -3156,7 +3156,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Telephoto -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Telephoto -->
 
     <owl:Class rdf:about="#Telephoto">
         <owl:equivalentClass>
@@ -3194,7 +3194,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#TestLens -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#TestLens -->
 
     <owl:Class rdf:about="#TestLens">
         <rdfs:subClassOf rdf:resource="#Lens"/>
@@ -3203,7 +3203,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Tilt -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Tilt -->
 
     <owl:Class rdf:about="#Tilt">
         <rdfs:subClassOf rdf:resource="#Movements"/>
@@ -3211,7 +3211,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#ToyCamera -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#ToyCamera -->
 
     <owl:Class rdf:about="#ToyCamera">
         <rdfs:subClassOf rdf:resource="#Camera"/>
@@ -3219,7 +3219,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Tripod -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Tripod -->
 
     <owl:Class rdf:about="#Tripod">
         <rdfs:subClassOf rdf:resource="#Equipment"/>
@@ -3233,7 +3233,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Tungsten -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Tungsten -->
 
     <owl:Class rdf:about="#Tungsten">
         <rdfs:subClassOf rdf:resource="#LightType"/>
@@ -3254,7 +3254,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#UVFilter -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#UVFilter -->
 
     <owl:Class rdf:about="#UVFilter">
         <rdfs:subClassOf rdf:resource="#Filter"/>
@@ -3262,7 +3262,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#UnderExposed -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#UnderExposed -->
 
     <owl:Class rdf:about="#UnderExposed">
         <rdfs:subClassOf rdf:resource="#ExposureLevel"/>
@@ -3270,7 +3270,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#UseEquipment -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#UseEquipment -->
 
     <owl:Class rdf:about="#UseEquipment">
         <owl:equivalentClass>
@@ -3288,7 +3288,7 @@ We need a min and max for zooms</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#UseLargerFormatCamera -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#UseLargerFormatCamera -->
 
     <owl:Class rdf:about="#UseLargerFormatCamera">
         <owl:equivalentClass>
@@ -3369,7 +3369,7 @@ It arbitrarily chooses medium or large format, but actually should just be incre
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#UseLongerFocalLength -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#UseLongerFocalLength -->
 
     <owl:Class rdf:about="#UseLongerFocalLength">
         <owl:equivalentClass>
@@ -3455,7 +3455,7 @@ It arbitrarily chooses medium or large format, but actually should just be incre
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#UseShorterFocalLength -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#UseShorterFocalLength -->
 
     <owl:Class rdf:about="#UseShorterFocalLength">
         <owl:equivalentClass>
@@ -3541,7 +3541,7 @@ It arbitrarily chooses medium or large format, but actually should just be incre
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#VeryFastExposure -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#VeryFastExposure -->
 
     <owl:Class rdf:about="#VeryFastExposure">
         <owl:equivalentClass>
@@ -3574,7 +3574,7 @@ Suitable for freezing subjects.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Vignetting -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Vignetting -->
 
     <owl:Class rdf:about="#Vignetting">
         <rdfs:subClassOf rdf:resource="#ImageFeature"/>
@@ -3584,7 +3584,7 @@ Suitable for freezing subjects.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Warm -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Warm -->
 
     <owl:Class rdf:about="#Warm">
         <rdfs:subClassOf rdf:resource="#ColourBalance"/>
@@ -3592,7 +3592,7 @@ Suitable for freezing subjects.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#WideAngle -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#WideAngle -->
 
     <owl:Class rdf:about="#WideAngle">
         <owl:equivalentClass>
@@ -3693,7 +3693,7 @@ Suitable for freezing subjects.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#Zoom -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#Zoom -->
 
     <owl:Class rdf:about="#Zoom">
         <owl:equivalentClass>
@@ -3725,7 +3725,7 @@ Suitable for freezing subjects.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#f/1 -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#f/1 -->
 
     <owl:Class rdf:about="#f/1">
         <owl:equivalentClass>
@@ -3743,7 +3743,7 @@ Suitable for freezing subjects.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#f/1.4 -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#f/1.4 -->
 
     <owl:Class rdf:about="#f/1.4">
         <owl:equivalentClass>
@@ -3761,7 +3761,7 @@ Suitable for freezing subjects.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#f/11 -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#f/11 -->
 
     <owl:Class rdf:about="#f/11">
         <owl:equivalentClass>
@@ -3779,7 +3779,7 @@ Suitable for freezing subjects.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#f/16 -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#f/16 -->
 
     <owl:Class rdf:about="#f/16">
         <owl:equivalentClass>
@@ -3797,7 +3797,7 @@ Suitable for freezing subjects.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#f/2 -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#f/2 -->
 
     <owl:Class rdf:about="#f/2">
         <owl:equivalentClass>
@@ -3815,7 +3815,7 @@ Suitable for freezing subjects.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#f/2.8 -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#f/2.8 -->
 
     <owl:Class rdf:about="#f/2.8">
         <owl:equivalentClass>
@@ -3833,7 +3833,7 @@ Suitable for freezing subjects.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#f/22 -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#f/22 -->
 
     <owl:Class rdf:about="#f/22">
         <owl:equivalentClass>
@@ -3851,7 +3851,7 @@ Suitable for freezing subjects.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#f/32 -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#f/32 -->
 
     <owl:Class rdf:about="#f/32">
         <owl:equivalentClass>
@@ -3869,7 +3869,7 @@ Suitable for freezing subjects.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#f/4 -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#f/4 -->
 
     <owl:Class rdf:about="#f/4">
         <owl:equivalentClass>
@@ -3887,7 +3887,7 @@ Suitable for freezing subjects.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#f/5.6 -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#f/5.6 -->
 
     <owl:Class rdf:about="#f/5.6">
         <owl:equivalentClass>
@@ -3905,7 +3905,7 @@ Suitable for freezing subjects.</rdfs:comment>
     
 
 
-    <!-- http://www.co-ode.org/ontologies/photography/photography.owl#f/8 -->
+    <!-- http://example.invalid/ontologies/photography/photography.owl#f/8 -->
 
     <owl:Class rdf:about="#f/8">
         <owl:equivalentClass>

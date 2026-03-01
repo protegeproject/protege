@@ -29,7 +29,7 @@ public class AnonymousDefinedClassManager implements Disposable {
 
     public static final String ID = AnonymousDefinedClassManager.class.getName();
 
-    private static final String DEFAULT_ANON_CLASS_URI_PREFIX = "http://www.co-ode.org/ontologies/owlx/anon#";
+    private static final String DEFAULT_ANON_CLASS_URI_PREFIX = "http://example.invalid/ontologies/owlx/anon#";
 
     private static final URI DEFAULT_ANON_CLASS_ANNOTATION_URI = URI.create(DEFAULT_ANON_CLASS_URI_PREFIX + "anonClass");
 

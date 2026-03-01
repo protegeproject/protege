@@ -28,9 +28,9 @@ public class Folder_IT extends TestCase {
     public static final String PIZZA_FILE       = "pizza.owl";
     public static final String PHOTOGRAPHY_FILE = "photography.owl";
         
-    public static final String AMINO_ACID_NS  = "http://www.co-ode.org/ontologies/amino-acid/2009/02/16/amino-acid.owl";
-    public static final String PIZZA_NS       = "http://www.co-ode.org/ontologies/pizza/2005/10/18/pizza.owl";
-    public static final String PHOTOGRAPHY_NS = "http://www.co-ode.org/ontologies/photography/photography.owl";
+    public static final String AMINO_ACID_NS  = "http://example.invalid/ontologies/amino-acid/2009/02/16/amino-acid.owl";
+    public static final String PIZZA_NS       = "http://example.invalid/ontologies/pizza/2005/10/18/pizza.owl";
+    public static final String PHOTOGRAPHY_NS = "http://example.invalid/ontologies/photography/photography.owl";
 
     public static final String CATALOG_FILE = "catalog-v001.xml";
 

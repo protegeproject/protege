@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 
 public class AssertedClassHierarchyTest {
     
-    public static String NEW_ONTOLOGY_URI = "http://www.tigraworld.com/protege/1";
+    public static String NEW_ONTOLOGY_URI = "http://example.invalid/protege/1";
     
     private OWLOntologyManager manager;
     private OWLDataFactory factory;
@@ -45,7 +45,7 @@ public class AssertedClassHierarchyTest {
 
     @Test
     public void testSimpleLoop() throws OWLOntologyCreationException, URISyntaxException, OWLOntologyChangeException {
-        String namespace = "http://tigraworld.com/protege/simpleLoop.owl#";
+        String namespace = "http://example.invalid/protege/simpleLoop.owl#";
         installOntology("src/test/resources/ontologies/tree/simpleLoop.owl");
         OWLOntology ontology = manager.getOntologies().iterator().next();
         
@@ -76,7 +76,7 @@ public class AssertedClassHierarchyTest {
 
     @Test
     public void testTwoParents() throws OWLOntologyCreationException, URISyntaxException {
-        String namespace = "http://tigraworld.com/protege/twoParents.owl#";
+        String namespace = "http://example.invalid/protege/twoParents.owl#";
         installOntology("src/test/resources/ontologies/tree/twoParents.owl");
         
         OWLClass a = factory.getOWLClass(IRI.create(namespace + "A"));
@@ -99,7 +99,7 @@ public class AssertedClassHierarchyTest {
 
     @Test
     public void testAddGCA() throws OWLOntologyCreationException, URISyntaxException, OWLOntologyChangeException, OWLRendererException {
-        String namespace = "http://tigraworld.com/protege/twoParents.owl#";
+        String namespace = "http://example.invalid/protege/twoParents.owl#";
         installOntology("src/test/resources/ontologies/tree/twoParents.owl");
         
         OWLOntology ontology = manager.getOntologies().iterator().next();
