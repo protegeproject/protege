@@ -1,5 +1,7 @@
 package org.protege.editor.owl.model.identifiers;
 
+import org.apache.http.HttpStatus;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,6 +27,7 @@ public class IdentifiersDotOrg_IT {
     @Test
     public void shouldRetrieveNamespaces() {
         Optional<IdoNamespace> collection = identifiersDotOrg.getCollection("EFO:0008307");
+        Assume.assumeTrue(identifiersDotOrg.getLastStatus() == HttpStatus.SC_OK);
         assertThat(collection.isPresent(), is(true));
     }
 
@@ -38,6 +41,7 @@ public class IdentifiersDotOrg_IT {
     public void shouldResolveCompactId() {
         String compactId = "EFO:0008307";
         Optional<IdoResolvedResource> response = identifiersDotOrg.resolveCompactId(compactId);
+        Assume.assumeTrue(identifiersDotOrg.getLastStatus() == HttpStatus.SC_OK);
         assertThat(response.isPresent(), is(true));
         IdoResolvedResource theResponse = response.orElseThrow(RuntimeException::new);
         assertThat(theResponse.getCompactIdentifierResolvedUrl(), is(not(isEmptyString())));
