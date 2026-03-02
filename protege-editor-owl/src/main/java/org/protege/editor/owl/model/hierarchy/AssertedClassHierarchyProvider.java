@@ -96,9 +96,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
 //            ImmutableSet<OWLObjectProperty> props = ImmutableSet.copyOf(ontologies.stream().flatMap(o -> o.getObjectPropertiesInSignature().stream()).collect(toSet()));
 //            childClassExtractor.setRelationshipProperties(props);
             nodesToUpdate.clear();
-            if (roots.isEmpty()) {
-                roots.add(owlOntologyManager.getOWLDataFactory().getOWLThing());
-            }
+            setDisplayFromOntologyRoots(ClassHierarchyPreferences.get().isDisplayFromOntologyRoots());
             rebuildImplicitRoots();
             fireHierarchyChanged();
         } finally {
@@ -358,7 +356,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
         return childClassExtractor.getRelationship(child);
     }
 
-    public void setDislayFromOntologyRoots(boolean fromRoots) {
+    public void setDisplayFromOntologyRoots(boolean fromRoots) {
         roots.clear();
         if (fromRoots && getOntologyRoots(roots)) {
             displayFromOntologyRoots = true;

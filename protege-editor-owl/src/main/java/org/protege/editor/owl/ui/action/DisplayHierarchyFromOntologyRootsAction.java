@@ -41,6 +41,6 @@ public class DisplayHierarchyFromOntologyRootsAction extends ProtegeOWLRadioButt
     private void setDisplayFromOntologyRoots() {
         boolean displayFromRoots = ClassHierarchyPreferences.get().isDisplayFromOntologyRoots();
         AssertedClassHierarchyProvider provider = (AssertedClassHierarchyProvider) getOWLModelManager().getOWLHierarchyManager().getOWLClassHierarchyProvider();
-        provider.setDislayFromOntologyRoots(displayFromRoots);
+        provider.setDisplayFromOntologyRoots(displayFromRoots);
     }
 }
