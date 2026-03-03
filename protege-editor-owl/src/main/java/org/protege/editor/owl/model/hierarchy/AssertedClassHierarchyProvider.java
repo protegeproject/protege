@@ -357,12 +357,17 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
     }
 
     public void setDisplayFromOntologyRoots(boolean fromRoots) {
-        roots.clear();
-        if (fromRoots && findOntologyRoots(roots)) {
-            displayFromOntologyRoots = true;
-        } else {
-            roots.add(owlOntologyManager.getOWLDataFactory().getOWLThing());
-            displayFromOntologyRoots = false;
+        ontologySetWriteLock.lock();
+        try {
+            roots.clear();
+            if (fromRoots && findOntologyRoots(roots)) {
+                displayFromOntologyRoots = true;
+            } else {
+                roots.add(owlOntologyManager.getOWLDataFactory().getOWLThing());
+                displayFromOntologyRoots = false;
+            }
+        } finally {
+            ontologySetWriteLock.unlock();
         }
     }
 
