@@ -46,7 +46,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
      */
     private final Collection<OWLOntology> ontologies = new ArrayList<>();
 
-    private volatile OWLClass root;
+    private Set<OWLClass> roots = new HashSet<>();
 
     private final ParentClassExtractor parentClassExtractor;
 
@@ -66,7 +66,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
         ontologySetWriteLock = locks.writeLock();
         rootFinder = new TerminalElementFinder<>(cls -> {
             Collection<OWLClass> parents = getParents(cls);
-            parents.remove(root);
+            parents.removeAll(roots);
             return parents;
         });
         parentClassExtractor = new ParentClassExtractor();
@@ -92,8 +92,8 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
 //            ImmutableSet<OWLObjectProperty> props = ImmutableSet.copyOf(ontologies.stream().flatMap(o -> o.getObjectPropertiesInSignature().stream()).collect(toSet()));
 //            childClassExtractor.setRelationshipProperties(props);
             nodesToUpdate.clear();
-            if (root == null) {
-                root = owlOntologyManager.getOWLDataFactory().getOWLThing();
+            if (roots.isEmpty()) {
+                roots.add(owlOntologyManager.getOWLDataFactory().getOWLThing());
             }
             rebuildImplicitRoots();
             fireHierarchyChanged();
@@ -128,14 +128,14 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
     private void handleChanges(List<? extends OWLOntologyChange> changes) {
         Set<OWLClass> oldTerminalElements = new HashSet<>(rootFinder.getTerminalElements());
         Set<OWLClass> changedClasses = new HashSet<>();
-        changedClasses.add(root);
+        changedClasses.addAll(roots);
         List<OWLAxiomChange> filteredChanges = filterIrrelevantChanges(changes);
         updateImplicitRoots(filteredChanges);
         for (OWLOntologyChange change : filteredChanges) {
             changedClasses.addAll(
                     change.getSignature().stream()
                     .filter(entity -> entity instanceof OWLClass)
-                    .filter(entity -> !entity.equals(root))
+                    .filter(entity -> !roots.contains(entity))
                     .map(entity -> (OWLClass) entity)
                     .collect(Collectors.toList()));
         }
@@ -194,7 +194,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
                     OWLAxiom axiom = change.getAxiom();
 
                     for (OWLEntity entity : axiom.getSignature()) {
-                        if (!(entity instanceof OWLClass) || entity.equals(root)) {
+                        if (!(entity instanceof OWLClass) || roots.contains(entity)) {
                             continue;
                         }
                         OWLClass cls = (OWLClass) entity;
@@ -214,16 +214,16 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
     }
 
     public Set<OWLClass> getRoots() {
-        if (root == null) {
-            root = owlOntologyManager.getOWLDataFactory().getOWLThing();
+        if (roots.isEmpty()) {
+            roots.add(owlOntologyManager.getOWLDataFactory().getOWLThing());
         }
-        return Collections.singleton(root);
+        return Collections.unmodifiableSet(roots);
     }
 
     protected Collection<OWLClass> getUnfilteredChildren(OWLClass object) {
         ontologySetReadLock.lock();
         try {
-            if (object.equals(root)) {
+            if (roots.contains(object)) {
                 Set<OWLClass> result = new HashSet<>();
                 result.addAll(rootFinder.getTerminalElements());
                 result.addAll(extractChildren(object));
@@ -286,13 +286,13 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
         try {
             // If the object is thing then there are no
             // parents
-            if (object.equals(root)) {
+            if (roots.contains(object)) {
                 return Collections.emptySet();
             }
             Set<OWLClass> result = new HashSet<>();
             // Thing if the object is a root class
             if (rootFinder.getTerminalElements().contains(object)) {
-                result.add(root);
+                result.addAll(roots);
                 return result;
             }
             // Not a root, so must have another parent
