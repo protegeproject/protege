@@ -358,7 +358,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
 
     public void setDisplayFromOntologyRoots(boolean fromRoots) {
         roots.clear();
-        if (fromRoots && getOntologyRoots(roots)) {
+        if (fromRoots && findOntologyRoots(roots)) {
             displayFromOntologyRoots = true;
         } else {
             roots.add(owlOntologyManager.getOWLDataFactory().getOWLThing());
@@ -366,7 +366,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
         }
     }
 
-    private boolean getOntologyRoots(Set<OWLClass> roots) {
+    private boolean findOntologyRoots(Set<OWLClass> roots) {
         boolean found = false;
         for (OWLOntology ont : ontologies) {
             for (OWLAnnotation annot : ont.getAnnotations()) {
