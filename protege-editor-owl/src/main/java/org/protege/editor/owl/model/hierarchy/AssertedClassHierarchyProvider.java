@@ -219,7 +219,7 @@ public class AssertedClassHierarchyProvider extends AbstractOWLObjectHierarchyPr
         if (roots.isEmpty()) {
             roots.add(owlOntologyManager.getOWLDataFactory().getOWLThing());
         }
-        return roots;
+        return Collections.unmodifiableSet(roots);
     }
 
     protected Collection<OWLClass> getUnfilteredChildren(OWLClass object) {
