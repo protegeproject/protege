@@ -38,7 +38,10 @@
   },
   {
     "prefix": "ac",
-    "uri_format": "http://www.w3.org/ns/activitystreams#$1"
+    "uri_format": "http://www.w3.org/ns/activitystreams#$1",
+    "synonyms": [
+      "as"
+    ]
   },
   {
     "prefix": "adcad",
@@ -66,6 +69,10 @@
     "prefix": "aeon",
     "uri_format": "http://purl.obolibrary.org/obo/AEON_$1",
     "pattern": "^\\d{7}$"
+  },
+  {
+    "prefix": "afo",
+    "uri_format": "http://purl.allotrope.org/ontologies/$1"
   },
   {
     "prefix": "aftol.category",
@@ -109,6 +116,26 @@
     "pattern": "^\\d{7}$"
   },
   {
+    "prefix": "allotrope.process",
+    "uri_format": "http://purl.allotrope.org/ontologies/process#AFP_$1",
+    "pattern": "^\\d+$"
+  },
+  {
+    "prefix": "allotrope.quality",
+    "uri_format": "http://purl.allotrope.org/ontologies/quality#AFQ_$1",
+    "pattern": "^\\d+$"
+  },
+  {
+    "prefix": "allotrope.result",
+    "uri_format": "http://purl.allotrope.org/ontologies/result#AFR_$1",
+    "pattern": "^\\d+$"
+  },
+  {
+    "prefix": "allotrope.role",
+    "uri_format": "http://purl.allotrope.org/ontologies/role#AFRL_$1",
+    "pattern": "^\\d+$"
+  },
+  {
     "prefix": "alzforum.mutation",
     "uri_format": "https://www.alzforum.org/mutations/$1",
     "synonyms": [
@@ -135,6 +162,11 @@
     "synonyms": [
       "ACTRN"
     ]
+  },
+  {
+    "prefix": "aopo",
+    "uri_format": "http://aopkb.org/aop_ontology#$1",
+    "pattern": "^[A-Za-z_]+$"
   },
   {
     "prefix": "apaonto",
@@ -212,6 +244,10 @@
     "pattern": "^[1-9][0-9]*$"
   },
   {
+    "prefix": "battinfo",
+    "uri_format": "https://w3id.org/emmo/domain/battery#battery_$1"
+  },
+  {
     "prefix": "bcbc",
     "uri_format": "https://scicrunch.org/resolver/RRID:BCBC_$1",
     "pattern": "^\\d+$"
@@ -263,7 +299,10 @@
   },
   {
     "prefix": "bibframe",
-    "uri_format": "http://id.loc.gov/ontologies/bibframe/$1"
+    "uri_format": "http://id.loc.gov/ontologies/bibframe/$1",
+    "synonyms": [
+      "bf"
+    ]
   },
   {
     "prefix": "bibo",
@@ -301,6 +340,10 @@
     "prefix": "biolegend",
     "uri_format": "https://www.biolegend.com/Default.aspx?ID=6664&productid=$1",
     "pattern": "^\\d+$"
+  },
+  {
+    "prefix": "biolink",
+    "uri_format": "https://biolink.github.io/biolink-model/$1"
   },
   {
     "prefix": "biomarkerkb.biomarker",
@@ -361,7 +404,8 @@
     "prefix": "bioschemas",
     "uri_format": "https://bioschemas.org/profiles/$1",
     "synonyms": [
-      "bioschema"
+      "bioschema",
+      "bioschemas_draft"
     ]
   },
   {
@@ -503,7 +547,10 @@
   {
     "prefix": "cc",
     "uri_format": "https://creativecommons.org/ns#$1",
-    "pattern": "^\\w+$"
+    "pattern": "^\\w+$",
+    "synonyms": [
+      "ccrel"
+    ]
   },
   {
     "prefix": "cc.legacy",
@@ -545,6 +592,10 @@
     "pattern": "^\\d+$"
   },
   {
+    "prefix": "ceds.learning_resource_type",
+    "uri_format": "https://ceds.ed.gov/element/000928#$1"
+  },
+  {
     "prefix": "cellbank.australia",
     "uri_format": "https://www.cellbankaustralia.com/$1.html"
   },
@@ -578,6 +629,30 @@
     "prefix": "cemo",
     "uri_format": "https://biopragmatics.github.io/providers/cemo/$1",
     "pattern": "^[0-9a-z_-]+$"
+  },
+  {
+    "prefix": "cessda",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/$1"
+  },
+  {
+    "prefix": "cessda.cdcpublishernames",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/CdcPublisherNames?lang=en#code_$1"
+  },
+  {
+    "prefix": "cessda.cessdadatacataloguecollections",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/CESSDADataCatalogueCollections?lang=en#code_$1"
+  },
+  {
+    "prefix": "cessda.cessdapersistentidentifiertypes",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/CessdaPersistentIdentifierTypes?lang=en#code_$1"
+  },
+  {
+    "prefix": "cessda.countrynamesandcodes",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/CountryNamesAndCodes?lang=en#code_$1"
+  },
+  {
+    "prefix": "cessda.topicclassification",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/TopicClassification?lang=en#code_$1"
   },
   {
     "prefix": "cgnc",
@@ -706,6 +781,10 @@
     "prefix": "cido",
     "uri_format": "http://purl.obolibrary.org/obo/CIDO_$1",
     "pattern": "^\\d{7}$"
+  },
+  {
+    "prefix": "cidoc.crm",
+    "uri_format": "http://www.cidoc-crm.org/cidoc-crm/$1"
   },
   {
     "prefix": "cio",
@@ -1107,6 +1186,10 @@
     "pattern": "^\\d+$"
   },
   {
+    "prefix": "corpusvitrearum",
+    "uri_format": "https://corpusvitrearum.de/id/$1"
+  },
+  {
     "prefix": "corum",
     "uri_format": "https://mips.helmholtz-muenchen.de/corum/?complex_id=$1"
   },
@@ -1163,6 +1246,14 @@
       "CRISP Thesaurus",
       "CRISP Thesaurus, 2006",
       "CSP2005"
+    ]
+  },
+  {
+    "prefix": "ctcae",
+    "uri_format": "http://ncicb.nci.nih.gov/xml/owl/EVS/ctcae5.owl#$1",
+    "pattern": "^E\\d+$",
+    "synonyms": [
+      "CTCAE"
     ]
   },
   {
@@ -1289,7 +1380,11 @@
   },
   {
     "prefix": "dctypes",
-    "uri_format": "http://purl.org/dc/dcmitype/$1"
+    "uri_format": "http://purl.org/dc/dcmitype/$1",
+    "synonyms": [
+      "dcmitype",
+      "dcmitypes"
+    ]
   },
   {
     "prefix": "ddanat",
@@ -1299,6 +1394,110 @@
   {
     "prefix": "ddi",
     "uri_format": "http://rdf-vocabulary.ddialliance.org/lifecycle#$1"
+  },
+  {
+    "prefix": "ddi.aggregationmethod",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/AggregationMethod?lang=en#code_$1"
+  },
+  {
+    "prefix": "ddi.analysisunit",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/AnalysisUnit?lang=en#code_$1"
+  },
+  {
+    "prefix": "ddi.characterset",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/CharacterSet?lang=en#code_$1"
+  },
+  {
+    "prefix": "ddi.commonalitytype",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/CommonalityType?lang=en#code_$1"
+  },
+  {
+    "prefix": "ddi.contributorrole",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/ContributorRole?lang=en#code_$1"
+  },
+  {
+    "prefix": "ddi.datasourcetype",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/DataSourceType?lang=en#code_$1"
+  },
+  {
+    "prefix": "ddi.datatype",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/DataType?lang=en#code_$1"
+  },
+  {
+    "prefix": "ddi.datetype",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/DateType?lang=en#code_$1"
+  },
+  {
+    "prefix": "ddi.generaldataformat",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/GeneralDataFormat?lang=en#code_$1"
+  },
+  {
+    "prefix": "ddi.languageproficiency",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/LanguageProficiency?lang=en#code_$1"
+  },
+  {
+    "prefix": "ddi.lifecycleeventtype",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/LifecycleEventType?lang=en#code_$1"
+  },
+  {
+    "prefix": "ddi.modeofcollection",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/ModeOfCollection?lang=en#code_$1"
+  },
+  {
+    "prefix": "ddi.numerictype",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/NumericType?lang=en#code_$1"
+  },
+  {
+    "prefix": "ddi.responseunit",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/ResponseUnit?lang=en#code_$1"
+  },
+  {
+    "prefix": "ddi.samplingprocedure",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/SamplingProcedure?lang=en#code_$1"
+  },
+  {
+    "prefix": "ddi.softwarepackage",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/SoftwarePackage?lang=en#code_$1"
+  },
+  {
+    "prefix": "ddi.summarystatistictype",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/SummaryStatisticType?lang=en#code_$1"
+  },
+  {
+    "prefix": "ddi.timemethod",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/TimeMethod?lang=en#code_$1"
+  },
+  {
+    "prefix": "ddi.timezone",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/TimeZone?lang=en#code_$1"
+  },
+  {
+    "prefix": "ddi.typeofaddress",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/TypeOfAddress?lang=en#code_$1"
+  },
+  {
+    "prefix": "ddi.typeofconceptgroup",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/TypeOfConceptGroup?lang=en#code_$1"
+  },
+  {
+    "prefix": "ddi.typeoffrequency",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/TypeOfFrequency?lang=en#code_$1"
+  },
+  {
+    "prefix": "ddi.typeofinstrument",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/TypeOfInstrument?lang=en#code_$1"
+  },
+  {
+    "prefix": "ddi.typeofnote",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/TypeOfNote?lang=en#code_$1"
+  },
+  {
+    "prefix": "ddi.typeoftelephone",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/TypeOfTelephone?lang=en#code_$1"
+  },
+  {
+    "prefix": "ddi.typeoftranslationmethod",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/TypeOfTranslationMethod?lang=en#code_$1"
   },
   {
     "prefix": "ddinter.drug",
@@ -1732,6 +1931,14 @@
     "uri_format": "http://ontologies.dbmi.pitt.edu/edda/StudyDesigns.owl#$1"
   },
   {
+    "prefix": "edm",
+    "uri_format": "http://www.europeana.eu/schemas/edm/$1"
+  },
+  {
+    "prefix": "edm.fibo",
+    "uri_format": "https://spec.edmcouncil.org/fibo/ontology/$1"
+  },
+  {
     "prefix": "educor",
     "uri_format": "https://github.com/tibonto/educor#$1"
   },
@@ -1742,6 +1949,10 @@
   {
     "prefix": "ejprd",
     "uri_format": "http://purl.org/ejp-rd/vocabulary/$1"
+  },
+  {
+    "prefix": "eli",
+    "uri_format": "http://data.europa.eu/eli/ontology#$1"
   },
   {
     "prefix": "elsst",
@@ -1759,6 +1970,11 @@
     "prefix": "emaps",
     "uri_format": "https://www.informatics.jax.org/vocab/gxd/anatomy/EMAPS:$1",
     "pattern": "^\\d+$"
+  },
+  {
+    "prefix": "emg",
+    "uri_format": "https://purls.helmholtz-metadaten.de/emg/EMG_$1",
+    "pattern": "^\\d{8}$"
   },
   {
     "prefix": "emi",
@@ -1845,6 +2061,10 @@
     "pattern": "^\\d{7,8}$"
   },
   {
+    "prefix": "envthes",
+    "uri_format": "http://vocabs.lter-europe.net/EnvThes/$1"
+  },
+  {
     "prefix": "enzo",
     "uri_format": "https://www.enzolifesciences.com/$1",
     "synonyms": [
@@ -1878,6 +2098,10 @@
     "prefix": "epso",
     "uri_format": "http://www.case.edu/EpilepsyOntology.owl#$1",
     "pattern": "^\\d{7}$"
+  },
+  {
+    "prefix": "erudite",
+    "uri_format": "http://www.bigdatau.org/schema#$1"
   },
   {
     "prefix": "esco.isco",
@@ -1924,6 +2148,11 @@
     "uri_format": "http://data.europa.eu/8mn/euroscivoc/$1"
   },
   {
+    "prefix": "eurovoc",
+    "uri_format": "http://eurovoc.europa.eu/$1",
+    "pattern": "^\\d+$"
+  },
+  {
     "prefix": "evorao",
     "uri_format": "https://w3id.org/evorao/$1"
   },
@@ -1943,6 +2172,11 @@
   {
     "prefix": "fabio",
     "uri_format": "https://sparontologies.github.io/fabio/current/fabio.html#$1"
+  },
+  {
+    "prefix": "factgrid",
+    "uri_format": "https://database.factgrid.de/viewer/item/$1",
+    "pattern": "^Q\\d+$"
   },
   {
     "prefix": "fairsharing.organization",
@@ -2132,6 +2366,10 @@
     "uri_format": "http://iflastandards.info/ns/fr/frbr/frbrer/$1"
   },
   {
+    "prefix": "ftonto",
+    "uri_format": "http://iot.uni-trier.de/FTOnto#$1"
+  },
+  {
     "prefix": "ftt",
     "uri_format": "https://apps.usgs.gov/thesaurus/term-simple.php?thcode=3&code=$1",
     "pattern": "^\\d+$"
@@ -2249,8 +2487,56 @@
     "uri_format": "https://www.geonames.org/recent-changes/featurecode/$1/"
   },
   {
+    "prefix": "gesis.kategorienschemawahlstudien",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/KategorienschemaWahlstudien?lang=en#code_$1"
+  },
+  {
+    "prefix": "gesis.rexconcepts",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/rexconcepts?lang=en#code_$1"
+  },
+  {
+    "prefix": "gesis.rexdatatype",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/rexdatatype?lang=en#code_$1"
+  },
+  {
+    "prefix": "gesis.rexgroups",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/rexgroups?lang=en#code_$1"
+  },
+  {
+    "prefix": "gesis.variables-relations",
+    "uri_format": "https://vocabularies.cessda.eu/vocabulary/Variables-Relations?lang=en#code_$1"
+  },
+  {
     "prefix": "gesiskg",
     "uri_format": "https://data.gesis.org/gesiskg/schema/$1"
+  },
+  {
+    "prefix": "getty.att",
+    "uri_format": "http://vocab.getty.edu/aat/$1"
+  },
+  {
+    "prefix": "getty.cona",
+    "uri_format": "http://vocab.getty.edu/page/cona/$1"
+  },
+  {
+    "prefix": "getty.gvp",
+    "uri_format": "http://vocab.getty.edu/ontology#$1"
+  },
+  {
+    "prefix": "getty.ia",
+    "uri_format": "http://vocab.getty.edu/page/ia/$1"
+  },
+  {
+    "prefix": "getty.tgn",
+    "uri_format": "http://vocab.getty.edu/tgn/$1",
+    "pattern": "^\\d+$",
+    "synonyms": [
+      "tgn"
+    ]
+  },
+  {
+    "prefix": "getty.ulan",
+    "uri_format": "http://vocab.getty.edu/ulan/$1"
   },
   {
     "prefix": "gfo",
@@ -2366,6 +2652,18 @@
     "uri_format": "https://gpcrdb.org/protein/$1"
   },
   {
+    "prefix": "gpml",
+    "uri_format": "http://vocabularies.wikipathways.org/gpml#$1",
+    "pattern": "^[A-Za-z]+$",
+    "synonyms": [
+      "wikipathways.gpml"
+    ]
+  },
+  {
+    "prefix": "gr",
+    "uri_format": "http://purl.org/goodrelations/v1#$1"
+  },
+  {
     "prefix": "graingenes.reference",
     "uri_format": "https://wheat.pw.usda.gov/cgi-bin/GG3/report.cgi?class=reference&name=$1"
   },
@@ -2428,6 +2726,11 @@
     "prefix": "gtdb",
     "uri_format": "https://gtdb.ecogenomic.org/tree?r=$1",
     "pattern": "^[cdfgops]__\\w+\\S+$"
+  },
+  {
+    "prefix": "gtn",
+    "uri_format": "https://gxy.io/GTN:$1",
+    "pattern": "^[A-Z]\\d+$"
   },
   {
     "prefix": "gtr.condition",
@@ -3039,6 +3342,16 @@
     "pattern": "^\\d{7}$"
   },
   {
+    "prefix": "kim.amb",
+    "uri_format": "https://dini-ag-kim.github.io/amb/20231019/#$1",
+    "pattern": "^[a-z]\\w+$"
+  },
+  {
+    "prefix": "kim.conditionsofaccess",
+    "uri_format": "https://skohub.io/dini-ag-kim/value-lists/heads/main/w3id.org/kim/conditionsOfAccess/$1.html",
+    "pattern": "^login|no_login$"
+  },
+  {
     "prefix": "kim.educationlevel",
     "uri_format": "https://w3id.org/kim/educationalLevel/level_$1"
   },
@@ -3072,6 +3385,10 @@
     "uri_format": "http://w3id.org/kim/schulfaecher/$1"
   },
   {
+    "prefix": "kit.mtxx",
+    "uri_format": "https://purls.helmholtz-metadaten.de/vp/kitmtxx-41732562-vp/$1"
+  },
+  {
     "prefix": "labo",
     "uri_format": "http://purl.obolibrary.org/obo/LABO_$1",
     "pattern": "^\\d{7}$"
@@ -3101,13 +3418,20 @@
     ]
   },
   {
+    "prefix": "lcsh.genreforms",
+    "uri_format": "http://id.loc.gov/authorities/genreForms/$1"
+  },
+  {
     "prefix": "lepao",
     "uri_format": "http://purl.obolibrary.org/obo/LEPAO_$1",
     "pattern": "^\\d{7}$"
   },
   {
     "prefix": "lexvo.ontology",
-    "uri_format": "http://lexvo.org/ontology#$1"
+    "uri_format": "http://lexvo.org/ontology#$1",
+    "synonyms": [
+      "lvont"
+    ]
   },
   {
     "prefix": "lifestylefactors",
@@ -3157,6 +3481,10 @@
     "pattern": "^\\d+$"
   },
   {
+    "prefix": "loop",
+    "uri_format": "https://loop.frontiersin.org/people/$1"
+  },
+  {
     "prefix": "lotus",
     "uri_format": "https://lotus.naturalproducts.net/compound/lotus_id/$1",
     "pattern": "^LTS\\d{7}$"
@@ -3169,6 +3497,26 @@
   {
     "prefix": "lrmi",
     "uri_format": "http://purl.org/dcx/lrmi-terms/$1"
+  },
+  {
+    "prefix": "lrmi.alignmenttype",
+    "uri_format": "http://purl.org/dcx/lrmi-vocabs/alignmentType/$1"
+  },
+  {
+    "prefix": "lrmi.educationalaudiencerole",
+    "uri_format": "http://purl.org/dcx/lrmi-vocabs/educationalAudienceRole/$1"
+  },
+  {
+    "prefix": "lrmi.eduse",
+    "uri_format": "http://purl.org/dcx/lrmi-vocabs/educationalUse/$1"
+  },
+  {
+    "prefix": "lrmi.interact",
+    "uri_format": "http://purl.org/dcx/lrmi-vocabs/interactivityType/$1"
+  },
+  {
+    "prefix": "lrmi.resourcetype",
+    "uri_format": "http://purl.org/dcx/lrmi-vocabs/learningResourceType/$1"
   },
   {
     "prefix": "lspci",
@@ -3276,6 +3624,7 @@
   {
     "prefix": "mesh",
     "uri_format": "https://meshb.nlm.nih.gov/record/ui?ui=$1",
+    "pattern": "^(C|D|Q)\\d+$",
     "synonyms": [
       "MESH",
       "MESHA",
@@ -3313,6 +3662,11 @@
     "prefix": "metatlas.reaction",
     "uri_format": "https://metabolicatlas.org/identifier/MetabolicAtlas/$1",
     "pattern": "^MAR\\d{5}$"
+  },
+  {
+    "prefix": "metpo",
+    "uri_format": "https://w3id.org/metpo/$1",
+    "pattern": "^\\d+$"
   },
   {
     "prefix": "mf",
@@ -3456,6 +3810,11 @@
     "prefix": "molbic.protein",
     "uri_format": "https://molbic.idrblab.net/data/protein/details/$1",
     "pattern": "^PT\\d+$"
+  },
+  {
+    "prefix": "molgluedb",
+    "uri_format": "https://www.molgluedb.com/browseDB/$1",
+    "pattern": "^\\d+$"
   },
   {
     "prefix": "mondo",
@@ -4053,6 +4412,10 @@
     ]
   },
   {
+    "prefix": "ocdo",
+    "uri_format": "http://purls.helmholtz-metadaten.de/cdos/cdco/$1"
+  },
+  {
     "prefix": "odrl",
     "uri_format": "http://www.w3.org/ns/odrl/2/$1"
   },
@@ -4061,12 +4424,21 @@
     "uri_format": "http://w3id.org/openeduhub/vocabs/educationalLevel/$1"
   },
   {
+    "prefix": "oeo",
+    "uri_format": "https://openenergyplatform.org/ontology/oeo/OEO_$1",
+    "pattern": "^\\d+$"
+  },
+  {
     "prefix": "oerschema",
     "uri_format": "https://oerschema.org/$1"
   },
   {
     "prefix": "og",
     "uri_format": "https://ogp.me/ns#$1"
+  },
+  {
+    "prefix": "ogc.sf",
+    "uri_format": "http://www.opengis.net/ont/sf#$1"
   },
   {
     "prefix": "ogg",
@@ -4242,6 +4614,10 @@
     "pattern": "^[WAICV]\\d{2,}$"
   },
   {
+    "prefix": "openeduhub.context",
+    "uri_format": "http://w3id.org/openeduhub/vocabs/educationalContext/$1"
+  },
+  {
     "prefix": "openwemi",
     "uri_format": "https://dcmi.github.io/openwemi/ns#$1",
     "pattern": "^\\w+$"
@@ -4318,6 +4694,15 @@
   {
     "prefix": "packagist",
     "uri_format": "https://packagist.org/packages/$1"
+  },
+  {
+    "prefix": "pahg",
+    "uri_format": "https://www.pahgncb.com/genomedb/public/genefamily/$1",
+    "pattern": "^\\d+$"
+  },
+  {
+    "prefix": "panet",
+    "uri_format": "http://purl.org/pan-science/PaNET/PaNET$1"
   },
   {
     "prefix": "panorama",
@@ -4492,6 +4877,11 @@
     ]
   },
   {
+    "prefix": "pmads",
+    "uri_format": "https://pmads-db.org/result/?id=$1",
+    "pattern": "^acc\\d{4}$"
+  },
+  {
     "prefix": "po",
     "uri_format": "http://purl.obolibrary.org/obo/PO_$1",
     "pattern": "^\\d+$"
@@ -4535,7 +4925,10 @@
   },
   {
     "prefix": "premis",
-    "uri_format": "http://www.loc.gov/premis/rdf/v3/$1"
+    "uri_format": "http://www.loc.gov/premis/rdf/v3/$1",
+    "synonyms": [
+      "premis3"
+    ]
   },
   {
     "prefix": "pride",
@@ -4575,6 +4968,13 @@
     "pattern": "^\\d{7}$"
   },
   {
+    "prefix": "pseudogene",
+    "uri_format": "https://bioregistry.io/pseudogene:$1",
+    "synonyms": [
+      "pseudogene.org"
+    ]
+  },
+  {
     "prefix": "psipar",
     "uri_format": "https://www.ebi.ac.uk/ontology-lookup/?termId=PAR:$1",
     "pattern": "^\\d+$"
@@ -4588,6 +4988,10 @@
     "prefix": "psskb",
     "uri_format": "https://psskb.org/motif/card/$1",
     "pattern": "^[A-Za-z0-9_]+$"
+  },
+  {
+    "prefix": "pto",
+    "uri_format": "http://www.productontology.org/id/$1"
   },
   {
     "prefix": "ptr",
@@ -4730,6 +5134,11 @@
     "synonyms": [
       "ribocenter"
     ]
+  },
+  {
+    "prefix": "ribocirc",
+    "uri_format": "http://www.ribocirc.com/rna_detail.php?circ_id=$1",
+    "pattern": "^(hsa|mmu|rno|cel|dme|dre)_ribocirc[A-Za-z0-9.:]+_\\d{3}$"
   },
   {
     "prefix": "rnajunction",
@@ -4987,6 +5396,10 @@
     "pattern": "^\\w+$"
   },
   {
+    "prefix": "shnex",
+    "uri_format": "http://www.w3.org/ns/shacl-node-expr#$1"
+  },
+  {
     "prefix": "sider.drug",
     "uri_format": "http://sideeffects.embl.de/drugs/$1"
   },
@@ -5017,7 +5430,10 @@
   },
   {
     "prefix": "sioc.core",
-    "uri_format": "http://rdfs.org/sioc/ns#$1"
+    "uri_format": "http://rdfs.org/sioc/ns#$1",
+    "synonyms": [
+      "sioc"
+    ]
   },
   {
     "prefix": "sioc.quote",
@@ -5105,7 +5521,7 @@
   },
   {
     "prefix": "snomedct",
-    "uri_format": "http://snomed.info/id/$1",
+    "uri_format": "http://purl.bioontology.org/ontology/SNOMEDCT/$1",
     "synonyms": [
       "SCTID",
       "SCTID_2010_1_31",
@@ -5154,6 +5570,10 @@
   {
     "prefix": "sosa",
     "uri_format": "http://www.w3.org/ns/sosa/$1"
+  },
+  {
+    "prefix": "sparql",
+    "uri_format": "http://www.w3.org/ns/sparql#$1"
   },
   {
     "prefix": "spd",
@@ -5227,7 +5647,7 @@
   },
   {
     "prefix": "streptomedb",
-    "uri_format": "http://streptomedb.vm.uni-freiburg.de:8000/streptomedb/get_drugcard/$1",
+    "uri_format": "http://streptomedb.vm.uni-freiburg.de/streptomedb/get_drugcard/$1",
     "pattern": "^\\d+$"
   },
   {
@@ -5269,10 +5689,1576 @@
     "pattern": "^\\d+$"
   },
   {
-    "prefix": "sweetrealm",
+    "prefix": "sweet",
+    "uri_format": "http://sweetontology.net/human/$1"
+  },
+  {
+    "prefix": "sweet.hu",
+    "uri_format": "http://sweetontology.net/human/$1",
+    "synonyms": [
+      "sohu"
+    ]
+  },
+  {
+    "prefix": "sweet.hua",
+    "uri_format": "http://sweetontology.net/humanAgriculture/$1",
+    "synonyms": [
+      "sohua"
+    ]
+  },
+  {
+    "prefix": "sweet.huc",
+    "uri_format": "http://sweetontology.net/humanCommerce/$1",
+    "synonyms": [
+      "sohuc"
+    ]
+  },
+  {
+    "prefix": "sweet.hud",
+    "uri_format": "http://sweetontology.net/humanDecision/$1",
+    "synonyms": [
+      "sohud"
+    ]
+  },
+  {
+    "prefix": "sweet.huea",
+    "uri_format": "http://sweetontology.net/humanEnvirAssessment/$1",
+    "synonyms": [
+      "sohuea"
+    ]
+  },
+  {
+    "prefix": "sweet.hueccont",
+    "uri_format": "http://sweetontology.net/humanEnvirControl/$1",
+    "synonyms": [
+      "sohueccont"
+    ]
+  },
+  {
+    "prefix": "sweet.huecons",
+    "uri_format": "http://sweetontology.net/humanEnvirConservation/$1",
+    "synonyms": [
+      "sohuecons"
+    ]
+  },
+  {
+    "prefix": "sweet.hues",
+    "uri_format": "http://sweetontology.net/humanEnvirStandards/$1",
+    "synonyms": [
+      "sohues"
+    ]
+  },
+  {
+    "prefix": "sweet.huj",
+    "uri_format": "http://sweetontology.net/humanJurisdiction/$1",
+    "synonyms": [
+      "sohuj"
+    ]
+  },
+  {
+    "prefix": "sweet.hukd",
+    "uri_format": "http://sweetontology.net/humanKnowledgeDomain/$1",
+    "synonyms": [
+      "sohukd"
+    ]
+  },
+  {
+    "prefix": "sweet.hur",
+    "uri_format": "http://sweetontology.net/humanResearch/$1",
+    "synonyms": [
+      "sohur"
+    ]
+  },
+  {
+    "prefix": "sweet.hut",
+    "uri_format": "http://sweetontology.net/humanTransportation/$1",
+    "synonyms": [
+      "sohut"
+    ]
+  },
+  {
+    "prefix": "sweet.hutr",
+    "uri_format": "http://sweetontology.net/humanTechReadiness/$1",
+    "synonyms": [
+      "sohutr"
+    ]
+  },
+  {
+    "prefix": "sweet.ma",
+    "uri_format": "http://sweetontology.net/matr/$1",
+    "synonyms": [
+      "soma"
+    ]
+  },
+  {
+    "prefix": "sweet.maae",
+    "uri_format": "http://sweetontology.net/matrAerosol/$1",
+    "synonyms": [
+      "somaae"
+    ]
+  },
+  {
+    "prefix": "sweet.mab",
+    "uri_format": "http://sweetontology.net/matrBiomass/$1",
+    "synonyms": [
+      "somab"
+    ]
+  },
+  {
+    "prefix": "sweet.mac",
+    "uri_format": "http://sweetontology.net/matrCompound/$1",
+    "synonyms": [
+      "somac"
+    ]
+  },
+  {
+    "prefix": "sweet.mael",
+    "uri_format": "http://sweetontology.net/matrElement/$1",
+    "synonyms": [
+      "somael"
+    ]
+  },
+  {
+    "prefix": "sweet.maem",
+    "uri_format": "http://sweetontology.net/matrElementalMolecule/$1",
+    "synonyms": [
+      "somaem"
+    ]
+  },
+  {
+    "prefix": "sweet.maen",
+    "uri_format": "http://sweetontology.net/matrEnergy/$1",
+    "synonyms": [
+      "somaen"
+    ]
+  },
+  {
+    "prefix": "sweet.maeq",
+    "uri_format": "http://sweetontology.net/matrEquipment/$1",
+    "synonyms": [
+      "somaeq"
+    ]
+  },
+  {
+    "prefix": "sweet.maf",
+    "uri_format": "http://sweetontology.net/matrFacility/$1",
+    "synonyms": [
+      "somaf"
+    ]
+  },
+  {
+    "prefix": "sweet.maind",
+    "uri_format": "http://sweetontology.net/matrIndustrial/$1",
+    "synonyms": [
+      "somaind"
+    ]
+  },
+  {
+    "prefix": "sweet.mains",
+    "uri_format": "http://sweetontology.net/matrInstrument/$1",
+    "synonyms": [
+      "somains"
+    ]
+  },
+  {
+    "prefix": "sweet.maio",
+    "uri_format": "http://sweetontology.net/matrIon/$1",
+    "synonyms": [
+      "somaio"
+    ]
+  },
+  {
+    "prefix": "sweet.mais",
+    "uri_format": "http://sweetontology.net/matrIsotope/$1",
+    "synonyms": [
+      "somais"
+    ]
+  },
+  {
+    "prefix": "sweet.mamic",
+    "uri_format": "http://sweetontology.net/matrMicrobiota/$1",
+    "synonyms": [
+      "somamic"
+    ]
+  },
+  {
+    "prefix": "sweet.mamin",
     "uri_format": "http://sweetontology.net/matrMineral/$1",
     "synonyms": [
-      "SWEETRealm"
+      "somamin"
+    ]
+  },
+  {
+    "prefix": "sweet.man",
+    "uri_format": "http://sweetontology.net/matrAnimal/$1",
+    "synonyms": [
+      "soman"
+    ]
+  },
+  {
+    "prefix": "sweet.manr",
+    "uri_format": "http://sweetontology.net/matrNaturalResource/$1",
+    "synonyms": [
+      "somanr"
+    ]
+  },
+  {
+    "prefix": "sweet.maoc",
+    "uri_format": "http://sweetontology.net/matrOrganicCompound/$1",
+    "synonyms": [
+      "somaoc"
+    ]
+  },
+  {
+    "prefix": "sweet.mapa",
+    "uri_format": "http://sweetontology.net/matrParticle/$1",
+    "synonyms": [
+      "somapa"
+    ]
+  },
+  {
+    "prefix": "sweet.mapl",
+    "uri_format": "http://sweetontology.net/matrPlant/$1",
+    "synonyms": [
+      "somapl"
+    ]
+  },
+  {
+    "prefix": "sweet.marock",
+    "uri_format": "http://sweetontology.net/matrRock/$1",
+    "synonyms": [
+      "somarock"
+    ]
+  },
+  {
+    "prefix": "sweet.marocki",
+    "uri_format": "http://sweetontology.net/matrRockIgneous/$1",
+    "synonyms": [
+      "somarocki"
+    ]
+  },
+  {
+    "prefix": "sweet.mas",
+    "uri_format": "http://sweetontology.net/matrSediment/$1",
+    "synonyms": [
+      "somas"
+    ]
+  },
+  {
+    "prefix": "sweet.maw",
+    "uri_format": "http://sweetontology.net/matrWater/$1",
+    "synonyms": [
+      "somaw"
+    ]
+  },
+  {
+    "prefix": "sweet.ph",
+    "uri_format": "http://sweetontology.net/phen/$1",
+    "synonyms": [
+      "soph"
+    ]
+  },
+  {
+    "prefix": "sweet.phatmo",
+    "uri_format": "http://sweetontology.net/phenAtmo/$1",
+    "synonyms": [
+      "sophatmo"
+    ]
+  },
+  {
+    "prefix": "sweet.phatmoc",
+    "uri_format": "http://sweetontology.net/phenAtmoCloud/$1",
+    "synonyms": [
+      "sophatmoc"
+    ]
+  },
+  {
+    "prefix": "sweet.phatmofo",
+    "uri_format": "http://sweetontology.net/phenAtmoFog/$1",
+    "synonyms": [
+      "sophatmofo"
+    ]
+  },
+  {
+    "prefix": "sweet.phatmofr",
+    "uri_format": "http://sweetontology.net/phenAtmoFront/$1",
+    "synonyms": [
+      "sophatmofr"
+    ]
+  },
+  {
+    "prefix": "sweet.phatmol",
+    "uri_format": "http://sweetontology.net/phenAtmoLightning/$1",
+    "synonyms": [
+      "sophatmol"
+    ]
+  },
+  {
+    "prefix": "sweet.phatmopc",
+    "uri_format": "http://sweetontology.net/phenAtmoPrecipitation/$1",
+    "synonyms": [
+      "sophatmopc"
+    ]
+  },
+  {
+    "prefix": "sweet.phatmops",
+    "uri_format": "http://sweetontology.net/phenAtmoPressure/$1",
+    "synonyms": [
+      "sophatmops"
+    ]
+  },
+  {
+    "prefix": "sweet.phatmos",
+    "uri_format": "http://sweetontology.net/phenAtmoSky/$1",
+    "synonyms": [
+      "sophatmos"
+    ]
+  },
+  {
+    "prefix": "sweet.phatmot",
+    "uri_format": "http://sweetontology.net/phenAtmoTransport/$1",
+    "synonyms": [
+      "sophatmot"
+    ]
+  },
+  {
+    "prefix": "sweet.phatmow",
+    "uri_format": "http://sweetontology.net/phenAtmoWind/$1",
+    "synonyms": [
+      "sophatmow"
+    ]
+  },
+  {
+    "prefix": "sweet.phatmowm",
+    "uri_format": "http://sweetontology.net/phenAtmoWindMesoscale/$1",
+    "synonyms": [
+      "sophatmowm"
+    ]
+  },
+  {
+    "prefix": "sweet.phb",
+    "uri_format": "http://sweetontology.net/phenBiol/$1",
+    "synonyms": [
+      "sophb"
+    ]
+  },
+  {
+    "prefix": "sweet.phcm",
+    "uri_format": "http://sweetontology.net/phenCycleMaterial/$1",
+    "synonyms": [
+      "sophcm"
+    ]
+  },
+  {
+    "prefix": "sweet.phcr",
+    "uri_format": "http://sweetontology.net/phenCryo/$1",
+    "synonyms": [
+      "sophcr"
+    ]
+  },
+  {
+    "prefix": "sweet.phcy",
+    "uri_format": "http://sweetontology.net/phenCycle/$1",
+    "synonyms": [
+      "sophcy"
+    ]
+  },
+  {
+    "prefix": "sweet.phec",
+    "uri_format": "http://sweetontology.net/phenEcology/$1",
+    "synonyms": [
+      "sophec"
+    ]
+  },
+  {
+    "prefix": "sweet.phei",
+    "uri_format": "http://sweetontology.net/phenEnvirImpact/$1",
+    "synonyms": [
+      "sophei"
+    ]
+  },
+  {
+    "prefix": "sweet.phel",
+    "uri_format": "http://sweetontology.net/phenElecMag/$1",
+    "synonyms": [
+      "sophel"
+    ]
+  },
+  {
+    "prefix": "sweet.phen",
+    "uri_format": "http://sweetontology.net/phenEnergy/$1",
+    "synonyms": [
+      "sophen"
+    ]
+  },
+  {
+    "prefix": "sweet.phfd",
+    "uri_format": "http://sweetontology.net/phenFluidDynamics/$1",
+    "synonyms": [
+      "sophfd"
+    ]
+  },
+  {
+    "prefix": "sweet.phfi",
+    "uri_format": "http://sweetontology.net/phenFluidInstability/$1",
+    "synonyms": [
+      "sophfi"
+    ]
+  },
+  {
+    "prefix": "sweet.phft",
+    "uri_format": "http://sweetontology.net/phenFluidTransport/$1",
+    "synonyms": [
+      "sophft"
+    ]
+  },
+  {
+    "prefix": "sweet.phg",
+    "uri_format": "http://sweetontology.net/phenGeol/$1",
+    "synonyms": [
+      "sophg"
+    ]
+  },
+  {
+    "prefix": "sweet.phgf",
+    "uri_format": "http://sweetontology.net/phenGeolFault/$1",
+    "synonyms": [
+      "sophgf"
+    ]
+  },
+  {
+    "prefix": "sweet.phgg",
+    "uri_format": "http://sweetontology.net/phenGeolGeomorphology/$1",
+    "synonyms": [
+      "sophgg"
+    ]
+  },
+  {
+    "prefix": "sweet.phgs",
+    "uri_format": "http://sweetontology.net/phenGeolSeismicity/$1",
+    "synonyms": [
+      "sophgs"
+    ]
+  },
+  {
+    "prefix": "sweet.phgt",
+    "uri_format": "http://sweetontology.net/phenGeolTectonic/$1",
+    "synonyms": [
+      "sophgt"
+    ]
+  },
+  {
+    "prefix": "sweet.phgv",
+    "uri_format": "http://sweetontology.net/phenGeolVolcano/$1",
+    "synonyms": [
+      "sophgv"
+    ]
+  },
+  {
+    "prefix": "sweet.phhe",
+    "uri_format": "http://sweetontology.net/phenHelio/$1",
+    "synonyms": [
+      "sophhe"
+    ]
+  },
+  {
+    "prefix": "sweet.phhy",
+    "uri_format": "http://sweetontology.net/phenHydro/$1",
+    "synonyms": [
+      "sophhy"
+    ]
+  },
+  {
+    "prefix": "sweet.phm",
+    "uri_format": "http://sweetontology.net/phenMixing/$1",
+    "synonyms": [
+      "sophm"
+    ]
+  },
+  {
+    "prefix": "sweet.pho",
+    "uri_format": "http://sweetontology.net/phenOcean/$1",
+    "synonyms": [
+      "sopho"
+    ]
+  },
+  {
+    "prefix": "sweet.phoc",
+    "uri_format": "http://sweetontology.net/phenOceanCoastal/$1",
+    "synonyms": [
+      "sophoc"
+    ]
+  },
+  {
+    "prefix": "sweet.phod",
+    "uri_format": "http://sweetontology.net/phenOceanDynamics/$1",
+    "synonyms": [
+      "sophod"
+    ]
+  },
+  {
+    "prefix": "sweet.phpc",
+    "uri_format": "http://sweetontology.net/phenPlanetClimate/$1",
+    "synonyms": [
+      "sophpc"
+    ]
+  },
+  {
+    "prefix": "sweet.phr",
+    "uri_format": "http://sweetontology.net/phenReaction/$1",
+    "synonyms": [
+      "sophr"
+    ]
+  },
+  {
+    "prefix": "sweet.phso",
+    "uri_format": "http://sweetontology.net/phenSolid/$1",
+    "synonyms": [
+      "sophso"
+    ]
+  },
+  {
+    "prefix": "sweet.phst",
+    "uri_format": "http://sweetontology.net/phenStar/$1",
+    "synonyms": [
+      "sophst"
+    ]
+  },
+  {
+    "prefix": "sweet.phsy",
+    "uri_format": "http://sweetontology.net/phenSystem/$1",
+    "synonyms": [
+      "sophsy"
+    ]
+  },
+  {
+    "prefix": "sweet.phsyc",
+    "uri_format": "http://sweetontology.net/phenSystemComplexity/$1",
+    "synonyms": [
+      "sophsyc"
+    ]
+  },
+  {
+    "prefix": "sweet.phw",
+    "uri_format": "http://sweetontology.net/phenWave/$1",
+    "synonyms": [
+      "sophw"
+    ]
+  },
+  {
+    "prefix": "sweet.phwn",
+    "uri_format": "http://sweetontology.net/phenWaveNoise/$1",
+    "synonyms": [
+      "sophwn"
+    ]
+  },
+  {
+    "prefix": "sweet.proc",
+    "uri_format": "http://sweetontology.net/proc/$1",
+    "synonyms": [
+      "soproc"
+    ]
+  },
+  {
+    "prefix": "sweet.procc",
+    "uri_format": "http://sweetontology.net/procChemical/$1",
+    "synonyms": [
+      "soprocc"
+    ]
+  },
+  {
+    "prefix": "sweet.procp",
+    "uri_format": "http://sweetontology.net/procPhysical/$1",
+    "synonyms": [
+      "soprocp"
+    ]
+  },
+  {
+    "prefix": "sweet.procsc",
+    "uri_format": "http://sweetontology.net/procStateChange/$1",
+    "synonyms": [
+      "soprocsc"
+    ]
+  },
+  {
+    "prefix": "sweet.procw",
+    "uri_format": "http://sweetontology.net/procWave/$1",
+    "synonyms": [
+      "soprocw"
+    ]
+  },
+  {
+    "prefix": "sweet.prop",
+    "uri_format": "http://sweetontology.net/prop/$1",
+    "synonyms": [
+      "soprop"
+    ]
+  },
+  {
+    "prefix": "sweet.propb",
+    "uri_format": "http://sweetontology.net/propBinary/$1",
+    "synonyms": [
+      "sopropb"
+    ]
+  },
+  {
+    "prefix": "sweet.propcap",
+    "uri_format": "http://sweetontology.net/propCapacity/$1",
+    "synonyms": [
+      "sopropcap"
+    ]
+  },
+  {
+    "prefix": "sweet.propcat",
+    "uri_format": "http://sweetontology.net/propCategorical/$1",
+    "synonyms": [
+      "sopropcat"
+    ]
+  },
+  {
+    "prefix": "sweet.propcha",
+    "uri_format": "http://sweetontology.net/propCharge/$1",
+    "synonyms": [
+      "sopropcha"
+    ]
+  },
+  {
+    "prefix": "sweet.propche",
+    "uri_format": "http://sweetontology.net/propChemical/$1",
+    "synonyms": [
+      "sopropche"
+    ]
+  },
+  {
+    "prefix": "sweet.propcon",
+    "uri_format": "http://sweetontology.net/propConductivity/$1",
+    "synonyms": [
+      "sopropcon"
+    ]
+  },
+  {
+    "prefix": "sweet.propcou",
+    "uri_format": "http://sweetontology.net/propCount/$1",
+    "synonyms": [
+      "sopropcou"
+    ]
+  },
+  {
+    "prefix": "sweet.propdife",
+    "uri_format": "http://sweetontology.net/propDifference/$1",
+    "synonyms": [
+      "sopropdife"
+    ]
+  },
+  {
+    "prefix": "sweet.propdifu",
+    "uri_format": "http://sweetontology.net/propDiffusivity/$1",
+    "synonyms": [
+      "sopropdifu"
+    ]
+  },
+  {
+    "prefix": "sweet.propdr",
+    "uri_format": "http://sweetontology.net/propDimensionlessRatio/$1",
+    "synonyms": [
+      "sopropdr"
+    ]
+  },
+  {
+    "prefix": "sweet.prope",
+    "uri_format": "http://sweetontology.net/propEnergy/$1",
+    "synonyms": [
+      "soprope"
+    ]
+  },
+  {
+    "prefix": "sweet.propef",
+    "uri_format": "http://sweetontology.net/propEnergyFlux/$1",
+    "synonyms": [
+      "sopropef"
+    ]
+  },
+  {
+    "prefix": "sweet.propfr",
+    "uri_format": "http://sweetontology.net/propFraction/$1",
+    "synonyms": [
+      "sopropfr"
+    ]
+  },
+  {
+    "prefix": "sweet.propfu",
+    "uri_format": "http://sweetontology.net/propFunction/$1",
+    "synonyms": [
+      "sopropfu"
+    ]
+  },
+  {
+    "prefix": "sweet.propi",
+    "uri_format": "http://sweetontology.net/propIndex/$1",
+    "synonyms": [
+      "sopropi"
+    ]
+  },
+  {
+    "prefix": "sweet.propm",
+    "uri_format": "http://sweetontology.net/propMass/$1",
+    "synonyms": [
+      "sopropm"
+    ]
+  },
+  {
+    "prefix": "sweet.propmf",
+    "uri_format": "http://sweetontology.net/propMassFlux/$1",
+    "synonyms": [
+      "sopropmf"
+    ]
+  },
+  {
+    "prefix": "sweet.propo",
+    "uri_format": "http://sweetontology.net/propOrdinal/$1",
+    "synonyms": [
+      "sopropo"
+    ]
+  },
+  {
+    "prefix": "sweet.propp",
+    "uri_format": "http://sweetontology.net/propPressure/$1",
+    "synonyms": [
+      "sopropp"
+    ]
+  },
+  {
+    "prefix": "sweet.propq",
+    "uri_format": "http://sweetontology.net/propQuantity/$1",
+    "synonyms": [
+      "sopropq"
+    ]
+  },
+  {
+    "prefix": "sweet.propr",
+    "uri_format": "http://sweetontology.net/propRotation/$1",
+    "synonyms": [
+      "sopropr"
+    ]
+  },
+  {
+    "prefix": "sweet.props",
+    "uri_format": "http://sweetontology.net/propSpace/$1",
+    "synonyms": [
+      "soprops"
+    ]
+  },
+  {
+    "prefix": "sweet.propsdir",
+    "uri_format": "http://sweetontology.net/propSpaceDirection/$1",
+    "synonyms": [
+      "sopropsdir"
+    ]
+  },
+  {
+    "prefix": "sweet.propsdis",
+    "uri_format": "http://sweetontology.net/propSpaceDistance/$1",
+    "synonyms": [
+      "sopropsdis"
+    ]
+  },
+  {
+    "prefix": "sweet.propsh",
+    "uri_format": "http://sweetontology.net/propSpaceHeight/$1",
+    "synonyms": [
+      "sopropsh"
+    ]
+  },
+  {
+    "prefix": "sweet.propsl",
+    "uri_format": "http://sweetontology.net/propSpaceLocation/$1",
+    "synonyms": [
+      "sopropsl"
+    ]
+  },
+  {
+    "prefix": "sweet.propsm",
+    "uri_format": "http://sweetontology.net/propSpaceMultidimensional/$1",
+    "synonyms": [
+      "sopropsm"
+    ]
+  },
+  {
+    "prefix": "sweet.propsp",
+    "uri_format": "http://sweetontology.net/propSpeed/$1",
+    "synonyms": [
+      "sopropsp"
+    ]
+  },
+  {
+    "prefix": "sweet.propst",
+    "uri_format": "http://sweetontology.net/propSpaceThickness/$1",
+    "synonyms": [
+      "sopropst"
+    ]
+  },
+  {
+    "prefix": "sweet.propt",
+    "uri_format": "http://sweetontology.net/propTemperature/$1",
+    "synonyms": [
+      "sopropt"
+    ]
+  },
+  {
+    "prefix": "sweet.proptf",
+    "uri_format": "http://sweetontology.net/propTimeFrequency/$1",
+    "synonyms": [
+      "soproptf"
+    ]
+  },
+  {
+    "prefix": "sweet.proptg",
+    "uri_format": "http://sweetontology.net/propTemperatureGradient/$1",
+    "synonyms": [
+      "soproptg"
+    ]
+  },
+  {
+    "prefix": "sweet.propti",
+    "uri_format": "http://sweetontology.net/propTime/$1",
+    "synonyms": [
+      "sopropti"
+    ]
+  },
+  {
+    "prefix": "sweet.rea",
+    "uri_format": "http://sweetontology.net/realm/$1",
+    "synonyms": [
+      "SWEETRealm",
+      "sorea"
+    ]
+  },
+  {
+    "prefix": "sweet.reaa",
+    "uri_format": "http://sweetontology.net/realmAtmo/$1",
+    "synonyms": [
+      "soreaa"
+    ]
+  },
+  {
+    "prefix": "sweet.reaab",
+    "uri_format": "http://sweetontology.net/realmAstroBody/$1",
+    "synonyms": [
+      "soreaab"
+    ]
+  },
+  {
+    "prefix": "sweet.reaabl",
+    "uri_format": "http://sweetontology.net/realmAtmoBoundaryLayer/$1",
+    "synonyms": [
+      "soreaabl"
+    ]
+  },
+  {
+    "prefix": "sweet.reaah",
+    "uri_format": "http://sweetontology.net/realmAstroHelio/$1",
+    "synonyms": [
+      "soreaah"
+    ]
+  },
+  {
+    "prefix": "sweet.reaas",
+    "uri_format": "http://sweetontology.net/realmAstroStar/$1",
+    "synonyms": [
+      "soreaas"
+    ]
+  },
+  {
+    "prefix": "sweet.reaaw",
+    "uri_format": "http://sweetontology.net/realmAtmoWeather/$1",
+    "synonyms": [
+      "soreaaw"
+    ]
+  },
+  {
+    "prefix": "sweet.reabb",
+    "uri_format": "http://sweetontology.net/realmBiolBiome/$1",
+    "synonyms": [
+      "soreabb"
+    ]
+  },
+  {
+    "prefix": "sweet.reac",
+    "uri_format": "http://sweetontology.net/realmCryo/$1",
+    "synonyms": [
+      "soreac"
+    ]
+  },
+  {
+    "prefix": "sweet.reacz",
+    "uri_format": "http://sweetontology.net/realmClimateZone/$1",
+    "synonyms": [
+      "soreacz"
+    ]
+  },
+  {
+    "prefix": "sweet.reaer",
+    "uri_format": "http://sweetontology.net/realmEarthReference/$1",
+    "synonyms": [
+      "soreaer"
+    ]
+  },
+  {
+    "prefix": "sweet.reag",
+    "uri_format": "http://sweetontology.net/realmGeol/$1",
+    "synonyms": [
+      "soreag"
+    ]
+  },
+  {
+    "prefix": "sweet.reagb",
+    "uri_format": "http://sweetontology.net/realmGeolBasin/$1",
+    "synonyms": [
+      "soreagb"
+    ]
+  },
+  {
+    "prefix": "sweet.reagcons",
+    "uri_format": "http://sweetontology.net/realmGeolConstituent/$1",
+    "synonyms": [
+      "soreagcons"
+    ]
+  },
+  {
+    "prefix": "sweet.reagcont",
+    "uri_format": "http://sweetontology.net/realmGeolContinental/$1",
+    "synonyms": [
+      "soreagcont"
+    ]
+  },
+  {
+    "prefix": "sweet.reagoc",
+    "uri_format": "http://sweetontology.net/realmGeolOceanic/$1",
+    "synonyms": [
+      "soreagoc"
+    ]
+  },
+  {
+    "prefix": "sweet.reagor",
+    "uri_format": "http://sweetontology.net/realmGeolOrogen/$1",
+    "synonyms": [
+      "soreagor"
+    ]
+  },
+  {
+    "prefix": "sweet.reah",
+    "uri_format": "http://sweetontology.net/realmHydro/$1",
+    "synonyms": [
+      "soreah"
+    ]
+  },
+  {
+    "prefix": "sweet.reahb",
+    "uri_format": "http://sweetontology.net/realmHydroBody/$1",
+    "synonyms": [
+      "soreahb"
+    ]
+  },
+  {
+    "prefix": "sweet.real",
+    "uri_format": "http://sweetontology.net/realmLandform/$1",
+    "synonyms": [
+      "soreal"
+    ]
+  },
+  {
+    "prefix": "sweet.reala",
+    "uri_format": "http://sweetontology.net/realmLandAeolian/$1",
+    "synonyms": [
+      "soreala"
+    ]
+  },
+  {
+    "prefix": "sweet.realc",
+    "uri_format": "http://sweetontology.net/realmLandCoastal/$1",
+    "synonyms": [
+      "sorealc"
+    ]
+  },
+  {
+    "prefix": "sweet.realf",
+    "uri_format": "http://sweetontology.net/realmLandFluvial/$1",
+    "synonyms": [
+      "sorealf"
+    ]
+  },
+  {
+    "prefix": "sweet.realg",
+    "uri_format": "http://sweetontology.net/realmLandGlacial/$1",
+    "synonyms": [
+      "sorealg"
+    ]
+  },
+  {
+    "prefix": "sweet.realo",
+    "uri_format": "http://sweetontology.net/realmLandOrographic/$1",
+    "synonyms": [
+      "sorealo"
+    ]
+  },
+  {
+    "prefix": "sweet.realp",
+    "uri_format": "http://sweetontology.net/realmLandProtected/$1",
+    "synonyms": [
+      "sorealp"
+    ]
+  },
+  {
+    "prefix": "sweet.realt",
+    "uri_format": "http://sweetontology.net/realmLandTectonic/$1",
+    "synonyms": [
+      "sorealt"
+    ]
+  },
+  {
+    "prefix": "sweet.realv",
+    "uri_format": "http://sweetontology.net/realmLandVolcanic/$1",
+    "synonyms": [
+      "sorealv"
+    ]
+  },
+  {
+    "prefix": "sweet.reao",
+    "uri_format": "http://sweetontology.net/realmOcean/$1",
+    "synonyms": [
+      "soreao"
+    ]
+  },
+  {
+    "prefix": "sweet.reaofe",
+    "uri_format": "http://sweetontology.net/realmOceanFeature/$1",
+    "synonyms": [
+      "soreaofe"
+    ]
+  },
+  {
+    "prefix": "sweet.reaofl",
+    "uri_format": "http://sweetontology.net/realmOceanFloor/$1",
+    "synonyms": [
+      "soreaofl"
+    ]
+  },
+  {
+    "prefix": "sweet.rear",
+    "uri_format": "http://sweetontology.net/realmRegion/$1",
+    "synonyms": [
+      "sorear"
+    ]
+  },
+  {
+    "prefix": "sweet.reas",
+    "uri_format": "http://sweetontology.net/realmSoil/$1",
+    "synonyms": [
+      "soreas"
+    ]
+  },
+  {
+    "prefix": "sweet.rel",
+    "uri_format": "http://sweetontology.net/rela/$1",
+    "synonyms": [
+      "sorel"
+    ]
+  },
+  {
+    "prefix": "sweet.relch",
+    "uri_format": "http://sweetontology.net/relaChemical/$1",
+    "synonyms": [
+      "sorelch"
+    ]
+  },
+  {
+    "prefix": "sweet.relcl",
+    "uri_format": "http://sweetontology.net/relaClimate/$1",
+    "synonyms": [
+      "sorelcl"
+    ]
+  },
+  {
+    "prefix": "sweet.relh",
+    "uri_format": "http://sweetontology.net/relaHuman/$1",
+    "synonyms": [
+      "sorelh"
+    ]
+  },
+  {
+    "prefix": "sweet.relm",
+    "uri_format": "http://sweetontology.net/relaMath/$1",
+    "synonyms": [
+      "sorelm"
+    ]
+  },
+  {
+    "prefix": "sweet.relph",
+    "uri_format": "http://sweetontology.net/relaPhysical/$1",
+    "synonyms": [
+      "sorelph"
+    ]
+  },
+  {
+    "prefix": "sweet.relpr",
+    "uri_format": "http://sweetontology.net/relaProvenance/$1",
+    "synonyms": [
+      "sorelpr"
+    ]
+  },
+  {
+    "prefix": "sweet.relsc",
+    "uri_format": "http://sweetontology.net/relaSci/$1",
+    "synonyms": [
+      "sorelsc"
+    ]
+  },
+  {
+    "prefix": "sweet.relsp",
+    "uri_format": "http://sweetontology.net/relaSpace/$1",
+    "synonyms": [
+      "sorelsp"
+    ]
+  },
+  {
+    "prefix": "sweet.relt",
+    "uri_format": "http://sweetontology.net/relaTime/$1",
+    "synonyms": [
+      "sorelt"
+    ]
+  },
+  {
+    "prefix": "sweet.rep",
+    "uri_format": "http://sweetontology.net/repr/$1",
+    "synonyms": [
+      "sorep"
+    ]
+  },
+  {
+    "prefix": "sweet.repdf",
+    "uri_format": "http://sweetontology.net/reprDataFormat/$1",
+    "synonyms": [
+      "sorepdf"
+    ]
+  },
+  {
+    "prefix": "sweet.repdm",
+    "uri_format": "http://sweetontology.net/reprDataModel/$1",
+    "synonyms": [
+      "sorepdm"
+    ]
+  },
+  {
+    "prefix": "sweet.repdp",
+    "uri_format": "http://sweetontology.net/reprDataProduct/$1",
+    "synonyms": [
+      "sorepdp"
+    ]
+  },
+  {
+    "prefix": "sweet.repds",
+    "uri_format": "http://sweetontology.net/reprDataService/$1",
+    "synonyms": [
+      "sorepds"
+    ]
+  },
+  {
+    "prefix": "sweet.repdsa",
+    "uri_format": "http://sweetontology.net/reprDataServiceAnalysis/$1",
+    "synonyms": [
+      "sorepdsa"
+    ]
+  },
+  {
+    "prefix": "sweet.repdsg",
+    "uri_format": "http://sweetontology.net/reprDataServiceGeospatial/$1",
+    "synonyms": [
+      "sorepdsg"
+    ]
+  },
+  {
+    "prefix": "sweet.repdsr",
+    "uri_format": "http://sweetontology.net/reprDataServiceReduction/$1",
+    "synonyms": [
+      "sorepdsr"
+    ]
+  },
+  {
+    "prefix": "sweet.repdsv",
+    "uri_format": "http://sweetontology.net/reprDataServiceValidation/$1",
+    "synonyms": [
+      "sorepdsv"
+    ]
+  },
+  {
+    "prefix": "sweet.repm",
+    "uri_format": "http://sweetontology.net/reprMath/$1",
+    "synonyms": [
+      "sorepm"
+    ]
+  },
+  {
+    "prefix": "sweet.repmf",
+    "uri_format": "http://sweetontology.net/reprMathFunction/$1",
+    "synonyms": [
+      "sorepmf"
+    ]
+  },
+  {
+    "prefix": "sweet.repmfo",
+    "uri_format": "http://sweetontology.net/reprMathFunctionOrthogonal/$1",
+    "synonyms": [
+      "sorepmfo"
+    ]
+  },
+  {
+    "prefix": "sweet.repmg",
+    "uri_format": "http://sweetontology.net/reprMathGraph/$1",
+    "synonyms": [
+      "sorepmg"
+    ]
+  },
+  {
+    "prefix": "sweet.repmo",
+    "uri_format": "http://sweetontology.net/reprMathOperation/$1",
+    "synonyms": [
+      "sorepmo"
+    ]
+  },
+  {
+    "prefix": "sweet.repmso",
+    "uri_format": "http://sweetontology.net/reprMathSolution/$1",
+    "synonyms": [
+      "sorepmso"
+    ]
+  },
+  {
+    "prefix": "sweet.repmst",
+    "uri_format": "http://sweetontology.net/reprMathStatistics/$1",
+    "synonyms": [
+      "sorepmst"
+    ]
+  },
+  {
+    "prefix": "sweet.reps",
+    "uri_format": "http://sweetontology.net/reprSpace/$1",
+    "synonyms": [
+      "soreps"
+    ]
+  },
+  {
+    "prefix": "sweet.repsc",
+    "uri_format": "http://sweetontology.net/reprSciComponent/$1",
+    "synonyms": [
+      "sorepsc"
+    ]
+  },
+  {
+    "prefix": "sweet.repscd",
+    "uri_format": "http://sweetontology.net/reprSpaceCoordinate/$1",
+    "synonyms": [
+      "sorepscd"
+    ]
+  },
+  {
+    "prefix": "sweet.repsd",
+    "uri_format": "http://sweetontology.net/reprSpaceDirection/$1",
+    "synonyms": [
+      "sorepsd"
+    ]
+  },
+  {
+    "prefix": "sweet.repsf",
+    "uri_format": "http://sweetontology.net/reprSciFunction/$1",
+    "synonyms": [
+      "sorepsf"
+    ]
+  },
+  {
+    "prefix": "sweet.repsg",
+    "uri_format": "http://sweetontology.net/reprSpaceGeometry/$1",
+    "synonyms": [
+      "sorepsg"
+    ]
+  },
+  {
+    "prefix": "sweet.repsg3",
+    "uri_format": "http://sweetontology.net/reprSpaceGeometry3D/$1",
+    "synonyms": [
+      "sorepsg3"
+    ]
+  },
+  {
+    "prefix": "sweet.repsl",
+    "uri_format": "http://sweetontology.net/reprSciLaw/$1",
+    "synonyms": [
+      "sorepsl"
+    ]
+  },
+  {
+    "prefix": "sweet.repsme",
+    "uri_format": "http://sweetontology.net/reprSciMethodology/$1",
+    "synonyms": [
+      "sorepsme"
+    ]
+  },
+  {
+    "prefix": "sweet.repsmo",
+    "uri_format": "http://sweetontology.net/reprSciModel/$1",
+    "synonyms": [
+      "sorepsmo"
+    ]
+  },
+  {
+    "prefix": "sweet.repsp",
+    "uri_format": "http://sweetontology.net/reprSciProvenance/$1",
+    "synonyms": [
+      "sorepsp"
+    ]
+  },
+  {
+    "prefix": "sweet.repsrs",
+    "uri_format": "http://sweetontology.net/reprSpaceReferenceSystem/$1",
+    "synonyms": [
+      "sorepsrs"
+    ]
+  },
+  {
+    "prefix": "sweet.repsu",
+    "uri_format": "http://sweetontology.net/reprSciUnits/$1",
+    "synonyms": [
+      "sorepsu"
+    ]
+  },
+  {
+    "prefix": "sweet.rept",
+    "uri_format": "http://sweetontology.net/reprTime/$1",
+    "synonyms": [
+      "sorept"
+    ]
+  },
+  {
+    "prefix": "sweet.reptd",
+    "uri_format": "http://sweetontology.net/reprTimeDay/$1",
+    "synonyms": [
+      "soreptd"
+    ]
+  },
+  {
+    "prefix": "sweet.repts",
+    "uri_format": "http://sweetontology.net/reprTimeSeason/$1",
+    "synonyms": [
+      "sorepts"
+    ]
+  },
+  {
+    "prefix": "sweet.st",
+    "uri_format": "http://sweetontology.net/state/$1",
+    "synonyms": [
+      "sost"
+    ]
+  },
+  {
+    "prefix": "sweet.stb",
+    "uri_format": "http://sweetontology.net/stateBiological/$1",
+    "synonyms": [
+      "sostb"
+    ]
+  },
+  {
+    "prefix": "sweet.stc",
+    "uri_format": "http://sweetontology.net/stateChemical/$1",
+    "synonyms": [
+      "sostc"
+    ]
+  },
+  {
+    "prefix": "sweet.stdp",
+    "uri_format": "http://sweetontology.net/stateDataProcessing/$1",
+    "synonyms": [
+      "sostdp"
+    ]
+  },
+  {
+    "prefix": "sweet.stef",
+    "uri_format": "http://sweetontology.net/stateEnergyFlux/$1",
+    "synonyms": [
+      "sostef"
+    ]
+  },
+  {
+    "prefix": "sweet.stf",
+    "uri_format": "http://sweetontology.net/stateFluid/$1",
+    "synonyms": [
+      "sostf"
+    ]
+  },
+  {
+    "prefix": "sweet.sto",
+    "uri_format": "http://sweetontology.net/stateOrdinal/$1",
+    "synonyms": [
+      "sosto"
+    ]
+  },
+  {
+    "prefix": "sweet.stp",
+    "uri_format": "http://sweetontology.net/statePhysical/$1",
+    "synonyms": [
+      "sostp"
+    ]
+  },
+  {
+    "prefix": "sweet.strb",
+    "uri_format": "http://sweetontology.net/stateRoleBiological/$1",
+    "synonyms": [
+      "sostrb"
+    ]
+  },
+  {
+    "prefix": "sweet.strc",
+    "uri_format": "http://sweetontology.net/stateRoleChemical/$1",
+    "synonyms": [
+      "sostrc"
+    ]
+  },
+  {
+    "prefix": "sweet.stre",
+    "uri_format": "http://sweetontology.net/stateRealm/$1",
+    "synonyms": [
+      "sostre"
+    ]
+  },
+  {
+    "prefix": "sweet.strg",
+    "uri_format": "http://sweetontology.net/stateRoleGeographic/$1",
+    "synonyms": [
+      "sostrg"
+    ]
+  },
+  {
+    "prefix": "sweet.stri",
+    "uri_format": "http://sweetontology.net/stateRoleImpact/$1",
+    "synonyms": [
+      "sostri"
+    ]
+  },
+  {
+    "prefix": "sweet.stro",
+    "uri_format": "http://sweetontology.net/stateRole/$1",
+    "synonyms": [
+      "sostro"
+    ]
+  },
+  {
+    "prefix": "sweet.strr",
+    "uri_format": "http://sweetontology.net/stateRoleRepresentative/$1",
+    "synonyms": [
+      "sostrr"
+    ]
+  },
+  {
+    "prefix": "sweet.strt",
+    "uri_format": "http://sweetontology.net/stateRoleTrust/$1",
+    "synonyms": [
+      "sostrt"
+    ]
+  },
+  {
+    "prefix": "sweet.stsb",
+    "uri_format": "http://sweetontology.net/stateSpectralBand/$1",
+    "synonyms": [
+      "sostsb"
+    ]
+  },
+  {
+    "prefix": "sweet.stsc",
+    "uri_format": "http://sweetontology.net/stateSpaceConfiguration/$1",
+    "synonyms": [
+      "sostsc"
+    ]
+  },
+  {
+    "prefix": "sweet.stsl",
+    "uri_format": "http://sweetontology.net/stateSpectralLine/$1",
+    "synonyms": [
+      "sostsl"
+    ]
+  },
+  {
+    "prefix": "sweet.stso",
+    "uri_format": "http://sweetontology.net/stateSolid/$1",
+    "synonyms": [
+      "sostso"
+    ]
+  },
+  {
+    "prefix": "sweet.stsp",
+    "uri_format": "http://sweetontology.net/stateSpace/$1",
+    "synonyms": [
+      "sostsp"
+    ]
+  },
+  {
+    "prefix": "sweet.stss",
+    "uri_format": "http://sweetontology.net/stateSpaceScale/$1",
+    "synonyms": [
+      "sostss"
+    ]
+  },
+  {
+    "prefix": "sweet.stst",
+    "uri_format": "http://sweetontology.net/stateStorm/$1",
+    "synonyms": [
+      "sostst"
+    ]
+  },
+  {
+    "prefix": "sweet.stsy",
+    "uri_format": "http://sweetontology.net/stateSystem/$1",
+    "synonyms": [
+      "sostsy"
+    ]
+  },
+  {
+    "prefix": "sweet.sttc",
+    "uri_format": "http://sweetontology.net/stateTimeCycle/$1",
+    "synonyms": [
+      "sosttc"
+    ]
+  },
+  {
+    "prefix": "sweet.sttf",
+    "uri_format": "http://sweetontology.net/stateTimeFrequency/$1",
+    "synonyms": [
+      "sosttf"
+    ]
+  },
+  {
+    "prefix": "sweet.sttg",
+    "uri_format": "http://sweetontology.net/stateTimeGeologic/$1",
+    "synonyms": [
+      "sosttg"
+    ]
+  },
+  {
+    "prefix": "sweet.stth",
+    "uri_format": "http://sweetontology.net/stateThermodynamic/$1",
+    "synonyms": [
+      "sostth"
+    ]
+  },
+  {
+    "prefix": "sweet.stti",
+    "uri_format": "http://sweetontology.net/stateTime/$1",
+    "synonyms": [
+      "sostti"
+    ]
+  },
+  {
+    "prefix": "sweet.stv",
+    "uri_format": "http://sweetontology.net/stateVisibility/$1",
+    "synonyms": [
+      "sostv"
     ]
   },
   {
@@ -5353,11 +7339,6 @@
     "uri_format": "http://tfclass.bioinf.med.uni-goettingen.de/?tfclass=$1"
   },
   {
-    "prefix": "tgn",
-    "uri_format": "http://vocab.getty.edu/page/tgn/$1",
-    "pattern": "^\\d+$"
-  },
-  {
     "prefix": "theiler",
     "uri_format": "https://www.emouseatlas.org/emap/ema/DAOAnatomyJSP/anatomy.html?stage=TS$1",
     "pattern": "^\\d+[a-d]?$",
@@ -5369,6 +7350,14 @@
     "prefix": "thermofisher",
     "uri_format": "https://www.thermofisher.com/antibody/product/$1",
     "pattern": "^\\w+$"
+  },
+  {
+    "prefix": "tib.mdv",
+    "uri_format": "https://data.nist.gov/od/dm/nmrr/vocab/?tema=$1"
+  },
+  {
+    "prefix": "tib.ts",
+    "uri_format": "https://terminology.tib.eu/ts/ontologies/$1"
   },
   {
     "prefix": "tigrfam",
@@ -5652,6 +7641,13 @@
     "pattern": "^\\d+$"
   },
   {
+    "prefix": "vega",
+    "uri_format": "https://bioregistry.io/vega:$1",
+    "synonyms": [
+      "VEGA"
+    ]
+  },
+  {
     "prefix": "vibso",
     "uri_format": "http://purl.obolibrary.org/obo/VIBSO_$1",
     "pattern": "^\\d{7}$"
@@ -5793,6 +7789,14 @@
     "pattern": "^P\\d+$"
   },
   {
+    "prefix": "wikipathways.type",
+    "uri_format": "http://vocabularies.wikipathways.org/wpTypes#$1",
+    "synonyms": [
+      "wikipathways.types",
+      "wptypes"
+    ]
+  },
+  {
     "prefix": "wikipathways.vocab",
     "uri_format": "https://bioportal.bioontology.org/ontologies/WIKIPATHWAYS/?p=classes&conceptid=http%3A%2F%2Fvocabularies.wikipathways.org%2Fwp%23$1"
   },
@@ -5807,6 +7811,18 @@
   {
     "prefix": "wot",
     "uri_format": "http://xmlns.com/wot/0.1/$1"
+  },
+  {
+    "prefix": "wot.hypermedia",
+    "uri_format": "https://www.w3.org/2019/wot/hypermedia#$1"
+  },
+  {
+    "prefix": "wot.security",
+    "uri_format": "https://www.w3.org/2019/wot/security#$1"
+  },
+  {
+    "prefix": "wot.tm",
+    "uri_format": "https://www.w3.org/2022/wot/tm#$1"
   },
   {
     "prefix": "wwf.ecoregion",
