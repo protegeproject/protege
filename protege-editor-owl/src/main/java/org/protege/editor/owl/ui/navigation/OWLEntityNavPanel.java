@@ -53,6 +53,8 @@ public class OWLEntityNavPanel extends JPanel {
 
 
     private void createActions() {
+        InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = getActionMap();
 
         backAction = new AbstractAction("", new NavIcon(NavIcon.Direction.BACK)) {
             public void actionPerformed(ActionEvent e) {
@@ -61,12 +63,12 @@ public class OWLEntityNavPanel extends JPanel {
             }
         };
         backAction.putValue(Action.SHORT_DESCRIPTION, "Back");
-        KeyStroke backKS = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT,
-                                                  Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
-
-        InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        inputMap.put(backKS, "nav-back");
-        ActionMap actionMap = getActionMap();
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT,
+                                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
+                     "nav-back");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_OPEN_BRACKET,
+                                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
+                     "nav-back");
         actionMap.put("nav-back", backAction);
 
 
@@ -77,10 +79,12 @@ public class OWLEntityNavPanel extends JPanel {
             }
         };
         forwardAction.putValue(Action.SHORT_DESCRIPTION, "Forward");
-        KeyStroke forwardKS = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT,
-                                                     Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
-
-        inputMap.put(forwardKS, "nav-forward");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT,
+                                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
+                     "nav-forward");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_CLOSE_BRACKET,
+                                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
+                     "nav-forward");
         actionMap.put("nav-forward", forwardAction);
     }
 
