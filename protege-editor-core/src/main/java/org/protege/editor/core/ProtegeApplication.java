@@ -320,13 +320,8 @@ public class ProtegeApplication implements BundleActivator {
                 // Force the Look & Feel to be instantiated.
                 UIDefaults defaults = UIManager.getDefaults();
                 if (lafClsName.equals(PlasticLookAndFeel.class.getName())) {
-                    // Truly strange.  If we don't do this then the LAF cannot be found.
-                    PlasticLookAndFeel.setCurrentTheme(new ProtegePlasticTheme());
-                    UIManager.put("ClassLoader", PlasticLookAndFeel.class.getClassLoader());
-                    // For plastic this needs to be instantiated here - otherwise SwingUtilities uses the wrong class
-                    // loaded.
-                    LookAndFeel lookAndFeel = (LookAndFeel) Class.forName(lafClsName).newInstance();
-                    UIManager.setLookAndFeel(lookAndFeel);
+                    // Use ThemeManager to apply the correct theme (light or dark)
+                    org.protege.editor.core.ui.util.ThemeManager.loadTheme();
                 }
                 else {
                     // Now set the class loader for Component UI loading to this one.  Works for non Plastic LAFs.

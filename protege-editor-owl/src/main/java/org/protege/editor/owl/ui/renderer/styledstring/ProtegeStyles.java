@@ -32,7 +32,23 @@ public class ProtegeStyles {
 
     private static final Style CLASS_EXPRESSION_CONNECTIVE_STYLE = new Style(ForegroundAttribute.get(new Color(0, 178, 178)), FontWeightAttribute.getBoldFontWeight());
 
-    private static final Style HIGHLIGHT_STYLE = new Style(BackgroundAttribute.get(Color.YELLOW), ForegroundAttribute.get(Color.BLACK), FontWeightAttribute.getBoldFontWeight());
+    private static final Style HIGHLIGHT_STYLE = new Style(BackgroundAttribute.get(getHighlightBackgroundColor()), ForegroundAttribute.get(getHighlightForegroundColor()), FontWeightAttribute.getBoldFontWeight());
+    
+    /**
+     * Gets the highlight background color based on the current theme.
+     */
+    private static Color getHighlightBackgroundColor() {
+        return org.protege.editor.core.ui.util.ThemeManager.isDarkTheme() ? 
+            new Color(80, 80, 40) : Color.YELLOW;  // Original yellow for light theme
+    }
+    
+    /**
+     * Gets the highlight foreground color based on the current theme.
+     */
+    private static Color getHighlightForegroundColor() {
+        return org.protege.editor.core.ui.util.ThemeManager.isDarkTheme() ? 
+            Color.WHITE : Color.BLACK;  // Original black for light theme
+    }
 
     private static final Style BLANK_STYLE = new Style();
 

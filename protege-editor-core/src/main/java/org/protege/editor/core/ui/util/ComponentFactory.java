@@ -34,7 +34,17 @@ public class ComponentFactory {
 
     public static JScrollPane createScrollPane(JComponent content) {
         JScrollPane sp = new JScrollPane(content);
-        sp.getViewport().setBackground(Color.WHITE);
+        Color background = content != null ? content.getBackground() : null;
+        if (background == null) {
+            background = UIManager.getColor("ScrollPane.background");
+        }
+        if (background == null) {
+            background = UIManager.getColor("Panel.background");
+        }
+        if (background == null) {
+            background = UIManager.getColor("control");
+        }
+        sp.getViewport().setBackground(background != null ? background : Color.WHITE);
         return sp;
     }
 
