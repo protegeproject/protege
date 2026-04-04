@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class IdPolicyEntityCreationPreferencesUpdater {
 
-    private static final Pattern ID_PREFIX_PATTERN = Pattern.compile("(.+)([/#:])([A-Za-z0-9]+(_[A-Za-z0-9]).*)_$");
+    private static final Pattern ID_PREFIX_PATTERN = Pattern.compile("(.+)([/#:])([A-Za-z0-9]+(_[A-Za-z0-9]+).*)_$");
 
     private final static Logger logger = LoggerFactory.getLogger(IdPolicyEntityCreationPreferencesUpdater.class);
 
