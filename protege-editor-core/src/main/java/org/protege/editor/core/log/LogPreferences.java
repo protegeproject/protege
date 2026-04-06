@@ -135,12 +135,13 @@ public class LogPreferences {
 	}
 
 	public static Object deserialize(byte[] bytes)
-			throws IOException, ClassNotFoundException {
-		try (ByteArrayInputStream b = new ByteArrayInputStream(bytes)) {
-			try (ObjectInputStream o = new ObjectInputStream(b)) {
-				return o.readObject();
-			}
-		}
+        throws IOException, ClassNotFoundException {
+	    try (ByteArrayInputStream b = new ByteArrayInputStream(bytes);
+	         ValidatingObjectInputStream o = new ValidatingObjectInputStream(b)) {
+	        // Only allow specific classes to be deserialized
+	        o.accept(LinkedList.class, LogMutation.class, HashMap.class, String.class);
+	        return o.readObject();
+	    }
 	}
 
 }
