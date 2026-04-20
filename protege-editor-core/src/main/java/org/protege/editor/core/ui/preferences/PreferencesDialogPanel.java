@@ -47,6 +47,8 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
     public PreferencesDialogPanel(EditorKit editorKit) {
     	this.editorKit = editorKit;
         setLayout(new BorderLayout());
+        setBackground(UIManager.getColor("Panel.background"));
+        setOpaque(true);
         add(tabbedPane);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int margin = 300;
@@ -59,6 +61,8 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
     private void reload() {
     	dispose();
     	tabbedPane.removeAll();
+    	tabbedPane.setBackground(UIManager.getColor("Panel.background"));
+    	tabbedPane.setOpaque(true);
     	PreferencesPanelPluginLoader loader = new PreferencesPanelPluginLoader(editorKit);
         Set<PreferencesPanelPlugin> plugins = new TreeSet<>((o1, o2) -> {
                 String s1 = o1.getLabel();
@@ -73,6 +77,10 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
                 final String label = plugin.getLabel();
                 final JScrollPane sp = new JScrollPane(panel);
                 sp.setBorder(new EmptyBorder(0, 0, 0, 0));
+                sp.setBackground(UIManager.getColor("Panel.background"));
+                sp.setOpaque(true);
+                sp.getViewport().setBackground(UIManager.getColor("Panel.background"));
+                sp.getViewport().setOpaque(true);
                 map.put(label, panel);
                 componentMap.put(label, sp);
                 tabbedPane.addTab(label, sp);
@@ -130,6 +138,8 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
         final PreferencesDialogPanel preferencesPanel = new PreferencesDialogPanel(editorKit);
         
         JPanel holder = new JPanel(new BorderLayout(4, 4));
+        holder.setBackground(UIManager.getColor("Panel.background"));
+        holder.setOpaque(true);
         holder.add(preferencesPanel);
                 
         if (selectedPanel == null){
@@ -139,6 +149,8 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
         preferencesPanel.setSelectedPanel(selectedPanel);
 
         JPanel resetPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        resetPanel.setBackground(UIManager.getColor("Panel.background"));
+        resetPanel.setOpaque(true);
         JButton resetPreferencesButton = new JButton(new AbstractAction("Reset preferences...") {
             public void actionPerformed(ActionEvent e) {
                 handleResetPreferences(preferencesPanel);
@@ -148,7 +160,14 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
         holder.add(resetPanel, BorderLayout.SOUTH);
 
         JOptionPane op = new JOptionPane(holder, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+        op.setBackground(UIManager.getColor("Panel.background"));
+        op.setOpaque(true);
         JDialog dlg = op.createDialog(editorKit.getWorkspace(), "Preferences");
+        dlg.getContentPane().setBackground(UIManager.getColor("Panel.background"));
+        
+        // Recursively set background colors on all components in the dialog
+        setBackgroundRecursive(dlg, UIManager.getColor("Panel.background"));
+        
         dlg.setResizable(true);
         dlg.setVisible(true);
         Object o = op.getValue();
@@ -174,5 +193,31 @@ public class PreferencesDialogPanel extends JPanel implements Disposable {
         }        
         panel.reload();
         panel.setSelectedPanel(selectedPanel);
+    }
+    
+    /**
+     * Recursively sets the background color on all components in a container.
+     * This ensures that all nested components use the correct theme background.
+     */
+    private static void setBackgroundRecursive(Container container, Color background) {
+        if (container == null || background == null) return;
+        
+        // Set background on the container itself
+        container.setBackground(background);
+        if (container instanceof JComponent) {
+            ((JComponent) container).setOpaque(true);
+        }
+        
+        // Recursively set background on all child components
+        for (Component component : container.getComponents()) {
+            if (component instanceof Container) {
+                setBackgroundRecursive((Container) component, background);
+            } else {
+                component.setBackground(background);
+                if (component instanceof JComponent) {
+                    ((JComponent) component).setOpaque(true);
+                }
+            }
+        }
     }
 }

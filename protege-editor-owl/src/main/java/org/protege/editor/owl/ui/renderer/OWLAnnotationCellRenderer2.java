@@ -37,7 +37,7 @@ import static org.protege.editor.owl.ui.renderer.InlineDatatypeRendering.RENDER_
  */
 public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
 
-    public static final Color ANNOTATION_PROPERTY_FOREGROUND = Color.BLACK;
+    public static final Color ANNOTATION_PROPERTY_FOREGROUND = resolveAnnotationPropertyForeground();
 
     private OWLEditorKit editorKit;
 
@@ -143,8 +143,8 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
                 return axiom;
             }
         }
-        else if (value instanceof AbstractAnnotationsList.AnnotationsListItem) {
-            annotation = ((AbstractAnnotationsList.AnnotationsListItem) value).getAnnotation();
+        else if (value instanceof AbstractAnnotationsList<?>.AnnotationsListItem) {
+            annotation = ((AbstractAnnotationsList<?>.AnnotationsListItem) value).getAnnotation();
         }
         else if (value instanceof OWLAnnotation) {
             annotation = (OWLAnnotation) value;
@@ -260,8 +260,8 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
         if (value instanceof OWLAnnotationAssertionAxiom) {
             annotation = ((OWLAnnotationAssertionAxiom) value).getAnnotation();
         }
-        else if (value instanceof AbstractAnnotationsList.AnnotationsListItem) {
-            annotation = ((AbstractAnnotationsList.AnnotationsListItem) value).getAnnotation();
+        else if (value instanceof AbstractAnnotationsList<?>.AnnotationsListItem) {
+            annotation = ((AbstractAnnotationsList<?>.AnnotationsListItem) value).getAnnotation();
         }
         else if (value instanceof OWLAnnotation) {
             annotation = (OWLAnnotation) value;
@@ -332,7 +332,28 @@ public class OWLAnnotationCellRenderer2 extends PageCellRenderer {
     }
 
     private Color getAnnotationPropertyForeground(Color defaultForeground, boolean isSelected) {
-        return isSelected ? defaultForeground : ANNOTATION_PROPERTY_FOREGROUND;
+        if (isSelected) {
+            return defaultForeground;
+        }
+        Color color = resolveAnnotationPropertyForeground();
+        if (color == null) {
+            color = defaultForeground != null ? defaultForeground : Color.WHITE;
+        }
+        return color;
+    }
+
+    private static Color resolveAnnotationPropertyForeground() {
+        Color color = UIManager.getColor("Annotation.propertyForeground");
+        if (color == null) {
+            color = UIManager.getColor("Label.foreground");
+        }
+        if (color == null) {
+            color = UIManager.getColor("List.foreground");
+        }
+        if (color == null) {
+            color = Color.WHITE;
+        }
+        return color;
     }
 
     /**
