@@ -92,6 +92,9 @@
 						<Bundle-Activator>org.protege.editor.core.ProtegeApplication</Bundle-Activator>
 						<Bundle-SymbolicName>org.protege.editor.core.application;singleton:=true</Bundle-SymbolicName>
 						<Embed-Dependency>*;scope=provided;inline=true</Embed-Dependency>
+						<!-- Do not inline JPMS descriptors from MR-JARs; they break downstream javac (e.g. AutoValue + Modules.enterModule NPE). -->
+						<_donotcopy>(.*\.svn|.*module-info\.class)$</_donotcopy>
+						<_fixupmessages>"Classes found in the wrong directory";is:=ignore</_fixupmessages>
 						<Export-Package>
 							org.protege.editor.core.*,
 						</Export-Package>

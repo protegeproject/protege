@@ -201,6 +201,9 @@
 						<Bundle-Activator>org.protege.editor.owl.ProtegeOWL</Bundle-Activator>
 						<Bundle-SymbolicName>org.protege.editor.owl;singleton:=true</Bundle-SymbolicName>
 						<Embed-Dependency>*;scope=provided;inline=true</Embed-Dependency>
+						<!-- Omit JPMS descriptors from inlined MR-JARs (see protege-editor-core). -->
+						<_donotcopy>(.*\.svn|.*module-info\.class)$</_donotcopy>
+						<_fixupmessages>"Classes found in the wrong directory";is:=ignore</_fixupmessages>
 						<Export-Package>
 							org.protege.editor.owl.*;version=${project.version},
 							org.protege.owlapi.inference.*;version=${project.version}
