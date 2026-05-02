@@ -237,6 +237,11 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
+				<configuration>
+					<systemPropertyVariables>
+						<bundle.jar>${project.build.directory}/${project.build.finalName}.jar</bundle.jar>
+					</systemPropertyVariables>
+				</configuration>
 				<executions>
 					<execution>
 						<phase>verify</phase>
