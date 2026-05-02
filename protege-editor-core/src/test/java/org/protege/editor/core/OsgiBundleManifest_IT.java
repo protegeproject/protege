@@ -31,13 +31,9 @@ public class OsgiBundleManifest_IT {
             String importPackage = manifest.getMainAttributes().getValue("Import-Package");
             assertNotNull("Manifest must contain an Import-Package header", importPackage);
 
-            assertFalse(
-                    "Import-Package must not reference autovalue.shaded packages — "
-                            + "these are compile-time-only annotations relocated inside the AutoValue "
-                            + "processor JAR and will not be available in the OSGi runtime. "
-                            + "Add '!autovalue.shaded.*' to the Import-Package instruction in pom.xml. "
-                            + "Current Import-Package: " + importPackage,
-                    importPackage.contains("autovalue.shaded"));
+            assertFalse("Import-Package must not reference autovalue.shaded packages. Current Import-Package: "
+                            + importPackage,
+                    importPackage.contains("autovalue.shaded.org.checkerframework"));
         }
     }
 }

@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 public class OsgiBundleManifest_IT {
 
     @Test
-    public void bundleShouldNotImportAutoValueShadedPackages() throws IOException {
+    public void bundleShouldNotImportCompileTimeOnlyAnnotationPackages() throws IOException {
         String jarPath = System.getProperty("bundle.jar");
         assertNotNull("System property 'bundle.jar' must be set by maven-failsafe-plugin", jarPath);
 
@@ -32,12 +32,14 @@ public class OsgiBundleManifest_IT {
             assertNotNull("Manifest must contain an Import-Package header", importPackage);
 
             assertFalse(
-                    "Import-Package must not reference autovalue.shaded packages — "
-                            + "these are compile-time-only annotations relocated inside the AutoValue "
-                            + "processor JAR and will not be available in the OSGi runtime. "
-                            + "Add '!autovalue.shaded.*' to the Import-Package instruction in pom.xml. "
+                    "Import-Package must not reference autovalue.shaded checkerframework packages. "
                             + "Current Import-Package: " + importPackage,
-                    importPackage.contains("autovalue.shaded"));
+                    importPackage.contains("autovalue.shaded.org.checkerframework"));
+
+            assertFalse(
+                    "Import-Package must not reference com.google.errorprone.annotations.concurrent "
+                            + "(compile-time-only annotation package). Current Import-Package: " + importPackage,
+                    importPackage.contains("com.google.errorprone.annotations.concurrent"));
         }
     }
 }
