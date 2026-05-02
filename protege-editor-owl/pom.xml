@@ -211,6 +211,8 @@
 							com.jcraft.jsch.*;version=${jsch.version},
 						</_exportcontents>
 						<Import-Package>
+							!autovalue.shaded.org.checkerframework.*,
+							!com.google.errorprone.annotations.concurrent,
 							org.eclipse.core.runtime;registry=split,
 							javax.inject.*;version=1.0,
 							*

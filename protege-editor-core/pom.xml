@@ -102,6 +102,7 @@
 							gnu.trove.*
 						</_exportcontents>
 						<Import-Package>
+							!autovalue.shaded.org.checkerframework.*,
 							!com.sun.*,
 							!com.apple.*,
 							!sun.swing,
