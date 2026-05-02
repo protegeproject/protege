@@ -216,7 +216,7 @@ public abstract class Workspace extends JComponent implements Disposable {
             }
             else {
                 Class<?> cls = Class.forName(lookAndFeelClassName);
-                LookAndFeel laf = (LookAndFeel) cls.newInstance();
+                LookAndFeel laf = (LookAndFeel) cls.getDeclaredConstructor().newInstance();
                 lafShortName = laf.getName();
             }
 
@@ -228,8 +228,8 @@ public abstract class Workspace extends JComponent implements Disposable {
             lafMenuItemGroup.add(menuItem);
             menuItem.setSelected(selectedLookAndFeelName.equals(lookAndFeelClassName));
             menu.add(menuItem);
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            logger.error("Error whilst adding menu item: {}", e);
+        } catch (ReflectiveOperationException | ClassCastException e) {
+            logger.debug("Skipping look-and-feel menu entry for {}", lookAndFeelClassName);
         }
     }
 
