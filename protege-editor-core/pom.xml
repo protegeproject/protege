@@ -92,6 +92,9 @@
 						<Bundle-Activator>org.protege.editor.core.ProtegeApplication</Bundle-Activator>
 						<Bundle-SymbolicName>org.protege.editor.core.application;singleton:=true</Bundle-SymbolicName>
 						<Embed-Dependency>*;scope=provided;inline=true</Embed-Dependency>
+						<!-- Do not inline JPMS descriptors from MR-JARs; they break downstream javac (e.g. AutoValue + Modules.enterModule NPE). -->
+						<_donotcopy>(.*\.svn|.*module-info\.class)$</_donotcopy>
+						<_fixupmessages>"Classes found in the wrong directory";is:=ignore</_fixupmessages>
 						<Export-Package>
 							org.protege.editor.core.*,
 						</Export-Package>
@@ -102,6 +105,7 @@
 							gnu.trove.*
 						</_exportcontents>
 						<Import-Package>
+							!autovalue.shaded.org.checkerframework.*,
 							!com.sun.*,
 							!com.apple.*,
 							!sun.swing,
@@ -110,6 +114,24 @@
 						</Import-Package>
 					</instructions>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<configuration>
+					<systemPropertyVariables>
+						<bundle.jar>${project.build.directory}/${project.build.finalName}.jar</bundle.jar>
+					</systemPropertyVariables>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>verify</phase>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
