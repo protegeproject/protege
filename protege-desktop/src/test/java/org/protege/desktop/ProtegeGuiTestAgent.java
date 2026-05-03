@@ -7,7 +7,11 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Window;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.IOException;
 import java.lang.instrument.Instrumentation;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
@@ -53,6 +57,7 @@ public class ProtegeGuiTestAgent {
     private static void runGuiClose() {
         if (GraphicsEnvironment.isHeadless()) {
             System.out.println("GUI test agent cannot close windows in a headless environment");
+            writeProtegeLog("GUI test agent cannot close windows in a headless environment");
             return;
         }
 
@@ -72,14 +77,19 @@ public class ProtegeGuiTestAgent {
             sleep(GUI_SETTLE_TIME);
             waitForIdle();
             closeVisibleDialogs();
-            System.out.println(WINDOW_READY_MESSAGE + ": " + describe(frame));
+            String windowReadyMessage = WINDOW_READY_MESSAGE + ": " + describe(frame);
+            System.out.println(windowReadyMessage);
+            writeProtegeLog(windowReadyMessage);
             EventQueue.invokeAndWait(() ->
                     frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)));
-            System.out.println(CLOSE_REQUESTED_MESSAGE + ": " + describe(frame));
+            String closeRequestedMessage = CLOSE_REQUESTED_MESSAGE + ": " + describe(frame);
+            System.out.println(closeRequestedMessage);
+            writeProtegeLog(closeRequestedMessage);
             waitForIdle();
             closeVisibleDialogs();
         } catch (Throwable t) {
             t.printStackTrace(System.out);
+            writeProtegeLog("GUI test agent error: " + t.getClass().getName() + ": " + t.getMessage());
         }
     }
 
@@ -149,6 +159,21 @@ public class ProtegeGuiTestAgent {
     private static Duration closeTimeout() {
         long seconds = Long.getLong(CLOSE_TIMEOUT_SECONDS_PROPERTY, DEFAULT_CLOSE_TIMEOUT.getSeconds());
         return Duration.ofSeconds(Math.max(1, seconds));
+    }
+
+    private static void writeProtegeLog(String message) {
+        File logFile = new File(new File(new File(System.getProperty("user.home"), ".Protege"), "logs"),
+                "protege.log");
+        File parent = logFile.getParentFile();
+        try {
+            if (parent != null && !parent.isDirectory()) {
+                Files.createDirectories(parent.toPath());
+            }
+            Files.write(logFile.toPath(), Arrays.asList(message), StandardCharsets.UTF_8,
+                    StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            e.printStackTrace(System.out);
+        }
     }
 
     private static void sleep(Duration duration) {

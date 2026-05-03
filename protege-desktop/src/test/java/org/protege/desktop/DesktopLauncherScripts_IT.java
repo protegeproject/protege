@@ -28,9 +28,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Launches packaged desktop entry points and fails if stdout/stderr contains
- * {@code Exception} (startup regression guard). OS-specific scripts run only on
- * the matching OS.
+ * Launches packaged desktop entry points and fails if their output contains
+ * {@code Exception} (startup regression guard). OS-specific launchers run only
+ * on the matching OS.
  */
 public class DesktopLauncherScripts_IT {
 
@@ -45,96 +45,146 @@ public class DesktopLauncherScripts_IT {
     private static final String AUTO_UPDATE_MARKER = "Auto-update ";
 
     @Test
-    public void platformIndependentLauncherShouldNotPrintException() throws Exception {
-        File distRoot = findProtegeDistributionRoot("platform-independent");
-        File script = isMacOs()
-                ? new File(distRoot, "run.command")
-                : new File(distRoot, isWindows() ? "run.bat" : "run.sh");
-        assertLauncherOutputHasNoException(script, "platform-independent launcher");
+    public void platformIndependentRunShShouldNotPrintException() throws Exception {
+        Assume.assumeTrue("Unix shell only", !isWindows());
+        File script = new File(findProtegeDistributionRoot("platform-independent"), "run.sh");
+        assertScriptLauncherOutputHasNoException(script, "platform-independent run.sh");
     }
 
     @Test
-    public void macRunCommandShouldNotPrintException() throws Exception {
+    public void platformIndependentRunCommandShouldNotPrintException() throws Exception {
         Assume.assumeTrue("macOS only", isMacOs());
         File script = new File(findProtegeDistributionRoot("platform-independent"), "run.command");
-        assertLauncherOutputHasNoException(script, "run.command");
+        assertScriptLauncherOutputHasNoException(script, "platform-independent run.command");
+    }
+
+    @Test
+    public void platformIndependentRunBatShouldNotPrintException() throws Exception {
+        Assume.assumeTrue("Windows only", isWindows());
+        File script = new File(findProtegeDistributionRoot("platform-independent"), "run.bat");
+        assertScriptLauncherOutputHasNoException(script, "platform-independent run.bat");
+    }
+
+    @Test
+    public void macNativeLauncherShouldNotPrintException() throws Exception {
+        Assume.assumeTrue("macOS only", isMacOs());
+        File launcher = new File(findProtegeDistributionRoot("mac"),
+                "Prot\u00e9g\u00e9.app/Contents/MacOS/protege");
+        assertNativeLauncherOutputHasNoException(launcher, "mac native launcher");
     }
 
     @Test
     public void linuxRunShShouldNotPrintException() throws Exception {
         Assume.assumeTrue("Linux only", isLinux());
         File script = new File(findProtegeDistributionRoot("linux"), "run.sh");
-        assertLauncherOutputHasNoException(script, "linux run.sh");
+        assertScriptLauncherOutputHasNoException(script, "linux run.sh");
+    }
+
+    @Test
+    public void linuxNativeLauncherShouldNotPrintException() throws Exception {
+        Assume.assumeTrue("Linux only", isLinux());
+        File launcher = new File(findProtegeDistributionRoot("linux"), "protege");
+        assertNativeLauncherOutputHasNoException(launcher, "linux native launcher");
     }
 
     @Test
     public void winRunBatShouldNotPrintException() throws Exception {
         Assume.assumeTrue("Windows only", isWindows());
         File script = new File(findProtegeDistributionRoot("win"), "run.bat");
-        assertLauncherOutputHasNoException(script, "win run.bat");
+        assertScriptLauncherOutputHasNoException(script, "win run.bat");
     }
 
-    private static void assertLauncherOutputHasNoException(File script, String label) throws Exception {
-        assertTrue(label + " must exist: " + script.getAbsolutePath(), script.isFile());
-        if (!isWindows()) {
-            assertTrue(label + " must be executable: " + script.getAbsolutePath(), script.canExecute());
-        }
+    @Test
+    public void winNativeLauncherShouldNotPrintException() throws Exception {
+        Assume.assumeTrue("Windows only", isWindows());
+        File launcher = new File(findProtegeDistributionRoot("win"), "Protege.exe");
+        assertNativeLauncherOutputHasNoException(launcher, "win native launcher");
+    }
 
+    private static void assertScriptLauncherOutputHasNoException(File script, String label) throws Exception {
         ProcessBuilder processBuilder = isWindows()
                 ? new ProcessBuilder("cmd.exe", "/c", script.getAbsolutePath())
                 : new ProcessBuilder("/bin/bash", script.getAbsolutePath());
         processBuilder.directory(script.getParentFile());
+        assertLauncherOutputHasNoException(script, label, processBuilder, null);
+    }
+
+    private static void assertNativeLauncherOutputHasNoException(File launcher, String label) throws Exception {
+        ProcessBuilder processBuilder = new ProcessBuilder(launcher.getAbsolutePath());
+        processBuilder.directory(launcher.getParentFile());
+        assertLauncherOutputHasNoException(launcher, label, processBuilder, nativeJvmConfFile(launcher));
+    }
+
+    private static void assertLauncherOutputHasNoException(File launcher,
+                                                           String label,
+                                                           ProcessBuilder processBuilder,
+                                                           File jvmConfFile) throws Exception {
+        assertTrue(label + " must exist: " + launcher.getAbsolutePath(), launcher.isFile());
+        if (!isWindows()) {
+            assertTrue(label + " must be executable: " + launcher.getAbsolutePath(), launcher.canExecute());
+        }
+
         processBuilder.redirectErrorStream(true);
         File testHome = createLauncherTestHome();
         File closeSignalFile = new File(testHome, "close-window.signal");
-        processBuilder.environment().put("HOME", testHome.getAbsolutePath());
-        processBuilder.environment().put("USERPROFILE", testHome.getAbsolutePath());
-        processBuilder.environment().put("CMD_OPTIONS", createGuiTestAgentOptions(closeSignalFile));
-        Process process = processBuilder.start();
-
+        boolean jvmConfExisted = jvmConfFile != null && jvmConfFile.isFile();
+        byte[] originalJvmConf = jvmConfExisted ? Files.readAllBytes(jvmConfFile.toPath()) : new byte[0];
+        configureGuiTestAgent(processBuilder, testHome, closeSignalFile, jvmConfFile);
+        Process process = null;
+        Thread reader = null;
         StringBuffer output = new StringBuffer(16_384);
-        Thread reader = new Thread(() -> {
-            try (BufferedReader br = new BufferedReader(
-                    new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8))) {
-                String line;
-                while ((line = br.readLine()) != null) {
-                    output.append(line).append(System.lineSeparator());
-                }
-            } catch (IOException ignored) {
-                // Process may terminate while reading stream.
-            }
-        }, "protege-launcher-output-" + label.replace(' ', '-'));
-        reader.setDaemon(true);
-        reader.start();
-
+        String processOutput = "";
         boolean startupObserved = false;
         boolean stopped = false;
         try {
-            startupObserved = waitForStartupMarker(process, output, STARTUP_WINDOW);
+            process = processBuilder.start();
+            Process launchedProcess = process;
+
+            reader = new Thread(() -> {
+                try (BufferedReader br = new BufferedReader(
+                        new InputStreamReader(launchedProcess.getInputStream(), StandardCharsets.UTF_8))) {
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        output.append(line).append(System.lineSeparator());
+                    }
+                } catch (IOException ignored) {
+                    // Process may terminate while reading stream.
+                }
+            }, "protege-launcher-output-" + label.replace(' ', '-'));
+            reader.setDaemon(true);
+            reader.start();
+
+            startupObserved = waitForStartupMarker(process, output, testHome, STARTUP_WINDOW);
             if (startupObserved) {
                 Files.write(closeSignalFile.toPath(), Arrays.asList("ready"), StandardCharsets.UTF_8);
                 stopped = process.waitFor(SHUTDOWN_WINDOW.getSeconds(), TimeUnit.SECONDS);
             }
         } finally {
-            if (process.isAlive()) {
+            if (process != null && process.isAlive()) {
                 stopProcessTree(process);
             }
-            reader.join(5_000);
+            if (reader != null) {
+                reader.join(5_000);
+            }
+            processOutput = combinedOutput(output, testHome);
+            restoreJvmConf(jvmConfFile, jvmConfExisted, originalJvmConf);
             deleteRecursively(testHome);
         }
 
-        String processOutput = output.toString();
         assertTrue(label + " did not reach startup marker within " + STARTUP_WINDOW.getSeconds()
                         + "s. Output:\n\n" + processOutput,
                 startupObserved);
         assertTrue(label + " did not stop after its window was closed within " + SHUTDOWN_WINDOW.getSeconds()
                         + "s. Output:\n\n" + processOutput,
                 stopped);
+        assertNotNull(process);
         assertEquals(label + " did not exit cleanly after its window was closed.\n\n" + processOutput,
                 0, process.exitValue());
-        assertTrue(label + " did not observe the Protege window via the GUI test agent.\n\n" + processOutput,
+        assertTrue(label + " did not observe the Protege window via the GUI test agent."
+                        + "\n\nOutput:\n\n" + processOutput,
                 processOutput.contains(ProtegeGuiTestAgent.WINDOW_READY_MESSAGE));
-        assertTrue(label + " did not request the Protege window close via the GUI test agent.\n\n" + processOutput,
+        assertTrue(label + " did not request the Protege window close via the GUI test agent."
+                        + "\n\nOutput:\n\n" + processOutput,
                 processOutput.contains(ProtegeGuiTestAgent.CLOSE_REQUESTED_MESSAGE));
         assertTrue(label + " did not run the normal shutdown sequence.\n\n" + processOutput,
                 processOutput.contains(SHUTDOWN_BANNER));
@@ -145,34 +195,116 @@ public class DesktopLauncherScripts_IT {
                 processOutput.contains("Exception"));
     }
 
-    private static boolean waitForStartupMarker(Process process, StringBuffer output, Duration timeout)
+    private static void configureGuiTestAgent(ProcessBuilder processBuilder,
+                                              File testHome,
+                                              File closeSignalFile,
+                                              File jvmConfFile) throws IOException {
+        processBuilder.environment().put("HOME", testHome.getAbsolutePath());
+        processBuilder.environment().put("USERPROFILE", testHome.getAbsolutePath());
+        List<String> options = createGuiTestAgentOptions(testHome, closeSignalFile);
+        if (jvmConfFile == null) {
+            processBuilder.environment().put("CMD_OPTIONS", String.join(" ", options));
+        } else {
+            writeJvmConf(jvmConfFile, options);
+        }
+    }
+
+    private static File nativeJvmConfFile(File launcher) {
+        File launcherDir = launcher.getParentFile();
+        if (isMacOs()) {
+            File contentsDir = launcherDir.getParentFile();
+            return new File(new File(contentsDir, "conf"), "jvm.conf");
+        }
+        return new File(new File(launcherDir, "conf"), "jvm.conf");
+    }
+
+    private static boolean waitForStartupMarker(Process process,
+                                                StringBuffer output,
+                                                File testHome,
+                                                Duration timeout)
             throws InterruptedException {
         long deadline = System.nanoTime() + timeout.toNanos();
         while (System.nanoTime() < deadline) {
-            if (containsStartupMarker(output.toString())) {
+            if (containsStartupMarker(combinedOutput(output, testHome))) {
                 return true;
             }
             if (!process.isAlive()) {
-                return containsStartupMarker(output.toString());
+                return containsStartupMarker(combinedOutput(output, testHome));
             }
             Thread.sleep(200);
         }
-        return containsStartupMarker(output.toString());
+        return containsStartupMarker(combinedOutput(output, testHome));
     }
 
     private static File createLauncherTestHome() throws IOException {
-        File testHome = Files.createTempDirectory("protege-launcher-home").toFile();
+        File testHomesDir = new File("target/launcher-test-homes");
+        assertTrue("Could not create launcher test homes directory: " + testHomesDir.getAbsolutePath(),
+                testHomesDir.isDirectory() || testHomesDir.mkdirs());
+        File testHome = Files.createTempDirectory(testHomesDir.toPath(), "home-").toFile();
         File confDir = new File(new File(testHome, ".Protege"), "conf");
         assertTrue("Could not create launcher test configuration directory: " + confDir.getAbsolutePath(),
                 confDir.mkdirs());
         return testHome;
     }
 
-    private static String createGuiTestAgentOptions(File closeSignalFile) throws IOException {
+    private static List<String> createGuiTestAgentOptions(File testHome,
+                                                          File closeSignalFile) throws IOException {
         File agentJar = createGuiTestAgentJar();
-        return "-D" + ProtegeGuiTestAgent.READY_SIGNAL_FILE_PROPERTY + "=" + closeSignalFile.getAbsolutePath()
-                + " -D" + ProtegeGuiTestAgent.CLOSE_TIMEOUT_SECONDS_PROPERTY + "=" + SHUTDOWN_WINDOW.getSeconds()
-                + " -javaagent:" + agentJar.getAbsolutePath();
+        List<String> options = new ArrayList<>();
+        options.add("-Duser.home=" + testHome.getAbsolutePath());
+        options.add("-D" + ProtegeGuiTestAgent.READY_SIGNAL_FILE_PROPERTY + "=" + closeSignalFile.getAbsolutePath());
+        options.add("-D" + ProtegeGuiTestAgent.CLOSE_TIMEOUT_SECONDS_PROPERTY + "=" + SHUTDOWN_WINDOW.getSeconds());
+        options.add("-javaagent:" + agentJar.getAbsolutePath());
+        return options;
+    }
+
+    private static void writeJvmConf(File confFile, List<String> options) throws IOException {
+        File parent = confFile.getParentFile();
+        assertTrue("Could not create launcher JVM configuration directory: " + parent.getAbsolutePath(),
+                parent.isDirectory() || parent.mkdirs());
+        List<String> jvmConfOptions = new ArrayList<>();
+        for (String option : options) {
+            jvmConfOptions.add("append=" + option);
+        }
+        Files.write(confFile.toPath(), jvmConfOptions, StandardCharsets.UTF_8);
+    }
+
+    private static void restoreJvmConf(File confFile, boolean existed, byte[] content) throws IOException {
+        if (confFile == null) {
+            return;
+        }
+        if (existed) {
+            Files.write(confFile.toPath(), content);
+        } else if (confFile.isFile() && !confFile.delete()) {
+            confFile.deleteOnExit();
+        }
+    }
+
+    private static String combinedOutput(StringBuffer output, File testHome) {
+        String protegeLog = readProtegeLog(testHome);
+        if (protegeLog.isEmpty()) {
+            return output.toString();
+        }
+        return output.toString()
+                + System.lineSeparator()
+                + "----- protege.log -----"
+                + System.lineSeparator()
+                + protegeLog;
+    }
+
+    private static String readProtegeLog(File testHome) {
+        return readFile(new File(new File(new File(testHome, ".Protege"), "logs"), "protege.log"));
+    }
+
+    private static String readFile(File file) {
+        if (!file.isFile()) {
+            return "";
+        }
+        try {
+            return new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            return "Could not read " + file.getAbsolutePath() + ": " + e.getMessage();
+        }
     }
 
     private static File createGuiTestAgentJar() throws IOException {
