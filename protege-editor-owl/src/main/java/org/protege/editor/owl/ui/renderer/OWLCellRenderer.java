@@ -745,6 +745,10 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             theVal = theVal.replace('\n', ' ');
             theVal = theVal.replaceAll(" [ ]+", " ");
         }
+        
+		TheValueStyler theStyler = new TheValueStyler();
+		theVal = theStyler.processTheValue(theVal);
+        
         textPane.setText(theVal);
         if (commentedOut) {
             textPane.setText(textPane.getText());
@@ -813,6 +817,8 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
                 doc.setCharacterAttributes(0, doc.getLength(), selectionForeground, false);
             }
         }
+        
+        theStyler.applyTheValueStyles(doc);
     }
 
 
@@ -1329,4 +1335,47 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             }
         }
     }
+    
+    private class TheValueStyler {
+
+		private String[] tagNames = { "demph" };
+		private Style[] styles = { feintStyle };
+
+		private List<Integer> startIdxs = new ArrayList<>();
+		private List<Integer> endIdxs = new ArrayList<>();
+		private List<Style> foundStyles = new ArrayList<>();
+
+		public String processTheValue(String theVal) {
+			for (int i = 0; i < tagNames.length; i++) {
+				String tagName = tagNames[i];
+				String startTag = "<" + tagName + ">";
+				String endTag = "</" + tagName + ">";
+
+				while (theVal.contains(startTag)) {
+					int startIdx = theVal.indexOf(startTag);
+					int endIdx = theVal.indexOf(endTag, startIdx);
+
+					theVal = theVal.substring(0, startIdx)
+							+ theVal.substring(startIdx + startTag.length(), endIdx)
+							+ theVal.substring(endIdx + endTag.length());
+					
+					startIdxs.add(startIdx);
+					endIdxs.add(endIdx - startTag.length());
+					foundStyles.add(styles[i]);
+				}
+			}
+
+			return theVal;
+		}
+
+		public void applyTheValueStyles(StyledDocument doc) {
+			for (int i = 0; i < startIdxs.size(); i++) {
+				int startIdx = startIdxs.get(i);
+				int endIdx = endIdxs.get(i);
+				Style style = foundStyles.get(i);
+
+				doc.setCharacterAttributes(startIdx, endIdx - startIdx, style, false);
+			}
+		}
+	}
 }
