@@ -70,7 +70,16 @@ public class UIUtil {
             parentWindow = SwingUtilities.getWindowAncestor(parent);
         }
         if(OSUtils.isOSX() && parentWindow != null) {
-            return MacUIUtil.openFile(parentWindow, title, extensions);
+            File f = MacUIUtil.openFile(parentWindow, title, extensions);
+            if (f != null) {
+                return f;
+            }
+            // Fall through to the OS-independent chooser below. On some Macs the
+            // native file dialog in MacUIUtil never appears and returns at once as
+            // if cancelled; with a current JDK it happens on every call, with the
+            // bundled Java 11 on every call after the first. The save dialog has had
+            // the same fallback since protegeproject/protege#1106. The cost: a user
+            // who did see the native dialog and cancelled it gets a second dialog.
         }
         JFileChooser fileDialog = new JFileChooser(getCurrentFileDirectory());
         if(extensions != null && !extensions.isEmpty()) {
