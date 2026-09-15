@@ -4,8 +4,6 @@ import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.MissingImportHandler;
 import org.protege.editor.owl.model.library.OntologyCatalogManager;
 import org.protege.editor.owl.ui.UIHelper;
-import org.protege.xmlcatalog.CatalogUtilities;
-import org.protege.xmlcatalog.entry.UriEntry;
 import org.semanticweb.owlapi.model.IRI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +12,6 @@ import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
@@ -107,16 +104,11 @@ public class MissingImportHandlerUI implements MissingImportHandler {
     private void updateActiveCatalog(IRI ontologyIRI,
                                      File file) {
         OntologyCatalogManager catalogManager = owlEditorKit.getOWLModelManager().getOntologyCatalogManager();
-        catalogManager.getCurrentCatalog().ifPresent(catalog -> {
-            URI relativeFile = CatalogUtilities.relativize(file.toURI(), catalog);
-            catalog.addEntry(0, new UriEntry("User Entered Import Resolution", catalog, ontologyIRI.toString(), relativeFile, null));
-            File catalogLocation = new File(catalog.getXmlBaseContext().getXmlBase());
-            try {
-                CatalogUtilities.save(catalog, catalogLocation);
-            } catch(IOException e) {
-                logger.error("Could not save user supplied import redirection to catalog.", e);
-            }
-        });
+        try {
+            catalogManager.addUserImportResolution(ontologyIRI.toURI(), file);
+        } catch(IOException e) {
+            logger.error("Could not save user supplied import redirection to catalog.", e);
+        }
     }
 }
 

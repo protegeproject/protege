@@ -4,6 +4,7 @@ import org.protege.editor.core.util.ProtegeDirectories;
 import org.protege.xmlcatalog.CatalogUtilities;
 import org.protege.xmlcatalog.XMLCatalog;
 import org.protege.xmlcatalog.entry.Entry;
+import org.protege.xmlcatalog.entry.UriEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +33,9 @@ public class OntologyCatalogManager {
     private Map<File, XMLCatalog> localCatalogs = new HashMap<>();
 
     private XMLCatalog activeCatalog;
+
+    /** Id of a catalog entry written when the user resolves a missing import by hand. */
+    public static final String USER_IMPORT_RESOLUTION_ID = "User Entered Import Resolution";
 
     private File activeCatalogFolder;
 
@@ -134,6 +138,24 @@ public class OntologyCatalogManager {
     @Nullable
     public XMLCatalog getActiveCatalog() {
         return activeCatalog;
+    }
+
+    /**
+     * Records that the user pointed a missing import at a local file. The mapping
+     * goes to the top of the catalog of the folder currently open, so it wins over
+     * generated entries, and the catalog is saved.
+     */
+    public void addUserImportResolution(URI ontologyIri, File file) throws IOException {
+        XMLCatalog catalog = getCurrentCatalog()
+                .orElseThrow(() -> new IOException("No catalog is open to record the import resolution in"));
+        URI relativeFile = CatalogUtilities.relativize(file.toURI(), catalog);
+        catalog.addEntry(0, new UriEntry(USER_IMPORT_RESOLUTION_ID, catalog, ontologyIri.toString(), relativeFile, null));
+        // A catalog created in this session has the folder as its base, not the file.
+        File catalogFile = getCatalogFile(catalog);
+        if (catalogFile == null) {
+            throw new IOException("Cannot find the catalog file for " + catalog.getXmlBaseContext().getXmlBase());
+        }
+        CatalogUtilities.save(catalog, catalogFile);
     }
 
     @Nonnull
