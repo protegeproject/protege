@@ -82,6 +82,12 @@ public class UIUtil {
             // who did see the native dialog and cancelled it gets a second dialog.
         }
         JFileChooser fileDialog = new JFileChooser(getCurrentFileDirectory());
+        // chooseFolder asks for a directory by routing through this method with the
+        // macOS "file dialog for directories" property set, so the fallback chooser
+        // has to offer directories too rather than files.
+        if(Boolean.parseBoolean(System.getProperty(MacUIUtil.FILE_DIALOG_FOR_DIRECTORIES))) {
+            fileDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        }
         if(extensions != null && !extensions.isEmpty()) {
             fileDialog.setFileFilter(new FileFilter() {
 
