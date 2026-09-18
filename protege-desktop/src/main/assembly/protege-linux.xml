@@ -65,7 +65,8 @@
             -->
             <fileMode>0755</fileMode>
             <directoryMode>0755</directoryMode>
-            <useStrictFiltering>true</useStrictFiltering>
+            <!-- <useStrictFiltering>true</useStrictFiltering> -->
+            <useStrictFiltering>false</useStrictFiltering>
         </dependencySet>
 
     </dependencySets>

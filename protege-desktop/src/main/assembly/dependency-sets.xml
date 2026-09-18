@@ -10,7 +10,7 @@
                 <include>edu.stanford.protege:protege-common:jar</include>
                 <include>edu.stanford.protege:protege-editor-core:jar</include>
                 <include>org.eclipse.equinox:org.eclipse.equinox.registry:jar</include>
-                <include>org.eclipse.equinox:org.eclipse.equinox.supplement:jar</include>
+                <!-- <include>org.eclipse.equinox:org.eclipse.equinox.supplement:jar</include> -->
                 <include>org.eclipse.equinox:org.eclipse.equinox.common:jar</include>
                 <include>net.sourceforge.owlapi:owlapi-osgidistribution:jar</include>
                 <include>edu.stanford.protege:protege-editor-owl:jar</include>
