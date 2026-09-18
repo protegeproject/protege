@@ -50,12 +50,12 @@
 			<version>${project.parent.version}</version>
 		</dependency>
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.eclipse.equinox</groupId>
 			<artifactId>org.eclipse.equinox.supplement</artifactId>
-		</dependency>
+		</dependency> -->
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>jre.os-x</artifactId>
 			<version>11.0.25_9</version>
@@ -74,7 +74,7 @@
 			<artifactId>jre.linux</artifactId>
 			<version>11.0.25_9</version>
 			<scope>runtime</scope>
-		</dependency>
+		</dependency> -->
 
 	</dependencies>
 	
