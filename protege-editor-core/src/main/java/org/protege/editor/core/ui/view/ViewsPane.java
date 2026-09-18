@@ -123,7 +123,8 @@ public class ViewsPane extends JPanel {
             nodeSerialiser.serialise();
             writer.flush();
         }
-        catch (ParserConfigurationException | IOException | TransformerFactoryConfigurationError | TransformerException e) {
+        // 2026-09-18: remove "| TransformerException" from below catch
+        catch (ParserConfigurationException | IOException | TransformerFactoryConfigurationError e) {
             logger.error("An error occurred whilst saving a views configuration file: {}", e);
         }
     }
