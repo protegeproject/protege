@@ -1,6 +1,10 @@
 # Protégé汉化实施工作日志
 
 - [Protégé汉化实施工作日志](#protégé汉化实施工作日志)
+  - [2026-09-19](#2026-09-19)
+    - [Java 21 迁移与兼容性适配](#java-21-迁移与兼容性适配)
+    - [依赖对齐与 OSGi 容器 Wiring 修复](#依赖对齐与-osgi-容器-wiring-修复)
+    - [运行时配置与打包优化](#运行时配置与打包优化)
   - [2026-09-18](#2026-09-18)
     - [汉化路径与模块的定位分析](#汉化路径与模块的定位分析)
     - [Protégé的界面文本初步分析](#protégé的界面文本初步分析)
@@ -8,6 +12,25 @@
       - [方法一：直接修改源码中的硬编码文本](#方法一直接修改源码中的硬编码文本)
       - [方法二：引入标准的 i18n 资源束机制](#方法二引入标准的-i18n-资源束机制)
     - [本地分支管理](#本地分支管理)
+
+## 2026-09-19
+
+### Java 21 迁移与兼容性适配
+- **Toolchain & Compiler:** 将 Maven 编译插件 (`maven-compiler-plugin`) 的 `source` 和 `target` 正式提升并锁定至 **Java 21**。
+- **JPMS 模块参数优化:** 在 `run.bat` 中通过 `--add-opens` 引入了必要的 Java 模块反射访问权限（如 `java.desktop`、`java.xml`、`java.base` 等），彻底解决了高版本 JDK 下的反射及访问限制问题。
+- **Swing 渲染性能修复:** 增加了 JVM 编译指令排除参数 `-XX:CompileCommand=exclude,javax/swing/text/GlyphView,getBreakSpot`，确保在现代 JVM 运行时中 Swing 渲染组件的高效稳定。
+
+### 依赖对齐与 OSGi 容器 Wiring 修复
+- **依赖版本管理:** 在 `pom.xml` 中统一并锁定了核心 Eclipse Platform 组件版本：
+  - `org.eclipse.osgi` (v3.18.0)
+  - `org.eclipse.equinox.registry` (v3.11.0)
+  - `org.eclipse.equinox.common` (v3.16.0)
+- **解决 OSGi Bundle 依赖解析错误:** 修复了 Apache Felix 容器启动时由于缺少服务包（如 `org.eclipse.osgi.service.localization`）导致的 `BundleException` 及 `org.eclipse.equinox.registry` 解析失败问题。
+- **类路径初始化优化:** 调整了启动类路径顺序，确保 `lib/org.eclipse.osgi.jar` 能够正确引导 OSGi 系统包的加载，避免类加载死锁。
+
+### 运行时配置与打包优化
+- **Felix 扩展包配置:** 完善了 `config.xml` 中的 `org.osgi.framework.system.packages.extra` 属性，显式导出了 Equinox 内部适配器、解析器以及本地化服务包。
+- **启动脚本及构建链路完善:** 优化了 Windows 下的 `run.bat` 运行环境，适配了字符编码 (`-Dfile.encoding=utf-8`)、日志配置（`logback-win.xml`）以及插件动态扫描目录。
 
 ## 2026-09-18
 
