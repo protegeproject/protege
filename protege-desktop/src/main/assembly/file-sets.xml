@@ -25,7 +25,6 @@
             </includes>
         </fileSet>
 
-<<<<<<< HEAD
         <!-- 新增：将本地 jre 目录打包到输出根目录下的 jre 文件夹中 -->
         <fileSet>
             <directory>jre</directory>
@@ -37,7 +36,5 @@
             </includes>
         </fileSet>
 
-=======
->>>>>>> 62322645aa5a62c14ef31c76796fc34ed492fec2
     </fileSets>
 </component>

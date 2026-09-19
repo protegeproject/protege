@@ -4,11 +4,7 @@
 	<parent>
 		<groupId>edu.stanford.protege</groupId>
 		<artifactId>protege-parent</artifactId>
-<<<<<<< HEAD
 		<version>5.6.10.1</version>
-=======
-		<version>5.6.10-SNAPSHOT</version>
->>>>>>> 62322645aa5a62c14ef31c76796fc34ed492fec2
 		<relativePath>../</relativePath>
 	</parent>
 
@@ -20,12 +16,8 @@
 	<description>Standard build of the Protege Desktop ontology editor.</description>
 
 	<properties>
-<<<<<<< HEAD
 		<conf.extra.args>--add-opens java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED --add-opens java.xml/com.sun.org.apache.xml.internal.serialize=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.net=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/sun.net.www=ALL-UNNAMED -XX:CompileCommand=exclude,javax/swing/text/GlyphView,getBreakSpot</conf.extra.args>
 		<!-- <conf.extra.args>-XX:CompileCommand=exclude,javax/swing/text/GlyphView,getBreakSpot</conf.extra.args> -->
-=======
-		<conf.extra.args>-XX:CompileCommand=exclude,javax/swing/text/GlyphView,getBreakSpot</conf.extra.args>
->>>>>>> 62322645aa5a62c14ef31c76796fc34ed492fec2
 		<osx.bundle.name>Protégé.app</osx.bundle.name>
 	</properties>
 
@@ -59,7 +51,6 @@
 			<version>${project.parent.version}</version>
 		</dependency>
 
-<<<<<<< HEAD
 		<dependency>
 			<groupId>org.eclipse.platform</groupId>
 			<artifactId>org.eclipse.osgi</artifactId>
@@ -77,33 +68,6 @@
 			<artifactId>org.eclipse.equinox.registry</artifactId>
 			<version>3.11.0</version>
 		</dependency>
-=======
-		<!-- <dependency>
-			<groupId>org.eclipse.equinox</groupId>
-			<artifactId>org.eclipse.equinox.supplement</artifactId>
-		</dependency> -->
-
-		<!-- <dependency>
-			<groupId>edu.stanford.protege</groupId>
-			<artifactId>jre.os-x</artifactId>
-			<version>11.0.25_9</version>
-			<scope>runtime</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>edu.stanford.protege</groupId>
-			<artifactId>jre.win</artifactId>
-			<version>11.0.25_9</version>
-			<scope>runtime</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>edu.stanford.protege</groupId>
-			<artifactId>jre.linux</artifactId>
-			<version>11.0.25_9</version>
-			<scope>runtime</scope>
-		</dependency> -->
->>>>>>> 62322645aa5a62c14ef31c76796fc34ed492fec2
 
 	</dependencies>
 	
@@ -113,13 +77,8 @@
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-<<<<<<< HEAD
 					<source>21</source>
 					<target>21</target>
-=======
-					<source>11</source>
-					<target>11</target>
->>>>>>> 62322645aa5a62c14ef31c76796fc34ed492fec2
 				</configuration>
 			</plugin>
 

@@ -10,11 +10,7 @@
   <frameworkProperties>
     <property name="org.osgi.framework.bootdelegation" value="sun.*,com.sun.*,apple.*,com.apple.*"/>
     <property name="org.osgi.framework.system.packages.extra" 
-<<<<<<< HEAD
               value="javax.xml.parsers,org.xml.sax,org.xml.sax.ext,org.xml.sax.helpers,org.eclipse.osgi.framework.log,org.eclipse.osgi.service.datalocation,org.eclipse.osgi.service.environment,org.eclipse.osgi.util,org.eclipse.osgi.service.debug,org.eclipse.osgi.service.localization,org.eclipse.osgi.service.urlconversion,org.eclipse.osgi.internal.url,org.eclipse.osgi.storage,org.eclipse.core.runtime,org.eclipse.core.runtime.adaptor,org.eclipse.core.runtime.internal.adaptor,org.eclipse.osgi.baseadaptor,org.eclipse.osgi.framework.adaptor,org.eclipse.osgi.framework.bundle,org.eclipse.osgi.internal.framework,org.eclipse.osgi.framework.internal.core"/>
-=======
-              value="javax.xml.parsers,org.xml.sax,org.xml.sax.ext,org.xml.sax.helpers"/>
->>>>>>> 62322645aa5a62c14ef31c76796fc34ed492fec2
     <property name="org.osgi.framework.storage.clean" 
               value="onFirstInit"/>
     <property name="org.osgi.service.http.port" value="8081"/>
@@ -29,18 +25,11 @@
     <search path="${user.home}/.Protege/bundles"/>
     <!-- Just start the org.protege.common bundle here -->
     <bundle name="protege-common.jar"/>
-<<<<<<< HEAD
     <!-- <bundle name="org.eclipse.osgi.jar"/> -->
-=======
->>>>>>> 62322645aa5a62c14ef31c76796fc34ed492fec2
   </bundles>
   <bundles>
     <search path="bundles"/>
     <search path="${user.home}/.Protege/bundles"/>
-<<<<<<< HEAD
-=======
-    <!-- Just start the eclipse equinox framework here -->
->>>>>>> 62322645aa5a62c14ef31c76796fc34ed492fec2
     <bundle name="org.eclipse.equinox.common.jar"/>
     <bundle name="org.eclipse.equinox.supplement.jar"/>
   </bundles>
@@ -56,11 +45,7 @@
   	<search path="bundles"/>
   	<search path="${user.home}/.Protege/bundles"/>
   </bundles>
-<<<<<<< HEAD
   <bundles>
-=======
-<bundles>
->>>>>>> 62322645aa5a62c14ef31c76796fc34ed492fec2
   	<search path="plugins"/>
   	<search path="${user.home}/.Protege/plugins"/>
   </bundles>
