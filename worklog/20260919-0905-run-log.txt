@@ -1,0 +1,448 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Install the latest PowerShell for new features and improvements! https://aka.ms/PSWindows
+
+PS D:\github\protege\protege-desktop\target\Protege-5.6.10.1-win\Protege-5.6.10.1> .\run.bat
+
+D:\github\protege\protege-desktop\target\Protege-5.6.10.1-win\Protege-5.6.10.1>setlocal
+
+D:\github\protege\protege-desktop\target\Protege-5.6.10.1-win\Protege-5.6.10.1>cd /d D:\github\protege\protege-desktop\target\Protege-5.6.10.1-win\Protege-5.6.10.1\
+
+D:\github\protege\protege-desktop\target\Protege-5.6.10.1-win\Protege-5.6.10.1>jre\bin\java --add-opens java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED --add-opens java.xml/com.sun.org.apache.xml.internal.serialize=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.net=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/sun.net.www=ALL-UNNAMED -XX:CompileCommand=exclude,javax/swing/text/GlyphView,getBreakSpot -DentityExpansionLimit=100000000 -Dlogback.configurationFile=conf/logback-win.xml -Dfile.encoding=utf-8 -Dorg.protege.plugin.dir=plugins -classpath lib/org.eclipse.osgi.jar;bundles/guava.jar;bundles/logback-classic.jar;bundles/logback-core.jar;bundles/slf4j-api.jar;bundles/glassfish-corba-orb.jar;bundles/org.apache.felix.main.jar;bundles/maven-artifact.jar;bundles/protege-launcher.jar org.protege.osgi.framework.Launcher
+CompileCommand: exclude javax/swing/text/GlyphView.getBreakSpot bool exclude = true
+********************************************************************************
+**                                  Protege                                   **
+********************************************************************************
+
+----------------- Initialising and Starting the OSGi Framework -----------------
+FrameworkFactory Class: org.eclipse.osgi.launch.EquinoxFactory
+
+The OSGi framework has been initialised
+Bundle bundles\protege-common.jar failed to install: {}
+org.osgi.framework.BundleException: Invalid manifest header Import-Package: "java.lang" : Cannot specify java.* packages in Import/Export headers "java.lang"
+        at org.eclipse.osgi.internal.resolver.StateBuilder.checkImportExportSyntax(StateBuilder.java:551)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.validateHeaders(StateBuilder.java:192)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.createBundleDescription(StateBuilder.java:50)
+        at org.eclipse.osgi.internal.resolver.StateObjectFactoryImpl.createBundleDescription(StateObjectFactoryImpl.java:32)
+        at org.eclipse.osgi.internal.baseadaptor.BaseStorage.updateState(BaseStorage.java:1131)
+        at org.eclipse.osgi.internal.baseadaptor.BundleInstall.commit(BundleInstall.java:128)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorkerPrivileged(Framework.java:948)
+        at org.eclipse.osgi.framework.internal.core.Framework$1.run(Framework.java:837)
+        at java.base/java.security.AccessController.doPrivileged(AccessController.java:571)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorker(Framework.java:888)
+        at org.eclipse.osgi.framework.internal.core.Framework.installBundle(Framework.java:832)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:167)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:161)
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:166)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\org.eclipse.equinox.common.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\org.eclipse.equinox.registry.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\protege-editor-core.jar failed to install: {}
+org.osgi.framework.BundleException: Invalid manifest header Import-Package: "java.awt" : Cannot specify java.* packages in Import/Export headers "java.awt"
+        at org.eclipse.osgi.internal.resolver.StateBuilder.checkImportExportSyntax(StateBuilder.java:551)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.validateHeaders(StateBuilder.java:192)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.createBundleDescription(StateBuilder.java:50)
+        at org.eclipse.osgi.internal.resolver.StateObjectFactoryImpl.createBundleDescription(StateObjectFactoryImpl.java:32)
+        at org.eclipse.osgi.internal.baseadaptor.BaseStorage.updateState(BaseStorage.java:1131)
+        at org.eclipse.osgi.internal.baseadaptor.BundleInstall.commit(BundleInstall.java:128)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorkerPrivileged(Framework.java:948)
+        at org.eclipse.osgi.framework.internal.core.Framework$1.run(Framework.java:837)
+        at java.base/java.security.AccessController.doPrivileged(AccessController.java:571)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorker(Framework.java:888)
+        at org.eclipse.osgi.framework.internal.core.Framework.installBundle(Framework.java:832)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:167)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:161)
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:166)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\asm-analysis.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\asm-tree.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\asm-util.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\asm.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\commons-io.jar failed to install: {}
+org.osgi.framework.BundleException: Invalid manifest header Import-Package: "java.io" : Cannot specify java.* packages in Import/Export headers "java.io"
+        at org.eclipse.osgi.internal.resolver.StateBuilder.checkImportExportSyntax(StateBuilder.java:551)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.validateHeaders(StateBuilder.java:192)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.createBundleDescription(StateBuilder.java:50)
+        at org.eclipse.osgi.internal.resolver.StateObjectFactoryImpl.createBundleDescription(StateObjectFactoryImpl.java:32)
+        at org.eclipse.osgi.internal.baseadaptor.BaseStorage.updateState(BaseStorage.java:1131)
+        at org.eclipse.osgi.internal.baseadaptor.BundleInstall.commit(BundleInstall.java:128)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorkerPrivileged(Framework.java:948)
+        at org.eclipse.osgi.framework.internal.core.Framework$1.run(Framework.java:837)
+        at java.base/java.security.AccessController.doPrivileged(AccessController.java:571)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorker(Framework.java:888)
+        at org.eclipse.osgi.framework.internal.core.Framework.installBundle(Framework.java:832)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:167)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:161)
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:166)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\glassfish-corba-omgapi.jar failed to install: {}
+org.osgi.framework.BundleException: Invalid manifest header Import-Package: "java.applet" : Cannot specify java.* packages in Import/Export headers "java.applet"
+        at org.eclipse.osgi.internal.resolver.StateBuilder.checkImportExportSyntax(StateBuilder.java:551)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.validateHeaders(StateBuilder.java:192)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.createBundleDescription(StateBuilder.java:50)
+        at org.eclipse.osgi.internal.resolver.StateObjectFactoryImpl.createBundleDescription(StateObjectFactoryImpl.java:32)
+        at org.eclipse.osgi.internal.baseadaptor.BaseStorage.updateState(BaseStorage.java:1131)
+        at org.eclipse.osgi.internal.baseadaptor.BundleInstall.commit(BundleInstall.java:128)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorkerPrivileged(Framework.java:948)
+        at org.eclipse.osgi.framework.internal.core.Framework$1.run(Framework.java:837)
+        at java.base/java.security.AccessController.doPrivileged(AccessController.java:571)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorker(Framework.java:888)
+        at org.eclipse.osgi.framework.internal.core.Framework.installBundle(Framework.java:832)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:167)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:161)
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:166)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\guava.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\jakarta.activation-api.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\JavaEWAH.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\jaxb-api.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\jaxb-core.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\jaxb-impl.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\jsr305.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\jul-to-slf4j.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\log4j-over-slf4j.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\logback-classic.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\logback-core.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\management-api.jar failed to install: {}
+org.osgi.framework.BundleException: Invalid manifest header Import-Package: "java.io" : Cannot specify java.* packages in Import/Export headers "java.io"
+        at org.eclipse.osgi.internal.resolver.StateBuilder.checkImportExportSyntax(StateBuilder.java:551)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.validateHeaders(StateBuilder.java:192)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.createBundleDescription(StateBuilder.java:50)
+        at org.eclipse.osgi.internal.resolver.StateObjectFactoryImpl.createBundleDescription(StateObjectFactoryImpl.java:32)
+        at org.eclipse.osgi.internal.baseadaptor.BaseStorage.updateState(BaseStorage.java:1131)
+        at org.eclipse.osgi.internal.baseadaptor.BundleInstall.commit(BundleInstall.java:128)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorkerPrivileged(Framework.java:948)
+        at org.eclipse.osgi.framework.internal.core.Framework$1.run(Framework.java:837)
+        at java.base/java.security.AccessController.doPrivileged(AccessController.java:571)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorker(Framework.java:888)
+        at org.eclipse.osgi.framework.internal.core.Framework.installBundle(Framework.java:832)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:167)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:161)
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:166)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\org.apache.felix.main.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\org.apache.servicemix.bundles.javax-inject.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\org.eclipse.equinox.common.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\org.eclipse.equinox.registry.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\org.eclipse.jgit.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\owlapi-osgidistribution.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\pfl-basic.jar failed to install: {}
+org.osgi.framework.BundleException: Invalid manifest header Import-Package: "java.io" : Cannot specify java.* packages in Import/Export headers "java.io"
+        at org.eclipse.osgi.internal.resolver.StateBuilder.checkImportExportSyntax(StateBuilder.java:551)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.validateHeaders(StateBuilder.java:192)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.createBundleDescription(StateBuilder.java:50)
+        at org.eclipse.osgi.internal.resolver.StateObjectFactoryImpl.createBundleDescription(StateObjectFactoryImpl.java:32)
+        at org.eclipse.osgi.internal.baseadaptor.BaseStorage.updateState(BaseStorage.java:1131)
+        at org.eclipse.osgi.internal.baseadaptor.BundleInstall.commit(BundleInstall.java:128)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorkerPrivileged(Framework.java:948)
+        at org.eclipse.osgi.framework.internal.core.Framework$1.run(Framework.java:837)
+        at java.base/java.security.AccessController.doPrivileged(AccessController.java:571)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorker(Framework.java:888)
+        at org.eclipse.osgi.framework.internal.core.Framework.installBundle(Framework.java:832)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:167)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:161)
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:166)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\pfl-dynamic.jar failed to install: {}
+org.osgi.framework.BundleException: Invalid manifest header Import-Package: "java.io" : Cannot specify java.* packages in Import/Export headers "java.io"
+        at org.eclipse.osgi.internal.resolver.StateBuilder.checkImportExportSyntax(StateBuilder.java:551)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.validateHeaders(StateBuilder.java:192)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.createBundleDescription(StateBuilder.java:50)
+        at org.eclipse.osgi.internal.resolver.StateObjectFactoryImpl.createBundleDescription(StateObjectFactoryImpl.java:32)
+        at org.eclipse.osgi.internal.baseadaptor.BaseStorage.updateState(BaseStorage.java:1131)
+        at org.eclipse.osgi.internal.baseadaptor.BundleInstall.commit(BundleInstall.java:128)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorkerPrivileged(Framework.java:948)
+        at org.eclipse.osgi.framework.internal.core.Framework$1.run(Framework.java:837)
+        at java.base/java.security.AccessController.doPrivileged(AccessController.java:571)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorker(Framework.java:888)
+        at org.eclipse.osgi.framework.internal.core.Framework.installBundle(Framework.java:832)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:167)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:161)
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:166)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\pfl-tf.jar failed to install: {}
+org.osgi.framework.BundleException: Invalid manifest header Import-Package: "java.io" : Cannot specify java.* packages in Import/Export headers "java.io"
+        at org.eclipse.osgi.internal.resolver.StateBuilder.checkImportExportSyntax(StateBuilder.java:551)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.validateHeaders(StateBuilder.java:192)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.createBundleDescription(StateBuilder.java:50)
+        at org.eclipse.osgi.internal.resolver.StateObjectFactoryImpl.createBundleDescription(StateObjectFactoryImpl.java:32)
+        at org.eclipse.osgi.internal.baseadaptor.BaseStorage.updateState(BaseStorage.java:1131)
+        at org.eclipse.osgi.internal.baseadaptor.BundleInstall.commit(BundleInstall.java:128)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorkerPrivileged(Framework.java:948)
+        at org.eclipse.osgi.framework.internal.core.Framework$1.run(Framework.java:837)
+        at java.base/java.security.AccessController.doPrivileged(AccessController.java:571)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorker(Framework.java:888)
+        at org.eclipse.osgi.framework.internal.core.Framework.installBundle(Framework.java:832)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:167)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:161)
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:166)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\protege-common.jar failed to install: {}
+org.osgi.framework.BundleException: Invalid manifest header Import-Package: "java.lang" : Cannot specify java.* packages in Import/Export headers "java.lang"
+        at org.eclipse.osgi.internal.resolver.StateBuilder.checkImportExportSyntax(StateBuilder.java:551)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.validateHeaders(StateBuilder.java:192)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.createBundleDescription(StateBuilder.java:50)
+        at org.eclipse.osgi.internal.resolver.StateObjectFactoryImpl.createBundleDescription(StateObjectFactoryImpl.java:32)
+        at org.eclipse.osgi.internal.baseadaptor.BaseStorage.updateState(BaseStorage.java:1131)
+        at org.eclipse.osgi.internal.baseadaptor.BundleInstall.commit(BundleInstall.java:128)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorkerPrivileged(Framework.java:948)
+        at org.eclipse.osgi.framework.internal.core.Framework$1.run(Framework.java:837)
+        at java.base/java.security.AccessController.doPrivileged(AccessController.java:571)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorker(Framework.java:888)
+        at org.eclipse.osgi.framework.internal.core.Framework.installBundle(Framework.java:832)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:167)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:161)
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:166)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\protege-editor-core.jar failed to install: {}
+org.osgi.framework.BundleException: Invalid manifest header Import-Package: "java.awt" : Cannot specify java.* packages in Import/Export headers "java.awt"
+        at org.eclipse.osgi.internal.resolver.StateBuilder.checkImportExportSyntax(StateBuilder.java:551)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.validateHeaders(StateBuilder.java:192)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.createBundleDescription(StateBuilder.java:50)
+        at org.eclipse.osgi.internal.resolver.StateObjectFactoryImpl.createBundleDescription(StateObjectFactoryImpl.java:32)
+        at org.eclipse.osgi.internal.baseadaptor.BaseStorage.updateState(BaseStorage.java:1131)
+        at org.eclipse.osgi.internal.baseadaptor.BundleInstall.commit(BundleInstall.java:128)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorkerPrivileged(Framework.java:948)
+        at org.eclipse.osgi.framework.internal.core.Framework$1.run(Framework.java:837)
+        at java.base/java.security.AccessController.doPrivileged(AccessController.java:571)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorker(Framework.java:888)
+        at org.eclipse.osgi.framework.internal.core.Framework.installBundle(Framework.java:832)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:167)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:161)
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:166)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\protege-editor-owl.jar failed to install: {}
+org.osgi.framework.BundleException: Invalid manifest header Import-Package: "java.awt" : Cannot specify java.* packages in Import/Export headers "java.awt"
+        at org.eclipse.osgi.internal.resolver.StateBuilder.checkImportExportSyntax(StateBuilder.java:551)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.validateHeaders(StateBuilder.java:192)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.createBundleDescription(StateBuilder.java:50)
+        at org.eclipse.osgi.internal.resolver.StateObjectFactoryImpl.createBundleDescription(StateObjectFactoryImpl.java:32)
+        at org.eclipse.osgi.internal.baseadaptor.BaseStorage.updateState(BaseStorage.java:1131)
+        at org.eclipse.osgi.internal.baseadaptor.BundleInstall.commit(BundleInstall.java:128)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorkerPrivileged(Framework.java:948)
+        at org.eclipse.osgi.framework.internal.core.Framework$1.run(Framework.java:837)
+        at java.base/java.security.AccessController.doPrivileged(AccessController.java:571)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorker(Framework.java:888)
+        at org.eclipse.osgi.framework.internal.core.Framework.installBundle(Framework.java:832)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:167)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:161)
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:166)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle bundles\slf4j-api.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle C:\Users\v0cn037\.Protege\plugins\aowln_plugin.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle C:\Users\v0cn037\.Protege\plugins\cellfie.jar failed to install: {}
+org.osgi.framework.BundleException: Invalid manifest header Import-Package: "java.awt" : Cannot specify java.* packages in Import/Export headers "java.awt"
+        at org.eclipse.osgi.internal.resolver.StateBuilder.checkImportExportSyntax(StateBuilder.java:551)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.validateHeaders(StateBuilder.java:192)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.createBundleDescription(StateBuilder.java:50)
+        at org.eclipse.osgi.internal.resolver.StateObjectFactoryImpl.createBundleDescription(StateObjectFactoryImpl.java:32)
+        at org.eclipse.osgi.internal.baseadaptor.BaseStorage.updateState(BaseStorage.java:1131)
+        at org.eclipse.osgi.internal.baseadaptor.BundleInstall.commit(BundleInstall.java:128)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorkerPrivileged(Framework.java:948)
+        at org.eclipse.osgi.framework.internal.core.Framework$1.run(Framework.java:837)
+        at java.base/java.security.AccessController.doPrivileged(AccessController.java:571)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorker(Framework.java:888)
+        at org.eclipse.osgi.framework.internal.core.Framework.installBundle(Framework.java:832)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:167)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:161)
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:166)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle C:\Users\v0cn037\.Protege\plugins\com.clarkparsia.protege.plugin.pellet.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle C:\Users\v0cn037\.Protege\plugins\comodide.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle C:\Users\v0cn037\.Protege\plugins\csv-export-plugin.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle C:\Users\v0cn037\.Protege\plugins\cz.cvut.kbss.owlhierarchy.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle C:\Users\v0cn037\.Protege\plugins\oaf-protege.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle C:\Users\v0cn037\.Protege\plugins\org.coode.change.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle C:\Users\v0cn037\.Protege\plugins\org.coode.matrix.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle C:\Users\v0cn037\.Protege\plugins\org.odase.protege.individualPropertiesContextualAssertions.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle C:\Users\v0cn037\.Protege\plugins\org.odase.protege.propertiesInDomainClass.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle C:\Users\v0cn037\.Protege\plugins\ROWL.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle C:\Users\v0cn037\.Protege\plugins\shacl4protege.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle C:\Users\v0cn037\.Protege\plugins\snap-sparql-query-plugin.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle C:\Users\v0cn037\.Protege\plugins\swrltab-plugin.jar failed to install: {}
+org.osgi.framework.BundleException: Invalid manifest header Import-Package: "java.applet" : Cannot specify java.* packages in Import/Export headers "java.applet"
+        at org.eclipse.osgi.internal.resolver.StateBuilder.checkImportExportSyntax(StateBuilder.java:551)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.validateHeaders(StateBuilder.java:192)
+        at org.eclipse.osgi.internal.resolver.StateBuilder.createBundleDescription(StateBuilder.java:50)
+        at org.eclipse.osgi.internal.resolver.StateObjectFactoryImpl.createBundleDescription(StateObjectFactoryImpl.java:32)
+        at org.eclipse.osgi.internal.baseadaptor.BaseStorage.updateState(BaseStorage.java:1131)
+        at org.eclipse.osgi.internal.baseadaptor.BundleInstall.commit(BundleInstall.java:128)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorkerPrivileged(Framework.java:948)
+        at org.eclipse.osgi.framework.internal.core.Framework$1.run(Framework.java:837)
+        at java.base/java.security.AccessController.doPrivileged(AccessController.java:571)
+        at org.eclipse.osgi.framework.internal.core.Framework.installWorker(Framework.java:888)
+        at org.eclipse.osgi.framework.internal.core.Framework.installBundle(Framework.java:832)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:167)
+        at org.eclipse.osgi.framework.internal.core.BundleContextImpl.installBundle(BundleContextImpl.java:161)
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:166)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+Bundle C:\Users\v0cn037\.Protege\plugins\uk.ac.manchester.cs.owl.factplusplus.jar failed to install: {}
+java.lang.NoSuchMethodError: 'java.lang.Object org.osgi.framework.Bundle.adapt(java.lang.Class)'
+        at org.protege.osgi.framework.Launcher.installBundles(Launcher.java:168)
+        at org.protege.osgi.framework.Launcher.start(Launcher.java:112)
+        at org.protege.osgi.framework.Launcher.main(Launcher.java:245)
+------------------------------- Starting Bundles -------------------------------
+The OSGi framework has been started
+

@@ -1,0 +1,209 @@
+
+D:\github\protege\protege-desktop\target\protege-5.6.10.1-win\Protege-5.6.10.1>setlocal
+
+D:\github\protege\protege-desktop\target\protege-5.6.10.1-win\Protege-5.6.10.1>cd /d D:\github\protege\protege-desktop\target\protege-5.6.10.1-win\Protege-5.6.10.1\
+
+D:\github\protege\protege-desktop\target\protege-5.6.10.1-win\Protege-5.6.10.1>jre\bin\java --add-opens java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED --add-opens java.xml/com.sun.org.apache.xml.internal.serialize=ALL-UNNAMED -XX:CompileCommand=exclude,javax/swing/text/GlyphView,getBreakSpot -DentityExpansionLimit=100000000 -Dlogback.configurationFile=conf/logback-win.xml -Dfile.encoding=utf-8 -Dorg.protege.plugin.dir=plugins -classpath bundles/guava.jar;bundles/logback-classic.jar;bundles/logback-core.jar;bundles/slf4j-api.jar;bundles/glassfish-corba-orb.jar;bundles/org.apache.felix.main.jar;bundles/maven-artifact.jar;bundles/protege-launcher.jar org.protege.osgi.framework.Launcher
+CompileCommand: exclude javax/swing/text/GlyphView.getBreakSpot bool exclude = true
+********************************************************************************
+**                                  Protege                                   **
+********************************************************************************
+
+----------------- Initialising and Starting the OSGi Framework -----------------
+FrameworkFactory Class: org.apache.felix.framework.FrameworkFactory
+
+The OSGi framework has been initialised
+------------------------------- Starting Bundles -------------------------------
+Starting bundle org.protege.common
+Starting bundle org.eclipse.equinox.common
+Starting bundle org.eclipse.equinox.registry
+Starting bundle org.protege.editor.core.application
+Starting bundle org.objectweb.asm.tree.analysis
+Starting bundle org.objectweb.asm.tree
+Starting bundle org.objectweb.asm.util
+Starting bundle org.objectweb.asm
+Starting bundle org.apache.commons.commons-io
+Starting bundle org.glassfish.corba.glassfish-corba-omgapi
+Starting bundle com.google.guava
+Starting bundle jakarta.activation-api
+Starting bundle com.googlecode.javaewah.JavaEWAH
+Starting bundle jaxb-api
+Starting bundle com.sun.xml.bind.jaxb-core
+Starting bundle com.sun.xml.bind.jaxb-impl
+Starting bundle org.jsr-305
+Starting bundle jul.to.slf4j
+Starting bundle log4j.over.slf4j
+Starting bundle ch.qos.logback.classic
+Starting bundle ch.qos.logback.core
+Starting bundle org.glassfish.external.management-api
+Starting bundle org.apache.felix.main
+Starting bundle org.apache.servicemix.bundles.javax-inject
+Starting bundle org.eclipse.equinox.common
+Starting bundle org.eclipse.equinox.registry
+Starting bundle org.eclipse.jgit
+Starting bundle org.semanticweb.owl.owlapi
+Starting bundle org.glassfish.pfl.pfl-basic
+Starting bundle org.glassfish.pfl.pfl-dynamic
+Starting bundle org.glassfish.pfl.pfl-tf
+Starting bundle org.protege.common
+Starting bundle org.protege.editor.core.application
+Starting bundle org.protege.editor.owl
+Starting bundle slf4j.api
+Starting bundle aowln_plugin
+Starting bundle cellfie
+Starting bundle com.clarkparsia.protege.plugin.pellet
+Starting bundle CoModIDE
+Starting bundle csv-export-plugin
+Starting bundle cz.cvut.kbss.owlhierarchy
+Starting bundle oaf-protege
+Starting bundle org.coode.change
+Starting bundle org.coode.matrix
+Starting bundle org.odase.protege.individualPropertiesContextualAssertions
+Starting bundle org.odase.protege.propertiesInDomainClass
+Starting bundle ROWL
+Starting bundle at.ac.tuwien.shacl.plugin
+Starting bundle snap-sparql-query-plugin
+Starting bundle swrltab-plugin
+Starting bundle uk.ac.manchester.cs.owl.factplusplus
+Error starting file:/D:/github/protege/protege-desktop/target/protege-5.6.10.1-win/Protege-5.6.10.1/bundles/org.eclipse.equinox.common.jar
+org.osgi.framework.BundleException: Unable to resolve org.eclipse.equinox.common [2](R 2.0): missing requirement [org.eclipse.equinox.common [2](R 2.0)] osgi.wiring.package; (osgi.wiring.package=org.eclipse.osgi.service.urlconversion) Unresolved requirements: [[org.eclipse.equinox.common [2](R 2.0)] osgi.wiring.package; (osgi.wiring.package=org.eclipse.osgi.service.urlconversion)]
+        at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:4398)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Error starting file:/D:/github/protege/protege-desktop/target/protege-5.6.10.1-win/Protege-5.6.10.1/bundles/org.eclipse.equinox.registry.jar
+org.osgi.framework.BundleException: Unable to resolve org.eclipse.equinox.registry [3](R 3.0): missing requirement [org.eclipse.equinox.registry [3](R 3.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.osgi.service.localization)(version>=1.1.0)) Unresolved requirements: [[org.eclipse.equinox.registry [3](R 3.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.osgi.service.localization)(version>=1.1.0))]
+        at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:4398)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Error starting file:/D:/github/protege/protege-desktop/target/protege-5.6.10.1-win/Protege-5.6.10.1/bundles/protege-editor-core.jar
+org.osgi.framework.BundleException: Unable to resolve org.protege.editor.core.application [4](R 4.0): missing requirement [org.protege.editor.core.application [4](R 4.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.core.runtime)(registry=split)(version>=3.4.0)(!(version>=4.0.0))) [caused by: Unable to resolve org.eclipse.equinox.registry [3](R 3.0): missing requirement [org.eclipse.equinox.registry [3](R 3.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.osgi.service.localization)(version>=1.1.0))] Unresolved requirements: [[org.protege.editor.core.application [4](R 4.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.core.runtime)(registry=split)(version>=3.4.0)(!(version>=4.0.0)))]
+        at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:4398)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Error starting file:/D:/github/protege/protege-desktop/target/protege-5.6.10.1-win/Protege-5.6.10.1/bundles/protege-editor-owl.jar
+org.osgi.framework.BundleException: Unable to resolve org.protege.editor.owl [30](R 30.0): missing requirement [org.protege.editor.owl [30](R 30.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.core.editorkit)(version>=5.6.0)(!(version>=6.0.0))) [caused by: Unable to resolve org.protege.editor.core.application [4](R 4.0): missing requirement [org.protege.editor.core.application [4](R 4.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.core.runtime)(registry=split)(version>=3.4.0)(!(version>=4.0.0))) [caused by: Unable to resolve org.eclipse.equinox.registry [3](R 3.0): missing requirement [org.eclipse.equinox.registry [3](R 3.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.osgi.service.localization)(version>=1.1.0))]] Unresolved requirements: [[org.protege.editor.owl [30](R 30.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.core.editorkit)(version>=5.6.0)(!(version>=6.0.0)))]
+        at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:4398)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Error starting file:/C:/Users/v0cn037/.Protege/plugins/aowln_plugin.jar
+org.osgi.framework.BundleException: Unable to resolve aowln_plugin [32](R 32.0): missing requirement [aowln_plugin [32](R 32.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.ui)(version>=5.0.0)) [caused by: Unable to resolve org.protege.editor.owl [30](R 30.0): missing requirement [org.protege.editor.owl [30](R 30.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.core.editorkit)(version>=5.6.0)(!(version>=6.0.0))) [caused by: Unable to resolve org.protege.editor.core.application [4](R 4.0): missing requirement [org.protege.editor.core.application [4](R 4.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.core.runtime)(registry=split)(version>=3.4.0)(!(version>=4.0.0))) [caused by: Unable to resolve org.eclipse.equinox.registry [3](R 3.0): missing requirement [org.eclipse.equinox.registry [3](R 3.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.osgi.service.localization)(version>=1.1.0))]]] Unresolved requirements: [[aowln_plugin [32](R 32.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.ui)(version>=5.0.0))]
+        at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:4398)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Error starting file:/C:/Users/v0cn037/.Protege/plugins/cellfie.jar
+org.osgi.framework.BundleException: Unable to resolve cellfie [33](R 33.0): missing requirement [cellfie [33](R 33.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model)(version>=5.0.0)) [caused by: Unable to resolve org.protege.editor.owl [30](R 30.0): missing requirement [org.protege.editor.owl [30](R 30.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.core.runtime)(registry=split)(version>=3.4.0)(!(version>=4.0.0))) [caused by: Unable to resolve org.eclipse.equinox.registry [3](R 3.0): missing requirement [org.eclipse.equinox.registry [3](R 3.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.osgi.service.localization)(version>=1.1.0))]] Unresolved requirements: [[cellfie [33](R 33.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model)(version>=5.0.0))]
+        at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:4398)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Error starting file:/C:/Users/v0cn037/.Protege/plugins/com.clarkparsia.protege.plugin.pellet.jar
+org.osgi.framework.BundleException: Unable to resolve com.clarkparsia.protege.plugin.pellet [34](R 34.0): missing requirement [com.clarkparsia.protege.plugin.pellet [34](R 34.0)] osgi.wiring.bundle; (&(osgi.wiring.bundle=org.protege.editor.owl)(bundle-version>=4.1.0)) [caused by: Unable to resolve org.protege.editor.owl [30](R 30.0): missing requirement [org.protege.editor.owl [30](R 30.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.core.runtime)(registry=split)(version>=3.4.0)(!(version>=4.0.0))) [caused by: Unable to resolve org.eclipse.equinox.registry [3](R 3.0): missing requirement [org.eclipse.equinox.registry [3](R 3.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.osgi.service.localization)(version>=1.1.0))]] Unresolved requirements: [[com.clarkparsia.protege.plugin.pellet [34](R 34.0)] osgi.wiring.bundle; (&(osgi.wiring.bundle=org.protege.editor.owl)(bundle-version>=4.1.0))]
+        at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:4398)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Error starting file:/C:/Users/v0cn037/.Protege/plugins/comodide.jar
+org.osgi.framework.BundleException: Unable to resolve CoModIDE [35](R 35.0): missing requirement [CoModIDE [35](R 35.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model)(version>=5.0.0)) [caused by: Unable to resolve org.protege.editor.owl [30](R 30.0): missing requirement [org.protege.editor.owl [30](R 30.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.core.editorkit)(version>=5.6.0)(!(version>=6.0.0))) [caused by: Unable to resolve org.protege.editor.core.application [4](R 4.0): missing requirement [org.protege.editor.core.application [4](R 4.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.core.runtime)(registry=split)(version>=3.4.0)(!(version>=4.0.0))) [caused by: Unable to resolve org.eclipse.equinox.registry [3](R 3.0): missing requirement [org.eclipse.equinox.registry [3](R 3.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.osgi.service.localization)(version>=1.1.0))]]] Unresolved requirements: [[CoModIDE [35](R 35.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model)(version>=5.0.0))]
+        at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:4398)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Error starting file:/C:/Users/v0cn037/.Protege/plugins/csv-export-plugin.jar
+org.osgi.framework.BundleException: Unable to resolve csv-export-plugin [36](R 36.0): missing requirement [csv-export-plugin [36](R 36.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model)(version>=5.0.0)(!(version>=6.0.0))) [caused by: Unable to resolve org.protege.editor.owl [30](R 30.0): missing requirement [org.protege.editor.owl [30](R 30.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.core.runtime)(registry=split)(version>=3.4.0)(!(version>=4.0.0))) [caused by: Unable to resolve org.eclipse.equinox.registry [3](R 3.0): missing requirement [org.eclipse.equinox.registry [3](R 3.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.osgi.service.localization)(version>=1.1.0))]] Unresolved requirements: [[csv-export-plugin [36](R 36.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model)(version>=5.0.0)(!(version>=6.0.0)))]
+        at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:4398)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Error starting file:/C:/Users/v0cn037/.Protege/plugins/cz.cvut.kbss.owlhierarchy.jar
+org.osgi.framework.BundleException: Unable to resolve cz.cvut.kbss.owlhierarchy [37](R 37.0): missing requirement [cz.cvut.kbss.owlhierarchy [37](R 37.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model)(version>=5.2.0)) [caused by: Unable to resolve org.protege.editor.owl [30](R 30.0): missing requirement [org.protege.editor.owl [30](R 30.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.core.runtime)(registry=split)(version>=3.4.0)(!(version>=4.0.0))) [caused by: Unable to resolve org.eclipse.equinox.registry [3](R 3.0): missing requirement [org.eclipse.equinox.registry [3](R 3.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.osgi.service.localization)(version>=1.1.0))]] Unresolved requirements: [[cz.cvut.kbss.owlhierarchy [37](R 37.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model)(version>=5.2.0))]
+        at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:4398)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Error starting file:/C:/Users/v0cn037/.Protege/plugins/oaf-protege.jar
+org.osgi.framework.BundleException: Unable to resolve oaf-protege [38](R 38.0): missing requirement [oaf-protege [38](R 38.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model.event)(version>=5.2.0)) [caused by: Unable to resolve org.protege.editor.owl [30](R 30.0): missing requirement [org.protege.editor.owl [30](R 30.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.core.runtime)(registry=split)(version>=3.4.0)(!(version>=4.0.0))) [caused by: Unable to resolve org.eclipse.equinox.registry [3](R 3.0): missing requirement [org.eclipse.equinox.registry [3](R 3.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.osgi.service.localization)(version>=1.1.0))]] Unresolved requirements: [[oaf-protege [38](R 38.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model.event)(version>=5.2.0))]
+        at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:4398)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Error starting file:/C:/Users/v0cn037/.Protege/plugins/org.coode.change.jar
+org.osgi.framework.BundleException: Unable to resolve org.coode.change [39](R 39.0): missing requirement [org.coode.change [39](R 39.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model)(version>=5.0.0)) [caused by: Unable to resolve org.protege.editor.owl [30](R 30.0): missing requirement [org.protege.editor.owl [30](R 30.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.core.runtime)(registry=split)(version>=3.4.0)(!(version>=4.0.0))) [caused by: Unable to resolve org.eclipse.equinox.registry [3](R 3.0): missing requirement [org.eclipse.equinox.registry [3](R 3.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.osgi.service.localization)(version>=1.1.0))]] Unresolved requirements: [[org.coode.change [39](R 39.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model)(version>=5.0.0))]
+        at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:4398)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Error starting file:/C:/Users/v0cn037/.Protege/plugins/org.coode.matrix.jar
+org.osgi.framework.BundleException: Unable to resolve org.coode.matrix [40](R 40.0): missing requirement [org.coode.matrix [40](R 40.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model)(version>=5.0.0)) [caused by: Unable to resolve org.protege.editor.owl [30](R 30.0): missing requirement [org.protege.editor.owl [30](R 30.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.core.runtime)(registry=split)(version>=3.4.0)(!(version>=4.0.0))) [caused by: Unable to resolve org.eclipse.equinox.registry [3](R 3.0): missing requirement [org.eclipse.equinox.registry [3](R 3.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.osgi.service.localization)(version>=1.1.0))]] Unresolved requirements: [[org.coode.matrix [40](R 40.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model)(version>=5.0.0))]
+        at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:4398)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Error starting file:/C:/Users/v0cn037/.Protege/plugins/org.odase.protege.individualPropertiesContextualAssertions.jar
+org.osgi.framework.BundleException: Unable to resolve org.odase.protege.individualPropertiesContextualAssertions [41](R 41.0): missing requirement [org.odase.protege.individualPropertiesContextualAssertions [41](R 41.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model)(version>=5.0.0)) [caused by: Unable to resolve org.protege.editor.owl [30](R 30.0): missing requirement [org.protege.editor.owl [30](R 30.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.core.editorkit)(version>=5.6.0)(!(version>=6.0.0))) [caused by: Unable to resolve org.protege.editor.core.application [4](R 4.0): missing requirement [org.protege.editor.core.application [4](R 4.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.core.runtime)(registry=split)(version>=3.4.0)(!(version>=4.0.0))) [caused by: Unable to resolve org.eclipse.equinox.registry [3](R 3.0): missing requirement [org.eclipse.equinox.registry [3](R 3.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.osgi.service.localization)(version>=1.1.0))]]] Unresolved requirements: [[org.odase.protege.individualPropertiesContextualAssertions [41](R 41.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model)(version>=5.0.0))]
+        at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:4398)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Error starting file:/C:/Users/v0cn037/.Protege/plugins/org.odase.protege.propertiesInDomainClass.jar
+org.osgi.framework.BundleException: Unable to resolve org.odase.protege.propertiesInDomainClass [42](R 42.0): missing requirement [org.odase.protege.propertiesInDomainClass [42](R 42.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model)(version>=5.0.0)) [caused by: Unable to resolve org.protege.editor.owl [30](R 30.0): missing requirement [org.protege.editor.owl [30](R 30.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.core.editorkit)(version>=5.6.0)(!(version>=6.0.0))) [caused by: Unable to resolve org.protege.editor.core.application [4](R 4.0): missing requirement [org.protege.editor.core.application [4](R 4.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.core.runtime)(registry=split)(version>=3.4.0)(!(version>=4.0.0))) [caused by: Unable to resolve org.eclipse.equinox.registry [3](R 3.0): missing requirement [org.eclipse.equinox.registry [3](R 3.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.osgi.service.localization)(version>=1.1.0))]]] Unresolved requirements: [[org.odase.protege.propertiesInDomainClass [42](R 42.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model)(version>=5.0.0))]
+        at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:4398)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Error starting file:/C:/Users/v0cn037/.Protege/plugins/ROWL.jar
+org.osgi.framework.BundleException: Unable to resolve ROWL [43](R 43.0): missing requirement [ROWL [43](R 43.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model)(version>=5.0.0)) [caused by: Unable to resolve org.protege.editor.owl [30](R 30.0): missing requirement [org.protege.editor.owl [30](R 30.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.core.editorkit)(version>=5.6.0)(!(version>=6.0.0))) [caused by: Unable to resolve org.protege.editor.core.application [4](R 4.0): missing requirement [org.protege.editor.core.application [4](R 4.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.core.runtime)(registry=split)(version>=3.4.0)(!(version>=4.0.0))) [caused by: Unable to resolve org.eclipse.equinox.registry [3](R 3.0): missing requirement [org.eclipse.equinox.registry [3](R 3.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.osgi.service.localization)(version>=1.1.0))]]] Unresolved requirements: [[ROWL [43](R 43.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model)(version>=5.0.0))]
+        at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:4398)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Error starting file:/C:/Users/v0cn037/.Protege/plugins/shacl4protege.jar
+org.osgi.framework.BundleException: Unable to resolve at.ac.tuwien.shacl.plugin [44](R 44.0): missing requirement [at.ac.tuwien.shacl.plugin [44](R 44.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model.inference)(version>=5.0.0)(!(version>=6.0.0))) [caused by: Unable to resolve org.protege.editor.owl [30](R 30.0): missing requirement [org.protege.editor.owl [30](R 30.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.core.editorkit)(version>=5.6.0)(!(version>=6.0.0))) [caused by: Unable to resolve org.protege.editor.core.application [4](R 4.0): missing requirement [org.protege.editor.core.application [4](R 4.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.core.runtime)(registry=split)(version>=3.4.0)(!(version>=4.0.0))) [caused by: Unable to resolve org.eclipse.equinox.registry [3](R 3.0): missing requirement [org.eclipse.equinox.registry [3](R 3.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.osgi.service.localization)(version>=1.1.0))]]] Unresolved requirements: [[at.ac.tuwien.shacl.plugin [44](R 44.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model.inference)(version>=5.0.0)(!(version>=6.0.0)))]
+        at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:4398)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Error starting file:/C:/Users/v0cn037/.Protege/plugins/snap-sparql-query-plugin.jar
+org.osgi.framework.BundleException: Unable to resolve snap-sparql-query-plugin [45](R 45.0): missing requirement [snap-sparql-query-plugin [45](R 45.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model)(version>=5.0.0)) [caused by: Unable to resolve org.protege.editor.owl [30](R 30.0): missing requirement [org.protege.editor.owl [30](R 30.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.core.editorkit)(version>=5.6.0)(!(version>=6.0.0))) [caused by: Unable to resolve org.protege.editor.core.application [4](R 4.0): missing requirement [org.protege.editor.core.application [4](R 4.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.core.runtime)(registry=split)(version>=3.4.0)(!(version>=4.0.0))) [caused by: Unable to resolve org.eclipse.equinox.registry [3](R 3.0): missing requirement [org.eclipse.equinox.registry [3](R 3.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.osgi.service.localization)(version>=1.1.0))]]] Unresolved requirements: [[snap-sparql-query-plugin [45](R 45.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model)(version>=5.0.0))]
+        at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:4398)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Error starting file:/C:/Users/v0cn037/.Protege/plugins/swrltab-plugin.jar
+org.osgi.framework.BundleException: Unable to resolve swrltab-plugin [46](R 46.0): missing requirement [swrltab-plugin [46](R 46.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model)(version>=5.6.4)) [caused by: Unable to resolve org.protege.editor.owl [30](R 30.0): missing requirement [org.protege.editor.owl [30](R 30.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.core.runtime)(registry=split)(version>=3.4.0)(!(version>=4.0.0))) [caused by: Unable to resolve org.eclipse.equinox.registry [3](R 3.0): missing requirement [org.eclipse.equinox.registry [3](R 3.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.osgi.service.localization)(version>=1.1.0))]] Unresolved requirements: [[swrltab-plugin [46](R 46.0)] osgi.wiring.package; (&(osgi.wiring.package=org.protege.editor.owl.model)(version>=5.6.4))]
+        at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:4398)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Error starting file:/C:/Users/v0cn037/.Protege/plugins/uk.ac.manchester.cs.owl.factplusplus.jar
+org.osgi.framework.BundleException: Unable to resolve uk.ac.manchester.cs.owl.factplusplus [47](R 47.0): missing requirement [uk.ac.manchester.cs.owl.factplusplus [47](R 47.0)] osgi.native; (|(&(|(osgi.native.osname~=win)(osgi.native.osname~=windowsnt)(osgi.native.osname~=windows nt)(osgi.native.osname~=winnt)(osgi.native.osname~=windowsxp)(osgi.native.osname~=windows xp)(osgi.native.osname~=winxp)(osgi.native.osname~=windowsvista)(osgi.native.osname~=windows vista)(osgi.native.osname~=windows2003)(osgi.native.osname~=windows2008)(osgi.native.osname~=windows7)(osgi.native.osname~=windows 7)(osgi.native.osname~=windows8)(osgi.native.osname~=windows 8)(osgi.native.osname~=windows8.1)(osgi.native.osname~=windows 8.1))(|(osgi.native.processor~=x86_64)(osgi.native.processor~=amd64)))(&(|(osgi.native.osname~=win)(osgi.native.osname~=windows95)(osgi.native.osname~=windows 95)(osgi.native.osname~=win95)(osgi.native.osname~=windows98)(osgi.native.osname~=windows 98)(osgi.native.osname~=win98)(osgi.native.osname~=windowsnt)(osgi.native.osname~=windows nt)(osgi.native.osname~=winnt)(osgi.native.osname~=windowsce)(osgi.native.osname~=winndows ce)(osgi.native.osname~=wince)(osgi.native.osname~=windowsxp)(osgi.native.osname~=windows xp)(osgi.native.osname~=winxp)(osgi.native.osname~=windowsvista)(osgi.native.osname~=windows vista)(osgi.native.osname~=windows2003)(osgi.native.osname~=windows2008)(osgi.native.osname~=windows7)(osgi.native.osname~=windows 7)(osgi.native.osname~=windows8)(osgi.native.osname~=windows 8)(osgi.native.osname~=windows8.1)(osgi.native.osname~=windows 8.1))(|(osgi.native.processor~=i386)(osgi.native.processor~=x86)))(&(osgi.native.osname~=linux)(|(osgi.native.processor~=x86_64)(osgi.native.processor~=amd64)))(&(osgi.native.osname~=linux)(osgi.native.processor~=i386))(&(|(osgi.native.osname~=macosx)(osgi.native.osname~=mac os x))(|(osgi.native.processor~=ppc64)(osgi.native.processor~=x86_64)))(&(|(osgi.native.osname~=macosx)(osgi.native.osname~=mac os x))(|(osgi.native.processor~=ppc)(osgi.native.processor~=i386)))) Unresolved requirements: [[uk.ac.manchester.cs.owl.factplusplus [47](R 47.0)] osgi.native; (|(&(|(osgi.native.osname~=win)(osgi.native.osname~=windowsnt)(osgi.native.osname~=windows nt)(osgi.native.osname~=winnt)(osgi.native.osname~=windowsxp)(osgi.native.osname~=windows xp)(osgi.native.osname~=winxp)(osgi.native.osname~=windowsvista)(osgi.native.osname~=windows vista)(osgi.native.osname~=windows2003)(osgi.native.osname~=windows2008)(osgi.native.osname~=windows7)(osgi.native.osname~=windows 7)(osgi.native.osname~=windows8)(osgi.native.osname~=windows 8)(osgi.native.osname~=windows8.1)(osgi.native.osname~=windows 8.1))(|(osgi.native.processor~=x86_64)(osgi.native.processor~=amd64)))(&(|(osgi.native.osname~=win)(osgi.native.osname~=windows95)(osgi.native.osname~=windows 95)(osgi.native.osname~=win95)(osgi.native.osname~=windows98)(osgi.native.osname~=windows 98)(osgi.native.osname~=win98)(osgi.native.osname~=windowsnt)(osgi.native.osname~=windows nt)(osgi.native.osname~=winnt)(osgi.native.osname~=windowsce)(osgi.native.osname~=winndows ce)(osgi.native.osname~=wince)(osgi.native.osname~=windowsxp)(osgi.native.osname~=windows xp)(osgi.native.osname~=winxp)(osgi.native.osname~=windowsvista)(osgi.native.osname~=windows vista)(osgi.native.osname~=windows2003)(osgi.native.osname~=windows2008)(osgi.native.osname~=windows7)(osgi.native.osname~=windows 7)(osgi.native.osname~=windows8)(osgi.native.osname~=windows 8)(osgi.native.osname~=windows8.1)(osgi.native.osname~=windows 8.1))(|(osgi.native.processor~=i386)(osgi.native.processor~=x86)))(&(osgi.native.osname~=linux)(|(osgi.native.processor~=x86_64)(osgi.native.processor~=amd64)))(&(osgi.native.osname~=linux)(osgi.native.processor~=i386))(&(|(osgi.native.osname~=macosx)(osgi.native.osname~=mac os x))(|(osgi.native.processor~=ppc64)(osgi.native.processor~=x86_64)))(&(|(osgi.native.osname~=macosx)(osgi.native.osname~=mac os x))(|(osgi.native.processor~=ppc)(osgi.native.processor~=i386))))]
+        at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:4398)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+The OSGi framework has been started
+

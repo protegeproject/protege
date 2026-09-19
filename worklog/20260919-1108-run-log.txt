@@ -1,0 +1,195 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Install the latest PowerShell for new features and improvements! https://aka.ms/PSWindows
+
+PS D:\GitHub\protege\protege-desktop\target\Protege-5.6.10.1-win\Protege-5.6.10.1> .\run.bat
+
+D:\github\protege\protege-desktop\target\Protege-5.6.10.1-win\Protege-5.6.10.1>setlocal
+
+D:\github\protege\protege-desktop\target\Protege-5.6.10.1-win\Protege-5.6.10.1>cd /d D:\github\protege\protege-desktop\target\Protege-5.6.10.1-win\Protege-5.6.10.1\
+
+D:\github\protege\protege-desktop\target\Protege-5.6.10.1-win\Protege-5.6.10.1>jre\bin\java --add-opens java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED --add-opens java.xml/com.sun.org.apache.xml.internal.serialize=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.net=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/sun.net.www=ALL-UNNAMED -XX:CompileCommand=exclude,javax/swing/text/GlyphView,getBreakSpot -DentityExpansionLimit=100000000 -Dlogback.configurationFile=conf/logback-win.xml -Dfile.encoding=utf-8 -Dorg.protege.plugin.dir=plugins -classpath bundles/guava.jar;bundles/logback-classic.jar;bundles/logback-core.jar;bundles/slf4j-api.jar;bundles/glassfish-corba-orb.jar;bundles/org.apache.felix.main.jar;bundles/maven-artifact.jar;bundles/protege-launcher.jar org.protege.osgi.framework.Launcher
+CompileCommand: exclude javax/swing/text/GlyphView.getBreakSpot bool exclude = true
+********************************************************************************
+**                                  Protege                                   **
+********************************************************************************
+
+----------------- Initialising and Starting the OSGi Framework -----------------
+FrameworkFactory Class: org.apache.felix.framework.FrameworkFactory
+
+The OSGi framework has been initialised
+------------------------------- Starting Bundles -------------------------------
+Starting bundle org.protege.common
+Starting bundle org.eclipse.equinox.common
+Starting bundle org.eclipse.osgi
+Starting bundle org.eclipse.equinox.registry
+Starting bundle org.protege.editor.core.application
+Starting bundle org.objectweb.asm.tree.analysis
+Starting bundle org.objectweb.asm.tree
+Starting bundle org.objectweb.asm.util
+Starting bundle org.objectweb.asm
+Starting bundle org.apache.commons.commons-io
+Starting bundle org.glassfish.corba.glassfish-corba-omgapi
+Starting bundle com.google.guava
+Starting bundle jakarta.activation-api
+Starting bundle com.googlecode.javaewah.JavaEWAH
+Starting bundle jaxb-api
+Starting bundle com.sun.xml.bind.jaxb-core
+Starting bundle com.sun.xml.bind.jaxb-impl
+Starting bundle org.jsr-305
+Starting bundle jul.to.slf4j
+Starting bundle log4j.over.slf4j
+Starting bundle ch.qos.logback.classic
+Starting bundle ch.qos.logback.core
+Starting bundle org.glassfish.external.management-api
+Starting bundle org.apache.felix.main
+Starting bundle org.apache.servicemix.bundles.javax-inject
+Starting bundle org.eclipse.equinox.common
+Starting bundle org.eclipse.equinox.registry
+Starting bundle org.eclipse.jgit
+Starting bundle org.eclipse.osgi
+Starting bundle org.semanticweb.owl.owlapi
+Starting bundle org.glassfish.pfl.pfl-basic
+Starting bundle org.glassfish.pfl.pfl-dynamic
+Starting bundle org.glassfish.pfl.pfl-tf
+Starting bundle org.protege.common
+Starting bundle org.protege.editor.core.application
+Starting bundle org.protege.editor.owl
+Starting bundle slf4j.api
+Starting bundle aowln_plugin
+Starting bundle cellfie
+Starting bundle com.clarkparsia.protege.plugin.pellet
+Starting bundle CoModIDE
+Starting bundle csv-export-plugin
+Starting bundle cz.cvut.kbss.owlhierarchy
+Starting bundle oaf-protege
+Starting bundle org.coode.change
+Starting bundle org.coode.matrix
+Starting bundle org.odase.protege.individualPropertiesContextualAssertions
+Starting bundle org.odase.protege.propertiesInDomainClass
+Starting bundle ROWL
+Starting bundle at.ac.tuwien.shacl.plugin
+Starting bundle snap-sparql-query-plugin
+Starting bundle swrltab-plugin
+Starting bundle uk.ac.manchester.cs.owl.factplusplus
+Error starting file:/D:/github/protege/protege-desktop/target/Protege-5.6.10.1-win/Protege-5.6.10.1/bundles/org.eclipse.equinox.common.jar
+org.osgi.framework.BundleException: Activator start error in bundle org.eclipse.equinox.common [2].
+        at org.apache.felix.framework.Felix.activateBundle(Felix.java:2479)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2335)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.NoClassDefFoundError: org.eclipse.osgi.service.urlconversion.URLConverter
+        at org.eclipse.core.internal.runtime.Activator.start(Activator.java:82)
+        at org.apache.felix.framework.util.SecureAction.startActivator(SecureAction.java:849)
+        at org.apache.felix.framework.Felix.activateBundle(Felix.java:2429)
+        ... 4 common frames omitted
+Error starting file:/D:/github/protege/protege-desktop/target/Protege-5.6.10.1-win/Protege-5.6.10.1/bundles/org.eclipse.osgi.jar
+org.osgi.framework.BundleException: Activator start error in bundle org.eclipse.osgi [3].
+        at org.apache.felix.framework.Felix.activateBundle(Felix.java:2479)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2335)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassCastException: class org.eclipse.osgi.internal.framework.SystemBundleActivator cannot be cast to class org.osgi.framework.BundleActivator (org.eclipse.osgi.internal.framework.SystemBundleActivator is in unnamed module of loader org.apache.felix.framework.BundleWiringImpl$BundleClassLoader @61aa3db8; org.osgi.framework.BundleActivator is in unnamed module of loader 'app')
+        at org.apache.felix.framework.Felix.createBundleActivator(Felix.java:4780)
+        at org.apache.felix.framework.Felix.activateBundle(Felix.java:2410)
+        ... 4 common frames omitted
+Error starting file:/D:/github/protege/protege-desktop/target/Protege-5.6.10.1-win/Protege-5.6.10.1/bundles/org.eclipse.equinox.registry.jar
+org.osgi.framework.BundleException: Activator start error in bundle org.eclipse.equinox.registry [4].
+        at org.apache.felix.framework.Felix.activateBundle(Felix.java:2479)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2335)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassCastException: class org.eclipse.core.internal.registry.osgi.Activator cannot be cast to class org.osgi.framework.BundleActivator (org.eclipse.core.internal.registry.osgi.Activator is in unnamed module of loader org.apache.felix.framework.BundleWiringImpl$BundleClassLoader @57f81e15; org.osgi.framework.BundleActivator is in unnamed module of loader 'app')
+        at org.apache.felix.framework.Felix.createBundleActivator(Felix.java:4780)
+        at org.apache.felix.framework.Felix.activateBundle(Felix.java:2410)
+        ... 4 common frames omitted
+Error starting file:/C:/Users/v0cn037/.Protege/plugins/oaf-protege.jar
+org.osgi.framework.BundleException: Unable to resolve oaf-protege [39](R 39.0): missing requirement [oaf-protege [39](R 39.0)] osgi.wiring.package; (osgi.wiring.package=org.semanticweb.HermiT) Unresolved requirements: [[oaf-protege [39](R 39.0)] osgi.wiring.package; (osgi.wiring.package=org.semanticweb.HermiT)]
+        at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:4398)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Error starting file:/C:/Users/v0cn037/.Protege/plugins/swrltab-plugin.jar
+org.osgi.framework.BundleException: Unable to resolve swrltab-plugin [47](R 47.0): missing requirement [swrltab-plugin [47](R 47.0)] osgi.wiring.package; (&(osgi.wiring.package=org.omg.CORBA)(version>=1.0.0)(!(version>=2.0.0))) Unresolved requirements: [[swrltab-plugin [47](R 47.0)] osgi.wiring.package; (&(osgi.wiring.package=org.omg.CORBA)(version>=1.0.0)(!(version>=2.0.0)))]
+        at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:4398)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Error starting file:/C:/Users/v0cn037/.Protege/plugins/uk.ac.manchester.cs.owl.factplusplus.jar
+org.osgi.framework.BundleException: Unable to resolve uk.ac.manchester.cs.owl.factplusplus [48](R 48.0): missing requirement [uk.ac.manchester.cs.owl.factplusplus [48](R 48.0)] osgi.native; (|(&(|(osgi.native.osname~=win)(osgi.native.osname~=windowsnt)(osgi.native.osname~=windows nt)(osgi.native.osname~=winnt)(osgi.native.osname~=windowsxp)(osgi.native.osname~=windows xp)(osgi.native.osname~=winxp)(osgi.native.osname~=windowsvista)(osgi.native.osname~=windows vista)(osgi.native.osname~=windows2003)(osgi.native.osname~=windows2008)(osgi.native.osname~=windows7)(osgi.native.osname~=windows 7)(osgi.native.osname~=windows8)(osgi.native.osname~=windows 8)(osgi.native.osname~=windows8.1)(osgi.native.osname~=windows 8.1))(|(osgi.native.processor~=x86_64)(osgi.native.processor~=amd64)))(&(|(osgi.native.osname~=win)(osgi.native.osname~=windows95)(osgi.native.osname~=windows 95)(osgi.native.osname~=win95)(osgi.native.osname~=windows98)(osgi.native.osname~=windows 98)(osgi.native.osname~=win98)(osgi.native.osname~=windowsnt)(osgi.native.osname~=windows nt)(osgi.native.osname~=winnt)(osgi.native.osname~=windowsce)(osgi.native.osname~=winndows ce)(osgi.native.osname~=wince)(osgi.native.osname~=windowsxp)(osgi.native.osname~=windows xp)(osgi.native.osname~=winxp)(osgi.native.osname~=windowsvista)(osgi.native.osname~=windows vista)(osgi.native.osname~=windows2003)(osgi.native.osname~=windows2008)(osgi.native.osname~=windows7)(osgi.native.osname~=windows 7)(osgi.native.osname~=windows8)(osgi.native.osname~=windows 8)(osgi.native.osname~=windows8.1)(osgi.native.osname~=windows 8.1))(|(osgi.native.processor~=i386)(osgi.native.processor~=x86)))(&(osgi.native.osname~=linux)(|(osgi.native.processor~=x86_64)(osgi.native.processor~=amd64)))(&(osgi.native.osname~=linux)(osgi.native.processor~=i386))(&(|(osgi.native.osname~=macosx)(osgi.native.osname~=mac os x))(|(osgi.native.processor~=ppc64)(osgi.native.processor~=x86_64)))(&(|(osgi.native.osname~=macosx)(osgi.native.osname~=mac os x))(|(osgi.native.processor~=ppc)(osgi.native.processor~=i386)))) Unresolved requirements: [[uk.ac.manchester.cs.owl.factplusplus [48](R 48.0)] osgi.native; (|(&(|(osgi.native.osname~=win)(osgi.native.osname~=windowsnt)(osgi.native.osname~=windows nt)(osgi.native.osname~=winnt)(osgi.native.osname~=windowsxp)(osgi.native.osname~=windows xp)(osgi.native.osname~=winxp)(osgi.native.osname~=windowsvista)(osgi.native.osname~=windows vista)(osgi.native.osname~=windows2003)(osgi.native.osname~=windows2008)(osgi.native.osname~=windows7)(osgi.native.osname~=windows 7)(osgi.native.osname~=windows8)(osgi.native.osname~=windows 8)(osgi.native.osname~=windows8.1)(osgi.native.osname~=windows 8.1))(|(osgi.native.processor~=x86_64)(osgi.native.processor~=amd64)))(&(|(osgi.native.osname~=win)(osgi.native.osname~=windows95)(osgi.native.osname~=windows 95)(osgi.native.osname~=win95)(osgi.native.osname~=windows98)(osgi.native.osname~=windows 98)(osgi.native.osname~=win98)(osgi.native.osname~=windowsnt)(osgi.native.osname~=windows nt)(osgi.native.osname~=winnt)(osgi.native.osname~=windowsce)(osgi.native.osname~=winndows ce)(osgi.native.osname~=wince)(osgi.native.osname~=windowsxp)(osgi.native.osname~=windows xp)(osgi.native.osname~=winxp)(osgi.native.osname~=windowsvista)(osgi.native.osname~=windows vista)(osgi.native.osname~=windows2003)(osgi.native.osname~=windows2008)(osgi.native.osname~=windows7)(osgi.native.osname~=windows 7)(osgi.native.osname~=windows8)(osgi.native.osname~=windows 8)(osgi.native.osname~=windows8.1)(osgi.native.osname~=windows 8.1))(|(osgi.native.processor~=i386)(osgi.native.processor~=x86)))(&(osgi.native.osname~=linux)(|(osgi.native.processor~=x86_64)(osgi.native.processor~=amd64)))(&(osgi.native.osname~=linux)(osgi.native.processor~=i386))(&(|(osgi.native.osname~=macosx)(osgi.native.osname~=mac os x))(|(osgi.native.processor~=ppc64)(osgi.native.processor~=x86_64)))(&(|(osgi.native.osname~=macosx)(osgi.native.osname~=mac os x))(|(osgi.native.processor~=ppc)(osgi.native.processor~=i386))))]
+        at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:4398)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+The OSGi framework has been started
+
+------------------------------------ Protege -----------------------------------
+Protege Desktop
+Version 5.6.10, Build 1
+
+
+----------------------------------- Platform -----------------------------------
+Java: JVM 21.0.5+11-LTS  Memory: 17121M
+Language: en, Country: US
+Framework: Apache Software Foundation (1.9)
+OS: win32 (10.0.0)
+Processor: x86-64
+
+
+------------------------------------ Plugins -----------------------------------
+Plugin: AOWLN Visualiser (1.0.1)
+Plugin: Cellfie Protege 5.6.4+ Plugin (2.2.4)
+Plugin: Pellet Reasoner Plug-in (2.2.0)
+Plugin: CoModIDE (1.1.1)
+Plugin: CSV Export Plugin (1.0.0)
+Plugin: OWL Hierarchy Protege Plugin (0.1.0)
+Plugin: OAF Protege Plugin (1.1.0) was not successfully started.  Please see the Prot茅g茅 log for more details.
+Plugin: Change Tracker (2.0.2)
+Plugin: matrix (4.0.1)
+Plugin: Individual Properties Contextual Assertions (1.0.2)
+Plugin: Properties in the Domain Class View (1.0.1)
+Plugin: ROWL Protege 5.0+ Plugin (1.6.0)
+Plugin: SHACL4Protege (1.2.0)
+Plugin: snap-sparql-query-plugin (6.0.0)
+Plugin: SWRLTab Plugin (2.1.3) was not successfully started.  Please see the Prot茅g茅 log for more details.
+Plugin: Factplusplus Plug-in (1.6.5) was not successfully started.  Please see the Prot茅g茅 log for more details.
+
+An error occurred whilst loading the list of recent items: Cannot invoke "org.eclipse.core.runtime.IExtensionRegistry.getExtensionPoint(String, String)" because "registry" is null
+java.lang.NullPointerException: Cannot invoke "org.eclipse.core.runtime.IExtensionRegistry.getExtensionPoint(String, String)" because "registry" is null
+        at org.protege.editor.core.plugin.PluginExtensionFilter.getExtensions(PluginExtensionFilter.java:62)
+        at org.protege.editor.core.editorkit.EditorKitFactoryPluginLoader.getPlugins(EditorKitFactoryPluginLoader.java:35)
+        at org.protege.editor.core.ProtegeManager.<init>(ProtegeManager.java:45)
+        at org.protege.editor.core.ProtegeManager.getInstance(ProtegeManager.java:56)
+        at org.protege.editor.core.editorkit.RecentEditorKitManager.pruneInvalidDescriptors(RecentEditorKitManager.java:62)
+        at org.protege.editor.core.editorkit.RecentEditorKitManager.load(RecentEditorKitManager.java:106)
+        at org.protege.editor.core.ProtegeApplication.loadRecentEditorKits(ProtegeApplication.java:289)
+        at org.protege.editor.core.ProtegeApplication.initApplication(ProtegeApplication.java:258)
+        at org.protege.editor.core.ProtegeApplication.reallyStart(ProtegeApplication.java:100)
+        at org.protege.editor.core.ProtegeApplication.lambda$start$0(ProtegeApplication.java:89)
+        at org.apache.felix.framework.EventDispatcher.invokeFrameworkListenerCallback(EventDispatcher.java:881)
+        at org.apache.felix.framework.EventDispatcher.fireEventImmediately(EventDispatcher.java:830)
+        at org.apache.felix.framework.EventDispatcher.run(EventDispatcher.java:1147)
+        at org.apache.felix.framework.EventDispatcher.access$000(EventDispatcher.java:54)
+        at org.apache.felix.framework.EventDispatcher$1.run(EventDispatcher.java:102)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Exception caught starting Protege
+java.lang.NullPointerException: Cannot invoke "org.eclipse.core.runtime.IExtensionRegistry.getExtensionPoint(String, String)" because "registry" is null
+        at org.protege.editor.core.plugin.PluginExtensionFilter.getExtensions(PluginExtensionFilter.java:62)
+        at org.protege.editor.core.editorkit.EditorKitFactoryPluginLoader.getPlugins(EditorKitFactoryPluginLoader.java:35)
+        at org.protege.editor.core.ProtegeManager.<init>(ProtegeManager.java:45)
+        at org.protege.editor.core.ProtegeManager.getInstance(ProtegeManager.java:56)
+        at org.protege.editor.core.ProtegeApplication.reallyStart(ProtegeApplication.java:107)
+        at org.protege.editor.core.ProtegeApplication.lambda$start$0(ProtegeApplication.java:89)
+        at org.apache.felix.framework.EventDispatcher.invokeFrameworkListenerCallback(EventDispatcher.java:881)
+        at org.apache.felix.framework.EventDispatcher.fireEventImmediately(EventDispatcher.java:830)
+        at org.apache.felix.framework.EventDispatcher.run(EventDispatcher.java:1147)
+        at org.apache.felix.framework.EventDispatcher.access$000(EventDispatcher.java:54)
+        at org.apache.felix.framework.EventDispatcher$1.run(EventDispatcher.java:102)
+        at java.base/java.lang.Thread.run(Thread.java:1583)

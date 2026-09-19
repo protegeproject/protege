@@ -1,0 +1,131 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Install the latest PowerShell for new features and improvements! https://aka.ms/PSWindows
+
+PS D:\github\protege\protege-desktop\target\protege-5.6.10.1-win\Protege-5.6.10.1> .\run.bat
+
+D:\github\protege\protege-desktop\target\protege-5.6.10.1-win\Protege-5.6.10.1>setlocal
+
+D:\github\protege\protege-desktop\target\protege-5.6.10.1-win\Protege-5.6.10.1>cd /d D:\github\protege\protege-desktop\target\protege-5.6.10.1-win\Protege-5.6.10.1\
+
+D:\github\protege\protege-desktop\target\protege-5.6.10.1-win\Protege-5.6.10.1>jre\bin\java --add-opens java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED --add-opens java.xml/com.sun.org.apache.xml.internal.serialize=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.net=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/sun.net.www=ALL-UNNAMED -XX:CompileCommand=exclude,javax/swing/text/GlyphView,getBreakSpot -DentityExpansionLimit=100000000 -Dlogback.configurationFile=conf/logback-win.xml -Dfile.encoding=utf-8 -Dorg.protege.plugin.dir=plugins -classpath bundles/guava.jar;bundles/logback-classic.jar;bundles/logback-core.jar;bundles/slf4j-api.jar;bundles/glassfish-corba-orb.jar;bundles/org.apache.felix.main.jar;bundles/maven-artifact.jar;bundles/protege-launcher.jar;bundles/org.eclipse.osgi.jar org.protege.osgi.framework.Launcher
+CompileCommand: exclude javax/swing/text/GlyphView.getBreakSpot bool exclude = true
+********************************************************************************
+**                                  Protege                                   **
+********************************************************************************
+
+----------------- Initialising and Starting the OSGi Framework -----------------
+FrameworkFactory Class: org.apache.felix.framework.FrameworkFactory
+
+The OSGi framework has been initialised
+------------------------------- Starting Bundles -------------------------------
+Starting bundle org.protege.common
+Starting bundle org.eclipse.equinox.common
+Starting bundle org.eclipse.osgi
+Starting bundle org.eclipse.equinox.registry
+Starting bundle org.protege.editor.core.application
+Starting bundle org.objectweb.asm.tree.analysis
+Starting bundle org.objectweb.asm.tree
+Starting bundle org.objectweb.asm.util
+Starting bundle org.objectweb.asm
+Starting bundle org.apache.commons.commons-io
+Starting bundle org.glassfish.corba.glassfish-corba-omgapi
+Starting bundle com.google.guava
+Starting bundle jakarta.activation-api
+Starting bundle com.googlecode.javaewah.JavaEWAH
+Starting bundle jaxb-api
+Starting bundle com.sun.xml.bind.jaxb-core
+Starting bundle com.sun.xml.bind.jaxb-impl
+Starting bundle org.jsr-305
+Starting bundle jul.to.slf4j
+Starting bundle log4j.over.slf4j
+Starting bundle ch.qos.logback.classic
+Starting bundle ch.qos.logback.core
+Starting bundle org.glassfish.external.management-api
+Starting bundle org.apache.felix.main
+Starting bundle org.apache.servicemix.bundles.javax-inject
+Starting bundle org.eclipse.equinox.common
+Starting bundle org.eclipse.equinox.registry
+Starting bundle org.eclipse.jgit
+Starting bundle org.eclipse.osgi
+Starting bundle org.semanticweb.owl.owlapi
+Starting bundle org.glassfish.pfl.pfl-basic
+Starting bundle org.glassfish.pfl.pfl-dynamic
+Starting bundle org.glassfish.pfl.pfl-tf
+Starting bundle org.protege.common
+Starting bundle org.protege.editor.core.application
+Starting bundle org.protege.editor.owl
+Starting bundle slf4j.api
+Error starting file:/D:/github/protege/protege-desktop/target/protege-5.6.10.1-win/Protege-5.6.10.1/bundles/org.eclipse.osgi.jar
+org.osgi.framework.BundleException: Activator start error in bundle org.eclipse.osgi [3].
+        at org.apache.felix.framework.Felix.activateBundle(Felix.java:2479)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2335)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassCastException: class org.eclipse.osgi.internal.framework.SystemBundleActivator cannot be cast to class org.osgi.framework.BundleActivator (org.eclipse.osgi.internal.framework.SystemBundleActivator is in unnamed module of loader org.apache.felix.framework.BundleWiringImpl$BundleClassLoader @7f446754; org.osgi.framework.BundleActivator is in unnamed module of loader 'app')
+        at org.apache.felix.framework.Felix.createBundleActivator(Felix.java:4780)
+        at org.apache.felix.framework.Felix.activateBundle(Felix.java:2410)
+        ... 4 common frames omitted
+Error starting file:/D:/github/protege/protege-desktop/target/protege-5.6.10.1-win/Protege-5.6.10.1/bundles/org.eclipse.equinox.registry.jar
+org.osgi.framework.BundleException: Activator start error in bundle org.eclipse.equinox.registry [4].
+        at org.apache.felix.framework.Felix.activateBundle(Felix.java:2479)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2335)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.ClassCastException: class org.eclipse.core.internal.registry.osgi.Activator cannot be cast to class org.osgi.framework.BundleActivator (org.eclipse.core.internal.registry.osgi.Activator is in unnamed module of loader org.apache.felix.framework.BundleWiringImpl$BundleClassLoader @1c4fd9e0; org.osgi.framework.BundleActivator is in unnamed module of loader 'app')
+        at org.apache.felix.framework.Felix.createBundleActivator(Felix.java:4780)
+        at org.apache.felix.framework.Felix.activateBundle(Felix.java:2410)
+        ... 4 common frames omitted
+The OSGi framework has been started
+
+------------------------------------ Protege -----------------------------------
+Protege Desktop
+Version 5.6.10, Build 1
+
+
+----------------------------------- Platform -----------------------------------
+Java: JVM 21.0.5+11-LTS  Memory: 17121M
+Language: en, Country: US
+Framework: Apache Software Foundation (1.9)
+OS: win32 (10.0.0)
+Processor: x86-64
+
+
+------------------------------------ Plugins -----------------------------------
+No plugins installed
+
+An error occurred whilst loading the list of recent items: Cannot invoke "org.eclipse.core.runtime.IExtensionRegistry.getExtensionPoint(String, String)" because "registry" is null
+java.lang.NullPointerException: Cannot invoke "org.eclipse.core.runtime.IExtensionRegistry.getExtensionPoint(String, String)" because "registry" is null
+        at org.protege.editor.core.plugin.PluginExtensionFilter.getExtensions(PluginExtensionFilter.java:62)
+        at org.protege.editor.core.editorkit.EditorKitFactoryPluginLoader.getPlugins(EditorKitFactoryPluginLoader.java:35)
+        at org.protege.editor.core.ProtegeManager.<init>(ProtegeManager.java:45)
+        at org.protege.editor.core.ProtegeManager.getInstance(ProtegeManager.java:56)
+        at org.protege.editor.core.editorkit.RecentEditorKitManager.pruneInvalidDescriptors(RecentEditorKitManager.java:62)
+        at org.protege.editor.core.editorkit.RecentEditorKitManager.load(RecentEditorKitManager.java:106)
+        at org.protege.editor.core.ProtegeApplication.loadRecentEditorKits(ProtegeApplication.java:289)
+        at org.protege.editor.core.ProtegeApplication.initApplication(ProtegeApplication.java:258)
+        at org.protege.editor.core.ProtegeApplication.reallyStart(ProtegeApplication.java:100)
+        at org.protege.editor.core.ProtegeApplication.lambda$start$0(ProtegeApplication.java:89)
+        at org.apache.felix.framework.EventDispatcher.invokeFrameworkListenerCallback(EventDispatcher.java:881)
+        at org.apache.felix.framework.EventDispatcher.fireEventImmediately(EventDispatcher.java:830)
+        at org.apache.felix.framework.EventDispatcher.run(EventDispatcher.java:1147)
+        at org.apache.felix.framework.EventDispatcher.access$000(EventDispatcher.java:54)
+        at org.apache.felix.framework.EventDispatcher$1.run(EventDispatcher.java:102)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Exception caught starting Protege
+java.lang.NullPointerException: Cannot invoke "org.eclipse.core.runtime.IExtensionRegistry.getExtensionPoint(String, String)" because "registry" is null
+        at org.protege.editor.core.plugin.PluginExtensionFilter.getExtensions(PluginExtensionFilter.java:62)
+        at org.protege.editor.core.editorkit.EditorKitFactoryPluginLoader.getPlugins(EditorKitFactoryPluginLoader.java:35)
+        at org.protege.editor.core.ProtegeManager.<init>(ProtegeManager.java:45)
+        at org.protege.editor.core.ProtegeManager.getInstance(ProtegeManager.java:56)
+        at org.protege.editor.core.ProtegeApplication.reallyStart(ProtegeApplication.java:107)
+        at org.protege.editor.core.ProtegeApplication.lambda$start$0(ProtegeApplication.java:89)
+        at org.apache.felix.framework.EventDispatcher.invokeFrameworkListenerCallback(EventDispatcher.java:881)
+        at org.apache.felix.framework.EventDispatcher.fireEventImmediately(EventDispatcher.java:830)
+        at org.apache.felix.framework.EventDispatcher.run(EventDispatcher.java:1147)
+        at org.apache.felix.framework.EventDispatcher.access$000(EventDispatcher.java:54)
+        at org.apache.felix.framework.EventDispatcher$1.run(EventDispatcher.java:102)
+        at java.base/java.lang.Thread.run(Thread.java:1583)

@@ -1,0 +1,71 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Install the latest PowerShell for new features and improvements! https://aka.ms/PSWindows
+
+PS D:\github\protege\protege-desktop\target\protege-5.6.10.1-win\Protege-5.6.10.1> .\run.bat
+
+D:\github\protege\protege-desktop\target\protege-5.6.10.1-win\Protege-5.6.10.1>setlocal
+
+D:\github\protege\protege-desktop\target\protege-5.6.10.1-win\Protege-5.6.10.1>cd /d D:\github\protege\protege-desktop\target\protege-5.6.10.1-win\Protege-5.6.10.1\
+
+D:\github\protege\protege-desktop\target\protege-5.6.10.1-win\Protege-5.6.10.1>jre\bin\java --add-opens java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED --add-opens java.xml/com.sun.org.apache.xml.internal.serialize=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.net=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/sun.net.www=ALL-UNNAMED -XX:CompileCommand=exclude,javax/swing/text/GlyphView,getBreakSpot -DentityExpansionLimit=100000000 -Dlogback.configurationFile=conf/logback-win.xml -Dfile.encoding=utf-8 -Dorg.protege.plugin.dir=plugins -classpath bundles/guava.jar;bundles/logback-classic.jar;bundles/logback-core.jar;bundles/slf4j-api.jar;bundles/glassfish-corba-orb.jar;bundles/org.apache.felix.main.jar;bundles/maven-artifact.jar;bundles/protege-launcher.jar;lib/org.eclipse.osgi.jar org.protege.osgi.framework.Launcher
+CompileCommand: exclude javax/swing/text/GlyphView.getBreakSpot bool exclude = true
+********************************************************************************
+**                                  Protege                                   **
+********************************************************************************
+
+----------------- Initialising and Starting the OSGi Framework -----------------
+FrameworkFactory Class: org.apache.felix.framework.FrameworkFactory
+
+The OSGi framework has been initialised
+------------------------------- Starting Bundles -------------------------------
+Starting bundle org.protege.common
+Starting bundle org.eclipse.equinox.common
+Starting bundle org.protege.editor.core.application
+Starting bundle org.objectweb.asm.tree.analysis
+Starting bundle org.objectweb.asm.tree
+Starting bundle org.objectweb.asm.util
+Starting bundle org.objectweb.asm
+Starting bundle org.apache.commons.commons-io
+Starting bundle org.glassfish.corba.glassfish-corba-omgapi
+Starting bundle com.google.guava
+Starting bundle jakarta.activation-api
+Starting bundle com.googlecode.javaewah.JavaEWAH
+Starting bundle jaxb-api
+Starting bundle com.sun.xml.bind.jaxb-core
+Starting bundle com.sun.xml.bind.jaxb-impl
+Starting bundle org.jsr-305
+Starting bundle jul.to.slf4j
+Starting bundle log4j.over.slf4j
+Starting bundle ch.qos.logback.classic
+Starting bundle ch.qos.logback.core
+Starting bundle org.glassfish.external.management-api
+Starting bundle org.apache.felix.main
+Starting bundle org.apache.servicemix.bundles.javax-inject
+Starting bundle org.eclipse.equinox.common
+Starting bundle org.eclipse.jgit
+Starting bundle org.semanticweb.owl.owlapi
+Starting bundle org.glassfish.pfl.pfl-basic
+Starting bundle org.glassfish.pfl.pfl-dynamic
+Starting bundle org.glassfish.pfl.pfl-tf
+Starting bundle org.protege.common
+Starting bundle org.protege.editor.core.application
+Starting bundle org.protege.editor.owl
+Starting bundle slf4j.api
+Error starting file:/D:/github/protege/protege-desktop/target/protege-5.6.10.1-win/Protege-5.6.10.1/bundles/protege-editor-core.jar
+org.osgi.framework.BundleException: Unable to resolve org.protege.editor.core.application [3](R 3.0): missing requirement [org.protege.editor.core.application [3](R 3.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.core.runtime)(registry=split)(version>=3.4.0)(!(version>=4.0.0))) Unresolved requirements: [[org.protege.editor.core.application [3](R 3.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.core.runtime)(registry=split)(version>=3.4.0)(!(version>=4.0.0)))]
+        at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:4398)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+Error starting file:/D:/github/protege/protege-desktop/target/protege-5.6.10.1-win/Protege-5.6.10.1/bundles/protege-editor-owl.jar
+org.osgi.framework.BundleException: Unable to resolve org.protege.editor.owl [29](R 29.0): missing requirement [org.protege.editor.owl [29](R 29.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.core.runtime)(registry=split)(version>=3.4.0)(!(version>=4.0.0))) Unresolved requirements: [[org.protege.editor.owl [29](R 29.0)] osgi.wiring.package; (&(osgi.wiring.package=org.eclipse.core.runtime)(registry=split)(version>=3.4.0)(!(version>=4.0.0)))]
+        at org.apache.felix.framework.Felix.resolveBundleRevision(Felix.java:4398)
+        at org.apache.felix.framework.Felix.startBundle(Felix.java:2308)
+        at org.apache.felix.framework.Felix.setActiveStartLevel(Felix.java:1566)
+        at org.apache.felix.framework.FrameworkStartLevelImpl.run(FrameworkStartLevelImpl.java:297)
+        at java.base/java.lang.Thread.run(Thread.java:1583)
+The OSGi framework has been started
+

@@ -3,15 +3,18 @@
 
         <dependencySet>
             <outputDirectory>bundles</outputDirectory>
+            <unpack>false</unpack>
+            <scope>runtime</scope>
             <includes>
+                <!-- <include>org.eclipse.platform:org.eclipse.osgi:jar</include> -->
                 <include>edu.stanford.protege:protege-launcher:jar</include>
                 <include>org.apache.felix:org.apache.felix.main:jar</include>
                 <include>org.apache.maven:maven-artifact</include>
                 <include>edu.stanford.protege:protege-common:jar</include>
                 <include>edu.stanford.protege:protege-editor-core:jar</include>
-                <include>org.eclipse.equinox:org.eclipse.equinox.registry:jar</include>
-                <!-- <include>org.eclipse.equinox:org.eclipse.equinox.supplement:jar</include> -->
                 <include>org.eclipse.equinox:org.eclipse.equinox.common:jar</include>
+                <include>org.eclipse.equinox:org.eclipse.equinox.registry:jar</include>
+                <include>org.eclipse.equinox:org.eclipse.equinox.supplement:jar</include>
                 <include>net.sourceforge.owlapi:owlapi-osgidistribution:jar</include>
                 <include>edu.stanford.protege:protege-editor-owl:jar</include>
                 <include>ch.qos.logback:logback-core:jar</include>
@@ -40,7 +43,19 @@
                 <include>org.ow2.asm:asm-tree:jar</include>
                 <include>org.ow2.asm:asm-analysis:jar</include>
             </includes>
-            <useStrictFiltering>true</useStrictFiltering>
+            <useStrictFiltering>false</useStrictFiltering>
+            <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
+        </dependencySet>
+
+        <!-- 新增：将 org.eclipse.osgi 单独输出到 lib 目录（或其他引导目录） -->
+        <dependencySet>
+            <outputDirectory>lib</outputDirectory>
+            <unpack>false</unpack>
+            <scope>runtime</scope>
+            <includes>
+                <include>org.eclipse.platform:org.eclipse.osgi:jar</include>
+            </includes>
+            <useStrictFiltering>false</useStrictFiltering>
             <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
         </dependencySet>
 
