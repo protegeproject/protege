@@ -23,3 +23,7 @@ _menus
 assets
 installation
 
+# Add 2026-09-19
+/protege-desktop/jre/
+/protege/jre/
+**/jre/
