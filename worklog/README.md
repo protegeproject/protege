@@ -1,13 +1,11 @@
-# Protégé汉化实施工作日志
+# Protégé 汉化实施工作日志
 
-- [Protégé汉化实施工作日志](#protégé汉化实施工作日志)
-<<<<<<< HEAD
+- [Protégé 汉化实施工作日志](#protégé-汉化实施工作日志)
   - [2026-09-19](#2026-09-19)
     - [Java 21 迁移与兼容性适配](#java-21-迁移与兼容性适配)
     - [依赖对齐与 OSGi 容器 Wiring 修复](#依赖对齐与-osgi-容器-wiring-修复)
     - [运行时配置与打包优化](#运行时配置与打包优化)
-=======
->>>>>>> 62322645aa5a62c14ef31c76796fc34ed492fec2
+    - [准备i18n架构设计，从资源文件存放路径开始](#准备i18n架构设计从资源文件存放路径开始)
   - [2026-09-18](#2026-09-18)
     - [汉化路径与模块的定位分析](#汉化路径与模块的定位分析)
     - [Protégé的界面文本初步分析](#protégé的界面文本初步分析)
@@ -16,7 +14,6 @@
       - [方法二：引入标准的 i18n 资源束机制](#方法二引入标准的-i18n-资源束机制)
     - [本地分支管理](#本地分支管理)
 
-<<<<<<< HEAD
 ## 2026-09-19
 
 ### Java 21 迁移与兼容性适配
@@ -36,8 +33,18 @@
 - **Felix 扩展包配置:** 完善了 `config.xml` 中的 `org.osgi.framework.system.packages.extra` 属性，显式导出了 Equinox 内部适配器、解析器以及本地化服务包。
 - **启动脚本及构建链路完善:** 优化了 Windows 下的 `run.bat` 运行环境，适配了字符编码 (`-Dfile.encoding=utf-8`)、日志配置（`logback-win.xml`）以及插件动态扫描目录。
 
-=======
->>>>>>> 62322645aa5a62c14ef31c76796fc34ed492fec2
+### 准备i18n架构设计，从资源文件存放路径开始
+
+在各个核心模块（`protege-editor-core`, `protege-editor-owl`, `protege-destop`, `protege-common` 和 `protege-launcher`）的 `src/main/resources` 目录下面创建统一的国际化目录结构：
+
+```mermaid
+treeView-beta
+src/main/resources/
+  i18n/
+    Messages.properties             # 默认英文，兜底fallback
+    Message_zh_CN.properties        # 简体中文
+```
+
 ## 2026-09-18
 
 ### 汉化路径与模块的定位分析
