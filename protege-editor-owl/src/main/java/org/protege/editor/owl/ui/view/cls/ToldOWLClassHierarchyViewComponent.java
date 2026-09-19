@@ -23,6 +23,9 @@ import java.awt.event.ActionEvent;
 import java.util.*;
 import java.util.List;
 
+// i18n
+import org.protege.common.i18n.I18n;
+
 
 /**
  * Author: Matthew Horridge<br>
@@ -61,13 +64,16 @@ public class ToldOWLClassHierarchyViewComponent extends AbstractOWLClassHierarch
         // need to dispose of these actions.
 
         AbstractOWLTreeAction<OWLClass> addSubClassAction =
-                new AbstractOWLTreeAction<OWLClass>("Add subclass",
+                // new AbstractOWLTreeAction<OWLClass>("Add subclass",
+                new AbstractOWLTreeAction<OWLClass>(I18n.get("action.add.subclass"),
                                                     ADD_SUB_ICON,
                                                     getTree().getSelectionModel()) {
+                    @Override
                     public void actionPerformed(ActionEvent event) {
                         createNewChild();
                     }
 
+                    @Override
                     protected boolean canPerform(OWLClass cls) {
                         return canCreateNewChild();
                     }

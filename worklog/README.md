@@ -5,7 +5,10 @@
     - [Java 21 迁移与兼容性适配](#java-21-迁移与兼容性适配)
     - [依赖对齐与 OSGi 容器 Wiring 修复](#依赖对齐与-osgi-容器-wiring-修复)
     - [运行时配置与打包优化](#运行时配置与打包优化)
-    - [准备i18n架构设计，从资源文件存放路径开始](#准备i18n架构设计从资源文件存放路径开始)
+    - [准备i18n架构设计](#准备i18n架构设计)
+      - [从资源文件存放路径开始](#从资源文件存放路径开始)
+      - [统一建立国际化管理类（`I18n.java`）](#统一建立国际化管理类i18njava)
+      - [具体组件示例](#具体组件示例)
   - [2026-09-18](#2026-09-18)
     - [汉化路径与模块的定位分析](#汉化路径与模块的定位分析)
     - [Protégé的界面文本初步分析](#protégé的界面文本初步分析)
@@ -33,7 +36,9 @@
 - **Felix 扩展包配置:** 完善了 `config.xml` 中的 `org.osgi.framework.system.packages.extra` 属性，显式导出了 Equinox 内部适配器、解析器以及本地化服务包。
 - **启动脚本及构建链路完善:** 优化了 Windows 下的 `run.bat` 运行环境，适配了字符编码 (`-Dfile.encoding=utf-8`)、日志配置（`logback-win.xml`）以及插件动态扫描目录。
 
-### 准备i18n架构设计，从资源文件存放路径开始
+### 准备i18n架构设计
+
+#### 从资源文件存放路径开始
 
 在各个核心模块（`protege-editor-core`, `protege-editor-owl`, `protege-destop`, `protege-common` 和 `protege-launcher`）的 `src/main/resources` 目录下面创建统一的国际化目录结构：
 
@@ -44,6 +49,21 @@ src/main/resources/
     Messages.properties             # 默认英文，兜底fallback
     Message_zh_CN.properties        # 简体中文
 ```
+
+#### 统一建立国际化管理类（`I18n.java`）
+
+为避免每个UI都重复编写 `ResourceBundle.getBundle(...)`，考虑在基础模块（如 `protege-common`）里面实现一个轻量级的国际化文本代理处理类，并支持占位符参数（如 `{0}, {1}`）：
+
+[protege-common\src\main\java\org\protege\common\i18n\I18n.java](../protege-common/src/main/java/org/protege/common/i18n/I18n.java)
+
+#### 具体组件示例
+
+以 `protege-editor-core` 中一个具体组件建立如下资源文件：
+
+- `Messages.properties`
+- `Messages_zh_CN.properties`
+
+---
 
 ## 2026-09-18
 
