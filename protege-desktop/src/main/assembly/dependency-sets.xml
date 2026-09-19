@@ -3,18 +3,28 @@
 
         <dependencySet>
             <outputDirectory>bundles</outputDirectory>
+<<<<<<< HEAD
             <unpack>false</unpack>
             <scope>runtime</scope>
             <includes>
                 <!-- <include>org.eclipse.platform:org.eclipse.osgi:jar</include> -->
+=======
+            <includes>
+>>>>>>> 62322645aa5a62c14ef31c76796fc34ed492fec2
                 <include>edu.stanford.protege:protege-launcher:jar</include>
                 <include>org.apache.felix:org.apache.felix.main:jar</include>
                 <include>org.apache.maven:maven-artifact</include>
                 <include>edu.stanford.protege:protege-common:jar</include>
                 <include>edu.stanford.protege:protege-editor-core:jar</include>
+<<<<<<< HEAD
                 <include>org.eclipse.equinox:org.eclipse.equinox.common:jar</include>
                 <include>org.eclipse.equinox:org.eclipse.equinox.registry:jar</include>
                 <include>org.eclipse.equinox:org.eclipse.equinox.supplement:jar</include>
+=======
+                <include>org.eclipse.equinox:org.eclipse.equinox.registry:jar</include>
+                <!-- <include>org.eclipse.equinox:org.eclipse.equinox.supplement:jar</include> -->
+                <include>org.eclipse.equinox:org.eclipse.equinox.common:jar</include>
+>>>>>>> 62322645aa5a62c14ef31c76796fc34ed492fec2
                 <include>net.sourceforge.owlapi:owlapi-osgidistribution:jar</include>
                 <include>edu.stanford.protege:protege-editor-owl:jar</include>
                 <include>ch.qos.logback:logback-core:jar</include>
@@ -43,6 +53,7 @@
                 <include>org.ow2.asm:asm-tree:jar</include>
                 <include>org.ow2.asm:asm-analysis:jar</include>
             </includes>
+<<<<<<< HEAD
             <useStrictFiltering>false</useStrictFiltering>
             <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
         </dependencySet>
@@ -56,6 +67,9 @@
                 <include>org.eclipse.platform:org.eclipse.osgi:jar</include>
             </includes>
             <useStrictFiltering>false</useStrictFiltering>
+=======
+            <useStrictFiltering>true</useStrictFiltering>
+>>>>>>> 62322645aa5a62c14ef31c76796fc34ed492fec2
             <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
         </dependencySet>
 

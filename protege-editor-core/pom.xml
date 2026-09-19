@@ -5,7 +5,11 @@
 	<parent>
 		<groupId>edu.stanford.protege</groupId>
 		<artifactId>protege-parent</artifactId>
+<<<<<<< HEAD
 		<version>5.6.10.1</version>
+=======
+		<version>5.6.10-SNAPSHOT</version>
+>>>>>>> 62322645aa5a62c14ef31c76796fc34ed492fec2
 		<relativePath>../</relativePath>
 	</parent>
 	
