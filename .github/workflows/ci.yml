@@ -2,9 +2,9 @@ name: CI check
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "protege-6" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "master", "protege-6" ]
   workflow_dispatch:
 
 jobs:
