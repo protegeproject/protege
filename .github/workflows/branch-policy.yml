@@ -1,0 +1,46 @@
+name: Branch policy
+
+# Protégé 6 development happens on the protege-6 branch, which takes source- and
+# binary-incompatible changes: the OWL API 5 migration first among them (issue #1230). None of
+# that belongs on master, which continues to carry the 5.6.x line.
+#
+# GitHub branch protection cannot express "branch X may not be merged into branch Y", so this
+# workflow provides the check and master requires it to pass. A pull request from protege-6, or
+# from a branch based on it, fails here and cannot be merged.
+#
+# When Protégé 6 does become the mainline, this file is what to remove — along with the
+# required-check entry in master's protection rules.
+
+on:
+  pull_request_target:
+    branches: [ "master" ]
+    types: [ opened, reopened, synchronize, edited ]
+
+jobs:
+  check-source-branch:
+    name: Source branch may merge into master
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reject pull requests from the Protégé 6 line
+        env:
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+        run: |
+          echo "Pull request head: $HEAD_REPO:$HEAD_REF"
+
+          case "$HEAD_REF" in
+            protege-6|protege-6/*|protege6|protege6/*)
+              echo "::error::'$HEAD_REF' belongs to the Protégé 6 line and must not be merged into master."
+              echo
+              echo "master carries the 5.6.x line. Protégé 6 takes source- and binary-incompatible"
+              echo "changes, including the OWL API 5 migration (issue #1230), so merging it into"
+              echo "master would break plugin compatibility and the 5.6.x release line."
+              echo
+              echo "If Protégé 6 is genuinely becoming the mainline, that is a deliberate decision:"
+              echo "remove this check from master's branch protection and delete"
+              echo ".github/workflows/branch-policy.yml, rather than working around it here."
+              exit 1
+              ;;
+          esac
+
+          echo "'$HEAD_REF' is not part of the Protégé 6 line. No objection from this check."
