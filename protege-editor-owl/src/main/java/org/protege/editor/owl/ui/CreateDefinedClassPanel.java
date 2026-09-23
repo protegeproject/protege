@@ -1,19 +1,12 @@
 package org.protege.editor.owl.ui;
 
-import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
-import org.protege.editor.core.ui.util.JOptionPaneEx;
-import org.protege.editor.core.ui.util.VerifiedInputEditor;
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.classexpression.anonymouscls.AnonymousDefinedClassManager;
 import org.protege.editor.owl.model.entity.OWLEntityCreationSet;
 import org.semanticweb.owlapi.model.*;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -21,133 +14,64 @@ import java.util.List;
 */
 
 /**
- * Author: drummond<br>
- * http://www.cs.man.ac.uk/~drummond/<br><br>
- * <p/>
- * The University Of Manchester<br>
- * Bio Health Informatics Group<br>
- * Date: Nov 24, 2008<br><br>
+ * Creates a named class that is equivalent to a supplied class expression.
+ *
+ * <p>The class name is retained for compatibility with plugins that call
+ * {@link #showDialog(OWLClassExpression, OWLEditorKit)}.</p>
+ *
+ * @author Nick Drummond
  */
-public class CreateDefinedClassPanel extends JPanel implements VerifiedInputEditor {
+public final class CreateDefinedClassPanel {
 
-    private final OWLEntityCreationPanel<OWLClass> entityCreatePanel;
-
-    private final JRadioButton anonymousButton;
-
-    private final JRadioButton namedButton;
-
-    private List<InputVerificationStatusChangedListener> listeners = new ArrayList<>();
-
-
-    public CreateDefinedClassPanel(OWLEditorKit eKit) {
-        setLayout(new BorderLayout());
-
-        anonymousButton = new JRadioButton("Anonymous class", true);
-        anonymousButton.setAlignmentX(0.0f);
-        namedButton = new JRadioButton("Named class", !anonymousButton.isSelected());
-        namedButton.setAlignmentY(0.0f);
-
-
-        entityCreatePanel = new OWLEntityCreationPanel<>(eKit, OWLClass.class);
-        entityCreatePanel.setEnabled(namedButton.isSelected());
-        entityCreatePanel.setAlignmentY(0.0f);
-        entityCreatePanel.setBorder(new EmptyBorder(0, 20, 0, 0));
-
-
-        ActionListener buttonListener = (event) -> {
-            if (namedButton.isSelected()) {
-                entityCreatePanel.setEnabled(true);
-                for (InputVerificationStatusChangedListener l : listeners) {
-                    entityCreatePanel.addStatusChangedListener(l);
-                }
-            }
-            else {
-                entityCreatePanel.setEnabled(false);
-                for (InputVerificationStatusChangedListener l : listeners) {
-                    entityCreatePanel.removeStatusChangedListener(l);
-                    l.verifiedStatusChanged(true);
-                }
-            }
-        };
-        anonymousButton.addActionListener(buttonListener);
-        namedButton.addActionListener(buttonListener);
-
-
-        Box namedPanel = new Box(BoxLayout.LINE_AXIS);
-        namedPanel.setAlignmentX(0.0f);
-        namedPanel.add(namedButton);
-        namedPanel.add(entityCreatePanel);
-
-        ButtonGroup bg = new ButtonGroup();
-        bg.add(namedButton);
-        bg.add(anonymousButton);
-
-        Box box = new Box(BoxLayout.PAGE_AXIS);
-        box.add(anonymousButton);
-        box.add(namedPanel);
-
-        add(box, BorderLayout.CENTER);
+    private CreateDefinedClassPanel() {
     }
 
-
-    private JComponent getDefaultFocusedComponent() {
-        return anonymousButton;
-    }
-
-
-    public OWLEntityCreationSet<OWLClass> getEntityCreationSet() {
-        if (anonymousButton.isSelected()) {
-            return null;
-        }
-        else {
-            return entityCreatePanel.getOWLEntityCreationSet();
-        }
-    }
-
-
-    public void addStatusChangedListener(InputVerificationStatusChangedListener listener) {
-        listeners.add(listener);
-    }
-
-
-    public void removeStatusChangedListener(InputVerificationStatusChangedListener listener) {
-        listeners.remove(listener);
-    }
-
-
+    /**
+     * Shows a dialog for choosing the name of a new class. The returned creation set contains
+     * an {@link OWLEquivalentClassesAxiom} that defines the new class using the supplied class
+     * expression.
+     *
+     * @param desc the class expression that defines the new class
+     * @param eKit the editor kit used to create the class
+     * @return the class and its ontology changes, including the defining equivalent-classes
+     * axiom, or {@code null} if the dialog was cancelled
+     * @deprecated Use {@link #showDialogForDefinedClass(OWLClassExpression, OWLEditorKit)}.
+     */
+    @Deprecated
     public static OWLEntityCreationSet<OWLClass> showDialog(OWLClassExpression desc, OWLEditorKit eKit) {
-        OWLEntityCreationSet<OWLClass> creationSet = null;
-
-        AnonymousDefinedClassManager adcManager = eKit.getOWLModelManager().get(AnonymousDefinedClassManager.ID);
-        if (adcManager != null) {
-            CreateDefinedClassPanel panel = new CreateDefinedClassPanel(eKit);
-            int ret = JOptionPaneEx.showValidatingConfirmDialog(eKit.getOWLWorkspace().getRootPane(), "Create defined class", panel,
-                    JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION,
-                    panel.getDefaultFocusedComponent());
-
-            if (ret == JOptionPane.OK_OPTION) {
-                creationSet = panel.getEntityCreationSet();
-                if (creationSet == null) {
-                    creationSet = adcManager.createAnonymousClass(eKit.getOWLModelManager().getActiveOntology(), desc);
-                }
-                else {
-                    creationSet = appendDefinitionToCreationSet(creationSet, desc, eKit);
-                }
-            }
-        }
-        else {
-            creationSet = OWLEntityCreationPanel.showDialog(eKit, OWLClass.class);
-            if (creationSet != null) {
-                appendDefinitionToCreationSet(creationSet, desc, eKit);
-            }
-        }
-        return creationSet;
+        return showDialogForDefinedClass(desc, eKit).orElse(null);
     }
 
+    /**
+     * Shows a dialog for choosing the name of a new class. The returned creation set contains
+     * an {@link OWLEquivalentClassesAxiom} that defines the new class using the supplied class
+     * expression.
+     *
+     * @param desc the class expression that defines the new class
+     * @param eKit the editor kit used to create the class
+     * @return the class and its ontology changes, including the defining equivalent-classes
+     * axiom, or an empty optional if the dialog was cancelled
+     */
+    public static Optional<OWLEntityCreationSet<OWLClass>> showDialogForDefinedClass(
+            OWLClassExpression desc,
+            OWLEditorKit eKit) {
+        OWLEntityCreationSet<OWLClass> creationSet = OWLEntityCreationPanel.showDialog(eKit, OWLClass.class);
+        if (creationSet != null) {
+            return Optional.of(appendDefinitionToCreationSet(creationSet, desc, eKit));
+        }
+        else {
+            return Optional.empty();
+        }
+    }
 
-    private static OWLEntityCreationSet<OWLClass> appendDefinitionToCreationSet(OWLEntityCreationSet<OWLClass> creationSet, OWLClassExpression desc, OWLEditorKit eKit) {
+    static OWLEntityCreationSet<OWLClass> appendDefinitionToCreationSet(
+            OWLEntityCreationSet<OWLClass> creationSet,
+            OWLClassExpression desc,
+            OWLEditorKit eKit) {
         final OWLClass owlEntity = creationSet.getOWLEntity();
-        final OWLAxiom ax = eKit.getOWLModelManager().getOWLDataFactory().getOWLEquivalentClassesAxiom(owlEntity, desc);
+        final OWLAxiom ax = eKit.getOWLModelManager()
+                .getOWLDataFactory()
+                .getOWLEquivalentClassesAxiom(owlEntity, desc);
 
         final List<OWLOntologyChange> changes = new ArrayList<>(creationSet.getOntologyChanges());
         changes.add(new AddAxiom(eKit.getOWLModelManager().getActiveOntology(), ax));

@@ -1,7 +1,6 @@
 package org.protege.editor.owl.ui.frame.cls;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.classexpression.anonymouscls.AnonymousDefinedClassManager;
 import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -34,20 +33,6 @@ public abstract class AbstractOWLClassAxiomFrameSection<A extends OWLAxiom, E> e
     protected AbstractOWLClassAxiomFrameSection(OWLEditorKit editorKit, String label, OWLFrame<? extends OWLClassExpression> owlFrame) {
         super(editorKit, label, owlFrame);
     }
-
-
-    public final OWLClassExpression getRootObject() {
-        final OWLClassExpression cls = super.getRootObject();
-        if (cls != null){
-            final AnonymousDefinedClassManager ADCManager = getOWLModelManager().get(AnonymousDefinedClassManager.ID);
-
-            if (ADCManager != null && ADCManager.isAnonymous(cls.asOWLClass())){
-                return ADCManager.getExpression(cls.asOWLClass());
-            }
-        }
-        return cls;
-    }
-
 
     protected final void refill(OWLOntology ontology) {
         for (A ax : getClassAxioms(getRootObject(), ontology)){

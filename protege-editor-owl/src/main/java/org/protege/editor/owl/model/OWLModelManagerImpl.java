@@ -8,7 +8,6 @@ import org.protege.editor.owl.model.cache.DeprecationCache;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCache;
 import org.protege.editor.owl.model.cache.OWLEntityRenderingCacheImpl;
 import org.protege.editor.owl.model.cache.OWLObjectRenderingCache;
-import org.protege.editor.owl.model.classexpression.anonymouscls.AnonymousDefinedClassManager;
 import org.protege.editor.owl.model.entity.CustomOWLEntityFactory;
 import org.protege.editor.owl.model.entity.OWLEntityFactory;
 import org.protege.editor.owl.model.event.EventType;
@@ -701,10 +700,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     public void applyChange(OWLOntologyChange change) {
         try {
-            AnonymousDefinedClassManager adcManager = get(AnonymousDefinedClassManager.ID);
-            if(adcManager != null) {
-                change = adcManager.getChangeRewriter().rewriteChange(change);
-            }
             applyChanges(Collections.singletonList(change));
         } catch(OWLOntologyChangeException e) {
             throw new OWLRuntimeException(e);
@@ -715,10 +710,6 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
 
     public void applyChanges(List<? extends OWLOntologyChange> changes) {
         try {
-            AnonymousDefinedClassManager adcManager = get(AnonymousDefinedClassManager.ID);
-            if(adcManager != null) {
-                changes = adcManager.getChangeRewriter().rewriteChanges(changes);
-            }
             logger.debug(LogBanner.start("Applying changes"));
             logger.debug("Number of requested changes: {}", changes.size());
             List<OWLOntologyChange> minimizedChanges = new ChangeListMinimizer().getMinimisedChanges(changes);
@@ -841,19 +832,13 @@ public class OWLModelManagerImpl extends AbstractModelManager implements OWLMode
         }
         // Look for a cached version of the rendering first!
         if(object instanceof OWLEntity) {
-            AnonymousDefinedClassManager adcManager = get(AnonymousDefinedClassManager.ID);
-            if(adcManager != null && object instanceof OWLClass && adcManager.isAnonymous((OWLClass) object)) {
-                return owlObjectRenderingCache.getRendering(adcManager.getExpression((OWLClass) object), getOWLObjectRenderer());
+            getOWLEntityRenderer();
+            String rendering = owlEntityRenderingCache.getRendering((OWLEntity) object);
+            if(rendering != null) {
+                return rendering;
             }
             else {
-                getOWLEntityRenderer();
-                String rendering = owlEntityRenderingCache.getRendering((OWLEntity) object);
-                if(rendering != null) {
-                    return rendering;
-                }
-                else {
-                    return getOWLEntityRenderer().render((OWLEntity) object);
-                }
+                return getOWLEntityRenderer().render((OWLEntity) object);
             }
         }
 
