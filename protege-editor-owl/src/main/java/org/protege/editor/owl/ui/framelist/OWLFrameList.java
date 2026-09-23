@@ -70,7 +70,15 @@ public class OWLFrameList<R> extends MList implements LinkedObjectComponent, Dro
 
     private static final Border inferredBorder = new OWLFrameListInferredSectionRowBorder();
 
-    public static final Color INFERRED_BG_COLOR = new Color(255, 255, 215);
+    public static final Color INFERRED_BG_COLOR = getInferredBackgroundColor();
+    
+    /**
+     * Gets the inferred background color based on the current theme.
+     */
+    private static Color getInferredBackgroundColor() {
+        return org.protege.editor.core.ui.util.ThemeManager.isDarkTheme() ? 
+            new Color(60, 60, 30) : new Color(255, 255, 215);  // Original light yellow for light theme
+    }
 
     public static final int BUTTON_DIMENSION = 14;
 

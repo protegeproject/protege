@@ -1,6 +1,8 @@
 package org.protege.editor.owl.ui.breadcrumb;
 
 import org.protege.editor.core.Fonts;
+import org.protege.editor.core.ui.util.ProtegeColorProvider;
+import org.protege.editor.core.ui.util.ThemeManager;
 import org.protege.editor.owl.model.util.OboUtilities;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
@@ -21,13 +23,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  * 21 Aug 2017
  */
-public class BreadcrumbViewImpl extends JPanel implements BreadcrumbView {
+public class BreadcrumbViewImpl extends JPanel implements BreadcrumbView, ThemeManager.ThemeChangeListener {
 
     private static final int PARENT_ARROW_BOX_WIDTH = 9;
-
-    private static final Color ARROW_COLOR = new Color(150, 150, 150);
-
-    private static final Color TEXT_COLOR = Color.DARK_GRAY;
 
     @Nonnull
     private final OWLObject object;
@@ -46,6 +44,10 @@ public class BreadcrumbViewImpl extends JPanel implements BreadcrumbView {
         setFont(Fonts.getMediumDialogFont());
         setupTooltip(object, rendering);
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        
+        // Register for theme changes
+        ThemeManager.addThemeChangeListener(this);
+        
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -107,14 +109,19 @@ public class BreadcrumbViewImpl extends JPanel implements BreadcrumbView {
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        
+        // Get theme-aware colors
+        Color arrowColor = getArrowColor();
+        Color textColor = getTextColor();
+        
         int x = 0;
         if(parentArrowVisible) {
-            g2.setColor(ARROW_COLOR);
+            g2.setColor(arrowColor);
             g2.drawLine(x + 1, 0, x + 5, getHeight() / 2);
             g2.drawLine(x + 1, getHeight(), x + 5, getHeight() / 2);
             x += PARENT_ARROW_BOX_WIDTH;
         }
-        g2.setColor(TEXT_COLOR);
+        g2.setColor(textColor);
         g.drawString(rendering, x, getFontMetrics(getFont()).getAscent());
         int width = getWidth();
         if(width < getPreferredSize().width) {
@@ -127,5 +134,29 @@ public class BreadcrumbViewImpl extends JPanel implements BreadcrumbView {
             g2.setPaint(paint);
             g2.fillRect(fadeX, 0, fadeLength, getHeight());
         }
+    }
+    
+    /**
+     * Gets the arrow color for the current theme.
+     */
+    private Color getArrowColor() {
+        if (ThemeManager.isDarkTheme()) {
+            return new Color(210, 210, 210);
+        } else {
+            return new Color(150, 150, 150);
+        }
+    }
+
+    /**
+     * Gets the text color for the current theme.
+     */
+    private Color getTextColor() {
+        return ProtegeColorProvider.getTextColor();
+    }
+    
+    @Override
+    public void onThemeChanged(String newTheme, String oldTheme) {
+        // Repaint to use new theme colors
+        repaint();
     }
 }

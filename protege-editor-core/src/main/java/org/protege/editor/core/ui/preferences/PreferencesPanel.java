@@ -29,6 +29,12 @@ public abstract class PreferencesPanel extends JPanel implements ProtegePluginIn
         this.editorKit = editorKit;
         setBorder(BorderFactory.createEmptyBorder(30, 20, 20, 20));
         setLayout(new PreferencesPanelLayoutManager(this));
+        Color panelBg = UIManager.getColor("Panel.background");
+        if (panelBg == null) {
+            panelBg = Color.WHITE;
+        }
+        setBackground(panelBg);
+        setOpaque(true);
     }
 
 

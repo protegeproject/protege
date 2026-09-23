@@ -89,10 +89,14 @@ public class GatherOntologiesPanel extends JPanel {
         }
 
         box.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 150));
-        box.setBackground(Color.WHITE);
+        Color panelBg = UIManager.getColor("Panel.background");
+        if (panelBg == null) {
+            panelBg = Color.WHITE;
+        }
+        box.setBackground(panelBg);
         JPanel boxHolder = new JPanel(new BorderLayout());
         boxHolder.setBorder(ComponentFactory.createTitledBorder("Ontologies"));
-        boxHolder.add(new JScrollPane(box));
+    boxHolder.add(new JScrollPane(box));
         boxHolder.setPreferredSize(new Dimension(boxHolder.getPreferredSize().width,
                                                  Math.min(boxHolder.getPreferredSize().height, 300)));
         holderPanel.add(boxHolder, BorderLayout.CENTER);
