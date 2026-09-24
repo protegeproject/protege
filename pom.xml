@@ -146,7 +146,7 @@
 			<dependency>
 				<groupId>net.sourceforge.owlapi</groupId>
 				<artifactId>owlapi-osgidistribution</artifactId>
-				<version>4.5.29</version>
+				<version>5.5.1</version>
 			</dependency>
 
 			<dependency>

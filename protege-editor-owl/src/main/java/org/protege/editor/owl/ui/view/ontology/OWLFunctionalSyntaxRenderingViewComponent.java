@@ -3,6 +3,7 @@ package org.protege.editor.owl.ui.view.ontology;
 import org.semanticweb.owlapi.functional.renderer.OWLFunctionalSyntaxRenderer;
 import org.semanticweb.owlapi.model.OWLOntology;
 
+import java.io.PrintWriter;
 import java.io.Writer;
 
 
@@ -17,6 +18,6 @@ public class OWLFunctionalSyntaxRenderingViewComponent extends AbstractOntologyR
 
     protected void renderOntology(OWLOntology ontology, Writer writer) throws Exception {
         OWLFunctionalSyntaxRenderer ren = new OWLFunctionalSyntaxRenderer();
-        ren.render(ontology, writer);
+        ren.render(ontology, new PrintWriter(writer));
     }
 }

@@ -1,9 +1,8 @@
 package org.protege.editor.owl.model.hierarchy;
 
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
-import org.semanticweb.owlapi.util.OWLOntologyChangeVisitorAdapter;
 
+import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -150,20 +149,22 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
     /**
      * Scans changes for nodes that have changed in the tree
      */
-    class TypesChangeVisitor extends OWLOntologyChangeVisitorAdapter {
+    class TypesChangeVisitor implements OWLOntologyChangeVisitor {
 
         private Set<OWLObject> changedNodes = new HashSet<>();
 
         Set<OWLNamedIndividual> checkIndividuals = new HashSet<>();
 
-        private OWLAxiomVisitor addAxiomVisitor = new OWLAxiomVisitorAdapter(){
-            public void visit(OWLClassAssertionAxiom ax) {
+        private OWLAxiomVisitor addAxiomVisitor = new OWLAxiomVisitor(){
+            @Override
+            public void visit(@Nonnull OWLClassAssertionAxiom ax) {
                 handleAddClassAssertionAxiom(ax);
             }
         };
 
-        private OWLAxiomVisitor removeAxiomVisitor = new OWLAxiomVisitorAdapter(){
-            public void visit(OWLClassAssertionAxiom ax) {
+        private OWLAxiomVisitor removeAxiomVisitor = new OWLAxiomVisitor(){
+            @Override
+            public void visit(@Nonnull OWLClassAssertionAxiom ax) {
                 handleRemoveClassAssertionAxiom(ax);
             }
         };
@@ -188,8 +189,8 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
             return changedNodes;
         }
 
-
-        public void visit(AddAxiom addAxiom) {
+        @Override
+        public void visit(@Nonnull AddAxiom addAxiom) {
             if (ontologies.contains(addAxiom.getOntology())){
 
                 handleAxiomChange(addAxiom);
@@ -198,8 +199,8 @@ public class IndividualsByTypeHierarchyProvider extends AbstractOWLObjectHierarc
             }
         }
 
-
-        public void visit(RemoveAxiom removeAxiom) {
+        @Override
+        public void visit(@Nonnull RemoveAxiom removeAxiom) {
             if (ontologies.contains(removeAxiom.getOntology())){
 
                 handleAxiomChange(removeAxiom);

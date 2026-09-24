@@ -55,8 +55,8 @@ public class PrefixUtilities {
 		if (ontology != null) {
 			OWLOntologyManager manager = ontology.getOWLOntologyManager();
 			OWLDocumentFormat format = manager.getOntologyFormat(ontology);
-			if (format != null && format.isPrefixOWLOntologyFormat()) {
-				prefixManager = format.asPrefixOWLOntologyFormat();
+			if (format != null && format.isPrefixOWLDocumentFormat()) {
+				prefixManager = format.asPrefixOWLDocumentFormat();
 			}
 		}
 		if (prefixManager == null) {

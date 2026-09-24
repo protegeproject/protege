@@ -1,15 +1,12 @@
 package org.protege.owlapi.inference.cls;
 
-import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLClassExpression;
-import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
-import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
-import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
+import org.semanticweb.owlapi.model.*;
 
+import javax.annotation.Nonnull;
 import java.util.Set;
 
 
-public class ParentClassExtractor extends OWLAxiomVisitorAdapter {
+public class ParentClassExtractor implements OWLAxiomVisitor {
 
     private NamedClassExtractor extractor = new NamedClassExtractor();
 
@@ -30,13 +27,13 @@ public class ParentClassExtractor extends OWLAxiomVisitorAdapter {
         return extractor.getResult();
     }
 
-
-    public void visit(OWLSubClassOfAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLSubClassOfAxiom axiom) {
         axiom.getSuperClass().accept(extractor);
     }
 
-
-    public void visit(OWLEquivalentClassesAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLEquivalentClassesAxiom axiom) {
         for (OWLClassExpression desc : axiom.getClassExpressions()) {
             if (desc.equals(current)) {
                 continue;

@@ -83,14 +83,14 @@ public class EntityDeprecator_TestCase {
                 SubClassOf(toDeprecate, superCls),
                 SubClassOf(subCls, toDeprecate),
                 AnnotationAssertion(dataFactory.getRDFSLabel(),
-                                                toDeprecate.getIRI(),
-                                                Literal(THE_LABEL)),
+                        toDeprecate.getIRI(),
+                        Literal(THE_LABEL)),
                 AnnotationAssertion(dataFactory.getRDFSSeeAlso(),
-                                    toDeprecate.getIRI(),
-                                    Literal(SEE_ALSO)),
+                        toDeprecate.getIRI(),
+                        Literal(SEE_ALSO)),
                 otherAnnoAssertion = AnnotationAssertion(dataFactory.getRDFSIsDefinedBy(),
-                                    toDeprecate.getIRI(),
-                                    Literal("Some Other Annotation Assertion"))
+                        toDeprecate.getIRI(),
+                        Literal("Some Other Annotation Assertion"))
         );
         Set<OWLOntology> ontologies = Collections.singleton(ont);
         when(deprecationProfile.getDeprecatedEntityLabelPrefix()).thenReturn("!deprecated!");
@@ -114,10 +114,11 @@ public class EntityDeprecator_TestCase {
                 Collections.singleton(alternateCls),
                 null);
         entityDeprecator = new EntityDeprecator<>(info,
-                                                  deprecationProfile,
-                                                  ontologies,
-                                                  new HomeOntologySupplier(),
-                                                  dataFactory);
+                deprecationProfile,
+                ontologies,
+                new HomeOntologySupplier(),
+                dataFactory,
+                manager);
     }
 
     private void performDeprecation() {

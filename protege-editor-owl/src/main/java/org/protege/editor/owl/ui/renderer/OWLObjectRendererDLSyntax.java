@@ -1,11 +1,9 @@
 package org.protege.editor.owl.ui.renderer;
 
-import com.google.common.base.Optional;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
-import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 
 
@@ -15,7 +13,7 @@ import java.util.*;
  * Bio-Health Informatics Group<br>
  * Date: 24-Jan-2007<br><br>
  */
-public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implements OWLObjectRenderer {
+public class OWLObjectRendererDLSyntax implements OWLObjectVisitor, OWLObjectRenderer {
 
 //    private static final Logger logger = LoggerFactory.getLogger(OWLObjectRendererImpl.class);
 
@@ -146,8 +144,8 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         return sortedDescs;
     }
 
-
-    public void visit(OWLObjectIntersectionOf node) {
+    @Override
+    public void visit(@Nonnull OWLObjectIntersectionOf node) {
         List<OWLClassExpression> ops = sort(node.getOperands());
         for (int i = 0; i < ops.size(); i++) {
             OWLClassExpression curOp = ops.get(i);
@@ -168,8 +166,8 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         }
     }
 
-
-    public void visit(OWLLiteral node) {
+    @Override
+    public void visit(@Nonnull OWLLiteral node) {
         if (node.isRDFPlainLiteral()) {
             write("\"");
             write(node.getLiteral());
@@ -187,12 +185,13 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         }
     }
 
-    public void visit(OWLDatatype node) {
+    @Override
+    public void visit(@Nonnull OWLDatatype node) {
         visit(node.getIRI());
     }
 
     @Override
-    public void visit(IRI iri) {
+    public void visit(@Nonnull IRI iri) {
         Optional<String> remainder = iri.getRemainder();
         if(remainder.isPresent()) {
             write(remainder.get());
@@ -201,8 +200,8 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
             write(iri.toString());
         }
     }
-
-    public void visit(OWLDataOneOf node) {
+    @Override
+    public void visit(@Nonnull OWLDataOneOf node) {
         write("{");
         for (Iterator<OWLLiteral> it = node.getValues().iterator(); it.hasNext();) {
             it.next().accept(this);
@@ -213,8 +212,8 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         write("}");
     }
 
-
-    public void visit(OWLDataAllValuesFrom node) {
+    @Override
+    public void visit(@Nonnull OWLDataAllValuesFrom node) {
         write(getAllKeyWord());
         write(" ");
         node.getProperty().accept(this);
@@ -222,13 +221,13 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         node.getFiller().accept(this);
     }
 
-
-    public void visit(OWLDataProperty node) {
+    @Override
+    public void visit(@Nonnull OWLDataProperty node) {
         write(getRendering(node));
     }
 
-
-    public void visit(OWLDataSomeValuesFrom node) {
+    @Override
+    public void visit(@Nonnull OWLDataSomeValuesFrom node) {
         write(getSomeKeyWord());
         write(" ");
         node.getProperty().accept(this);
@@ -236,8 +235,8 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         node.getFiller().accept(this);
     }
 
-
-    public void visit(OWLDataHasValue node) {
+    @Override
+    public void visit(@Nonnull OWLDataHasValue node) {
         write(getSomeKeyWord());
         write(" ");
         node.getProperty().accept(this);
@@ -246,13 +245,13 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         write("}");
     }
 
-
-    public void visit(OWLNamedIndividual node) {
+    @Override
+    public void visit(@Nonnull OWLNamedIndividual node) {
         write(getRendering(node));
     }
 
-
-    public void visit(OWLObjectAllValuesFrom node) {
+    @Override
+    public void visit(@Nonnull OWLObjectAllValuesFrom node) {
         write(getAllKeyWord());
         write(" ");
         node.getProperty().accept(this);
@@ -262,18 +261,18 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         writeCloseBracket(node.getFiller());
     }
 
-
-    public void visit(OWLObjectMinCardinality desc) {
+    @Override
+    public void visit(@Nonnull OWLObjectMinCardinality desc) {
         writeCardinality(desc, getMinKeyWord());
     }
 
-
-    public void visit(OWLObjectExactCardinality desc) {
+    @Override
+    public void visit(@Nonnull OWLObjectExactCardinality desc) {
         writeCardinality(desc, getExactlyKeyWord());
     }
 
-
-    public void visit(OWLObjectMaxCardinality desc) {
+    @Override
+    public void visit(@Nonnull OWLObjectMaxCardinality desc) {
         writeCardinality(desc, getMaxKeyWord());
     }
 
@@ -290,18 +289,18 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         writeCloseBracket(desc.getFiller());
     }
 
-
-    public void visit(OWLDataMinCardinality desc) {
+    @Override
+    public void visit(@Nonnull OWLDataMinCardinality desc) {
         writeCardinality(desc, getMinKeyWord());
     }
 
-
-    public void visit(OWLDataExactCardinality desc) {
+    @Override
+    public void visit(@Nonnull OWLDataExactCardinality desc) {
         writeCardinality(desc, getExactlyKeyWord());
     }
 
-
-    public void visit(OWLDataMaxCardinality desc) {
+    @Override
+    public void visit(@Nonnull OWLDataMaxCardinality desc) {
         writeCardinality(desc, getMaxKeyWord());
     }
 
@@ -318,13 +317,13 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         writeCloseBracket(desc.getFiller());
     }
 
-
-    public void visit(OWLObjectProperty node) {
+    @Override
+    public void visit(@Nonnull OWLObjectProperty node) {
         write(getRendering(node));
     }
 
-
-    public void visit(OWLObjectSomeValuesFrom node) {
+    @Override
+    public void visit(@Nonnull OWLObjectSomeValuesFrom node) {
         write(getSomeKeyWord());
         write(" ");
         node.getProperty().accept(this);
@@ -334,8 +333,8 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         writeCloseBracket(node.getFiller());
     }
 
-
-    public void visit(OWLObjectHasValue node) {
+    @Override
+    public void visit(@Nonnull OWLObjectHasValue node) {
         write(getSomeKeyWord());
         write(" ");
         node.getProperty().accept(this);
@@ -344,8 +343,8 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         write("}");
     }
 
-
-    public void visit(OWLObjectComplementOf node) {
+    @Override
+    public void visit(@Nonnull OWLObjectComplementOf node) {
         writeNotKeyword();
         write(" ");
         writeOpenBracket(node.getOperand());
@@ -358,11 +357,11 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         write(getNotKeyWord());
     }
 
-
-    public void visit(OWLObjectUnionOf node) {
+    @Override
+    public void visit(@Nonnull OWLObjectUnionOf node) {
         int indent = getIndent();
-        for (Iterator it = sort(node.getOperands()).iterator(); it.hasNext();) {
-            OWLClassExpression curOp = (OWLClassExpression) it.next();
+        for (Iterator<OWLClassExpression> it = sort(node.getOperands()).iterator(); it.hasNext();) {
+            OWLClassExpression curOp = it.next();
             writeOpenBracket(curOp);
             curOp.accept(this);
             writeCloseBracket(curOp);
@@ -380,13 +379,13 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         write(" ");
     }
 
-
-    public void visit(OWLClass node) {
+    @Override
+    public void visit(@Nonnull OWLClass node) {
         write(getRendering(node));
     }
 
-
-    public void visit(OWLObjectOneOf node) {
+    @Override
+    public void visit(@Nonnull OWLObjectOneOf node) {
         write("{");
         int size = node.getIndividuals().size();
         int count = 0;
@@ -399,8 +398,8 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         write("}");
     }
 
-
-    public void visit(OWLDisjointClassesAxiom node) {
+    @Override
+    public void visit(@Nonnull OWLDisjointClassesAxiom node) {
         for (Iterator<OWLClassExpression> it = sort(node.getClassExpressions()).iterator(); it.hasNext();) {
             it.next().accept(this);
             if (it.hasNext()) {
@@ -409,8 +408,8 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         }
     }
 
-
-    public void visit(OWLEquivalentClassesAxiom node) {
+    @Override
+    public void visit(@Nonnull OWLEquivalentClassesAxiom node) {
         for (Iterator<OWLClassExpression> it = sort(node.getClassExpressions()).iterator(); it.hasNext();) {
             it.next().accept(this);
             if (it.hasNext()) {
@@ -419,8 +418,8 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         }
     }
 
-
-    public void visit(OWLSubClassOfAxiom node) {
+    @Override
+    public void visit(@Nonnull OWLSubClassOfAxiom node) {
         node.getSubClass().accept(this);
         write(" \u2291 ");
         node.getSuperClass().accept(this);
@@ -458,13 +457,13 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
         }
     }
 
-
-    public void visit(OWLOntology ontology) {
+    @Override
+    public void visit(@Nonnull OWLOntology ontology) {
         write(ontology.getOntologyID().toString());
     }
 
 
-    private class BracketWriter extends OWLClassExpressionVisitorAdapter implements OWLDataVisitor {
+    private class BracketWriter implements OWLClassExpressionVisitor, OWLDataVisitor {
 
         boolean nested = false;
 
@@ -473,133 +472,133 @@ public class OWLObjectRendererDLSyntax extends OWLObjectVisitorAdapter implement
             return nested;
         }
 
-
-        public void visit(OWLObjectIntersectionOf owlAnd) {
+        @Override
+        public void visit(@Nonnull OWLObjectIntersectionOf owlAnd) {
             nested = true;
         }
 
-
-        public void visit(OWLDataAllValuesFrom owlDataAllRestriction) {
+        @Override
+        public void visit(@Nonnull OWLDataAllValuesFrom owlDataAllRestriction) {
             nested = true;
         }
 
-
-        public void visit(OWLDataSomeValuesFrom owlDataSomeValuesFrom) {
+        @Override
+        public void visit(@Nonnull OWLDataSomeValuesFrom owlDataSomeValuesFrom) {
             nested = true;
         }
 
-
-        public void visit(OWLDataHasValue owlDataValueRestriction) {
+        @Override
+        public void visit(@Nonnull OWLDataHasValue owlDataValueRestriction) {
             nested = true;
         }
 
-
-        public void visit(OWLObjectAllValuesFrom owlObjectAllRestriction) {
+        @Override
+        public void visit(@Nonnull OWLObjectAllValuesFrom owlObjectAllRestriction) {
             nested = true;
         }
 
-
-        public void visit(OWLObjectSomeValuesFrom owlObjectSomeValuesFrom) {
+        @Override
+        public void visit(@Nonnull OWLObjectSomeValuesFrom owlObjectSomeValuesFrom) {
             nested = true;
         }
 
-
-        public void visit(OWLObjectHasValue owlObjectValueRestriction) {
+        @Override
+        public void visit(@Nonnull OWLObjectHasValue owlObjectValueRestriction) {
             nested = true;
         }
 
-
-        public void visit(OWLObjectComplementOf owlNot) {
+        @Override
+        public void visit(@Nonnull OWLObjectComplementOf owlNot) {
             nested = true;
         }
 
-
-        public void visit(OWLObjectUnionOf owlOr) {
+        @Override
+        public void visit(@Nonnull OWLObjectUnionOf owlOr) {
             nested = true;
         }
 
-
-        public void visit(OWLClass owlClass) {
+        @Override
+        public void visit(@Nonnull OWLClass owlClass) {
             nested = false;
         }
 
-
-        public void visit(OWLObjectOneOf owlObjectOneOf) {
+        @Override
+        public void visit(@Nonnull OWLObjectOneOf owlObjectOneOf) {
             nested = false;
         }
 
-
-        public void visit(OWLObjectMinCardinality desc) {
+        @Override
+        public void visit(@Nonnull OWLObjectMinCardinality desc) {
             nested = true;
         }
 
-
-        public void visit(OWLObjectExactCardinality desc) {
+        @Override
+        public void visit(@Nonnull OWLObjectExactCardinality desc) {
             nested = true;
         }
 
-
-        public void visit(OWLObjectMaxCardinality desc) {
+        @Override
+        public void visit(@Nonnull OWLObjectMaxCardinality desc) {
             nested = true;
         }
 
-
-        public void visit(OWLObjectHasSelf desc) {
+        @Override
+        public void visit(@Nonnull OWLObjectHasSelf desc) {
             nested = true;
         }
 
-
-        public void visit(OWLDataMinCardinality desc) {
+        @Override
+        public void visit(@Nonnull OWLDataMinCardinality desc) {
             nested = true;
         }
 
-
-        public void visit(OWLDataExactCardinality desc) {
+        @Override
+        public void visit(@Nonnull OWLDataExactCardinality desc) {
             nested = true;
         }
 
-
-        public void visit(OWLDataMaxCardinality desc) {
+        @Override
+        public void visit(@Nonnull OWLDataMaxCardinality desc) {
             nested = true;
         }
 
-
-        public void visit(OWLDatatype node) {
+        @Override
+        public void visit(@Nonnull OWLDatatype node) {
             nested = false;
         }
 
-
-        public void visit(OWLDataComplementOf node) {
+        @Override
+        public void visit(@Nonnull OWLDataComplementOf node) {
             nested = false;
         }
 
-
-        public void visit(OWLDataIntersectionOf owlDataIntersectionOf) {
+        @Override
+        public void visit(@Nonnull OWLDataIntersectionOf owlDataIntersectionOf) {
             nested = true;
         }
 
-
-        public void visit(OWLDataUnionOf owlDataUnionOf) {
+        @Override
+        public void visit(@Nonnull OWLDataUnionOf owlDataUnionOf) {
             nested = true;
         }
 
-
-        public void visit(OWLDatatypeRestriction owlDatatypeRestriction) {
+        @Override
+        public void visit(@Nonnull OWLDatatypeRestriction owlDatatypeRestriction) {
             nested = false;
         }
 
-
-        public void visit(OWLDataOneOf node) {
+        @Override
+        public void visit(@Nonnull OWLDataOneOf node) {
             nested = false;
         }
 
-
-        public void visit(OWLLiteral node) {
+        @Override
+        public void visit(@Nonnull OWLLiteral node) {
             nested = false;
         }
 
-
-        public void visit(OWLFacetRestriction node) {
+        @Override
+        public void visit(@Nonnull OWLFacetRestriction node) {
             nested = false;
         }
 

@@ -1,6 +1,5 @@
 package org.protege.editor.owl.model.hierarchy.tabbed;
 
-import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -11,6 +10,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -81,7 +81,9 @@ public abstract class AbstractOWLObjectHierarchyCreator {
     protected IRI getIRI(String s) {
         try {
             final Optional<IRI> defaultDocURI = ontology.getOntologyID().getDefaultDocumentIRI();
-            return IRI.create(new URI(defaultDocURI.get().getScheme(), defaultDocURI.get().toURI().getSchemeSpecificPart(), s));
+            if(defaultDocURI.isPresent()) {
+                return IRI.create(new URI(defaultDocURI.get().getScheme(), defaultDocURI.get().toURI().getSchemeSpecificPart(), s));
+            }
         }
         catch (Exception e) {
             LoggerFactory.getLogger(AbstractOWLObjectHierarchyCreator.class)

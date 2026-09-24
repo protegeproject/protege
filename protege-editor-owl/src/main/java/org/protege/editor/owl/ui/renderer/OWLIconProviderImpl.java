@@ -5,7 +5,6 @@ import org.protege.editor.owl.ui.OWLIcons;
 import org.protege.editor.owl.ui.renderer.context.DefinedClassChecker;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.search.EntitySearcher;
-import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
@@ -23,7 +22,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
  */
-public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLIconProvider {
+public class OWLIconProviderImpl implements OWLObjectVisitor, OWLIconProvider {
 
     private Icon icon;
 
@@ -95,293 +94,293 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
         }
     }
 
-
-    public void visit(OWLObjectIntersectionOf owlAnd) {
+    @Override
+    public void visit(@Nonnull OWLObjectIntersectionOf owlAnd) {
         icon = primitiveClassIcon;
     }
 
-
-    public void visit(OWLDatatype owlDatatype) {
+    @Override
+    public void visit(@Nonnull OWLDatatype owlDatatype) {
         icon = dataTypeIcon;
     }
 
-
-    public void visit(OWLDataOneOf owlDataEnumeration) {
+    @Override
+    public void visit(@Nonnull OWLDataOneOf owlDataEnumeration) {
         icon = dataTypeIcon;
     }
 
-
-    public void visit(OWLDataAllValuesFrom owlDataAllRestriction) {
+    @Override
+    public void visit(@Nonnull OWLDataAllValuesFrom owlDataAllRestriction) {
         icon = primitiveClassIcon;
     }
 
-
-    public void visit(OWLDataProperty owlDataProperty) {
+    @Override
+    public void visit(@Nonnull OWLDataProperty owlDataProperty) {
         icon = dataPropertyIcon;
     }
 
-
-    public void visit(OWLDataSomeValuesFrom owlDataSomeValuesFrom) {
+    @Override
+    public void visit(@Nonnull OWLDataSomeValuesFrom owlDataSomeValuesFrom) {
         icon = primitiveClassIcon;
     }
 
-
-    public void visit(OWLDataHasValue owlDataValueRestriction) {
+    @Override
+    public void visit(@Nonnull OWLDataHasValue owlDataValueRestriction) {
         icon = primitiveClassIcon;
     }
 
-
-    public void visit(OWLDifferentIndividualsAxiom owlDifferentIndividualsAxiom) {
+    @Override
+    public void visit(@Nonnull OWLDifferentIndividualsAxiom owlDifferentIndividualsAxiom) {
         icon = individualIcon;
     }
 
-
-    public void visit(OWLDisjointDataPropertiesAxiom owlDisjointDataPropertiesAxiom) {
+    @Override
+    public void visit(@Nonnull OWLDisjointDataPropertiesAxiom owlDisjointDataPropertiesAxiom) {
         icon = dataPropertyIcon;
     }
 
-
-    public void visit(OWLFunctionalObjectPropertyAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLFunctionalObjectPropertyAxiom axiom) {
         icon = objectPropertyIcon;
     }
 
-
-    public void visit(OWLDisjointObjectPropertiesAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLDisjointObjectPropertiesAxiom axiom) {
         icon = objectPropertyIcon;
     }
 
-
-    public void visit(OWLInverseObjectPropertiesAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLInverseObjectPropertiesAxiom axiom) {
         icon = objectPropertyIcon;
     }
 
-
-    public void visit(OWLHasKeyAxiom owlHasKeyAxiom) {
+    @Override
+    public void visit(@Nonnull OWLHasKeyAxiom owlHasKeyAxiom) {
         icon = primitiveClassIcon;
     }
 
-
-    public void visit(OWLDatatypeDefinitionAxiom owlDatatypeDefinitionAxiom) {
+    @Override
+    public void visit(@Nonnull OWLDatatypeDefinitionAxiom owlDatatypeDefinitionAxiom) {
         icon = dataTypeIcon;
     }
 
-
-    public void visit(OWLInverseFunctionalObjectPropertyAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLInverseFunctionalObjectPropertyAxiom axiom) {
         icon = objectPropertyIcon;
     }
 
-
-    public void visit(OWLObjectPropertyDomainAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLObjectPropertyDomainAxiom axiom) {
         icon = objectPropertyIcon;
     }
 
-
-    public void visit(OWLEquivalentObjectPropertiesAxiom owlEquivalentObjectPropertiesAxiom) {
+    @Override
+    public void visit(@Nonnull OWLEquivalentObjectPropertiesAxiom owlEquivalentObjectPropertiesAxiom) {
         icon = objectPropertyIcon;
     }
 
-
-    public void visit(OWLNegativeDataPropertyAssertionAxiom owlNegativeDataPropertyAssertionAxiom) {
+    @Override
+    public void visit(@Nonnull OWLNegativeDataPropertyAssertionAxiom owlNegativeDataPropertyAssertionAxiom) {
         icon = individualIcon;
     }
 
-
-    public void visit(OWLObjectPropertyRangeAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLObjectPropertyRangeAxiom axiom) {
         icon = objectPropertyIcon;
     }
 
-
-    public void visit(OWLObjectPropertyAssertionAxiom owlObjectPropertyAssertionAxiom) {
+    @Override
+    public void visit(@Nonnull OWLObjectPropertyAssertionAxiom owlObjectPropertyAssertionAxiom) {
         icon = individualIcon;
     }
 
-
-    public void visit(OWLSubObjectPropertyOfAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLSubObjectPropertyOfAxiom axiom) {
         icon = objectPropertyIcon;
     }
 
-
-    public void visit(OWLNamedIndividual owlIndividual) {
+    @Override
+    public void visit(@Nonnull OWLNamedIndividual owlIndividual) {
         icon = individualIcon;
     }
 
-
-    public void visit(OWLAnonymousIndividual individual) {
+    @Override
+    public void visit(@Nonnull OWLAnonymousIndividual individual) {
         icon = individualIcon;
     }
 
-
-    public void visit(OWLObjectAllValuesFrom owlObjectAllRestriction) {
+    @Override
+    public void visit(@Nonnull OWLObjectAllValuesFrom owlObjectAllRestriction) {
         icon = primitiveClassIcon;
     }
 
-
-    public void visit(OWLObjectMinCardinality desc) {
+    @Override
+    public void visit(@Nonnull OWLObjectMinCardinality desc) {
         icon = primitiveClassIcon;
     }
 
-
-    public void visit(OWLObjectExactCardinality desc) {
+    @Override
+    public void visit(@Nonnull OWLObjectExactCardinality desc) {
         icon = primitiveClassIcon;
     }
 
-
-    public void visit(OWLObjectMaxCardinality desc) {
+    @Override
+    public void visit(@Nonnull OWLObjectMaxCardinality desc) {
         icon = primitiveClassIcon;
     }
 
-
-    public void visit(OWLObjectHasSelf desc) {
+    @Override
+    public void visit(@Nonnull OWLObjectHasSelf desc) {
         icon = primitiveClassIcon;
     }
 
-
-    public void visit(OWLDataMinCardinality desc) {
+    @Override
+    public void visit(@Nonnull OWLDataMinCardinality desc) {
         icon = primitiveClassIcon;
     }
 
-
-    public void visit(OWLDataExactCardinality desc) {
+    @Override
+    public void visit(@Nonnull OWLDataExactCardinality desc) {
         icon = primitiveClassIcon;
     }
 
-
-    public void visit(OWLDataMaxCardinality desc) {
+    @Override
+    public void visit(@Nonnull OWLDataMaxCardinality desc) {
         icon = primitiveClassIcon;
     }
 
-
-    public void visit(OWLObjectProperty owlObjectProperty) {
+    @Override
+    public void visit(@Nonnull OWLObjectProperty owlObjectProperty) {
         icon = objectPropertyIcon;
     }
 
-
-    public void visit(OWLObjectSomeValuesFrom owlObjectSomeValuesFrom) {
+    @Override
+    public void visit(@Nonnull OWLObjectSomeValuesFrom owlObjectSomeValuesFrom) {
         icon = primitiveClassIcon;
     }
 
-
-    public void visit(OWLObjectHasValue owlObjectValueRestriction) {
+    @Override
+    public void visit(@Nonnull OWLObjectHasValue owlObjectValueRestriction) {
         icon = primitiveClassIcon;
     }
 
-
-    public void visit(OWLObjectComplementOf owlNot) {
+    @Override
+    public void visit(@Nonnull OWLObjectComplementOf owlNot) {
         icon = primitiveClassIcon;
     }
 
-
-    public void visit(OWLOntology owlOntology) {
+    @Override
+    public void visit(@Nonnull OWLOntology owlOntology) {
         icon = ontologyIcon;
     }
 
-
-    public void visit(OWLObjectUnionOf owlOr) {
+    @Override
+    public void visit(@Nonnull OWLObjectUnionOf owlOr) {
         icon = primitiveClassIcon;
     }
 
-
-    public void visit(OWLDeclarationAxiom owlDeclarationAxiom) {
+    @Override
+    public void visit(@Nonnull OWLDeclarationAxiom owlDeclarationAxiom) {
         owlDeclarationAxiom.getEntity().accept(this);
     }
 
-
-    public void visit(OWLSubClassOfAxiom owlSubClassAxiom) {
+    @Override
+    public void visit(@Nonnull OWLSubClassOfAxiom owlSubClassAxiom) {
         icon = primitiveClassIcon;
     }
 
-
-    public void visit(OWLNegativeObjectPropertyAssertionAxiom owlNegativeObjectPropertyAssertionAxiom) {
+    @Override
+    public void visit(@Nonnull OWLNegativeObjectPropertyAssertionAxiom owlNegativeObjectPropertyAssertionAxiom) {
         icon = individualIcon;
     }
 
-
-    public void visit(OWLAsymmetricObjectPropertyAxiom owlAntiSymmetricObjectPropertyAxiom) {
+    @Override
+    public void visit(@Nonnull OWLAsymmetricObjectPropertyAxiom owlAntiSymmetricObjectPropertyAxiom) {
         icon = objectPropertyIcon;
     }
 
-
-    public void visit(OWLReflexiveObjectPropertyAxiom owlReflexiveObjectPropertyAxiom) {
+    @Override
+    public void visit(@Nonnull OWLReflexiveObjectPropertyAxiom owlReflexiveObjectPropertyAxiom) {
         icon = objectPropertyIcon;
     }
 
-
-    public void visit(OWLDisjointClassesAxiom owlDisjointClassesAxiom) {
+    @Override
+    public void visit(@Nonnull OWLDisjointClassesAxiom owlDisjointClassesAxiom) {
         icon = primitiveClassIcon;
     }
 
-
-    public void visit(OWLDataPropertyDomainAxiom owlDataPropertyDomainAxiom) {
+    @Override
+    public void visit(@Nonnull OWLDataPropertyDomainAxiom owlDataPropertyDomainAxiom) {
         icon = dataPropertyIcon;
     }
 
-
-    public void visit(OWLDisjointUnionAxiom owlDisjointUnionAxiom) {
+    @Override
+    public void visit(@Nonnull OWLDisjointUnionAxiom owlDisjointUnionAxiom) {
         icon = primitiveClassIcon;
     }
 
-
-    public void visit(OWLSymmetricObjectPropertyAxiom owlSymmetricObjectPropertyAxiom) {
+    @Override
+    public void visit(@Nonnull OWLSymmetricObjectPropertyAxiom owlSymmetricObjectPropertyAxiom) {
         icon = objectPropertyIcon;
     }
 
-
-    public void visit(OWLDataPropertyRangeAxiom owlDataPropertyRangeAxiom) {
+    @Override
+    public void visit(@Nonnull OWLDataPropertyRangeAxiom owlDataPropertyRangeAxiom) {
         icon = dataPropertyIcon;
     }
 
-
-    public void visit(OWLFunctionalDataPropertyAxiom owlFunctionalDataPropertyAxiom) {
+    @Override
+    public void visit(@Nonnull OWLFunctionalDataPropertyAxiom owlFunctionalDataPropertyAxiom) {
         icon = dataPropertyIcon;
     }
 
-
-    public void visit(OWLEquivalentDataPropertiesAxiom owlEquivalentDataPropertiesAxiom) {
+    @Override
+    public void visit(@Nonnull OWLEquivalentDataPropertiesAxiom owlEquivalentDataPropertiesAxiom) {
         icon = dataPropertyIcon;
     }
 
-
-    public void visit(OWLEquivalentClassesAxiom owlEquivalentClassesAxiom) {
+    @Override
+    public void visit(@Nonnull OWLEquivalentClassesAxiom owlEquivalentClassesAxiom) {
         icon = primitiveClassIcon;
     }
 
-
-    public void visit(OWLDataPropertyAssertionAxiom owlDataPropertyAssertionAxiom) {
+    @Override
+    public void visit(@Nonnull OWLDataPropertyAssertionAxiom owlDataPropertyAssertionAxiom) {
         icon = individualIcon;
     }
 
-
-    public void visit(OWLTransitiveObjectPropertyAxiom owlTransitiveObjectPropertyAxiom) {
+    @Override
+    public void visit(@Nonnull OWLTransitiveObjectPropertyAxiom owlTransitiveObjectPropertyAxiom) {
         icon = objectPropertyIcon;
     }
 
-
-    public void visit(OWLIrreflexiveObjectPropertyAxiom owlIrreflexiveObjectPropertyAxiom) {
+    @Override
+    public void visit(@Nonnull OWLIrreflexiveObjectPropertyAxiom owlIrreflexiveObjectPropertyAxiom) {
         icon = objectPropertyIcon;
     }
 
-
-    public void visit(OWLSubDataPropertyOfAxiom owlDataSubPropertyAxiom) {
+    @Override
+    public void visit(@Nonnull OWLSubDataPropertyOfAxiom owlDataSubPropertyAxiom) {
         icon = dataPropertyIcon;
     }
 
-
-    public void visit(OWLSameIndividualAxiom owlSameIndividualsAxiom) {
+    @Override
+    public void visit(@Nonnull OWLSameIndividualAxiom owlSameIndividualsAxiom) {
         icon = individualIcon;
     }
 
-    
-    public void visit(OWLClassAssertionAxiom owlClassAssertionAxiom) {
+    @Override
+    public void visit(@Nonnull OWLClassAssertionAxiom owlClassAssertionAxiom) {
         icon = individualIcon;
     }
 
-
-    public void visit(OWLSubPropertyChainOfAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLSubPropertyChainOfAxiom axiom) {
         icon = objectPropertyIcon;
     }
 
-
-    public void visit(OWLClass owlClass) {
+    @Override
+    public void visit(@Nonnull OWLClass owlClass) {
         if(definedClassChecker.isDefinedClass(owlClass)) {
             icon = definedClassIcon;
         }
@@ -390,32 +389,33 @@ public class OWLIconProviderImpl extends OWLObjectVisitorAdapter implements OWLI
         }
     }
 
-    public void visit(OWLObjectOneOf owlEnumeration) {
+    @Override
+    public void visit(@Nonnull OWLObjectOneOf owlEnumeration) {
         icon = primitiveClassIcon;
     }
 
-
-    public void visit(OWLAnnotationProperty owlAnnotationProperty) {
+    @Override
+    public void visit(@Nonnull OWLAnnotationProperty owlAnnotationProperty) {
         icon = annotationPropertyIcon;
     }
 
-
-    public void visit(OWLAnnotationAssertionAxiom owlAnnotationAssertionAxiom) {
+    @Override
+    public void visit(@Nonnull OWLAnnotationAssertionAxiom owlAnnotationAssertionAxiom) {
         icon = annotationPropertyIcon;
     }
 
-
-    public void visit(OWLSubAnnotationPropertyOfAxiom owlSubAnnotationPropertyOfAxiom) {
+    @Override
+    public void visit(@Nonnull OWLSubAnnotationPropertyOfAxiom owlSubAnnotationPropertyOfAxiom) {
         icon = annotationPropertyIcon;
     }
 
-
-    public void visit(OWLAnnotationPropertyDomainAxiom owlAnnotationPropertyDomainAxiom) {
+    @Override
+    public void visit(@Nonnull OWLAnnotationPropertyDomainAxiom owlAnnotationPropertyDomainAxiom) {
         icon = annotationPropertyIcon;
     }
 
-
-    public void visit(OWLAnnotationPropertyRangeAxiom owlAnnotationPropertyRangeAxiom) {
+    @Override
+    public void visit(@Nonnull OWLAnnotationPropertyRangeAxiom owlAnnotationPropertyRangeAxiom) {
         icon = annotationPropertyIcon;
     }
 }

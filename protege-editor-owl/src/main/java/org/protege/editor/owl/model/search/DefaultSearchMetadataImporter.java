@@ -3,17 +3,14 @@ package org.protege.editor.owl.model.search;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLEditorKitOntologyShortFormProvider;
 import org.protege.editor.owl.model.OWLEditorKitShortFormProvider;
+import org.protege.editor.owl.model.axiom.DefaultAxiomSubjectProvider;
 import org.protege.editor.owl.model.search.importer.*;
 import org.protege.editor.owl.ui.renderer.context.OWLObjectRenderingContext;
 import org.protege.editor.owl.ui.renderer.styledstring.OWLObjectStyledStringRenderer;
 import org.protege.editor.owl.ui.renderer.styledstring.StyledString;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.AxiomSubjectProvider;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Author: Matthew Horridge<br>
@@ -67,9 +64,9 @@ public class DefaultSearchMetadataImporter implements SearchMetadataImporter {
         for (AxiomBasedSearchMetadataImporter importer : getAxiomBasedSearchMetadataImporters(categories, axiomType)) {
             for (OWLOntology ontology : context.getOntologies()) {
                 for (OWLAxiom ax : ontology.getAxioms(axiomType)) {
-                    OWLObject subject = new AxiomSubjectProvider().getSubject(ax);
-                    if (subject instanceof OWLEntity) {
-                        OWLEntity entSubject = (OWLEntity) subject;
+                    Optional<OWLObject> subject = new DefaultAxiomSubjectProvider().getAxiomSubject(ax);
+                    if (subject.isPresent() && subject.get() instanceof OWLEntity) {
+                        OWLEntity entSubject = (OWLEntity) subject.get();
                         String rendering = context.getRendering(entSubject);
                         importer.generateSearchMetadataFor(ax, entSubject, rendering, context, db);
                     }

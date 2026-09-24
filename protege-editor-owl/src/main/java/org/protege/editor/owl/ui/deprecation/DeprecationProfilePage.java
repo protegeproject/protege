@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.deprecation;
 
-import com.google.common.base.Optional;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.deprecation.DeprecationProfile;
 import org.protege.editor.owl.ui.AbstractOWLWizardPanel;
@@ -12,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Matthew Horridge

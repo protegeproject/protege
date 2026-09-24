@@ -7,7 +7,6 @@ import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.protege.editor.owl.ui.tree.OWLObjectTreeNode;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.Imports;
-import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -196,42 +195,46 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
      * An implementation of a visitor that can be used to determine if an object should be highlighted as being
      * in the active ontology.
      */
-    private static final class ActiveOntologyVisitor extends OWLObjectVisitorExAdapter<Boolean> {
+    private static final class ActiveOntologyVisitor implements OWLObjectVisitorEx<Boolean> {
 
         @Nonnull
         private final OWLModelManager modelManager;
 
         public ActiveOntologyVisitor(@Nonnull OWLModelManager modelManager) {
-            super(false);
             this.modelManager = modelManager;
         }
 
         @Override
-        public Boolean visit(OWLClass ce) {
+        public <T> Boolean doDefault(@Nonnull T object) {
+            return false;
+        }
+
+        @Override
+        public Boolean visit(@Nonnull OWLClass ce) {
             return !modelManager.getActiveOntology().getAxioms(ce, Imports.EXCLUDED).isEmpty()
                     || !modelManager.getActiveOntology().getAnnotationAssertionAxioms(ce.getIRI()).isEmpty();
         }
 
         @Override
-        public Boolean visit(OWLDataProperty property) {
+        public Boolean visit(@Nonnull OWLDataProperty property) {
             return !modelManager.getActiveOntology().getAxioms(property, Imports.EXCLUDED).isEmpty()
                     || !modelManager.getActiveOntology().getAnnotationAssertionAxioms(property.getIRI()).isEmpty();
         }
 
         @Override
-        public Boolean visit(OWLObjectProperty property) {
+        public Boolean visit(@Nonnull OWLObjectProperty property) {
             return !modelManager.getActiveOntology().getAxioms(property, Imports.EXCLUDED).isEmpty()
                     || !modelManager.getActiveOntology().getAnnotationAssertionAxioms(property.getIRI()).isEmpty();
         }
 
         @Override
-        public Boolean visit(OWLNamedIndividual individual) {
+        public Boolean visit(@Nonnull OWLNamedIndividual individual) {
             return !modelManager.getActiveOntology().getAxioms(individual, Imports.EXCLUDED).isEmpty()
                     || !modelManager.getActiveOntology().getAnnotationAssertionAxioms(individual.getIRI()).isEmpty();
         }
 
         @Override
-        public Boolean visit(OWLAnnotationProperty property) {
+        public Boolean visit(@Nonnull OWLAnnotationProperty property) {
             return !modelManager.getActiveOntology().getAxioms(property, Imports.EXCLUDED).isEmpty()
                     || !modelManager.getActiveOntology().getAnnotationAssertionAxioms(property.getIRI()).isEmpty();
         }

@@ -1,6 +1,5 @@
 package org.protege.editor.owl.model.axiom;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +13,7 @@ import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 import java.util.Collections;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -63,7 +63,7 @@ public class SubjectDefinitionLocationStrategy_TestCase {
 
         // The subject of our axiom is subject
         when(subjectProvider.getAxiomSubject(axiom))
-                .thenReturn(Optional.<OWLObject>of(subject));
+                .thenReturn(Optional.of(subject));
 
         // Active is the root ontology i.e. OntologyA
         when(hasActiveOntology.getActiveOntology()).thenReturn(ontologyA);
@@ -77,7 +77,7 @@ public class SubjectDefinitionLocationStrategy_TestCase {
                 subjectDefinitionExtractor
 
         );
-        when(subjectProvider.getAxiomSubject(any(OWLAxiom.class))).thenReturn(Optional.<OWLObject>absent());
+        when(subjectProvider.getAxiomSubject(any(OWLAxiom.class))).thenReturn(Optional.empty());
         OWLOntology ontology = strategy.getFreshAxiomLocation(axiom, hasActiveOntology);
         assertThat(ontology, is(equalTo(ontologyA)));
     }

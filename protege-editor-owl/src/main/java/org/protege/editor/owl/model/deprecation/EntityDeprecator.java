@@ -1,11 +1,11 @@
 package org.protege.editor.owl.model.deprecation;
 
 import org.protege.editor.core.log.LogBanner;
+import org.protege.editor.owl.model.axiom.DefaultAxiomSubjectProvider;
 import org.protege.editor.owl.model.entity.HomeOntologySupplier;
 import org.protege.editor.owl.model.util.DefinitionExtractor;
 import org.protege.editor.owl.model.util.LiteralLexicalValueReplacer;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.AxiomSubjectProvider;
 import org.semanticweb.owlapi.util.OWLObjectDuplicator;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import org.slf4j.Logger;
@@ -41,14 +41,19 @@ public class EntityDeprecator<E extends OWLEntity> {
     @Nonnull
     private final HomeOntologySupplier homeOntologySupplier;
 
+    @Nonnull
+    private final OWLOntologyManager manager;
+
     public EntityDeprecator(@Nonnull DeprecateEntityInfo<E> info,
                             @Nonnull DeprecationProfile profile,
                             @Nonnull Set<OWLOntology> ontologies,
                             @Nonnull HomeOntologySupplier homeOntologySupplier,
-                            @Nonnull OWLDataFactory dataFactory) {
+                            @Nonnull OWLDataFactory dataFactory,
+                            @Nonnull OWLOntologyManager manager) {
         this.dataFactory = checkNotNull(dataFactory);
         this.profile = checkNotNull(profile);
         this.homeOntologySupplier = checkNotNull(homeOntologySupplier);
+        this.manager = manager;
         this.ontologies.addAll(ontologies);
         this.info = checkNotNull(info);
     }
@@ -266,13 +271,13 @@ public class EntityDeprecator<E extends OWLEntity> {
         info.getReplacementEntity().ifPresent(replacementEntity -> {
             Map<OWLEntity, IRI> replacementMap = new HashMap<>();
             replacementMap.put(info.getEntityToDeprecate(), replacementEntity.getIRI());
-            OWLObjectDuplicator duplicator = new OWLObjectDuplicator(replacementMap, dataFactory);
+            OWLObjectDuplicator duplicator = new OWLObjectDuplicator(replacementMap, manager);
             ontologies.forEach(o -> {
                 o.getReferencingAxioms(info.getEntityToDeprecate()).stream()
                  // Only replace the entity in logical axioms - annotations remain on the deprecated entity
                  .filter(OWLAxiom::isLogicalAxiom)
                  // Don't replace axioms that define the entity to be deprecated
-                 .filter(ax -> !new AxiomSubjectProvider().getSubject(ax).equals(info.getEntityToDeprecate()))
+                 .filter(ax -> !new DefaultAxiomSubjectProvider().getAxiomSubject(ax).equals(Optional.of(info.getEntityToDeprecate())))
                  .forEach(ax -> {
                      OWLAxiom replacementAx = duplicator.duplicateObject(ax);
                      changes.add(new RemoveAxiom(o, ax));

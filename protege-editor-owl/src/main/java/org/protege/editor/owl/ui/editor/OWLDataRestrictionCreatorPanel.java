@@ -5,8 +5,8 @@ import org.protege.editor.owl.ui.selector.AbstractSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLDataPropertySelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLDataTypeSelectorPanel;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -107,7 +107,7 @@ public class OWLDataRestrictionCreatorPanel extends AbstractRestrictionCreatorPa
     }
 
 
-    class AcceptableExpressionFilter extends OWLClassExpressionVisitorAdapter {
+    class AcceptableExpressionFilter implements OWLClassExpressionVisitor {
         private boolean isAcceptable = false;
         private OWLDataProperty p;
         private OWLDatatype f;
@@ -115,36 +115,41 @@ public class OWLDataRestrictionCreatorPanel extends AbstractRestrictionCreatorPa
         private int cardinality = -1;
 
         private void handleRestriction(OWLQuantifiedRestriction<OWLDataRange>  r) {
-            if (!r.getProperty().isAnonymous() && r.getFiller().isDatatype()){
+            if (!r.getProperty().isAnonymous() && r.getFiller().isOWLDatatype()){
                 p = (OWLDataProperty) r.getProperty();
                 f = r.getFiller().asOWLDatatype();
                 isAcceptable = true;
             }
         }
 
-        public void visit(OWLDataSomeValuesFrom r) {
+        @Override
+        public void visit(@Nonnull OWLDataSomeValuesFrom r) {
             t = some;
             handleRestriction(r);
         }
 
-        public void visit(OWLDataAllValuesFrom r) {
+        @Override
+        public void visit(@Nonnull OWLDataAllValuesFrom r) {
             t = only;
             handleRestriction(r);
         }
 
-        public void visit(OWLDataMinCardinality r) {
+        @Override
+        public void visit(@Nonnull OWLDataMinCardinality r) {
             t = min;
             cardinality = r.getCardinality();
             handleRestriction(r);
         }
 
-        public void visit(OWLDataExactCardinality r) {
+        @Override
+        public void visit(@Nonnull OWLDataExactCardinality r) {
             t = exactly;
             cardinality = r.getCardinality();
             handleRestriction(r);
         }
 
-        public void visit(OWLDataMaxCardinality r) {
+        @Override
+        public void visit(@Nonnull OWLDataMaxCardinality r) {
             t = max;
             cardinality = r.getCardinality();
             handleRestriction(r);

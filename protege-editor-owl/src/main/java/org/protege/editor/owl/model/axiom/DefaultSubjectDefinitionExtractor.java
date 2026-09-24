@@ -1,10 +1,9 @@
 package org.protege.editor.owl.model.axiom;
 
-import com.google.common.collect.Sets;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.Imports;
-import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
+import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,42 +15,46 @@ public class DefaultSubjectDefinitionExtractor implements SubjectDefinitionExtra
 
     @Override
     public Set<OWLAxiom> getDefiningAxioms(final OWLObject subject, final OWLOntology ontology) {
-            return new HashSet<>(subject.accept(new OWLObjectVisitorExAdapter<Set<? extends OWLAxiom>>(Collections.emptySet()) {
+            return new HashSet<>(subject.accept(new OWLObjectVisitorEx<Set<? extends OWLAxiom>>() {
 
                 @Override
-                public Set<? extends OWLAxiom> visit(OWLClass cls) {
+                public <T> Set<? extends OWLAxiom> doDefault(@Nonnull T object) {
+                    return Collections.emptySet();
+                }
+
+                @Override
+                public Set<? extends OWLAxiom> visit(@Nonnull OWLClass cls) {
                     return ontology.getAxioms(cls, Imports.EXCLUDED);
                 }
 
                 @Override
-                public Set<? extends OWLAxiom> visit(OWLObjectProperty property) {
+                public Set<? extends OWLAxiom> visit(@Nonnull OWLObjectProperty property) {
                     return ontology.getAxioms(property, Imports.EXCLUDED);
                 }
 
                 @Override
-                public Set<? extends OWLAxiom> visit(OWLDataProperty property) {
+                public Set<? extends OWLAxiom> visit(@Nonnull OWLDataProperty property) {
                     return ontology.getAxioms(property, Imports.EXCLUDED);
                 }
 
                 @Override
-                public Set<? extends OWLAxiom> visit(OWLNamedIndividual individual) {
+                public Set<? extends OWLAxiom> visit(@Nonnull OWLNamedIndividual individual) {
                     return ontology.getAxioms(individual, Imports.EXCLUDED);
                 }
 
                 @Override
-                public Set<? extends OWLAxiom> visit(OWLDatatype datatype) {
+                public Set<? extends OWLAxiom> visit(@Nonnull OWLDatatype datatype) {
                     return ontology.getAxioms(datatype, Imports.EXCLUDED);
                 }
 
                 @Override
-                public Set<? extends OWLAxiom> visit(OWLAnnotationProperty property) {
+                public Set<? extends OWLAxiom> visit(@Nonnull OWLAnnotationProperty property) {
                     return ontology.getAxioms(property, Imports.EXCLUDED);
                 }
 
                 @Override
-                public Set<? extends OWLAxiom> visit(IRI iri) {
-                    Set<OWLAxiom> axioms = Sets.newHashSet();
-                    axioms.addAll(ontology.getAnnotationAssertionAxioms(iri));
+                public Set<? extends OWLAxiom> visit(@Nonnull IRI iri) {
+                    Set<OWLAxiom> axioms = new HashSet<>(ontology.getAnnotationAssertionAxioms(iri));
                     for(OWLEntity entity : ontology.getEntitiesInSignature(iri, Imports.INCLUDED)) {
                         axioms.addAll(getDefiningAxioms(entity, ontology));
                     }

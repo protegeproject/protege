@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.view.ontology;
 
-import com.google.common.base.Optional;
 import org.protege.editor.core.ui.error.ErrorLogPanel;
 import org.protege.editor.core.ui.util.AugmentedJTextField;
 import org.protege.editor.core.ui.util.LinkLabel;
@@ -13,8 +12,8 @@ import org.protege.editor.owl.ui.ontology.annotation.OWLOntologyAnnotationList;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
 import org.semanticweb.owlapi.formats.PrefixDocumentFormat;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLOntologyChangeVisitorAdapter;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -25,6 +24,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.NumberFormat;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -260,9 +260,10 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
                 OWLOntologyID id = activeOntology.getOntologyID();
 
                 Optional<IRI> ontologyIRI = id.getOntologyIRI();
-                String ontologyIRIString = ontologyIRI.get().toString();
-                if (ontologyIRI.isPresent()) {
-                    if (!ontologyIRIField.getText().equals(ontologyIRIString)) {
+                String ontologyIRIString = null;
+                if(ontologyIRI.isPresent()) {
+                    ontologyIRIString = ontologyIRI.get().toString();
+                    if(!ontologyIRIField.getText().equals(ontologyIRIString)) {
                         ontologyIRIField.setText(ontologyIRIString);
                     }
                 }
@@ -316,11 +317,11 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
         }
         PrefixDocumentFormat prefixFormat = (PrefixDocumentFormat) format;
         Optional<IRI> currentOntologyIri = currentId.getOntologyIRI();
-        if(!currentOntologyIri.isPresent()) {
+        if(currentOntologyIri.isEmpty()) {
             return;
         }
         Optional<IRI> nextOntologyIri = nextId.getOntologyIRI();
-        if(!nextOntologyIri.isPresent()) {
+        if(nextOntologyIri.isEmpty()) {
             return;
         }
         String emptyPrefix = prefixFormat.getDefaultPrefix();
@@ -356,12 +357,12 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
             IRI ontologyIRI = IRI.create(ontURI);
             String versionIRIString = ontologyVersionIRIField.getText().trim();
             if (versionIRIString.isEmpty()) {
-                return new OWLOntologyID(Optional.of(ontologyIRI), Optional.<IRI>absent());
+                return new OWLOntologyID(ontologyIRI, null);
             }
 
             URI verURI = new URI(versionIRIString);
             IRI versionIRI = IRI.create(verURI);
-            return new OWLOntologyID(Optional.of(ontologyIRI), Optional.of(versionIRI));
+            return new OWLOntologyID(ontologyIRI, versionIRI);
         }
         catch (URISyntaxException e) {
             ontologyIRIField.setErrorMessage(e.getReason());
@@ -373,9 +374,9 @@ public class OWLOntologyAnnotationViewComponent extends AbstractOWLViewComponent
 
     private void handleOntologyChanges(List<? extends OWLOntologyChange> changes) {
         for (OWLOntologyChange change : changes) {
-            change.accept(new OWLOntologyChangeVisitorAdapter() {
+            change.accept(new OWLOntologyChangeVisitor() {
                 @Override
-                public void visit(SetOntologyID change) {
+                public void visit(@Nonnull SetOntologyID change) {
                     updateView();
                 }
             });
