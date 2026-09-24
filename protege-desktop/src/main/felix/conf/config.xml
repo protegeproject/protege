@@ -8,7 +8,7 @@
     <property name="org.protege.plugin.dir" value="plugins"/>
   </systemProperties>
   <frameworkProperties>
-    <property name="org.osgi.framework.bootdelegation" value="sun.*,com.sun.*,apple.*,com.apple.*"/>
+    <property name="org.osgi.framework.bootdelegation" value="sun.*,com.sun.*,apple.*,com.apple.*,javax.xml.*"/>
     <property name="org.osgi.framework.system.packages.extra" 
               value="javax.xml.parsers,org.xml.sax,org.xml.sax.ext,org.xml.sax.helpers"/>
     <property name="org.osgi.framework.storage.clean" 
@@ -50,4 +50,3 @@
   </bundles>
 
 </launch>
-
