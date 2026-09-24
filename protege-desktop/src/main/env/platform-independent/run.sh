@@ -32,7 +32,7 @@ $EFFECTIVE_JAVA_HOME/bin/java \
      -Dfile.encoding=UTF-8 \
      ${conf.extra.args} \
      --add-opens=java.desktop/sun.swing=ALL-UNNAMED \
-     -classpath bundles/guava.jar:bundles/logback-classic.jar:bundles/logback-core.jar:bundles/slf4j-api.jar:bundles/glassfish-corba-orb.jar:bundles/org.apache.felix.main.jar:bundles/maven-artifact.jar:bundles/protege-launcher.jar \
+     -classpath bundles/guava.jar:bundles/logback-classic.jar:bundles/logback-core.jar:bundles/slf4j-api.jar:bundles/org.apache.felix.main.jar:bundles/maven-artifact.jar:bundles/protege-launcher.jar \
      $CMD_OPTIONS $EXTRA_JVM_OPTIONS org.protege.osgi.framework.Launcher $1
 
 

@@ -117,11 +117,5 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- swrltab plugin requires -->
-		<dependency>
-		    <groupId>org.glassfish.corba</groupId>
-		    <artifactId>glassfish-corba-orb</artifactId>
-		</dependency>
-
 	</dependencies>
 </project>
