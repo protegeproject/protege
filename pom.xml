@@ -302,14 +302,6 @@
 				<version>1.6.5</version>
 				<scope>provided</scope>
 			</dependency>
-
-			<!-- swrltab plugin requires -->
-			<dependency>
-			    <groupId>org.glassfish.corba</groupId>
-			    <artifactId>glassfish-corba-orb</artifactId>
-			    <version>5.0.0</version>
-			</dependency>
-
 		</dependencies>
 	</dependencyManagement>
 
