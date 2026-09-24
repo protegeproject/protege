@@ -302,31 +302,7 @@
 				<version>1.6.5</version>
 				<scope>provided</scope>
 			</dependency>
-			
-			<dependency>
-				<groupId>jakarta.xml.bind</groupId>
-				<artifactId>jakarta.xml.bind-api</artifactId>
-				<version>4.0.2</version>
-			</dependency>
 
-			<dependency>
-				<groupId>com.sun.xml.bind</groupId>
-				<artifactId>jaxb-core</artifactId>
-				<version>2.3.0.1</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.sun.xml.bind</groupId>
-				<artifactId>jaxb-impl</artifactId>
-				<version>2.3.9</version>
-			</dependency>
-
-			<dependency>
-				<groupId>jakarta.activation</groupId>
-				<artifactId>jakarta.activation-api</artifactId>
-				<version>1.2.2</version>
-			</dependency>
-			
 			<!-- swrltab plugin requires -->
 			<dependency>
 			    <groupId>org.glassfish.corba</groupId>
