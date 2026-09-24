@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.search;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.find.OWLEntityFinderPreferences;
@@ -21,6 +20,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 

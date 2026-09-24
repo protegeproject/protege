@@ -1,12 +1,12 @@
 package org.protege.editor.owl.ui.action;
 
-import com.google.common.base.Optional;
 import org.protege.editor.owl.ui.ontology.OntologyIDJDialog;
 import org.semanticweb.owlapi.model.*;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -27,7 +27,7 @@ public class ChangeOntologyIRI extends ProtegeOWLAction {
 		}
 	}
 	
-    private List<OWLOntologyChange> getChanges(OWLOntology ontology, OWLOntologyID id) {
+    static List<OWLOntologyChange> getChanges(OWLOntology ontology, OWLOntologyID id) {
         List<OWLOntologyChange> changes = new ArrayList<>();
         OWLOntologyManager owlOntologyManager = ontology.getOWLOntologyManager();
         OWLDataFactory factory = owlOntologyManager.getOWLDataFactory();

@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.library;
 
-import com.google.common.base.Optional;
 import org.protege.editor.owl.model.repository.MasterOntologyIDExtractor;
 import org.protege.xmlcatalog.CatalogUtilities;
 import org.protege.xmlcatalog.XMLCatalog;
@@ -16,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Optional;
 
 
 public class EditUriAction extends AbstractAction {
