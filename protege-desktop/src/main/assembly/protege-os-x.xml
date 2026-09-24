@@ -33,10 +33,6 @@
                 <include>org.apache.servicemix.bundles:org.apache.servicemix.bundles.javax-inject:jar</include>
                 <include>org.eclipse.jgit:org.eclipse.jgit:jar</include>
                 <include>com.googlecode.javaewah:JavaEWAH:jar</include>
-                <include>javax.xml.bind:jaxb-api:jar</include>
-                <include>com.sun.xml.bind:jaxb-core:jar</include>
-                <include>com.sun.xml.bind:jaxb-impl:jar</include>
-                <include>jakarta.activation:jakarta.activation-api</include>
                 <!-- CORBA dependencies -->
                 <include>org.glassfish.corba:glassfish-corba-omgapi:jar</include>
                 <include>org.glassfish.external:management-api:jar</include>
