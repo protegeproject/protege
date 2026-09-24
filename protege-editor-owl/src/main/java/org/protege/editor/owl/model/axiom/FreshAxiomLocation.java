@@ -1,6 +1,6 @@
 package org.protege.editor.owl.model.axiom;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -44,6 +44,6 @@ public enum FreshAxiomLocation {
                 return Optional.of(location);
             }
         }
-        return Optional.absent();
+        return Optional.empty();
     }
 }
