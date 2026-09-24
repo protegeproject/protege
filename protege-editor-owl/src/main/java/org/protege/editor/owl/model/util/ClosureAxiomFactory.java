@@ -78,7 +78,7 @@ public class ClosureAxiomFactory extends ObjectSomeValuesFromFillerExtractor {
             return;
         }
         visitedClasses.add(cls);
-        // TODO: Optimize for stream operations
+        // TODO: Refactor this into a stream pipeline in a follow-up branch and pull request.
         for (OWLClassExpression superCls : EntitySearcher.getSuperClasses(cls, onts.stream()).collect(Collectors.toList())) {
             superCls.accept(this);
         }

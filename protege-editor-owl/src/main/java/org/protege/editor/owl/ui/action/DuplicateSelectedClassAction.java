@@ -118,7 +118,7 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
         }
 
         for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
-            // TODO: Optimize for stream call
+            // TODO: Refactor this into a stream pipeline in a follow-up branch and pull request.
             for (OWLAnnotationAssertionAxiom ax : EntitySearcher.getAnnotationAssertionAxioms(selectedClass, ont).collect(Collectors.toSet())){
                 final OWLAnnotation annot = ax.getAnnotation();
                 if (annotIRIs == null || !annotIRIs.contains(annot.getProperty().getIRI())){

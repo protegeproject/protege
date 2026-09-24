@@ -56,7 +56,7 @@ public class OWLMembersListViewComponent extends OWLIndividualListViewComponent 
         if (cls != null) {
             typeLabel.setText(getOWLModelManager().getRendering(cls));
             typeLabel.setIcon(getOWLWorkspace().getOWLIconProvider().getIcon(cls));
-            // TODO: Optimize for stream operations
+            // TODO: Refactor this into a stream pipeline in a follow-up branch and pull request.
             Collection<OWLIndividual> individuals = EntitySearcher.getIndividuals(cls, getOntologies().stream()).collect(Collectors.toList());
             for (OWLIndividual ind : individuals) {
                 if (!ind.isAnonymous()) {
@@ -82,7 +82,7 @@ public class OWLMembersListViewComponent extends OWLIndividualListViewComponent 
         Set<OWLOntology> importsClosure = activeOntology.getImportsClosure();
 
         for (OWLNamedIndividual individual : activeOntology.getIndividualsInSignature(Imports.INCLUDED)) {
-            // TODO: Optimize for stream operations
+            // TODO: Refactor this into a stream pipeline in a follow-up branch and pull request.
             Collection<OWLClassExpression> types = EntitySearcher.getTypes(individual, importsClosure.stream()).collect(Collectors.toList());
             if (types.size() == 0) {
                 untypedIndividuals.add(individual);

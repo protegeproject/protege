@@ -61,7 +61,7 @@ public class OWLClassAssertionSelectionModel implements Disposable {
 			individual = individual;
 			inferredOwlClassNeedsRecalculation = true;
 			OWLModelManager modelManager = editorKit.getOWLModelManager();
-			// TODO: Optimize for stream?
+			// TODO: Refactor this into a stream pipeline in a follow-up branch and pull request.
 			Collection<OWLClassExpression> types = EntitySearcher.getTypes(individual, modelManager.getActiveOntologies().stream()).collect(Collectors.toList());
 			if (!types.contains(owlClass)) {
 				owlClass = null;
