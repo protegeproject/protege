@@ -78,11 +78,14 @@ public class MacUIUtil {
         }
     }
 
+	/** Makes the native macOS file dialog offer directories instead of files. */
+	public static final String FILE_DIALOG_FOR_DIRECTORIES = "apple.awt.fileDialogForDirectories";
+
 	public static File chooseOSXFolder(Component parent, String title) {
 	    String prop = null;
 	    File file = null;
 	    try {
-	        prop = "apple.awt.fileDialogForDirectories";
+	        prop = FILE_DIALOG_FOR_DIRECTORIES;
 	        System.setProperty(prop, "true");
 	        file = UIUtil.openFile((Frame) SwingUtilities.getAncestorOfClass(Frame.class, parent),
 	                        title,
