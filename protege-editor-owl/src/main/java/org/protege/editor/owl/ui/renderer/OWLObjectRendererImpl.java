@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.renderer;
 
-import com.google.common.base.Optional;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterOWLSyntaxObjectRenderer;
 import org.semanticweb.owlapi.model.*;
@@ -13,6 +12,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Iterator;
+import java.util.Optional;
 
 import static org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntax.SUB_PROPERTY_OF;
 

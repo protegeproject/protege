@@ -5,13 +5,14 @@ package org.protege.owlapi.inference.orphan;
 
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLClassExpressionVisitor;
 import org.semanticweb.owlapi.model.OWLObjectIntersectionOf;
-import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 
+import javax.annotation.Nonnull;
 import java.util.HashSet;
 import java.util.Set;
 
-public class NamedClassExtractor extends OWLClassExpressionVisitorAdapter {
+public class NamedClassExtractor implements OWLClassExpressionVisitor {
 
     Set<OWLClass> result = new HashSet<>();
 
@@ -25,13 +26,13 @@ public class NamedClassExtractor extends OWLClassExpressionVisitorAdapter {
         return result;
     }
 
-
-    public void visit(OWLClass desc) {
+    @Override
+    public void visit(@Nonnull OWLClass desc) {
         result.add(desc);
     }
 
-
-    public void visit(OWLObjectIntersectionOf desc) {
+    @Override
+    public void visit(@Nonnull OWLObjectIntersectionOf desc) {
         for (OWLClassExpression op : desc.getOperands()) {
             op.accept(this);
         }

@@ -31,7 +31,7 @@ public class DLExpressivityMetric extends AbstractOWLMetric<String> {
     @Nonnull
     @Override
     protected String recomputeMetric() {
-        DLExpressivityChecker checker = new DLExpressivityChecker(getOntologies());
+        DLExpressivityChecker checker = new DLExpressivityChecker(getOntologies().collect(Collectors.toList()));
         Collection<Languages> dlLangs = checker.expressibleInLanguages();
         return dlLangs.stream()
                 .map(Enum::name)

@@ -21,24 +21,11 @@
                 <include>org.slf4j:slf4j-api:jar</include>
                 <include>org.slf4j:log4j-over-slf4j:jar</include>
                 <include>org.slf4j:jul-to-slf4j:jar</include>
+                <include>commons-codec:commons-codec:jar</include>
                 <include>commons-io:commons-io:jar</include>
                 <include>org.apache.servicemix.bundles:org.apache.servicemix.bundles.javax-inject:jar</include>
                 <include>org.eclipse.jgit:org.eclipse.jgit:jar</include>
                 <include>com.googlecode.javaewah:JavaEWAH:jar</include>
-                <include>javax.xml.bind:jaxb-api:jar</include>	
-                <include>com.sun.xml.bind:jaxb-core:jar</include>	
-                <include>com.sun.xml.bind:jaxb-impl:jar</include>	
-                <include>jakarta.activation:jakarta.activation-api</include>
-                <!-- CORBA dependencies -->
-                <include>org.glassfish.corba:glassfish-corba-omgapi:jar</include>
-                <include>org.glassfish.external:management-api:jar</include>
-                <include>org.glassfish.pfl:pfl-basic:jar</include>
-                <include>org.glassfish.pfl:pfl-tf:jar</include>
-                <include>org.glassfish.pfl:pfl-dynamic:jar</include>
-                <include>org.ow2.asm:asm:jar</include>
-                <include>org.ow2.asm:asm-util:jar</include>
-                <include>org.ow2.asm:asm-tree:jar</include>
-                <include>org.ow2.asm:asm-analysis:jar</include>
             </includes>
             <useStrictFiltering>true</useStrictFiltering>
             <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>

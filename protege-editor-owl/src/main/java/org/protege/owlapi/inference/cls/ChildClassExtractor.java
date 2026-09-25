@@ -2,7 +2,6 @@ package org.protege.owlapi.inference.cls;
 
 import com.google.common.collect.ImmutableSet;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -11,7 +10,7 @@ import java.util.*;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 
-public class ChildClassExtractor extends OWLAxiomVisitorAdapter {
+public class ChildClassExtractor implements OWLAxiomVisitor {
 
 
     private NamedConjunctChecker checker = new NamedConjunctChecker();
@@ -59,8 +58,8 @@ public class ChildClassExtractor extends OWLAxiomVisitorAdapter {
         return new ArrayList<>(results);
     }
 
-
-    public void visit(OWLSubClassOfAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLSubClassOfAxiom axiom) {
         if (axiom.getSubClass().isAnonymous()) {
             // Not in our results because we only want to return class names
             return;
@@ -88,8 +87,8 @@ public class ChildClassExtractor extends OWLAxiomVisitorAdapter {
         }
     }
 
-
-    public void visit(OWLEquivalentClassesAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLEquivalentClassesAxiom axiom) {
         // EquivalentClasses(A  And(B...))
         if (!namedClassInEquivalentAxiom(axiom)) {
             return;

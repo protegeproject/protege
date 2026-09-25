@@ -62,7 +62,8 @@ public class DeprecateSelectedEntityAction extends SelectedOWLEntityAction {
                                                                 wizard.getWizardState().getDeprecationProfile().get(),
                                                                 getOWLModelManager().getActiveOntologies(),
                                                                 new HomeOntologySupplier(),
-                                                                getOWLDataFactory());
+                                                                getOWLDataFactory(),
+                getOWLModelManager().getOWLOntologyManager());
         getOWLModelManager().applyChanges(deprecator.getChanges());
         long referenceCount = getOWLModelManager().getActiveOntology().getReferencingAxioms(selectedEntity, Imports.INCLUDED).stream()
                                                   .filter(OWLAxiom::isLogicalAxiom)

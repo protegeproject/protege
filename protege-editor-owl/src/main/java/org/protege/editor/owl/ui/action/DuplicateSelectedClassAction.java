@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.action;
 
-import com.google.common.base.Optional;
 import org.protege.editor.core.prefs.Preferences;
 import org.protege.editor.core.prefs.PreferencesManager;
 import org.protege.editor.core.ui.util.InputVerificationStatusChangedListener;
@@ -21,10 +20,9 @@ import org.semanticweb.owlapi.util.OWLObjectDuplicator;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -71,7 +69,7 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
         Map<IRI, IRI> replacementIRIMap = new HashMap<>();
         replacementIRIMap.put(selectedClass.getIRI(), set.getOWLEntity().getIRI());
         OWLModelManager mngr = getOWLModelManager();
-        OWLObjectDuplicator dup = new OWLObjectDuplicator(mngr.getOWLDataFactory(), replacementIRIMap);
+        OWLObjectDuplicator dup = new OWLObjectDuplicator(mngr.getOWLOntologyManager(), replacementIRIMap);
         List<OWLOntologyChange> changes = new ArrayList<>(set.getOntologyChanges());
 
         changes.addAll(duplicateClassAxioms(selectedClass, dup, prefs));
@@ -120,7 +118,8 @@ public class DuplicateSelectedClassAction extends SelectedOWLClassAction {
         }
 
         for (OWLOntology ont : getOWLModelManager().getActiveOntologies()) {
-            for (OWLAnnotationAssertionAxiom ax : EntitySearcher.getAnnotationAssertionAxioms(selectedClass, ont)){
+            // TODO: Refactor this into a stream pipeline in a follow-up branch and pull request.
+            for (OWLAnnotationAssertionAxiom ax : EntitySearcher.getAnnotationAssertionAxioms(selectedClass, ont).collect(Collectors.toSet())){
                 final OWLAnnotation annot = ax.getAnnotation();
                 if (annotIRIs == null || !annotIRIs.contains(annot.getProperty().getIRI())){
                     Optional<OWLLiteral> literal = annot.getValue().asLiteral();

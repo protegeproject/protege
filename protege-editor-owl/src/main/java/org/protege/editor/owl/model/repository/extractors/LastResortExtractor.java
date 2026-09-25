@@ -1,6 +1,5 @@
 package org.protege.editor.owl.model.repository.extractors;
 
-import com.google.common.base.Optional;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -10,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
+import java.util.Optional;
 
 public class LastResortExtractor implements OntologyIdExtractor {
 
@@ -23,7 +23,7 @@ public class LastResortExtractor implements OntologyIdExtractor {
         }
         catch (Throwable t) {
             log.info("Exception caught trying to get ontology id for " + location, t);
-            return null;
+            return Optional.empty();
         }
     }
 }

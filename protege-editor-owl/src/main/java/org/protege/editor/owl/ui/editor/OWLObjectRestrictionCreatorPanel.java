@@ -5,8 +5,8 @@ import org.protege.editor.owl.ui.selector.AbstractSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLClassSelectorPanel;
 import org.protege.editor.owl.ui.selector.OWLObjectPropertySelectorPanel;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -115,7 +115,7 @@ public class OWLObjectRestrictionCreatorPanel extends AbstractRestrictionCreator
         return false;
     }
 
-    class AcceptableExpressionFilter extends OWLClassExpressionVisitorAdapter {
+    class AcceptableExpressionFilter implements OWLClassExpressionVisitor {
         private boolean isAcceptable = false;
         private OWLObjectProperty p;
         private OWLClass f;
@@ -130,29 +130,34 @@ public class OWLObjectRestrictionCreatorPanel extends AbstractRestrictionCreator
             }
         }
 
-        public void visit(OWLObjectSomeValuesFrom r) {
+        @Override
+        public void visit(@Nonnull OWLObjectSomeValuesFrom r) {
             t = some;
             handleRestriction(r);
         }
 
-        public void visit(OWLObjectAllValuesFrom r) {
+        @Override
+        public void visit(@Nonnull OWLObjectAllValuesFrom r) {
             t = only;
             handleRestriction(r);
         }
 
-        public void visit(OWLObjectMinCardinality r) {
+        @Override
+        public void visit(@Nonnull OWLObjectMinCardinality r) {
             t = min;
             cardinality = r.getCardinality();
             handleRestriction(r);
         }
 
-        public void visit(OWLObjectExactCardinality r) {
+        @Override
+        public void visit(@Nonnull OWLObjectExactCardinality r) {
             t = exactly;
             cardinality = r.getCardinality();
             handleRestriction(r);
         }
 
-        public void visit(OWLObjectMaxCardinality r) {
+        @Override
+        public void visit(@Nonnull OWLObjectMaxCardinality r) {
             t = max;
             cardinality = r.getCardinality();
             handleRestriction(r);

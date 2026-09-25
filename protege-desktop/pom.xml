@@ -56,6 +56,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.21.0</version>
+		</dependency>
+
+		<dependency>
 			<groupId>edu.stanford.protege</groupId>
 			<artifactId>jre.os-x</artifactId>
 			<version>11.0.25_9</version>

@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.library.plugins;
 
-import com.google.common.base.Optional;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.model.repository.MasterOntologyIDExtractor;
 import org.protege.editor.owl.ui.UIHelper;
@@ -18,6 +17,7 @@ import java.awt.*;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 

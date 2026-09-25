@@ -7,6 +7,8 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.util.ShortFormProvider;
 
+import javax.annotation.Nonnull;
+
 /**
  * Author: Damien Goutte-Gattat<br>
  * German BioImaging e.V.<br>
@@ -30,15 +32,15 @@ public class PrefixAwareShortFormProvider implements ShortFormProvider {
     }
 
     @Override
-    public String getShortForm(OWLEntity entity) {
+    public String getShortForm(@Nonnull OWLEntity entity) {
         if (renderer == null) {
             PrefixedNameRenderer.Builder builder = PrefixedNameRenderer.builder();
             builder.withOwlPrefixes().withWellKnownPrefixes();
             if (manager != null) {
                 for (OWLOntology ontology : manager.getOntologies()) {
                     OWLDocumentFormat f = ontology.getOWLOntologyManager().getOntologyFormat(ontology);
-                    if (f.isPrefixOWLOntologyFormat()) {
-                        f.asPrefixOWLOntologyFormat().getPrefixName2PrefixMap().forEach(builder::withPrefix);
+                    if (f != null && f.isPrefixOWLDocumentFormat()) {
+                        f.asPrefixOWLDocumentFormat().getPrefixName2PrefixMap().forEach(builder::withPrefix);
                     }
                 }
             }

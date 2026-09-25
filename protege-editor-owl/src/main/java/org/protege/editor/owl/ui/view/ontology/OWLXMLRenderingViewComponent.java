@@ -3,6 +3,7 @@ package org.protege.editor.owl.ui.view.ontology;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.owlxml.renderer.OWLXMLRenderer;
 
+import java.io.PrintWriter;
 import java.io.Writer;
 
 
@@ -17,6 +18,6 @@ public class OWLXMLRenderingViewComponent extends AbstractOntologyRenderingViewC
 
     protected void renderOntology(OWLOntology ontology, Writer writer) throws Exception {
         OWLXMLRenderer renderer = new OWLXMLRenderer();
-        renderer.render(ontology, writer);
+        renderer.render(ontology, new PrintWriter(writer));
     }
 }

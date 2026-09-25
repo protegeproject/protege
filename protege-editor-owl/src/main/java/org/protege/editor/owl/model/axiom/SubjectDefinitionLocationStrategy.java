@@ -1,12 +1,12 @@
 package org.protege.editor.owl.model.axiom;
 
-import com.google.common.base.Optional;
 import org.protege.editor.owl.model.HasActiveOntology;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -32,7 +32,7 @@ public class SubjectDefinitionLocationStrategy implements FreshAxiomLocationStra
     @Override
     public OWLOntology getFreshAxiomLocation(OWLAxiom axiom, HasActiveOntology hasActiveOntology) {
         Optional<OWLObject> subject = axiomSubjectProvider.getAxiomSubject(axiom);
-        if(!subject.isPresent()) {
+        if(subject.isEmpty()) {
             return getDefaultLocation(hasActiveOntology);
         }
         return getDefiningImportsClosureRootOntology(hasActiveOntology, subject.get());

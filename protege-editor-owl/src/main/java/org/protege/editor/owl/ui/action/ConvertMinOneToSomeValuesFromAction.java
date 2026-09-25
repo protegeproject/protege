@@ -1,7 +1,9 @@
 package org.protege.editor.owl.ui.action;
 
+import org.semanticweb.owlapi.change.AddAxiomData;
+import org.semanticweb.owlapi.change.AxiomChangeData;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLObjectDuplicator;
+import org.semanticweb.owlapi.util.OWLObjectTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,37 +54,54 @@ public class ConvertMinOneToSomeValuesFromAction extends ProtegeOWLAction {
     }
 
     /**
-     * A variant of the duplicator that changes qualified MinCardi1
-     * restrictions into someValueFrom restrictions
+     * Replaces qualified minimum-cardinality-one restrictions with
+     * existential restrictions.
      */
-    class MinCardiOneReplacer extends OWLObjectDuplicator{
+    class MinCardiOneReplacer {
 
-        public MinCardiOneReplacer(OWLDataFactory owlDataFactory) {
-            super(owlDataFactory);
+        private final OWLDataFactory dataFactory;
+
+        private final OWLObjectTransformer<OWLClassExpression> transformer;
+
+        public MinCardiOneReplacer(OWLDataFactory dataFactory) {
+            this.dataFactory = dataFactory;
+            transformer = new OWLObjectTransformer<>(
+                    object -> true,
+                    this::replace,
+                    dataFactory,
+                    OWLClassExpression.class);
         }
 
-
-        public void visit(OWLObjectMinCardinality min) {
-            if (min.getCardinality() == 1 && min.isQualified()){
-                OWLObjectSomeValuesFrom someValuesFrom =
-                        getOWLDataFactory().getOWLObjectSomeValuesFrom(min.getProperty(), min.getFiller());
-                visit(someValuesFrom);
-            }
-            else{
-                super.visit(min);
+        public OWLAxiom duplicateObject(OWLAxiom axiom) {
+            OWLAxiom result = axiom;
+            while (true) {
+                List<AxiomChangeData> changes = transformer.change(result);
+                OWLAxiom replacement = changes.stream()
+                        .filter(AddAxiomData.class::isInstance)
+                        .map(AxiomChangeData::getAxiom)
+                        .findFirst()
+                        .orElse(null);
+                if (replacement == null) {
+                    return result;
+                }
+                result = replacement;
             }
         }
 
-
-        public void visit(OWLDataMinCardinality min) {
-            if (min.getCardinality() == 1 && min.isQualified()){
-                OWLDataSomeValuesFrom someValuesFrom =
-                        getOWLDataFactory().getOWLDataSomeValuesFrom(min.getProperty(), min.getFiller());
-                visit(someValuesFrom);
+        private OWLClassExpression replace(OWLClassExpression expression) {
+            if (expression instanceof OWLObjectMinCardinality) {
+                OWLObjectMinCardinality min = (OWLObjectMinCardinality) expression;
+                if (min.getCardinality() == 1 && min.isQualified()) {
+                    return dataFactory.getOWLObjectSomeValuesFrom(min.getProperty(), min.getFiller());
+                }
             }
-            else{
-                super.visit(min);
+            else if (expression instanceof OWLDataMinCardinality) {
+                OWLDataMinCardinality min = (OWLDataMinCardinality) expression;
+                if (min.getCardinality() == 1 && min.isQualified()) {
+                    return dataFactory.getOWLDataSomeValuesFrom(min.getProperty(), min.getFiller());
+                }
             }
+            return expression;
         }
     }
 }

@@ -6,7 +6,6 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimaps;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.search.EntitySearcher;
-import org.semanticweb.owlapi.util.OWLDataVisitorExAdapter;
 import org.semanticweb.owlapi.vocab.OWLFacet;
 
 import javax.annotation.Nonnull;
@@ -66,10 +65,16 @@ public class IdRangesPolicyParser {
     private static OWLDatatypeRestriction parseIdRangeDatatypeRestriction(OWLDatatypeDefinitionAxiom axiom) {
         return axiom
                 .getDataRange()
-                .accept(new OWLDataVisitorExAdapter<Optional<OWLDatatypeRestriction>>(Optional.empty()) {
+                .accept(new OWLDataVisitorEx<Optional<OWLDatatypeRestriction>>() {
+
+                    @Override
+                    public <T> Optional<OWLDatatypeRestriction> doDefault(@Nonnull T object) {
+                        return Optional.empty();
+                    }
+
                     @Nonnull
                     @Override
-                    public Optional<OWLDatatypeRestriction> visit(OWLDatatypeRestriction node) {
+                    public Optional<OWLDatatypeRestriction> visit(@Nonnull OWLDatatypeRestriction node) {
                         return Optional.of(node);
                     }
                 })
@@ -173,7 +178,7 @@ public class IdRangesPolicyParser {
     }
 
     private boolean hasAllocatedToAnnotation(@Nonnull OWLDatatype datatype) {
-        return !EntitySearcher.getAnnotationObjects(datatype, ontology, getAllocatedToProperty()).isEmpty();
+        return !EntitySearcher.getAnnotationObjects(datatype, ontology, getAllocatedToProperty()).findFirst().isEmpty();
     }
 
     @Nonnull
@@ -191,7 +196,7 @@ public class IdRangesPolicyParser {
 
     private Optional<String> findFirstLexicalValue(OWLDatatype datatype,
                                                    OWLAnnotationProperty property) {
-        Collection<OWLAnnotation> allocatedToValues = EntitySearcher.getAnnotationObjects(datatype, ontology, property);
+        Collection<OWLAnnotation> allocatedToValues = EntitySearcher.getAnnotationObjects(datatype, ontology, property).collect(Collectors.toList());
         return allocatedToValues
                 .stream()
                 .map(OWLAnnotation::getValue)

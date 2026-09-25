@@ -1,6 +1,5 @@
 package org.protege.editor.owl.model.repository;
 
-import com.google.common.base.Optional;
 import org.protege.editor.owl.model.repository.extractors.LastResortExtractor;
 import org.protege.editor.owl.model.repository.extractors.OntologyIdExtractor;
 import org.protege.editor.owl.model.repository.extractors.RdfXmlExtractor;
@@ -9,6 +8,7 @@ import org.semanticweb.owlapi.model.OWLOntologyID;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class MasterOntologyIDExtractor implements OntologyIdExtractor {
     
@@ -21,7 +21,7 @@ public class MasterOntologyIDExtractor implements OntologyIdExtractor {
     }
 
     public Optional<OWLOntologyID> getOntologyId(URI location) {
-        Optional<OWLOntologyID> id = Optional.absent();
+        Optional<OWLOntologyID> id = Optional.empty();
         for (OntologyIdExtractor extractor : extractors) {
             id = extractor.getOntologyId(location);
             if (id.isPresent()) {

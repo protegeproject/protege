@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model.util;
 
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLClassExpressionVisitorAdapter;
 
+import javax.annotation.Nonnull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,7 +24,7 @@ import java.util.Set;
  * out, so any restrictions that are contained as one of their operands
  * are also visited.
  */
-public class RestrictedPropertyExtractor extends OWLClassExpressionVisitorAdapter {
+public class RestrictedPropertyExtractor implements OWLClassExpressionVisitor {
 
     private Set<OWLPropertyExpression> properties;
 
@@ -44,86 +44,87 @@ public class RestrictedPropertyExtractor extends OWLClassExpressionVisitorAdapte
     }
 
 
-    public void visit(OWLObjectIntersectionOf node) {
+    @Override
+    public void visit(@Nonnull OWLObjectIntersectionOf node) {
         for (OWLClassExpression desc : node.getOperands()) {
             desc.accept(this);
         }
     }
 
-
-    public void visit(OWLObjectComplementOf node) {
+    @Override
+    public void visit(@Nonnull OWLObjectComplementOf node) {
         node.getOperand().accept(this);
     }
 
-
-    public void visit(OWLObjectUnionOf node) {
+    @Override
+    public void visit(@Nonnull OWLObjectUnionOf node) {
         for (OWLClassExpression desc : node.getOperands()) {
             desc.accept(this);
         }
     }
 
-
-    public void visit(OWLDataAllValuesFrom node) {
+    @Override
+    public void visit(@Nonnull OWLDataAllValuesFrom node) {
         properties.add(node.getProperty());
     }
 
-
-    public void visit(OWLDataSomeValuesFrom node) {
+    @Override
+    public void visit(@Nonnull OWLDataSomeValuesFrom node) {
         properties.add(node.getProperty());
     }
 
-
-    public void visit(OWLDataHasValue node) {
+    @Override
+    public void visit(@Nonnull OWLDataHasValue node) {
         properties.add(node.getProperty());
     }
 
-
-    public void visit(OWLObjectAllValuesFrom node) {
+    @Override
+    public void visit(@Nonnull OWLObjectAllValuesFrom node) {
         properties.add(node.getProperty());
     }
 
-
-    public void visit(OWLObjectSomeValuesFrom node) {
+    @Override
+    public void visit(@Nonnull OWLObjectSomeValuesFrom node) {
         properties.add(node.getProperty());
     }
 
-
-    public void visit(OWLObjectHasValue node) {
+    @Override
+    public void visit(@Nonnull OWLObjectHasValue node) {
         properties.add(node.getProperty());
     }
 
-
-    public void visit(OWLObjectMinCardinality node) {
+    @Override
+    public void visit(@Nonnull OWLObjectMinCardinality node) {
         properties.add(node.getProperty());
     }
 
-
-    public void visit(OWLObjectExactCardinality node) {
+    @Override
+    public void visit(@Nonnull OWLObjectExactCardinality node) {
         properties.add(node.getProperty());
     }
 
-
-    public void visit(OWLObjectMaxCardinality node) {
+    @Override
+    public void visit(@Nonnull OWLObjectMaxCardinality node) {
         properties.add(node.getProperty());
     }
 
-
-    public void visit(OWLObjectHasSelf node) {
+    @Override
+    public void visit(@Nonnull OWLObjectHasSelf node) {
         properties.add(node.getProperty());
     }
 
-
-    public void visit(OWLDataMinCardinality node) {
+    @Override
+    public void visit(@Nonnull OWLDataMinCardinality node) {
         properties.add(node.getProperty());
     }
 
-
-    public void visit(OWLDataExactCardinality node) {
+    @Override
+    public void visit(@Nonnull OWLDataExactCardinality node) {
         properties.add(node.getProperty());
     }
 
-
-    public void visit(OWLDataMaxCardinality node) {
+    @Override
+    public void visit(@Nonnull OWLDataMaxCardinality node) {
         properties.add(node.getProperty());
     }
 }

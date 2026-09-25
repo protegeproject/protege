@@ -1,6 +1,5 @@
 package org.protege.editor.owl.model.refactor.ontology;
 
-import com.google.common.base.Optional;
 import org.protege.editor.core.Disposable;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.entity.CustomOWLEntityFactory;
@@ -8,6 +7,8 @@ import org.protege.editor.owl.model.entity.OWLEntityCreationException;
 import org.protege.editor.owl.model.entity.OWLEntityFactory;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
+
+import java.util.Optional;
 /*
 * Copyright (C) 2007, University of Manchester
 *

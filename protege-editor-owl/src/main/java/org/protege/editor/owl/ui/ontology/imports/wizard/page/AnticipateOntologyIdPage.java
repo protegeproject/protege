@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard.page;
 
-import com.google.common.base.Optional;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.library.folder.XmlBaseAlgorithm;
@@ -18,6 +17,7 @@ import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**

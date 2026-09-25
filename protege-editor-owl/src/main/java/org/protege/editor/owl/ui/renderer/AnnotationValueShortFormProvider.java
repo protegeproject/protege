@@ -8,15 +8,7 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
-import org.semanticweb.owlapi.model.OWLAnnotationProperty;
-import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLLiteral;
-import org.semanticweb.owlapi.model.OWLObject;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologySetProvider;
+import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.util.*;
 
 /**
@@ -203,8 +195,7 @@ public class AnnotationValueShortFormProvider implements ShortFormProvider {
     @Override
     public void dispose() {}
 
-    private static class AnnotationLanguageFilter extends
-            OWLObjectVisitorAdapter {
+    private static class AnnotationLanguageFilter implements OWLObjectVisitor {
 
         private final OWLAnnotationProperty prop;
         private final List<String> preferredLanguages;
@@ -247,7 +238,7 @@ public class AnnotationValueShortFormProvider implements ShortFormProvider {
         }
 
         @Override
-        public void visit(IRI iri) {
+        public void visit(@Nonnull IRI iri) {
             // No language
             candidateValue = iri;
         }

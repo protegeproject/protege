@@ -1,6 +1,5 @@
 package org.protege.editor.owl;
 
-import com.google.common.base.Optional;
 import org.osgi.framework.ServiceRegistration;
 import org.protege.editor.core.BookMarkedURIManager;
 import org.protege.editor.core.Disposable;
@@ -207,7 +206,7 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
      */
     @Nonnull
     private OWLOntologyID createDefaultOntologyId() {
-        return new OWLOntologyID(Optional.of(createFreshOntologyIRI()), Optional.<IRI>absent());
+        return new OWLOntologyID(createFreshOntologyIRI(), null);
     }
 
     /**
@@ -232,12 +231,12 @@ public class OWLEditorKit extends AbstractEditorKit<OWLEditorKitFactory> {
     }
 
     private static RDFXMLDocumentFormat createDefaultDocumentFormat(OWLOntologyID id) {
-        return id.getOntologyIRI().transform(iri -> {
-                String emptyPrefix = iri.toString() + "/";
+        return id.getOntologyIRI().map(iri -> {
+                String emptyPrefix = iri + "/";
                 RDFXMLDocumentFormat f = new RDFXMLDocumentFormat();
                 f.setDefaultPrefix(emptyPrefix);
                 return f;
-            }).or(new RDFXMLDocumentFormat());
+            }).orElse(new RDFXMLDocumentFormat());
     }
 
     @Override

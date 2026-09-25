@@ -1,10 +1,10 @@
 package org.protege.editor.owl.ui.ontology.imports.wizard;
 
-import com.google.common.base.Optional;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 
 import java.net.URI;
+import java.util.Optional;
 
 
 /**

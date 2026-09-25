@@ -45,7 +45,7 @@ public class DocumentFormatMapper_TestCase {
         String thePrefix = "ThePrefix";
         format.setPrefix(prefixName, thePrefix);
         OWLDocumentFormat mappedFormat = mapper.mapFormat(format);
-        assertThat(mappedFormat.asPrefixOWLOntologyFormat().getPrefix(prefixName), is(thePrefix));
+        assertThat(mappedFormat.asPrefixOWLDocumentFormat().getPrefix(prefixName), is(thePrefix));
     }
 
     @Test

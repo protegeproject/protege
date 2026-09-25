@@ -1,8 +1,8 @@
 package org.protege.editor.owl.model.util;
 
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -38,39 +38,44 @@ public class OWLObjectRemover {
 
 
     private List<OWLOntologyChange> getChangesToRemoveObject(OWLObject object, final OWLOntology ontology) {
-        return object.accept(new OWLObjectVisitorExAdapter<List<OWLOntologyChange>>(Collections.emptyList()) {
+        return object.accept(new OWLObjectVisitorEx<List<OWLOntologyChange>>() {
             @Override
-            public List<OWLOntologyChange> visit(OWLDatatype datatype) {
+            public <T> List<OWLOntologyChange> doDefault(@Nonnull T object) {
+                return Collections.emptyList();
+            }
+
+            @Override
+            public List<OWLOntologyChange> visit(@Nonnull OWLDatatype datatype) {
                 return getChangesForEntity(datatype, ontology);
             }
 
             @Override
-            public List<OWLOntologyChange> visit(OWLDataProperty property) {
+            public List<OWLOntologyChange> visit(@Nonnull OWLDataProperty property) {
                 return getChangesForEntity(property, ontology);
             }
 
             @Override
-            public List<OWLOntologyChange> visit(OWLObjectProperty property) {
+            public List<OWLOntologyChange> visit(@Nonnull OWLObjectProperty property) {
                 return getChangesForEntity(property, ontology);
             }
 
             @Override
-            public List<OWLOntologyChange> visit(OWLNamedIndividual individual) {
+            public List<OWLOntologyChange> visit(@Nonnull OWLNamedIndividual individual) {
                 return getChangesForEntity(individual, ontology);
             }
 
             @Override
-            public List<OWLOntologyChange> visit(OWLClass desc) {
+            public List<OWLOntologyChange> visit(@Nonnull OWLClass desc) {
                 return getChangesForEntity(desc, ontology);
             }
 
             @Override
-            public List<OWLOntologyChange> visit(OWLAnonymousIndividual individual) {
+            public List<OWLOntologyChange> visit(@Nonnull OWLAnonymousIndividual individual) {
                 return getChangesForAnonymousIndividual(individual, ontology);
             }
 
             @Override
-            public List<OWLOntologyChange> visit(OWLAnnotationProperty property) {
+            public List<OWLOntologyChange> visit(@Nonnull OWLAnnotationProperty property) {
                 List<OWLOntologyChange> changes = getChangesForEntity(property, ontology);
                 changes.addAll(getChangesForOntologyAnnotations(property, ontology));
                 return changes;

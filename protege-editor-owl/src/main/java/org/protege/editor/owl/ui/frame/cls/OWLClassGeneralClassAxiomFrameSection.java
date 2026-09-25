@@ -8,8 +8,8 @@ import org.protege.editor.owl.ui.frame.AbstractOWLFrameSection;
 import org.protege.editor.owl.ui.frame.OWLFrame;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLAxiomVisitorExAdapter;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -99,20 +99,25 @@ public class OWLClassGeneralClassAxiomFrameSection extends AbstractOWLFrameSecti
             return false;
         }
         OWLAxiom axiom = change.getAxiom();
-        return axiom.accept(new OWLAxiomVisitorExAdapter<Boolean>(false) {
+        return axiom.accept(new OWLAxiomVisitorEx<Boolean>() {
 
             @Override
-            public Boolean visit(OWLSubClassOfAxiom axiom) {
+            public <T> Boolean doDefault(@Nonnull T object) {
+                return false;
+            }
+
+            @Override
+            public Boolean visit(@Nonnull OWLSubClassOfAxiom axiom) {
                 return axiom.isGCI();
             }
 
             @Override
-            public Boolean visit(OWLEquivalentClassesAxiom axiom) {
+            public Boolean visit(@Nonnull OWLEquivalentClassesAxiom axiom) {
                 return !axiom.contains(getRootObject());
             }
 
             @Override
-            public Boolean visit(OWLDisjointClassesAxiom axiom) {
+            public Boolean visit(@Nonnull OWLDisjointClassesAxiom axiom) {
                 return !axiom.contains(getRootObject());
             }
         });

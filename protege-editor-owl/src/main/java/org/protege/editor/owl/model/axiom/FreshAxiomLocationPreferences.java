@@ -33,7 +33,7 @@ public class FreshAxiomLocationPreferences {
         if(locationName == null) {
             return FreshAxiomLocation.getDefaultValue();
         }
-        return FreshAxiomLocation.getLocationFromName(locationName).or(FreshAxiomLocation.getDefaultValue());
+        return FreshAxiomLocation.getLocationFromName(locationName).orElse(FreshAxiomLocation.getDefaultValue());
     }
 
     public static synchronized FreshAxiomLocationPreferences getPreferences() {

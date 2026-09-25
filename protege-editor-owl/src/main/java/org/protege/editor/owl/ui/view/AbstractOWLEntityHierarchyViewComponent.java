@@ -160,7 +160,7 @@ public abstract class AbstractOWLEntityHierarchyViewComponent<E extends OWLEntit
 
         hierarchyDeleter = new OWLObjectHierarchyDeleter<>(getOWLEditorKit(),
                                                            getHierarchyProvider(),
-                                                           () -> new HashSet<>(assertedTree.getSelectedOWLObjects()),
+                                                           () -> new HashSet<>(assertedTree.getSelectedOWLObjects()).stream(),
                                                            getCollectiveTypeName());
         listener = e -> transmitSelection();
         assertedTree.addTreeSelectionListener(listener);

@@ -102,7 +102,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
         }
 
         // standard annotation properties        
-        for (IRI uri : OWLRDFVocabulary.BUILT_IN_ANNOTATION_PROPERTY_IRIS){
+        for (IRI uri : OWLRDFVocabulary.BUILT_IN_AP_IRIS){
             addRendering(factory.getOWLAnnotationProperty(uri), owlAnnotationPropertyMap);
         }
 
@@ -367,7 +367,7 @@ public class OWLEntityRenderingCacheImpl implements OWLEntityRenderingCache {
         int refCount = activeOntology
                 .getReferencingAxioms(entity, Imports.EXCLUDED)
                 .size();
-        int defCount = EntitySearcher.getReferencingAxioms(entity, activeOntology).size();
+        int defCount = (int) EntitySearcher.getReferencingAxioms(entity, activeOntology).count();
         return new DefRefCount<>(entity, defCount, refCount);
     }
 

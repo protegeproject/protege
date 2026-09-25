@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.search;
 
-import com.google.common.base.Optional;
 import org.protege.editor.core.ui.util.ComponentFactory;
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLEditorKitOntologyShortFormProvider;
@@ -26,6 +25,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -115,9 +115,7 @@ public class SearchResultsPanel extends JPanel {
     private void handleMouseReleased(MouseEvent e) {
         if (e.getClickCount() == 2) {
             Optional<SearchResult> selectedSearchResult = getSelectedSearchResult();
-            if (selectedSearchResult.isPresent()) {
-                searchResultClickedListener.handleSearchResultClicked(selectedSearchResult.get(), e);
-            }
+            selectedSearchResult.ifPresent(searchResult -> searchResultClickedListener.handleSearchResultClicked(searchResult, e));
         }
     }
 
@@ -150,7 +148,7 @@ public class SearchResultsPanel extends JPanel {
     public Optional<SearchResult> getSelectedSearchResult() {
         int selRow = resultsTable.getSelectedRow();
         if (selRow == -1) {
-            return Optional.absent();
+            return Optional.empty();
         }
         return Optional.of(model.getSearchResult(selRow));
     }
@@ -173,7 +171,7 @@ public class SearchResultsPanel extends JPanel {
             return Optional.of((OWLEntity) object);
         }
         else {
-            return Optional.absent();
+            return Optional.empty();
         }
     }
 
@@ -184,7 +182,7 @@ public class SearchResultsPanel extends JPanel {
     public Optional<OWLEntity> getSelectedEntity() {
         int selRow = resultsTable.getSelectedRow();
         if (selRow == -1) {
-            return Optional.absent();
+            return Optional.empty();
         }
         return getEntityAtRow(selRow);
     }

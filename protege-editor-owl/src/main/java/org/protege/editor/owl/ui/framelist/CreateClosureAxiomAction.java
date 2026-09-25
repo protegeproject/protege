@@ -3,8 +3,8 @@ package org.protege.editor.owl.ui.framelist;
 import org.protege.editor.owl.model.util.ClosureAxiomFactory;
 import org.protege.editor.owl.ui.frame.OWLFrameSectionRow;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLObjectVisitorAdapter;
 
+import javax.annotation.Nonnull;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -80,7 +80,7 @@ public class CreateClosureAxiomAction extends OWLFrameListPopupMenuAction<OWLCla
     /**
      * Gets the properties of some, min and exact restrictions from super or equivalent class axioms
      */
-    class ClosureSourceIdentifier extends OWLObjectVisitorAdapter {
+    class ClosureSourceIdentifier implements OWLObjectVisitor {
 
         private final Set<OWLObjectProperty> propertiesToClose = new HashSet<>();
 
@@ -92,15 +92,16 @@ public class CreateClosureAxiomAction extends OWLFrameListPopupMenuAction<OWLCla
         }
 
 
-        public void visit(OWLSubClassOfAxiom owlSubClassAxiom) {
+        @Override
+        public void visit(@Nonnull OWLSubClassOfAxiom owlSubClassAxiom) {
             if (!visited.contains(owlSubClassAxiom)){
                 visited.add(owlSubClassAxiom);
                 owlSubClassAxiom.getSuperClass().accept(this);
             }
         }
 
-
-        public void visit(OWLEquivalentClassesAxiom owlEquivalentClassesAxiom) {
+        @Override
+        public void visit(@Nonnull OWLEquivalentClassesAxiom owlEquivalentClassesAxiom) {
             if (!visited.contains(owlEquivalentClassesAxiom)){
                 visited.add(owlEquivalentClassesAxiom);
                 for (OWLClassExpression op : owlEquivalentClassesAxiom.getClassExpressions()){
@@ -109,31 +110,35 @@ public class CreateClosureAxiomAction extends OWLFrameListPopupMenuAction<OWLCla
             }
         }
 
-
-        public void visit(OWLObjectIntersectionOf owlObjectIntersectionOf) {
+        @Override
+        public void visit(@Nonnull OWLObjectIntersectionOf owlObjectIntersectionOf) {
             for (OWLClassExpression op : owlObjectIntersectionOf.getOperands()){
                 op.accept(this);
             }
         }
 
-
-        public void visit(OWLObjectSomeValuesFrom restr) {
+        @Override
+        public void visit(@Nonnull OWLObjectSomeValuesFrom restr) {
             restr.getProperty().accept(this);
         }
 
-        public void visit(OWLObjectMinCardinality restr) {
+        @Override
+        public void visit(@Nonnull OWLObjectMinCardinality restr) {
             restr.getProperty().accept(this);
         }
 
-        public void visit(OWLObjectExactCardinality restr) {
+        @Override
+        public void visit(@Nonnull OWLObjectExactCardinality restr) {
             restr.getProperty().accept(this);
         }
 
-        public void visit(OWLObjectHasValue restr) {
+        @Override
+        public void visit(@Nonnull OWLObjectHasValue restr) {
             restr.getProperty().accept(this);
         }
 
-        public void visit(OWLObjectProperty owlObjectProperty) {
+        @Override
+        public void visit(@Nonnull OWLObjectProperty owlObjectProperty) {
             propertiesToClose.add(owlObjectProperty);
         }
     }

@@ -1,7 +1,5 @@
 package org.protege.editor.owl.ui.renderer;
 
-import com.google.common.base.Optional;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.protege.editor.owl.model.OWLModelManager;
 import org.semanticweb.owlapi.model.IRI;
@@ -19,6 +17,7 @@ import javax.swing.JList;
 import java.awt.Component;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 /*
  * Copyright (C) 2007, University of Manchester
  *

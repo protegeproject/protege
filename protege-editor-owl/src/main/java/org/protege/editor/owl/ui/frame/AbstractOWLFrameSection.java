@@ -13,10 +13,10 @@ import org.protege.editor.owl.ui.editor.OWLObjectEditorHandler;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
-import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 
 
@@ -28,8 +28,8 @@ import java.util.*;
  *
  * The visitor methods can be overriden to be notified when an axiom is added or removed
  */
-public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxiom, E> extends OWLAxiomVisitorAdapter 
-        implements OWLFrameSection<R, A, E>, OWLObjectEditorHandler<E> {
+public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxiom, E> implements OWLAxiomVisitor,
+        OWLFrameSection<R, A, E>, OWLObjectEditorHandler<E> {
 
 	private final Logger logger = LoggerFactory.getLogger(AbstractOWLFrameSection.class);
 
@@ -394,7 +394,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
      * method is not efficient.
      */
     @Deprecated
-    public void visit(OWLDeclarationAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLDeclarationAxiom axiom) {
     }
 
     /**
@@ -403,7 +404,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
      * method is not efficient.
      */
     @Deprecated
-    public void visit(OWLSubClassOfAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLSubClassOfAxiom axiom) {
     }
 
     /**
@@ -412,7 +414,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
      * method is not efficient.
      */
     @Deprecated
-    public void visit(OWLNegativeObjectPropertyAssertionAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLNegativeObjectPropertyAssertionAxiom axiom) {
     }
 
     /**
@@ -421,7 +424,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
      * method is not efficient.
      */
     @Deprecated
-    public void visit(OWLAsymmetricObjectPropertyAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLAsymmetricObjectPropertyAxiom axiom) {
     }
 
     /**
@@ -430,7 +434,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
      * method is not efficient.
      */
     @Deprecated
-    public void visit(OWLReflexiveObjectPropertyAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLReflexiveObjectPropertyAxiom axiom) {
     }
 
     /**
@@ -439,7 +444,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
      * method is not efficient.
      */
     @Deprecated
-    public void visit(OWLDisjointClassesAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLDisjointClassesAxiom axiom) {
     }
 
     /**
@@ -448,16 +454,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
      * method is not efficient.
      */
     @Deprecated
-    public void visit(OWLDataPropertyDomainAxiom axiom) {
-    }
-
-    /**
-     * Use handleOn     * @deprecated logyChanges instead to process the whole change
-     * list at once.  Processing changes one by one by overriding this
-     * method is not efficient.
-     */
-    @Deprecated
-    public void visit(OWLObjectPropertyDomainAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLDataPropertyDomainAxiom axiom) {
     }
 
     /**
@@ -466,7 +464,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
      * method is not efficient.
      */
     @Deprecated
-    public void visit(OWLEquivalentObjectPropertiesAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLObjectPropertyDomainAxiom axiom) {
     }
 
     /**
@@ -475,7 +474,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
      * method is not efficient.
      */
     @Deprecated
-    public void visit(OWLNegativeDataPropertyAssertionAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLEquivalentObjectPropertiesAxiom axiom) {
     }
 
     /**
@@ -484,7 +484,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
      * method is not efficient.
      */
     @Deprecated
-    public void visit(OWLDifferentIndividualsAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLNegativeDataPropertyAssertionAxiom axiom) {
     }
 
     /**
@@ -493,115 +494,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
      * method is not efficient.
      */
     @Deprecated
-    public void visit(OWLDisjointDataPropertiesAxiom axiom) {
-    }
-
-    /**
-     * Use handleOn     * @deprecated logyChanges instead to process the whole change
-     * list at once.  Processing changes one by one by overriding this
-     * method is not efficient.
-     */
-    @Deprecated
-    public void visit(OWLDisjointObjectPropertiesAxiom axiom) {
-    }
-
-    /**
-     * Use handleOn     * @deprecated logyChanges instead to process the whole change
-     * list at once.  Processing changes one by one by overriding this
-     * method is not efficient.
-     */
-    @Deprecated
-    public void visit(OWLObjectPropertyRangeAxiom axiom) {
-    }
-
-    /**
-     * Use handleOn     * @deprecated logyChanges instead to process the whole change
-     * list at once.  Processing changes one by one by overriding this
-     * method is not efficient.
-     */
-    @Deprecated
-    public void visit(OWLObjectPropertyAssertionAxiom axiom) {
-    }
-
-    /**
-     * Use handleOn     * @deprecated logyChanges instead to process the whole change
-     * list at once.  Processing changes one by one by overriding this
-     * method is not efficient.
-     */
-    @Deprecated
-    public void visit(OWLFunctionalObjectPropertyAxiom axiom) {
-    }
-
-    /**
-     * Use handleOn     * @deprecated logyChanges instead to process the whole change
-     * list at once.  Processing changes one by one by overriding this
-     * method is not efficient.
-     */
-    @Deprecated
-    public void visit(OWLSubObjectPropertyOfAxiom axiom) {
-    }
-
-    /**
-     * Use handleOn     * @deprecated logyChanges instead to process the whole change
-     * list at once.  Processing changes one by one by overriding this
-     * method is not efficient.
-     */
-    @Deprecated
-    public void visit(OWLDisjointUnionAxiom axiom) {
-    }
-
-    /**
-     * Use handleOn     * @deprecated logyChanges instead to process the whole change
-     * list at once.  Processing changes one by one by overriding this
-     * method is not efficient.
-     */
-    @Deprecated
-    public void visit(OWLSymmetricObjectPropertyAxiom axiom) {
-    }
-
-    /**
-     * Use handleOn     * @deprecated logyChanges instead to process the whole change
-     * list at once.  Processing changes one by one by overriding this
-     * method is not efficient.
-     */
-    @Deprecated
-    public void visit(OWLDataPropertyRangeAxiom axiom) {
-    }
-
-    /**
-     * Use handleOn     * @deprecated logyChanges instead to process the whole change
-     * list at once.  Processing changes one by one by overriding this
-     * method is not efficient.
-     */
-    @Deprecated
-    public void visit(OWLFunctionalDataPropertyAxiom axiom) {
-    }
-
-    /**
-     * Use handleOn     * @deprecated logyChanges instead to process the whole change
-     * list at once.  Processing changes one by one by overriding this
-     * method is not efficient.
-     */
-    @Deprecated
-    public void visit(OWLEquivalentDataPropertiesAxiom axiom) {
-    }
-
-    /**
-     * Use handleOn     * @deprecated logyChanges instead to process the whole change
-     * list at once.  Processing changes one by one by overriding this
-     * method is not efficient.
-     */
-    @Deprecated
-    public void visit(OWLClassAssertionAxiom axiom) {
-    }
-
-    /**
-     * Use handleOn     * @deprecated logyChanges instead to process the whole change
-     * list at once.  Processing changes one by one by overriding this
-     * method is not efficient.
-     */
-    @Deprecated
-    public void visit(OWLEquivalentClassesAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLDifferentIndividualsAxiom axiom) {
     }
 
     /**
@@ -610,7 +504,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
      * method is not efficient.
      */
     @Deprecated
-    public void visit(OWLDataPropertyAssertionAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLDisjointDataPropertiesAxiom axiom) {
     }
 
     /**
@@ -619,7 +514,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
      * method is not efficient.
      */
     @Deprecated
-    public void visit(OWLTransitiveObjectPropertyAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLDisjointObjectPropertiesAxiom axiom) {
     }
 
     /**
@@ -628,7 +524,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
      * method is not efficient.
      */
     @Deprecated
-    public void visit(OWLIrreflexiveObjectPropertyAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLObjectPropertyRangeAxiom axiom) {
     }
 
     /**
@@ -637,7 +534,138 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
      * method is not efficient.
      */
     @Deprecated
-    public void visit(OWLSubDataPropertyOfAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLObjectPropertyAssertionAxiom axiom) {
+    }
+
+    /**
+     * @deprecated Use handleOntologyChanges instead to process the whole change
+     * list at once.  Processing changes one by one by overriding this
+     * method is not efficient.
+     */
+    @Deprecated
+    @Override
+    public void visit(@Nonnull OWLFunctionalObjectPropertyAxiom axiom) {
+    }
+
+    /**
+     * @deprecated Use handleOntologyChanges instead to process the whole change
+     * list at once.  Processing changes one by one by overriding this
+     * method is not efficient.
+     */
+    @Deprecated
+    @Override
+    public void visit(@Nonnull OWLSubObjectPropertyOfAxiom axiom) {
+    }
+
+    /**
+     * @deprecated Use handleOntologyChanges instead to process the whole change
+     * list at once.  Processing changes one by one by overriding this
+     * method is not efficient.
+     */
+    @Deprecated
+    @Override
+    public void visit(@Nonnull OWLDisjointUnionAxiom axiom) {
+    }
+
+    /**
+     * @deprecated Use handleOntologyChanges instead to process the whole change
+     * list at once.  Processing changes one by one by overriding this
+     * method is not efficient.
+     */
+    @Deprecated
+    @Override
+    public void visit(@Nonnull OWLSymmetricObjectPropertyAxiom axiom) {
+    }
+
+    /**
+     * @deprecated Use handleOntologyChanges instead to process the whole change
+     * list at once.  Processing changes one by one by overriding this
+     * method is not efficient.
+     */
+    @Deprecated
+    @Override
+    public void visit(@Nonnull OWLDataPropertyRangeAxiom axiom) {
+    }
+
+    /**
+     * @deprecated Use handleOntologyChanges instead to process the whole change
+     * list at once.  Processing changes one by one by overriding this
+     * method is not efficient.
+     */
+    @Deprecated
+    @Override
+    public void visit(@Nonnull OWLFunctionalDataPropertyAxiom axiom) {
+    }
+
+    /**
+     * @deprecated Use handleOntologyChanges instead to process the whole change
+     * list at once.  Processing changes one by one by overriding this
+     * method is not efficient.
+     */
+    @Deprecated
+    @Override
+    public void visit(@Nonnull OWLEquivalentDataPropertiesAxiom axiom) {
+    }
+
+    /**
+     * @deprecated Use handleOntologyChanges instead to process the whole change
+     * list at once.  Processing changes one by one by overriding this
+     * method is not efficient.
+     */
+    @Deprecated
+    @Override
+    public void visit(@Nonnull OWLClassAssertionAxiom axiom) {
+    }
+
+    /**
+     * @deprecated Use handleOntologyChanges instead to process the whole change
+     * list at once.  Processing changes one by one by overriding this
+     * method is not efficient.
+     */
+    @Deprecated
+    @Override
+    public void visit(@Nonnull OWLEquivalentClassesAxiom axiom) {
+    }
+
+    /**
+     * @deprecated Use handleOntologyChanges instead to process the whole change
+     * list at once.  Processing changes one by one by overriding this
+     * method is not efficient.
+     */
+    @Deprecated
+    @Override
+    public void visit(@Nonnull OWLDataPropertyAssertionAxiom axiom) {
+    }
+
+    /**
+     * @deprecated Use handleOntologyChanges instead to process the whole change
+     * list at once.  Processing changes one by one by overriding this
+     * method is not efficient.
+     */
+    @Deprecated
+    @Override
+    public void visit(@Nonnull OWLTransitiveObjectPropertyAxiom axiom) {
+    }
+
+    /**
+     * @deprecated Use handleOntologyChanges instead to process the whole change
+     * list at once.  Processing changes one by one by overriding this
+     * method is not efficient.
+     */
+    @Deprecated
+    @Override
+    public void visit(@Nonnull OWLIrreflexiveObjectPropertyAxiom axiom) {
+    }
+
+    /**
+     * @deprecated Use handleOntologyChanges instead to process the whole change
+     * list at once.  Processing changes one by one by overriding this
+     * method is not efficient.
+     */
+    @Deprecated
+    @Override
+    public void visit(@Nonnull OWLSubDataPropertyOfAxiom axiom) {
     }
 
     /**
@@ -646,7 +674,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
      * method is not efficient.
      */
     @Deprecated
-    public void visit(OWLInverseFunctionalObjectPropertyAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLInverseFunctionalObjectPropertyAxiom axiom) {
     }
 
     /**
@@ -655,7 +684,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
      * method is not efficient.
      */
     @Deprecated
-    public void visit(OWLSameIndividualAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLSameIndividualAxiom axiom) {
     }
 
     /**
@@ -664,7 +694,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
      * method is not efficient.
      */
     @Deprecated
-    public void visit(OWLSubPropertyChainOfAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLSubPropertyChainOfAxiom axiom) {
     }
 
     /**
@@ -673,7 +704,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
      * method is not efficient.
      */
     @Deprecated
-    public void visit(OWLInverseObjectPropertiesAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLInverseObjectPropertiesAxiom axiom) {
     }
 
     /**
@@ -682,7 +714,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
      * method is not efficient.
      */
     @Deprecated
-    public void visit(OWLHasKeyAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLHasKeyAxiom axiom) {
     }
 
     /**
@@ -691,7 +724,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
      * method is not efficient.
      */
     @Deprecated
-    public void visit(OWLDatatypeDefinitionAxiom axiom) {
+    @Override
+    public void visit(@Nonnull OWLDatatypeDefinitionAxiom axiom) {
     }
 
     /**
@@ -700,7 +734,8 @@ public abstract class AbstractOWLFrameSection<R extends Object, A extends OWLAxi
      * method is not efficient.
      */
     @Deprecated
-    public void visit(SWRLRule rule) {
+    @Override
+    public void visit(@Nonnull SWRLRule rule) {
     }
 
     

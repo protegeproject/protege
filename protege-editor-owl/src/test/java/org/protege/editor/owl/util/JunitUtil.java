@@ -7,6 +7,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.PrintWriter;
 import java.io.StringWriter;
 
 public class JunitUtil {
@@ -20,7 +21,7 @@ public class JunitUtil {
         try {
             StringWriter writer = new StringWriter();
             OWLFunctionalSyntaxRenderer renderer = new OWLFunctionalSyntaxRenderer();
-            renderer.render(ontology, writer);
+            renderer.render(ontology, new PrintWriter(writer));
             log.debug(writer.toString());
         }
         catch (OWLRendererException ore) {

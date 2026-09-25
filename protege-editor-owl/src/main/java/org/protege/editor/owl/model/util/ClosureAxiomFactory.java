@@ -5,6 +5,7 @@ import org.semanticweb.owlapi.search.EntitySearcher;
 
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 
 /**
@@ -77,10 +78,11 @@ public class ClosureAxiomFactory extends ObjectSomeValuesFromFillerExtractor {
             return;
         }
         visitedClasses.add(cls);
-        for (OWLClassExpression superCls : EntitySearcher.getSuperClasses(cls, onts)) {
+        // TODO: Refactor this into a stream pipeline in a follow-up branch and pull request.
+        for (OWLClassExpression superCls : EntitySearcher.getSuperClasses(cls, onts.stream()).collect(Collectors.toList())) {
             superCls.accept(this);
         }
-        for (OWLClassExpression equiv : EntitySearcher.getEquivalentClasses(cls, onts)) {
+        for (OWLClassExpression equiv : EntitySearcher.getEquivalentClasses(cls, onts.stream()).collect(Collectors.toList())) {
             equiv.accept(this);
         }
     }

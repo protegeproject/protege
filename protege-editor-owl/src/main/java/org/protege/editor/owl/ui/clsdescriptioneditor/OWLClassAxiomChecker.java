@@ -9,6 +9,7 @@ import org.semanticweb.owlapi.manchestersyntax.renderer.ParserException;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClassAxiom;
 import org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration;
+import org.semanticweb.owlapi.model.OntologyConfigurator;
 import org.semanticweb.owlapi.util.mansyntax.ManchesterOWLSyntaxParser;
 
 import java.util.Collections;
@@ -41,7 +42,7 @@ class OWLClassAxiomChecker implements OWLExpressionChecker<OWLClassAxiom> {
 
     public OWLClassAxiom createObject(String text) throws OWLExpressionParserException {
         ManchesterOWLSyntaxParser parser = new ManchesterOWLSyntaxParserImpl(
-                OWLOntologyLoaderConfiguration::new, mngr.getOWLDataFactory());
+                new OntologyConfigurator(), mngr.getOWLDataFactory());
         parser.setOWLEntityChecker(new ProtegeOWLEntityChecker(mngr.getOWLEntityFinder()));
         parser.setStringToParse(text);
         try {

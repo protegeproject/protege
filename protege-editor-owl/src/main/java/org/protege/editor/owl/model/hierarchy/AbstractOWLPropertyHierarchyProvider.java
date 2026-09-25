@@ -1,8 +1,6 @@
 package org.protege.editor.owl.model.hierarchy;
 
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.search.EntitySearcher;
-
 import java.util.*;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
@@ -230,11 +228,7 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
                 }
             }
 
-            for (E prop : EntitySearcher.getEquivalentProperties(object, ontologies)) {
-                if (!prop.isAnonymous()) {
-                    result.add((P) prop);
-                }
-            }
+            result.addAll(getEquivalentProperties(object, ontologies));
 
             result.remove(object);
             return result;
@@ -243,6 +237,8 @@ public abstract class AbstractOWLPropertyHierarchyProvider<R extends OWLProperty
 //    		getReadLock().unlock();
         }
     }
+
+    protected abstract Collection<P> getEquivalentProperties(P property, Set<OWLOntology> ontologies);
 
 
     public Set<P> getParents(P object) {

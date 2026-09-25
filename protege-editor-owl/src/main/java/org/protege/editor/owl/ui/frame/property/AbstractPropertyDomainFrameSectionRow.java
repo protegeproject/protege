@@ -8,6 +8,7 @@ import org.protege.editor.owl.ui.util.OWLComponentFactory;
 import org.semanticweb.owlapi.model.*;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /*
@@ -24,7 +25,7 @@ import java.util.List;
  * Bio Health Informatics Group<br>
  * Date: Oct 16, 2008<br><br>
  */
-public abstract class AbstractPropertyDomainFrameSectionRow<P extends OWLProperty, A extends OWLPropertyDomainAxiom> extends AbstractOWLFrameSectionRow<P, A, OWLClassExpression> {
+public abstract class AbstractPropertyDomainFrameSectionRow<P extends OWLProperty, A extends OWLPropertyDomainAxiom<?>> extends AbstractOWLFrameSectionRow<P, A, OWLClassExpression> {
 
     public AbstractPropertyDomainFrameSectionRow(OWLEditorKit owlEditorKit, OWLFrameSection<P, A, OWLClassExpression> section,
                                                 OWLOntology ontology, P rootObject,
@@ -41,7 +42,6 @@ public abstract class AbstractPropertyDomainFrameSectionRow<P extends OWLPropert
 
 
     public List<? extends OWLObject> getManipulatableObjects() {
-        return Arrays.asList(getAxiom().getDomain());
+        return Collections.singletonList(getAxiom().getDomain());
     }
 }
-

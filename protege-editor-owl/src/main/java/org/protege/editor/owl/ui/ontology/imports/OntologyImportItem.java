@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.ontology.imports;
 
-import com.google.common.base.Optional;
 import org.protege.editor.core.ui.list.MListButton;
 import org.protege.editor.core.ui.list.MListItem;
 import org.protege.editor.owl.OWLEditorKit;
@@ -13,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 /*
 * Copyright (C) 2007, University of Manchester
 *

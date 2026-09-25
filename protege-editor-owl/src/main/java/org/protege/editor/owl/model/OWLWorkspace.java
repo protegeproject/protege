@@ -113,7 +113,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
             verifySelection(getEntities());
         }
 
-        public void ontologiesChanged(@Nonnull List<? extends OWLOntologyChange> changes) throws OWLException {
+        public void ontologiesChanged(@Nonnull List<? extends OWLOntologyChange> changes) {
             super.ontologiesChanged(changes);
             handleOntologiesChanged(changes);
         }
@@ -785,7 +785,7 @@ public class OWLWorkspace extends TabbedWorkspace implements SendErrorReportHand
         }
 
         String ontShortName = mngr.getRendering(activeOntology);
-        com.google.common.base.Optional<IRI> defaultDocumentIRI = activeOntology.getOntologyID().getDefaultDocumentIRI();
+        Optional<IRI> defaultDocumentIRI = activeOntology.getOntologyID().getDefaultDocumentIRI();
         String documentIRIPart = "";
         if (defaultDocumentIRI.isPresent()) {
             documentIRIPart = " (" + defaultDocumentIRI.get() + ") ";

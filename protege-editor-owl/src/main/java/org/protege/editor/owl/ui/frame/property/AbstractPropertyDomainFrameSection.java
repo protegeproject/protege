@@ -25,7 +25,7 @@ import java.util.*;
  * Bio Health Informatics Group<br>
  * Date: Oct 16, 2008<br><br>
  */
-public abstract class AbstractPropertyDomainFrameSection<P extends OWLProperty, A extends OWLPropertyDomainAxiom>  extends AbstractOWLFrameSection<P, A, OWLClassExpression> {
+public abstract class AbstractPropertyDomainFrameSection<P extends OWLProperty, A extends OWLPropertyDomainAxiom<?>>  extends AbstractOWLFrameSection<P, A, OWLClassExpression> {
 
     public static final String LABEL = "Domains (intersection)";
 

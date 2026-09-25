@@ -18,6 +18,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Stream;
 /*
 * Copyright (C) 2007, University of Manchester
 *
@@ -136,8 +137,9 @@ public class OWLAnnotationPropertyHierarchyViewComponent extends AbstractOWLEnti
 
     private class InternalOWLEntitySetProvider implements OWLEntitySetProvider<OWLAnnotationProperty> {
 
-        public Set<OWLAnnotationProperty> getEntities() {
-            return new HashSet<>(getTree().getSelectedOWLObjects());
+        @Override
+        public Stream<OWLAnnotationProperty> entities() {
+            return getTree().getSelectedOWLObjects().stream().distinct();
         }
     }
 

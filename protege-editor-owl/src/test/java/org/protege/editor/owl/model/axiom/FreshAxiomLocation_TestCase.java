@@ -1,7 +1,8 @@
 package org.protege.editor.owl.model.axiom;
 
-import com.google.common.base.Optional;
 import org.junit.Test;
+
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -31,6 +32,11 @@ public class FreshAxiomLocation_TestCase {
                 FreshAxiomLocation.SUBJECT_DEFINING_ONTOLOGY.getLocationName());
         assertThat(locationFromName.isPresent(), is(true));
         assertThat(locationFromName.get(), is(FreshAxiomLocation.SUBJECT_DEFINING_ONTOLOGY));
+    }
+
+    @Test
+    public void shouldReturnEmptyForUnknownName() {
+        assertThat(FreshAxiomLocation.getLocationFromName("Unknown"), is(Optional.empty()));
     }
 
     @Test

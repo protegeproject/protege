@@ -1,9 +1,9 @@
 package org.protege.editor.owl.model.hierarchy;
 
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
+import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -201,13 +201,16 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
         final Set<OWLAnnotationProperty> props = new HashSet<>();
         for (OWLOntologyChange chg : changes){
             if(chg.isAxiomChange()){
-                chg.getAxiom().accept(new OWLAxiomVisitorAdapter(){
-                    public void visit(OWLSubAnnotationPropertyOfAxiom owlSubAnnotationPropertyOfAxiom) {
+                chg.getAxiom().accept(new OWLAxiomVisitor(){
+
+                    @Override
+                    public void visit(@Nonnull OWLSubAnnotationPropertyOfAxiom owlSubAnnotationPropertyOfAxiom) {
                         props.add(owlSubAnnotationPropertyOfAxiom.getSubProperty());
                         props.add(owlSubAnnotationPropertyOfAxiom.getSuperProperty());
                     }
 
-                    public void visit(OWLDeclarationAxiom owlDeclarationAxiom) {
+                    @Override
+                    public void visit(@Nonnull OWLDeclarationAxiom owlDeclarationAxiom) {
                         if (owlDeclarationAxiom.getEntity().isOWLAnnotationProperty()){
                             props.add(owlDeclarationAxiom.getEntity().asOWLAnnotationProperty());
                         }
@@ -255,7 +258,7 @@ public class OWLAnnotationPropertyHierarchyProvider extends AbstractOWLObjectHie
             }
         }
 
-        for (IRI uri : OWLRDFVocabulary.BUILT_IN_ANNOTATION_PROPERTY_IRIS){
+        for (IRI uri : OWLRDFVocabulary.BUILT_IN_AP_IRIS){
             roots.add(df.getOWLAnnotationProperty(uri));
         }
     }

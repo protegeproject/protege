@@ -8,6 +8,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.search.EntitySearcher;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Author: Matthew Horridge<br>
@@ -25,7 +26,8 @@ public class EntityAnnotationValueSearchMetadataImporter extends EntityBasedSear
     @Override
     public void generateSearchMetadataFor(OWLEntity entity, String entityRendering, final SearchMetadataImportContext context, SearchMetadataDB db) {
         for (OWLOntology ontology : context.getOntologies()) {
-            for (final OWLAnnotation annotation : EntitySearcher.getAnnotations(entity, ontology)) {
+            // TODO: Refactor this into a stream pipeline in a follow-up branch and pull request.
+            for (final OWLAnnotation annotation : EntitySearcher.getAnnotations(entity, ontology).collect(Collectors.toList())) {
                 String groupDescription = context.getRendering(annotation.getProperty());
                 StyledString ren = context.getStyledStringRendering(annotation);
                 SearchMetadata md = new SearchMetadata(SearchCategory.ANNOTATION_VALUE, groupDescription, entity, entityRendering, ren.getString()) {
