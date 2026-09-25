@@ -201,6 +201,9 @@
 						<Bundle-Activator>org.protege.editor.owl.ProtegeOWL</Bundle-Activator>
 						<Bundle-SymbolicName>org.protege.editor.owl;singleton:=true</Bundle-SymbolicName>
 						<Embed-Dependency>*;scope=provided;inline=true</Embed-Dependency>
+						<!-- Omit JPMS descriptors from inlined MR-JARs (see protege-editor-core). -->
+						<_donotcopy>(.*\.svn|.*module-info\.class)$</_donotcopy>
+						<_fixupmessages>"Classes found in the wrong directory";is:=ignore</_fixupmessages>
 						<Export-Package>
 							org.protege.editor.owl.*;version=${project.version},
 							org.protege.owlapi.inference.*;version=${project.version}
@@ -211,6 +214,8 @@
 							com.jcraft.jsch.*;version=${jsch.version},
 						</_exportcontents>
 						<Import-Package>
+							!autovalue.shaded.org.checkerframework.*,
+							!com.google.errorprone.annotations.concurrent,
 							org.eclipse.core.runtime;registry=split,
 							javax.inject.*;version=1.0,
 							*
@@ -237,6 +242,11 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
+				<configuration>
+					<systemPropertyVariables>
+						<bundle.jar>${project.build.directory}/${project.build.finalName}.jar</bundle.jar>
+					</systemPropertyVariables>
+				</configuration>
 				<executions>
 					<execution>
 						<phase>verify</phase>
@@ -247,14 +257,24 @@
 					 </execution>
 				</executions>
 			</plugin>
-		 <plugin>
-		  <groupId>org.apache.maven.plugins</groupId>
-		  <artifactId>maven-compiler-plugin</artifactId>
-		  <configuration>
-		   <source>11</source>
-		   <target>11</target>
-		  </configuration>
-		 </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-compile</id>
+						<configuration>
+							<annotationProcessorPaths>
+								<path>
+									<groupId>com.google.auto.value</groupId>
+									<artifactId>auto-value</artifactId>
+									<version>${auto-value.version}</version>
+								</path>
+							</annotationProcessorPaths>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 

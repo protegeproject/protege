@@ -133,6 +133,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<auto-value.version>1.11.1</auto-value.version>
 		<maven.javadoc.failOnError>false</maven.javadoc.failOnError>
 		<slf4j.version>1.7.36</slf4j.version>
 		<logback.version>1.2.13</logback.version>
@@ -292,14 +293,14 @@
 			<dependency>
 				<groupId>com.google.auto.value</groupId>
 				<artifactId>auto-value-annotations</artifactId>
-				<version>1.11.1</version>
+				<version>${auto-value.version}</version>
 				<scope>provided</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>com.google.auto.value</groupId>
 				<artifactId>auto-value</artifactId>
-				<version>1.6.5</version>
+				<version>${auto-value.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			
@@ -352,6 +353,8 @@
 					<version>3.14.0</version>
 					<configuration>
 						<release>11</release>
+						<useModulePath>false</useModulePath>
+						<fork>true</fork>
 					</configuration>
 				</plugin>
 

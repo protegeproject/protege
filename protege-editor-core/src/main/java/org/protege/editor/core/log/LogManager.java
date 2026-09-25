@@ -16,6 +16,7 @@ import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
@@ -34,6 +35,9 @@ public class LogManager {
 
     private final List<LogStatusListener> listenerList = new ArrayList<>();
 
+    /**
+     * Null when {@link GraphicsEnvironment#isHeadless()}; log appender still works without a window.
+     */
     private final JDialog logViewDialog;
 
     public LogManager(LogView logView) {
@@ -67,40 +71,44 @@ public class LogManager {
 			}
         };
 
-        JComponent holder = new JPanel(new BorderLayout(7, 7));
-        holder.setPreferredSize(new Dimension(800, 600));
-        JScrollPane sp = new JScrollPane(logView.asJComponent());
-        sp.getVerticalScrollBar().setUnitIncrement(15);
-        holder.add(sp);
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton clearLogButton = new JButton("Clear log");
-        clearLogButton.setToolTipText("Remove all log messages");
-        clearLogButton.addActionListener(e -> clearLogView());
-        JButton showLogFile = new JButton("Show log file");
-        showLogFile.setToolTipText("Show the log file in the system file browser");
-        showLogFile.addActionListener(e -> FileUtils.showLogFile());        
-		JButton preferencesButton = new JButton("Preferences");		
-		preferencesButton.addActionListener(e -> showPreferences());
-		preferencesButton.setToolTipText("Display log preferences");
-		JButton timeStampButton = new JButton("Time stamp");
-		timeStampButton.addActionListener(e -> TimestampOutputAction.createTimeStamp(holder));
-		timeStampButton.setToolTipText("Print a timestamp and optional message into the logs or console");
-        buttonPanel.add(showLogFile);        
-        buttonPanel.add(preferencesButton);
-        buttonPanel.add(timeStampButton);
-        buttonPanel.add(clearLogButton);
-        holder.add(buttonPanel, BorderLayout.SOUTH);
-        
-        JOptionPane op = new JOptionPane(holder, JOptionPane.PLAIN_MESSAGE);
-        logViewDialog = op.createDialog(null, "Log");
-        logViewDialog.setModal(false);
-        logViewDialog.setResizable(true);
-        logViewDialog.addComponentListener(new ComponentAdapter() {
-        	@Override
-        	public void componentHidden(ComponentEvent e) {
-        		fireErrorsCleared();
-        	}
-		});
+        if (GraphicsEnvironment.isHeadless()) {
+            logViewDialog = null;
+        } else {
+            JComponent holder = new JPanel(new BorderLayout(7, 7));
+            holder.setPreferredSize(new Dimension(800, 600));
+            JScrollPane sp = new JScrollPane(logView.asJComponent());
+            sp.getVerticalScrollBar().setUnitIncrement(15);
+            holder.add(sp);
+            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            JButton clearLogButton = new JButton("Clear log");
+            clearLogButton.setToolTipText("Remove all log messages");
+            clearLogButton.addActionListener(e -> clearLogView());
+            JButton showLogFile = new JButton("Show log file");
+            showLogFile.setToolTipText("Show the log file in the system file browser");
+            showLogFile.addActionListener(e -> FileUtils.showLogFile());
+            JButton preferencesButton = new JButton("Preferences");
+            preferencesButton.addActionListener(e -> showPreferences());
+            preferencesButton.setToolTipText("Display log preferences");
+            JButton timeStampButton = new JButton("Time stamp");
+            timeStampButton.addActionListener(e -> TimestampOutputAction.createTimeStamp(holder));
+            timeStampButton.setToolTipText("Print a timestamp and optional message into the logs or console");
+            buttonPanel.add(showLogFile);
+            buttonPanel.add(preferencesButton);
+            buttonPanel.add(timeStampButton);
+            buttonPanel.add(clearLogButton);
+            holder.add(buttonPanel, BorderLayout.SOUTH);
+
+            JOptionPane op = new JOptionPane(holder, JOptionPane.PLAIN_MESSAGE);
+            logViewDialog = op.createDialog(null, "Log");
+            logViewDialog.setModal(false);
+            logViewDialog.setResizable(true);
+            logViewDialog.addComponentListener(new ComponentAdapter() {
+                @Override
+                public void componentHidden(ComponentEvent e) {
+                    fireErrorsCleared();
+                }
+            });
+        }
     }
 
     public synchronized void addErrorLogListener(LogStatusListener listener) {
@@ -139,7 +147,9 @@ public class LogManager {
     }
 
     public void showLogView() {
-        logViewDialog.setVisible(true);
+        if (logViewDialog != null) {
+            logViewDialog.setVisible(true);
+        }
         fireErrorsCleared();
     }
 

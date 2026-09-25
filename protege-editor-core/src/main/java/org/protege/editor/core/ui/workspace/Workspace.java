@@ -209,35 +209,40 @@ public abstract class Workspace extends JComponent implements Disposable {
     }
 
     private void addLookAndFeelMenuItem(JMenu menu, ButtonGroup lafMenuItemGroup, String selectedLookAndFeelName, final String lookAndFeelClassName, Optional<String> shortName) {
-        try {
-            final String lafShortName;
-            if(shortName.isPresent()) {
-                lafShortName = shortName.get();
-            }
-            else {
-                Class<?> cls = Class.forName(lookAndFeelClassName);
-                LookAndFeel laf = (LookAndFeel) cls.newInstance();
-                lafShortName = laf.getName();
-            }
+        final String lafShortName = getLookAndFeelShortName(lookAndFeelClassName, shortName);
 
-            JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(new AbstractAction(lafShortName) {
-                public void actionPerformed(ActionEvent e) {
-                    setLookAndFeel(lookAndFeelClassName, lafShortName);
-                }
-            });
-            lafMenuItemGroup.add(menuItem);
-            menuItem.setSelected(selectedLookAndFeelName.equals(lookAndFeelClassName));
-            menu.add(menuItem);
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            logger.error("Error whilst adding menu item: {}", e);
+        JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(new AbstractAction(lafShortName) {
+            public void actionPerformed(ActionEvent e) {
+                setLookAndFeel(lookAndFeelClassName, lafShortName);
+            }
+        });
+        lafMenuItemGroup.add(menuItem);
+        menuItem.setSelected(selectedLookAndFeelName.equals(lookAndFeelClassName));
+        menu.add(menuItem);
+    }
+
+    private String getLookAndFeelShortName(String lookAndFeelClassName, Optional<String> shortName) {
+        if(shortName.isPresent()) {
+            return shortName.get();
         }
+
+        LookAndFeel currentLookAndFeel = UIManager.getLookAndFeel();
+        if(currentLookAndFeel != null && currentLookAndFeel.getClass().getName().equals(lookAndFeelClassName)) {
+            return currentLookAndFeel.getName();
+        }
+
+        for(UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+            if(info.getClassName().equals(lookAndFeelClassName)) {
+                return info.getName();
+            }
+        }
+
+        return lookAndFeelClassName;
     }
 
     private void setLookAndFeel(String clsName, String shortName) {
         try {
-            Class<?> lookAndFeelClass = Class.forName(clsName);
-            LookAndFeel lookAndFeel = (LookAndFeel) lookAndFeelClass.newInstance();
-            UIManager.setLookAndFeel(lookAndFeel);
+            UIManager.setLookAndFeel(clsName);
             SwingUtilities.updateComponentTreeUI(Workspace.this);
             Preferences p = PreferencesManager.getInstance().getApplicationPreferences(ProtegeApplication.LOOK_AND_FEEL_KEY);
             p.putString(ProtegeApplication.LOOK_AND_FEEL_CLASS_NAME, clsName);
