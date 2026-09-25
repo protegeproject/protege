@@ -1,15 +1,31 @@
 name: Publish packages to the Maven Central Repository
 
+# To publish a release, push a version tag such as 6.0.0-alpha-1. The version
+# in pom.xml must already match the tag. This workflow never changes the
+# project version during publication.
+#
+# To publish a snapshot, run this workflow manually and select the branch that
+# contains the snapshot version. Manual runs do not publish release versions.
 on:
-  release:
-    types: [released]
+  push:
+    tags:
+      - '6.*'
   workflow_dispatch:
+
+# Prevent two jobs from publishing the same branch or tag at the same time.
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
+      # Configure Maven to authenticate with Maven Central and import the GPG
+      # private key used to sign the published artifacts.
       - name: Set up JDK/Maven
         uses: actions/setup-java@v4
         with:
@@ -20,12 +36,41 @@ jobs:
           server-password: OSSRH_TOKEN
           gpg-private-key: ${{secrets.GPG_PRIVATE_KEY}}
           gpg-passphrase: GPG_PASSPHRASE
-      - if: github.event.release
-        name: Update version in pom.xml (Release only)
-        run: mvn -B versions:set -DnewVersion=${{ github.event.release.tag_name }} -DgenerateBackupPoms=false
+      # A tag-triggered run publishes a release. Check that the tag has a valid
+      # Protégé 6 version and matches the version in pom.xml. A manually
+      # triggered run may only publish a snapshot.
+      - name: Validate project version
+        shell: bash
+        run: |
+          set -euo pipefail
+          project_version="$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
+
+          if [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
+            if [[ ! "${GITHUB_REF_NAME}" =~ ^6\.[0-9]+\.[0-9]+(-(alpha|beta|rc)-[0-9]+)?$ ]]; then
+              echo "Invalid release tag: ${GITHUB_REF_NAME}"
+              exit 1
+            fi
+            if [[ "${project_version}" != "${GITHUB_REF_NAME}" ]]; then
+              echo "Release tag ${GITHUB_REF_NAME} does not match project version ${project_version}"
+              exit 1
+            fi
+            if [[ "${project_version}" == *-SNAPSHOT ]]; then
+              echo "A release tag cannot publish a snapshot version"
+              exit 1
+            fi
+          elif [[ "${project_version}" != *-SNAPSHOT ]]; then
+            echo "Manual publishing is restricted to snapshot versions"
+            exit 1
+          fi
+
+      # The release profile creates the source and Javadoc JARs, signs the
+      # artifacts, and publishes them through the Maven Central Portal.
       - name: Publish packages
-        run: mvn --batch-mode -Prelease deploy
+        run: mvn --batch-mode --activate-profiles release clean deploy
 env:
   GPG_PASSPHRASE: ${{secrets.GPG_PASSPHRASE}}
+  # Despite the OSSRH prefix, these secrets contain the username and token for
+  # the Maven Central Portal. Their names are retained for compatibility with
+  # the existing Maven configuration.
   OSSRH_USERNAME: ${{secrets.OSSRH_USERNAME}}
   OSSRH_TOKEN: ${{secrets.OSSRH_TOKEN}}
