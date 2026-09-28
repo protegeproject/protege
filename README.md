@@ -4,6 +4,8 @@
 
 The `protege-6` branch contains development work for Protégé 6. It is under active development and is not yet a stable release. Protégé 6 is being migrated to OWL API 5.x, so plugins built for Protégé 5 may require changes for compatibility.
 
+Maintainers should follow the [Protégé 6 release guide](RELEASING.md) when publishing Maven artifacts and creating a release.
+
 [Protégé](https://protege.stanford.edu) is a free, open-source ontology editor that supports the latest [OWL 2.0 standard](http://www.w3.org/TR/owl2-overview/). Protégé has a pluggable architecture, and many [plugins](https://protegewiki.stanford.edu/wiki/Protege_Plugin_Library) for different functionalities are available.
 
 To read more about **Protégé's features**, please visit the Protégé [home page](https://protege.stanford.edu).
