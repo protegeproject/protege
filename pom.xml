@@ -448,7 +448,7 @@
 		</plugins>
 	</build>
 
-	<!-- Generate source and Javadoc JAR files, and sign artifacts.  Required by Sonatype OSSRH for deployment. -->
+	<!-- Generate source and Javadoc JAR files, and sign artifacts for Maven Central. -->
 	<profiles>
 		<profile>
 			<id>release</id>
@@ -509,15 +509,6 @@
 						<groupId>org.sonatype.central</groupId>
 						<artifactId>central-publishing-maven-plugin</artifactId>
 						<extensions>true</extensions>
-						<executions>
-							<execution>
-								<id>default-deploy</id>
-								<phase>deploy</phase>
-								<goals>
-									<goal>publish</goal>
-								</goals>
-							</execution>
-						</executions>
 						<configuration>
 							<publishingServerId>ossrh</publishingServerId>
 							<autoPublish>true</autoPublish>
