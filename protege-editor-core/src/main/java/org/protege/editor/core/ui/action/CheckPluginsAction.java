@@ -26,7 +26,7 @@ public class CheckPluginsAction extends ProtegeAction {
 
     public void actionPerformed(ActionEvent event) {
         try {
-            PluginManager.getInstance().runCheckForPlugins();
+            PluginManager.getInstance().runCheckForPlugins(getWorkspace());
         } catch (UnknownHostException e) {
             JOptionPane.showMessageDialog(getWorkspace(),
                     "<html><body>" +

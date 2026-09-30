@@ -11,6 +11,8 @@ import javax.swing.text.Document;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.StyleSheet;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,6 +21,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 /*
  * Copyright (C) 2007, University of Manchester
  *
@@ -243,7 +247,9 @@ public class PluginPanel extends JPanel {
     }
 
 
-    public static List<PluginInfo> showDialog(List<PluginInfo> pluginInfoList, Component parent) {
+    public static JDialog showDialog(List<PluginInfo> pluginInfoList,
+                                     Component parent,
+                                     Consumer<List<PluginInfo>> resultHandler) {
         PluginPanel panel = new PluginPanel(pluginInfoList);
         final String installOption = "Install";
         final String notNowOption = "Not now";
@@ -256,15 +262,37 @@ public class PluginPanel extends JPanel {
                 options,
                 options[0]);
         JDialog dlg = optionPane.createDialog(parent, "Automatic Update");
-        dlg.setModal(true);
+        dlg.setModal(false);
         dlg.setResizable(true);
+        dlg.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+        AtomicBoolean completed = new AtomicBoolean();
+        Consumer<List<PluginInfo>> complete = selectedPlugins -> {
+            if (completed.compareAndSet(false, true)) {
+                dlg.dispose();
+                resultHandler.accept(selectedPlugins);
+            }
+        };
+        optionPane.addPropertyChangeListener(event -> {
+            if (JOptionPane.VALUE_PROPERTY.equals(event.getPropertyName())
+                    && event.getNewValue() != null
+                    && event.getNewValue() != JOptionPane.UNINITIALIZED_VALUE) {
+                if (installOption.equals(event.getNewValue())) {
+                    complete.accept(panel.getPluginsToInstall());
+                }
+                else {
+                    complete.accept(Collections.emptyList());
+                }
+            }
+        });
+        dlg.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent event) {
+                complete.accept(Collections.emptyList());
+            }
+        });
         dlg.setVisible(true);
-        if(installOption.equals(optionPane.getValue())) {
-            return panel.getPluginsToInstall();
-        }
-        else {
-            return Collections.emptyList();
-        }
+        return dlg;
     }
 
 

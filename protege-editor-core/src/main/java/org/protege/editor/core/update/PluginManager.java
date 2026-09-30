@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import java.awt.Component;
+import java.awt.KeyboardFocusManager;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -38,6 +40,8 @@ public class PluginManager {
     public static final String DEFAULT_REGISTRY = "https://raw.githubusercontent.com/protegeproject/autoupdate/master/update-info/6.0.0/plugins.repository";
 
     private final Logger logger = LoggerFactory.getLogger(PluginManager.class);
+
+    private JDialog pluginDialog;
 
     private static enum SearchType {
         UPDATES_ONLY,
@@ -99,12 +103,16 @@ public class PluginManager {
     }
 
     public void runAutoUpdate() {
-        runSearch(SearchType.UPDATES_ONLY);
+        runSearch(SearchType.UPDATES_ONLY, null);
     }
 
     public void runCheckForPlugins() throws IOException {
+        runCheckForPlugins(null);
+    }
+
+    public void runCheckForPlugins(Component parent) throws IOException {
         ensureConnectionToPluginRegistry();
-        runSearch(SearchType.UPDATES_AND_INSTALLS);
+        runSearch(SearchType.UPDATES_AND_INSTALLS, parent);
     }
 
     private void ensureConnectionToPluginRegistry() throws IOException {
@@ -114,7 +122,7 @@ public class PluginManager {
         connection.getResponseCode();
     }
 
-    private void runSearch(SearchType searchType) {
+    private void runSearch(SearchType searchType, Component parent) {
         final BackgroundTask autoUpdateTask = ProtegeApplication.getBackgroundTaskManager().startTask("autoupdate");
         Runnable runnable = () -> {
             PluginRegistry registry = new PluginRegistryImpl(getPluginRegistryLocation());
@@ -125,11 +133,11 @@ public class PluginManager {
                 ProtegeApplication.getBackgroundTaskManager().endTask(autoUpdateTask);
                 List<PluginInfo> availablePlugins = registry.getAvailablePlugins();
                 if (searchType == SearchType.UPDATES_AND_INSTALLS) {
-                    showPluginsDialog(availablePlugins);
+                    showPluginsDialog(availablePlugins, parent);
                 }
                 else {
                     if (!availablePlugins.isEmpty()) {
-                        showPluginsDialog(availablePlugins);
+                        showPluginsDialog(availablePlugins, parent);
                     }
                 }
             }
@@ -139,13 +147,24 @@ public class PluginManager {
         t.start();
     }
 
-    private void showPluginsDialog(List<PluginInfo> pluginInfoList) {
+    private void showPluginsDialog(List<PluginInfo> pluginInfoList, Component parent) {
         SwingUtilities.invokeLater(() -> {
-            List<PluginInfo> selUpdates = PluginPanel.showDialog(pluginInfoList, null);
-            if (!selUpdates.isEmpty()) {
-                PluginInstaller installer = new PluginInstaller(selUpdates);
-                installer.run();
+            if (pluginDialog != null && pluginDialog.isDisplayable()) {
+                pluginDialog.setVisible(true);
+                pluginDialog.toFront();
+                pluginDialog.requestFocus();
+                return;
             }
+            Component dialogParent = parent != null
+                    ? parent
+                    : KeyboardFocusManager.getCurrentKeyboardFocusManager().getActiveWindow();
+            pluginDialog = PluginPanel.showDialog(pluginInfoList, dialogParent, selectedPlugins -> {
+                pluginDialog = null;
+                if (!selectedPlugins.isEmpty()) {
+                    PluginInstaller installer = new PluginInstaller(selectedPlugins);
+                    installer.run();
+                }
+            });
         });
     }
 
