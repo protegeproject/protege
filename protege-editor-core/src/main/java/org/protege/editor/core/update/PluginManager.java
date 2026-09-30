@@ -33,9 +33,9 @@ public class PluginManager {
 
     public static final String AUTO_UPDATE_KEY = "CheckForUpdates";
 
-    public static final String PLUGIN_REGISTRY_KEY = "plugin.registry-5.0.url";
+    public static final String PLUGIN_REGISTRY_KEY = "plugin.registry-6.0.url";
 
-    public static final String DEFAULT_REGISTRY = "https://raw.githubusercontent.com/protegeproject/autoupdate/master/update-info/5.0.0/plugins.repository";
+    public static final String DEFAULT_REGISTRY = "https://raw.githubusercontent.com/protegeproject/autoupdate/master/update-info/6.0.0/plugins.repository";
 
     private final Logger logger = LoggerFactory.getLogger(PluginManager.class);
 
