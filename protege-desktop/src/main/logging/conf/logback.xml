@@ -16,6 +16,9 @@
         </encoder>
     </appender>
 
+    <!-- Module extraction logs every locality check at INFO. -->
+    <logger name="uk.ac.manchester.cs.owlapi.modularity.SyntacticLocalityModuleExtractor"
+            level="WARN"/>
 
     <root level="info">
         <appender-ref ref="stdout" />
