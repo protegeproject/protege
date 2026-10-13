@@ -62,6 +62,15 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
 
 
     public OWLConstantEditor(OWLEditorKit owlEditorKit) {
+        this(owlEditorKit, true);
+    }
+
+    /**
+     * @param installAutoCompleter Whether to install the auto-completer on the value field.  Tests pass
+     *                             {@code false}, because the auto-completer creates a popup window up front, which
+     *                             isn't possible in a headless environment such as CI.
+     */
+    OWLConstantEditor(OWLEditorKit owlEditorKit, boolean installAutoCompleter) {
         this.editorKit = owlEditorKit;
         dataFactory = owlEditorKit.getModelManager().getOWLDataFactory();
         lexicalValueField.setWrapStyleWord(true);
@@ -99,7 +108,9 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
 
         removeNonSelectableDatatypes(datatypeField);
 
-        setupAutoCompleter(owlEditorKit);
+        if(installAutoCompleter) {
+            setupAutoCompleter(owlEditorKit);
+        }
         layoutComponents();
     }
 
@@ -124,23 +135,33 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
 
     private void updateDatatype() {
         if(overridingDatatype != null) {
+            // Don't clear the language tag here: this runs inside the tag field's own document listener, and an
+            // existing tagged value would silently lose its tag.  validateContent() reports the conflict instead.
             datatypeField.setSelectedItem(overridingDatatype);
-            langTagField.clear();
         }
         else if(isLangSelected()) {
-            datatypeField.setSelectedItem(OWL2Datatype.RDF_PLAIN_LITERAL.getDatatype(this.dataFactory));
+            // Show the datatype that a tagged literal is saved with.  It can't be chosen directly, so it isn't in the
+            // list, and JComboBox.setSelectedItem() ignores items that aren't in the list; set it on the model instead.
+            datatypeField.getModel().setSelectedItem(getLangTaggedDatatype());
             datatypeField.setEnabled(false);
         }
         else {
             datatypeField.setEnabled(true);
             OWLDatatype selDatatype = (OWLDatatype) datatypeField.getSelectedItem();
-            if(isBuiltInParseableDatatpe(selDatatype) || selDatatype == null) {
+            if(isBuiltInParseableDatatpe(selDatatype) || selDatatype == null || selDatatype.equals(getLangTaggedDatatype())) {
                 OWLLiteralParser parser = new OWLLiteralParser(dataFactory);
                 OWLLiteral parsedLiteral = parser.parseLiteral(lexicalValueField.getText().trim());
                 datatypeField.setSelectedItem(parsedLiteral.getDatatype());
             }
         }
         validateContent();
+    }
+
+    /**
+     * Gets the datatype of a language-tagged literal, as the OWL API represents it.
+     */
+    private OWLDatatype getLangTaggedDatatype() {
+        return dataFactory.getOWLLiteral("", "en").getDatatype();
     }
 
     private boolean isBuiltInParseableDatatpe(OWLDatatype selDatatype) {
@@ -150,6 +171,13 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
 
     private void validateContent() {
         clearErrorMessage();
+        if(overridingDatatype != null && isLangSelected()) {
+            lexicalValueField.setForeground(Color.RED);
+            displayErrorMessage(String.format(
+                    "A language tag is not allowed by this property's range (%s)",
+                    editorKit.getOWLModelManager().getRendering(overridingDatatype)));
+            return;
+        }
         if(getLexicalValue().isEmpty()) {
             return;
         }
@@ -169,6 +197,14 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         messageLabel.setText(message);
         messageLabel.setForeground(Color.RED);
         lexicalValueField.setToolTipText(message);
+    }
+
+    /**
+     * Gets the validation message currently shown to the user.
+     * @return The message, or the empty string if the content is valid.
+     */
+    String getErrorMessage() {
+        return messageLabel.getText();
     }
 
     private void clearErrorMessage() {
@@ -250,8 +286,9 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         }
         lexicalValueField.setText(literal.getLiteral());
         if(literal.isRDFPlainLiteral()) {
-            langCodeRegistry.getLangCode(literal.getLang()).ifPresent(langTagField::setLangCode);
+            // Setting the tag updates the datatype shown, so clear the datatype first rather than afterwards
             datatypeField.setSelectedItem(null);
+            langCodeRegistry.getLangCode(literal.getLang()).ifPresent(langTagField::setLangCode);
         }
         else {
             datatypeField.setSelectedItem(literal.getDatatype());

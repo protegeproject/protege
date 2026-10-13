@@ -18,6 +18,8 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * Author: Matthew Horridge<br>
@@ -182,14 +184,28 @@ public class OWLAnnotationEditor extends AbstractOWLObjectEditor<OWLAnnotation> 
         if(property == null) {
             return;
         }
-        EntitySearcher.getRanges(property,
-                                 owlEditorKit.getOWLModelManager().getActiveOntology())
-                .stream()
-                .filter(OWL2Datatype::isBuiltIn)
-                .findFirst()
-                .map(OWL2Datatype::getDatatype)
+        getOverridingDatatype(EntitySearcher.getRanges(property,
+                                                       owlEditorKit.getOWLModelManager().getActiveOntology())
+                                      .stream())
                 .map(rng -> rng.getDatatype(owlEditorKit.getOWLModelManager().getOWLDataFactory()))
                 .ifPresent(rng -> constantEditor.setOverridingDatatype(rng));
+    }
+
+    /**
+     * Picks the datatype that the literal editor should be locked to, given an annotation property's ranges.
+     * Ranges that admit language-tagged literals (rdfs:Literal, rdf:PlainLiteral and rdf:langString) are skipped,
+     * because locking the editor to one of them would suppress the language tag.
+     * @param ranges The IRIs of the property's ranges.
+     * @return The first built-in range that doesn't admit language-tagged literals, if any.
+     */
+    static Optional<OWL2Datatype> getOverridingDatatype(@Nonnull Stream<IRI> ranges) {
+        return ranges
+                .filter(OWL2Datatype::isBuiltIn)
+                .map(OWL2Datatype::getDatatype)
+                .filter(dt -> dt != OWL2Datatype.RDFS_LITERAL
+                        && dt != OWL2Datatype.RDF_PLAIN_LITERAL
+                        && dt != OWL2Datatype.RDF_LANG_STRING)
+                .findFirst();
     }
 
     @SuppressWarnings("unchecked")
