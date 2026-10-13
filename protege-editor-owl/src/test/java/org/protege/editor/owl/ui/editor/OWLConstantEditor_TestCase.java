@@ -109,6 +109,40 @@ public class OWLConstantEditor_TestCase {
         assertThat(editor.getErrorMessage(), is(""));
     }
 
+    @Test
+    public void shouldShowLangTaggedDatatypeForLoadedTaggedValue() {
+        editor.setEditedObject(dataFactory.getOWLLiteral(LEXICAL_VALUE, LANG));
+        assertThat(getSelectedDatatype(), is(getLangTaggedDatatype()));
+    }
+
+    @Test
+    public void shouldReplaceChosenDatatypeWithLangTaggedDatatypeWhenTagIsTyped() {
+        editor.setEditedObject(dataFactory.getOWLLiteral(LEXICAL_VALUE, xsdString));
+        getLangTagTextField().setText(LANG);
+        assertThat(getSelectedDatatype(), is(getLangTaggedDatatype()));
+    }
+
+    @Test
+    public void shouldRestoreParsedDatatypeWhenTagIsRemoved() {
+        editor.setEditedObject(dataFactory.getOWLLiteral(LEXICAL_VALUE, LANG));
+        getLangTagTextField().setText("");
+        assertThat(getSelectedDatatype(), is(xsdString));
+        assertThat(editor.getEditedObject(), is(dataFactory.getOWLLiteral(LEXICAL_VALUE, xsdString)));
+    }
+
+    /**
+     * The datatype of a language-tagged literal, as the OWL API represents it (rdf:PlainLiteral in OWL API 4).
+     */
+    private OWLDatatype getLangTaggedDatatype() {
+        return dataFactory.getOWLLiteral(LEXICAL_VALUE, LANG).getDatatype();
+    }
+
+    private Object getSelectedDatatype() {
+        Optional<JComboBox> field = findComponent(editor, JComboBox.class);
+        assertThat("Datatype field present", field.isPresent(), is(true));
+        return field.get().getSelectedItem();
+    }
+
     /**
      * The language tag field is the only single-line text field in the editor; the lexical value is a text area.
      */

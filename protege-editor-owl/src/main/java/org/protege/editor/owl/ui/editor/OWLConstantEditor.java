@@ -140,19 +140,28 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
             datatypeField.setSelectedItem(overridingDatatype);
         }
         else if(isLangSelected()) {
-            datatypeField.setSelectedItem(OWL2Datatype.RDF_PLAIN_LITERAL.getDatatype(this.dataFactory));
+            // Show the datatype that a tagged literal is saved with.  It can't be chosen directly, so it isn't in the
+            // list, and JComboBox.setSelectedItem() ignores items that aren't in the list; set it on the model instead.
+            datatypeField.getModel().setSelectedItem(getLangTaggedDatatype());
             datatypeField.setEnabled(false);
         }
         else {
             datatypeField.setEnabled(true);
             OWLDatatype selDatatype = (OWLDatatype) datatypeField.getSelectedItem();
-            if(isBuiltInParseableDatatpe(selDatatype) || selDatatype == null) {
+            if(isBuiltInParseableDatatpe(selDatatype) || selDatatype == null || selDatatype.equals(getLangTaggedDatatype())) {
                 OWLLiteralParser parser = new OWLLiteralParser(dataFactory);
                 OWLLiteral parsedLiteral = parser.parseLiteral(lexicalValueField.getText().trim());
                 datatypeField.setSelectedItem(parsedLiteral.getDatatype());
             }
         }
         validateContent();
+    }
+
+    /**
+     * Gets the datatype of a language-tagged literal, as the OWL API represents it.
+     */
+    private OWLDatatype getLangTaggedDatatype() {
+        return dataFactory.getOWLLiteral("", "en").getDatatype();
     }
 
     private boolean isBuiltInParseableDatatpe(OWLDatatype selDatatype) {
@@ -277,8 +286,9 @@ public class OWLConstantEditor extends JPanel implements OWLObjectEditor<OWLLite
         }
         lexicalValueField.setText(literal.getLiteral());
         if(literal.isRDFPlainLiteral()) {
-            langCodeRegistry.getLangCode(literal.getLang()).ifPresent(langTagField::setLangCode);
+            // Setting the tag updates the datatype shown, so clear the datatype first rather than afterwards
             datatypeField.setSelectedItem(null);
+            langCodeRegistry.getLangCode(literal.getLang()).ifPresent(langTagField::setLangCode);
         }
         else {
             datatypeField.setSelectedItem(literal.getDatatype());
